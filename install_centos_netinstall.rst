@@ -6,7 +6,6 @@ The CentOS NetInstall distribution is an ISO image that can be mounted to a CD, 
 
 .. seealso::  See :ref:`GettingChooseInstall` for more information on choosing an installation type.
 
-==================
 Step-by-Step Guide
 ==================
 

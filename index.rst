@@ -23,6 +23,7 @@ Managing the perfSONAR Toolkit
    
    manage_update
    manage_users
+   manage_web_overview
    manage_regular_tests
    manage_admin_info
    manage_services
