@@ -18,7 +18,7 @@ Step-by-Step Guide
     +--------------+-------------------------------------------------------------------------------+
     | x86_64       | :centos_netinstall_iso:`iso <x86_64>` :centos_netinstall_md5:`md5 <x86_64>`   |
     +--------------+-------------------------------------------------------------------------------+
-#. Verify the md5 checksum by verifying the two lines output are the same when you run the command below (replace both instances of 3.X with the version downloaded):
+#. Verify the md5 checksum by verifying the two lines output are the same when you run the command below (replace the filenames with that of the downloaded iso and md5). If they do no match then you may need to re-download the iso images:
 
         .. code-block:: console
 
@@ -58,7 +58,7 @@ Step-by-Step Guide
     * *Use free space* - This option will not touch any existing partitions and will give any remaining space to the hard drive.
 
     .. image:: images/install_netinstall-5drive.png
-#. You will next see a series of loading screesn as packages are downloaded and prepared to be downloaded. You do not need to do anything except wait. 
+#. You will now see a series of loading screesn as packages are downloaded and installed. You do not need to do anything except wait. 
     .. note:: This process may take several minutes or longer depending on your network connectivity to the download server.
     .. image:: images/install_netinstall-6retrieveinfo.png
         :width: 49%
