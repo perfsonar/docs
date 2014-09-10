@@ -2,7 +2,7 @@
 CentOS Full Install Guide
 *************************
 
-The CentOS Full Install distribution is an ISO image that can be mounted to a CD, DVD, or USB drive. The image contains all the required packages so internet connectivity is not required for the initial install. 
+The CentOS Full Install distribution is an ISO image that can be mounted to a DVD or USB drive. The image contains all the required packages so Internet connectivity is not required for the initial install. The document describes step-by-step how to install this distribution.
 
 .. seealso::  See :ref:`GettingChooseInstall` for more information on choosing an installation type.
 
@@ -24,7 +24,7 @@ Step-by-Step Guide
 
             $ md5sum pS-Performance_Toolkit-FullInstall-3.X.iso;cat pS-Performance_Toolkit-FullInstall-3.X.iso.md5
 
-#. Mount the ISO to a CD, DVD, or USB drive 
+#. Mount the ISO to a DVD or USB drive 
      .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document.
 #. Insert the media containing the ISO into the target end system
 #. Power on the host 
@@ -46,9 +46,9 @@ Step-by-Step Guide
     * *Use free space* - This option will not touch any existing partitions and will give any remaining space to the hard drive.
 
     .. image:: images/install_fullinstall-7harddrive.png
-#. You will next see a series of loading screesn as packages are installed. You do not need to do anything except wait. 
+#. You will next see a series of loading screens as packages are installed. You do not need to do anything except wait. 
     .. image:: images/install_fullinstall-8install.png
-#. If the installation is successful you will be presented with the screen below. Select *Reboot* to restart the host. 
+#. If the installation is successful you will be presented with the screen below. Select **Reboot** to restart the host. 
     .. image:: images/install_fullinstall-9reboot.png
 #. After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to :doc:`install_config_first_time`
     .. image:: images/install_fullinstall-10login.png

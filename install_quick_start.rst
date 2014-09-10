@@ -10,54 +10,8 @@ Quick Start
 
         .. seealso:: For a complete walkthrough of these prompts see :doc:`install_centos_netinstall`
 #. Once the installation completes and the host reboots, from the console login using the root password you created during the previous step
-#. Run the command ``/opt/perfsonar_ps/toolkit/scripts/nptoolkit-configure.py`` to create a new user that can log in to the web administrator interface. At the prompts enter **2**, **1**, **no**, **yes**, the new username, your desired password (twice), and **0** as shown below (where the new username is **webadmin**):
-
-    .. code-block:: console
-
-        [root@localhost ~]# /opt/perfsonar_ps/toolkit/scripts/nptoolkit-configure.py
-        
-        Internet2 Network Performance Toolkit customization script
-        Options in MAGENTA have yet to be configured
-        Options in GREEN have already been configured
-
-        1. Configure Networking
-        2. Manage Users
-        0. exit
-
-        Make a selection: 2
-  
-        Welcome to the Internet2 pS-Performance Toolkit user administration program.
-        This program will help you administer users.
-        You may configure any of the options below with this program: 
-            1. Add a new user
-            2. Delete a user
-            3. Change a user's password
-            0. exit
-        Make a selection: 1
- 
-        Enter the user whose account you'd like to add. Just hit enter to exit: webadmin
-        Should this user be able to login via SSH? [yes] no
-
-
-        NOTE: you must enable SSH via the web interface before this user can login remotely
-
-
-        Is this user an administrator? [yes] 
-        Please specify a password for the webadmin account.
-        Changing password for user webadmin.
-        New password: 
-        Retype new password: 
-        passwd: all authentication tokens updated successfully.
-
-
-        You may configure any of the options below with this program: 
-            1. Add a new user
-            2. Delete a user
-            3. Change a user's password
-            0. exit
-        Make a selection: 0
-
-    .. seealso:: For more information on adding new users see :doc:`manage_users`
+#. You will be prompted to create a user and password that can be used to administer the host through the web interface. Follow the prompts to complete this step.
+    .. image:: images/install_config_first_time-user5.png
 #. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host
 #. Click on **Administrative Info** in the left menu and login as the user created in the previous step
     

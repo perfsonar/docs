@@ -36,7 +36,7 @@ Step-by-Step Guide
         #. First you will be presented with a screen asking how to configure IPv4 and IPv6 on your host. You may assign a static address by using the *tab* key to select *Manual Configuration*.
 
             .. image:: images/install_netinstall-static2.png
-        #. If you select *Manual Configuration* you will get the screen belowwhich asks you to enter the IP addresses, netmask, gateway and DNS server. Enter the required information and select *OK* to continue. 
+        #. If you select *Manual Configuration* you will get the screen below asking you to enter the IP addresses, netmask, gateway and DNS server. Enter the required information and select *OK* to continue. 
 
             .. image:: images/install_netinstall-static3.png
         #. If you are not behind a web proxy, you may see the welcome screen and return to the regular instructions. If you are behind a web proxy you may enter that information in the screen presented (shown below). After this screen you should be presented with a welcome screen. If not you should check your settings and network connection.
@@ -48,7 +48,7 @@ Step-by-Step Guide
     .. image:: images/install_netinstall-1welcome.png
 #. The next screen will download some of the initial installation files. If any errors occur during this phase, you may need to check your network settings. 
     .. image:: images/install_netinstall-2retrieve.png
-#. You will next be propmpted to choose your timezone. You may do so by using the *tab* and *arrow* keys on your keyboard. When you have chosen your timezone, *tab* to the **OK** box and hit *Enter*.
+#. You will next be prompted to choose your timezone. You may do so by using the *tab* and *arrow* keys on your keyboard. When you have chosen your timezone, *tab* to the **OK** box and hit *Enter*.
     .. image:: images/install_netinstall-3timezone.png
 #. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. After entering and confirming the password *tab* to the **OK** box and hit *Enter* on your keyboard.
     .. image:: images/install_netinstall-4password.png
@@ -68,7 +68,7 @@ Step-by-Step Guide
         :width: 49%
     .. image:: images/install_netinstall-9install.png
         :width: 49%
-#. If the installation is successful you will be presented with the screen below. Select *Reboot* to restart the host. 
+#. If the installation is successful you will be presented with the screen below. Select **Reboot** to restart the host. 
     .. image:: images/install_netinstall-10endinstall.png
 #. After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to :doc:`install_config_first_time`
     .. image:: images/install_netinstall-11login.png
