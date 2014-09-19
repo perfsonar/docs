@@ -44,10 +44,14 @@ Step-by-Step Guide
             .. image:: images/install_netinstall-static4.png
     
         .. note::  After installation you may need to re-enter the network settings. These settings are only expected for use during the installation process and may be discarded once the process completes.
-#. You will now be presented with a welcome screen. Use *tab* on your keyboard to select the **OK** box and hit *Enter* to continue. 
-    .. image:: images/install_netinstall-1welcome.png
+#. You will next be asked to select your language. Make your choice and select **OK** to continue.
+    .. image:: images/install_netinstall-language.png
+#. On the next prompt select your keyboard layout and select **OK** to continue.
+    .. image:: images/install_netinstall-keyboard.png
 #. The next screen will download some of the initial installation files. If any errors occur during this phase, you may need to check your network settings. 
     .. image:: images/install_netinstall-2retrieve.png
+#. You will now be presented with a welcome screen. Use *tab* on your keyboard to select the **OK** box and hit *Enter* to continue. 
+    .. image:: images/install_netinstall-1welcome.png
 #. You will next be prompted to choose your timezone. You may do so by using the *tab* and *arrow* keys on your keyboard. When you have chosen your timezone, *tab* to the **OK** box and hit *Enter*.
     .. image:: images/install_netinstall-3timezone.png
 #. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. After entering and confirming the password *tab* to the **OK** box and hit *Enter* on your keyboard.
