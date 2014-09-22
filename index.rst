@@ -21,18 +21,18 @@ Managing the perfSONAR Toolkit
 .. toctree::
    :maxdepth: 2
    
-   manage_update
-   manage_users
-   manage_web_overview
+   manage_choose
    manage_regular_tests
    manage_admin_info
    manage_services
    manage_ntp
    manage_logs
-   manage_cacti
+   manage_update
+   manage_users
    manage_tuning
    manage_dual_xface
    manage_security
+   manage_extra_tools
 
 Using the perfSONAR Toolkit
 ============================

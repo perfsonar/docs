@@ -42,7 +42,6 @@ You will be presented with a page like the following:
 
 .. image:: images/install_config_first_time-web1.png
 
-.. seealso:: For more information on the web interface see :doc:`manage_web_overview`.
 
 Updating Your Administrative Information
 ========================================
