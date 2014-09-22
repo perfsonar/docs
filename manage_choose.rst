@@ -13,13 +13,13 @@ Standalone Node
 If you only have one or two perfSONAR hosts, this is probably what you'll want to do.
 In this mode, all configuration is done using the web interface on the perfSONAR node itself.
 
-This is described under `Configuring Regular Tests`_.
+This is described under :doc:`Configuring Regular Tests <manage_regular_tests>`.
 
 Centrally Managed Node
 ----------------------
 
 If you want to create a perfSONAR dashboard such as http://ps-dashboard.es.net, or have several perfSONAR hosts to manage,
-you probably want to use this method. Details are described under `Managing Multiple perfSONAR Toolkits`_.
+you probably want to use this method. Details are described under :doc:`Managing Multiple perfSONAR Toolkits <multi_quick_start>`.
 
 Combination Node
 ----------------
