@@ -34,6 +34,15 @@ Managing the perfSONAR Toolkit
    manage_security
    manage_extra_tools
 
+Managing Multiple perfSONAR Toolkits
+====================================
+.. toctree::
+   :maxdepth: 2
+   
+   multi_quick_start
+   multi_server_config
+   multi_agent_config
+   
 Using the perfSONAR Toolkit
 ============================
 .. toctree::
@@ -46,15 +55,6 @@ Using the perfSONAR Toolkit
    using_rev_traceroute
    using_rev_tracepath
    using_oppd
-   
-Managing Multiple perfSONAR Toolkits
-====================================
-.. toctree::
-   :maxdepth: 2
-   
-   multi_quick_start
-   multi_server_config
-   multi_agent_config
    
 Configuration Reference
 =======================
