@@ -54,7 +54,6 @@ Using the perfSONAR Toolkit
    using_rev_ping
    using_rev_traceroute
    using_rev_tracepath
-   using_oppd
    
 Configuration Reference
 =======================
@@ -66,6 +65,7 @@ Configuration Reference
    config_esmond_data_cleaner
    config_ls_registration
    config_mesh
+   config_oppd
    config_owamp
    config_owamp_limits
    config_regular_testing

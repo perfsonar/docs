@@ -75,5 +75,4 @@ You should now have a fully configured host regularly collecting data. A few thi
     * :doc:`using_rev_ping`
     * :doc:`using_rev_tracepath`
     * :doc:`using_rev_traceroute`
-    * :doc:`using_oppd`
 
