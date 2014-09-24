@@ -12,6 +12,9 @@ Enabling/Disabling Services
 #. Click on **Enabled Services** in the left-hand menu
 
     .. image:: images/manage_services-enable1.png
+#. Login using the web administrator username and password.
+
+    .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
 #. A list of services and a description of each is provided on the screen that loads. Check the services you wish to enable and uncheck the services you wish to disable. Alternatively, you may use the *Only Enable Bandwith Services* and *Only Enable Latency Services* to enable only tests related to throughput and one-way delay testing, respectively. 
 
     .. image:: images/manage_services-enable2.png
