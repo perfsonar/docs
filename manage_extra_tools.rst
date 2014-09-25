@@ -44,7 +44,7 @@ Description
 ------------
 The Monitoring and Debugging Dashboard (MaDDash) is software for concisely displaying and analyzing the results of network measurements between multiple hosts. If you have a small collection of tests you may want to install MaDDash on the same host as one of your Toolkit nodes.
 
-.. note:: For large test sets it is recommended you install MaDDash on a dedicated non-Toolkit host for performance reasons. 
+.. note:: It is recommended you install MaDDash on a separate, non-Toolkit host, to ensure it does not affect test results.
 
 Installation
 ------------
@@ -54,7 +54,7 @@ You may install MaDDash via yum with the following::
 
 Usage
 -----
-See the MaDDash web site `here <http://software.es.net/maddash>`_ for a complete guide.
+See the MaDDash web site `here <http://software.es.net/maddash>`_ for a complete install and user guide.
 
 Source Code
 -----------
