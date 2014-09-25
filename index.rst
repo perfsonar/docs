@@ -51,7 +51,7 @@ Using the perfSONAR Toolkit
    using_graphs
    using_ndt
    using_npad
-   using_rev_ping
+   using_ext_tools
    
 Configuration Reference
 =======================

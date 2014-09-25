@@ -72,7 +72,5 @@ You should now have a fully configured host regularly collecting data. A few thi
 * The perfSONAR Toolkit provides a number of on-demand testing tools you may be interested in exploring. More information can be found on the following pages:
     * :doc:`using_ndt`
     * :doc:`using_npad`
-    * :doc:`using_rev_ping`
-    * :doc:`using_rev_tracepath`
-    * :doc:`using_rev_traceroute`
+    * :doc:`using_ext_tools`
 
