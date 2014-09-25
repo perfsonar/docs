@@ -52,8 +52,6 @@ Using the perfSONAR Toolkit
    using_ndt
    using_npad
    using_rev_ping
-   using_rev_traceroute
-   using_rev_tracepath
    
 Configuration Reference
 =======================
