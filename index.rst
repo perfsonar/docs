@@ -42,6 +42,7 @@ Managing Multiple perfSONAR Toolkits
    multi_quick_start
    multi_server_config
    multi_agent_config
+   multi_central_MA
    
 Using the perfSONAR Toolkit
 ============================
