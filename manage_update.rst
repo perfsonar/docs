@@ -79,5 +79,3 @@ Special Upgrade Notes
     mysql -u root -e "DROP DATABASE owamp"
     mysql -u root -e "DROP DATABASE bwctl"
     mysql -u root -e "DROP DATABASE traceroute_ma"
-    
-    
