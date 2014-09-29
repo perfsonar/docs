@@ -58,6 +58,11 @@ You may notice on the left-side of the web interface that **Administrative Info*
 
 After completing this step, you should be able to access the **Global Services** page and see your host listed within 24 hours of making the change.
 
+Enabling Services 
+=================
+
+See the section on :doc:`manage_services` for information on enabling various perfSONAR services.
+
 Scheduling Regular Measurements
 ===============================
 You will now want to schedule some tests that run on regular time intervals. There are two commonly used ways to add these tests and you may take one or both of these approaches depending on your needs:

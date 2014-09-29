@@ -32,7 +32,7 @@ Adding Routes
 -------------
 When a regular test is run (or you run a measurement at the command-line using an option to specify the source address), the operating system may or may not use the provided source IP address when deciding which interface on the local host to use for forwarding. Most default routing tables only look at the destination address when making forwarding decisions which can lead to unexpected behavior with your measurements.
 
-In order to avoid this situation, you can run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at */opt/perfsonar_ps/toolkit/scripts/mod_interface_route*. For **each interface on the host** you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:
+In order to avoid this situation, you need to run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at */opt/perfsonar_ps/toolkit/scripts/mod_interface_route*. For **each interface on the host** you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:
     
     * Interface 1
         :Interface Name: eth0

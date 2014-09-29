@@ -5,6 +5,25 @@ Managing Services
 
 The perfSONAR Toolkit runs a number of *services*, applications constantly listening for requests to perform measurements, retrieve data and execute other tasks. This page details how you may enable and disable services through the web interface.
 
+Before enabling services, it is important to understand what services might impact other services. For example, if you run throughput tests 
+(e.g.: bwctl + iperf3) and 
+latency/loss tests (e.g.: owamp ) on the same NIC, the throughput tests will possibly cause the host to drop packets, greatly reducing perfSONARs 
+ability to detect network problems. Also, NDT and NPAD should not be run on a Toolkit host doing regular testing, as those 
+tests will also impact other results as well.  Therefore we recommend only one of the following be enabled at a time:
+
+  * bwctl
+  * owampd
+  * NDT/NPAD
+
+If you want to run all three, it's best to have three separate hosts.
+
+However there are some excecptions to this. First, if you only use bwctl for running traceroute, tracepath, ping, owping, then you can run that at the same time as owamp. Second, if you have a :doc:`host with multiple interfaces <manage_dual_xface>`, and run owamp on one NIC, and bwctl on the other NIC, then its OK to enable both at the same time.
+
+By default, the following services are enabled:
+
+  * XXX
+  * YYY
+
 
 Enabling/Disabling Services
 ===========================
