@@ -15,6 +15,7 @@ Installation
    install_centos_netinstall
    install_centos_fullinstall
    install_config_first_time
+   install_secure_management
    
 Managing the perfSONAR Toolkit
 ==============================

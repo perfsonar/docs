@@ -12,7 +12,7 @@ ability to detect network problems. Also, NDT and NPAD should not be run on a To
 tests will also impact other results as well.  Therefore we recommend only one of the following be enabled at a time:
 
   * bwctl
-  * owampd
+  * owamp
   * NDT/NPAD
 
 If you want to run all three, it's best to have three separate hosts.
@@ -21,9 +21,10 @@ However there are some excecptions to this. First, if you only use bwctl for run
 
 By default, the following services are enabled:
 
-  * XXX
-  * YYY
+  * bwctl
+  * owamp
 
+If you wish to run NDT on your perfSONAR host, you must enable it, as described below.
 
 Enabling/Disabling Services
 ===========================
