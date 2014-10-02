@@ -58,10 +58,19 @@ You may notice on the left-side of the web interface that **Administrative Info*
 
 After completing this step, you should be able to access the **Global Services** page and see your host listed within 24 hours of making the change.
 
-Enabling Services 
-=================
+Managing Toolkit Security
+=========================
+perfSONAR hosts are just like any other host and need to be actively managed to avoid being compromised. perfSONAR hosts run a number of common services, listen on numerous ports and may be outside you site's normal firewall. No set of steps will make your host invincible, but below are some steps that can be taken to contribute toward protecting your host:
+ 
+  * An important aspect of security is to stay informed. Multiple system administrators from your site should be subscribed to the perfsonar security `announcement list <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_. This mailing list keeps users up-to-date on actions that need to be taken when critical security updates for both perfSONAR and third-party packages are released. 
+  * Always follow best common security practices when it comes to creating user accounts and choosing passwords . 
+  * If you run `Nagios <http://www.nagios.org>`_, add your perfSONAR host to your monitoring infrastructure. Consider running some of the nagios `security plugins <http://exchange.nagios.org/directory/Plugins/Security#/>`_ such as `check_yum <http://exchange.nagios.org/directory/Plugins/Operating-Systems/Linux/check_yum/details>`_
+  * Automatic updates are enabled by default on all perfSONAR Toolkit hosts. In order to understand how to update your Toolkit and if automatic updates are right for your system, see :doc:`manage_update`
+  
+    .. note:: Automatic updates were enabled starting in perfSONAR Toolkit version 3.4. If you are running an older version than automatic updates are not enabled.
+  * The perfSONAR Toolkit ships with a default iptables rule-set and intrusion detection system (IDS) software. In order to learn more about these components and how to do things like add custom firewall rules see :doc:`manage_security`
 
-See the section on :doc:`manage_services` for information on enabling various perfSONAR services.
+Those are just a few steps and there is always more than can be done. If you have access to system administrators leverage that resource and any other available. A little extra effort can prevent serious headaches later if your host falls victim to an attack.
 
 Scheduling Regular Measurements
 ===============================
@@ -73,6 +82,7 @@ What next?
 ==========
 You should now have a fully configured host regularly collecting data. A few things you may consider exploring:
 
+* perfSONAR contains tools such as the Network Diagnostic Tester that are disabled by default. For information on enabling/disabling various tools see the section :doc:`manage_services`.
 * Your regular tests record data that can be presented on graphs. To view the results on the toolkit provided graphs see the section :doc:`using_graphs`
 * The perfSONAR Toolkit provides a number of on-demand testing tools you may be interested in exploring. More information can be found on the following pages:
     * :doc:`using_ndt`
