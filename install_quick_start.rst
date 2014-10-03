@@ -29,7 +29,7 @@ Quick Start
 #. You now need to select other hosts to test against. You may do so by explicitly adding a host or selecting a *community* and browsing the list (1). When you are done adding tests, hit *Save* (2).
 
     .. image:: images/install_quick_start-configtests3.png
-    .. seealso:: For more information on adding regular tests see :doc:`config_regular_testing`
+    .. seealso:: For more information on adding regular tests see :doc:`manage_regular_tests`
 #. After some time you may view the results of your tests by clicking on **Throughput/Latency Graphs** or **Traceroute Graphs** in the left menu (depending on the test type).
 
     .. image:: images/install_quick_start-graphs.png
