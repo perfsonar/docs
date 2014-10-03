@@ -12,7 +12,7 @@ The following services may be managed through the web interface:
 =================== =================== ==================================================================
 Name                Default Enabled     Description
 =================== =================== ==================================================================
-Automatic Updates   Yes                 Controls *yum-cron* service that updates packages on the host nightly. See see :doc:`manage_update` for more details.
+Automatic Updates   Yes                 Controls *yum-cron* service that updates packages on the host nightly. See :doc:`manage_update` for more details.
 BWCTL               Yes                 Controls *bwctld* service that allows clients at other sites to run throughput, traceroute and ping tests to your host. Also required if you plan to run regular tests of the aforementioned types on your host.
 OWAMP               Yes                 Controls *owampd* service that allows clients at other sites to run one-way latency tests to this host. Also required to run regular one-way delay tests on your host.
 NDT                 No                  Controls *ndt* service that allows clients to run on-demand diagnostic tests through a Java applet or command-line tool
