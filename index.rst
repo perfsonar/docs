@@ -39,7 +39,7 @@ Managing Multiple perfSONAR Toolkits
 .. toctree::
    :maxdepth: 2
    
-   multi_quick_start
+   multi_overview
    multi_server_config
    multi_agent_config
    multi_central_MA
