@@ -3,28 +3,31 @@ Managing Services
 *****************
 
 
-The perfSONAR Toolkit runs a number of *services*, applications constantly listening for requests to perform measurements, retrieve data and execute other tasks. This page details how you may enable and disable services through the web interface.
+The perfSONAR Toolkit runs a number of *services*: applications constantly listening for requests to perform measurements, retrieve data and execute other tasks. This page details how and when to enable/disable services through the web interface.
 
-Before enabling services, it is important to understand what services might impact other services. For example, if you run throughput tests 
-(e.g.: bwctl + iperf3) and 
-latency/loss tests (e.g.: owamp ) on the same NIC, the throughput tests will possibly cause the host to drop packets, greatly reducing perfSONARs 
-ability to detect network problems. Also, NDT and NPAD should not be run on a Toolkit host doing regular testing, as those 
-tests will also impact other results as well.  Therefore we recommend only one of the following be enabled at a time:
+List of Services
+================
+The following services may be managed through the web interface:
 
-  * bwctl
-  * owamp
-  * NDT/NPAD
+=================== =================== ==================================================================
+Name                Default Enabled     Description
+=================== =================== ==================================================================
+Automatic Updates   Yes                 Controls *yum-cron* service that updates packages on the host nightly. See see :doc:`manage_update` for more details.
+BWCTL               Yes                 Controls *bwctld* service that allows clients at other sites to run throughput, traceroute and ping tests to your host. Also required if you plan to run regular tests of the aforementioned types on your host.
+OWAMP               Yes                 Controls *owampd* service that allows clients at other sites to run one-way latency tests to this host. Also required to run regular one-way delay tests on your host.
+NDT                 No                  Controls *ndt* service that allows clients to run on-demand diagnostic tests through a Java applet or command-line tool
+NPAD                No                  Controls *npad* service that allows clients run diagnostic tests through a Java applet
+=================== =================== ==================================================================
 
-If you want to run all three, it's best to have three separate hosts.
+Choosing Services to Enable
+===========================
+It is important to understand what services might impact other services. For example, if you run throughput tests (e.g. BWCTL + iperf3) and latency/loss tests (e.g. OWAMP ) on the same network interface, the throughput tests will possibly cause the host to drop packets. This may lead to a misleading interpretation of data if these events are not properly correlated. In general it is recommended you use the following guidelines when deciding which services to enable:
 
-However there are some excecptions to this. First, if you only use bwctl for running traceroute, tracepath, ping, owping, then you can run that at the same time as owamp. Second, if you have a :doc:`host with multiple interfaces <manage_dual_xface>`, and run owamp on one NIC, and bwctl on the other NIC, then its OK to enable both at the same time.
+* BWCTL throughput and OWAMP tests **should** be run on separate hosts or interfaces (see :doc:`manage_dual_xface`) for best results that minimise risk of interference
+* If the above is not possible, you **may** run them on the same host and interface, but be conscious that you will need to work diligently to rule out network performance issues caused by overlapping tests
+* NDT and NPAD **should not** be run on hosts also running regular tests of any type. Their tests may interfere with regular tests and the administrator has less control over when they occur since they are run on-demand by an end-user.
 
-By default, the following services are enabled:
-
-  * bwctl
-  * owamp
-
-If you wish to run NDT on your perfSONAR host, you must enable it, as described below.
+.. seealso:: For a discussion on when to run Automatic Updates see :ref:`manage_update-auto`
 
 Enabling/Disabling Services
 ===========================
@@ -43,5 +46,5 @@ Enabling/Disabling Services
 
     .. image:: images/manage_services-enable3.png
 
-
+.. note:: Starting in 3.4, you may also enable/disable any of the underlying services with the *chkconfig* command and the changes will be reflected in the GUI and maintained on reboot.
 

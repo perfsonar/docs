@@ -14,6 +14,8 @@ The *yum* package manager is used by RedHat-based operating systems like CentOS 
 
 .. note:: The Toolkit runs a `Web100 <http://www.web100.org>`_ patched version of the kernel. In some cases CentOS may release a new kernel before the perfSONAR development team has had a chance to create and test a patched version. This will cause an unpatched version to be downloaded, thus disabling the tools NDT and NPAD that rely on the patch. For some users that do not leverage these tools this may not be a concern. Please see our `FAQ <http://www.perfsonar.net/about/faq/#Q25>`_ for more details.
 
+.. _manage_update-auto:
+
 Enabling Auto-Updates
 =====================
 If you do not want to manually keep your system updated, you may choose to enable automatic updates. As with most decisions there are advantages and disadvantages. The main advantage is that your host should receive updates as soon as they are available. The downside is you are giving-up control as to when updates are applied, including those that may unexpectedly make changes that break the system. `Fedora <http://fedoraproject.org/wiki/AutoUpdates>`_ offers the following advice when making this decision:
