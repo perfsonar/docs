@@ -9,7 +9,7 @@ Quick Start
 #. Follow the prompts provided by the CentOS installer to install the required packages. If you have installed a Linux operating system before, these prompts should be relatively self-explanatory. 
 
         .. seealso:: For a complete walkthrough of these prompts see :doc:`install_centos_netinstall`
-#. Once the installation completes and the host reboots, from the console login using the root password you created during the previous step
+#. Once the installation completes and the host reboots, login from the console using the root password you created during the previous step
 #. You will be prompted to create a user and password that can be used to administer the host through the web interface. Follow the prompts to complete this step.
     .. image:: images/install_config_first_time-user5.png
 #. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host
