@@ -98,7 +98,7 @@ You may see the IPv4 changes by running the command ``ip rule list``::
 
 You may see the IPv6 changes by running the command ``ip -6 rule list``::
 
-    # ip rule list
+    # ip -6 rule list
     0:	from all lookup local 
     200:	from fde1:40ff:e1a3:d50e::2 lookup eth0_source_route 
     200:	from fd7d:3189:ed46:2736::2 lookup eth1_source_route 
