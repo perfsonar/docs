@@ -6,14 +6,10 @@ By default, the /etc/bwctld/bwctld.conf on the perfSONAR toolkit uses the follow
 
    .. code-block:: none
 
-    # iperf tool
-    iperf_port      5001-5300
-    # nuttcp tool
-    nuttcp_port     5301-5600
-    # owamp tool
-    owamp_port      5601-5900
     # bwctl control channel 
     peer_port       6001-6200
+    # bwctl measurement test ports
+    test_port       5001-5900
 
 
 You can edit that file if you want to change those port ranges. Note that if you make the port
