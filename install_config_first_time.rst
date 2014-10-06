@@ -67,7 +67,7 @@ perfSONAR hosts are just like any other host and need to be actively managed to 
   * If you run `Nagios <http://www.nagios.org>`_, add your perfSONAR host to your monitoring infrastructure. Consider running some of the nagios `security plugins <http://exchange.nagios.org/directory/Plugins/Security#/>`_ such as `check_yum <http://exchange.nagios.org/directory/Plugins/Operating-Systems/Linux/check_yum/details>`_
   * Automatic updates are enabled by default on all perfSONAR Toolkit hosts. In order to understand how to update your Toolkit and if automatic updates are right for your system, see :doc:`manage_update`
   
-    .. note:: Automatic updates were enabled starting in perfSONAR Toolkit version 3.4. If you are running an older version than automatic updates are not enabled.
+    .. note:: Automatic updates were enabled starting in perfSONAR Toolkit version 3.4. If you are running an older version then automatic updates are not enabled.
   * The perfSONAR Toolkit ships with a default iptables rule-set and intrusion detection system (IDS) software. In order to learn more about these components and how to do things like add custom firewall rules see :doc:`manage_security`
 
 Those are just a few steps and there is always more than can be done. If you have access to system administrators leverage that resource and any other available. A little extra effort can prevent serious headaches later if your host falls victim to an attack.
