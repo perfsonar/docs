@@ -9,7 +9,7 @@ Quick Start
 #. Follow the prompts provided by the CentOS installer to install the required packages. If you have installed a Linux operating system before, these prompts should be relatively self-explanatory. 
 
         .. seealso:: For a complete walkthrough of these prompts see :doc:`install_centos_netinstall`
-#. Once the installation completes and the host reboots, from the console login using the root password you created during the previous step
+#. Once the installation completes and the host reboots, login from the console using the root password you created during the previous step
 #. You will be prompted to create a user and password that can be used to administer the host through the web interface. Follow the prompts to complete this step.
     .. image:: images/install_config_first_time-user5.png
 #. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host
@@ -29,7 +29,7 @@ Quick Start
 #. You now need to select other hosts to test against. You may do so by explicitly adding a host or selecting a *community* and browsing the list (1). When you are done adding tests, hit *Save* (2).
 
     .. image:: images/install_quick_start-configtests3.png
-    .. seealso:: For more information on adding regular tests see :doc:`config_regular_testing`
+    .. seealso:: For more information on adding regular tests see :doc:`manage_regular_tests`
 #. After some time you may view the results of your tests by clicking on **Throughput/Latency Graphs** or **Traceroute Graphs** in the left menu (depending on the test type).
 
     .. image:: images/install_quick_start-graphs.png

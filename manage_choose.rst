@@ -19,7 +19,7 @@ Centrally Managed Node
 ----------------------
 
 If you want to create a perfSONAR dashboard such as http://ps-dashboard.es.net, or have several perfSONAR hosts to manage,
-you probably want to use this method. Details are described under :doc:`Managing Multiple perfSONAR Toolkits <multi_quick_start>`.
+you probably want to use this method. Details are described under :doc:`Managing Multiple perfSONAR Toolkits <multi_overview>`.
 
 Combination Node
 ----------------

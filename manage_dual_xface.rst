@@ -56,7 +56,34 @@ Below is an example of the commands we would run to install the rules required t
 
 Replace the options above with those relevant to each interface on your host to create the necessary rules. 
 
-After performing the task above, your routes should now be setup. In order for the newly installed rules to persist between system reboots it is recommended that you add the *mod_interface_route* commands to **/etc/rc.local**. Copy them exactly as you ran them at the command-line and they should get executed each time your host starts. 
+After performing the task above, your routes should now be setup. There are two ways to enable the newly installed rules to persist between system reboots. One is to set the **mod_interface_route** command to run whenever the machine boots, and the other is to configure the **mod_interface_route** command to run whenever the interface is brought up or torn down.
+
+The easiest approach is to have the routes setup when the machine boots. To do this, it is recommended that you add the *mod_interface_route* commands to **/etc/rc.local**. Copy them exactly as you ran them at the command-line and they should get executed each time your host starts. 
+
+To have the routes setup whenever the interface is brought up, you will need to create two shell scripts: **/sbin/ifup-local** and **/sbin/ifdown-local**. The **/sbin/ifup-local** script gets executed whenever an interface is brought up, and will be used setup the route. The **/sbin/ifdown-local** script gets executed whenever an interface is brought down, and will be used to remove the route. Both scripts get executed with the interface name as the first parameter. The scripts then take the appropriate steps based on which interface is being taken up or torn down.
+
+An example **/sbin/ifup-local** script based on the example interfaces above::
+
+    #/bin/sh
+    INTERFACE=$1
+
+    if [ "$INTERFACE" == "eth0" ]; then
+        /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
+    elif [ "$INTERFACE" == "eth1" ]; then
+        /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
+    fi
+
+An example **/sbin/ifdown-local** script based on the example interfaces above::
+
+    #!/bin/sh
+
+    INTERFACE=$1
+
+    if [ "$INTERFACE" == "eth0" -o "$INTERFACE" == "eth1" ]; then
+        /opt/perfsonar_ps/toolkit/scripts/mod_interface_route  --command delete --device  $1
+    fi
+
+After you have created those scripts, make sure that they are executable by running **chmod ugo+x /sbin/ifup-local /sbin/ifdown-local**.
 
 Viewing Routes
 --------------
@@ -71,7 +98,7 @@ You may see the IPv4 changes by running the command ``ip rule list``::
 
 You may see the IPv6 changes by running the command ``ip -6 rule list``::
 
-    # ip rule list
+    # ip -6 rule list
     0:	from all lookup local 
     200:	from fde1:40ff:e1a3:d50e::2 lookup eth0_source_route 
     200:	from fd7d:3189:ed46:2736::2 lookup eth1_source_route 
