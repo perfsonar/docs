@@ -280,7 +280,7 @@ texinfo_documents = [
 ###perfSONAR Specific settings
 
 #URL to download server
-ps_download_url = 'http://software.internet2.edu/pSPT3.4rc3'
+ps_download_url = 'http://software.internet2.edu/pS-Performance_Toolkit'
 #CentOS version
 centos_version = '6'
 
