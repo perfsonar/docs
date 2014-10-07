@@ -20,7 +20,7 @@ The rules added by the perfSONAR toolkit are contained within a special perfSONA
 An example that will block access to port 8000 for all traffic is shown in the steps below (note it is not recommended you run this command as it will block access to the NPAD tool):
 
     #. Login to your host via SSH or the terminal as a root user
-    #. View your current iptables rules with the following ``/sbin/service iptables status`` command::
+    #. View your current iptables rules with the following ``/sbin/service iptables status`` command. Note that the command does not necessarily show all the details of each rule and you should look in */etc/sysconfig/iptables* for a full description. For example  the second rule in the INPUT chain may look like it accepts all traffic, but in reality it only accepts all traffic *from the loopback interface*. An example is shown below::
     
         # /sbin/service iptables status
         Table: filter
