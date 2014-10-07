@@ -104,3 +104,4 @@ Special Upgrade Notes
     mysql -u root -e "DROP DATABASE bwctl"
     mysql -u root -e "DROP DATABASE traceroute_ma"
 * When you upgrade from a version of the software older than 3.4, automatic updates will be enabled for you. See the :ref:`previous section <manage_update-auto>` in this document for information on implications and how to disable them if desired.
+* When you upgrade from a version of the software older than version 3.4, you may be asked to create a new user to login to the web interface. This is because any user in wheel (e.g. root) is no longer allowed to access the web interface. Given this new constraint, if none of your existing users can login to the web interface you will be prompted to create a new one the first time you login as root. See :doc:`manage_users` for more information.

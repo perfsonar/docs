@@ -56,7 +56,8 @@ When adding users to the toolkit, in particular those that you want to access th
     passwd: all authentication tokens updated successfully.
 #. The new user is added. You may enter **0** to exit the program or perform other operations with the tool. 
 
-.. note:: The perfSONAR Toolkit does not provide any special utilities to create superusers. You will need to use built-in utilities like *visudo* to create privileged users. This is a change as of 3.4 of the perfSONAR Toolkit.
+.. note:: The perfSONAR Toolkit does not provide any special utilities to create superusers. You will need to use built-in utilities like *visudo* to create privileged users. This is a change as of 3.4 of the perfSONAR Toolkit. Note that any users in the wheel group will NOT be allowed access to the web interface.  The **psadmin** group is provided as a special group for web administrators.
+
 
 Deleting a User
 ==========================
