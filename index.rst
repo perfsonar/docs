@@ -87,8 +87,8 @@ Related Projects
 * `iperf3 <http://software.es.net/iperf/>`_
 * `Lookup Service <http://code.google.com/p/simple-lookup-service/>`_
 * `MaDDash <http://software.es.net/maddash/>`_
-* `NDT <http://www.measurementlab.net/tools/ndt>`_
-* `NPAD <http://www.measurementlab.net/tools/npad>`_
+* `NDT <http://software.internet2.edu/ndt/>`_
+* `NPAD <http://www.psc.edu/index.php/npad/645-pathdiagserverinstall>`_
  
 Search
 ==================

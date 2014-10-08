@@ -5,7 +5,7 @@ Quick Start
 #. Download the NetInstall ISO for :centos_netinstall_iso:`i386` or :centos_netinstall_iso:`x86_64` depending on your system's architecture.
 
         .. seealso:: The NetInstall is the recommended installation type, but for more information on other installation types see :doc:`install_getting`.
-#. Using your favorite software, burn the image to a CD, DVD or USB drive and insert the chosen installation media into your host
+#. Using your favorite software, burn the image to a CD, DVD or USB drive and insert the chosen installation media into your host.  Linux and Macintosh users can use the dd tool: *sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK*
 #. Follow the prompts provided by the CentOS installer to install the required packages. If you have installed a Linux operating system before, these prompts should be relatively self-explanatory. 
 
         .. seealso:: For a complete walkthrough of these prompts see :doc:`install_centos_netinstall`
@@ -20,6 +20,10 @@ Quick Start
 
     .. image:: images/install_quick_start-admininfo2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
+#. After this step, you can configure NTP.  Click on *NTP* in the left menu.  When the page loads click **Select Closest Servers** and wait for the operation to complete.  Click **Save** to apply your changes
+
+    .. image:: images/manage_ntp-closest1.png
+    .. seealso:: For more information on updating NTP settings see :doc:`manage_ntp`
 #. You are now ready to add some regular tests. Click on *Configure Tests* in the left menu.
 
     .. image:: images/install_quick_start-configtests1.png

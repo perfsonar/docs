@@ -131,6 +131,7 @@ You may change a user's password with the |nptoolkit_script|:
     Retype new password: 
     passwd: all authentication tokens updated successfully.
 
+#. Normal precautions should be taken to protect the password as it can be used to access the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach. 
 #. The new user's password is now changed. You may enter **0** to exit the program or perform other operations with the tool. 
 
 .. |nptoolkit_script| replace:: */opt/perfsonar_ps/toolkit/scripts/nptoolkit-configure.py*

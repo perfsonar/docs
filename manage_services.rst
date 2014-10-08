@@ -19,6 +19,8 @@ NDT                 No                  Controls *ndt* service that allows clien
 NPAD                No                  Controls *npad* service that allows clients run diagnostic tests through a Java applet
 =================== =================== ==================================================================
 
+.. note:: Starting in 3.4, SSH was removed as a service from this listing.  To enable/disable SSHD, use *chkconfig*
+
 Choosing Services to Enable
 ===========================
 It is important to understand what services might impact other services. For example, if you run throughput tests (e.g. BWCTL + iperf3) and latency/loss tests (e.g. OWAMP ) on the same network interface, the throughput tests will possibly cause the host to drop packets. This may lead to a misleading interpretation of data if these events are not properly correlated. In general it is recommended you use the following guidelines when deciding which services to enable:

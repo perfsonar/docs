@@ -24,7 +24,7 @@ Step-by-Step Guide
 
             $ md5sum pS-Performance_Toolkit-FullInstall-3.X.iso;cat pS-Performance_Toolkit-FullInstall-3.X.iso.md5
 
-#. Mount the ISO to a DVD or USB drive 
+#. Mount the ISO to a CD, DVD, or USB drive and write the ISO file to this media.  
      .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document.
 #. Insert the media containing the ISO into the target end system
 #. Power on the host 
@@ -38,7 +38,7 @@ Step-by-Step Guide
     .. image:: images/install_fullinstall-4keyboard.png
 #. The next screen asks you to select a timezone. Make your choice and select **OK** to continue.
     .. image:: images/install_fullinstall-5timezone.png
-#. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. After entering and confirming the password *tab* to the **OK** box and hit *Enter* on your keyboard.
+#. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.  After entering and confirming the password *tab* to the **OK** box and hit *Enter* on your keyboard.
     .. image:: images/install_fullinstall-6password.png
 #. The next screen asks you where you would like to install the operating and how you would like to partition the drive. After you have selected the desired partitioning scheme and hard drive, select **OK** and hit *Enter* on your keyboard. The following options are available for partitioning:
     * *Use entire drive* - Use this option if there is nothing else installed on the selected hard drive. It will remove any existing data on the hard drive and dedicate the entire disk to the operating system

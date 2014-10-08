@@ -302,20 +302,20 @@ You may delete a test with the following steps:
 .. |add_params_iface|  replace:: The network interface on which to run the test. The default is the default interface of the host. Use this field if you have multiple interfaces and want to specify the interface where this test runs. 
 
 .. |add_params_throughput_interval|     replace:: The amount of time in between tests. Throughput tests consume bandwidth so usually only run a few times a day. The default is every 6 hours. Note that the tests will not run exactly every 6 hours as some randomization occurs to prevent tests from running  in sequence at the beginning of the interval.
-.. |add_params_throughput_duration|     replace:: The length of the tests to be run.
+.. |add_params_throughput_duration|     replace:: The length of the tests to be run.  TCP requires time to *ramp up*, especially as the latency increases.  Consider using a larger value if the test subjects are further away.  
 .. |add_params_throughput_protocol|     replace:: The transport protocol to be used. It can be TCP or UDP.
-.. |add_params_throughput_udp_bwidth|   replace:: Field only appears if **Protocol** is set to **UDP**. For UDP this sets the target bandwidth in Mbps. Note that you should be careful with high values since UDP is not a "fair" protocol (in contrast to TCP) and will not back-off on bandwidth if it encounters other traffic.
+.. |add_params_throughput_udp_bwidth|   replace:: Field only appears if **Protocol** is set to **UDP**. For UDP this sets the target bandwidth in Mbps. Note that you should be careful with high values since UDP is not a "fair" protocol (in contrast to TCP) and will not back-off on bandwidth if it encounters other traffic.  Also note that many BWCTL instances disable UDP by default, setting this option may require coordination with remote testers to allow the test to complete.  
 .. |add_params_throughput_autotune|     replace:: Allows the TCP window size to be automatically calculated.
 .. |add_params_throughput_window_size|  replace:: If **Use Autotuning** is checked then this field appears. Manually sets the value of the TCP window size.
-.. |add_params_throughput_tos|          replace::  A value between 0 and 255 that will be set in the TOS field of the IP header. If you are unsure about this field, leave the default.
+.. |add_params_throughput_tos|          replace::  A value between 0 and 255 that will be set in the TOS field of the IP header, and will only have impact on networks that support QoS specifications. If you are unsure about this field, leave the default.
 
 .. |add_params_ping_interval|           replace:: The amount of time in between tests. Ping tests are low bandwidth and generally run every few minutes.
 .. |add_params_ping_packets|            replace:: The number of packets to send per test. Multiplying by the **Time between packets** yields the duration of the test in seconds. 
 .. |add_params_ping_packet_interval|    replace:: The time to wait in between sending packets. Multiplying by the **Packets sent per test** yields the duration of the test in seconds. 
 .. |add_params_ping_size|               replace:: The size of the packets sent
 
-.. |add_params_owdelay_packet_rate|     replace:: The number of packets sent each second. 
-.. |add_params_owdelay_packet_size|     replace:: The size of the packets sent
+.. |add_params_owdelay_packet_rate|     replace:: The number of packets sent each second. Note that each OWAMP daemon has limitations on the bandwidth for tests.  If the packet rate and packet size exceed available bandwidth, tests may be denied.  
+.. |add_params_owdelay_packet_size|     replace:: The size of the packets sent.  Note that each OWAMP daemon has limitations on the bandwidth for tests.  If the packet rate and packet size exceed available bandwidth, tests may be denied.  
 
 .. |add_params_traceroute_interval|     replace:: The amount of time in between tests. Traceroute tests are low bandwidth and may run every few minutes.
 .. |add_params_traceroute_packet_size|  replace:: The size of the packets sent
