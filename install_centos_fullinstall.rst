@@ -24,8 +24,9 @@ Step-by-Step Guide
 
             $ md5sum pS-Performance_Toolkit-FullInstall-3.X.iso;cat pS-Performance_Toolkit-FullInstall-3.X.iso.md5
 
-#. Mount the ISO to a CD, DVD, or USB drive and write the ISO file to this media.  
-     .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document.
+#. Mount the ISO to a DVD or USB drive 
+     .. note:: The Full Install ISO is generally too large to fit on current writable CDs
+     .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK``
 #. Insert the media containing the ISO into the target end system
 #. Power on the host 
 #. You will be presented with a screen asking you to select how you want to install the system. Select **Install using kickstart** and hit enter (or wait 60 seconds for installation to automatically proceed).

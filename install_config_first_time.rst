@@ -43,7 +43,7 @@ You will be presented with a page like the following:
 .. image:: images/install_config_first_time-web1.png
 
 
-Updating Your Administrative Information and NTP Settings
+Updating Your Administrative Information
 ========================================
 You may notice on the left-side of the web interface that **Administrative Info** is highlighted in yellow. This is to highlight that this information needs to be populated. You will be prompted for basic location and contact information. This information is needed so other perfSONAR users can more accurately find your node. To populate the information do the following:
 
@@ -55,10 +55,6 @@ You may notice on the left-side of the web interface that **Administrative Info*
 
     .. image:: images/install_quick_start-admininfo2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
-#. After this step, you can configure NTP.  Click on *NTP* in the left menu.  When the page loads click **Select Closest Servers** and wait for the operation to complete.  Click **Save** to apply your changes
-
-    .. image:: images/manage_ntp-closest1.png
-    .. seealso:: For more information on updating NTP settings see :doc:`manage_ntp`
 
 After completing this step, you should be able to access the **Global Services** page and see your host listed within 24 hours of making the change.
 

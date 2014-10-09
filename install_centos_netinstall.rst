@@ -24,8 +24,8 @@ Step-by-Step Guide
 
             $ md5sum pS-Performance_Toolkit-NetInstall-3.X.iso;cat pS-Performance_Toolkit-NetInstall-3.X.iso.md5
 
-#. Mount the ISO to a CD, DVD, or USB drive and write the ISO file to this media.  
-     .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document.
+#. Mount the ISO to a CD, DVD, or USB drive
+     .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK``
 #. Insert the media containing the ISO into the target end system
 #. Power on the host 
 #. If CentOS is able to detect your DHCP server and access the images then your installer will automatically move ahead to the welcome screen and you can skip this step. If you instead see a prompt asking you about your network settings, see the special topic below:
