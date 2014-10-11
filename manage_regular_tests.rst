@@ -306,7 +306,7 @@ You may delete a test with the following steps:
 .. |add_params_throughput_protocol|     replace:: The transport protocol to be used. It can be TCP or UDP.
 .. |add_params_throughput_udp_bwidth|   replace:: Field only appears if **Protocol** is set to **UDP**. For UDP this sets the target bandwidth in Mbps. Note that you should be careful with high values since UDP is not a "fair" protocol (in contrast to TCP) and will not back-off on bandwidth if it encounters other traffic.  Also note that many BWCTL instances disable UDP by default, setting this option may require coordination with remote testers to allow the test to complete.  
 .. |add_params_throughput_autotune|     replace:: Allows the TCP window size to be automatically calculated.
-.. |add_params_throughput_window_size|  replace:: If **Use Autotuning** is checked then this field appears. Manually sets the value of the TCP window size.
+.. |add_params_throughput_window_size|  replace:: If **Use Autotuning** is not checked then this field appears. Manually sets the value of the TCP window size.
 .. |add_params_throughput_tos|          replace::  A value between 0 and 255 that will be set in the TOS field of the IP header, and will only have impact on networks that support QoS specifications. If you are unsure about this field, leave the default.
 
 .. |add_params_ping_interval|           replace:: The amount of time in between tests. Ping tests are low bandwidth and generally run every few minutes.
