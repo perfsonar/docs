@@ -14,10 +14,10 @@ Installation
 ------------
 The installation guide describes the deployment of the psUI for RPM based or Debian distributions. You can `download it here <http://downloads.perfsonar.eu/repositories/documents/perfsonarUI_installation_guide.pdf>`_.
 
-Current version of the psUI is 1.3.1 and can be downloaded as:
+Current version of the psUI is 1.3.2 and can be downloaded as:
 
-    * An `RPM package <http://downloads.perfsonar.eu/repositories/rpm/stable/6/noarch/Packages/perfsonar-ui-web-1.3.1-rpm.rpm>`_ for RHEL 6, CentOS 6 or Scientific Linux 6.
-    * A `Debian 7 package <http://downloads.perfsonar.eu/repositories/deb/pool/main/p/perfsonar-ui-web/perfsonar-ui-web_1.3.1_all.deb>`_.
+    * An `RPM package <http://downloads.perfsonar.eu/repositories/rpm/stable/6/noarch/Packages/perfsonar-ui-web-1.3.2-rpm.rpm>`_ for RHEL 6, CentOS 6 or Scientific Linux 6.
+    * A `Debian 7 package <http://downloads.perfsonar.eu/repositories/deb/pool/main/p/perfsonar-ui-web/perfsonar-ui-web_1.3.2_all.deb>`_.
     
     .. note:: If installing directly on your Toolkit host you will need to use the RPM. 
 
