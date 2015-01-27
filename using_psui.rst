@@ -61,7 +61,7 @@ In order to select a particular service, perform the following steps:
 3. Click **Pick service** to select a Measurement Archive or click **Pick source/Pick destination** to select Measurement Point.
 4. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
 
-   .. seealso:: See section `Filtering services`_ for more information on filtering.
+.. seealso:: See section `Filtering services`_ for more information on filtering.
 5. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
   - Measurement Archive selection window
   
@@ -97,9 +97,13 @@ Accessing Link Utilization Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 1. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has no content:
 
-   .. image:: images/using_psui-7historical_link_util1.png
+  .. image:: images/using_psui-7historical_link_util1.png
+The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4).
+2. Then it is necessary to select a measurement archive to query. This is achieved by clicking on the **Pick service** button in the top left corner, which brings up the service selection dialog.
 
-The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4). 
+.. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+3. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
+4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it.
 
 Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
