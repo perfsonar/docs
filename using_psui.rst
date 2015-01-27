@@ -89,11 +89,17 @@ It is also possible to check if the service is reachable to the perfsonarUI and 
 Working With Measurements
 =========================
 
-Accessing Historical Measurements 
+Accessing Historical Measurements
 ---------------------------------
+perfsonarUI currently supports the visualization of three types of historical measurements. These are link utilization data, one way delay, jitter, one-way packet loss and traceroute for a path and measured achievable throughput for a path. For each measurement type, there is a dedicated plugin within the **Access** section of the navigation panel. Each of the plugins will be described in more detail below.
 
 Accessing Link Utilization Data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has no content:
+
+   .. image:: images/using_psui-7historical_link_util1.png
+
+The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive. Below that is a panel showing details of selected interfaces and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window. 
 
 Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
