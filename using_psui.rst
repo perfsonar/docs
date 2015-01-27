@@ -103,7 +103,13 @@ The plugin panel is divided into several segments. On the very top are controls 
 
 .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
 3. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
-4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it.
+4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
+
+  .. image:: images/using_psui-8historical_link_util2.png
+In the details panel interface name, description, address, domain and capacity are shown, alongside the status, maximum and average utilizations for each direction. The graph shows how the utilization changed over time in the selected time window. There are two elements on the graph. The green, filled area represents the inbound utilization while the blue line represents the outbound utilization. The graph provides the following functionalities:
+
+* Graph zooming: The graph can be zoomed in by clicking a mouse and dragging it to mark a selection area.
+* Comparison of link utilization in graph: It is possible to compare the utilization of two interfaces within the same time window. This is done by simply clicking on another interface from the list while there is already an active selection.
 
 Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
