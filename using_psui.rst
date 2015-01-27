@@ -42,11 +42,11 @@ The application main window is organized in two main sections: time window selec
 
 The start and the end of the time window can be selected manually by clicking on the corresponding input field and selecting date and time from a pop-up. It is also possible to select one of pre-defined time windows. These are (last) **hour**, (last) **6 hours**, (last) **day** and (last) **week**. Selection of these intervals is done by simply clicking the corresponding button in the bottom row. These intervals are relative to the current time, meaning that the end of the time window is set to current time and beginning is set according to the interval duration. Using the top row of buttons the user can shift the current time window backwards and forwards. Buttons **<<** and **>>** shift the time window backwards and forwards for its duration, while buttons **<** and **>** shift for half of time window duration.
 
-  .. image:: images/using_psui-2timeselection.png
+.. image:: images/using_psui-2timeselection.png
 
 The navigation panel is located below the time window selection and currently has three sections. The **Access** section is used for plugin selection, **Analyse** section is used for analysing traceroutes and cross-referencing them with perfSONAR measurements, while the **Settings** section is used to configure the UI itself.
 
-  .. image:: images/using_psui-3navipanel.png
+.. image:: images/using_psui-3navipanel.png
 
 perfSONAR Service Selection Panel 
 =================================
@@ -56,26 +56,33 @@ Selecting Service
 -----------------
 In order to select a particular service, perform the following steps:
 
-1.  In the navigation panel, click **Access** section.
-2.  Select the type of measurements you want to access. The appropriate plugin window is displayed in the right part of the application window.
-3.  Click **Pick service** or **Pick source/Pick destination**.
-4.  In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
+1. In the navigation panel, click **Access** section.
+2. Select the type of measurements you want to access. The appropriate plugin window is displayed in the right part of the application window.
+3. Click **Pick service** or **Pick source/Pick destination**.
 
-.. seealso:: See section `Filtering services`_ for more information on filtering.
+   .. image:: images/using_psui-4selecting_service1.png
+   
+   .. image:: images/using_psui-5selecting_service2.png
 
-5.  Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
+4. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
+
+   .. seealso:: See section `Filtering services`_ for more information on filtering.
+
+5. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
 
 Filtering services
 ------------------
-It is possible to filter the services list. There is a filter input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
+It is possible to filter the services list. For selection windows for **Pick service** or **Pick source/Pick destination** options there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
+
+.. image:: images/using_psui-6filtering.png
 
 Verifying Service Reachability
 ------------------------------
 It is also possible to check if the service is reachable to the perfsonarUI and available for queries. In order to verify a particular service’s reachability perform the following steps:
 
-1.  In the service selection window click **Check all** button to verify all services from the list or verify just a single service by clicking the text displayed in the Status column for the desired service.
-2.  In both cases, if the service is reachable the status message will be *Available* with green dots to its right. If the service is not reachable, the dots will be red with the message *Unavailable*.
-3.  If a perfSONAR service is available, that information is cached for 60 minutes. When the service selection dialog is shown, this cached information is displayed when available.
+1. In the service selection window click **Check all** button to verify all services from the list or verify just a single service by clicking the text displayed in the Status column for the desired service.
+2. In both cases, if the service is reachable the status message will be *Available* with green dots to its right. If the service is not reachable, the dots will be red with the message *Unavailable*.
+3. If a perfSONAR service is available, that information is cached for 60 minutes. When the service selection dialog is shown, this cached information is displayed when available.
 
 .. note:: For some service types it is not possible to determine their availability. In that case the status message will be *Unable to test*.
 
