@@ -58,17 +58,18 @@ In order to select a particular service, perform the following steps:
 
 1. In the navigation panel, click **Access** section.
 2. Select the type of measurements you want to access. The appropriate plugin window is displayed in the right part of the application window.
-3. Click **Pick service** to select a Measurement Archive:
+3. Click **Pick service** to select a Measurement Archive or click **Pick source/Pick destination** to select Measurement Point.
+4. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
 
-   .. image:: images/using_psui-4selecting_service1.png
-   
-4. Or click **Pick source/Pick destination** to select Measurement Point:
-
-   .. image:: images/using_psui-5selecting_service2.png
-5. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
    .. seealso:: See section `Filtering services`_ for more information on filtering.
-6. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
-
+5. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
+  - Measurement Archive selection window
+  
+    .. image:: images/using_psui-4selecting_service1.png
+  - Measurement Point selection window
+  
+    .. image:: images/using_psui-5selecting_service2.png
+   
 Filtering services
 ------------------
 It is possible to filter the services list. For selection windows for **Pick service** or **Pick source/Pick destination** options there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
