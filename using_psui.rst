@@ -98,7 +98,9 @@ Accessing Link Utilization Data
 1. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has no content:
 
   .. image:: images/using_psui-7historical_link_util1.png
-The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4).
+  
+  The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4).
+
 2. Then it is necessary to select a measurement archive to query. This is achieved by clicking on the **Pick service** button in the top left corner, which brings up the service selection dialog.
 
 .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
@@ -106,10 +108,11 @@ The plugin panel is divided into several segments. On the very top are controls 
 4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
 
   .. image:: images/using_psui-8historical_link_util2.png
-In the details panel interface name, description, address, domain and capacity are shown, alongside the status, maximum and average utilizations for each direction. The graph shows how the utilization changed over time in the selected time window. There are two elements on the graph. The green, filled area represents the inbound utilization while the blue line represents the outbound utilization. The graph provides the following functionalities:
 
-* Graph zooming: The graph can be zoomed in by clicking a mouse and dragging it to mark a selection area.
-* Comparison of link utilization in graph: It is possible to compare the utilization of two interfaces within the same time window. This is done by simply clicking on another interface from the list while there is already an active selection.
+  In the details panel interface name, description, address, domain and capacity are shown, alongside the status, maximum and average utilizations for each direction. The graph shows how the utilization changed over time in the selected time window. There are two elements on the graph. The green, filled area represents the inbound utilization while the blue line represents the outbound utilization. The graph provides the following functionalities:
+
+  * Graph zooming: The graph can be zoomed in by clicking a mouse and dragging it to mark a selection area.
+  * Comparison of link utilization in graph: It is possible to compare the utilization of two interfaces within the same time window. This is done by simply clicking on another interface from the list while there is already an active selection.
 
 Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
