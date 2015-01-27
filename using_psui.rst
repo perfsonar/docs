@@ -58,17 +58,16 @@ In order to select a particular service, perform the following steps:
 
 1. In the navigation panel, click **Access** section.
 2. Select the type of measurements you want to access. The appropriate plugin window is displayed in the right part of the application window.
-3. Click **Pick service** or **Pick source/Pick destination**.
+3. Click **Pick service** to select a Measurement Archive:
 
    .. image:: images/using_psui-4selecting_service1.png
    
+4. Or click **Pick source/Pick destination** to select Measurement Point:
+
    .. image:: images/using_psui-5selecting_service2.png
-
-4. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
-
+5. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
    .. seealso:: See section `Filtering services`_ for more information on filtering.
-
-5. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
+6. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
 
 Filtering services
 ------------------
@@ -80,7 +79,7 @@ Verifying Service Reachability
 ------------------------------
 It is also possible to check if the service is reachable to the perfsonarUI and available for queries. In order to verify a particular service’s reachability perform the following steps:
 
-1. In the service selection window click **Check all** button to verify all services from the list or verify just a single service by clicking the text displayed in the Status column for the desired service.
+1. In the service selection window click **Check all** button to verify all services from the list or verify just a single service by clicking the text **Unknown, click to test** displayed in the Status column for the desired service.
 2. In both cases, if the service is reachable the status message will be *Available* with green dots to its right. If the service is not reachable, the dots will be red with the message *Unavailable*.
 3. If a perfSONAR service is available, that information is cached for 60 minutes. When the service selection dialog is shown, this cached information is displayed when available.
 
