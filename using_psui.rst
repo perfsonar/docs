@@ -22,6 +22,15 @@ In addition perfsonarUI is also able to retrieve data from the old perfSONAR Too
 
 Access To the Application
 =========================
+perfsonarUI is available through any modern web browser. We recommend using latest versions of Mozilla Firefox, Google Chrome, Safari and Opera. Accessing the application through Internet Explorer 9-11 is not tested, but should be operational. Accessing the application through Internet Explorer 8 is very limited – charts are not functional at all in IE8 and also there are several issues with style rendering such as element color, position, font type and size and more. For that reason accessing perfsonarUI through Internet Explorer versions 8, 7, 6 and lesser is not supported. To access your instance perform the following procedure:
+
+1. Start your web browser
+2 . In the URL field of the browser, enter the IP address of the server running the instance of perfsonarUI. This will look similar to: *http://your_server_IP_address:8080/perfsonar-ui/*
+3 . Access to the application is secured. After the installation perfsonarUI is configured to use only embedded database for authentication. To login press **perfSONAR UI Login** button. When the login window displays enter default credentials. Default username is **admin** with the password **admin**.
+
+Minimum recommended screen resolution is 1024x768 pixels.
+
+.. note:: It is possible to change these credentials or add additional ones by modifying the */usr/share/perfsonar-ui-web/perfsonar-ui/WEB-INF/classes/usersdetails.xml* file. Each newly defined username should be in the role *ROLE_USER* since this is currently the only role supported by perfsonarUI. The *ROLE_USER* role allows full access to the application. A more sophisticated control over user roles and credentials will be implemented in future versions of the application. To produce MD5 hash of the desired password use an MD5 hash generator. You can do it easily on the Linux CLI with a command such as **echo -n "password" | md5sum**. After finishing changes in *usersdetails.xml* file you need to restart the Tomcat service.
 
 Content Organization
 ====================
