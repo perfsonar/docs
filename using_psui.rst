@@ -99,7 +99,7 @@ Accessing Link Utilization Data
 
    .. image:: images/using_psui-7historical_link_util1.png
 
-The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive. Below that is a panel showing details of selected interfaces and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window. 
+The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4). 
 
 Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
