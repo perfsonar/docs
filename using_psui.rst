@@ -5,7 +5,9 @@ perfsonarUI User Guide
 Introduction
 ============
 perfsonarUI is a web application for running and visualizing on-demand tests between perfSONAR measurement points (MPs) or visualizing historical measurement results obtained from perfSONAR measurement archives (MAs). It is designed to be intuitive and user friendly, thus allowing the network operator the troubleshoot network problems as efficiently as possible. The application functionality itself is realized through several plugins, one for each supported type of measurement. In the current version, perfsonarUI supports fetching stored interface utilization data, one-way delay data, jitter data, one-way packet loss data, hop count information data and achievable throughput data. This data is stored in perfSONAR MAs and represents results of regularly scheduled measurements which are performed automatically. The UI also offers the possibility of requesting an on-demand measurement of achievable throughput or one-way latency between two perfSONAR MPs. In the future other types of measurements will be added to the UI in the form of new plugin panels.
-    .. image:: images/using_psui-1welcome.png
+
+  .. image:: images/using_psui-1welcome.png
+
 perfsonarUI also supports using historical data from multiple MAs to visualize path segment utilization for a given traceroute output.
 
 The current release of perfsonarUI has been tested with the following perfSONAR components:
@@ -40,20 +42,42 @@ The application main window is organized in two main sections: time window selec
 
 The start and the end of the time window can be selected manually by clicking on the corresponding input field and selecting date and time from a pop-up. It is also possible to select one of pre-defined time windows. These are (last) **hour**, (last) **6 hours**, (last) **day** and (last) **week**. Selection of these intervals is done by simply clicking the corresponding button in the bottom row. These intervals are relative to the current time, meaning that the end of the time window is set to current time and beginning is set according to the interval duration. Using the top row of buttons the user can shift the current time window backwards and forwards. Buttons **<<** and **>>** shift the time window backwards and forwards for its duration, while buttons **<** and **>** shift for half of time window duration.
 
-.. image:: images/using_psui-2timeselection.png
+  .. image:: images/using_psui-2timeselection.png
 
 The navigation panel is located below the time window selection and currently has three sections. The **Access** section is used for plugin selection, **Analyse** section is used for analysing traceroutes and cross-referencing them with perfSONAR measurements, while the **Settings** section is used to configure the UI itself.
 
-.. image:: images/using_psui-3navipanel.png
+  .. image:: images/using_psui-3navipanel.png
 
 perfSONAR Service Selection Panel 
 =================================
+Each perfsonarUI plugin requires a perfSONAR service (Measurement Point or Measurement Archive) or endpoint (like *bwctl* or *owamp*) to be selected from the list of preconfigured services specific to that particular plugin (refer to section `Configuration Of the UI`_ -  for more information about configuring service list). Selecting desired service for querying is done via service selection dialog.
 
 Selecting Service 
 -----------------
+In order to select a particular service, perform the following steps:
 
-Verifying Service Reachability 
+1.  In the navigation panel, click **Access** section.
+2.  Select the type of measurements you want to access. The appropriate plugin window is displayed in the right part of the application window.
+3.  Click **Pick service** or **Pick source/Pick destination**.
+4.  In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
+
+.. seealso:: See section `Filtering services`_ for more information on filtering.
+
+5.  Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
+
+Filtering services
+------------------
+It is possible to filter the services list. There is a filter input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
+
+Verifying Service Reachability
 ------------------------------
+It is also possible to check if the service is reachable to the perfsonarUI and available for queries. In order to verify a particular service’s reachability perform the following steps:
+
+1.  In the service selection window click **Check all** button to verify all services from the list or verify just a single service by clicking the text displayed in the Status column for the desired service.
+2.  In both cases, if the service is reachable the status message will be *Available* with green dots to its right. If the service is not reachable, the dots will be red with the message *Unavailable*.
+3.  If a perfSONAR service is available, that information is cached for 60 minutes. When the service selection dialog is shown, this cached information is displayed when available.
+
+.. note:: For some service types it is not possible to determine their availability. In that case the status message will be *Unable to test*.
 
 Working With Measurements
 =========================
