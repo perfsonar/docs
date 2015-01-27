@@ -54,6 +54,13 @@ Using the perfSONAR Toolkit
    using_npad
    using_ext_tools
    
+Using Additional Tools
+======================
+.. toctree::
+   :maxdepth: 2
+
+   using_psui
+   
 Configuration Reference
 =======================
 .. toctree::
