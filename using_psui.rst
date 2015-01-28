@@ -163,13 +163,13 @@ The **Access available throughput historical data** plugin enables the user to v
   
   .. image:: images/using_psui-17historical_bw_results.png
 
-  The requested measurements are shown on a graph in the lower part of the screen. These measurements represent a series of individual available throughput measurements with identical parameters, which were performed on a regular basis in the past. Each of these measurements consists of more than one value. One distinct value is the average achieved throughput shown as a blue dot. There are also several values which represent throughput achieved during reporting intervals (green dots). For example, if a single measurement lasted 30 seconds and had a reporting interval of 6 seconds this means that there will be 5 reporting interval values (one every 6 seconds of the measurement) and one average value. Each of the individual measurements can be viewed in more detail. 
+The requested measurements are shown on a graph in the lower part of the screen. These measurements represent a series of individual available throughput measurements with identical parameters, which were performed on a regular basis in the past. Each of these measurements consists of more than one value. One distinct value is the average achieved throughput shown as a blue dot. There are also several values which represent throughput achieved during reporting intervals (green dots). For example, if a single measurement lasted 30 seconds and had a reporting interval of 6 seconds this means that there will be 5 reporting interval values (one every 6 seconds of the measurement) and one average value. Each of the individual measurements can be viewed in more detail. 
   
-  In order to view details of a single measurement click on a dot belonging to that measurementto. The detailed result will be displayed in a separate panel:
+In order to view details of a single measurement click on a dot belonging to that measurement. The detailed result will be displayed in a separate panel:
  
   .. image:: images/using_psui-18historical_bw_details.png
 
-  That single measurement is now presented differently, which allows the user to see how it progressed over time. Along with the graph there is also a numerical representation of the measurement data. A table below the graph specifies the transferred volume of data and the achieved throughput for each reporting interval.
+That single measurement is now presented differently, which allows the user to see how it progressed over time. Along with the graph there is also a numerical representation of the measurement data. A table below the graph specifies the transferred volume of data and the achieved throughput for each reporting interval.
 
 Making an On-demand Measurement 
 -------------------------------
@@ -177,11 +177,13 @@ perfsonarUI allows users to make on-demand measurements using perfSONAR measurem
 
 Make Available Throughput Measurement 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Through perfsonarUI, it is possible to request an achievable throughput measurement between two perfSONAR BWCTL MPs or between a perfSONAR BWCTL MP and another *bwctl* only endpoint. To do this, the user should use the **Make available throughput measurement** plugin.
+Through perfsonarUI, it is possible to request an achievable throughput measurement between two perfSONAR BWCTL MPs or between a perfSONAR BWCTL MP and another *bwctl* only endpoint. In order to make available throughput measurement:
 
-.. image:: images/using_psui-19make_bw_initial.png
+1. Click **Make available throughput measurement** in the left navigation panel. Initially the page loads with no data.
 
-1. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up.
+  .. image:: images/using_psui-19make_bw_initial.png
+
+2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up.
 
   .. seealso:: See section `Selecting Service`_ for information on the service selection dialog including service filtering.
   
@@ -197,31 +199,31 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
   
   .. glossary::
   
-    Protocol
-      This parameter specifies protocol used. The possible choices are TCP or UDP. By default TCP is selected. For each protocol, additional parameters can be set. 
+      Protocol
+        This parameter specifies protocol used. The possible choices are TCP or UDP. By default TCP is selected. For each protocol, additional parameters can be set. 
   
-    TCP windows size
-      TCP window size, in bytes, can be set when using the TCP protocol but it is not mandatory.
+      TCP windows size
+        TCP window size, in bytes, can be set when using the TCP protocol but it is not mandatory.
 
-    UDP buffer size
-      This parameter sets buffer size, in bytes for UDP protocol but which is not mandatory. 
+      UDP buffer size
+        This parameter sets buffer size, in bytes for UDP protocol but which is not mandatory. 
 
-    Maximum bandwidth
-      This parameter limits maximum bandwidth, in Mbps, for UDP protocol only, which is not mandatory. The default value is 1 Mbps.
+      Maximum bandwidth
+        This parameter limits maximum bandwidth, in Mbps, for UDP protocol only, which is not mandatory. The default value is 1 Mbps.
 
-    Address type
-      Use this selection to choose whether IPv4 or IPv6 is used for testing. By default, IPv4 is selected.
+      Address type
+        Use this selection to choose whether IPv4 or IPv6 is used for testing. By default, IPv4 is selected.
 
-    Test duration
-      Use this parameter to specify the test duration is seconds. This parameter is mandatory.
+      Test duration
+        Use this parameter to specify the test duration is seconds. This parameter is mandatory.
   
-    Reporting interval
-      Use this parameter to specify the reporting interval in seconds. The interval specifies that the service should attempt to run a throughput test every interval seconds. This parameter is mandatory.
+      Reporting interval
+        Use this parameter to specify the reporting interval in seconds. The interval specifies that the service should attempt to run a throughput test every interval seconds. This parameter is mandatory.
 
-    .. note:: By default, Test duration is set to 30s and Reporting interval to 6s, and that means that the test will last 30 seconds with 5 reporting intervals, each lasting 6 seconds.
-
-    Type of Service bits
-      This parameter sets ToS bits in sent measurement packets, but it is not mandatory. 
+      Type of Service bits
+        This parameter sets ToS bits in sent measurement packets, but it is not mandatory.
+        
+      .. note:: By default, Test duration is set to 30s and Reporting interval to 6s, and that means that the test will last 30 seconds with 5 reporting intervals, each lasting 6 seconds.
 
 3. To perform the test click on the **Perform test**
 
@@ -246,6 +248,26 @@ Troubleshoot a Path
 
 Configuration Of the UI 
 =======================
+The **Settings** section of the navigation panel contains a link to the **Configure service** list panel, which allows the user to configure the list of services (measurement archives and measurement points) available to the perfsonarUI. To configure the list of services, perform the following steps:
+
+1.  In the navigation panel, click the **Settings** section.
+2.  Click on **Configure service list** to access the list of available services. There are four tabs displayed:
+
+  .. glossary::
+  
+  LegacyLS
+     This tab contains the list of services found by the legacy MDM lookup service. This list can be modified by changing the bootstrap URL from which services are being fetched. By clicking the **Set** button, the new URL is saved and services fetched from that bootstrap URL are displayed. 
+	
+  SimpleLS
+     This tab contains the list of services found by the simpleLookupService. This list can be modified by changing the bootstrap URL from which services are being fetched.
+     
+  Internal services
+    This default list contains known perfSONAR MPs and MAs and is supplied with the application. It cannot be changed directly through the application (for information about changing this list refer to Installation guide)
+
+  Local services
+    This list is local to that specific installation of perfsonarUI and can be modified by adding and removing services.
+
+.. note:: To activate or deactivate a specific type of list, click a selection box next to its header. All services contained within the tab that was activated will be visible in service pickup dialogs.
 
 Configuring Authentication With Identity Provider
 =================================================
