@@ -179,13 +179,24 @@ Make Available Throughput Measurement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Through perfsonarUI, it is possible to request an achievable throughput measurement between two perfSONAR BWCTL MPs or between a perfSONAR BWCTL MP and another *bwctl* only endpoint. To do this, the user should use the **Make available throughput measurement** plugin.
 
-1. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up. 
+.. image:: images/using_psui-19make_bw_initial.png
 
+1. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up.
+
+  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog including service filtering.
+  
+  .. image:: images/using_psui-20make_bw_selection.png
+  
   .. warning:: It is mandatory to select a perfSONAR BWCTL MP as one endpoint (a service configured with **BWCTL_MP** type in configuration section). The other endpoint could be either a perfSONAR BWCTL MP or another BWCTL endpoint (a service configured with BWCTL type in configuration section).
   
-2. Once the endpoints are selected, the user has two choices. To perform the test with default parameters, by clicking on the **Perform test**, or to adjust the test parameters first and then request the test. 
+2. Once the endpoints are selected, the user has two choices: To perform the test with default parameters, or to adjust the test parameters first and then request the test. 
 
   There are several parameters for a BWCTL MP on-demand test:
+  
+  .. image:: images/using_psui-21make_bw_params.png
+  
+.. glossary::
+  
   Protocol
     This parameter specifies protocol used. The possible choices are TCP or UDP. By default TCP is selected. For each protocol, additional parameters can be set. 
   
@@ -212,9 +223,15 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
   Type of Service bits
     This parameter sets ToS bits in sent measurement packets, but it is not mandatory. 
 
-3. Once all the parameters are set (or defaults were used) and the test was requested, it may take some time for the result of the test to appear in the browser. If the test, for example, lasts 30 seconds it will take at least 30 seconds for the test results to show.
+3. To perform the test click on the **Perform test**
+
+  .. image:: images/using_psui-22make_bw_perform.png
+
+4. Once all the parameters are set (or defaults were used) and the test was requested, it may take some time for the result of the test to appear in the browser. If the test, for example, lasts 30 seconds it will take at least 30 seconds for the test results to show.
 
 The results of the test are shown on a graph and in a table. The graph has two datasets, one representing throughput values at the reporting intervals (green) and one representing the average throughput (blue). The table below the graph shows the volume of data transferred and the achieved throughput for each interval, as well as the average values.
+
+.. image:: images/using_psui-23make_bw_result.png
 
 A test in the reverse direction can quickly be requested by clicking on the **Swap endpoints** button, which substitutes source and destination and then by clicking on the **Perform test** button.
 
