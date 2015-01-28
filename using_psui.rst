@@ -118,10 +118,10 @@ Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This type of measurement data is stored within a perfSONAR HADES MA service. In order to retrieve it:
 
-1. Click the **Access one way delay, jitter, loss and traceroute data** in the left navigation panel. Initially the page loads with no data:
+1. Click the **Access one way delay, jitter, loss and traceroute data** in the left navigation panel. Initially the page loads with no data. There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a source and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3).
 
   .. image:: images/using_psui-9historical_delay_initial.png
-There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a soruce and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3). 
+  
 2. A click on the **Pick service** button opens a dialogue for service selection. Select the appropriate service.
 
   .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
@@ -132,12 +132,44 @@ There is a service selection control located on top of the plugin panel (1). Onc
 
   .. image:: images/using_psui-11historical_delay_results.png
 
-The resulting graph has 3 segments. The first one shows *IPDV* (jitter). The second one shows *Delay*. Both of these segments show three sets of values, minimum, median and maximum. The third segment shows packet *Loss/duplicates* (values shown on the left side of the graph) as well as *Hopcount* for the route used (values shown on the right side of the graph). This graph can be zoomed to a particular segment.
+  The resulting graph has 3 segments. The first one shows *IPDV* (jitter). The second one shows *Delay*. Both of these segments show three sets of values, minimum, median and maximum. The third segment shows packet *Loss/duplicates* (values shown on the left side of the graph) as well as *Hopcount* for the route used (values shown on the right side of the graph). This graph can be zoomed to a particular segment.
 
-The data set showing the hop count on the third graph segment (in green colour) is interactive. By clicking on it at a certain point in time, a route comparator panel becomes visible. On the left side of this panel, the route that was active at a point in time where the user clicked is shown. Individual hops are shown with their IP address and hostname. On the right side of the panel, a list of all the different routes that were active during the entire time window is shown. A user can compare one of these routes to the primary one (on the left) by clicking on it. The two routes are put side by side so that possible differences can be easily spotted. By clicking on the **<<** the user can go back to the list of all available routes and choose a different one for further comparison. A click on the **>>** closes the route comparator panel altogether.
+  The data set showing the hop count on the third graph segment (in green colour) is interactive:
+  
+  1. Click on it at a certain point in time and route comparator panel becomes visible. On the left side of this panel, the route that was active at a point in time where the user clicked is shown.
+  
+  .. image:: images/using_psui-12historical_delay_tracert1.png
+  2. Individual hops are shown with their IP address and hostname. On the right side of the panel named **Select route to compare**, a list of all the different routes that were active during the entire time window is shown. Click on nay of it to compare one of these routes to the primary one (on the left).
+  
+  .. image:: images/using_psui-13historical_delay_tracert2.png
+  3. The two routes are put side by side so that possible differences can be easily spotted. By clicking on the **<<** the user can go back to the list of all available routes and choose a different one for further comparison. A click on the **>>** closes the route comparator panel altogether.
+  
+  .. image:: images/using_psui-14historical_delay_tracert3.png
 
 Accessing Achievable Throughput data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The **Access available throughput historical data** plugin enables the user to visualize historical measurements performed by perfSONAR BWCTL MP and stored within a perfSONAR SQL MA. To do this, the user must do the following:
+
+1. Click the **Access available throughput historical data** in the left navigation panel. Initially the page loads with no data. There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a source and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3).
+
+  .. image:: images/using_psui-15historical_bw_initial.png
+2. Click the **Pick service** button and select the measurement archive to query by choosing from the list.
+  
+  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+3. The measurements provided by the SQL MA are measurements of parameters between two endpoints. When the service responds with the available measurements, then choose the required source point in the **Source:** section (theis represents the endpoints where the measurements are originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **Destination:** section of the panel. Click on the required destination endpoint.
+
+  .. image:: images/using_psui-16historical_bw_selection.png
+4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel.
+  
+  .. image:: images/using_psui-17historical_bw_results.png
+
+  The requested measurements are shown on a graph in the lower part of the screen. These measurements represent a series of individual available throughput measurements with identical parameters, which were performed on a regular basis in the past. Each of these measurements consists of more than one value. One distinct value is the average achieved throughput shown as a blue dot. There are also several values which represent throughput achieved during reporting intervals (green dots). For example, if a single measurement lasted 30 seconds and had a reporting interval of 6 seconds this means that there will be 5 reporting interval values (one every 6 seconds of the measurement) and one average value. Each of the individual measurements can be viewed in more detail. 
+  
+  In order to view details of a single measurement click on a dot belonging to that measurementto. The detailed result will be displayed in a separate panel:
+ 
+  .. image:: images/using_psui-18historical_bw_details.png
+
+  That single measurement is now presented differently, which allows the user to see how it progressed over time. Along with the graph there is also a numerical representation of the measurement data. A table below the graph specifies the transferred volume of data and the achieved throughput for each reporting interval.
 
 Making an On-demand Measurement 
 -------------------------------
