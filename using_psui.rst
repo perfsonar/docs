@@ -173,9 +173,50 @@ The **Access available throughput historical data** plugin enables the user to v
 
 Making an On-demand Measurement 
 -------------------------------
+perfsonarUI allows users to make on-demand measurements using perfSONAR measurement points. In the current version, available throughput and one-way latency measurements are supported.
 
 Make Available Throughput Measurement 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Through perfsonarUI, it is possible to request an achievable throughput measurement between two perfSONAR BWCTL MPs or between a perfSONAR BWCTL MP and another *bwctl* only endpoint. To do this, the user should use the **Make available throughput measurement** plugin.
+
+1. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up. 
+
+  .. warning:: It is mandatory to select a perfSONAR BWCTL MP as one endpoint (a service configured with **BWCTL_MP** type in configuration section). The other endpoint could be either a perfSONAR BWCTL MP or another BWCTL endpoint (a service configured with BWCTL type in configuration section).
+  
+2. Once the endpoints are selected, the user has two choices. To perform the test with default parameters, by clicking on the **Perform test**, or to adjust the test parameters first and then request the test. 
+
+  There are several parameters for a BWCTL MP on-demand test:
+  Protocol
+    This parameter specifies protocol used. The possible choices are TCP or UDP. By default TCP is selected. For each protocol, additional parameters can be set. 
+  
+  TCP windows size
+    TCP window size, in bytes, can be set when using the TCP protocol but it is not mandatory.
+
+  UDP buffer size
+    This parameter sets buffer size, in bytes for UDP protocol but which is not mandatory. 
+
+  Maximum bandwidth
+    This parameter limits maximum bandwidth, in Mbps, for UDP protocol only, which is not mandatory. The default value is 1 Mbps.
+
+  Address type
+    Use this selection to choose whether IPv4 or IPv6 is used for testing. By default, IPv4 is selected.
+
+  Test duration
+    Use this parameter to specify the test duration is seconds. This parameter is mandatory.
+  
+  Reporting interval
+    Use this parameter to specify the reporting interval in seconds. The interval specifies that the service should attempt to run a throughput test every interval seconds. This parameter is mandatory.
+
+  .. note:: By default, Test duration is set to 30s and Reporting interval to 6s, and that means that the test will last 30 seconds with 5 reporting intervals, each lasting 6 seconds.
+
+  Type of Service bits
+    This parameter sets ToS bits in sent measurement packets, but it is not mandatory. 
+
+3. Once all the parameters are set (or defaults were used) and the test was requested, it may take some time for the result of the test to appear in the browser. If the test, for example, lasts 30 seconds it will take at least 30 seconds for the test results to show.
+
+The results of the test are shown on a graph and in a table. The graph has two datasets, one representing throughput values at the reporting intervals (green) and one representing the average throughput (blue). The table below the graph shows the volume of data transferred and the achieved throughput for each interval, as well as the average values.
+
+A test in the reverse direction can quickly be requested by clicking on the **Swap endpoints** button, which substitutes source and destination and then by clicking on the **Perform test** button.
 
 Make One-way Latency Measurement 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
