@@ -253,19 +253,19 @@ The **Settings** section of the navigation panel contains a link to the **Config
 1.  In the navigation panel, click the **Settings** section.
 2.  Click on **Configure service list** to access the list of available services. There are four tabs displayed:
 
-.. glossary::
+  .. glossary::
   
-  LegacyLS
-     This tab contains the list of services found by the legacy MDM lookup service. This list can be modified by changing the bootstrap URL from which services are being fetched. By clicking the **Set** button, the new URL is saved and services fetched from that bootstrap URL are displayed. 
+      LegacyLS
+       This tab contains the list of services found by the legacy MDM lookup service. This list can be modified by changing the bootstrap URL from which services are being fetched. By clicking the **Set** button, the new URL is saved and services fetched from that bootstrap URL are displayed. 
 	
-  SimpleLS
-     This tab contains the list of services found by the simpleLookupService. This list can be modified by changing the bootstrap URL from which services are being fetched.
+      SimpleLS
+       This tab contains the list of services found by the simpleLookupService. This list can be modified by changing the bootstrap URL from which services are being fetched.
      
-  Internal services
-    This default list contains known perfSONAR MPs and MAs and is supplied with the application. It cannot be changed directly through the application (for information about changing this list refer to Installation guide)
+      Internal services
+        This default list contains known perfSONAR MPs and MAs and is supplied with the application. It cannot be changed directly through the application (for information about changing this list refer to Installation guide)
 
-  Local services
-    This list is local to that specific installation of perfsonarUI and can be modified by adding and removing services.
+      Local services
+        This list is local to that specific installation of perfsonarUI and can be modified by adding and removing services.
 
 .. note:: To activate or deactivate a specific type of list, click a selection box next to its header. All services contained within the tab that was activated will be visible in service pickup dialogs.
 
@@ -275,51 +275,51 @@ In order to add a local service to the list, make sure the **Use local services*
 
 1.  Click **Add**, and when a dialogue box appears enter the intended data.
 
-.. glossary::
+  .. glossary::
 
-    Name
-      Use this to assign the recognizable name to perfSONAR service entry.
+      Name
+        Use this to assign the recognizable name to perfSONAR service entry.
 
-    Group
-      The name of the group this service belongs to. You may group services according to your own criteria.
+      Group
+        The name of the group this service belongs to. You may group services according to your own criteria.
 
-    URL
-      The service URL of the perfSONAR service as obtained during service installation and the same as what is registered to the Lookup Service. For MP and MA services, the URL should be the full web service URL. For example, http://hostname:8090/services/MP/BWCTL is a typical service URL for a BWCTL MP and http://hostname:8080/perfsonar-java-sql-ma/services/MeasurementArchiveService is a typical service URL for a SQL MA. For pS Performance Toolkit BUOY Measurement Archive services, the URL should be similar to http://hostname:8085/perfSONAR_PS/services/pSB. BWCTL and OWAMP endpoints which are not MPs should have URLs that contain the hostname or IP address of the service and the port that the measurements should use. For example, http://hostname:4823 is a working URL for BWCTL endpoints.
+      URL
+        The service URL of the perfSONAR service as obtained during service installation and the same as what is registered to the Lookup Service. For MP and MA services, the URL should be the full web service URL. For example, http://hostname:8090/services/MP/BWCTL is a typical service URL for a BWCTL MP and http://hostname:8080/perfsonar-java-sql-ma/services/MeasurementArchiveService is a typical service URL for a SQL MA. For pS Performance Toolkit BUOY Measurement Archive services, the URL should be similar to http://hostname:8085/perfSONAR_PS/services/pSB. BWCTL and OWAMP endpoints which are not MPs should have URLs that contain the hostname or IP address of the service and the port that the measurements should use. For example, http://hostname:4823 is a working URL for BWCTL endpoints.
 
-    Type
-      Use this parameter to set a type of perfSONAR service added. The possible settings are:
+      Type
+        Use this parameter to set a type of perfSONAR service added. The possible settings are:
       
-      .. glossary::
+        .. glossary::
       
-        BWCTL
-          Corresponds to a *bwctl* only endpoint as part of the perfSONAR Toolkit.
+            BWCTL
+              Corresponds to a *bwctl* only endpoint as part of the perfSONAR Toolkit.
         
-        BWCTL_MP
-          Corresponds to the perfSONAR BWCTL MP.
+            BWCTL_MP
+              Corresponds to the perfSONAR BWCTL MP.
         
-        BWCTL_MA
-          Corresponds to the old perfSONAR SQL MA.
+            BWCTL_MA
+              Corresponds to the old perfSONAR SQL MA.
         
-        BWCTL_PS
-          Corresponds to perfSONAR BUOY MA containing throughput measurements.
+            BWCTL_PS
+              Corresponds to perfSONAR BUOY MA containing throughput measurements.
         
-        HADES_MA
-          ?
+            HADES_MA
+              ?
         
-        OWAMP
-          ?
+            OWAMP
+              ?
         
-        OWAMP_MP
-          ?
+            OWAMP_MP
+              ?
         
-        OWAMP_PS
-          Corresponds to perfSONAR Toolkit BUOY MA containing latency measurements.
+            OWAMP_PS
+              Corresponds to perfSONAR Toolkit BUOY MA containing latency measurements.
         
-        RRD_MA
-          An old perfSONAR Toolkit SNMP MA
+            RRD_MA
+              An old perfSONAR Toolkit SNMP MA
         
-        TRACERT
-          ?
+            TRACERT
+              ?
 
 2.  Click **Add** to activate your change.
 
