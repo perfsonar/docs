@@ -61,7 +61,7 @@ In order to select a particular service, perform the following steps:
 3. Click **Pick service** to select a Measurement Archive or click **Pick source/Pick destination** to select Measurement Point.
 4. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
 
-.. seealso:: See section `Filtering services`_ for more information on filtering.
+  .. seealso:: See section `Filtering services`_ for more information on filtering.
 5. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
   - Measurement Archive selection window
   
@@ -138,13 +138,13 @@ This type of measurement data is stored within a perfSONAR HADES MA service. In 
   
   1. Click on it at a certain point in time and route comparator panel becomes visible. On the left side of this panel, the route that was active at a point in time where the user clicked is shown.
   
-  .. image:: images/using_psui-12historical_delay_tracert1.png
+    .. image:: images/using_psui-12historical_delay_tracert1.png
   2. Individual hops are shown with their IP address and hostname. On the right side of the panel named **Select route to compare**, a list of all the different routes that were active during the entire time window is shown. Click on nay of it to compare one of these routes to the primary one (on the left).
   
-  .. image:: images/using_psui-13historical_delay_tracert2.png
+    .. image:: images/using_psui-13historical_delay_tracert2.png
   3. The two routes are put side by side so that possible differences can be easily spotted. By clicking on the **<<** the user can go back to the list of all available routes and choose a different one for further comparison. A click on the **>>** closes the route comparator panel altogether.
   
-  .. image:: images/using_psui-14historical_delay_tracert3.png
+    .. image:: images/using_psui-14historical_delay_tracert3.png
 
 Accessing Achievable Throughput data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,33 +195,33 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
   
   .. image:: images/using_psui-21make_bw_params.png
   
-.. glossary::
+  .. glossary::
   
-  Protocol
-    This parameter specifies protocol used. The possible choices are TCP or UDP. By default TCP is selected. For each protocol, additional parameters can be set. 
+    Protocol
+      This parameter specifies protocol used. The possible choices are TCP or UDP. By default TCP is selected. For each protocol, additional parameters can be set. 
   
-  TCP windows size
-    TCP window size, in bytes, can be set when using the TCP protocol but it is not mandatory.
+    TCP windows size
+      TCP window size, in bytes, can be set when using the TCP protocol but it is not mandatory.
 
-  UDP buffer size
-    This parameter sets buffer size, in bytes for UDP protocol but which is not mandatory. 
+    UDP buffer size
+      This parameter sets buffer size, in bytes for UDP protocol but which is not mandatory. 
 
-  Maximum bandwidth
-    This parameter limits maximum bandwidth, in Mbps, for UDP protocol only, which is not mandatory. The default value is 1 Mbps.
+    Maximum bandwidth
+      This parameter limits maximum bandwidth, in Mbps, for UDP protocol only, which is not mandatory. The default value is 1 Mbps.
 
-  Address type
-    Use this selection to choose whether IPv4 or IPv6 is used for testing. By default, IPv4 is selected.
+    Address type
+      Use this selection to choose whether IPv4 or IPv6 is used for testing. By default, IPv4 is selected.
 
-  Test duration
-    Use this parameter to specify the test duration is seconds. This parameter is mandatory.
+    Test duration
+      Use this parameter to specify the test duration is seconds. This parameter is mandatory.
   
-  Reporting interval
-    Use this parameter to specify the reporting interval in seconds. The interval specifies that the service should attempt to run a throughput test every interval seconds. This parameter is mandatory.
+    Reporting interval
+      Use this parameter to specify the reporting interval in seconds. The interval specifies that the service should attempt to run a throughput test every interval seconds. This parameter is mandatory.
 
-  .. note:: By default, Test duration is set to 30s and Reporting interval to 6s, and that means that the test will last 30 seconds with 5 reporting intervals, each lasting 6 seconds.
+    .. note:: By default, Test duration is set to 30s and Reporting interval to 6s, and that means that the test will last 30 seconds with 5 reporting intervals, each lasting 6 seconds.
 
-  Type of Service bits
-    This parameter sets ToS bits in sent measurement packets, but it is not mandatory. 
+    Type of Service bits
+      This parameter sets ToS bits in sent measurement packets, but it is not mandatory. 
 
 3. To perform the test click on the **Perform test**
 
