@@ -95,7 +95,7 @@ perfsonarUI currently supports the visualization of three types of historical me
 
 Accessing Link Utilization Data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-1. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has no content:
+1. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has content with no data:
 
   .. image:: images/using_psui-7historical_link_util1.png
   
@@ -103,7 +103,7 @@ Accessing Link Utilization Data
 
 2. Then it is necessary to select a measurement archive to query. This is achieved by clicking on the **Pick service** button in the top left corner, which brings up the service selection dialog.
 
-.. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
 3. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
 4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
 
@@ -116,6 +116,25 @@ Accessing Link Utilization Data
 
 Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This type of measurement data is stored within a perfSONAR HADES MA service. In order to retrieve it:
+
+1. Click the **Access one way delay, jitter, loss and traceroute data** in the left navigation panel. Initially the page loads with no data:
+
+  .. image:: images/using_psui-9historical_delay_initial.png
+There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a soruce and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3). 
+2. A click on the **Pick service** button opens a dialogue for service selection. Select the appropriate service.
+
+  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+3. The measurements provided by the HADES MA are measurements of parameters between two endpoints. When the service responds with the available measurements, then choose the required source point in the **From:** section (theis represents the endpoints where the measurements are originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **To:** section of the panel. Click on the required destination endpoint.
+
+  .. image:: images/using_psui-10historical_delay_selection.png
+4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel. 
+
+  .. image:: images/using_psui-11historical_delay_results.png
+
+The resulting graph has 3 segments. The first one shows *IPDV* (jitter). The second one shows *Delay*. Both of these segments show three sets of values, minimum, median and maximum. The third segment shows packet *Loss/duplicates* (values shown on the left side of the graph) as well as *Hopcount* for the route used (values shown on the right side of the graph). This graph can be zoomed to a particular segment.
+
+The data set showing the hop count on the third graph segment (in green colour) is interactive. By clicking on it at a certain point in time, a route comparator panel becomes visible. On the left side of this panel, the route that was active at a point in time where the user clicked is shown. Individual hops are shown with their IP address and hostname. On the right side of the panel, a list of all the different routes that were active during the entire time window is shown. A user can compare one of these routes to the primary one (on the left) by clicking on it. The two routes are put side by side so that possible differences can be easily spotted. By clicking on the **<<** the user can go back to the list of all available routes and choose a different one for further comparison. A click on the **>>** closes the route comparator panel altogether.
 
 Accessing Achievable Throughput data 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
