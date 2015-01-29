@@ -233,7 +233,7 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
 
 5. The results of the test are shown on a graph and in a table. The graph has two datasets, one representing throughput values at the reporting intervals (green) and one representing the average throughput (blue). The table below the graph shows the volume of data transferred and the achieved throughput for each interval, as well as the average values.
 
-.. image:: images/using_psui-23make_bw_result.png
+	.. image:: images/using_psui-23make_bw_result.png
 
 A test in the reverse direction can quickly be requested by clicking on the **Swap endpoints** button, which substitutes source and destination and then by clicking on the **Perform test** button.
 
@@ -376,22 +376,22 @@ In order to add a local service to the list, make sure the **Use local services*
               Corresponds to perfSONAR BUOY MA containing throughput measurements.
         
             HADES_MA
-              ?
+              Corresponds to perfSONAR HADES MA.
         
             OWAMP
-              ?
+              Corresponds to a *owamp* only endpoint as part of the perfSONAR Toolkit.
         
             OWAMP_MP
-              ?
+              Corresponds to perfSONAR OWAMP MP
         
             OWAMP_PS
               Corresponds to perfSONAR Toolkit BUOY MA containing latency measurements.
         
             RRD_MA
-              An old perfSONAR Toolkit SNMP MA
+              An old perfSONAR Toolkit SNMP MA.
         
             TRACERT
-              ?
+              Corresponds to perfSONAR Traceroute MP.
 
 2.  Click **Add** to activate your change.
 
