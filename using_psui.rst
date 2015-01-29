@@ -231,7 +231,7 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
 
 4. Once all the parameters are set (or defaults were used) and the test was requested, it may take some time for the result of the test to appear in the browser. If the test, for example, lasts 30 seconds it will take at least 30 seconds for the test results to show.
 
-The results of the test are shown on a graph and in a table. The graph has two datasets, one representing throughput values at the reporting intervals (green) and one representing the average throughput (blue). The table below the graph shows the volume of data transferred and the achieved throughput for each interval, as well as the average values.
+5. The results of the test are shown on a graph and in a table. The graph has two datasets, one representing throughput values at the reporting intervals (green) and one representing the average throughput (blue). The table below the graph shows the volume of data transferred and the achieved throughput for each interval, as well as the average values.
 
 .. image:: images/using_psui-23make_bw_result.png
 
@@ -239,12 +239,84 @@ A test in the reverse direction can quickly be requested by clicking on the **Sw
 
 Make One-way Latency Measurement 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Through perfsonarUI, it is possible to request a one-way latency measurement between two perfSONAR OWAMP MPs or between a perfSONAR OWAMP MP and another *owamp* only endpoint. To do this the user should use the **Make one-way latency measurement** plugin. In order to make one-way latency measurement:
+
+1. Click **Make available throughput measurement** in the left navigation panel. Initially the page loads with no data.
+
+	.. image:: images/using_psui-24make_delay_initial.png
+	
+2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. Endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up. It is mandatory to select a perfSONAR OWAMP MP as a source endpoint (a service configured with **OWAMP_MP** type in configuration section). The destination could be either a perfSONAR OWAMP MP or another owamp only endpoint.  Once the endpoints are selected, the user has two choices. To perform the test with default parameters, by clicking on the **Perform test**, or to adjust the test parameters first and then request the test. A full list of parameters can be displayed by clicking on the **more options** button.
+
+	There are several parameters for OWAMP MP on-demand tests:
+	
+	.. image:: images/using_psui-25make_delay_params.png
+
+	.. glossary::
+
+		Packet count
+			This parameter specifies the number of packets being sent.
+
+		
+		Wait time
+			Mean average wait time between packets. Not mandatory. The default is 100ms.
+
+		
+		Timeout
+			Maximum time to wait for a packet before declaring it lost. Not mandatory. 
+
+		Padding size
+			Size of the padding added to each packet. Not mandatory. 
+
+		Start delay
+			Time to wait before executing the test. Not mandatory. Defaults to 0.
+
+		DSCP
+			DSCP value for ToS byte. Not mandatory. Defaults to 0x00.
+
+		Bucket size
+			Bucket size for histogram calculations. Not mandatory.
+
+	.. note:: By default, **Packet count** is set to 10.
+
+3. Once all the parameters are set (or defaults were used) and the test was requested, it may take some time for the result of the test to appear in the browser. 
+
+4. The results of the test are shown numerically and graphically. In the lower part of the screen, delay and estimated measurement error are shown for each packet. One bar of the graph represents one packet of the sequence. If the colour of the bar is green then the packet was received correctly. If the colour is yellow then a duplicated packet was detected. If the colour is red then the packet was lost. In the table above the graph, statistics of the measurement are shown. These statistics include minimum and maximum packet delay, minimum and maximum TTL values, maximum estimated error, total number of packets, number of lost packets and number of duplicate packets.
+
+	.. image:: images/using_psui-26make_delay_results.png
+
+A test in the reverse direction can quickly be requested by clicking on the **Swap endpoints** button, which substitutes source and destination and then by clicking on the **Perform test** button.
 
 Perform a Traceroute Measurement 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Through perfsonarUI, it is possible to perform a traceroute between a perfSONAR MDM traceroute MP and any other perfSONAR MDM service (MP or MA). To do this the user should use **Perform traceroute** plugin.
+
+..info:: Please note this plugin is disabled be default.
+
+In order to make traceroute measurement:
+
+1. Click **Perform traceroute** in the left navigation panel. Initially the page loads with no data.
+
+2. Before the measurement is requested the user must select measurement endpoints. Endpoints are selected using the **Pick source** and **Pick destination** buttons and selection dialogs that they bring. A perfSONAR MDM trace route MP must be the source endpoint (a service configured with **TRACERT** type in configuration section). The destination can be any perfSONAR MDM endpoint. Once the endpoints are selected the test is performed by clicking the Go button.
+
+3. Result of the traceroute is shown in the table in the main section of the plugin. Each row in the table represents a single hop in the path. 
 
 Troubleshoot a Path 
 -------------------
+Using historical data from multiple measurement archives, perfsonarUI can visualize the path segment utilization for a given traceroute output. This is done using the **Analyse path segments** plugin of the **Analyse** section in the navigation panel. 
+
+In order to troubleshoot a path:
+
+1. Click **Analyse path segments** in the left navigation panel. Initially the page loads with no data.
+
+	.. image:: images/using_psui-28analyse_path_initial.png
+
+2. In the top part of the plugin, there is a text box where the user can paste a traceroute output. The UI was tested using outputs from both Windows and Linux systems. Once the traceroute output is provided, the user clicks the **Analyse** button in the top left corner of the plugin.
+
+3. The UI will try to find the utilization data for each link in the path by querying all of the configured **RRD_MA** services. This process can be slow, as the UI waits for responses from every single MA.
+
+4. All the segments of the path are presented in a table below the input text box. For each path segment, it presents this set of data: hop, IP address, hostname, interface name, interface description, link capacity and maximum as well as average inbound and outbound link utilization for the specified time period. If measurements for a link cannot be found in any of the configured RRD MAs (or SNMP MAs), only information found in the traceroute output is shown (hop, IP and hostname).
+
+	.. image:: images/using_psui-29analyse_path_results.png
 
 Configuration Of the UI 
 =======================
