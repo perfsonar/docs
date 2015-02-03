@@ -93,7 +93,7 @@ Starting in 3.4, the LiveCD and LiveUSB distributions are no longer provided. If
     
 Your host should now be migrated.
 
-.. note:: After the reboot, it still may take many hours to migrate all historical OWAMP, BWCTL and traceroute data to the new measurement archive so please be patient. You may look in */var/log/perfsonar_ps/psb_to_esmond.log* for information on the progress of the migration. 
+.. note:: After the reboot, it still may take many hours to migrate all historical OWAMP, BWCTL and traceroute data to the new measurement archive so please be patient. You may look in */var/log/perfsonar/psb_to_esmond.log* for information on the progress of the migration. 
 
 Special Upgrade Notes
 =====================
