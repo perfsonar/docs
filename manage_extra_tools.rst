@@ -14,10 +14,10 @@ Installation
 ------------
 The installation guide describes the deployment of the psUI for RPM based or Debian distributions. You can `download it here <http://downloads.perfsonar.eu/repositories/documents/perfsonarUI_installation_guide.pdf>`_.
 
-Current version of the psUI is 1.4.0 and can be downloaded as:
+As of March 23rd, 2015, current version of the psUI is 1.4.1 and can be downloaded as:
 
-    * An `RPM package <http://downloads.perfsonar.eu/repositories/rpm/stable/6/noarch/Packages/perfsonar-ui-web-1.4.0-rpm.rpm>`_ for RHEL 6, CentOS 6 or Scientific Linux 6.
-    * A `Debian 7 package <http://downloads.perfsonar.eu/repositories/deb/pool/main/p/perfsonar-ui-web/perfsonar-ui-web_1.4.0_all.deb>`_.
+    * An `RPM package <http://downloads.perfsonar.eu/repositories/rpm/stable/6/noarch/Packages/perfsonar-ui-web-1.4.1.rpm>`_ for RHEL 6, CentOS 6 or Scientific Linux 6.
+    * A `Debian 7 package <http://downloads.perfsonar.eu/repositories/deb/pool/main/p/perfsonar-ui-web/perfsonar-ui-web_1.4.1_all.deb>`_.
     
     .. note:: If installing directly on your Toolkit host you will need to use the RPM. 
 
@@ -29,14 +29,14 @@ The perfSONAR UI source code can be browsed or retreived with subversion::
 
 Usage
 -----
-A user guide describing how to use the psUI user interface can be `downloaded here <http://downloads.perfsonar.eu/repositories/documents/perfsonarUI_user_guide_1.4.pdf>`_. This guide covers each feature of the UI:
+The user guide describing how to use the psUI user interface can be `found here <http://docs.perfsonar.net/using_psui.html>`_. This guide covers each feature of the UI:
 
     * How to select a perfSONAR service
     * How to access historical measurements
     * How to make an on-demand measurement
     * How to troubleshoot a path
     * How to configure the UI
-    * How to configure authentication with an indentity provider
+    * How to configure authentication with an identity provider
 
 MaDDash
 =======
