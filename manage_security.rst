@@ -62,7 +62,7 @@ An example that will block access to port 8000 for all traffic is shown in the s
         12   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:4823 
         13   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200 
         14   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200 
-        15   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5000:5600 
+        15   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5000:5900 
         16   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5000:5900 
         17   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:10101:10300 
         18   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:10101:10300 
