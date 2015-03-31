@@ -60,6 +60,13 @@ Using Additional Tools
    :maxdepth: 2
 
    using_psui
+
+Additional Installation Options
+===============================
+.. toctree::
+   :maxdepth: 2
+
+   install_level12
    
 Configuration Reference
 =======================
