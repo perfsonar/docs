@@ -62,7 +62,9 @@ In order to select a particular service, perform the following steps:
 4. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
 
   .. seealso:: See section `Filtering services`_ for more information on filtering.
+
 5. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
+
   - Measurement Archive selection window
   
     .. image:: images/using_psui-4selecting_service1.png
@@ -104,6 +106,7 @@ Accessing Link Utilization Data
 2. Then it is necessary to select a measurement archive to query. This is achieved by clicking on the **Pick service** button in the top left corner, which brings up the service selection dialog.
 
   .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+
 3. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
 4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
 
@@ -125,9 +128,11 @@ This type of measurement data is stored within a perfSONAR HADES MA service. In 
 2. A click on the **Pick service** button opens a dialogue for service selection. Select the appropriate service.
 
   .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+
 3. The measurements provided by the HADES MA are measurements of parameters between two endpoints. When the service responds with the available measurements, then choose the required source point in the **From:** section (theis represents the endpoints where the measurements are originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **To:** section of the panel. Click on the required destination endpoint.
 
   .. image:: images/using_psui-10historical_delay_selection.png
+
 4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel. 
 
   .. image:: images/using_psui-11historical_delay_results.png
@@ -139,9 +144,11 @@ This type of measurement data is stored within a perfSONAR HADES MA service. In 
   1. Click on it at a certain point in time and route comparator panel becomes visible. On the left side of this panel, the route that was active at a point in time where the user clicked is shown.
   
     .. image:: images/using_psui-12historical_delay_tracert1.png
+
   2. Individual hops are shown with their IP address and hostname. On the right side of the panel named **Select route to compare**, a list of all the different routes that were active during the entire time window is shown. Click on nay of it to compare one of these routes to the primary one (on the left).
   
     .. image:: images/using_psui-13historical_delay_tracert2.png
+
   3. The two routes are put side by side so that possible differences can be easily spotted. By clicking on the **<<** the user can go back to the list of all available routes and choose a different one for further comparison. A click on the **>>** closes the route comparator panel altogether.
   
     .. image:: images/using_psui-14historical_delay_tracert3.png
@@ -153,12 +160,15 @@ The **Access available throughput historical data** plugin enables the user to v
 1. Click the **Access available throughput historical data** in the left navigation panel. Initially the page loads with no data. There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a source and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3).
 
   .. image:: images/using_psui-15historical_bw_initial.png
+
 2. Click the **Pick service** button and select the measurement archive to query by choosing from the list.
   
   .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+
 3. The measurements provided by the SQL MA are measurements of parameters between two endpoints. When the service responds with the available measurements, then choose the required source point in the **Source:** section (theis represents the endpoints where the measurements are originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **Destination:** section of the panel. Click on the required destination endpoint.
 
   .. image:: images/using_psui-16historical_bw_selection.png
+
 4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel.
   
   .. image:: images/using_psui-17historical_bw_results.png
