@@ -28,4 +28,4 @@ This will generate a set of HTML files that can be opened in your browser under 
 
 ##Deploying Documentation to docs.perfsonar.net
 
-Simply push your changes to the master branch and the documentation will be published within 15 minutes to http://docs.perfsonar.net. This is handled by a script running on the hosting server that polls the git repository every 15 minutes and rebuilds the site if changes are detected.
+Simply push your changes to the master branch and the documentation will be published within 15 minutes to http://docs.perfsonar.net. This is handled by a script running on the hosting server that polls the git repository every 15 minutes and rebuilds the site if changes are detected. If you can't wait that long, simply run `deploy.sh` to deploy your changes.
