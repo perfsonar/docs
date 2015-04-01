@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CentOS NetInstall Guide &mdash; perfSONAR Toolkit 3.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.4.2 documentation" href="index.html" />
+    <link rel="next" title="CentOS Full Install Guide" href="install_centos_fullinstall.html" />
+    <link rel="prev" title="Getting the Software" href="install_getting.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_centos_fullinstall.html" title="CentOS Full Install Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_getting.html" title="Getting the Software"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="centos-netinstall-guide">
+<h1>CentOS NetInstall Guide<a class="headerlink" href="#centos-netinstall-guide" title="Permalink to this headline">¶</a></h1>
+<p>The CentOS NetInstall distribution is an ISO image that can be mounted to a CD, DVD, or USB drive. The image does not contain any of the packages, but will download them from a remote location at install time. The document describes step-by-step how to install the NetInstall distribution.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See <a class="reference internal" href="install_getting.html#gettingchooseinstall"><em>Choosing an Installation Method</em></a> for more information on choosing an installation type.</p>
+</div>
+<div class="section" id="step-by-step-guide">
+<h2>Step-by-Step Guide<a class="headerlink" href="#step-by-step-guide" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Download the ISO image appropriate for your architecture from <a class="reference internal" href="install_getting.html#gettingdownloads"><em>Downloads</em></a> or below:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Architecture</th>
+<th class="head">Downloads</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>i386</td>
+<td><a class="reference external" href="http://software.internet2.edu/pS-Performance_Toolkit/pS-Performance_Toolkit-3.4.2-NetInstall-i386.iso">iso</a> <a class="reference external" href="http://software.internet2.edu/pS-Performance_Toolkit/pS-Performance_Toolkit-3.4.2-NetInstall-i386.iso.md5">md5</a></td>
+</tr>
+<tr class="row-odd"><td>x86_64</td>
+<td><a class="reference external" href="http://software.internet2.edu/pS-Performance_Toolkit/pS-Performance_Toolkit-3.4.2-NetInstall-x86_64.iso">iso</a> <a class="reference external" href="http://software.internet2.edu/pS-Performance_Toolkit/pS-Performance_Toolkit-3.4.2-NetInstall-x86_64.iso.md5">md5</a></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p class="first">Verify the md5 checksum by verifying the two lines output are the same when you run the command below (replace the filenames with that of the downloaded iso and md5). If they do no match then you may need to re-download the iso images:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> md5sum pS-Performance_Toolkit-NetInstall-3.X.iso;cat pS-Performance_Toolkit-NetInstall-3.X.iso.md5
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl class="first docutils">
+<dt>Mount the ISO to a CD, DVD, or USB drive</dt>
+<dd><div class="first last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">dd</span> <span class="pre">if=/PATH/TO/FILE.iso</span> <span class="pre">of=/dev/DISK</span></tt></p>
+</div>
+</dd>
+</dl>
+</li>
+<li><p class="first">Insert the media containing the ISO into the target end system</p>
+</li>
+<li><p class="first">Power on the host</p>
+</li>
+<li><dl class="first docutils">
+<dt>If CentOS is able to detect your DHCP server and access the images then your installer will automatically move ahead to the welcome screen and you can skip this step. If you instead see a prompt asking you about your network settings, see the special topic below:</dt>
+<dd><div class="topic first last container">
+<p><strong>Special Topic: Static Networking and Web Proxies</strong></p>
+<ol class="arabic">
+<li><p class="first">First you will be presented with a screen asking how to configure IPv4 and IPv6 on your host. You may assign a static address by using the <em>tab</em> key to select <em>Manual Configuration</em>.</p>
+<blockquote>
+<div><img alt="_images/install_netinstall-static2.png" src="_images/install_netinstall-static2.png" />
+</div></blockquote>
+</li>
+<li><p class="first">If you select <em>Manual Configuration</em> you will get the screen below asking you to enter the IP addresses, netmask, gateway and DNS server. Enter the required information and select <em>OK</em> to continue.</p>
+<blockquote>
+<div><img alt="_images/install_netinstall-static3.png" src="_images/install_netinstall-static3.png" />
+</div></blockquote>
+</li>
+<li><p class="first">If you are not behind a web proxy, you may see the welcome screen and return to the regular instructions. If you are behind a web proxy you may enter that information in the screen presented (shown below). After this screen you should be presented with a welcome screen. If not you should check your settings and network connection.</p>
+<blockquote>
+<div><img alt="_images/install_netinstall-static4.png" src="_images/install_netinstall-static4.png" />
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">After installation you may need to re-enter the network settings. These settings are only expected for use during the installation process and may be discarded once the process completes.</p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will next be asked to select your language. Make your choice and select <strong>OK</strong> to continue.</dt>
+<dd><img alt="_images/install_netinstall-language.png" class="first last" src="_images/install_netinstall-language.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>On the next prompt select your keyboard layout and select <strong>OK</strong> to continue.</dt>
+<dd><img alt="_images/install_netinstall-keyboard.png" class="first last" src="_images/install_netinstall-keyboard.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The next screen will download some of the initial installation files. If any errors occur during this phase, you may need to check your network settings.</dt>
+<dd><img alt="_images/install_netinstall-2retrieve.png" class="first last" src="_images/install_netinstall-2retrieve.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will now be presented with a welcome screen. Use <em>tab</em> on your keyboard to select the <strong>OK</strong> box and hit <em>Enter</em> to continue.</dt>
+<dd><img alt="_images/install_netinstall-1welcome.png" class="first last" src="_images/install_netinstall-1welcome.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will next be prompted to choose your timezone. You may do so by using the <em>tab</em> and <em>arrow</em> keys on your keyboard. When you have chosen your timezone, <em>tab</em> to the <strong>OK</strong> box and hit <em>Enter</em>.</dt>
+<dd><img alt="_images/install_netinstall-3timezone.png" class="first last" src="_images/install_netinstall-3timezone.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach. After entering and confirming the password <em>tab</em> to the <strong>OK</strong> box and hit <em>Enter</em> on your keyboard.</dt>
+<dd><img alt="_images/install_netinstall-4password.png" class="first last" src="_images/install_netinstall-4password.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The next screen asks you where you would like to install the operating and how you would like to partition the drive. After you have selected the desired partitioning scheme and hard drive, select <strong>OK</strong> and hit <em>Enter</em> on your keyboard. The following options are available for partitioning:</dt>
+<dd><ul class="first simple">
+<li><em>Use entire drive</em> - Use this option if there is nothing else installed on the selected hard drive. It will remove any existing data on the hard drive and dedicate the entire disk to the operating system</li>
+<li><em>Replace existing Linux system</em> - This option removes any Linux partitions on the disk but will keep any non-Linux partitions.</li>
+<li><em>Use free space</em> - This option will not touch any existing partitions and will give any remaining space to the hard drive.</li>
+</ul>
+<img alt="_images/install_netinstall-5drive.png" class="last" src="_images/install_netinstall-5drive.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will now see a series of loading screesn as packages are downloaded and installed. You do not need to do anything except wait.</dt>
+<dd><div class="first admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This process may take several minutes or longer depending on your network connectivity to the download server.</p>
+</div>
+<a class="reference internal image-reference" href="_images/install_netinstall-6retrieveinfo.png"><img alt="_images/install_netinstall-6retrieveinfo.png" src="_images/install_netinstall-6retrieveinfo.png" style="width: 49%;" /></a>
+<a class="reference internal image-reference" href="_images/install_netinstall-7dependencies.png"><img alt="_images/install_netinstall-7dependencies.png" src="_images/install_netinstall-7dependencies.png" style="width: 49%;" /></a>
+<a class="reference internal image-reference" href="_images/install_netinstall-8startinstall.png"><img alt="_images/install_netinstall-8startinstall.png" src="_images/install_netinstall-8startinstall.png" style="width: 49%;" /></a>
+<a class="last reference internal image-reference" href="_images/install_netinstall-9install.png"><img alt="_images/install_netinstall-9install.png" src="_images/install_netinstall-9install.png" style="width: 49%;" /></a>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>If the installation is successful you will be presented with the screen below. Select <strong>Reboot</strong> to restart the host.</dt>
+<dd><img alt="_images/install_netinstall-10endinstall.png" class="first last" src="_images/install_netinstall-10endinstall.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to <a class="reference internal" href="install_config_first_time.html"><em>Configuring the Toolkit for the First Time</em></a></dt>
+<dd><img alt="_images/install_netinstall-11login.png" class="first last" src="_images/install_netinstall-11login.png" />
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">CentOS NetInstall Guide</a><ul>
+<li><a class="reference internal" href="#step-by-step-guide">Step-by-Step Guide</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_getting.html">Previous topic</a>
+                  <ul><li><a href="install_getting.html" title="previous chapter">Getting the Software</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="install_centos_fullinstall.html">Next topic</a>
+                      <ul><li><a href="install_centos_fullinstall.html" title="next chapter">CentOS Full Install Guide</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_centos_fullinstall.html" title="CentOS Full Install Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_getting.html" title="Getting the Software"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.net/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2014, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

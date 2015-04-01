@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CentOS Full Install Guide &mdash; perfSONAR Toolkit 3.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.4.2 documentation" href="index.html" />
+    <link rel="next" title="Configuring the Toolkit for the First Time" href="install_config_first_time.html" />
+    <link rel="prev" title="CentOS NetInstall Guide" href="install_centos_netinstall.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_config_first_time.html" title="Configuring the Toolkit for the First Time"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_centos_netinstall.html" title="CentOS NetInstall Guide"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="centos-full-install-guide">
+<h1>CentOS Full Install Guide<a class="headerlink" href="#centos-full-install-guide" title="Permalink to this headline">¶</a></h1>
+<p>The CentOS Full Install distribution is an ISO image that can be mounted to a DVD or USB drive. The image contains all the required packages so Internet connectivity is not required for the initial install. The document describes step-by-step how to install this distribution.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See <a class="reference internal" href="install_getting.html#gettingchooseinstall"><em>Choosing an Installation Method</em></a> for more information on choosing an installation type.</p>
+</div>
+<div class="section" id="step-by-step-guide">
+<h2>Step-by-Step Guide<a class="headerlink" href="#step-by-step-guide" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Download the ISO image appropriate for your architecture from <a class="reference internal" href="install_getting.html#gettingdownloads"><em>Downloads</em></a> or below:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Architecture</th>
+<th class="head">Downloads</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>i386</td>
+<td><a class="reference external" href="http://software.internet2.edu/pS-Performance_Toolkit/pS-Performance_Toolkit-3.4.2-FullInstall-i386.iso">iso</a> <a class="reference external" href="http://software.internet2.edu/pS-Performance_Toolkit/pS-Performance_Toolkit-3.4.2-FullInstall-i386.iso.md5">md5</a></td>
+</tr>
+<tr class="row-odd"><td>x86_64</td>
+<td><a class="reference external" href="http://software.internet2.edu/pS-Performance_Toolkit/pS-Performance_Toolkit-3.4.2-FullInstall-x86_64.iso">iso</a> <a class="reference external" href="http://software.internet2.edu/pS-Performance_Toolkit/pS-Performance_Toolkit-3.4.2-FullInstall-x86_64.iso.md5">md5</a></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p class="first">Verify the md5 checksum by verifying the two lines output are the same when you run the command below (replace the filenames with that of the downloaded iso and md5). If they do no match then you may need to re-download the iso images:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> md5sum pS-Performance_Toolkit-FullInstall-3.X.iso;cat pS-Performance_Toolkit-FullInstall-3.X.iso.md5
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl class="first docutils">
+<dt>Mount the ISO to a DVD or USB drive</dt>
+<dd><div class="first admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Full Install ISO is generally too large to fit on current writable CDs</p>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">dd</span> <span class="pre">if=/PATH/TO/FILE.iso</span> <span class="pre">of=/dev/DISK</span></tt></p>
+</div>
+</dd>
+</dl>
+</li>
+<li><p class="first">Insert the media containing the ISO into the target end system</p>
+</li>
+<li><p class="first">Power on the host</p>
+</li>
+<li><dl class="first docutils">
+<dt>You will be presented with a screen asking you to select how you want to install the system. Select <strong>Install using kickstart</strong> and hit enter (or wait 60 seconds for installation to automatically proceed).</dt>
+<dd><img alt="_images/install_fullinstall-1boot.png" class="first last" src="_images/install_fullinstall-1boot.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will now be presented with a welcome screen. Use <em>tab</em> on your keyboard to select the <strong>OK</strong> box and hit <em>Enter</em> to continue.</dt>
+<dd><img alt="_images/install_fullinstall-2welcome.png" class="first last" src="_images/install_fullinstall-2welcome.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will next be asked to select your language. Make your choice and select <strong>OK</strong> to continue.</dt>
+<dd><img alt="_images/install_fullinstall-3language.png" class="first last" src="_images/install_fullinstall-3language.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>On the next prompt select your keyboard layout and select <strong>OK</strong> to continue.</dt>
+<dd><img alt="_images/install_fullinstall-4keyboard.png" class="first last" src="_images/install_fullinstall-4keyboard.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The next screen asks you to select a timezone. Make your choice and select <strong>OK</strong> to continue.</dt>
+<dd><img alt="_images/install_fullinstall-5timezone.png" class="first last" src="_images/install_fullinstall-5timezone.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.  After entering and confirming the password <em>tab</em> to the <strong>OK</strong> box and hit <em>Enter</em> on your keyboard.</dt>
+<dd><img alt="_images/install_fullinstall-6password.png" class="first last" src="_images/install_fullinstall-6password.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The next screen asks you where you would like to install the operating and how you would like to partition the drive. After you have selected the desired partitioning scheme and hard drive, select <strong>OK</strong> and hit <em>Enter</em> on your keyboard. The following options are available for partitioning:</dt>
+<dd><ul class="first simple">
+<li><em>Use entire drive</em> - Use this option if there is nothing else installed on the selected hard drive. It will remove any existing data on the hard drive and dedicate the entire disk to the operating system</li>
+<li><em>Replace existing Linux system</em> - This option removes any Linux partitions on the disk but will keep any non-Linux partitions.</li>
+<li><em>Use free space</em> - This option will not touch any existing partitions and will give any remaining space to the hard drive.</li>
+</ul>
+<img alt="_images/install_fullinstall-7harddrive.png" class="last" src="_images/install_fullinstall-7harddrive.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>You will next see a series of loading screens as packages are installed. You do not need to do anything except wait.</dt>
+<dd><img alt="_images/install_fullinstall-8install.png" class="first last" src="_images/install_fullinstall-8install.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>If the installation is successful you will be presented with the screen below. Select <strong>Reboot</strong> to restart the host.</dt>
+<dd><img alt="_images/install_fullinstall-9reboot.png" class="first last" src="_images/install_fullinstall-9reboot.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to <a class="reference internal" href="install_config_first_time.html"><em>Configuring the Toolkit for the First Time</em></a></dt>
+<dd><img alt="_images/install_fullinstall-10login.png" class="first last" src="_images/install_fullinstall-10login.png" />
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">CentOS Full Install Guide</a><ul>
+<li><a class="reference internal" href="#step-by-step-guide">Step-by-Step Guide</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_centos_netinstall.html">Previous topic</a>
+                  <ul><li><a href="install_centos_netinstall.html" title="previous chapter">CentOS NetInstall Guide</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="install_config_first_time.html">Next topic</a>
+                      <ul><li><a href="install_config_first_time.html" title="next chapter">Configuring the Toolkit for the First Time</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_config_first_time.html" title="Configuring the Toolkit for the First Time"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_centos_netinstall.html" title="CentOS NetInstall Guide"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.net/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2014, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

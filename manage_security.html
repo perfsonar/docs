@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Firewalls and Security Software &mdash; perfSONAR Toolkit 3.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.4.2 documentation" href="index.html" />
+    <link rel="next" title="Installing Additional Tools" href="manage_extra_tools.html" />
+    <link rel="prev" title="Configuring a Host with Multiple Interfaces" href="manage_dual_xface.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_extra_tools.html" title="Installing Additional Tools"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_dual_xface.html" title="Configuring a Host with Multiple Interfaces"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="firewalls-and-security-software">
+<h1>Firewalls and Security Software<a class="headerlink" href="#firewalls-and-security-software" title="Permalink to this headline">¶</a></h1>
+<p>The perfSONAR Toolkit utilizes a number of tools the help protect against attacks on the system. Some of these tools include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>A default set of iptables and ip6tables firewall rules that only allow connections to ports required by perfSONAR tools.</li>
+<li>Inclusion of the <a class="reference external" href="http://www.fail2ban.org">fail2ban</a> intrusion detection system (IDS) to log suspicious activity such as brute-force SSH attacks</li>
+</ul>
+</div></blockquote>
+<p>None of these solutions will protect your host from all kinds of attacks so best common practices and good sense should be used when administering your host. In addition to tools like above it&#8217;s important <a class="reference internal" href="manage_update.html"><em>update your host</em></a> with the latest packages and to watch the <a class="reference external" href="http://www.perfsonar.net/about/getting-help/">mailing lists</a> for important security announcements.</p>
+<div class="section" id="default-firewall-rules">
+<h2>Default Firewall Rules<a class="headerlink" href="#default-firewall-rules" title="Permalink to this headline">¶</a></h2>
+<p>The perfSONAR Toolkit uses <em>iptables</em> and <em>ip6tables</em> to implement IPv4 and IPv6 firewall rules respectively. You can find the default configurations for each in <em>/etc/sysconfig/iptables</em> and <em>/etc/sysconfig/ip6tables</em>. You can find more information about the ports open and a complete list of rules on <a class="reference external" href="http://www.perfsonar.net/deploy/security-considerations/">our security page</a>.</p>
+</div>
+<div class="section" id="adding-your-own-firewall-rules">
+<h2>Adding Your Own Firewall Rules<a class="headerlink" href="#adding-your-own-firewall-rules" title="Permalink to this headline">¶</a></h2>
+<p>The rules added by the perfSONAR toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update.</p>
+<p>An example that will block access to port 8000 for all traffic is shown in the steps below (note it is not recommended you run this command as it will block access to the NPAD tool):</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Login to your host via SSH or the terminal as a root user</p>
+</li>
+<li><p class="first">View your current iptables rules with the following <tt class="docutils literal"><span class="pre">/sbin/service</span> <span class="pre">iptables</span> <span class="pre">status</span></tt> command. Note that the command does not necessarily show all the details of each rule and you should look in <em>/etc/sysconfig/iptables</em> for a full description. For example  the second rule in the INPUT chain may look like it accepts all traffic, but in reality it only accepts all traffic <em>from the loopback interface</em>. An example is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre># /sbin/service iptables status
+Table: filter
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    fail2ban-SSH  tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:22
+2    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+3    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED
+4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:22
+5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           state NEW udp spt:547 dpt:546
+6    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0
+7    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable
+
+Chain FORWARD (policy ACCEPT)
+num  target     prot opt source               destination
+1    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable
+
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain fail2ban-SSH (1 references)
+num  target     prot opt source               destination
+1    RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain perfSONAR (1 references)
+num  target     prot opt source               destination
+1    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255
+2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 state NEW,ESTABLISHED
+3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:443 state NEW,ESTABLISHED
+4    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp
+5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634
+6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8000
+7    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8001:8020
+8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7123
+9    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:3001:3003
+10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:861
+11   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
+12   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:4823
+13   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200
+14   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
+15   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5000:5900
+16   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5000:5900
+17   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:10101:10300
+18   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:10101:10300
+19   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7
+20   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:7
+21   RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+</pre></div>
+</div>
+</li>
+<li><p class="first">Run the  iptables command below to block port 8000. Note that we are adding this rule to the INPUT chain and leaving the perfSONAR chain untouched. We are also adding it at position 5 which ensures it is processed before the perfSONAR rules:</p>
+<div class="highlight-python"><div class="highlight"><pre>iptables -I INPUT 5 -p tcp --dport 8000 -j REJECT
+</pre></div>
+</div>
+</li>
+<li><p class="first">Now save your configuration change:</p>
+<div class="highlight-python"><div class="highlight"><pre>/sbin/service iptables save
+</pre></div>
+</div>
+</li>
+<li><p class="first">We can now see our new rule was added:</p>
+<div class="highlight-python"><div class="highlight"><pre># /sbin/service iptables status
+Table: filter
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+2    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED
+3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:22
+4    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           state NEW udp spt:547 dpt:546
+5    REJECT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8000 reject-with icmp-port-unreachable
+6    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0
+7    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable
+
+Chain FORWARD (policy ACCEPT)
+num  target     prot opt source               destination
+1    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable
+
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain perfSONAR (1 references)
+num  target     prot opt source               destination
+1    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255
+2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 state NEW,ESTABLISHED
+3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:443 state NEW,ESTABLISHED
+4    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp
+5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634
+6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8000
+7    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8001:8020
+8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7123
+9    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:3001:3003
+10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:861
+11   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
+12   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:4823
+13   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200
+14   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
+15   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5000:5600
+16   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5000:5900
+17   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:10101:10300
+18   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:10101:10300
+19   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7
+20   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:7
+21   RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Prior to version 3.4, custom firewall rules were not handled properly. As such you may find that when upgrading from versions older than 3.4 that you will lose any custom rules. Following the steps above should ensure your rules are maintained for updates beyond 3.4 in the foreseeable future.</p>
+</div>
+</div>
+<div class="section" id="fail2ban-intrusion-detection-system">
+<h2>Fail2ban Intrusion Detection System<a class="headerlink" href="#fail2ban-intrusion-detection-system" title="Permalink to this headline">¶</a></h2>
+<p>By default the perfSONAR Toolkit installs and configures the <a class="reference external" href="http://www.fail2ban.org">fail2ban</a> Intrusion Detection System (IDS). This software will log suspicious activity such as a rapid succession of failed SSH login attempts in <em>/var/log/secure</em>. By default it will not act to mitigate any attempts, only log them (though the default IP table rules do SSH throttling). If you would like to change this default behavior to send email or block unwanted intrusions, see the configuration file <em>/etc/fail2ban/jail.conf</em> and the <a class="reference external" href="http://www.fail2ban.org/wiki/index.php/MANUAL_0_8">fail2ban manual</a> for details.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Firewalls and Security Software</a><ul>
+<li><a class="reference internal" href="#default-firewall-rules">Default Firewall Rules</a></li>
+<li><a class="reference internal" href="#adding-your-own-firewall-rules">Adding Your Own Firewall Rules</a></li>
+<li><a class="reference internal" href="#fail2ban-intrusion-detection-system">Fail2ban Intrusion Detection System</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="manage_dual_xface.html">Previous topic</a>
+                  <ul><li><a href="manage_dual_xface.html" title="previous chapter">Configuring a Host with Multiple Interfaces</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_extra_tools.html">Next topic</a>
+                      <ul><li><a href="manage_extra_tools.html" title="next chapter">Installing Additional Tools</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_extra_tools.html" title="Installing Additional Tools"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_dual_xface.html" title="Configuring a Host with Multiple Interfaces"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.net/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2014, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
