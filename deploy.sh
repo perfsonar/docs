@@ -10,6 +10,7 @@ mkdir ${DEPLOY_DIR}
 )
 cp -r _build/html/* ${DEPLOY_DIR}
 touch ${DEPLOY_DIR}/.nojekyll
+echo "docs.perfsonar.net" > ${DEPLOY_DIR}/CNAME
 (cd ${DEPLOY_DIR} ; \
     git add .nojekyll *  \
     && git commit -m "deploy"  \
