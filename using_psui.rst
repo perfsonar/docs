@@ -6,7 +6,7 @@ Introduction
 ============
 perfsonarUI is a web application for running and visualizing on-demand tests between perfSONAR measurement points (MPs) or visualizing historical measurement results obtained from perfSONAR measurement archives (MAs). It is designed to be intuitive and user friendly, thus allowing the network operator the troubleshoot network problems as efficiently as possible. The application functionality itself is realized through several plugins, one for each supported type of measurement. In the current version, perfsonarUI supports fetching stored interface utilization data, one-way delay data, jitter data, one-way packet loss data, hop count information data and achievable throughput data. This data is stored in perfSONAR MAs and represents results of regularly scheduled measurements which are performed automatically. The UI also offers the possibility of requesting an on-demand measurement of achievable throughput or one-way latency between two perfSONAR MPs. In the future other types of measurements will be added to the UI in the form of new plugin panels.
 
-  .. image:: images/using_psui-1welcome.png
+  .. image:: images/using_psui-01welcome.png
 
 perfsonarUI also supports using historical data from multiple MAs to visualize path segment utilization for a given traceroute output.
 
@@ -42,17 +42,17 @@ The application main window is organized in two main sections: time window selec
 
 The start and the end of the time window can be selected manually by clicking on the corresponding input field and selecting date and time from a pop-up. It is also possible to select one of pre-defined time windows. These are (last) **hour**, (last) **6 hours**, (last) **day** and (last) **week**. Selection of these intervals is done by simply clicking the corresponding button in the bottom row. These intervals are relative to the current time, meaning that the end of the time window is set to current time and beginning is set according to the interval duration. Using the top row of buttons the user can shift the current time window backwards and forwards. Buttons **<<** and **>>** shift the time window backwards and forwards for its duration, while buttons **<** and **>** shift for half of time window duration.
 
-.. image:: images/using_psui-2timeselection.png
+.. image:: images/using_psui-02timeselection.png
 
 The navigation panel is located below the time window selection and currently has three sections. The **Access** section is used for plugin selection, **Analyse** section is used for analysing traceroutes and cross-referencing them with perfSONAR measurements, while the **Settings** section is used to configure the UI itself.
 
-.. image:: images/using_psui-3navipanel.png
+.. image:: images/using_psui-03navipanel.png
 
-perfSONAR Service Selection Panel 
+perfSONAR Service Selection Panel
 =================================
 Each perfsonarUI plugin requires a perfSONAR service (Measurement Point or Measurement Archive) or endpoint (like *bwctl* or *owamp*) to be selected from the list of preconfigured services specific to that particular plugin (refer to section `Configuration Of the UI`_ -  for more information about configuring service list). Selecting desired service for querying is done via service selection dialog.
 
-Selecting Service 
+Selecting Service
 -----------------
 In order to select a particular service, perform the following steps:
 
@@ -67,16 +67,16 @@ In order to select a particular service, perform the following steps:
 
   - Measurement Archive selection window
   
-    .. image:: images/using_psui-4selecting_service1.png
+    .. image:: images/using_psui-04selecting_service1.png
   - Measurement Point selection window
   
-    .. image:: images/using_psui-5selecting_service2.png
+    .. image:: images/using_psui-05selecting_service2.png
    
 Filtering services
 ------------------
 It is possible to filter the services list. For selection windows for **Pick service** or **Pick source/Pick destination** options there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
 
-.. image:: images/using_psui-6filtering.png
+.. image:: images/using_psui-06filtering.png
 
 Verifying Service Reachability
 ------------------------------
@@ -95,11 +95,11 @@ Accessing Historical Measurements
 ---------------------------------
 perfsonarUI currently supports the visualization of three types of historical measurements. These are link utilization data, one way delay, jitter, one-way packet loss and traceroute for a path and measured achievable throughput for a path. For each measurement type, there is a dedicated plugin within the **Access** section of the navigation panel. Each of the plugins will be described in more detail below.
 
-Accessing Link Utilization Data 
+Accessing Link Utilization Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 1. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has content with no data:
 
-  .. image:: images/using_psui-7historical_link_util1.png
+  .. image:: images/using_psui-07historical_link_util1.png
   
   The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4).
 
@@ -110,20 +110,20 @@ Accessing Link Utilization Data
 3. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
 4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
 
-  .. image:: images/using_psui-8historical_link_util2.png
+  .. image:: images/using_psui-08historical_link_util2.png
 
   In the details panel interface name, description, address, domain and capacity are shown, alongside the status, maximum and average utilizations for each direction. The graph shows how the utilization changed over time in the selected time window. There are two elements on the graph. The green, filled area represents the inbound utilization while the blue line represents the outbound utilization. The graph provides the following functionalities:
 
   * Graph zooming: The graph can be zoomed in by clicking a mouse and dragging it to mark a selection area.
   * Comparison of link utilization in graph: It is possible to compare the utilization of two interfaces within the same time window. This is done by simply clicking on another interface from the list while there is already an active selection.
 
-Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data 
+Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This type of measurement data is stored within a perfSONAR HADES MA service. In order to retrieve it:
 
 1. Click the **Access one way delay, jitter, loss and traceroute data** in the left navigation panel. Initially the page loads with no data. There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a source and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3).
 
-  .. image:: images/using_psui-9historical_delay_initial.png
+  .. image:: images/using_psui-09historical_delay_initial.png
   
 2. A click on the **Pick service** button opens a dialogue for service selection. Select the appropriate service.
 
@@ -153,7 +153,7 @@ This type of measurement data is stored within a perfSONAR HADES MA service. In 
   
     .. image:: images/using_psui-14historical_delay_tracert3.png
 
-Accessing Achievable Throughput data 
+Accessing Achievable Throughput data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The **Access available throughput historical data** plugin enables the user to visualize historical measurements performed by perfSONAR BWCTL MP and stored within a perfSONAR SQL MA. To do this, the user must do the following:
 
@@ -181,11 +181,11 @@ In order to view details of a single measurement click on a dot belonging to tha
 
 That single measurement is now presented differently, which allows the user to see how it progressed over time. Along with the graph there is also a numerical representation of the measurement data. A table below the graph specifies the transferred volume of data and the achieved throughput for each reporting interval.
 
-Making an On-demand Measurement 
+Making an On-demand Measurement
 -------------------------------
 perfsonarUI allows users to make on-demand measurements using perfSONAR measurement points. In the current version, available throughput and one-way latency measurements are supported.
 
-Make Available Throughput Measurement 
+Make Available Throughput Measurement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Through perfsonarUI, it is possible to request an achievable throughput measurement between two perfSONAR BWCTL MPs or between a perfSONAR BWCTL MP and another *bwctl* only endpoint. In order to make available throughput measurement:
 
@@ -247,7 +247,7 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
 
 A test in the reverse direction can quickly be requested by clicking on the **Swap endpoints** button, which substitutes source and destination and then by clicking on the **Perform test** button.
 
-Make One-way Latency Measurement 
+Make One-way Latency Measurement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Through perfsonarUI, it is possible to request a one-way latency measurement between two perfSONAR OWAMP MPs or between a perfSONAR OWAMP MP and another *owamp* only endpoint. To do this the user should use the **Make one-way latency measurement** plugin. In order to make one-way latency measurement:
 
@@ -296,7 +296,7 @@ Through perfsonarUI, it is possible to request a one-way latency measurement bet
 
 A test in the reverse direction can quickly be requested by clicking on the **Swap endpoints** button, which substitutes source and destination and then by clicking on the **Perform test** button.
 
-Perform a Traceroute Measurement 
+Perform a Traceroute Measurement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Through perfsonarUI, it is possible to perform a traceroute between a perfSONAR MDM traceroute MP and any other perfSONAR MDM service (MP or MA). To do this the user should use **Perform traceroute** plugin.
 
@@ -310,7 +310,7 @@ In order to make traceroute measurement:
 
 3. Result of the traceroute is shown in the table in the main section of the plugin. Each row in the table represents a single hop in the path. 
 
-Troubleshoot a Path 
+Troubleshoot a Path
 -------------------
 Using historical data from multiple measurement archives, perfsonarUI can visualize the path segment utilization for a given traceroute output. This is done using the **Analyse path segments** plugin of the **Analyse** section in the navigation panel. 
 
@@ -328,7 +328,7 @@ In order to troubleshoot a path:
 
 	.. image:: images/using_psui-29analyse_path_results.png
 
-Configuration Of the UI 
+Configuration Of the UI
 =======================
 The **Settings** section of the navigation panel contains a link to the **Configure service** list panel, which allows the user to configure the list of services (measurement archives and measurement points) available to the perfsonarUI. To configure the list of services, perform the following steps:
 
