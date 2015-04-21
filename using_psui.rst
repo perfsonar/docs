@@ -13,6 +13,7 @@ perfsonarUI also supports using historical data from multiple MAs to visualize p
 The current release of perfsonarUI has been tested with the following perfSONAR components:
 
 * perfSONAR Toolkit v 3.4.1
+* esmond v 1.0
 * BWCTL MP v 1.0
 * RRD MA v 3.3.1-1
 * SQL MA v 2.4
@@ -61,7 +62,7 @@ In order to select a particular service, perform the following steps:
 3. Click **Pick service** to select a Measurement Archive or click **Pick source/Pick destination** to select Measurement Point.
 4. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
 
-  .. seealso:: See section `Filtering services`_ for more information on filtering.
+  .. seealso:: See section `Filtering and Ordering Services`_ for more information on filtering.
 
 5. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
 
@@ -72,11 +73,6 @@ In order to select a particular service, perform the following steps:
   
     .. image:: images/using_psui-05selecting_service2.png
    
-Filtering services
-------------------
-It is possible to filter the services list. For selection windows for **Pick service** or **Pick source/Pick destination** options there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
-
-.. image:: images/using_psui-06filtering.png
 
 Verifying Service Reachability
 ------------------------------
@@ -87,6 +83,28 @@ It is also possible to check if the service is reachable to the perfsonarUI and 
 3. If a perfSONAR service is available, that information is cached for 60 minutes. When the service selection dialog is shown, this cached information is displayed when available.
 
 .. note:: For some service types it is not possible to determine their availability. In that case the status message will be *Unable to test*.
+
+Filtering and Ordering Services
+-------------------------------
+Services can be quickly filtered. In **Pick service** and **Pick source/Pick destination** dialog windows there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
+
+	- Filtering services
+    .. image:: images/using_psui-06filtering.png
+
+Services can be ordered by their name or their status/reachability in the **Service Pickup** dialog window. Clicking icon in the **Name** column header will sort services by name descendingly or ascendigly. Clicking icon in the **Status** column will sort services cycling through three modes of operation:
+
+1. *Available first* - services reachable to the perfsonarUI are displayed first
+2. *Unavailable first* - services not reachable to the perfsonarUI are displayed first
+3. *Unknown first* - services not yet tested or that don't support testing reachability are displayed first.
+
+  - Ordering services by name
+
+    .. image:: images/using_psui-06_01ordering_name.png
+  - Ordering services by status/reachability
+
+    .. image:: images/using_psui-06_02ordering_status.png
+
+  .. seealso:: See section `Verifying Service Reachability`_ for on checking service status/reachibility.
 
 Working With Measurements
 =========================
@@ -105,7 +123,7 @@ Accessing Link Utilization Data
 
 2. Then it is necessary to select a measurement archive to query. This is achieved by clicking on the **Pick service** button in the top left corner, which brings up the service selection dialog.
 
-  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog.
 
 3. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
 4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
@@ -119,19 +137,25 @@ Accessing Link Utilization Data
 
 Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This type of measurement data is stored within a perfSONAR HADES MA service. In order to retrieve it:
-
-1. Click the **Access one way delay, jitter, loss and traceroute data** in the left navigation panel. Initially the page loads with no data. There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a source and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3).
+The data generated by running OWAMP tests are stored within esmond or perfSONAR HADES MA service. PerfsonaUI displays OWAMP archived tests in **Access one way delay, jitter, loss and traceroute data** plugin accessed from eponymous menu item in the left navigation panel. Initially the page loads with no data. There are three main sections:
 
   .. image:: images/using_psui-09historical_delay_initial.png
+
+  1. Service selection control located on top of the plugin panel;
+  2. Measurement selection panel;
+  3. The result panel with graphs in the bottom part of the plugin.
+
+In order to retreive OWAMP archived data:
   
-2. A click on the **Pick service** button opens a dialogue for service selection. Select the appropriate service.
+1. Click on the **Pick service** button to opens Service pickup dialog. Select the desired service point.
 
-  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog.
 
-3. The measurements provided by the HADES MA are measurements of parameters between two endpoints. When the service responds with the available measurements, then choose the required source point in the **From:** section (theis represents the endpoints where the measurements are originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **To:** section of the panel. Click on the required destination endpoint.
+2. The measurements provided by the OWAMP or HADES MA are measurements of parameters between two endpoints. Once the desired archive is selected, a request is sent to it to get all the available measurements from it. When the archive service responds with the available measurements, they are presented to the users in the measurement selection panel.
 
   .. image:: images/using_psui-10historical_delay_selection.png
+
+3. Choose the required source point in the **From:** section (representing the endpoint where the measurements originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **To:** section of the panel. It is possible to quickly *filer* out the list of available destination points by typing into **Filter** input field.
 
 4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel. 
 
@@ -153,6 +177,12 @@ This type of measurement data is stored within a perfSONAR HADES MA service. In 
   
     .. image:: images/using_psui-14historical_delay_tracert3.png
 
+5. It is possible to display reverse OWAMP measurement data if correlated data exists in the service. By clicking the **Swap** button, if supported by service, previously selected destination point would be set as a source point and the previous source point would be set in the **Filter** input. If only one point is possible after applying the filter then this point is set as the destination and the service is queried for the data.  
+
+    .. image:: images/using_psui-14_01historical_delay_swap.png
+
+.. note:: *IPDV* (jitter) data are available only for HADES archives. Route information is available only for some measurement pairs in esmond archives. 
+
 Accessing Achievable Throughput data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The **Access available throughput historical data** plugin enables the user to visualize historical measurements performed by perfSONAR BWCTL MP and stored within a perfSONAR SQL MA. To do this, the user must do the following:
@@ -163,7 +193,7 @@ The **Access available throughput historical data** plugin enables the user to v
 
 2. Click the **Pick service** button and select the measurement archive to query by choosing from the list.
   
-  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog.
 
 3. The measurements provided by the SQL MA are measurements of parameters between two endpoints. When the service responds with the available measurements, then choose the required source point in the **Source:** section (theis represents the endpoints where the measurements are originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **Destination:** section of the panel. Click on the required destination endpoint.
 
@@ -193,9 +223,9 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
 
   .. image:: images/using_psui-19make_bw_initial.png
 
-2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up.
+2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogs that they bring up.
 
-  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog including service filtering.
+  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog including service filtering.
   
   .. image:: images/using_psui-20make_bw_selection.png
   
@@ -255,7 +285,7 @@ Through perfsonarUI, it is possible to request a one-way latency measurement bet
 
 	.. image:: images/using_psui-24make_delay_initial.png
 	
-2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. Endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up. It is mandatory to select a perfSONAR OWAMP MP as a source endpoint (a service configured with **OWAMP_MP** type in configuration section). The destination could be either a perfSONAR OWAMP MP or another owamp only endpoint.  Once the endpoints are selected, the user has two choices. To perform the test with default parameters, by clicking on the **Perform test**, or to adjust the test parameters first and then request the test. A full list of parameters can be displayed by clicking on the **more options** button.
+2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. Endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogs that they bring up. It is mandatory to select a perfSONAR OWAMP MP as a source endpoint (a service configured with **OWAMP_MP** type in configuration section). The destination could be either a perfSONAR OWAMP MP or another owamp only endpoint.  Once the endpoints are selected, the user has two choices. To perform the test with default parameters, by clicking on the **Perform test**, or to adjust the test parameters first and then request the test. A full list of parameters can be displayed by clicking on the **more options** button.
 
 	There are several parameters for OWAMP MP on-demand tests:
 	
@@ -355,7 +385,7 @@ Managing local perfSONAR services
 ---------------------------------
 In order to add a local service to the list, make sure the **Use local services** option is selected. Then:
 
-1.  Click **Add**, and when a dialogue box appears enter the intended data.
+1.  Click **Add**, and when a dialog box appears enter the intended data.
 
   .. glossary::
 
