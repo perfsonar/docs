@@ -89,6 +89,7 @@ Filtering and Ordering Services
 Services can be quickly filtered. In **Pick service** and **Pick source/Pick destination** dialog windows there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
 
 	- Filtering services
+
     .. image:: images/using_psui-06filtering.png
 
 Services can be ordered by their name or their status/reachability in the **Service Pickup** dialog window. Clicking icon in the **Name** column header will sort services by name descendingly or ascendigly. Clicking icon in the **Status** column will sort services cycling through three modes of operation:
