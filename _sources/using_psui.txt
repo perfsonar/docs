@@ -6,19 +6,20 @@ Introduction
 ============
 perfsonarUI is a web application for running and visualizing on-demand tests between perfSONAR measurement points (MPs) or visualizing historical measurement results obtained from perfSONAR measurement archives (MAs). It is designed to be intuitive and user friendly, thus allowing the network operator the troubleshoot network problems as efficiently as possible. The application functionality itself is realized through several plugins, one for each supported type of measurement. In the current version, perfsonarUI supports fetching stored interface utilization data, one-way delay data, jitter data, one-way packet loss data, hop count information data and achievable throughput data. This data is stored in perfSONAR MAs and represents results of regularly scheduled measurements which are performed automatically. The UI also offers the possibility of requesting an on-demand measurement of achievable throughput or one-way latency between two perfSONAR MPs. In the future other types of measurements will be added to the UI in the form of new plugin panels.
 
-  .. image:: images/using_psui-1welcome.png
+  .. image:: images/using_psui-01welcome.png
 
 perfsonarUI also supports using historical data from multiple MAs to visualize path segment utilization for a given traceroute output.
 
 The current release of perfsonarUI has been tested with the following perfSONAR components:
 
 * perfSONAR Toolkit v 3.4.1
+* esmond v 1.0
 * BWCTL MP v 1.0
 * RRD MA v 3.3.1-1
 * SQL MA v 2.4
 * HADES MA v 0.53
 * OWAMP MP v 0.53
-* simpleLookupService  
+* simpleLookupService
 
 If a particular component version is not included in this document it may still be compatible with perfsonarUI but has not been tested. 
 
@@ -42,17 +43,17 @@ The application main window is organized in two main sections: time window selec
 
 The start and the end of the time window can be selected manually by clicking on the corresponding input field and selecting date and time from a pop-up. It is also possible to select one of pre-defined time windows. These are (last) **hour**, (last) **6 hours**, (last) **day** and (last) **week**. Selection of these intervals is done by simply clicking the corresponding button in the bottom row. These intervals are relative to the current time, meaning that the end of the time window is set to current time and beginning is set according to the interval duration. Using the top row of buttons the user can shift the current time window backwards and forwards. Buttons **<<** and **>>** shift the time window backwards and forwards for its duration, while buttons **<** and **>** shift for half of time window duration.
 
-.. image:: images/using_psui-2timeselection.png
+.. image:: images/using_psui-02timeselection.png
 
 The navigation panel is located below the time window selection and currently has three sections. The **Access** section is used for plugin selection, **Analyse** section is used for analysing traceroutes and cross-referencing them with perfSONAR measurements, while the **Settings** section is used to configure the UI itself.
 
-.. image:: images/using_psui-3navipanel.png
+.. image:: images/using_psui-03navipanel.png
 
-perfSONAR Service Selection Panel 
+perfSONAR Service Selection Panel
 =================================
 Each perfsonarUI plugin requires a perfSONAR service (Measurement Point or Measurement Archive) or endpoint (like *bwctl* or *owamp*) to be selected from the list of preconfigured services specific to that particular plugin (refer to section `Configuration Of the UI`_ -  for more information about configuring service list). Selecting desired service for querying is done via service selection dialog.
 
-Selecting Service 
+Selecting Service
 -----------------
 In order to select a particular service, perform the following steps:
 
@@ -61,22 +62,17 @@ In order to select a particular service, perform the following steps:
 3. Click **Pick service** to select a Measurement Archive or click **Pick source/Pick destination** to select Measurement Point.
 4. In the service selection dialog, configured services for that measurement type are shown sorted by name. The **Name** column also presents all Communities (in bold) associated with that particular host. If you wish to search for a certain service or group of services you can use filtering.
 
-  .. seealso:: See section `Filtering services`_ for more information on filtering.
+  .. seealso:: See section `Filtering and Ordering Services`_ for more information on filtering.
 
 5. Select one service by marking it and clicking the **Select** button, or by double-clicking on the item in the list.
 
   - Measurement Archive selection window
   
-    .. image:: images/using_psui-4selecting_service1.png
+    .. image:: images/using_psui-04selecting_service1.png
   - Measurement Point selection window
   
-    .. image:: images/using_psui-5selecting_service2.png
+    .. image:: images/using_psui-05selecting_service2.png
    
-Filtering services
-------------------
-It is possible to filter the services list. For selection windows for **Pick service** or **Pick source/Pick destination** options there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
-
-.. image:: images/using_psui-6filtering.png
 
 Verifying Service Reachability
 ------------------------------
@@ -88,6 +84,28 @@ It is also possible to check if the service is reachable to the perfsonarUI and 
 
 .. note:: For some service types it is not possible to determine their availability. In that case the status message will be *Unable to test*.
 
+Filtering and Ordering Services
+-------------------------------
+Services can be quickly filtered. In **Pick service** and **Pick source/Pick destination** dialog windows there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
+
+	- Filtering services
+    .. image:: images/using_psui-06filtering.png
+
+Services can be ordered by their name or their status/reachability in the **Service Pickup** dialog window. Clicking icon in the **Name** column header will sort services by name descendingly or ascendigly. Clicking icon in the **Status** column will sort services cycling through three modes of operation:
+
+1. *Available first* - services reachable to the perfsonarUI are displayed first
+2. *Unavailable first* - services not reachable to the perfsonarUI are displayed first
+3. *Unknown first* - services not yet tested or that don't support testing reachability are displayed first.
+
+  - Ordering services by name
+
+    .. image:: images/using_psui-06_01ordering_name.png
+  - Ordering services by status/reachability
+
+    .. image:: images/using_psui-06_02ordering_status.png
+
+  .. seealso:: See section `Verifying Service Reachability`_ for on checking service status/reachibility.
+
 Working With Measurements
 =========================
 
@@ -95,43 +113,50 @@ Accessing Historical Measurements
 ---------------------------------
 perfsonarUI currently supports the visualization of three types of historical measurements. These are link utilization data, one way delay, jitter, one-way packet loss and traceroute for a path and measured achievable throughput for a path. For each measurement type, there is a dedicated plugin within the **Access** section of the navigation panel. Each of the plugins will be described in more detail below.
 
-Accessing Link Utilization Data 
+Accessing Link Utilization Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 1. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has content with no data:
 
-  .. image:: images/using_psui-7historical_link_util1.png
+  .. image:: images/using_psui-07historical_link_util1.png
   
   The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4).
 
 2. Then it is necessary to select a measurement archive to query. This is achieved by clicking on the **Pick service** button in the top left corner, which brings up the service selection dialog.
 
-  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog.
 
 3. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
 4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
 
-  .. image:: images/using_psui-8historical_link_util2.png
+  .. image:: images/using_psui-08historical_link_util2.png
 
   In the details panel interface name, description, address, domain and capacity are shown, alongside the status, maximum and average utilizations for each direction. The graph shows how the utilization changed over time in the selected time window. There are two elements on the graph. The green, filled area represents the inbound utilization while the blue line represents the outbound utilization. The graph provides the following functionalities:
 
   * Graph zooming: The graph can be zoomed in by clicking a mouse and dragging it to mark a selection area.
   * Comparison of link utilization in graph: It is possible to compare the utilization of two interfaces within the same time window. This is done by simply clicking on another interface from the list while there is already an active selection.
 
-Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data 
+Accessing One-way Delay, Jitter, One-way Packet Loss And Traceroute Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This type of measurement data is stored within a perfSONAR HADES MA service. In order to retrieve it:
+The data generated by running OWAMP tests are stored within esmond or perfSONAR HADES MA service. PerfsonaUI displays OWAMP archived tests in **Access one way delay, jitter, loss and traceroute data** plugin accessed from its menu item in the left navigation panel. Initially the page loads with no data. There are three main sections:
 
-1. Click the **Access one way delay, jitter, loss and traceroute data** in the left navigation panel. Initially the page loads with no data. There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a source and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3).
+  .. image:: images/using_psui-09historical_delay_initial.png
 
-  .. image:: images/using_psui-9historical_delay_initial.png
+  1. Service selection control located on top of the plugin panel;
+  2. Measurement selection panel;
+  3. The result panel with graphs in the bottom part of the plugin.
+
+In order to retreive archived OWAMP data:
   
-2. A click on the **Pick service** button opens a dialogue for service selection. Select the appropriate service.
+1. Click the **Pick service** button and select the measurement archive to query by choosing from the list.
+  .. note:: Use filters to quickly find desired archive
 
-  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog.
 
-3. The measurements provided by the HADES MA are measurements of parameters between two endpoints. When the service responds with the available measurements, then choose the required source point in the **From:** section (theis represents the endpoints where the measurements are originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **To:** section of the panel. Click on the required destination endpoint.
+2. OWAMP measurement tests are run between pairs of OWAMP mesurement points. Once the desired archive is selected, a request is sent to it to get all the available measurements from it. Available measurement pairs are presented in the measurement selection panel.
 
   .. image:: images/using_psui-10historical_delay_selection.png
+
+3. Choose the desired source point in the **From:** section (representing the endpoint where the measurements originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **To:** section of the panel. It is possible to quickly *filer* out the list of available destination points by typing into **Filter** input field.
 
 4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel. 
 
@@ -153,39 +178,56 @@ This type of measurement data is stored within a perfSONAR HADES MA service. In 
   
     .. image:: images/using_psui-14historical_delay_tracert3.png
 
-Accessing Achievable Throughput data 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The **Access available throughput historical data** plugin enables the user to visualize historical measurements performed by perfSONAR BWCTL MP and stored within a perfSONAR SQL MA. To do this, the user must do the following:
+5. It is possible to display reverse OWAMP measurement data if correlated data exists in the service. By clicking the **Swap** button, if supported by service, previously selected destination point would be set as a source point and the previous source point would be set in the **Filter** input. If only one point is possible after applying the filter then this point is set as the destination and the service is queried for the data.  
 
-1. Click the **Access available throughput historical data** in the left navigation panel. Initially the page loads with no data. There is a service selection control located on top of the plugin panel (1). Once the desired MA service is selected, a request is sent to it to get all the available measurements from it. When the service responds with the available measurements, they are presented to the users in the measurement selection panel (2). When a source and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3).
+    .. image:: images/using_psui-14_01historical_delay_swap.png
+
+.. note:: *IPDV* (jitter) data are available only for HADES archives. Route information is available only for some measurement pairs in esmond archives. 
+
+Accessing Achievable Throughput data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The **Access available throughput historical data** plugin enables the user to visualize historical measurement tests performed between BWCTL nodes and stored within esmond or a perfSONAR SQL MA. Initially the page loads with no data.
 
   .. image:: images/using_psui-15historical_bw_initial.png
 
-2. Click the **Pick service** button and select the measurement archive to query by choosing from the list.
-  
-  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog.
+  1. There is a service selection control located on top of the plugin panel;
+  2. Measurement selection panel;
+  3. The result panel with graphs in the bottom part of the plugin.
 
-3. The measurements provided by the SQL MA are measurements of parameters between two endpoints. When the service responds with the available measurements, then choose the required source point in the **Source:** section (theis represents the endpoints where the measurements are originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **Destination:** section of the panel. Click on the required destination endpoint.
+To do this, the user must do the following:
+
+ When a source and destination points are selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel (3).
+
+In order to retreive archived BWCTL data:
+
+1. Click the **Pick service** button and select the measurement archive to query by choosing from the list.
+  .. note:: Use filters to quickly find desired archive
+  
+  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog.
+
+2. BWCTL measurement tests are run between pairs of BWCTL mesurement points. Once the desired archive is selected, a request is sent to it to get all the available measurements from it. Available measurement pairs are presented in the measurement selection panel.
 
   .. image:: images/using_psui-16historical_bw_selection.png
+
+3. Choose the desired source point in the **Source:** section (representing the endpoint where the measurements originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **Destination:** section of the panel. It is possible to quickly *filer* out the list of available destination points by typing into **Filter** input field.
 
 4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel.
   
   .. image:: images/using_psui-17historical_bw_results.png
 
-The requested measurements are shown on a graph in the lower part of the screen. These measurements represent a series of individual available throughput measurements with identical parameters, which were performed on a regular basis in the past. Each of these measurements consists of more than one value. One distinct value is the average achieved throughput shown as a blue dot. There are also several values which represent throughput achieved during reporting intervals (green dots). For example, if a single measurement lasted 30 seconds and had a reporting interval of 6 seconds this means that there will be 5 reporting interval values (one every 6 seconds of the measurement) and one average value. Each of the individual measurements can be viewed in more detail. 
+The graph represents a series of individual available throughput tests with identical parameters, which were performed in the past. Each of these tests consists of more than one value represented by a dot. One distinct value is the average achieved throughput shown as a blue dot. There are also several values which represent throughput achieved during reporting intervals (green dots). For example, if a single test lasted 30 seconds and had a reporting interval of 6 seconds this means that there will be 5 reporting interval values (one every 6 seconds of the test) and one average value. Each of the individual tests can be clicked and viewed in more detail. 
   
-In order to view details of a single measurement click on a dot belonging to that measurement. The detailed result will be displayed in a separate panel:
+To view details of a single test click on a dot belonging to that test. The detailed result will be displayed in a separate panel:
  
   .. image:: images/using_psui-18historical_bw_details.png
 
-That single measurement is now presented differently, which allows the user to see how it progressed over time. Along with the graph there is also a numerical representation of the measurement data. A table below the graph specifies the transferred volume of data and the achieved throughput for each reporting interval.
+That single measurement is now presented differently (1), which allows the user to see how it progressed over time. Along with the graph there is also a numerical representation of the measurement data. A table below the graph specifies the transferred volume of data and the achieved throughput for each reporting interval (2). Clicking on **<<** button in left corner (3) takes user back to previous screen.
 
-Making an On-demand Measurement 
+Making an On-demand Measurement
 -------------------------------
 perfsonarUI allows users to make on-demand measurements using perfSONAR measurement points. In the current version, available throughput and one-way latency measurements are supported.
 
-Make Available Throughput Measurement 
+Make Available Throughput Measurement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Through perfsonarUI, it is possible to request an achievable throughput measurement between two perfSONAR BWCTL MPs or between a perfSONAR BWCTL MP and another *bwctl* only endpoint. In order to make available throughput measurement:
 
@@ -193,9 +235,9 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
 
   .. image:: images/using_psui-19make_bw_initial.png
 
-2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up.
+2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. The endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogs that they bring up.
 
-  .. seealso:: See section `Selecting Service`_ for information on the service selection dialog including service filtering.
+  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog including service filtering.
   
   .. image:: images/using_psui-20make_bw_selection.png
   
@@ -247,7 +289,7 @@ Through perfsonarUI, it is possible to request an achievable throughput measurem
 
 A test in the reverse direction can quickly be requested by clicking on the **Swap endpoints** button, which substitutes source and destination and then by clicking on the **Perform test** button.
 
-Make One-way Latency Measurement 
+Make One-way Latency Measurement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Through perfsonarUI, it is possible to request a one-way latency measurement between two perfSONAR OWAMP MPs or between a perfSONAR OWAMP MP and another *owamp* only endpoint. To do this the user should use the **Make one-way latency measurement** plugin. In order to make one-way latency measurement:
 
@@ -255,7 +297,7 @@ Through perfsonarUI, it is possible to request a one-way latency measurement bet
 
 	.. image:: images/using_psui-24make_delay_initial.png
 	
-2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. Endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogues that they bring up. It is mandatory to select a perfSONAR OWAMP MP as a source endpoint (a service configured with **OWAMP_MP** type in configuration section). The destination could be either a perfSONAR OWAMP MP or another owamp only endpoint.  Once the endpoints are selected, the user has two choices. To perform the test with default parameters, by clicking on the **Perform test**, or to adjust the test parameters first and then request the test. A full list of parameters can be displayed by clicking on the **more options** button.
+2. Before the measurement is requested, the user must select measurement endpoints and set measurement parameters. Endpoints are selected by using the **Pick source** and **Pick destination** buttons and the selection dialogs that they bring up. It is mandatory to select a perfSONAR OWAMP MP as a source endpoint (a service configured with **OWAMP_MP** type in configuration section). The destination could be either a perfSONAR OWAMP MP or another owamp only endpoint.  Once the endpoints are selected, the user has two choices. To perform the test with default parameters, by clicking on the **Perform test**, or to adjust the test parameters first and then request the test. A full list of parameters can be displayed by clicking on the **more options** button.
 
 	There are several parameters for OWAMP MP on-demand tests:
 	
@@ -296,7 +338,7 @@ Through perfsonarUI, it is possible to request a one-way latency measurement bet
 
 A test in the reverse direction can quickly be requested by clicking on the **Swap endpoints** button, which substitutes source and destination and then by clicking on the **Perform test** button.
 
-Perform a Traceroute Measurement 
+Perform a Traceroute Measurement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Through perfsonarUI, it is possible to perform a traceroute between a perfSONAR MDM traceroute MP and any other perfSONAR MDM service (MP or MA). To do this the user should use **Perform traceroute** plugin.
 
@@ -310,7 +352,7 @@ In order to make traceroute measurement:
 
 3. Result of the traceroute is shown in the table in the main section of the plugin. Each row in the table represents a single hop in the path. 
 
-Troubleshoot a Path 
+Troubleshoot a Path
 -------------------
 Using historical data from multiple measurement archives, perfsonarUI can visualize the path segment utilization for a given traceroute output. This is done using the **Analyse path segments** plugin of the **Analyse** section in the navigation panel. 
 
@@ -328,9 +370,11 @@ In order to troubleshoot a path:
 
 	.. image:: images/using_psui-29analyse_path_results.png
 
-Configuration Of the UI 
+Configuration Of the UI
 =======================
-The **Settings** section of the navigation panel contains a link to the **Configure service** list panel, which allows the user to configure the list of services (measurement archives and measurement points) available to the perfsonarUI. To configure the list of services, perform the following steps:
+The **Settings** section of the navigation panel contains a link to the **Configure service** list panel, which allows the user to configure the list of services (measurement archives and measurement points) available to the perfsonarUI. 
+
+To configure the list of services, perform the following steps:
 
 1.  In the navigation panel, click the **Settings** section.
 2.  Click on **Configure service list** to access the list of available services. There are four tabs displayed:
@@ -353,9 +397,9 @@ The **Settings** section of the navigation panel contains a link to the **Config
 
 Managing local perfSONAR services
 ---------------------------------
-In order to add a local service to the list, make sure the **Use local services** option is selected. Then:
+When desired service is not present in the lookup service or whithin default list of services packaged with perfsonarUI you can add desired service using **Local services** tab. To add a local service to the list make sure the **Use local services** option is selected. Then:
 
-1.  Click **Add**, and when a dialogue box appears enter the intended data.
+1.  Click **Add**, and when a dialog box appears enter the intended data.
 
   .. glossary::
 
