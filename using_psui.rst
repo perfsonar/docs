@@ -19,7 +19,7 @@ The current release of perfsonarUI has been tested with the following perfSONAR 
 * SQL MA v 2.4
 * HADES MA v 0.53
 * OWAMP MP v 0.53
-* simpleLookupService  
+* simpleLookupService
 
 If a particular component version is not included in this document it may still be compatible with perfsonarUI but has not been tested. 
 
@@ -372,7 +372,9 @@ In order to troubleshoot a path:
 
 Configuration Of the UI
 =======================
-The **Settings** section of the navigation panel contains a link to the **Configure service** list panel, which allows the user to configure the list of services (measurement archives and measurement points) available to the perfsonarUI. To configure the list of services, perform the following steps:
+The **Settings** section of the navigation panel contains a link to the **Configure service** list panel, which allows the user to configure the list of services (measurement archives and measurement points) available to the perfsonarUI. 
+
+To configure the list of services, perform the following steps:
 
 1.  In the navigation panel, click the **Settings** section.
 2.  Click on **Configure service list** to access the list of available services. There are four tabs displayed:
@@ -395,7 +397,7 @@ The **Settings** section of the navigation panel contains a link to the **Config
 
 Managing local perfSONAR services
 ---------------------------------
-In order to add a local service to the list, make sure the **Use local services** option is selected. Then:
+When desired service is not present in the lookup service or whithin default list of services packaged with perfsonarUI you can add desired service using **Local services** tab. To add a local service to the list make sure the **Use local services** option is selected. Then:
 
 1.  Click **Add**, and when a dialog box appears enter the intended data.
 
