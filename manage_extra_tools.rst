@@ -12,24 +12,20 @@ perfsonarUI (psUI) is a web application for running and visualizing on-demand te
 
 Installation
 ------------
-The installation guide describes the deployment of the psUI for RPM based or Debian distributions. You can `download it here <http://downloads.perfsonar.eu/repositories/documents/perfsonarUI_installation_guide.pdf>`_.
+The :doc:`install_psui` describes the deployment of the psUI for RPM or Debian based distributions using native package system or downloaded packages.
 
-As of April 21st, 2015, current version of the psUI is 1.5.0 and can be downloaded as:
-
-    * An `RPM package <http://downloads.perfsonar.eu/repositories/rpm/stable/6/noarch/Packages/perfsonar-ui-web-1.5.0.rpm>`_ for RHEL 6, CentOS 6 or Scientific Linux 6.
-    * A `Debian 7 package <http://downloads.perfsonar.eu/repositories/deb/pool/main/p/perfsonar-ui-web/perfsonar-ui-web_1.5.0_all.deb>`_.
-    
-    .. note:: If installing directly on your Toolkit host you will need to use the RPM. 
+.. include:: psui_artifacts.rst
 
 Source Code
 -----------
-The perfSONAR UI source code can be browsed or retreived with subversion::
-    
+The perfSONAR UI source code can be browsed via `Fisheye interface <https://svn.geant.net/fisheye/browse/SA2T3-ps-visualisation-tools>`_ or retreived with subversion: 
+
+::  
     svn co http://svn.geant.net/GEANT/SA2/ps-visualisation-tools/perfsonar-ui-web/
 
 Usage
 -----
-The user guide describing how to use the psUI user interface can be `found here <http://docs.perfsonar.net/using_psui.html>`_. This guide covers each feature of the UI:
+The user guide describing how to use the psUI user interface can be :doc:`found here <using_psui>`. This guide covers each feature of the UI:
 
     * How to select a perfSONAR service
     * How to access historical measurements

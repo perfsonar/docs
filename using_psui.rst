@@ -25,6 +25,8 @@ If a particular component version is not included in this document it may still 
 
 In addition perfsonarUI is also able to retrieve data from the old perfSONAR Toolkit, v3.3.1, SNMP MA and perfSONAR-BUOY MA. It is also able to make on-demand tests to *bwctl* endpoint such as perfSONAR Toolkit BWCTL and one-way latency measurement between a perfSONAR OWAMP MP and another *owamp* endpoint (such as perfSONAR Toolkit OWAMP endpoints).
 
+.. _psui_usage_access:
+
 Access To the Application
 =========================
 perfsonarUI is available through any modern web browser. We recommend using latest versions of Mozilla Firefox, Google Chrome, Safari and Opera. Accessing the application through Internet Explorer 9-11 is not tested, but should be operational. Accessing the application through Internet Explorer 8 is very limited – charts are not functional at all in IE8 and also there are several issues with style rendering such as element color, position, font type and size and more. For that reason accessing perfsonarUI through Internet Explorer versions 8, 7, 6 and lesser is not supported. To access your instance perform the following procedure:
@@ -88,22 +90,23 @@ Filtering and Ordering Services
 -------------------------------
 Services can be quickly filtered. In **Pick service** and **Pick source/Pick destination** dialog windows there is a **Filter** input field above the list, which is used for quickly searching through all services. When the filter is used, it looks through all service attributes (Name, Group/Community, Type and Hostname), as you type, and shows only services that match the filter.
 
-	- Filtering services
+  .. figure:: images/using_psui-06filtering.png
 
-    .. image:: images/using_psui-06filtering.png
+    Filtering services
 
 Services can be ordered by their name or their status/reachability in the **Service Pickup** dialog window. Clicking icon in the **Name** column header will sort services by name descendingly or ascendigly. Clicking icon in the **Status** column will sort services cycling through three modes of operation:
 
-1. *Available first* - services reachable to the perfsonarUI are displayed first
-2. *Unavailable first* - services not reachable to the perfsonarUI are displayed first
-3. *Unknown first* - services not yet tested or that don't support testing reachability are displayed first.
+  #. *Available first* - services reachable to the perfsonarUI are displayed first
+  #. *Unavailable first* - services not reachable to the perfsonarUI are displayed first
+  #. *Unknown first* - services not yet tested or that don't support testing reachability are displayed first.
 
-  - Ordering services by name
+  .. figure:: images/using_psui-06_01ordering_name.png
 
-    .. image:: images/using_psui-06_01ordering_name.png
-  - Ordering services by status/reachability
+    Ordering services by name
 
-    .. image:: images/using_psui-06_02ordering_status.png
+  .. figure:: images/using_psui-06_02ordering_status.png
+
+    Ordering services by status/reachability
 
   .. seealso:: See section `Verifying Service Reachability`_ for on checking service status/reachibility.
 
@@ -116,18 +119,18 @@ perfsonarUI currently supports the visualization of three types of historical me
 
 Accessing Link Utilization Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-1. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has content with no data:
+#. On the **Access** section of the navigation panle of the perfsonarUI you will see **Access utilization data** link. Click this item to bring up the link utilization plugin in the content panel on the right side of the application screen. This plugin is used to visualize data from the perfSONAR RRD MA and is also able to retrieve data from perfSONAR BUOY MA and the old perfSONAR Toolkit SNMP MA. Initially the page has content with no data:
 
-  .. image:: images/using_psui-07historical_link_util1.png
+    .. image:: images/using_psui-07historical_link_util1.png
   
-  The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4).
+    The plugin panel is divided into several segments. On the very top are controls for the selection of a measurement archive service to be queried (1) and for the type of values to be displayed in the results (utilization can be shown in bps or % of capacity). Next is a list of interfaces for which data is available in the measurement archive (2). Below that is a panel showing details of selected interfaces (3) and finally, the bottom part of the panel is reserved for the graph showing inbound and outbound link utilization for the selected time window (4).
 
-2. Then it is necessary to select a measurement archive to query. This is achieved by clicking on the **Pick service** button in the top left corner, which brings up the service selection dialog.
+#. Then it is necessary to select a measurement archive to query. This is achieved by clicking on the **Pick service** button in the top left corner, which brings up the service selection dialog.
 
-  .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog.
+    .. seealso:: See section `Selecting Service`_ for information on the Service pickup dialog.
 
-3. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
-4. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
+#. When the service is selected, a request is sent to the measurement archive to fetch a list of all the interfaces for which available measurements exist within that archive. The archive’s response is converted into a list of available interfaces. This list can be filtered by name or description. To do this, the user simply clicks on the **Name** or **Description** labels in the list header and the labels turn into input fields.
+#. Once a desired interface is located and selected by clicking in the list, a request is sent to the measurement archive to provide measurement values for that interface. When the archive responds, the data is presented to the user in the details panel and on the graph below it. The resulting screen may look similarly to:
 
   .. image:: images/using_psui-08historical_link_util2.png
 
@@ -142,9 +145,9 @@ The data generated by running OWAMP tests are stored within esmond or perfSONAR 
 
   .. image:: images/using_psui-09historical_delay_initial.png
 
-  1. Service selection control located on top of the plugin panel;
-  2. Measurement selection panel;
-  3. The result panel with graphs in the bottom part of the plugin.
+  #. Service selection control located on top of the plugin panel;
+  #. Measurement selection panel;
+  #. The result panel with graphs in the bottom part of the plugin.
 
 In order to retreive archived OWAMP data:
   
@@ -158,7 +161,7 @@ In order to retreive archived OWAMP data:
 
   .. image:: images/using_psui-10historical_delay_selection.png
 
-3. Choose the desired source point in the **From:** section (representing the endpoint where the measurements originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **To:** section of the panel. It is possible to quickly *filer* out the list of available destination points by typing into **Filter** input field.
+3. Choose the desired source point in the **From:** section (representing the endpoint where the measurements originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **To:** section of the panel. It is possible to quickly *filter* out the list of available destination points by typing into **Filter** input field.
 
 4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel. 
 
@@ -212,7 +215,7 @@ In order to retreive archived BWCTL data:
 
   .. image:: images/using_psui-16historical_bw_selection.png
 
-3. Choose the desired source point in the **Source:** section (representing the endpoint where the measurements originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **Destination:** section of the panel. It is possible to quickly *filer* out the list of available destination points by typing into **Filter** input field.
+3. Choose the desired source point in the **Source:** section (representing the endpoint where the measurements originated from). Once a source point is selected, all the available destination endpoints become visible on the right side in the **Destination:** section of the panel. It is possible to quickly *filter* out the list of available destination points by typing into **Filter** input field.
 
 4. When a destination point is selected, the measurement archive is queried for that particular measurement. The results from such a query are presented on a graph in the bottom part of the plugin panel.
   
@@ -345,7 +348,7 @@ Perform a Traceroute Measurement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Through perfsonarUI, it is possible to perform a traceroute between a perfSONAR MDM traceroute MP and any other perfSONAR MDM service (MP or MA). To do this the user should use **Perform traceroute** plugin.
 
-..info:: Please note this plugin is disabled be default.
+  .. note:: This plugin is disabled be default. Refer to :ref:`psui_installation_plugins` chapter of Installation Guide on steps how to enable it.
 
 In order to make traceroute measurement:
 
@@ -391,7 +394,7 @@ To configure the list of services, perform the following steps:
        This tab contains the list of services found by the simpleLookupService. This list can be modified by changing the bootstrap URL from which services are being fetched.
      
       Internal services
-        This default list contains known perfSONAR MPs and MAs and is supplied with the application. It cannot be changed directly through the application (for information about changing this list refer to Installation guide)
+        This default list contains known perfSONAR MPs and MAs and is supplied with the application. It cannot be changed directly through the application (for information about changing this list refer to :ref:`related chapter <psui_installation_internal>` of Installation Guide)
 
       Local services
         This list is local to that specific installation of perfsonarUI and can be modified by adding and removing services.
