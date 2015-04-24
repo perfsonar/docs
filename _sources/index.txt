@@ -58,7 +58,8 @@ Using Additional Tools
 ======================
 .. toctree::
    :maxdepth: 2
-
+   
+   install_psui
    using_psui
 
 Additional Installation Options
