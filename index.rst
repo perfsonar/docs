@@ -1,8 +1,12 @@
 *******************************************
-perfSONAR Toolkit User Guide
+perfSONAR User Guide
 *******************************************
 
-The perfSONAR Toolkit is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using the perfSONAR Toolkit on one or more hosts. 
+perfSONAR is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using the perfSONAR on one or more hosts. 
+
+
+perfSONAR Toolkit
+-----------------
 
 Installation
 ============
@@ -33,16 +37,6 @@ Managing the perfSONAR Toolkit
    manage_dual_xface
    manage_security
    manage_extra_tools
-
-Managing Multiple perfSONAR Toolkits
-====================================
-.. toctree::
-   :maxdepth: 2
-   
-   multi_overview
-   multi_server_config
-   multi_agent_config
-   multi_central_MA
    
 Using the perfSONAR Toolkit
 ============================
@@ -53,9 +47,12 @@ Using the perfSONAR Toolkit
    using_ndt
    using_npad
    using_ext_tools
-   
-Using Additional Tools
-======================
+
+Additional perfSONAR Tools
+--------------------------
+
+perfSONAR UI
+============
 .. toctree::
    :maxdepth: 2
    
@@ -63,14 +60,57 @@ Using Additional Tools
    using_psui
 
 Additional Installation Options
-===============================
+-------------------------------
 .. toctree::
    :maxdepth: 2
 
    install_level12
    
+Managing Multiple perfSONAR Toolkits
+------------------------------------
+
+Introduction to Central Management
+==================================
+.. toctree::
+   :maxdepth: 2
+   
+   multi_overview
+
+Central Test Configuration
+===========================
+.. toctree::
+   :maxdepth: 2
+   
+   multi_mesh_server_config
+   multi_mesh_agent_config
+   multi_mesh_autoconfig
+   
+Central Measurement Archive
+===========================
+.. toctree::
+   :maxdepth: 2
+   
+   multi_ma_install
+   multi_ma_clustering
+   multi_ma_backups
+
+Central Logging
+===============
+.. toctree::
+   :maxdepth: 2
+   
+   multi_logging
+   
+Managing Nodes with Puppet
+==========================
+.. toctree::
+   :maxdepth: 2
+   
+   multi_puppet_install
+   multi_puppet_using
+   
 Configuration Reference
-=======================
+-----------------------
 .. toctree::
    :maxdepth: 2
    
@@ -85,7 +125,7 @@ Configuration Reference
    config_regular_testing
 
 Further Information
-===================
+-------------------
 * `Project Homepage <http://www.perfsonar.net>`_
 * `Project Wiki <http://code.google.com/p/perfsonar-ps/w/list>`_
 * `Source Code Repository <http://code.google.com/p/perfsonar-ps/source/checkout>`_
@@ -97,7 +137,7 @@ Further Information
   * `Announcement Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_ - List where important announcements such as new releases and security updates are posted.
 
 Related Projects
-================
+----------------
 * `esmond <http://software.es.net/esmond/>`_
 * `iperf3 <http://software.es.net/iperf/>`_
 * `Lookup Service <http://code.google.com/p/simple-lookup-service/>`_

@@ -1,6 +1,6 @@
-***********************************
-Using a Central Measurement Archive
-***********************************
+***************************************
+Deploying a Central Measurement Archive
+***************************************
 
 Measurement results from your regular tests are stored in a **measurement archive (MA)**. This leads to the definition of two categories of hosts:
 

@@ -81,7 +81,7 @@ Scheduling Regular Measurements
 ===============================
 You will now want to schedule some tests that run on regular time intervals. There are two commonly used ways to add these tests and you may take one or both of these approaches depending on your needs:
  #. *Configure your tests via the web interface* - This approach can be used if you have a small number of perfSONAR nodes running a small number of tests. You will use the web interface to find and define tests. See :doc:`manage_regular_tests`.
- #. *Participate in a centrally managed mesh*  - This approach is best if you manage a large number of hosts or are participating in a large community of organizations running measurements. This requires updating a configuration file to point at a centrally managed file. See :doc:`multi_agent_config` for more details. 
+ #. *Participate in a centrally managed mesh*  - This approach is best if you manage a large number of hosts or are participating in a large community of organizations running measurements. This requires updating a configuration file to point at a centrally managed file. See :doc:`multi_mesh_agent_config` for more details. 
  
 What next?
 ==========

@@ -13,7 +13,7 @@ Finding a Test Mesh
 ===================
 Currently finding centrally configured meshes in which to participate is largely an out-of-band process. You will need to obtain a URL to a configuration file in order to participate. It is possible to simultaneously participate in multiple meshes (a well as :doc:`manually <manage_regular_tests>` define your own tests) so don't feel like you are limited by what's in a single mesh configuration file. 
 
-The best way to discover meshes is to talk to others you test with (or would like to test with) to see if they are participating in any meshes. If not, it may be worth :doc:`creating one <multi_server_config>`. If you do find a mesh in which you'd like to participate, be sure to talk to the administrator of the file. It's not only polite, but you cannot use that file to generate tests with the MeshConfig software unless they add the address(es) of your host(s)!
+The best way to discover meshes is to talk to others you test with (or would like to test with) to see if they are participating in any meshes. If not, it may be worth :doc:`creating one <multi_mesh_server_config>`. If you do find a mesh in which you'd like to participate, be sure to talk to the administrator of the file. It's not only polite, but you cannot use that file to generate tests with the MeshConfig software unless they add the address(es) of your host(s)!
 
 
 .. _multi_agent_config-config:
