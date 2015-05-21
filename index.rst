@@ -65,7 +65,7 @@ Additional Installation Options
    :maxdepth: 2
 
    install_level12
-   
+   install_bundles   
 Managing Multiple perfSONAR Toolkits
 ------------------------------------
 
