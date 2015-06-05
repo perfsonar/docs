@@ -79,10 +79,10 @@
 <li><em>High availability</em> - If you are running your archive on one server and a component of the software goes down, such as a database, your archive will not be able to service any requests. Clustering can be used to configure things like data replication across servers and failovers to another dataset if a host goes down.</li>
 <li><em>Load balancing</em> - If your measurement archive is servicing a large number of requests, you may want to create a cluster so multiple servers can share the load. There are number of strategies for doing this such as round-robing requests or splitting read and write operations.</li>
 </ol>
-<p>The esmond software is built on three primary components all capable of being configured in a cluster. The components are</p>
+<p>The esmond software is built on three primary components all capable of being configured in a cluster. The components are:</p>
 <ol class="arabic simple">
 <li><a class="reference external" href="https://cassandra.apache.org">Cassandra</a> - This is the database that stores the results of a measurement. Cassandra was designed with <em>horizontal scaling</em> in mind and as such provides a number of options for data replication, failovers, load balancing and adding/removing/replacing nodes over time. See <a class="reference internal" href="#multi-ma-clustering-cassandra"><em>Clustering Cassandra</em></a> for more details.</li>
-<li><a class="reference external" href="http://www.postgresql.org">PostgreSQL</a> - This is the database that stores measurement metadata (description about the tests run such as the type of test and the parameters used). It natively supports a number of data replication options and tools exist to support failovers and load balancing. See <a class="reference internal" href="#multi-ma-clustering-postgresql"><em>Clustering PostgresSQL</em></a></li>
+<li><a class="reference external" href="http://www.postgresql.org">PostgreSQL</a> - This is the database that stores measurement metadata (description about the tests run such as the type of test and the parameters used). It also stores the usernames, API keys and/or authorized IP addresses that are used to add new information to esmond. PostgreSQL supports a number of data replication options and tools exist to support failovers and load balancing. See <a class="reference internal" href="#multi-ma-clustering-postgresql"><em>Clustering PostgreSQL</em></a></li>
 <li><a class="reference external" href="http://www.postgresql.org">Apache httpd</a> - Esmond runs on the Apache HTTPD web server. Apache has a number of options for handling failovers and load balancing that are detailed in <a class="reference internal" href="#multi-ma-clustering-httpd"><em>Clustering Apache httpd</em></a>.</li>
 </ol>
 <p>You may cluster some or all of the components if you so choose. For example, you could have a cassandra cluster but run PostgreSQL and Apache on a single server. It should also be noted that all of these components have been around for a number of years and the documentation that exists on clustering them is extensive. This document will do its best to identify key features and common configurations but is by no means an exhaustive list. It is highly recommended you consult each components documentation before embarking on an attempt to create a clustered configuration.</p>
@@ -193,11 +193,68 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
 </ol>
 </div>
 </div>
-<div class="section" id="clustering-postgressql">
-<span id="multi-ma-clustering-postgresql"></span><h2>Clustering PostgresSQL<a class="headerlink" href="#clustering-postgressql" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clustering-postgresql">
+<span id="multi-ma-clustering-postgresql"></span><h2>Clustering PostgreSQL<a class="headerlink" href="#clustering-postgresql" title="Permalink to this headline">¶</a></h2>
+<p>PostgreSQL provides a number of options for high availability, data replication, and load balancing. It actually has too many options to realistically cover in this document. The <a class="reference external" href="http://www.postgresql.org/docs/current/interactive/high-availability.html">PostgreSQL High Availability, Load Balancing and Replication</a> page does a thorough job of comparing and contrasting the various alternatives. It also directs you how to get started on the various options, so there isn&#8217;t need to rehash that here. If you have clustered Postgres or another relational database before, many of the considerations and strategies should be familiar. A few important pieces of information specific to esmond that may be useful for deciding on and configuring the proposed method:</p>
+<ul class="simple">
+<li>The name of the database where the esmond information is kept is <em>esmond</em></li>
+<li>You can change the PostgreSQL username, password and host that esmond uses in <em>/opt/esmond/esmond.conf</em> by changing  <em>sql_db_user</em>, <em>sql_db_password</em>, and <em>sql_db_host</em> respectively</li>
+<li>Often when choosing a replication strategy it is important to understand the write profile of a database. Esmond will only insert new rows into PostgreSQL if you add new tests to be run or change the parameters of an existing test. For example, changing the parameters of a BWCTL test to run for 30 seconds instead of 20 seconds. Esmond also executes an update on a single column every time it adds new data to Cassandra so that it can keep track of when data was last updated. This means that there will likely be lots of small updates but very few inserts of new data.</li>
+</ul>
 </div>
 <div class="section" id="clustering-apache-httpd">
 <span id="multi-ma-clustering-httpd"></span><h2>Clustering Apache httpd<a class="headerlink" href="#clustering-apache-httpd" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Basics of Cassandra Clustering<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to cluster your Apache httpd instances running esmond. Each esmond installation will point at the same Cassandra and PostgreSQL instances/clusters. Clustering Apache will allow incoming requests to be load-balanced and/or failover if one of your Apache instances goes down. This section highlights some of the common load balancing and failover techniques such as:</p>
+<ul class="simple">
+<li><strong>DNS Round-Robin</strong> - This approach involves registering a set of IP addresses in DNS and allowing that protocol to round-robin requests between the servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-dns"><em>DNS Round Robin</em></a> for more details.</li>
+<li><strong>mod_proxy_balancer</strong> - This approach uses a common Apache module to distribute requests between a set of configured servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-modproxy"><em>mod-proxy-balancer</em></a> for more details.</li>
+<li><strong>HAProxy and keepalived</strong> - <a class="reference external" href="http://www.haproxy.org">HAProxy</a>  and <a class="reference external" href="http://www.keepalived.org">keepalived</a> are popular open source tools for handling load balancing for a large number of requests while also providing a robust failover mechanism. See <a class="reference internal" href="#multi-ma-clustering-httpd-haproxy"><em>HAProxy and keepalived</em></a> for more details.</li>
+</ul>
+<p>This is by no means an exhaustive list of all your options. Scaling Apache is a topic that has been around for several years now, so there is no shortage of literature on the subject. The sections below will hopefully give you an idea of some of your options, but you should not heistate to do your own research in deciding the best solution for you and/or your organization.</p>
+</div>
+<div class="section" id="dns-round-robin">
+<span id="multi-ma-clustering-httpd-dns"></span><h3>DNS Round Robin<a class="headerlink" href="#dns-round-robin" title="Permalink to this headline">¶</a></h3>
+<p>DNS Round Robin is an approach that involves configuring your Domain Name System (DNS) servers to map a hostname to <em>a list</em> of IP addresses. DNS will then alternate the address returned when a lookup is performed. Note that this provides load balancing only and no health checks are performed by DNS. Therefore if one of the servers at an individual IP goes down, a percentage of your users will get a failure when trying to contact your web server since the failing servers IP will not be removed from the round-robin automatically. If load-balancing is your sole concern, this may be an adequate solution. Otherwise pursuing this load balancing solution will require additional measures if one wishes to handle failures as well. The best way to configure DNS Round Robin is to contact your local network administrator if you think this is the right approach for your  organization. In summary, DNS Round Robin MAY be a good approach if all of the following hold true:</p>
+<ul class="simple">
+<li>You have the ability (either personally or with the help of your friendly neighborhood network administrator) to update DNS with the required changes.</li>
+<li>You only care about load-balancing and not failovers OR you have an independent failover mechanism in mind you plan to use in conjunction with the DNS round robin</li>
+<li>You are happy with a simple round robin algorithm for load balancing</li>
+</ul>
+<p>If one or more of the above do not hold true, likely pursuing another option would be recommended.</p>
+</div>
+<div class="section" id="mod-proxy-balancer">
+<span id="multi-ma-clustering-httpd-modproxy"></span><h3>mod-proxy-balancer<a class="headerlink" href="#mod-proxy-balancer" title="Permalink to this headline">¶</a></h3>
+<p>The Apache module <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_proxy_balancer.html">mod_proxy_balancer</a> allows one to use an apache server to load balance requests amongst other Apache servers. If you are familiar with configuring Apache this may be a desirable load balancing solution. It also supports multiple load-balancing algorithms in contrast to DNS Round Robin. Again, there are no health checks performed, so it does not handle failovers. In fact, if you create only a single load balancer server, that load balancer can become a single point of failure. With all this in mind, mod_proxy_balancer MAY be a good approach if all of the following hold true:</p>
+<ul class="simple">
+<li>You are comfortable with Apache configuration</li>
+<li>You prefer to have more balancing options than the traditional round-robin</li>
+<li>Automatic failover is not a concern OR you have an independent failover mechanism in mind you plan to use in conjunction with mod_proxy_balancer</li>
+</ul>
+<p>See the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_proxy_balancer.html">mod_proxy_balancer documentation</a> for details on installing and configuring.</p>
+</div>
+<div class="section" id="haproxy-and-keepalived">
+<span id="multi-ma-clustering-httpd-haproxy"></span><h3>HAProxy and keepalived<a class="headerlink" href="#haproxy-and-keepalived" title="Permalink to this headline">¶</a></h3>
+<p>This approach is the most flexible and robust of the solutions covered. It also comes with the cost of slightly more complexity (but maybe not as much as you&#8217;d expect).  It involves two components:</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://www.haproxy.org">HAProxy</a>, an open source load balancing software designed to handle large volumes of TCP and HTTP traffic. Additionally, it performs regular health checks of your web servers and removes them from the pool if it finds an issue. Since it&#8217;s not limited to HTTP, it can also be used with services like PostgreSQL to load balance read-only slaves of the database.</li>
+<li><a class="reference external" href="http://www.keepalived.org">keepalived</a>, is routing software that uses <a class="reference external" href="http://www.linux-vs.org">Linux Virtual Servers</a> to migrate IP addresses to a backup server if a failure is detected at the master. In this context, keepalived runs on each load balancer and can be used to detect failures if one of the HAproxy nodes goes down. This prevents your HAProxy node from becoming a single point of failure.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">keepalived is not required to run HAProxy or vice versa. They are commonly paired together in practice hence the joint discussion here. It is also possible to use keepalived with solutions such as mod_proxy_balancer.</p>
+</div>
+<p>Using HAProxy and keepalived is a good approach if any of the following holds true:</p>
+<ul class="simple">
+<li>You expect a lot of requests (which you probably do or you wouldn&#8217;t be load balancing) and want a highly scalable solution.</li>
+<li>You want to automatically remove servers from the load balancing pool if they go down</li>
+<li>You want to have automatic failovers if a load balancer goes down</li>
+<li>You would like a load balancer that works with more than just HTTPD, such as PostgreSQL</li>
+<li>You are familiar with the tools or are willing to learn something new</li>
+</ul>
+<p>Both HAProxy and keepalived are available in most major Linux distribution&#8217;s packaging systems (such as yum and apt). For more information on configuring these tools see the <a class="reference external" href="http://www.haproxy.org">HAProxy</a> and <a class="reference external" href="http://www.keepalived.org">keepalived</a> web pages.</p>
+</div>
 </div>
 </div>
 
@@ -218,8 +275,14 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
 <li><a class="reference internal" href="#changing-the-replication-factor">Changing the replication_factor</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#clustering-postgressql">Clustering PostgresSQL</a></li>
-<li><a class="reference internal" href="#clustering-apache-httpd">Clustering Apache httpd</a></li>
+<li><a class="reference internal" href="#clustering-postgresql">Clustering PostgreSQL</a></li>
+<li><a class="reference internal" href="#clustering-apache-httpd">Clustering Apache httpd</a><ul>
+<li><a class="reference internal" href="#id1">Basics of Cassandra Clustering</a></li>
+<li><a class="reference internal" href="#dns-round-robin">DNS Round Robin</a></li>
+<li><a class="reference internal" href="#mod-proxy-balancer">mod-proxy-balancer</a></li>
+<li><a class="reference internal" href="#haproxy-and-keepalived">HAProxy and keepalived</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
