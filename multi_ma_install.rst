@@ -206,7 +206,7 @@ Given all the information above, lets look at an example where we want to regist
 
 After adding the above to you configuration you will need to restart your regular testing::
 
-    /sbin/service/regular_testing restart
+    /sbin/service regular_testing restart
 
 Registering to Multiple Measurement Archives
 --------------------------------------------
