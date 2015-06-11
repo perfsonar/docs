@@ -66,6 +66,7 @@ Additional Installation Options
 
    install_level12
    install_bundles   
+
 Managing Multiple perfSONAR Toolkits
 ------------------------------------
 
@@ -116,7 +117,6 @@ Configuration Reference
    
    config_bwctl
    config_bwctl_limits
-   config_esmond_data_cleaner
    config_ls_registration
    config_mesh
    config_oppd
@@ -147,6 +147,6 @@ Related Projects
 * `psUI <https://forge.geant.net/forge/display/perfsonar/Change+Log/>`_
  
 Search
-==================
+----------------
 
 * :ref:`search`
