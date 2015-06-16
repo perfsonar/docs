@@ -68,6 +68,7 @@ Additional Installation Options
    :maxdepth: 2
 
    install_level12
+   install_debian
    
 Configuration Reference
 =======================
