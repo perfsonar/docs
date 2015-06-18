@@ -36,6 +36,14 @@ Then, after refreshing the apt packages list, you'll be able to install one of t
 
    apt-get update
    apt-get install perfsonar-endpoint
+   
+Or on Ubuntu:
+::
+
+   apt-get update
+   apt-get install perfsonar-tools
+
+.. note:: Currently only the **perfsonar-tools** bundle can be installed on Ubuntu.
 
 Bundles Description
 ===================
