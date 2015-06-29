@@ -24,7 +24,7 @@ System Requirements
 Installation Instructions
 =========================
 
-All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian machine.  This can be done with the following commands:
+All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands:
 ::
 
    cd /etc/apt/sources.list.d/
@@ -37,14 +37,6 @@ Then, after refreshing the apt packages list, you'll be able to install one of t
    apt-get update
    apt-get install perfsonar-endpoint
    
-Or on Ubuntu:
-::
-
-   apt-get update
-   apt-get install perfsonar-tools
-
-.. note:: Currently only the **perfsonar-tools** bundle can be installed on Ubuntu.
-
 Bundles Description
 ===================
 
