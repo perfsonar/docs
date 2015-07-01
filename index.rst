@@ -64,8 +64,8 @@ Additional Installation Options
 .. toctree::
    :maxdepth: 2
 
-   install_level12
    install_bundles   
+   install_debian
 
 Managing Multiple perfSONAR Toolkits
 ------------------------------------
