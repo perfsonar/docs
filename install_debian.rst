@@ -6,6 +6,7 @@ Starting with perfSONAR 3.4.2 we provide part of the perfSONAR toolkit as Debian
 
 * Debian 7 Wheezy
 * Ubuntu 12 Precise
+* Ubuntu 14 Trusty (with limited support)
 
 Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.
 
@@ -19,7 +20,7 @@ System Requirements
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
 
-* **Operating System:**  Any system running a Debian 7 or Ubuntu 12 OS is supported.  Other Debian flavours derived from Debian 7 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 7 or Ubuntu 12 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 might work too but are not officially supported. Ubuntu 14 is supported for the ``perfsonar-tools`` bundle only (see below).
 
 Installation Instructions
 =========================
@@ -36,20 +37,26 @@ Then, after refreshing the apt packages list, you'll be able to install one of t
 
    apt-get update
    apt-get install perfsonar-endpoint
+
+For Ubuntu 14, you should limit the installation to the ``perfsonar-tools`` bundle:
+::
+
+   apt-get update
+   apt-get install perfsonar-tools
    
 Bundles Description
 ===================
 
 The two bundles we currently provide for Debian contains the following packages:
 
-* ``perfsonar-tools`` contains all the tools you need to make measurements from the CLI:
+* **perfsonar-tools** contains all the tools you need to make measurements from the CLI:
 
   * iperf and iperf3
   * owamp client and server
   * bwctl client and server
   * ndt client
 
-* ``perfsonar-endpoint`` contains the perfsonar-tools and the perfSONAR software you need to get your perfSONAR measurement point part of the global perfSONAR measurement infrastructure:
+* **perfsonar-endpoint** contains the perfsonar-tools and the perfSONAR software you need to get your perfSONAR measurement point part of the global perfSONAR measurement infrastructure:
 
   * ls-registration daemon
   * regular-testing daemon
