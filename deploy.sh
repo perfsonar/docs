@@ -6,7 +6,7 @@ mkdir ${DEPLOY_DIR}
 (cd ${DEPLOY_DIR} ; \
     git clone ${GIT_URL} . \
  && git checkout gh-pages \
- && git rm -rf .
+ && git rm -rf *.html _* objects.inv searchindex.js
 )
 cp -r _build/html/* ${DEPLOY_DIR}
 touch ${DEPLOY_DIR}/.nojekyll
