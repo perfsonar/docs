@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation on Debian &mdash; perfSONAR Toolkit 3.5rc1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.5rc1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.5rc1 documentation" href="index.html" />
+    <link rel="next" title="Central Configuration Overview" href="multi_overview.html" />
+    <link rel="prev" title="Bundle Installations" href="install_bundles.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="multi_overview.html" title="Central Configuration Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_bundles.html" title="Bundle Installations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation-on-debian">
+<h1>Installation on Debian<a class="headerlink" href="#installation-on-debian" title="Permalink to this headline">¶</a></h1>
+<p>Starting with perfSONAR 3.4.2 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:</p>
+<ul class="simple">
+<li>Debian 7 Wheezy</li>
+<li>Ubuntu 12 Precise</li>
+</ul>
+<p>Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.</p>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>Hardware:</strong> We provide Debian packages for 4 different architectures:<ul>
+<li>32-bit (i386)</li>
+<li>64-bit (amd64)</li>
+<li>ARMv4t and up (armel)</li>
+<li>ARMv7 and up (armhf)</li>
+</ul>
+</li>
+<li><strong>Operating System:</strong>  Any system running a Debian 7 or Ubuntu 12 OS is supported.  Other Debian flavours derived from Debian 7 might work too but are not officially supported.</li>
+</ul>
+</div>
+<div class="section" id="installation-instructions">
+<h2>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
+<p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
+wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
+wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.gpg.key | apt-key add -
+</pre></div>
+</div>
+<p>Then, after refreshing the apt packages list, you&#8217;ll be able to install one of the perfSONAR bundles:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get update
+apt-get install perfsonar-endpoint
+</pre></div>
+</div>
+</div>
+<div class="section" id="bundles-description">
+<h2>Bundles Description<a class="headerlink" href="#bundles-description" title="Permalink to this headline">¶</a></h2>
+<p>The two bundles we currently provide for Debian contains the following packages:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">perfsonar-tools</span></tt> contains all the tools you need to make measurements from the CLI:<ul>
+<li>iperf and iperf3</li>
+<li>owamp client and server</li>
+<li>bwctl client and server</li>
+<li>ndt client</li>
+</ul>
+</li>
+<li><tt class="docutils literal"><span class="pre">perfsonar-endpoint</span></tt> contains the perfsonar-tools and the perfSONAR software you need to get your perfSONAR measurement point part of the global perfSONAR measurement infrastructure:<ul>
+<li>ls-registration daemon</li>
+<li>regular-testing daemon</li>
+<li>oppd</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re used to the perfSONAR toolkit deployed on a CentOS/RHEL host, the configuration files for the different perfSONAR tools are the same as for the regular toolkit, but they are located in a different location.  You&#8217;ll have to look for configuration files directly in <tt class="docutils literal"><span class="pre">/etc/</span></tt>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/etc/bwctl/</span></tt> for the bwctl server</li>
+<li><tt class="docutils literal"><span class="pre">/etc/owampd/</span></tt> for the owamp server</li>
+<li><tt class="docutils literal"><span class="pre">/etc/perfsonar/</span></tt> for the oppd, the ls-registration daemon and the regular-testing daemon</li>
+</ul>
+</div></blockquote>
+<p>Also, the name of the services are a bit different from the CentOS/RHEL ones, Debian services names are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">bwctl-server</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">owampd</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">perfsonar-lsregistrationdaemon</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">perfsonar-oppd-server</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">perfsonar-regulartesting</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="support">
+<h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
+<p>Support for Debian installations is provided by the perfSONAR community through the usual communication channels.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Installation on Debian</a><ul>
+<li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li><a class="reference internal" href="#installation-instructions">Installation Instructions</a></li>
+<li><a class="reference internal" href="#bundles-description">Bundles Description</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#support">Support</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_bundles.html">Previous topic</a>
+                  <ul><li><a href="install_bundles.html" title="previous chapter">Bundle Installations</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="multi_overview.html">Next topic</a>
+                      <ul><li><a href="multi_overview.html" title="next chapter">Central Configuration Overview</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="multi_overview.html" title="Central Configuration Overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_bundles.html" title="Bundle Installations"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.net/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2014, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
