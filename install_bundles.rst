@@ -26,16 +26,16 @@ Step 1: Configure Yum
 ---------------------- 
 The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below:
 
-1. Install the EPEL RPM (Note: For i386 systems replace x86_64 with i386)::
+1. Install the EPEL RPM:
 ::
 
     rpm -hUv https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 
 
-2. Install the Internet2-repo RPM  (Note: For i386 systems replace x86_64 with i386):
+2. Install the Internet2-repo RPM:
 ::
 
-    rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.5-7.noarch.rpm
+    rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
 
 
 4. Refresh yum's cache so it detects the new RPMS
@@ -63,17 +63,17 @@ Step 2: Install RPM
 
     Or, you can manually install them by running:  
 
-     * yum install perfSONAR_PS-Toolkit-service-watcher  
-     * yum install perfSONAR_PS-Toolkit-ntp  
-     * yum install perfSONAR_PS-Toolkit-security  
-     * yum install perfSONAR_PS-Toolkit-sysctl  
+     * ``yum install perfSONAR_PS-Toolkit-service-watcher``
+     * ``yum install perfSONAR_PS-Toolkit-ntp``
+     * ``yum install perfSONAR_PS-Toolkit-security``
+     * ``yum install perfSONAR_PS-Toolkit-sysctl``
 
 
 * **perfSONAR-Core**::
 
-    yum install perfSONAR-Bundles-Core  
+    yum install perfSONAR-Bundles-Core
 
-  Just as in TestPoint  Bundle, optional packages are available and can be installed via a script or manually.
+  Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.
 
   *Optional Packages*
 
@@ -84,10 +84,10 @@ Step 2: Install RPM
 
     Or, you can manually install them by running:
 
-       * yum install perfSONAR_PS-Toolkit-service-watcher
-       * yum install perfSONAR_PS-Toolkit-ntp
-       * yum install perfSONAR_PS-Toolkit-security
-       * yum install perfSONAR_PS-Toolkit-sysctl
+       * ``yum install perfSONAR_PS-Toolkit-service-watcher``
+       * ``yum install perfSONAR_PS-Toolkit-ntp``
+       * ``yum install perfSONAR_PS-Toolkit-security``
+       * ``yum install perfSONAR_PS-Toolkit-sysctl``
 
 
 
