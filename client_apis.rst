@@ -19,7 +19,11 @@ Lookup Service APIs and clients:
 perfSONAR Dashboard (MaDDash) API:
    * http://software.es.net/maddash/index.html#api
 
+Toolkit Host configuration API:
+   * perfSONAR toolkit host configuration info can be retrieved using a URL of this format:
+      * http://your-perfsonar-hostname/toolkit/index.cgi?format=json
+
 API Support
-=======
+========
 
 For support for using these APIs, send email to the perfSONAR user list.
