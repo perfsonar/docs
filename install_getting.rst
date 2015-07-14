@@ -41,3 +41,7 @@ Downloads
 .. |centos_fullinstall_descr| replace:: This installation type contains all the packages to be installed on the local ISO image. This not only leads to a larger ISO image but also eliminates the need to have external connectivity during the initial installation process. Since the packages are all included on the disc some software packages may be out of date if they were updated since the last time an ISO was generated. You will need to see :doc:`manage_update` if you want to make sure your host has the latest packages after installation. In cases of no networking connectivity it may also be impossible to update your toolkit since updates will need access to the download servers. 
 
 .. |centos_fullinstall_when|  replace:: Use this in cases where the installation host has limited to no network connectivity to the CentOS and perfSONAR download servers. Be aware that this installation type may result in outdated packages initially and updates may be impossible if external network connectivity is not available even after the initial install. 
+
+Alternative installation methods
+================================
+We now also provide some alternative installation methods based on bundles where only a subset of the perfSONAR toolkit is installed.  These bundles offer more flexibility in your installation options and are also supported on a wider OS selection.  See :doc:`install_bundles` for details.

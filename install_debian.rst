@@ -2,11 +2,11 @@
 Installation on Debian
 **********************
 
-Starting with perfSONAR 3.4.2 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
+For perfSONAR 3.5 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
 
 * Debian 7 Wheezy
 * Ubuntu 12 Precise
-* Ubuntu 14 Trusty (with limited support)
+* Ubuntu 14 Trusty
 
 Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.
 
@@ -20,7 +20,7 @@ System Requirements
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
 
-* **Operating System:**  Any system running a Debian 7 or Ubuntu 12 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 might work too but are not officially supported. Ubuntu 14 is supported for the ``perfsonar-tools`` bundle only (see below).
+* **Operating System:**  Any system running a Debian 7, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.
 
 Installation Instructions
 =========================
@@ -29,8 +29,8 @@ All you need to do is to configure the perfSONAR Debian repository source, along
 ::
 
    cd /etc/apt/sources.list.d/
-   wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
-   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.gpg.key | apt-key add -
+   wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
+   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.gpg.key | apt-key add -
 
 Then, after refreshing the apt packages list, you'll be able to install one of the perfSONAR bundles:
 ::
@@ -38,12 +38,6 @@ Then, after refreshing the apt packages list, you'll be able to install one of t
    apt-get update
    apt-get install perfsonar-endpoint
 
-For Ubuntu 14, you should limit the installation to the ``perfsonar-tools`` bundle:
-::
-
-   apt-get update
-   apt-get install perfsonar-tools
-   
 Bundles Description
 ===================
 

@@ -12,13 +12,19 @@ perfSONAR combines a number of measurement tools and services. Depending on your
 
 System Requirements 
 ==================== 
-* **Operating System:** Any system running either a 32-bit or 64-bit CentOS 6 operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.
+* **Operating System:**
+
+  * Any system running either a 32-bit or 64-bit **CentOS 6** operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.
+  * Any system running either a 32-bit, 64-bit or ARM **Debian 7**, **Ubuntu 12** or **Ubuntu 14** is currently supported for the **perfSONAR-TestPoint** bundle.  Other Debian flavours derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.
+
 * **Hardware:** Most base-level systems should be adequate to run the measurement tools. You may want to explore a 10Gbps network interface card depending on the throughput testing you wish to perform. See the `fasterdata.es.net hardware page <http://fasterdata.es.net/performance-testing/perfsonar/ps-howto/hardware/>`_ for some suggested configurations.
 
 Installation 
 ============
 
-Step 1 is common for all the installs. It specifies how to configure the yum repository. Do this step and then proceed to the installation instructions for the bundle of your choice.
+Debian installation is currently only supported for the **perfSONAR-TestPoint** bundle. See the :doc:`install_debian` page.
+
+Step 1 is common for all the RPM installs. It specifies how to configure the yum repository. Do this step and then proceed to the installation instructions for the bundle of your choice.
 
 .. _install_step1:
 
