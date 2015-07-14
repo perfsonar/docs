@@ -8,7 +8,7 @@
     
     <title>Bundle Installations &mdash; perfSONAR Toolkit 3.5rc1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Installation on Debian" href="install_debian.html" />
     <link rel="prev" title="perfsonarUI User Guide" href="using_psui.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="using_psui.html" title="perfsonarUI User Guide"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="bundle-installations">
 <h1>Bundle Installations<a class="headerlink" href="#bundle-installations" title="Permalink to this headline">¶</a></h1>
@@ -85,22 +85,27 @@
 <div class="section" id="system-requirements">
 <h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><strong>Operating System:</strong> Any system running either a 32-bit or 64-bit CentOS 6 operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.</li>
+<li><strong>Operating System:</strong><ul>
+<li>Any system running either a 32-bit or 64-bit <strong>CentOS 6</strong> operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.</li>
+<li>Any system running either a 32-bit, 64-bit or ARM <strong>Debian 7</strong>, <strong>Ubuntu 12</strong> or <strong>Ubuntu 14</strong> is currently supported for the <strong>perfSONAR-TestPoint</strong> bundle.  Other Debian flavours derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.</li>
+</ul>
+</li>
 <li><strong>Hardware:</strong> Most base-level systems should be adequate to run the measurement tools. You may want to explore a 10Gbps network interface card depending on the throughput testing you wish to perform. See the <a class="reference external" href="http://fasterdata.es.net/performance-testing/perfsonar/ps-howto/hardware/">fasterdata.es.net hardware page</a> for some suggested configurations.</li>
 </ul>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Step 1 is common for all the installs. It specifies how to configure the yum repository. Do this step and then proceed to the installation instructions for the bundle of your choice.</p>
+<p>Debian installation is currently only supported for the <strong>perfSONAR-TestPoint</strong> bundle. See the <a class="reference internal" href="install_debian.html"><em>Installation on Debian</em></a> page.</p>
+<p>Step 1 is common for all the RPM installs. It specifies how to configure the yum repository. Do this step and then proceed to the installation instructions for the bundle of your choice.</p>
 <div class="section" id="step-1-configure-yum">
 <span id="install-step1"></span><h3>Step 1: Configure Yum<a class="headerlink" href="#step-1-configure-yum" title="Permalink to this headline">¶</a></h3>
 <p>The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below:</p>
-<p>1. Install the EPEL RPM (Note: For i386 systems replace x86_64 with i386)::</p>
+<p>1. Install the EPEL RPM:</p>
 <div class="highlight-python"><div class="highlight"><pre>rpm -hUv https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 </pre></div>
 </div>
-<p>2. Install the Internet2-repo RPM  (Note: For i386 systems replace x86_64 with i386):</p>
-<div class="highlight-python"><div class="highlight"><pre>rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.5-7.noarch.rpm
+<p>2. Install the Internet2-repo RPM:</p>
+<div class="highlight-python"><div class="highlight"><pre>rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
 </pre></div>
 </div>
 <p>4. Refresh yum&#8217;s cache so it detects the new RPMS</p>
@@ -125,10 +130,10 @@
 <p>Or, you can manually install them by running:</p>
 <blockquote>
 <div><ul class="simple">
-<li>yum install perfSONAR_PS-Toolkit-service-watcher</li>
-<li>yum install perfSONAR_PS-Toolkit-ntp</li>
-<li>yum install perfSONAR_PS-Toolkit-security</li>
-<li>yum install perfSONAR_PS-Toolkit-sysctl</li>
+<li><code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfSONAR_PS-Toolkit-service-watcher</span></code></li>
+<li><code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfSONAR_PS-Toolkit-ntp</span></code></li>
+<li><code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfSONAR_PS-Toolkit-security</span></code></li>
+<li><code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfSONAR_PS-Toolkit-sysctl</span></code></li>
 </ul>
 </div></blockquote>
 </div></blockquote>
@@ -137,7 +142,7 @@
 <div class="highlight-python"><div class="highlight"><pre>yum install perfSONAR-Bundles-Core
 </pre></div>
 </div>
-<p>Just as in TestPoint  Bundle, optional packages are available and can be installed via a script or manually.</p>
+<p>Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.</p>
 <p><em>Optional Packages</em></p>
 <blockquote>
 <div><p>To install additional packages, run:</p>
@@ -147,10 +152,10 @@
 <p>Or, you can manually install them by running:</p>
 <blockquote>
 <div><ul class="simple">
-<li>yum install perfSONAR_PS-Toolkit-service-watcher</li>
-<li>yum install perfSONAR_PS-Toolkit-ntp</li>
-<li>yum install perfSONAR_PS-Toolkit-security</li>
-<li>yum install perfSONAR_PS-Toolkit-sysctl</li>
+<li><code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfSONAR_PS-Toolkit-service-watcher</span></code></li>
+<li><code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfSONAR_PS-Toolkit-ntp</span></code></li>
+<li><code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfSONAR_PS-Toolkit-security</span></code></li>
+<li><code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfSONAR_PS-Toolkit-sysctl</span></code></li>
 </ul>
 </div></blockquote>
 </div></blockquote>
@@ -245,7 +250,7 @@ chmod +x update_limits.sh
 </div>
 <div class="section" id="step-6-register-your-services">
 <span id="install-step6"></span><h3>Step 6: Register your services<a class="headerlink" href="#step-6-register-your-services" title="Permalink to this headline">¶</a></h3>
-<p>In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening <strong>/opt/perfsonar_ps/ls_registration_daemon/etc/ls_registration_daemon.conf</strong>. You will see numerous properties you may populate. They are commented out meaning you need to remove the <tt class="docutils literal"><span class="pre">#</span></tt> at the beginning of the line for them to take effect. The properties you are <strong>required</strong> to set are as follows:</p>
+<p>In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening <strong>/opt/perfsonar_ps/ls_registration_daemon/etc/ls_registration_daemon.conf</strong>. You will see numerous properties you may populate. They are commented out meaning you need to remove the <code class="docutils literal"><span class="pre">#</span></code> at the beginning of the line for them to take effect. The properties you are <strong>required</strong> to set are as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">##Hostname or IP address others can use to access your service</span>
 <span class="c">#external_address   myhost.mydomain.example</span>
 
@@ -254,7 +259,7 @@ chmod +x update_limits.sh
 </pre></div>
 </div>
 <p>and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are <strong>highly recommended</strong>.</p>
-<p>In the example above remove the leading <tt class="docutils literal"><span class="pre">#</span></tt> before external_address and external_address_if_name respectively. Also replace <em>myhost.mydomain.example</em> and <em>eth0</em> with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the RPM install.</p>
+<p>In the example above remove the leading <code class="docutils literal"><span class="pre">#</span></code> before external_address and external_address_if_name respectively. Also replace <em>myhost.mydomain.example</em> and <em>eth0</em> with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the RPM install.</p>
 </div>
 <div class="section" id="step-7-starting-your-services">
 <span id="install-step7"></span><h3>Step 7: Starting your services<a class="headerlink" href="#step-7-starting-your-services" title="Permalink to this headline">¶</a></h3>
@@ -318,7 +323,7 @@ chmod +x update_limits.sh
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -330,7 +335,7 @@ chmod +x update_limits.sh
         <li class="right" >
           <a href="using_psui.html" title="perfsonarUI User Guide"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -368,9 +373,9 @@ chmod +x update_limits.sh
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

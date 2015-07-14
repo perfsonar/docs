@@ -8,7 +8,7 @@
     
     <title>Installation on Debian &mdash; perfSONAR Toolkit 3.5rc1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Central Configuration Overview" href="multi_overview.html" />
     <link rel="prev" title="Bundle Installations" href="install_bundles.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="install_bundles.html" title="Bundle Installations"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,15 +70,15 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="installation-on-debian">
 <h1>Installation on Debian<a class="headerlink" href="#installation-on-debian" title="Permalink to this headline">¶</a></h1>
-<p>Starting with perfSONAR 3.4.2 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:</p>
+<p>For perfSONAR 3.5 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:</p>
 <ul class="simple">
 <li>Debian 7 Wheezy</li>
 <li>Ubuntu 12 Precise</li>
-<li>Ubuntu 14 Trusty (with limited support)</li>
+<li>Ubuntu 14 Trusty</li>
 </ul>
 <p>Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.</p>
 <div class="section" id="system-requirements">
@@ -91,25 +91,20 @@
 <li>ARMv7 and up (armhf)</li>
 </ul>
 </li>
-<li><strong>Operating System:</strong>  Any system running a Debian 7 or Ubuntu 12 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 might work too but are not officially supported. Ubuntu 14 is supported for the <tt class="docutils literal"><span class="pre">perfsonar-tools</span></tt> bundle only (see below).</li>
+<li><strong>Operating System:</strong>  Any system running a Debian 7, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.</li>
 </ul>
 </div>
 <div class="section" id="installation-instructions">
 <h2>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
 <p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
-wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
-wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.gpg.key | apt-key add -
+wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
+wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.gpg.key | apt-key add -
 </pre></div>
 </div>
 <p>Then, after refreshing the apt packages list, you&#8217;ll be able to install one of the perfSONAR bundles:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get update
 apt-get install perfsonar-endpoint
-</pre></div>
-</div>
-<p>For Ubuntu 14, you should limit the installation to the <tt class="docutils literal"><span class="pre">perfsonar-tools</span></tt> bundle:</p>
-<div class="highlight-python"><div class="highlight"><pre>apt-get update
-apt-get install perfsonar-tools
 </pre></div>
 </div>
 </div>
@@ -134,22 +129,22 @@ apt-get install perfsonar-tools
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>If you&#8217;re used to the perfSONAR toolkit deployed on a CentOS/RHEL host, the configuration files for the different perfSONAR tools are the same as for the regular toolkit, but they are located in a different location.  You&#8217;ll have to look for configuration files directly in <tt class="docutils literal"><span class="pre">/etc/</span></tt>:</p>
+<p>If you&#8217;re used to the perfSONAR toolkit deployed on a CentOS/RHEL host, the configuration files for the different perfSONAR tools are the same as for the regular toolkit, but they are located in a different location.  You&#8217;ll have to look for configuration files directly in <code class="docutils literal"><span class="pre">/etc/</span></code>:</p>
 <blockquote>
 <div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">/etc/bwctl/</span></tt> for the bwctl server</li>
-<li><tt class="docutils literal"><span class="pre">/etc/owampd/</span></tt> for the owamp server</li>
-<li><tt class="docutils literal"><span class="pre">/etc/perfsonar/</span></tt> for the oppd, the ls-registration daemon and the regular-testing daemon</li>
+<li><code class="docutils literal"><span class="pre">/etc/bwctl/</span></code> for the bwctl server</li>
+<li><code class="docutils literal"><span class="pre">/etc/owampd/</span></code> for the owamp server</li>
+<li><code class="docutils literal"><span class="pre">/etc/perfsonar/</span></code> for the oppd, the ls-registration daemon and the regular-testing daemon</li>
 </ul>
 </div></blockquote>
 <p>Also, the name of the services are a bit different from the CentOS/RHEL ones, Debian services names are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">bwctl-server</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">owampd</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">perfsonar-lsregistrationdaemon</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">perfsonar-oppd-server</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">perfsonar-regulartesting</span></tt></li>
+<li><code class="docutils literal"><span class="pre">bwctl-server</span></code></li>
+<li><code class="docutils literal"><span class="pre">owampd</span></code></li>
+<li><code class="docutils literal"><span class="pre">perfsonar-lsregistrationdaemon</span></code></li>
+<li><code class="docutils literal"><span class="pre">perfsonar-oppd-server</span></code></li>
+<li><code class="docutils literal"><span class="pre">perfsonar-regulartesting</span></code></li>
 </ul>
 </div></blockquote>
 </div>
@@ -197,7 +192,7 @@ apt-get install perfsonar-tools
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -209,7 +204,7 @@ apt-get install perfsonar-tools
         <li class="right" >
           <a href="install_bundles.html" title="Bundle Installations"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -247,9 +242,9 @@ apt-get install perfsonar-tools
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
