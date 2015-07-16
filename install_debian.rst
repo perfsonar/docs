@@ -38,6 +38,8 @@ Then, after refreshing the apt packages list, you'll be able to install one of t
    apt-get update
    apt-get install perfsonar-testpoint
 
+During the installation you'll be asked if you want to keep your current set of iptables rules, both for IPV4 and for IPv6. This is part of the usual installation process of the ``iptables-persistent`` package that we use to setup the firewall protecting your perfSONAR node.  Whatever you answer to the question, your current rules will be saved as part of the ``perfsonar-toolkit-security`` package installation.
+
 Bundles Description
 ===================
 
@@ -55,8 +57,8 @@ The two :doc:`bundles <install_bundles>` we currently provide for Debian contain
   * ls-registration daemon
   * regular-testing daemon
   * oppd
-  * toolkit-security containing iptables rules to protect your node
-  * toolkit-sysctl fine tuning your host for better performance measurements
+  * toolkit-security containing iptables rules to protect your node, see :doc:`manage_security` for more details
+  * toolkit-sysctl fine tuning your host for better performance measurements, see :doc:`manage_tuning` for more details
 
 Configuration
 =============
