@@ -11,7 +11,8 @@ perfSONAR has historically been packaged as a single large bundle of packages ca
 #. **perfSONAR-CentralManagement:** The perfSONAR-CentralManagement Bundle installs the central mesh config, Maddash, centralized config service and the autoconfig. 
 
 System Requirements 
-==================== 
+===================
+
 * **Operating System:**
 
   * Any system running either a 32-bit or 64-bit **CentOS 6** operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.
@@ -20,7 +21,7 @@ System Requirements
 * **Hardware:** Most systems should be adequate to run the measurement tools. To run an archive, you should have at least 4GB of RAM, and 500GB of disk. You may want a 10Gbps network interface card depending on the throughput testing you wish to perform. See the `fasterdata.es.net hardware page <http://fasterdata.es.net/performance-testing/perfsonar/ps-howto/hardware/>`_ for some suggested configurations.
 
 Bundle Installation 
-============
+===================
 
 * :doc:`install_centos`
 * :doc:`install_debian` 

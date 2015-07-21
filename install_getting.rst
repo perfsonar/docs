@@ -4,7 +4,7 @@ Getting the Toolkit Software
 
 .. _GettingChooseInstall:
 
-Choosing an Installation Method
+Choosing a Toolkit Installation Method
 ===============================
 The perfSONAR Toolkit is currently made available as an ISO image that can be mounted to media such as a CD, DVD or USB drive. This ISO contains a full |CentOS|_ operating system with additional perfSONAR packages required to perform, collect and publish network measurements. There are multiple variations of the ISOs available described below:
 
