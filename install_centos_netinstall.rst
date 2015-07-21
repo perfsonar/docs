@@ -1,8 +1,8 @@
 ***********************
-CentOS NetInstall Guide
+Toolkit NetInstall Guide
 ***********************
 
-The CentOS NetInstall distribution is an ISO image that can be mounted to a CD, DVD, or USB drive. The image does not contain any of the packages, but will download them from a remote location at install time. The document describes step-by-step how to install the NetInstall distribution.
+The CentOS NetInstall distribution of the perfSONAR Toolkit is an ISO image that can be mounted to a CD, DVD, or USB drive. The image does not contain any of the packages, but will download them from a remote location at install time. The document describes step-by-step how to install the NetInstall distribution.
 
 .. seealso::  See :ref:`GettingChooseInstall` for more information on choosing an installation type.
 

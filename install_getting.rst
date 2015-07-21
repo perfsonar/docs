@@ -1,5 +1,5 @@
 ********************
-Getting the Software
+Getting the Toolkit Software
 ********************
 
 .. _GettingChooseInstall:
