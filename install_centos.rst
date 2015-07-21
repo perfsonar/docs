@@ -53,6 +53,7 @@ Step 2: Install RPM
      * ``yum install perfSONAR_PS-Toolkit-security``
      * ``yum install perfSONAR_PS-Toolkit-sysctl``
 
+In particular, you should install perfSONAR_PS-Toolkit-ntp if you are not managing your ntp.conf file in some other manner.
 
 * **perfSONAR-Core**::
 
@@ -160,6 +161,13 @@ ESnet provides a shell script that will download and install the latest bwctld.l
     cd /etc/bwctld
     wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
     chmod +x update_limits.sh
+
+You can also enable yum ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this, do the following:
+::
+
+    /sbin/chkconfig --add yum-cron
+    /sbin/chkconfig yum-cron on
+    /sbin/service yum-cron start
 
 .. _install_step5:
 

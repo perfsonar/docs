@@ -63,6 +63,8 @@ The two :doc:`bundles <install_bundles>` we currently provide for Debian contain
 Configuration
 =============
 
+Be sure your host has ntp configured and the clock sync is good. If you want to use the standard perfSONAR toolkit configuration, you can install the package perfsonar-toolkit-ntp.
+
 If you're used to the perfSONAR toolkit deployed on a CentOS/RHEL host, the configuration files for the different perfSONAR tools are the same as for the regular toolkit, but they are located in a different location.  You'll have to look for configuration files directly in ``/etc/``:
 
   * ``/etc/bwctl/`` for the bwctl server
