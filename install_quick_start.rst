@@ -1,6 +1,8 @@
 ***********
-Quick Start
+Toolkit Installation Quick Start
 ***********
+
+These instructions are for the full Toolkit installation. For other perfSONAR installtion options, see (URL HERE).
 
 #. Download the NetInstall ISO for :centos_netinstall_iso:`i386` or :centos_netinstall_iso:`x86_64` depending on your system's architecture.
 
