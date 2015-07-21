@@ -13,6 +13,7 @@ Installation
 .. toctree::
    :maxdepth: 2
    
+   install_options
    install_quick_start
    install_sys_requirements
    install_getting
@@ -58,14 +59,6 @@ perfSONAR UI
    
    install_psui
    using_psui
-
-Additional Installation Options
--------------------------------
-.. toctree::
-   :maxdepth: 2
-
-   install_bundles   
-   install_debian
 
 Managing Multiple perfSONAR Toolkits
 ------------------------------------
