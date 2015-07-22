@@ -8,7 +8,7 @@ A number of folks in the perfSONAR community have been experimenting with runnin
 #. CPU performance issues: current ARM processors are not able to push TCP much more than about 300Mbps. Celeron processors do better, and get around 930Mbps. 
 #. None of these devices are powerful enough to run the full perfSONAR toolkit which install a measurement archive.
 
-The :doc:`perfsonar-testbed <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.
+The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.
 
 System Requirements
 ===================
@@ -25,7 +25,7 @@ We recommend a device with at least 1MB of RAM and 16MB of disk.
 Installation Instructions
 =========================
 
-See instructions for installing the perfsonar-testpoint bundle here: 
+See instructions for installing the perfsonar-testpoint bundle: 
 :doc:`install_debian`
 
 Support
