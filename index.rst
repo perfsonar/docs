@@ -103,6 +103,13 @@ Managing Nodes with Puppet
    multi_puppet_install
    multi_puppet_using
    
+Accessing Raw Data 
+=======================
+.. toctree::
+   :maxdepth: 1
+   
+   client_apis
+
 Configuration Reference
 -----------------------
 .. toctree::
@@ -120,9 +127,9 @@ Configuration Reference
 Further Information
 -------------------
 * `Project Homepage <http://www.perfsonar.net>`_
-* `Project Wiki <http://code.google.com/p/perfsonar-ps/w/list>`_
-* `Source Code Repository <http://code.google.com/p/perfsonar-ps/source/checkout>`_
-* `Issue Tracker <http://code.google.com/p/perfsonar-ps/issues/list>`_
+* `Source Code Repository <https://github.com/perfsonar>`_
+* `Issue Tracker <https://github.com/perfsonar/project/issues>`_
+* `Project Wiki <https://github.com/perfsonar/project/wiki>`_
 * `Frequently Asked Questions (FAQs) <http://www.perfsonar.net/about/faq/>`_
 * Mailing Lists
 
@@ -136,7 +143,6 @@ Related Projects
 * `Lookup Service <http://code.google.com/p/simple-lookup-service/>`_
 * `MaDDash <http://software.es.net/maddash/>`_
 * `NDT <http://software.internet2.edu/ndt/>`_
-* `NPAD <http://www.psc.edu/index.php/npad/645-pathdiagserverinstall>`_
 * `psUI <https://forge.geant.net/forge/display/perfsonar/Change+Log/>`_
  
 Search
