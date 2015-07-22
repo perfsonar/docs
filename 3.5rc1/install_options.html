@@ -74,32 +74,65 @@
             
   <div class="section" id="perfsonar-installation-options">
 <h1>perfSONAR Installation Options<a class="headerlink" href="#perfsonar-installation-options" title="Permalink to this headline">¶</a></h1>
-<p>perfSONAR has historically been packaged as a single large bundle of packages call the perfSONAR “Toolkit”. The toolkit includes all perfSONAR components, and is probably what you should start with if you are new to perfSONAR.</p>
-<p>Starting with perfSONAR 3.5, there are several other installation options as well:</p>
+<p>perfSONAR has historically been packaged as the <strong>perfSONAR Toolkit</strong>: an ISO containing a custom distribution of the CentOS operating system with all of the perfSONAR tools and services. The <strong>perfSONAR Toolkit</strong> is probably the best distribution for you if at least one or more of the following hold true:</p>
+<ul class="simple">
+<li>You are new to perfSONAR</li>
+<li>You plan to only deploy a small number of perfSONAR nodes</li>
+<li>You plan to use the CentOS operating system</li>
+<li>You do NOT wish to install perfSONAR on a host with the operating system already installed</li>
+</ul>
+<p>Starting with perfSONAR 3.5, there are several other installation options as well for certain versions of both <strong>CentOS</strong> and <strong>Debian/Ubuntu</strong>:</p>
 <ol class="arabic simple">
 <li><strong>perfSONAR-Tools:</strong> This bundle includes all tools used by perfSONAR. These tools are useful for network testing and troubleshooting in general, and we recommend you install these tools on any host where you need to maximize network performance, such as a <a class="reference external" href="http://fasterdata.es.net/science-dmz/DTN/">Data Transfer Node</a>.</li>
 <li><strong>perfSONAR-TestPoint:</strong> This is the most basic perfSONAR installation, and is targeted at organizations that run a centrally managed test mesh and use a central measurement archive. It contains all perfSONAR tools, along with tools to publish the location of these services to the perfSONAR-PS Simple Lookup Service. This is also the bundle to use on low-end hardware such as the $100 Liva.</li>
 <li><strong>perfSONAR-Core:</strong> The perfSONAR-Core install includes everything in the perfSONAR-TestPoint install plus clients to automatically run scheduled tests over specified time intervals.</li>
-<li><strong>perfSONAR-Complete:</strong> This is considered the full perfSONAR-PS Toolkit rpms. It includes everything in perfSONAR-Core and also contains web interfaces and Toolkit configuration. It is useful if you already have a CentOS host and want to install only the rpms. Full install instructions is included in the document.</li>
-<li><strong>perfSONAR-Toolkit ISO:</strong> This installs CentOS and all the Toolkit rpms in perfSONAR-Complete. This is the usual perfSONAR-NetInstall. Full install instructions can be found at <a class="reference internal" href="install_centos_netinstall.html"><em>Toolkit NetInstall Guide</em></a>.</li>
+<li><strong>perfSONAR-Complete:</strong> This is the full set of perfSONAR packages Toolkit distribution. It includes everything in perfSONAR-Core and also contains web interfaces and Toolkit configuration. This provides an option for installing these packages without using the Toolkit ISO.</li>
 <li><strong>perfSONAR-CentralManagement:</strong> The perfSONAR-CentralManagement Bundle installs the central mesh config, Maddash, centralized config service and the autoconfig.</li>
 </ol>
+<p>One of these options may be desirable if one or more of the following is true:</p>
+<ul class="simple">
+<li>You only wish to install a subset of the measurement tools</li>
+<li>You are managing a large deployment</li>
+<li>You would like to use an operating system other than the version of CentOS supported by the Toolkit (such as Debian or Ubuntu)</li>
+<li>You wish to install the perfSONAR packages on an existing host with an operating system pre-installed</li>
+</ul>
 <div class="section" id="system-requirements">
-<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<span id="install-options-sysreq"></span><h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><strong>Operating System:</strong><ul>
 <li>Any system running either a 32-bit or 64-bit <strong>CentOS 6</strong> operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.</li>
 <li>Any system running either a 32-bit, 64-bit or ARM <strong>Debian 7</strong>, <strong>Ubuntu 12</strong> or <strong>Ubuntu 14</strong> is currently supported for the <strong>perfSONAR-TestPoint</strong> bundle.  Other Debian flavors derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.</li>
 </ul>
 </li>
-<li><strong>Hardware:</strong> Most systems should be adequate to run the measurement tools. To run an archive, you should have at least 4GB of RAM, and 500GB of disk. You may want a 10Gbps network interface card depending on the throughput testing you wish to perform. See the <a class="reference external" href="http://fasterdata.es.net/performance-testing/perfsonar/ps-howto/hardware/">fasterdata.es.net hardware page</a> for some suggested configurations.</li>
+<li><strong>Hardware:</strong><ul>
+<li>Most modern systems should be adequate to run the perfSONAR-Tools, perfSONAR-TestPoint and perfSONAR-Core bundles. We recommend at least 2GB of RAM and 20GB of disk space.</li>
+<li>For running a measurement archive, you should have at least 4GB of RAM, and 50GB of disk.</li>
+<li>You may want a 10Gbps network interface card depending on the throughput testing you wish to perform.</li>
+<li>See the <a class="reference external" href="http://fasterdata.es.net/performance-testing/perfsonar/ps-howto/hardware/">fasterdata.es.net hardware page</a> for suggested configurations.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See the install instructions of each specific option for any further system requirements.</p>
+</div>
+</div>
+<div class="section" id="centos-toolkit-iso-installation">
+<h2>CentOS Toolkit ISO Installation<a class="headerlink" href="#centos-toolkit-iso-installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>See <a class="reference internal" href="install_getting.html"><em>Getting the Toolkit Software</em></a></li>
 </ul>
 </div>
-<div class="section" id="bundle-installation">
-<h2>Bundle Installation<a class="headerlink" href="#bundle-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="centos-bundle-installation">
+<h2>CentOS Bundle Installation<a class="headerlink" href="#centos-bundle-installation" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="install_centos.html"><em>Installation on CentOS</em></a></li>
-<li><a class="reference internal" href="install_debian.html"><em>Installation on Debian</em></a></li>
+<li>See <a class="reference internal" href="install_centos.html"><em>Installation of CentOS Bundles</em></a></li>
+</ul>
+</div>
+<div class="section" id="debian-bundle-installation">
+<h2>Debian Bundle Installation<a class="headerlink" href="#debian-bundle-installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>See <a class="reference internal" href="install_debian.html"><em>Installation on Debian</em></a></li>
 </ul>
 </div>
 </div>
@@ -115,7 +148,9 @@
                 <ul>
 <li><a class="reference internal" href="#">perfSONAR Installation Options</a><ul>
 <li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
-<li><a class="reference internal" href="#bundle-installation">Bundle Installation</a></li>
+<li><a class="reference internal" href="#centos-toolkit-iso-installation">CentOS Toolkit ISO Installation</a></li>
+<li><a class="reference internal" href="#centos-bundle-installation">CentOS Bundle Installation</a></li>
+<li><a class="reference internal" href="#debian-bundle-installation">Debian Bundle Installation</a></li>
 </ul>
 </li>
 </ul>
