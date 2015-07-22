@@ -2,15 +2,7 @@
 Installation of CentOS Bundles
 ******************************
 
-perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit distribution (as detailed at :doc:`install_getting`) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you'd like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind the following RPM bundles are available:
-
-#. **perfSONAR-Tools:** This bundle includes all tools used by perfSONAR. These tools are useful for network testing and troubleshooting in general, and we recommend you install these tools on any host where you need to maximize network performance, such as a `Data Transfer Node <http://fasterdata.es.net/science-dmz/DTN/>`_. 
-#. **perfSONAR-TestPoint:** This is the most basic perfSONAR installation, and is targeted at organizations that run a centrally managed test mesh and use a central measurement archive. It contains all perfSONAR tools, along with tools to publish the location of these services to the perfSONAR-PS Simple Lookup Service. This is also the bundle to use on low-end hardware such as the $100 Liva. 
-#. **perfSONAR-Core:** The perfSONAR-Core install includes everything in the perfSONAR-TestPoint install plus clients to automatically run scheduled tests over specified time intervals. 
-#. **perfSONAR-Complete:** This is the full set of perfSONAR packages Toolkit distribution. It includes everything in perfSONAR-Core and also contains web interfaces and Toolkit configuration. This provides an option for installing these packages without using the Toolkit ISO. 
-#. **perfSONAR-CentralManagement:** The perfSONAR-CentralManagement Bundle installs the central mesh config, Maddash, centralized config service and the autoconfig. 
-
-The steps in the remaining sections of this document detail the steps required for installing these bundles.
+perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit distribution (as detailed at :doc:`install_getting`) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you'd like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
 .. _install_centos_sysreq:
 
