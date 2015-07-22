@@ -1,11 +1,33 @@
-***************************
-Installation on CentOS
-***************************
+******************************
+Installation of CentOS Bundles
+******************************
 
+perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit distribution (as detailed at :doc:`install_getting`) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you'd like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind the following RPM bundles are available:
 
-Step 1 is common for all the RPM installs. It specifies how to configure the yum repository. Do this step and then proceed to the installation instructions for the bundle of your choice.
+#. **perfSONAR-Tools:** This bundle includes all tools used by perfSONAR. These tools are useful for network testing and troubleshooting in general, and we recommend you install these tools on any host where you need to maximize network performance, such as a `Data Transfer Node <http://fasterdata.es.net/science-dmz/DTN/>`_. 
+#. **perfSONAR-TestPoint:** This is the most basic perfSONAR installation, and is targeted at organizations that run a centrally managed test mesh and use a central measurement archive. It contains all perfSONAR tools, along with tools to publish the location of these services to the perfSONAR-PS Simple Lookup Service. This is also the bundle to use on low-end hardware such as the $100 Liva. 
+#. **perfSONAR-Core:** The perfSONAR-Core install includes everything in the perfSONAR-TestPoint install plus clients to automatically run scheduled tests over specified time intervals. 
+#. **perfSONAR-Complete:** This is the full set of perfSONAR packages Toolkit distribution. It includes everything in perfSONAR-Core and also contains web interfaces and Toolkit configuration. This provides an option for installing these packages without using the Toolkit ISO. 
+#. **perfSONAR-CentralManagement:** The perfSONAR-CentralManagement Bundle installs the central mesh config, Maddash, centralized config service and the autoconfig. 
 
-.. _install_step1:
+The steps in the remaining sections of this document detail the steps required for installing these bundles.
+
+.. _install_centos_sysreq:
+
+System Requirements 
+==================== 
+* **Operating System:**
+
+  * Any system running either a 32-bit or 64-bit **CentOS 6** operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.
+
+* See the general :ref:`install_options_sysreq` for hardware requirements and more
+
+.. _install_centos_installation:
+
+Installation 
+============
+
+.. _install_centos_step1:
 
 Step 1: Configure Yum 
 ---------------------- 
@@ -29,7 +51,7 @@ The process configures yum to point at the necessary repositories to get package
     yum clean all
 
 
-.. _install_step2:
+.. _install_centos_step2:
 
 Step 2: Install RPM 
 -------------------------------- 
@@ -87,7 +109,7 @@ In particular, you should install perfSONAR_PS-Toolkit-ntp if you are not managi
     yum install perfSONAR-Bundles-Complete
 
 
-.. _level1_step3:
+.. _install_centos_step3:
 
 Step 3: Verify NTP and Tuning Parameters 
 ----------------------------------------- 
@@ -126,7 +148,7 @@ Step 3: Verify NTP and Tuning Parameters
 
 
 
-.. _install_step4:
+.. _install_centos_step4:
 
 Step 4: Firewall and Security Considerations 
 --------------------------------------------- 
@@ -169,7 +191,7 @@ You can also enable yum ‘auto updates’ to ensure you always have the most cu
     /sbin/chkconfig yum-cron on
     /sbin/service yum-cron start
 
-.. _install_step5:
+.. _install_centos_step5:
 
 Step 5: Service Watcher
 ------------------------
@@ -181,7 +203,7 @@ To run the script manually, run::
 
   /opt/perfsonar_ps/toolkit/scripts/service_watcher
 
-.. _install_step6:
+.. _install_centos_step6:
 
 Step 6: Register your services 
 ------------------------------- 
@@ -200,7 +222,7 @@ and the other entries (administrator_email, site_name, city, country, latitude, 
 
 In the example above remove the leading ``#`` before external_address and external_address_if_name respectively. Also replace *myhost.mydomain.example* and *eth0* with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the RPM install. 
 
-.. _install_step7:
+.. _install_centos_step7:
 
 Step 7: Starting your services 
 ------------------------------- 

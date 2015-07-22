@@ -5,6 +5,13 @@ perfSONAR User Guide
 perfSONAR is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using the perfSONAR on one or more hosts. 
 
 
+perfSONAR Installation Options
+------------------------------
+.. toctree::
+   :maxdepth: 2
+   
+   install_options
+
 perfSONAR Toolkit
 -----------------
 
@@ -13,7 +20,6 @@ Installation
 .. toctree::
    :maxdepth: 2
    
-   install_options
    install_quick_start
    install_sys_requirements
    install_getting
@@ -48,6 +54,14 @@ Using the perfSONAR Toolkit
    using_ndt
    using_npad
    using_ext_tools
+
+Additional Installation Options
+--------------------------------
+.. toctree::
+   :maxdepth: 2
+
+   install_centos 
+   install_debian
 
 Additional perfSONAR Tools
 --------------------------
