@@ -1,8 +1,12 @@
-***************************
+******************************
 perfSONAR Installation Options
-***************************
+******************************
 
-perfSONAR has historically been packaged as a single large bundle of packages call the perfSONAR “Toolkit”. The toolkit includes all perfSONAR components, and is probably what you should start with if you are new to perfSONAR.Starting with perfSONAR 3.5, there are several other installation options as well:
+perfSONAR has historically been packaged as a single large bundle of packages call the perfSONAR “Toolkit”. The toolkit includes all perfSONAR components, and is probably what you should start with if you are new to perfSONAR.
+
+Starting with perfSONAR 3.5, there are several other installation options as well:
+
+
 #. **perfSONAR-Tools:** This bundle includes all tools used by perfSONAR. These tools are useful for network testing and troubleshooting in general, and we recommend you install these tools on any host where you need to maximize network performance, such as a `Data Transfer Node <http://fasterdata.es.net/science-dmz/DTN/>`_. 
 #. **perfSONAR-TestPoint:** This is the most basic perfSONAR installation, and is targeted at organizations that run a centrally managed test mesh and use a central measurement archive. It contains all perfSONAR tools, along with tools to publish the location of these services to the perfSONAR-PS Simple Lookup Service. This is also the bundle to use on low-end hardware such as the $100 Liva. 
 #. **perfSONAR-Core:** The perfSONAR-Core install includes everything in the perfSONAR-TestPoint install plus clients to automatically run scheduled tests over specified time intervals. 

@@ -1,6 +1,6 @@
-*******************
+***************************
 Toolkit System Requirements
-*******************
+***************************
 
 The hardware requirements of the perfSONAR Toolkit largely depend on the type of measurements you plan to run. A few things should be considered when choosing hardware:
 

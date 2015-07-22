@@ -1,6 +1,6 @@
-*************************
+**************************
 Toolkit Full Install Guide
-*************************
+**************************
 
 The CentOS Full Install distribution of the perfSONAR toolkit is an ISO image that can be mounted to a DVD or USB drive. The image contains all the required packages so Internet connectivity is not required for the initial install. The document describes step-by-step how to install this distribution.
 

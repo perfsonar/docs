@@ -1,6 +1,6 @@
-***********
+*********************************
 Toolkit Installation Quick Start
-***********
+*********************************
 
 These instructions are for the full Toolkit installation. For other perfSONAR installtion options, see (URL HERE).
 
