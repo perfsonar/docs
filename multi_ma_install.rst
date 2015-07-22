@@ -22,7 +22,7 @@ Installing the Measurement Archive Software
 The measurement archive is implemented using a software package named `esmond <http://software.es.net/esmond/>`_. If your central archive is a perfSONAR Toolkit, then esmond is already installed. It is more likely though that you will install your measurement archive on an instance completely separate from the perfSONAR Toolkit. There are a few options for installing esmond:
 
 #. RedHat Linux (including CentOS) users may install a standalone instance of esmond using an RPM. See the `RPM installation page <http://software.es.net/esmond/rpm_install.html>`_ for details on installing a standalone RPM. 
-#. You may install esmond as part of the perfSONAR CentralManagement bundle. See :doc:`install_bundles` for more information.
+#. You may install esmond as part of the perfSONAR CentralManagement bundle. See :doc:`install_options` for more information.
 #. You may consult the `esmond web site <http://software.es.net/esmond/>`_ for more guidance on various other deployment options. 
 
 

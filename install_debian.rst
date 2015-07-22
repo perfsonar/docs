@@ -43,7 +43,7 @@ During the installation you'll be asked if you want to keep your current set of 
 Bundles Description
 ===================
 
-The two :doc:`bundles <install_bundles>` we currently provide for Debian contains the following packages:
+The two :doc:`bundles <install_options>` we currently provide for Debian contains the following packages:
 
 * **perfsonar-tools** contains all the tools you need to make measurements from the CLI:
 

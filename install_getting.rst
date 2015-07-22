@@ -44,4 +44,4 @@ Downloads
 
 Alternative installation methods
 ================================
-We now also provide some alternative installation methods based on bundles where only a subset of the perfSONAR toolkit is installed.  These bundles offer more flexibility in your installation options and are also supported on a wider OS selection.  See :doc:`install_bundles` for details.
+We now also provide some alternative installation methods based on bundles where only a subset of the perfSONAR toolkit is installed.  These bundles offer more flexibility in your installation options and are also supported on a wider OS selection.  See :doc:`install_options` for details.
