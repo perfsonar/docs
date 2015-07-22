@@ -1627,12 +1627,9 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </div>
 </div>
 <div class="section" id="dynamic-mesh-generation">
-<h2>Dynamic Mesh Generation<a class="headerlink" href="#dynamic-mesh-generation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="host-class-directive">
-<span id="config-mesh-host-class"></span><h3>&lt;host_class&gt; Directive<a class="headerlink" href="#host-class-directive" title="Permalink to this headline">¶</a></h3>
-</div>
+<span id="config-mesh-dynamic-gen"></span><h2>Dynamic Mesh Generation<a class="headerlink" href="#dynamic-mesh-generation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="tag-directive">
-<h3>tag Directive<a class="headerlink" href="#tag-directive" title="Permalink to this headline">¶</a></h3>
+<span id="config-mesh-dynamic-gen-tag"></span><h3>tag Directive<a class="headerlink" href="#tag-directive" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1650,6 +1647,337 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 <p>The tag directive labels the parent object in a custom way. This label can then be used in a <a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a> definition to match items sharing the same tag. A good example is if you want to tag some &lt;address&gt; directives as &#8220;latency&#8221; and others as &#8220;throughput&#8221; on a dual-homed host. You can then define a host tag that selects only the &#8220;throughput&#8221; interfaces for throughput tests and &#8220;latency&#8221; interfaces for latency tests.</p>
+</div>
+<div class="section" id="host-class-directive">
+<span id="config-mesh-host-class"></span><h3>&lt;host_class&gt; Directive<a class="headerlink" href="#host-class-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines a set of criteria that if a host meets, then will be included in this class. the class can then be referenced by name in test definitions to include grpups of hosts.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;host_class&gt;...&lt;host_class&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The &lt;host_class&gt; structure is one of the more complex in the MeshConfig. It is the foundational element in generating dynamic lists of hosts. A host_class has a <em>name</em> used to identify it, one or more <em>data sources</em> that contain an initial list of hosts, and a set of <em>filters</em> used to select hosts from the data sources that meet certain criteria. This host class can then be referenced in a <a class="reference internal" href="#config-mesh-group"><em>&lt;group&gt; Directive</em></a> as a member using the notation <em>host_class::NAME</em> where NAME is the name of the hos class. For example, below we define a host_class that matches all hosts in our current mesh file (that&#8217;s our data source in this case) belonging to organization Acme:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      acme_org
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   organization
+           description   Acme
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+<p>We could then letter reference this host_class in a group as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_group&gt;
+    type mesh
+
+    member 10.0.1.1
+    member 10.0.1.2
+    member host_class::acme_org
+&lt;/group&gt;
+</pre></div>
+</div>
+<p>An hosts we add to our mesh in the future with organization &#8220;Acme&#8221; will automatically get added to the test definitions using this group.</p>
+</div>
+<div class="section" id="name-directive">
+<span id="config-mesh-dynamic-gen-name"></span><h3>name Directive<a class="headerlink" href="#name-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Names a host_class. This is used to reference the host class in <a class="reference internal" href="#config-mesh-group"><em>group</em></a> definitions later.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">name</span> <span class="pre">CLASSNAME</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="data-source-directive">
+<span id="config-mesh-dynamic-gen-data-source"></span><h3>data_source Directive<a class="headerlink" href="#data-source-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The data source from which to build an initial list of hosts before applying filters. See &lt;config_mesh-dynamic_sources&gt; for information in different types of data sources and their options.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;data_source&gt;...&lt;/data_source&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="match-directive">
+<span id="config-mesh-dynamic-gen-match"></span><h3>match Directive<a class="headerlink" href="#match-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Contains a list of <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filters</em></a> that must be matched. An empty match filter matches everything. The <a class="reference internal" href="#config-mesh-dynamic-gen-exclude"><em>exclude</em></a> directive takes precedence if they both match the same host. Within a match directive, <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filters</em></a> of the same type have an implied OR condition and filter of a different type have an implied AND condition.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;match&gt;...&lt;/match&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="exclude-directive">
+<span id="config-mesh-dynamic-gen-exclude"></span><h3>exclude Directive<a class="headerlink" href="#exclude-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Contains a list of <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filters</em></a> that if matched, exclude the host from the class. An empty exclude filter matches excludes nothing. This directive takes precedence over the <a class="reference internal" href="#config-mesh-dynamic-gen-match"><em>match</em></a> directive if they both match the same host. Within an exclude directive, <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filters</em></a> of the same type have an implied OR condition and filter of a different type have an implied AND condition.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;exclude&gt;...&lt;/exclude&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="filter-directive">
+<span id="config-mesh-dynamic-gen-filter"></span><h3>filter Directive<a class="headerlink" href="#filter-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Used in <a class="reference internal" href="#config-mesh-dynamic-gen-match"><em>match</em></a>, <a class="reference internal" href="#config-mesh-dynamic-gen-exclude"><em>exclude</em></a> and certain other ref:<cite>filter &lt;config_mesh-dynamic_gen-filter&gt;</cite> directives to select a host. See <a class="reference internal" href="#config-mesh-dynamic-filters"><em>Dynamic Mesh Filters</em></a> for a list of filter types and their options.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;filter&gt;...&lt;/filter&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-match"><em>match Directive</em></a>, <a class="reference internal" href="#config-mesh-dynamic-gen-exclude"><em>exclude Directive</em></a>, <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>and</em>, <em>or</em> or <em>not</em>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="dynamic-mesh-data-sources">
+<span id="config-mesh-dynamic-sources"></span><h2>Dynamic Mesh Data Sources<a class="headerlink" href="#dynamic-mesh-data-sources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="config-mesh-dynamic-sources-type">
+<span id="id23"></span><h3>type Directive<a class="headerlink" href="#config-mesh-dynamic-sources-type" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the type of data source to be used to build the initial list of hosts</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">current_mesh|mesh|requesting_agent</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-data-source"><em>data_source Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The type of data source defines where a <a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a> get the initial list of hosts where filters will be applied. The following are valid values for the type:</p>
+<ul class="simple">
+<li><strong>current_mesh</strong> - Looks at all <a class="reference internal" href="#config-mesh-host"><em>host</em></a> definitions in the current mesh file</li>
+<li><strong>mesh</strong> - Looks at all <a class="reference internal" href="#config-mesh-host"><em>host</em></a> definitions in mesh file specified by the <a class="reference internal" href="#config-mesh-dynamic-sources-mesh-url"><em>mesh_url Directive</em></a>.</li>
+<li><strong>requesting_agent</strong> - Looks at the client reading the mesh file as a host</li>
+</ul>
+</div>
+<div class="section" id="mesh-url-directive">
+<span id="config-mesh-dynamic-sources-mesh-url"></span><h3>mesh_url Directive<a class="headerlink" href="#mesh-url-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the URL of a configuration file containing a lists of hosts to use as the data source when data_source <a class="reference internal" href="#config-mesh-dynamic-sources-type"><em>type</em></a> is <em>mesh</em>. URL prefix can indicate remote (<a class="reference external" href="http://">http://</a>, <a class="reference external" href="https://">https://</a>) or local (<a class="reference external" href="file://">file://</a>).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">mesh_url</span> <span class="pre">URL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-data-source"><em>data_source Directive</em></a> where type is <em>mesh</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="dynamic-mesh-filters">
+<span id="config-mesh-dynamic-filters"></span><h2>Dynamic Mesh Filters<a class="headerlink" href="#dynamic-mesh-filters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="config-mesh-dynamic-filters-type">
+<span id="id24"></span><h3>type Directive<a class="headerlink" href="#config-mesh-dynamic-filters-type" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the type of filter.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">address_type|and|class|netmask|not|or|organization|site|tag</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The type of filter indicates what property of the address or its parent elements to match against. There are also some special filters that define boolean operations across multiple filters. The valid types and their meanings are:</p>
+<ul class="simple">
+<li><strong>address_type</strong> - Matches addresses on hosts of the specified type (e.g. ipv4 or ipv6)</li>
+<li><strong>and</strong> - A special operand that takes a set of filters and will return true if ALL filters match</li>
+<li><strong>class</strong> - This takes the name of another class and only returns true if the host also belong to the specified class. This allows a simple form of inheritance between classes.</li>
+<li><strong>netmask</strong> - Matches a address if it is in the specified IP netmask</li>
+<li><strong>not</strong> -  A special operand that returns true only if the underlying filters return false and vice versa</li>
+<li><strong>or</strong> -  A special operand that takes a set of filters and will return true if ANY filters match</li>
+<li><strong>organization</strong> - Matches the organization ref:<cite>description &lt;config_mesh-description&gt;</cite> of a host</li>
+<li><strong>site</strong> - Matches the site ref:<cite>description &lt;config_mesh-description&gt;</cite> of a host</li>
+<li><strong>tag</strong> - Matches a <a class="reference internal" href="#config-mesh-dynamic-gen-tag"><em>tag</em></a> on an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> or its parent <a class="reference internal" href="#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="#config-mesh-site"><em>site</em></a>, or <a class="reference internal" href="#config-mesh-host"><em>host</em></a></li>
+</ul>
+</div>
+<div class="section" id="address-type-directive">
+<span id="config-mesh-dynamic-filters-address-type"></span><h3>address_type Directive<a class="headerlink" href="#address-type-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the type of address to match against for filters with type <em>address_type</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">address_type</span> <span class="pre">ipv4|ipv6</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>address_type</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="class-directive">
+<span id="config-mesh-dynamic-filters-class"></span><h3>class Directive<a class="headerlink" href="#class-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the name of the <a class="reference internal" href="#config-mesh-host-class"><em>host_class</em></a> to match against for filters with type <em>class</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">class</span> <span class="pre">CLASSNAME</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>class</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-mesh-dynamic-filters-description">
+<span id="id25"></span><h3>description Directive<a class="headerlink" href="#config-mesh-dynamic-filters-description" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the description of the parent <a class="reference internal" href="#config-mesh-organization"><em>organization</em></a> or <a class="reference internal" href="#config-mesh-site"><em>site</em></a> to match for hosts belonging to this class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">description</span> <span class="pre">DESCRIPTION</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>organization</em> or <em>site</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="exact-directive">
+<span id="config-mesh-dynamic-filters-exact"></span><h3>exact Directive<a class="headerlink" href="#exact-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates the given match should be case-sensitive if enabled. Disabled (i.e. case-insensitive matches) by default if not specified.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">exact</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>tag</em>, <em>organization</em> or <em>site</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="netmask-directive">
+<span id="config-mesh-dynamic-filters-netmask"></span><h3>netmask Directive<a class="headerlink" href="#netmask-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The IP netmask used to match addresses when filter type is <em>netmask</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">netmask</span> <span class="pre">NETMASK</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>netmask</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-mesh-dynamic-filters-tag">
+<span id="id26"></span><h3>tag Directive<a class="headerlink" href="#config-mesh-dynamic-filters-tag" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tag to match for an address or its parent elements in order for it to be included in the mesh</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tag</span> <span class="pre">TAG</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>tag</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section" id="optional-descriptive-fields">
@@ -1674,8 +2002,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 <p>This element is primarily used for informational purposes. If defined at the top-level, it is assumed it is the contact information of the person managing this mesh. It is not strictly required in any of it&#8217;s parent elements but may be useful in keeping track of the various administrators of meshes, organization, hosts and/or sites.</p>
 </div>
-<div class="section" id="name-directive">
-<h3>name Directive<a class="headerlink" href="#name-directive" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id27">
+<h3>name Directive<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1981,13 +2309,33 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </ul>
 </li>
 <li><a class="reference internal" href="#dynamic-mesh-generation">Dynamic Mesh Generation</a><ul>
-<li><a class="reference internal" href="#host-class-directive">&lt;host_class&gt; Directive</a></li>
 <li><a class="reference internal" href="#tag-directive">tag Directive</a></li>
+<li><a class="reference internal" href="#host-class-directive">&lt;host_class&gt; Directive</a></li>
+<li><a class="reference internal" href="#name-directive">name Directive</a></li>
+<li><a class="reference internal" href="#data-source-directive">data_source Directive</a></li>
+<li><a class="reference internal" href="#match-directive">match Directive</a></li>
+<li><a class="reference internal" href="#exclude-directive">exclude Directive</a></li>
+<li><a class="reference internal" href="#filter-directive">filter Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dynamic-mesh-data-sources">Dynamic Mesh Data Sources</a><ul>
+<li><a class="reference internal" href="#config-mesh-dynamic-sources-type">type Directive</a></li>
+<li><a class="reference internal" href="#mesh-url-directive">mesh_url Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dynamic-mesh-filters">Dynamic Mesh Filters</a><ul>
+<li><a class="reference internal" href="#config-mesh-dynamic-filters-type">type Directive</a></li>
+<li><a class="reference internal" href="#address-type-directive">address_type Directive</a></li>
+<li><a class="reference internal" href="#class-directive">class Directive</a></li>
+<li><a class="reference internal" href="#config-mesh-dynamic-filters-description">description Directive</a></li>
+<li><a class="reference internal" href="#exact-directive">exact Directive</a></li>
+<li><a class="reference internal" href="#netmask-directive">netmask Directive</a></li>
+<li><a class="reference internal" href="#config-mesh-dynamic-filters-tag">tag Directive</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#optional-descriptive-fields">Optional Descriptive Fields</a><ul>
 <li><a class="reference internal" href="#administrator-directive">&lt;administrator&gt; Directive</a></li>
-<li><a class="reference internal" href="#name-directive">name Directive</a></li>
+<li><a class="reference internal" href="#id27">name Directive</a></li>
 <li><a class="reference internal" href="#email-directive">email Directive</a></li>
 <li><a class="reference internal" href="#location-directive">&lt;location&gt; Directive</a></li>
 <li><a class="reference internal" href="#street-address-directive">street_address Directive</a></li>
