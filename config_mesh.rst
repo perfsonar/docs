@@ -852,7 +852,7 @@ The tag directive labels the parent object in a custom way. This label can then 
 :Occurrences:  Zero or more
 :Compatibility: 3.5 or later
 
-The <host_class> structure is one of the more complex in the MeshConfig. It is the foundational element in generating dynamic lists of hosts. A host_class has a *name* used to identify it, one or more *data sources* that contain an initial list of hosts, and a set of *filters* used to select hosts from the data sources that meet certain criteria. This host class can then be referenced in a :ref:`config_mesh-group` as a member using the notation *host_class::NAME* where NAME is the name of the hos class. For example, below we define a host_class that matches all hosts in our current mesh file (that's our data source in this case) belonging to organization Acme::
+The <host_class> structure is one of the more complex in the MeshConfig. It is the foundational element in generating dynamic lists of hosts. A host_class has a *name* used to identify it, one or more *data sources* that contain an initial list of hosts, and a set of *filters* used to select hosts from the data sources that meet certain criteria. Optionally it may also have *host properties* used to set attributes on matching hosts such as measurement archives for storing test results. This host class can then be referenced in a :ref:`config_mesh-group` as a member using the notation *host_class::NAME* where NAME is the name of the hos class. For example, below we define a host_class that matches all hosts in our current mesh file (that's our data source in this case) belonging to organization Acme::
 
     <host_class>
         name      acme_org
@@ -928,6 +928,16 @@ filter Directive
 :Description: Used in :ref:`match <config_mesh-dynamic_gen-match>`, :ref:`exclude <config_mesh-dynamic_gen-exclude>` and certain other ref:`filter <config_mesh-dynamic_gen-filter>` directives to select a host. See :ref:`config_mesh-dynamic_filters` for a list of filter types and their options. 
 :Syntax: ``<filter>...</filter>``
 :Contexts: :ref:`config_mesh-dynamic_gen-match`, :ref:`config_mesh-dynamic_gen-exclude`, :ref:`config_mesh-dynamic_gen-filter` where type is *and*, *or* or *not*.  
+:Occurrences:  Zero or one
+:Compatibility: 3.5 or later
+
+.. _config_mesh-dynamic_gen-host_properties:
+
+<host_properties> Directive
+---------------------------
+:Description: Defines properties to assign  hosts that match the specified class. Primarily used to set the measurement archives where test results will be stored. This is a :ref:`host <config_mesh-host>` directive, so any sub-directives supported by :ref:`host <config_mesh-host>` are also supported by host_properties. You do not need to set the address. In general, this will only contain :ref:`measurement archive <config_mesh-ma>` directives. If the properties set in the block conflict with any already set in an explicit :ref:`host <config_mesh-host>` directive, then the configurations will be merged. For measurement archives this means that both sets of archives will be used. 
+:Syntax: ``<host_properties>...<host_properties>``
+:Contexts: :ref:`config_mesh-host_class`
 :Occurrences:  Zero or one
 :Compatibility: 3.5 or later
 
