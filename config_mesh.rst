@@ -951,7 +951,7 @@ Dynamic Mesh Data Sources
 type Directive
 ---------------
 :Description: Defines the type of data source to be used to build the initial list of hosts
-:Syntax: ``type current_mesh|mesh|requesting_agent``
+:Syntax: ``type current_mesh|requesting_agent``
 :Contexts: :ref:`config_mesh-dynamic_gen-data_source`
 :Occurrences:  Exactly one
 :Compatibility: 3.5 or later
@@ -959,18 +959,7 @@ type Directive
 The type of data source defines where a :ref:`config_mesh-host_class` get the initial list of hosts where filters will be applied. The following are valid values for the type:
 
 * **current_mesh** - Looks at all :ref:`host <config_mesh-host>` definitions in the current mesh file
-* **mesh** - Looks at all :ref:`host <config_mesh-host>` definitions in mesh file specified by the :ref:`config_mesh-dynamic_sources-mesh_url`.
 * **requesting_agent** - Looks at the client reading the mesh file as a host
-
-.. _config_mesh-dynamic_sources-mesh_url:
-
-mesh_url Directive
-------------------
-:Description: Defines the URL of a configuration file containing a lists of hosts to use as the data source when data_source :ref:`type <config_mesh-dynamic_sources-type>` is *mesh*. URL prefix can indicate remote (http://, https://) or local (file://).
-:Syntax: ``mesh_url URL``
-:Contexts: :ref:`config_mesh-dynamic_gen-data_source` where type is *mesh*
-:Occurrences:  Exactly one
-:Compatibility: 3.5 or later
 
 .. _config_mesh-dynamic_filters:
 
