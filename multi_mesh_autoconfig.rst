@@ -2,9 +2,15 @@
 Automatic Test Configuration
 **************************************
 
-If you have a very large mesh or a mesh that frequently is adding and removing test members, then it may become cumbersome to manually add/remove host definitions and update test groups. Luckily, the MeshConfig provides constructs in the form of *host classes* and *tags*. See :ref:`multi_mesh_autoconfig-classes` for more information on these constructs. 
+If you have a very large mesh or a mesh that frequently is adding and removing test members, then it may become cumbersome to manually update your tests. For this reason the perfSONAR MeshConfig software has the concept of *automatic test configuration*. 
 
-Using just these constructs you can develop a  simple automated configuration that tests to a fixed set of endpoints. For example, every new host that comes up may always test to the same two hosts, not aware of any other host that comes-up. See :ref:`multi_mesh_autoconfig-fixed` for more details.
+Automatic test configuration's goal is NOT zero configuration, instead the idea is that there will be some initial configuration steps performed on a server hosting the MeshConfig that describes the tests in a general sense as opposed to explicitly naming each host that will be involved in a test. The MeshConfig provides constructs in the form of *host classes* and *tags* in support of this idea. See :ref:`multi_mesh_autoconfig-classes` for more information on these constructs. 
+
+Once this initial configuration has taken place, each new host can simply point at this central file and know the tests to run *without the administrator of the central mesh configuration file having to update the mesh every time a new host is added* (this last part is what distinguishes it from a traditional MeshConfig setup). The configuration on the end host should also be minimized (though again it will be greater than zero). The configuration primarily consists of pointing at the URL where the central mesh lives (and perhaps optionally pointing at a private lookup service). 
+
+The individual client configurations are simplified even further by using external configuration management software such as `Puppet <https://puppetlabs.com>`_ or similar. Essentially the configuration management software of your choice will need to copy one or two (depending on your use case) configuration files to each new host. See our document on using the :doc:`perfSONAR Puppet module <multi_puppet_install>` for more information on using this type of setup with puppet specifically or for ideas on how to integrate with another configuration managements software of your choosing.
+
+Once you have the basic ideas, there are a few common setups worth discussing further. First, using automated testing  constructs you can develop a simple automated configuration that tests to a fixed set of endpoints. For example, every new host that comes up may always test to the same two hosts, not aware of any other host that comes-up. See :ref:`multi_mesh_autoconfig-fixed` for more details.
 
 You may also go even further and build a dynamic list of hosts from the perfSONAR Lookup Service. In this configuration, new nodes are discovered by other nodes in the mesh and the endpoint to which they test are changed accordingly. For information on this configuration, see :ref:`multi_mesh_autoconfig-dynamic`.
 
