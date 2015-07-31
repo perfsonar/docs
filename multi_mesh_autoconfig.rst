@@ -163,12 +163,9 @@ As an example, let's use the following MeshConfig file::
     </group>
     
     <test_spec owamp_test>
-      type              perfsonarbuoy/owamp  # Perform a constant low-bandwidth OWAMP test
-      packet_interval   0.1                 # Send 10 packets every second (i.e. pause 0.1 seconds between each packet)
-      loss_threshold    10                   # Wait no more than 10 seconds for a response
-      sample_count      600                  # Send results back every 60 seconds (once every 600 packets)
-      packet_padding    0                    # The size of the packets (not including the IP/UDP headers)
-      bucket_width      0.001                # The granularity of the measurements
+      type              perfsonarbuoy/owamp
+      packet_interval   0.1
+      sample_count      600every 600 packets)
     </test_spec>
     
     <test>
@@ -244,13 +241,10 @@ Once the class *owamp_agents* is defined, we are free to reference it in a test 
 Next we define the parameters for our test::
 
    <test_spec owamp_test>
-      type              perfsonarbuoy/owamp  # Perform a constant low-bandwidth OWAMP test
-      packet_interval   0.1                 # Send 10 packets every second (i.e. pause 0.1 seconds between each packet)
-      loss_threshold    10                   # Wait no more than 10 seconds for a response
-      sample_count      600                  # Send results back every 60 seconds (once every 600 packets)
-      packet_padding    0                    # The size of the packets (not including the IP/UDP headers)
-      bucket_width      0.001                # The granularity of the measurements
-    </test_spec>
+      type              perfsonarbuoy/owamp
+      packet_interval   0.1
+      sample_count      600every 600 packets)
+   </test_spec>
 
 Finally we bring it all together in the test definition::
 
@@ -344,6 +338,177 @@ While it does require some additional configuration on the client, it also adds 
 
 Testing to a Dynamic Set of Target Hosts
 ========================================
+In many cases, having every host test to a fixed set of endpoints may not meet your needs. Instead, you may want a more dynamic mesh where each tester detects the existence of the others and adjusts it's test set accordingly as members come and go. This is possible by using the MeshConfig constructs already discussed in conjunction with the *perfSONAR Lookup Service*. Such a configuration will allow you to do the following:
+
+* Allow clients to automatically detect new testers, and remove any testers no longer in a mesh
+* Include dynamically added testers in an automatically generated dashboard
+
+In order for this case to work you will need access to a lookup service. It is **highly recommended** you use a `private lookup service <https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService>`_ for this purpose. Using the public lookup service exposes the risk of others being able to (intentionally or unintentionally) change the tests your host runs, perhaps in ways you do not desire. For more information on setting up a private lookup service see `this document <https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService>`_. Assuming you have a private lookup service setup, you can complete the configuration process by defining the appropriate directives in your :ref:`central MeshConfig file <multi_mesh_autoconfig-dynamic-server>` and in the :ref:`agent configuration <multi_mesh_autoconfig-dynamic-client>` of the new testers.
+
+.. _multi_mesh_autoconfig-dynamic-server:
+
+MeshConfig Server Configuration
+------------------------------- 
+ 
+On our MeshConfig server, the first thing we need to setup is a file that defines the hosts we want to extract from the lookup service. By default, you will find this file in */opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf*. An example of this file using a configuration that extracts all hosts running OWAMP (the service that performs one-way latency measurements) and tagged with the community *example*::
+ 
+    ls_instance http://private-ls.example:8090/lookup/records
+
+    <query>
+        service_type owamp
+    
+        <filter>
+            filter_key group-communities
+            filter_value example
+        </filter>
+    
+        <output_settings>
+            organization_name Acme
+        
+            <measurement_archive>
+                type perfsonarbuoy/owamp
+                read_url http://ma.example/esmond/perfsonar/archive
+                write_url http://ma.example/esmond/perfsonar/archive
+            </measurement_archive>
+        
+            address_tag owamp
+        </output_settings>
+    </query>
+ 
+Let's breakdown the major components of the file. First we have the *ls_instance* property which sets the private lookup service we want to use to query for hosts::
+
+    ls_instance http://private-ls.example:8090/lookup/records
+    ...
+    
+We can have one or more of these. If you provide multiple, each lookup service will be queried in search of hosts matching the criteria. Next up we have the *query* block::
+
+    <query>
+    ...
+    </query>
+
+We may have one or more of these blocks in the file. This is where a bulk of the work happens. Within each query you have to define one or more service types::
+
+    service_type owamp
+    
+In our example we want *owamp* services. It may also be something like *bwctl* or *traceroute*. Next we may optionally define a list of filters::
+
+    <filter>
+        filter_key group-communities
+        filter_value example
+    </filter>
+
+If you don't define any filters then all services of the specified type in the lookup service will return. For each filter that you do define, there is a *filter_key* and a *filter_value*. The key is the name of a lookup service field name you wish to match in the **service** record. You can find a complete list of valid field names in the `Lookup Service Records reference guide <https://docs.google.com/document/u/1/d/1dEROeTwW0R4qcLHKnA2fsWEz8fQWnPKSpPVf_FuB2Vc/pub>`_. 
+
+.. note:: The lookup_hosts.conf file currently only supports fields for **service** records and not fields in the host, interface, person or other records. 
+
+The *filter_value* is the value you want the field specified by the *filter_key* to take in order to match. In our example we want the *group-communities* of the service record to take the value of *example*. 
+
+Finally, with our filters defined, we can create *output_settings* which define what the :ref:`host <config_mesh-host>` directives look like in our MeshConfig file::
+
+    <output_settings>
+        organization_name Acme
+        address_tag owamp
+                
+        <measurement_archive>
+            type perfsonarbuoy/owamp
+            read_url http://ma.example/esmond/perfsonar/archive
+            write_url http://ma.example/esmond/perfsonar/archive
+        </measurement_archive>
+    
+    </output_settings>
+    
+None of the fields are required but the example highlights a few common ones to set. First we can set the *organization_name*. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an *address_tag* of *owamp*. Last, we can also set a :ref:`measurement_archive <config_mesh-ma>` that we want the generated host elements to use. These look just like the same element we'd define in a MeshConfig file with a *type*, *read_url* and *write_url*. 
+
+Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command::
+
+    /opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /opt/perfsonar_ps/mesh_config/etc/dynamic_host_list.conf
+    
+The *--input* parameter points to the file we just generated. The *--output* points to a location we we want the file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service. In order to include this in the larger mesh, you need to convert the file to JSON and publish it on your web server::
+
+    /opt/perfsonar_ps/mesh_config/bin/build_json /opt/perfsonar_ps/mesh_config/etc/dynamic_host_list.conf > /var/www/html/dynamic_host_list.json.
+    
+.. note:: It is highly recommended you add both of these commands to cron so the host list is frequently updated. 
+
+Assuming the JSON is published, we are ready to setup our MeshConfig file. We can do so as follows::
+
+    description      Example Dynamic Mesh
+    
+    include http://mesh.example/dynamic_host_list.json
+    
+    <host_class>
+        name      owamp_agents
+
+        <data_source>
+            type     current_mesh
+        </data_source>
+
+        <match>
+           <filter>
+               type   tag
+               netmask   owamp
+           </filter>
+        </match>
+    </host_class>
+    
+    <group owamp_group>
+      type              mesh
+      
+      member          host_class::owamp_agents
+    </group>
+    
+    <test_spec owamp_test>
+      type              perfsonarbuoy/owamp
+      packet_interval   0.1
+      sample_count      600every 600 packets)
+    </test_spec>
+    
+    <test>
+      description       OWAMP Tests
+      group             owamp_group
+      test_spec         owamp_test
+    </test>
+
+This file should look pretty familiar at this point, but let's highlight some of the important parts. First we use an *include* directive to insert our dynamically generated host list::
+
+    include http://mesh.example/dynamic_host_list.json
+    ...
+
+Next we define a *host_class* that uses the current mesh as the data source (since it has an include of our dynamic list) that matches anything tagged *owamp*::
+
+    <host_class>
+        name      owamp_agents
+
+        <data_source>
+            type     current_mesh
+        </data_source>
+
+        <match>
+           <filter>
+               type   tag
+               netmask   owamp
+           </filter>
+        </match>
+    </host_class>
+
+Notice that we do not need to explicitly define any hosts in this case. You of course, can mix explicit and dynamically generated hosts but for this simple example it is unnecessary. With this file defined, we can now convert it to JSON and publish it for our clients to consume. 
+
+
+.. _multi_mesh_autoconfig-dynamic-client:
+
+MeshConfig Client Configuration
+-------------------------------
+
+The configuration of the client in terms of the MeshConfig agent is largely the same as what is described in :doc:`multi_mesh_agent_config` and :ref:`multi_mesh_autoconfig-fixed-client`. There is not anything further to add on that file, but there is extra configuration to be done of the service that registers your clients in the lookup service. Specifically you need to do the following:
+
+* Add a pointer to your private lookup service
+* Configure any fields you use as a filter in lookup_hosts.conf file if they are not automatically generated (for example, fields like *group-communities*). 
+
+For our example we can do this simply by adding the following lines to the top of */opt/perfsonar/ls_registration_daemon/etc/ls_registration_daemon.conf*::
+
+    ls_instance http://private-ls.example:8090/lookup/records
+    site_project example #site_project is group-communities in the lookup service
+    
+For more information on the options available in ls_registration_daemon.conf see :doc:`config_ls_registration` for a complete configuration reference.
 
 .. _multi_mesh_autoconfig-examples:
 

@@ -846,7 +846,7 @@ The tag directive labels the parent object in a custom way. This label can then 
 
 <host_class> Directive
 -----------------------
-:Description: Defines a set of criteria that if a host meets, then will be included in this class. the class can then be referenced by name in test definitions to include grpups of hosts. 
+:Description: Defines a set of criteria that if a host meets, then will be included in this class. the class can then be referenced by name in test definitions to include groups of hosts. 
 :Syntax: ``<host_class>...<host_class>``
 :Contexts: top level
 :Occurrences:  Zero or more
