@@ -411,15 +411,6 @@ sample_count Directive
 :Occurrences:  Exactly one
 :Compatibility: 3.3 or later
 
-
-session_count Directive
------------------------
-:Description: The number of packets before powstream creates a new session. Generally set this something in the 15-30 minute range (e.g. 18000 for a sample_count of 600 and packet_interval of .1)
-:Syntax: ``session_count NUMBER``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
-:Occurrences:  Exactly one
-:Compatibility: 3.3 or later
-
 force_bidirectional Directive
 -----------------------------
 :Description: Forces each endpoint to initiate the test in both directions. This will lead to redundant tests being run on each side. 
@@ -455,6 +446,22 @@ packet_padding Directive
 :Occurrences:  Zero or more
 :Default: 0
 :Compatibility: 3.3 or later
+
+loss_threshold Directive
+------------------------
+:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4.
+:Syntax: ``loss_threshold SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
+:Occurrences:  Exactly one
+:Compatibility: Deprecated in 3.4.
+
+session_count Directive
+-----------------------
+:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4.
+:Syntax: ``session_count NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
+:Occurrences:  Exactly one
+:Compatibility: Deprecated in 3.4.
 
 
 .. _config_mesh-test_spec-ping:
@@ -650,6 +657,23 @@ random_start_percentage Directive
 :Default: 10
 :Compatibility: 3.3 or later
 
+pause Directive
+---------------------------------
+:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4
+:Syntax: ``pause SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: Underlying tool default
+:Compatibility: Deprecated in 3.4.
+
+waittime Directive
+---------------------------------
+:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4
+:Syntax: ``waittime SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: Underlying tool default
+:Compatibility: Deprecated in 3.4.
 
 Defining Test Topology
 ======================
