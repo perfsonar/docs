@@ -465,16 +465,13 @@
 </div>
 <p>None of the fields are required but the example highlights a few common ones to set. First we can set the <em>organization_name</em>. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an <em>address_tag</em> of <em>owamp</em>. Last, we can also set a <a class="reference internal" href="config_mesh.html#config-mesh-ma"><em>measurement_archive</em></a> that we want the generated host elements to use. These look just like the same element we&#8217;d define in a MeshConfig file with a <em>type</em>, <em>read_url</em> and <em>write_url</em>.</p>
 <p>Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /opt/perfsonar_ps/mesh_config/etc/dynamic_host_list.conf
+<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /var/www/html/dynamic_host_list.json
 </pre></div>
 </div>
-<p>The <em>&#8211;input</em> parameter points to the file we just generated. The <em>&#8211;output</em> points to a location we we want the file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service. In order to include this in the larger mesh, you need to convert the file to JSON and publish it on your web server:</p>
-<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/mesh_config/bin/build_json /opt/perfsonar_ps/mesh_config/etc/dynamic_host_list.conf &gt; /var/www/html/dynamic_host_list.json.
-</pre></div>
-</div>
+<p>The <em>&#8211;input</em> parameter points to the file we just generated. The <em>&#8211;output</em> points to a location we we want the generated JSON file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is highly recommended you add both of these commands to cron so the host list is frequently updated.</p>
+<p class="last">It is highly recommended you add the <em>lookup_hosts</em> command to cron so the host list is frequently updated.</p>
 </div>
 <p>Assuming the JSON is published, we are ready to setup our MeshConfig file. We can do so as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>description      Example Dynamic Mesh
