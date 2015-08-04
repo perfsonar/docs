@@ -421,13 +421,11 @@ None of the fields are required but the example highlights a few common ones to 
 
 Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command::
 
-    /opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /opt/perfsonar_ps/mesh_config/etc/dynamic_host_list.conf
+    /opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /var/www/html/dynamic_host_list.json
     
-The *--input* parameter points to the file we just generated. The *--output* points to a location we we want the file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service. In order to include this in the larger mesh, you need to convert the file to JSON and publish it on your web server::
-
-    /opt/perfsonar_ps/mesh_config/bin/build_json /opt/perfsonar_ps/mesh_config/etc/dynamic_host_list.conf > /var/www/html/dynamic_host_list.json.
+The *--input* parameter points to the file we just generated. The *--output* points to a location we we want the generated JSON file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service. 
     
-.. note:: It is highly recommended you add both of these commands to cron so the host list is frequently updated. 
+.. note:: It is highly recommended you add the *lookup_hosts* command to cron so the host list is frequently updated. 
 
 Assuming the JSON is published, we are ready to setup our MeshConfig file. We can do so as follows::
 
