@@ -1,6 +1,6 @@
-***************
-Regular Testing
-***************
+*********************
+regular_testing.conf
+*********************
 
 The file /opt/perfsonar_ps/regular_testing/etc/regular_testing.conf is used to define what regular tests will run.
 

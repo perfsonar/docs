@@ -127,16 +127,53 @@ Accessing Raw Data
 
 Configuration Reference
 -----------------------
+
+
+BWCTL
+=====
 .. toctree::
    :maxdepth: 2
    
    config_bwctl
    config_bwctl_limits
+   
+Lookup Service Registration Daemon
+==================================
+.. toctree::
+   :maxdepth: 2
+   
    config_ls_registration
+   
+MeshConfig
+==========
+.. toctree::
+   :maxdepth: 2
+   
    config_mesh
+   config_mesh_agent
+   config_mesh_gui
+   config_mesh_lookup_hosts
+   
+OPPD
+====
+.. toctree::
+   :maxdepth: 2
+   
    config_oppd
+
+OWAMP
+=====
+.. toctree::
+   :maxdepth: 2
+   
    config_owamp
    config_owamp_limits
+
+Regular Testing
+===============
+.. toctree::
+   :maxdepth: 2
+   
    config_regular_testing
 
 Further Information

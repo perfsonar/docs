@@ -1,6 +1,6 @@
-***************************
-ls_registration_daemon.conf
-***************************
+************************
+agent_configuration.conf
+************************
 
 The file /opt/perfsonar_ps/ls_registration_daemon/etc/ls_registration_daemon.conf
 is used to define what gets registered into the lookup service.
