@@ -3,14 +3,15 @@ regular_testing.conf
 *********************
 
 The file *regular_testing.conf* is used to define the schedule of measurements that your host will run and the location(s) where the results of those tests will be stored. In general you will not need to edit this file by hand. Most configurations use either the :doc:`central mesh configuration software <multi_overview>` (often referred to as MeshConfig) or the the :doc:`perfSONAR Toolkit web interface <manage_regular_tests>` to generate this file. Some cases where you may need to edit this file by hand are as follows (this is not an exhaustive list):
-* You are running only one or two non-Toolkit measurement hosts and have no central mesh defined.
-* You would like to set parameters not supported by the GUI or MeshConfig. For example the OWAMP receive ports.
+
+* You are running only a small number of non-Toolkit measurement hosts and have no central mesh defined.
+* You would like to set parameters not supported by the GUI or MeshConfig.
 * You need to change or set authentication tokens used to register to a measurement archive.
 * You want to use an alternative or additional measurement archive as opposed to the one defined by your default toolkit installation and/or in your central mesh configuration file
 
 The basic structure of this file is as follows:
 
-* A set of top-level directives that set values such as the directory where results are queued befor sending to the measurement archive(s)
+* A set of top-level directives that set values of general user and/or global defaults
 * The list of tests you want to run
 * The list of measurement archives where data should be stored. 
 
@@ -25,7 +26,7 @@ General Settings
 
 added_by_mesh Directive
 --------------------------------
-:Description: If set to 1, indicates the parent element was added by the MeshConfig software. This means teh MeshConfig software will change or remove the test as needed. If set to 0 (the default) then the MeshConfig will not change the parent element.
+:Description: If set to 1, indicates the parent element was added by the MeshConfig software. This means the MeshConfig software will change or remove the test as needed. If set to 0 (the default) then the MeshConfig will not change the parent element.
 :Syntax: ``added_by_mesh 0|1``
 :Contexts: :ref:`measurement_archive <config_regular_testing-measurement_archive>`,: ref:`test <config_regular_testing-test>`, 
 :Occurrences:  Zero or One
@@ -36,7 +37,7 @@ added_by_mesh Directive
 
 default_parameters Directive
 ------------------------------
-:Description: A set of parameters to assign to any test of the specified :ref:`type <config_regular_testing-test-test_type>` where the provided parameters are not otherwise set. For valid parameters see the relevant type-specific section on test parameters.
+:Description: A set of parameters to assign to any test of the specified :ref:`type <config_regular_testing-test-test_type>` where the provided parameters are not otherwise set. For valid parameters see the relevant type-specific test parameters section.
 :Syntax: ``<default_parameters>...</default_parameters>``
 :Contexts: top level
 :Occurrences:  Zero or More
@@ -69,7 +70,7 @@ measurement_archive Directive
 
 test_result_directory Directive
 --------------------------------
-:Description: Describes a measurement archive where results can be stored. See :ref:`config_regular_testing-ma` for more details on the parameters that can be set in this block. 
+:Description: The directory where results are temporarily queued before being sent to the measurement archive(s)
 :Syntax: ``test_result_directory DIR``
 :Contexts: top level
 :Occurrences:  Zero or One
@@ -152,7 +153,7 @@ max_parallelism Directive
 
 password Directive
 ------------------------------------
-:Description: The password or API key to use when authenticating to the measurement archive. If not set, then IP authentication or another means must be set on the server.
+:Description: The password or API key to use when authenticating to the measurement archive. If not set, then IP authentication or another means must be configured on the server.
 :Syntax: ``password PASSWD``
 :Contexts: :ref:`measurement_archive <config_regular_testing-measurement_archive>`
 :Occurrences:  Zero or One
@@ -335,7 +336,7 @@ schedule Directive
 
 target Directive
 -------------------------
-:Description: The remote location to and from which tests should be performed. The syntac ofr this directive can take a simple form where it is given just an address and a complex form where a block is provided that allows parameters to be overwritten to just the target address.
+:Description: The remote location to and from which tests should be performed. The syntax for this directive can take a simple form where it is given just an address and a complex form where a block is provided that allows parameters to be overwritten to just the target address. See :ref:`config_regular_testing-targets` for more details on the complex form.
 :Syntax (Simple): ``target ADDRESS``
 :Syntax (Complex): ``<target>...</target>``
 :Contexts: :ref:`test <config_regular_testing-test>`
@@ -367,7 +368,7 @@ override_parameters Directive
 :Description: A set of parameters to use only to this target. It will override any parameters of the same type already set. See :ref:`config_regular_testing-params-general` and the test-specific parameter sections for a list of valid options.
 :Syntax: ``<override_parameters>...</override_parameters>``
 :Contexts: :ref:`target <config_regular_testing-target>`
-:Occurrences:  Exactly One
+:Occurrences:  Zero or One
 :Default: N/A
 :Compatibility: 3.4 and later
 
@@ -536,14 +537,14 @@ type Directive
 Valid types include:
 
 * *bwctl* - Runs a BWCTL throughput test. See for :ref:`config_regular_testing-params-bwctl` for supported parameters specific to this type.
-* *bwctl2* - *WARNING: BETA ONLY.*  Runs a BWCTL2 throughput test. See for :ref:`config_regular_testing-params-bwctl` for supported parameters specific to this type.
-* *bwping* - Runs a scheduled ping test using bwping. See for :ref:`config_regular_testing-params-bwping` for supported parameters specific to this type.
-* *bwping2* - *WARNING: BETA ONLY.* Runs a scheduled ping test using bwping2. See for :ref:`config_regular_testing-params-bwping` for supported parameters specific to this type.
-* *bwping/owamp* - Runs a scheduled OWAMP test using bwping. See for :ref:`config_regular_testing-params-bwping` for supported parameters specific to this type.
-* *bwping2/owamp* - *WARNING: BETA ONLY.* Runs a scheduled OWAMP test using bwping2. See for :ref:`config_regular_testing-params-bwping` for supported parameters specific to this type.
-* *bwtraceroute* - Runs a scheduled traceroute test using bwtraceroute. See for :ref:`config_regular_testing-params-bwtraceroute` for supported parameters specific to this type.
-* *bwtraceroute2* - *WARNING: BETA ONLY.* Runs a scheduled traceroute test using bwtraceroute2. See for :ref:`config_regular_testing-params-bwtraceroute` for supported parameters specific to this type.
-* *powstream* - Runs a streaming OWAMP test using the powstream tool. See for :ref:`config_regular_testing-params-powstream` for supported parameters specific to this type.
+* *bwctl2* - *WARNING: BETA ONLY.*  Runs a BWCTL2 throughput test. See :ref:`config_regular_testing-params-bwctl` for supported parameters specific to this type.
+* *bwping* - Runs a scheduled ping test using bwping. See :ref:`config_regular_testing-params-bwping` for supported parameters specific to this type.
+* *bwping2* - *WARNING: BETA ONLY.* Runs a scheduled ping test using bwping2. See :ref:`config_regular_testing-params-bwping` for supported parameters specific to this type.
+* *bwping/owamp* - Runs a scheduled OWAMP test using bwping. See :ref:`config_regular_testing-params-bwping` for supported parameters specific to this type.
+* *bwping2/owamp* - *WARNING: BETA ONLY.* Runs a scheduled OWAMP test using bwping2. See :ref:`config_regular_testing-params-bwping` for supported parameters specific to this type.
+* *bwtraceroute* - Runs a scheduled traceroute test using bwtraceroute. See :ref:`config_regular_testing-params-bwtraceroute` for supported parameters specific to this type.
+* *bwtraceroute2* - *WARNING: BETA ONLY.* Runs a scheduled traceroute test using bwtraceroute2. See :ref:`config_regular_testing-params-bwtraceroute` for supported parameters specific to this type.
+* *powstream* - Runs a streaming OWAMP test using the powstream tool. See :ref:`config_regular_testing-params-powstream` for supported parameters specific to this type.
 
 .. _config_regular_testing-params-bwctl:
 
@@ -569,7 +570,7 @@ bwctl_cmd Directive
 :Syntax: ``bwctl_cmd CMD``
 :Contexts: :ref:`parameters <config_regular_testing-parameters>`, :ref:`override_parameters <config_regular_testing-override_parameters>`, :ref:`default_parameters <config_regular_testing-default_parameters>` where :ref:`type <config_regular_testing-test-test_type>` is *bwctl* or *bwctl2*
 :Occurrences:  Zero or One
-:Default: /usr/bin/bwctl got *bwctl* and /usr/bin/bwctl2 for *bwctl2*
+:Default: /usr/bin/bwctl for *bwctl* and /usr/bin/bwctl2 for *bwctl2*
 :Compatibility: 3.4 and later
 
 .. _config_regular_testing-test-duration:
@@ -704,7 +705,7 @@ packet_length Directive
 
 packet_ttl Directive
 -------------------------------
-:Description: The maximum number of hops a packet may travers before being dropped. Corresponds to the bwping *-t* option. 
+:Description: The maximum number of hops a packet may traverse before being dropped. Corresponds to the bwping *-t* option. 
 :Syntax: ``packet_ttl TTL``
 :Contexts: :ref:`parameters <config_regular_testing-parameters>`, :ref:`override_parameters <config_regular_testing-override_parameters>`, :ref:`default_parameters <config_regular_testing-default_parameters>` where :ref:`type <config_regular_testing-test-test_type>` is *bwping*, *bwping2*, *bwping/owamp* or *bwping2/owamp*
 :Occurrences:  Zero or One
@@ -791,7 +792,7 @@ inter_packet_time Directive
 
 log_level Directive
 -----------------------------
-:Description: Controls the number and detail of message sent to syslog. Keeping this reasonable is especially important when using a central syslog server as not to flood the server with requests. Corresponds to powstream *-g* option.
+:Description: Controls the number and detail of messages sent to syslog. Keeping this reasonable is especially important when using a central syslog server as not to flood the server with requests. Corresponds to powstream *-g* option.
 :Syntax: ``log_level FATAL|WARN|INFO|DEBUG|ALL|NONE``
 :Contexts: :ref:`parameters <config_regular_testing-parameters>`, :ref:`override_parameters <config_regular_testing-override_parameters>`, :ref:`default_parameters <config_regular_testing-default_parameters>` where :ref:`type <config_regular_testing-test-test_type>` is *powstream*
 :Occurrences:  Zero or One
