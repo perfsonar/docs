@@ -1208,6 +1208,16 @@ tool_name Directive
 Misc. Daemon Settings
 =====================
 
+.. _config_ls_registration-client_uuid_file:
+
+client_uuid_file Directive
+-----------------------------------
+:Description: The location of the file containing a UUID to be registered with each record in the *client-uuid* field. If the file does not exist it will be created and populated with a random UUID.
+:Syntax: ``client_uuid_file FILE``
+:Contexts: top level
+:Occurrences:  Zero or One
+:Default: */var/lib/perfsonar/ls_registration_daemon/client_uuid*
+
 .. _config_ls_registration-group:
 
 group Directive
