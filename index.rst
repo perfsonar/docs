@@ -115,8 +115,10 @@ Managing Nodes with Puppet
 .. toctree::
    :maxdepth: 2
    
+   multi_puppet_overview
    multi_puppet_install
-   multi_puppet_using
+   multi_puppet_using_server
+   multi_puppet_using_client
    
 Accessing Raw Data 
 ------------------

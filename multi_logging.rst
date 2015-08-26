@@ -87,6 +87,8 @@ For more information read the `rsyslog documentation`_.
 When you have finished configuring the server, run::
     sudo service rsyslog restart
 
+If you are running a firewall, don't forget to open the appropriate port(s) accordingly.
+
 Client
 ---------
 
