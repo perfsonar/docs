@@ -84,8 +84,29 @@ For more information read the `rsyslog documentation`_.
 
 .. _rsyslog documentation: http://www.rsyslog.com/doc/v5-stable/configuration/templates.html
 
+When you have finished configuring the server, run::
+    sudo service rsyslog restart
 
 Client
 ---------
 
+Once the server is working, the clients need to be configured to send their syslogs to the central server. As with the server, we need an ``/etc/rsyslog.conf`` file. However, it should be slightly different as it needs to specify the hostname of the server where it should send its logs. An `example client rsyslog.conf file`_  is available here.
 
+.. _example client rsyslog.conf file: https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.conf
+
+The only required modification is changing the rmote host specification::
+
+    # FILL THIS IN:
+    # remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional
+    *.* @@remote-host:514
+
+Change ``remote-host`` to the hostname or IP address of your central syslog server. Use '@@' for a TCP connection, or '@' for a UDP connection. Specify the port after the colon.
+
+The clients also need an ``/etc/rsyslog.d/owamp_bwctl-syslog.conf`` file. This is optional, but will improve bwctl/owamp logging. This is normally installed when you install owamp, but if you need it, an `example owamp_bwctl-syslog.conf file`_ is available.
+
+.. _example owamp_bwctl-syslog.conf file: https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.d/owamp_bwctl-syslog.conf
+
+When you have finished configuring the client, run::
+    sudo service rsyslog restart
+
+Double check that the logs are being stored properly on the central server, if configured as in this example, the logs should be under ``/var/log/central/``.
