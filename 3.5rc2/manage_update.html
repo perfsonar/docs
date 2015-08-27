@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Updating the Toolkit &mdash; perfSONAR Toolkit 3.5rc2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.5rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.5rc2 documentation" href="index.html" />
+    <link rel="next" title="Managing Users" href="manage_users.html" />
+    <link rel="prev" title="Reading Log Files" href="manage_logs.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_users.html" title="Managing Users"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_logs.html" title="Reading Log Files"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="updating-the-toolkit">
+<h1>Updating the Toolkit<a class="headerlink" href="#updating-the-toolkit" title="Permalink to this headline">¶</a></h1>
+<p>Just like any other host on your network, it is critical to stay up-to-date with the latest packages on your perfSONAR Toolkit. You will want to make sure you have the latest security fixes as well as the ability to take advantage of the great new features constantly being added to the tools. In general you will keep your host up-to-date with the operating system&#8217;s package manager (e.g. yum), but in some special cases things may be more involved. Be sure to watch release notes and this page when such cases arise.</p>
+<div class="section" id="manually-updating-with-yum">
+<h2>Manually Updating with Yum<a class="headerlink" href="#manually-updating-with-yum" title="Permalink to this headline">¶</a></h2>
+<p>Anytime you want to manually update your host, simply run the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum update
+</pre></div>
+</div>
+<p>The <em>yum</em> package manager is used by RedHat-based operating systems like CentOS to update packages. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Toolkit runs a <a class="reference external" href="http://www.web100.org">Web100</a> patched version of the kernel. In some cases CentOS may release a new kernel before the perfSONAR development team has had a chance to create and test a patched version. This will cause an unpatched version to be downloaded, thus disabling the tools NDT and NPAD that rely on the patch. For some users that do not leverage these tools this may not be a concern. Please see our <a class="reference external" href="http://www.perfsonar.net/about/faq/#Q25">FAQ</a> for more details.</p>
+</div>
+</div>
+<div class="section" id="automatic-updates">
+<span id="manage-update-auto"></span><h2>Automatic Updates<a class="headerlink" href="#automatic-updates" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Automatic updates are enabled by default starting in version 3.4 of the perfSONAR Toolkit.</p>
+</div>
+<p>You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. Specifically kernel updates may break NDT and NPAD if a non-web100 version is applied. See this <a class="reference external" href="http://www.perfsonar.net/about/faq/#Q25">FAQ</a> for more information. The following rule of thumb from <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">Fedora</a> may be useful when considering whether to enable this feature:</p>
+<blockquote class="epigraph">
+<div>If the machine is a critical server, for which unplanned downtime of a service on the machine can not be tolerated, then you should not use automatic updates. Otherwise, you <strong>may</strong> choose to use them.</div></blockquote>
+<p>It is also important to note that automatic updates do not perform all required system reboots or service restarts. Also, auto-updates happen nightly so there may be a period of up to 24 hours where you do not receive a patch. Enabling this feature still requires close monitoring of the host to make sure all updates are applied completely and properly.</p>
+<p>You may enable/disable automatic updates from the web interface as follows:</p>
+<ol class="arabic">
+<li><p class="first">Open your toolkit web interface in a browser</p>
+</li>
+<li><p class="first">Click on <strong>Enabled Services</strong> in the left-hand menu</p>
+<blockquote>
+<div><img alt="_images/manage_services-enable1.png" src="_images/manage_services-enable1.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Login using the web administrator username and password.</p>
+<blockquote>
+<div><div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account</p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">On the page that loads check the box next to <strong>Automatic Updates</strong> to enable them or uncheck it to disable them</p>
+<blockquote>
+<div><img alt="_images/manage_update-auto.png" src="_images/manage_update-auto.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Click <strong>Save</strong> to apply your changes</p>
+</li>
+<li><p class="first">After a loading screen you should see a message indicating the services have been successfully restarted and the new configuration has been applied.</p>
+<blockquote>
+<div><img alt="_images/manage_services-enable3.png" src="_images/manage_services-enable3.png" />
+</div></blockquote>
+</li>
+</ol>
+<p>Alternatively, you may enable them from the command-line with the following commands (must be run as a root user):</p>
+<div class="highlight-python"><div class="highlight"><pre>/sbin/chkconfig --add yum-cron
+/sbin/chkconfig yum-cron on
+/sbin/service yum-cron start
+</pre></div>
+</div>
+<p>Likewise, you may disable auto-updates from the command-line by running:</p>
+<div class="highlight-python"><div class="highlight"><pre>/sbin/service yum-cron stop
+/sbin/chkconfig yum-cron off
+</pre></div>
+</div>
+<p>Also note that the main configuration file for auto-updates lives at <em>/etc/sysconfig/yum-cron</em>. See the yum-cron man page or the page <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">here</a> for more information on using auto-updates and advanced options like excluding packages from updates.</p>
+</div>
+<div class="section" id="migrating-from-a-3-3-2-livecd-liveusb">
+<h2>Migrating from a 3.3.2 LiveCD/LiveUSB<a class="headerlink" href="#migrating-from-a-3-3-2-livecd-liveusb" title="Permalink to this headline">¶</a></h2>
+<p>Starting in 3.4, the LiveCD and LiveUSB distributions are no longer provided. If you do not wish to keep any existing data you may ignore this section and do a normal <a class="reference internal" href="install_getting.html#gettingchooseinstall"><em>clean installation</em></a>. For existing users of the LiveCD wishing to migrate their data to the latest distribution see the steps below:</p>
+<ol class="arabic">
+<li><p class="first">Login in to your 3.3.2 LiveCD/LiveUSB via SSH or the terminal</p>
+</li>
+<li><p class="first">Run the command below to create a backup of all relevant files in <em>~/ps-toolkit-livecd-backup.tgz</em></p>
+<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/toolkit/scripts/ps-toolkit-migrate-backup.sh  ~/ps-toolkit-livecd-backup.tgz
+</pre></div>
+</div>
+</li>
+<li><p class="first">Copy the backup file <em>~/ps-toolkit-livecd-backup.tgz</em> from your LiveCD/LiveUSB host to a safe location. We will need to copy this to our new installation later. If you will be overwriting the LiveCD/LiveUSB with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.</p>
+</li>
+<li><p class="first">Logout of the LiveCD/LiveUSB host</p>
+</li>
+<li><p class="first">Perform a clean installation of the Toolkit using the latest released version. See <a class="reference internal" href="install_getting.html#gettingchooseinstall"><em>Choosing a Toolkit Installation Method</em></a> for help choosing the right distribution and pointers to installation instructions. You may choose to install on the existing LiveCD/LiveUSB hardware or a completely new host. If it is the former, make sure you have downloaded your LiveCD/LiveUSB backup file to a safe location.</p>
+</li>
+<li><p class="first">Copy the file ~/ps-toolkit-livecd-backup.tgz from the location chosen in step 3 to your new system. The exact command to do this will depend on where you placed the file (e.g. use <em>scp</em>).</p>
+</li>
+<li><p class="first">Login to your new installation via SSH or the terminal</p>
+</li>
+<li><p class="first">Run the following commands to create a few databases and directories to hold the old LiveCD/LiveUSB data:</p>
+<div class="highlight-python"><div class="highlight"><pre>mkdir -p /opt/perfsonar_ps/perfsonarbuoy_ma/etc
+mysql -u root -e &quot;CREATE DATABASE owamp&quot;
+mysql -u root -e &quot;CREATE DATABASE bwctl&quot;
+mysql -u root -e &quot;CREATE DATABASE traceroute_ma&quot;
+mysql -u root -e &quot;CREATE DATABASE pingerMA&quot;
+mysql -u root -e &quot;CREATE DATABASE cacti&quot;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Run the command below to restore your data:</p>
+<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/toolkit/scripts/ps-toolkit-migrate-restore.sh  ~/ps-toolkit-livecd-backup.tgz
+</pre></div>
+</div>
+</li>
+<li><p class="first">Run the command below to re-install the toolkit which should apply any required updates to the transfered configuration files:</p>
+<blockquote>
+<div><p>yum reinstall perl-perfSONAR_PS-Toolkit</p>
+</div></blockquote>
+</li>
+<li><p class="first">Reboot your host:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">reboot</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Your host should now be migrated.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">After the reboot, it still may take many hours to migrate all historical OWAMP, BWCTL and traceroute data to the new measurement archive so please be patient. You may look in <em>/var/log/perfsonar/psb_to_esmond.log</em> for information on the progress of the migration.</p>
+</div>
+</div>
+<div class="section" id="special-upgrade-notes">
+<h2>Special Upgrade Notes<a class="headerlink" href="#special-upgrade-notes" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Note that updates from versions older than 3.3 are not currently supported. You will need to do a <a class="reference internal" href="install_getting.html#gettingchooseinstall"><em>clean installation</em></a> if you wish to move to a newer version.</p>
+</li>
+<li><p class="first">When upgrading from version 3.3 to 3.4, your archived BWCTL, OWAMP and traceroute data will automatically be migrated to the new measurement archive introduced in that version. This may take many hours depending on the amount of historical data on your system. See <em>/var/log/perfsonar_ps/psb_to_esmond.log</em> for logs and progress on the conversion. If you do not wish to convert data you may discard all old data with the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>mysql -u root -e &quot;DROP DATABASE owamp&quot;
+mysql -u root -e &quot;DROP DATABASE bwctl&quot;
+mysql -u root -e &quot;DROP DATABASE traceroute_ma&quot;
+</pre></div>
+</div>
+</li>
+<li><p class="first">When you upgrade from a version of the software older than 3.4, automatic updates will be enabled for you. See the <a class="reference internal" href="#manage-update-auto"><em>previous section</em></a> in this document for information on implications and how to disable them if desired.</p>
+</li>
+<li><p class="first">When you upgrade from a version of the software older than version 3.4, you may be asked to create a new user to login to the web interface. This is because any user in wheel (e.g. root) is no longer allowed to access the web interface. Given this new constraint, if none of your existing users can login to the web interface you will be prompted to create a new one the first time you login as root. See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more information.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Updating the Toolkit</a><ul>
+<li><a class="reference internal" href="#manually-updating-with-yum">Manually Updating with Yum</a></li>
+<li><a class="reference internal" href="#automatic-updates">Automatic Updates</a></li>
+<li><a class="reference internal" href="#migrating-from-a-3-3-2-livecd-liveusb">Migrating from a 3.3.2 LiveCD/LiveUSB</a></li>
+<li><a class="reference internal" href="#special-upgrade-notes">Special Upgrade Notes</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="manage_logs.html">Previous topic</a>
+                  <ul><li><a href="manage_logs.html" title="previous chapter">Reading Log Files</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_users.html">Next topic</a>
+                      <ul><li><a href="manage_users.html" title="next chapter">Managing Users</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_users.html" title="Managing Users"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_logs.html" title="Reading Log Files"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.net/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2015, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

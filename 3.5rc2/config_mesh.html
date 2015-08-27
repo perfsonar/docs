@@ -1,0 +1,2491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mesh Configuration (.conf) file &mdash; perfSONAR Toolkit 3.5rc2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.5rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.5rc2 documentation" href="index.html" />
+    <link rel="next" title="agent_configuration.conf" href="config_mesh_agent.html" />
+    <link rel="prev" title="ls_registration_daemon.conf" href="config_ls_registration.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="config_mesh_agent.html" title="agent_configuration.conf"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="config_ls_registration.html" title="ls_registration_daemon.conf"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mesh-configuration-conf-file">
+<h1>Mesh Configuration (.conf) file<a class="headerlink" href="#mesh-configuration-conf-file" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The perfSONAR MeshConfig software allows an administrator to generate a central file that defines measurements for a set of hosts that read the published file. The file is defined by the administrator in Apache config format. This document covers this format and the complete listing of options available.</p>
+<p>Each configuration file consists of the following elements:</p>
+<ul class="simple">
+<li>A list of <strong>description</strong> providing a human-readable string that names your mesh. See <a class="reference internal" href="#config-mesh-description"><em>description Directive</em></a> for details on defining this element.</li>
+<li>A list of <strong>administrators</strong> responsible for the configuration file. See <a class="reference internal" href="#config-mesh-administrator"><em>&lt;administrator&gt; Directive</em></a> for details on defining this element.</li>
+<li>A list of <em>organizations</em> including the <strong>sites</strong> and <strong>hosts</strong> that they contain. See <a class="reference internal" href="#config-mesh-organization"><em>&lt;organization&gt; Directive</em></a> for details on defining this element.</li>
+<li>A list of <strong>test specification</strong> that describe the parameters of the tests to be run. See <a class="reference internal" href="#config-mesh-test-spec"><em>&lt;test_spec&gt; Directive</em></a> for details on defining this element.</li>
+<li>A list of <strong>groups</strong> the describe the topology of tests and the hosts they contain. See <a class="reference internal" href="#config-mesh-group"><em>&lt;group&gt; Directive</em></a> for details on defining this element.</li>
+<li>A list of <strong>tests</strong> that connect the previously defined <em>test specifications</em> and <em>groups</em>. See <a class="reference internal" href="#config-mesh-test"><em>&lt;test&gt; Directive</em></a> for details on defining this element.</li>
+<li>An optional set of <strong>host classes</strong> that allow for dynamic joining of tests to groups. See <a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a> for details on defining this element.</li>
+</ul>
+</div>
+<div class="section" id="naming">
+<h2>Naming<a class="headerlink" href="#naming" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="description-directive">
+<span id="config-mesh-description"></span><h3>description Directive<a class="headerlink" href="#description-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A human-readable name for the parent directive</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">description</span> <span class="pre">TEXT</span> <span class="pre">GOES</span> <span class="pre">HERE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="#config-mesh-site"><em>site</em></a>, <a class="reference internal" href="#config-mesh-host"><em>host</em></a>, <a class="reference internal" href="#config-mesh-test"><em>host</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one per parent</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>The description is a human-readable name applied for the parent element. It is primarily relevant to
+GUIs for display purposes. For example, MaDDash configurations uses this field as the title of the created dashboard in the top-level context. Likewise it uses this field as the name displayed for each host in the rows and columns of a grid in the <a class="reference internal" href="#config-mesh-host"><em>host</em></a> context.</p>
+</div>
+</div>
+<div class="section" id="grouping">
+<h2>Grouping<a class="headerlink" href="#grouping" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="organization-directive">
+<span id="config-mesh-organization"></span><h3>&lt;organization&gt; Directive<a class="headerlink" href="#organization-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">An optional construct that groups together sites and hosts by the organization to which they belong</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;organization&gt;...&lt;/organization&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>The &lt;organization&gt; directive is strictly of purposes of grouping elements managed by the same entity together. In addition to keeping <a class="reference internal" href="#config-mesh-site"><em>sites</em></a> and <a class="reference internal" href="#config-mesh-host"><em>hosts</em></a> in a logical order, the description field can also be matched on when defining <a class="reference internal" href="#config-mesh-host-class"><em>host classes</em></a>.</p>
+</div>
+<div class="section" id="site-directive">
+<span id="config-mesh-site"></span><h3>&lt;site&gt; Directive<a class="headerlink" href="#site-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">An optional construct that groups an organization&#8217;s hosts together, generally based on location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;site&gt;...&lt;/site&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-organization"><em>organization</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>A site can group hosts within an organization together. For example, if an organization has multiple campuses with two hosts deployed at each, then the site directive can be used to group the hosts at each campus. This example is illustrate below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;site&gt;
+    description Site 1
+    &lt;host&gt;...&lt;/host&gt;
+    &lt;host&gt;...&lt;/host&gt;
+&lt;/site&gt;
+
+&lt;site&gt;
+    description Site 2
+    &lt;host&gt;...&lt;/host&gt;
+    &lt;host&gt;...&lt;/host&gt;
+&lt;/site&gt;
+</pre></div>
+</div>
+<p>The &lt;site&gt; may have additional significance for tools that display data. For example, a MaDDash configuration can plot data on the same graph for hosts belonging to the same site. This is especially useful when different types of measurement data are spread across multiple hosts, such as throughput and one-way delay data.</p>
+</div>
+</div>
+<div class="section" id="hosts">
+<h2>Hosts<a class="headerlink" href="#hosts" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="host-directive">
+<span id="config-mesh-host"></span><h3>&lt;host&gt; Directive<a class="headerlink" href="#host-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Describes a host that will be used as an endpoint in measurements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;host&gt;...&lt;/host&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="#config-mesh-site"><em>site</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>The host object is a critical part of your mesh configuration. You may define a host object at the top level of the file or within an organization or site. The latter two options simply provide more metadata about the host that can be used for documentation purposes or for <a class="reference internal" href="#config-mesh-host-class"><em>hos class</em></a> matches. Inside the construct you will define all the addresses which may be used for performing network measurements to/from this host as well as some additional metadata.</p>
+</div>
+<div class="section" id="no-agent-directive">
+<span id="config-mesh-host-no-agent"></span><h3>no_agent Directive<a class="headerlink" href="#no-agent-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A boolean indicating that his host does NOT read the mesh</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">no_agent</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host"><em>host</em></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>If set to 1, this value indicates that the host in question is not reading the mesh. This is significant because it means those that test to it are responsible for initiating tests in both directions and storing the results. The default is 0 meaning other testers can assume this host is reading the mesh and will initiate its portion of the tests accordingly.</p>
+</div>
+<div class="section" id="toolkit-url-directive">
+<span id="config-mesh-host-toolkit-url"></span><h3>toolkit_url Directive<a class="headerlink" href="#toolkit-url-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A URL to the host&#8217;s perfSONAR Toolkit instance or other related web site</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">toolkit_url</span> <span class="pre">URL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host"><em>host</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>This option is for graphical displays that wish to provide a link to more information about the host. traditionally this is a link to the perfSONAR Toolkit, but may in practice be any valid URL.</p>
+</div>
+<div class="section" id="address-directive">
+<span id="config-mesh-address"></span><h3>&lt;address&gt; Directive<a class="headerlink" href="#address-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">An IPv4 address, IPv6 address, or hostname belonging to a host</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">address</span> <span class="pre">ADDRESS</span></tt> or <tt class="docutils literal"><span class="pre">&lt;address&gt;...&lt;/address&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host"><em>host</em></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Occurrences:</th><td class="field-body">One or more</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later for simple form, 3.5 and later for complex form</td>
+</tr>
+</tbody>
+</table>
+<p>An address is a required element of a host that defines an IPv4address , IPv6 address or hostname assigned to an interface on the host. You can and likely will define multiple of these for a single a host. If using a hostname it is not required to also define theIP addresses to which the hostname maps as the tools will do the look-ups automatically.</p>
+<p>You can define address in one of two forms. In the simple form you simply provide the address. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>address 10.0.1.1
+</pre></div>
+</div>
+<p>In the complex form you make it a block and can optionally add the <em>tags</em> field to label the address. Tags are used when defining a <a class="reference internal" href="#config-mesh-host-class"><em>host class</em></a>. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;address&gt;
+    address 10.0.1.1
+    tag latency
+&lt;/address&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>address Directive<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">In the complex form of &lt;address&gt;, a simple string representation of the IPv4, IPv6 address or hostname</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">address</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-address"><em>address</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="storing-results">
+<h2>Storing Results<a class="headerlink" href="#storing-results" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="measurement-archive-directive">
+<span id="config-mesh-ma"></span><h3>&lt;measurement_archive&gt; Directive<a class="headerlink" href="#measurement-archive-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines where measurement results are stored</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;measurement_archive&gt;...&lt;/measurement_archive&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="#config-mesh-site"><em>site</em></a>, <a class="reference internal" href="#config-mesh-host"><em>host</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One per &lt;measurement_archive&gt; type</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The &lt;measurement_archive&gt; defines where measurements of a certain type are stored. Depending on where it is placed in the document it can have the following semantics:</p>
+<ul class="simple">
+<li>If placed in the &lt;host&gt; directive, then all measurements initiated by that host(and matching the measurement archive type) will be stored in the provided MA</li>
+<li>If placed in the &lt;site&gt; directive, all measurements initiated by hosts defined in the site will use the provided measurement archive UNLESS a &lt;measurement_archive&gt; is defined in the &lt;host&gt; directive.</li>
+<li>If placed in the &lt;organization&gt; directive, all measurements initiated by hosts defined in the organization will use the provided measurement archive UNLESS a &lt;measurement_archive&gt; is defined in the &lt;site&gt; directive OR the &lt;host&gt; directive (with &lt;host&gt; given preference).</li>
+<li>If placed in the top level, then all hosts will use the defined &lt;measurement_archive&gt; UNLESS there is &lt;measurement_archive&gt; defined in the &lt;host&gt;, &lt;site&gt;, or &lt;organization&gt; (with preference given in that order).</li>
+</ul>
+</div>
+<div class="section" id="type-directive">
+<h3>type Directive<a class="headerlink" href="#type-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of measurement archive</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">perfsonarbuoy/bwctl|perfsonarbuoy/owamp|pinger|traceroute</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-ma"><em>measurement archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>This specifies the type of data to be stored. The supported values refer to an older version of the perfSONAR software where different data types were stored in different archives. Even if the data ultimately ends up in the same archive you need to define multiple &lt;measurement_archive&gt; directives for each type of data you plan to store. The types have the following meanings:</p>
+<ul class="simple">
+<li><strong>perfsonarbuoy/bwctl</strong> - Throughput tests such as those initated by BWCTL running iperf or iperf3</li>
+<li><strong>perfsonarbuoy/owamp</strong> - OWAMP tests initiated by the powstream tool</li>
+<li><strong>pinger</strong> - Ping tests initiated by bwping or OWAMP tests initiated by bwping running OWAMP</li>
+<li><strong>traceroute</strong> - Any type of test initiated by bwtraceroute</li>
+</ul>
+</div>
+<div class="section" id="read-url-directive">
+<h3>read_url Directive<a class="headerlink" href="#read-url-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL where tools should query for results</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">read_url</span> <span class="pre">URL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-ma"><em>measurement archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>This is the URL where tools, such as a MaDDash dashboard, will query for test results. In general, this value will be the same as the write_url if running the perfSONAR Toolkit 3.4 or newer. You may want it to be a different value if your server uses a different public address than it uses to store data, such as in a NAT environment.</p>
+</div>
+<div class="section" id="write-url-directive">
+<h3>write_url Directive<a class="headerlink" href="#write-url-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL where tools should send results to store</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">write_url</span> <span class="pre">URL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-ma"><em>measurement archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3, ignored in 3.4, supported again in 3.5 or later</td>
+</tr>
+</tbody>
+</table>
+<p>This is the URL where tools, such as regular_testing on the perfSONAR Toolkit, should send results. This value is only useful if your measurement archive is using IP authentication. if using API key authentication, you will need to define the measurement archive in your local regular_testing.conf file. This is because it is not safe for the MeshConfig to share login credentials in it&#8217;s current form and would be difficult to manage in a large mesh.</p>
+</div>
+</div>
+<div class="section" id="defining-test-parameters">
+<h2>Defining Test Parameters<a class="headerlink" href="#defining-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="test-spec-directive">
+<span id="config-mesh-test-spec"></span><h3>&lt;test_spec&gt; Directive<a class="headerlink" href="#test-spec-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The parameters to use when running a test that uses this specification. The NAME tag is used to reference the test_spec elsewhere in the configuration.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;test_spec</span> <span class="pre">NAME&gt;...&lt;/test_spec&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The &lt;test_spec&gt; defines the parameters used when running a test. Every test_spec has a <em>type</em> directive that indicates what kind of test is to be run. A set of directives are available for each type that are then used to further refine the parameters of the tests that use this specification.</p>
+</div>
+<div class="section" id="id2">
+<h3>type Directive<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of test to be run for tests using this specification</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">perfsonarbuoy/bwctl|perfsonarbuoy/owamp|pinger|traceroute</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The types have the following meanings:</p>
+<ul class="simple">
+<li><strong>perfsonarbuoy/bwctl</strong> - Throughput tests such as those initated by BWCTL running iperf or iperf3. See <a class="reference internal" href="#config-mesh-test-spec-throughput"><em>Defining Throughput Test Parameters</em></a> for directives specific to this type of test.</li>
+<li><strong>perfsonarbuoy/owamp</strong> - OWAMP tests initiated by the powstream tool. See <a class="reference internal" href="#config-mesh-test-spec-owamp"><em>Defining Streaming One-way Delay Test Parameters</em></a> for directives specific to this type of test.</li>
+<li><strong>pinger</strong> - Ping tests initiated by bwping or OWAMP tests initiated by bwping running OWAMP. See <a class="reference internal" href="#config-mesh-test-spec-ping"><em>Defining Ping Test Parameters</em></a> for directives specific to this type of test.</li>
+<li><strong>traceroute</strong> - Any type of test initiated by bwtraceroute. See <a class="reference internal" href="#config-mesh-test-spec-traceroute"><em>Defining Traceroute Parameters</em></a> for directives specific to this type of test.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="defining-throughput-test-parameters">
+<span id="config-mesh-test-spec-throughput"></span><h2>Defining Throughput Test Parameters<a class="headerlink" href="#defining-throughput-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tool-directive">
+<h3>tool Directive<a class="headerlink" href="#tool-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tool to use in performing the throughput test</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">iperf|iperf3</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="duration-directive">
+<h3>duration Directive<a class="headerlink" href="#duration-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The length to run each throughput test in seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">duration</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="interval-directive">
+<h3>interval Directive<a class="headerlink" href="#interval-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time in between throughput tests in seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="buffer-length-directive">
+<h3>buffer_length Directive<a class="headerlink" href="#buffer-length-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Length of read and write buffers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">buffer_length</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="force-bidirectional-directive">
+<h3>force_bidirectional Directive<a class="headerlink" href="#force-bidirectional-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each endpoint to initiate the test in both directions. This will lead to redundant tests being run on each side.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">force_bidirectional</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ipv4-only-directive">
+<h3>ipv4_only Directive<a class="headerlink" href="#ipv4-only-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv4_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ipv6-only-directive">
+<h3>ipv6_only Directive<a class="headerlink" href="#ipv6-only-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv6_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="latest-time-directive">
+<h3>latest_time Directive<a class="headerlink" href="#latest-time-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The delay in seconds after the test is requested that it is allowed to start. This may be useful on busy hosts where a test cannot be scheduled until further in the future than the default allows.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">latest_time</span> <span class="pre">seconds</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">50% of the interval OR the difference between the interval and duration (whichever is smaller)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="omit-interval-directive">
+<h3>omit_interval Directive<a class="headerlink" href="#omit-interval-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time to ignore results at the beginning of a test in seconds. Useful for excluding TCP ramp-up time. Note that this is added to the duration (e.g. omit_interval of 5 and duration 30 leads to a 35 second test).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">omit_interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protcol is <em>tcp</em> and tool is <em>iperf3</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="protocol-directive">
+<h3>protocol Directive<a class="headerlink" href="#protocol-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The transport protocol to use for the test. May be tcp or udp.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">protocol</span> <span class="pre">tcp|udp</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">tcp</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="random-start-percentage-directive">
+<h3>random_start_percentage Directive<a class="headerlink" href="#random-start-percentage-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The percentage to randomize the start time of requests. Valid values are between 0 and 50 (inclusive). Example: interval of 7200 (2 hours) and random_start_percentage 50 means that a test can start anywhere between 1 hour and 3 hours after the previous test completes.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">random_start_percentage</span> <span class="pre">PERCENTAGE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="report-interval-directive">
+<h3>report_interval Directive<a class="headerlink" href="#report-interval-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The sub-interval at which to report results in seconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">report_interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="streams-directive">
+<h3>streams Directive<a class="headerlink" href="#streams-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of parallel streams to use in the test</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">streams</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tos-bits-directive">
+<h3>tos_bits Directive<a class="headerlink" href="#tos-bits-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of service to set in the IP header of outgoing packets</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tos_bits</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="udp-bandwidth-directive">
+<h3>udp_bandwidth Directive<a class="headerlink" href="#udp-bandwidth-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The rate at which the tool will attempt to send UDP packets. Can specify as bits per second or with suffix K, M, or G to indicated Kbps, Mbps or Gbps respectively.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">udp_bandwidth</span> <span class="pre">NUMBER(K|M|G)</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protcol is <em>udp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1M if a udp protocol set, n/a otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="window-size-directive">
+<h3>window_size Directive<a class="headerlink" href="#window-size-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">TCP window size (bytes) 0 indicates system defaults</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">window_size</span> <span class="pre">NUMBYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protcol is <em>tcp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0 (i.e. use endpoint host default)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="defining-streaming-one-way-delay-test-parameters">
+<span id="config-mesh-test-spec-owamp"></span><h2>Defining Streaming One-way Delay Test Parameters<a class="headerlink" href="#defining-streaming-one-way-delay-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bucket-width-directive">
+<h3>bucket_width Directive<a class="headerlink" href="#bucket-width-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The bin size for histogram calculations in terms of seconds. For example a value such as .001 means all histogram bins will be in milliseconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">bucket_width</span> <span class="pre">VALUE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-interval-directive">
+<h3>packet_interval Directive<a class="headerlink" href="#packet-interval-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The mean average time between packets in seconds. For example, .1 means send 10 packets per second.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="sample-count-directive">
+<h3>sample_count Directive<a class="headerlink" href="#sample-count-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of packets contained in each summary. This combined with packet_interval determines how often data is stored. For example, a packet_interval of .1 (10 packets per second) and sample_count of 600 stores a result every 60 seconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">sample_count</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id3">
+<h3>force_bidirectional Directive<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each endpoint to initiate the test in both directions. This will lead to redundant tests being run on each side.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">force_bidirectional</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id4">
+<h3>ipv4_only Directive<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv4_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id5">
+<h3>ipv6_only Directive<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv6_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-padding-directive">
+<h3>packet_padding Directive<a class="headerlink" href="#packet-padding-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size of the padding added to each packet in bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_padding</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="loss-threshold-directive">
+<h3>loss_threshold Directive<a class="headerlink" href="#loss-threshold-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body"><strong>DEPRECATED IN 3.4</strong> This option will not cause an error but will be ignored in MeshConfig software later than 3.4.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">loss_threshold</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">Deprecated in 3.4.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="session-count-directive">
+<h3>session_count Directive<a class="headerlink" href="#session-count-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body"><strong>DEPRECATED IN 3.4</strong> This option will not cause an error but will be ignored in MeshConfig software later than 3.4.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">session_count</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">Deprecated in 3.4.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="defining-ping-test-parameters">
+<span id="config-mesh-test-spec-ping"></span><h2>Defining Ping Test Parameters<a class="headerlink" href="#defining-ping-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="test-interval-directive">
+<h3>test_interval Directive<a class="headerlink" href="#test-interval-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time in between ping tests in seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">test_interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id6">
+<h3>force_bidirectional Directive<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each endpoint to initiate the test in both directions. This will lead to redundant tests being run on each side.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">force_bidirectional</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id7">
+<h3>ipv4_only Directive<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv4_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id8">
+<h3>ipv6_only Directive<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv6_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-count-directive">
+<h3>packet_count Directive<a class="headerlink" href="#packet-count-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of packets to send per test. This multiplied by packet_interval is the duration of the test.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_count</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id9">
+<h3>packet_interval Directive<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The average time between packets. A decimal value less than one means to send multiple packets per second (e.g. .1 means 10 packets per second). This multiplied by packet_count is the duration of the test.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-size-directive">
+<h3>packet_size Directive<a class="headerlink" href="#packet-size-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size of packets in bytes.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_size</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-ttl-directive">
+<h3>packet_ttl Directive<a class="headerlink" href="#packet-ttl-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The TTL to set in the IP header of outgoing packets</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_ttl</span> <span class="pre">TTL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">System default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id10">
+<h3>random_start_percentage Directive<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The percentage to randomize the start time of test. Valid values are between 0 and 50 (inclusive). Example: interval of 7200 (2 hours) and random_start_percentage 50 means that a test can start anywhere between 1 hour and 3 hours after the previous test completes.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">random_start_percentage</span> <span class="pre">PERCENTAGE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="defining-traceroute-parameters">
+<span id="config-mesh-test-spec-traceroute"></span><h2>Defining Traceroute Parameters<a class="headerlink" href="#defining-traceroute-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h3>test_interval Directive<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time in between traceroute tests in seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">test_interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="first-ttl-directive">
+<h3>first_ttl Directive<a class="headerlink" href="#first-ttl-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The first hop to look at starting at 1. This can be used to hide local routers. <strong>Not supported by tracepath</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">first_ttl</span> <span class="pre">TTL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em> and tool is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id12">
+<h3>force_bidirectional Directive<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each endpoint to initiate the test in both directions. This will lead to redundant tests being run on each side.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">force_bidirectional</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id13">
+<h3>ipv4_only Directive<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv4_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id14">
+<h3>ipv6_only Directive<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv6_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id15">
+<h3>packet_size Directive<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size of packets to send in bytes when performing the traceroute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_size</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="timeout-directive">
+<h3>timeout Directive<a class="headerlink" href="#timeout-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum amount of time to wait in seconds for the traceroute to complete</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">timeout</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id16">
+<h3>tool Directive<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tool to use to perform the traceroute.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">traceroute|tracepath</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">traceroute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<p>You can specify on of the following tools for a traceroute test:</p>
+<ul class="simple">
+<li><strong>traceroute</strong> - This is the default and generally the more reliable of the tools. It also includes more options in terms of setting the TTL and properly binding to interfaces.</li>
+<li><strong>tracepath</strong> - The main advantage of this tool is it reports MTU by default. It has  fewer options than standard traceroute for setting TTLs and binding to local interfaces. It also is UDP-only and may be blocked by firewalls. It&#8217;s also been reported to have a harder time with MTU mismatches on the destination host.</li>
+</ul>
+</div>
+<div class="section" id="max-ttl-directive">
+<h3>max_ttl Directive<a class="headerlink" href="#max-ttl-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum number of hops before a traceroute fails. <strong>Not supported by tracepath</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">max_ttl</span> <span class="pre">TTL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em> and tool is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">traceroute default (usually 30)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id17">
+<h3>protocol Directive<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether to use ICMP or UDP for the traceroute. <strong>Not supported by tracepath</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">protocol</span> <span class="pre">icmp|udp</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em> and tool is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">icmp</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id18">
+<h3>random_start_percentage Directive<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The percentage to randomize the start time of test. Valid values are between 0 and 50 (inclusive). Example: interval of 7200 (2 hours) and random_start_percentage 50 means that a test can start anywhere between 1 hour and 3 hours after the previous test completes.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">random_start_percentage</span> <span class="pre">PERCENTAGE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pause-directive">
+<h3>pause Directive<a class="headerlink" href="#pause-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body"><strong>DEPRECATED IN 3.4</strong> This option will not cause an error but will be ignored in MeshConfig software later than 3.4</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">pause</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Underlying tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">Deprecated in 3.4.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="waittime-directive">
+<h3>waittime Directive<a class="headerlink" href="#waittime-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body"><strong>DEPRECATED IN 3.4</strong> This option will not cause an error but will be ignored in MeshConfig software later than 3.4</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">waittime</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Underlying tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">Deprecated in 3.4.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="defining-test-topology">
+<h2>Defining Test Topology<a class="headerlink" href="#defining-test-topology" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="group-directive">
+<span id="config-mesh-group"></span><h3>&lt;group&gt; Directive<a class="headerlink" href="#group-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Describes which tests should be run between a given set of addresses. The NAME tag is used to identify the group elsewhere in the configuration.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;group</span> <span class="pre">NAME&gt;...&lt;/group&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The group directive is one of the primary elements used for defining your configuration. Each group has a at a minimum a type and a list of members. The combination of these elements defines which tests are run. Each member of a group must reference either an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> defined in a <a class="reference internal" href="#config-mesh-host"><em>host</em></a> block or a <a class="reference internal" href="#config-mesh-host-class"><em>host_class</em></a>. For example, the following defines a group named example_group where each host tests to every other host in the list (i.e. type is mesh). The first two addresses in the list are explicitly defined (10.0.1.1 and 10.0.1.2) and the third is a host class (host_class::ten_gige):</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_group&gt;
+    type mesh
+
+    member 10.0.1.1
+    member 10.0.1.2
+    member host_class::ten_gige
+&lt;/group&gt;
+</pre></div>
+</div>
+<p>For more on the different types of groups, see the <a class="reference internal" href="#config-mesh-group-type"><em>group</em></a> type section.</p>
+</div>
+<div class="section" id="config-mesh-group-type">
+<span id="id19"></span><h3>type Directive<a class="headerlink" href="#config-mesh-group-type" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of group, which further determines which options should be used in the rest of the group directive.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">disjoint|mesh|ordered_mesh|star</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-group"><em>group</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The type can be one of the following values:</p>
+<ul>
+<li><p class="first"><strong>disjoint</strong> - This type of test defines that tests are performed between a set of addresses in group A and a second set of addresses in group B. It is possible for an address to be in both groups. See <a class="reference internal" href="#config-mesh-group-a-member"><em>a_member Directive</em></a>, <a class="reference internal" href="#config-mesh-group-b-member"><em>b_member Directive</em></a> and <a class="reference internal" href="#config-mesh-group-no-agent"><em>no_agent Directive</em></a> for more information on defining members. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_disjoint_group&gt;
+    type disjoint
+
+    a_member 10.0.1.1
+    a_member 10.0.1.2
+
+    b_member 10.0.2.1
+    b_member 10.0.2.2
+&lt;/group&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>mesh</strong> - This type of test defines that tests are performed between all addresses in the given list.  See <a class="reference internal" href="#config-mesh-group-member"><em>member Directive</em></a> and <a class="reference internal" href="#config-mesh-group-no-agent"><em>no_agent Directive</em></a> for more information on defining members. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_mesh_group&gt;
+    type mesh
+
+    member 10.0.1.1
+    member 10.0.1.2
+    member host_class::ten_gige
+&lt;/group&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>ordered_mesh</strong> - A special type of group were the order an address is listed matters. The first address is responsible for testing to all the hosts listed below it, the second host is responsible for testing to all the hosts below that, etc until the last address is reached, which does not initiate any tests. This ultimately leads to a full mesh, with hosts toward the top of the list taking on a larger burden for initiating and storing tests. This may be desirable if you have a set of more powerful hosts (in terms of hardware) you can put toward the top of this list with less powerful hosts toward the bottom.   See <a class="reference internal" href="#config-mesh-group-member"><em>member Directive</em></a> for more information on defining members.  Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_ordered_group&gt;
+    type ordered_mesh
+
+    member 10.0.1.1
+    member 10.0.1.2
+    member 10.0.2.1
+    member 10.0.2.2
+&lt;/group&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>star</strong> - A mesh where a single center address tests to all other members of the group.  See <a class="reference internal" href="#config-mesh-group-center-address"><em>center_address Directive</em></a> and <a class="reference internal" href="#config-mesh-group-member"><em>member Directive</em></a> for more information on defining members. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre> &lt;group example_star_group&gt;
+    type star
+
+    center_address 10.0.0.1
+
+    member 10.0.1.1
+    member 10.0.1.2
+    member 10.0.2.1
+    member 10.0.2.2
+&lt;/group&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The functional equivalent of a <strong>star</strong> group can alternatively be defined as a <strong>disjoint</strong> group where the <a class="reference internal" href="#config-mesh-group-a-member"><em>a_member</em></a> OR <a class="reference internal" href="#config-mesh-group-b-member"><em>b_member</em></a> is the center_address.</p>
+</div>
+</div>
+<div class="section" id="a-member-directive">
+<span id="config-mesh-group-a-member"></span><h3>a_member Directive<a class="headerlink" href="#a-member-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">For disjoint type groups, defines an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> belonging to group A. This address will only test to addresses defined in group B using the <a class="reference internal" href="#config-mesh-group-b-member"><em>b_member</em></a> directive and will NOT test to other addresses in group A (unless they are also in group B). Note that the address MUST map to an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> defined in one (and only one) <a class="reference internal" href="#config-mesh-host"><em>host</em></a> directive.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">a_member</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-group"><em>group</em></a> where <a class="reference internal" href="#config-mesh-group-type"><em>type</em></a> is <em>disjoint</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="b-member-directive">
+<span id="config-mesh-group-b-member"></span><h3>b_member Directive<a class="headerlink" href="#b-member-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">For disjoint type groups, defines an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> belonging to group B. This address will only test to addresses defined in group A using the <a class="reference internal" href="#config-mesh-group-a-member"><em>a_member</em></a> directive and will NOT test to other addresses in group B (unless they are also in group A). Note that the address MUST map to an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> defined in one (and only one) <a class="reference internal" href="#config-mesh-host"><em>host</em></a> directive.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">b_member</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-group"><em>group</em></a> where <a class="reference internal" href="#config-mesh-group-type"><em>type</em></a> is <em>disjoint</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="center-address-directive">
+<span id="config-mesh-group-center-address"></span><h3>center_address Directive<a class="headerlink" href="#center-address-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">For star type groups, defines the <a class="reference internal" href="#config-mesh-address"><em>address</em></a> that will test to all other addresses defined by the <a class="reference internal" href="#config-mesh-group-member"><em>member</em></a> directive. Note that the address MUST map to an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> defined in one (and only one) <a class="reference internal" href="#config-mesh-host"><em>host</em></a> directive.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">center_address</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-group"><em>group</em></a> where <a class="reference internal" href="#config-mesh-group-type"><em>type</em></a> is <em>star</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="member-directive">
+<span id="config-mesh-group-member"></span><h3>member Directive<a class="headerlink" href="#member-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> to be used in a group of various types (see Context row later in this table). Note that the address MUST map to an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> defined in one (and only one) <a class="reference internal" href="#config-mesh-host"><em>host</em></a> directive.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">member</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-group"><em>group</em></a> where <a class="reference internal" href="#config-mesh-group-type"><em>type</em></a> is <em>mesh</em>, <em>ordered_mesh</em> or <em>star</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-mesh-group-no-agent">
+<span id="id20"></span><h3>no_agent Directive<a class="headerlink" href="#config-mesh-group-no-agent" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> that will not initiate tests when used in this group. This will override the <a class="reference internal" href="#config-mesh-host-no-agent"><em>no_agent</em></a> field specified in the <a class="reference internal" href="#config-mesh-host"><em>host</em></a> directive if defined. It is recommended you use the host directive to define this if a address cannot initiate tests for any group. Only use this form if you want a host to initiate tests when used in some groups but not others.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">no_agent</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-group"><em>group</em></a> where <a class="reference internal" href="#config-mesh-group-type"><em>type</em></a> is <em>mesh</em>, <em>ordered_mesh</em> or <em>star</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="defining-tests">
+<h2>Defining Tests<a class="headerlink" href="#defining-tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="test-directive">
+<span id="config-mesh-test"></span><h3>&lt;test&gt; Directive<a class="headerlink" href="#test-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Maps a <a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> to <a class="reference internal" href="#config-mesh-group"><em>group</em></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;test&gt;...&lt;/test&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<p>A &lt;test&gt; directive is essentially the final step in defining the set of measurements to be run on participating hosts. By mapping a <a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> to a
+<a class="reference internal" href="#config-mesh-group"><em>group</em></a>, you are declaring you want a test run with the parameters defined in <a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> for each point-to-point pair defined in <a class="reference internal" href="#config-mesh-group"><em>group</em></a>. You also provided a <a class="reference internal" href="#config-mesh-description"><em>description</em></a> to name the test. The <a class="reference internal" href="#config-mesh-description"><em>description</em></a> has little significance to the tests themselves, but may be used for display purposes in a user interface, such as naming a grid in a dashboard. An example is below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;test&gt;
+    description Example BWCTL Tests
+    test_spec example_bwctl_spec
+    group example_mesh_group
+&lt;test&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="config-mesh-test-test-spec">
+<span id="id21"></span><h3>group Directive<a class="headerlink" href="#config-mesh-test-test-spec" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The name of the group to use. The name must be exactly the NAME used when defining the <a class="reference internal" href="#config-mesh-group"><em>group</em></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">group</span> <span class="pre">NAME</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test"><em>test</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id22">
+<h3>test_spec Directive<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The name of the test_spec to use. The name must be exactly the NAME used when defining the <a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">test_spec</span> <span class="pre">NAME</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test"><em>test</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="dynamic-mesh-generation">
+<span id="config-mesh-dynamic-gen"></span><h2>Dynamic Mesh Generation<a class="headerlink" href="#dynamic-mesh-generation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tag-directive">
+<span id="config-mesh-dynamic-gen-tag"></span><h3>tag Directive<a class="headerlink" href="#tag-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A custom string used to label an organization, site, host or address</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tag</span> <span class="pre">TAG</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="#config-mesh-site"><em>site</em></a>, <a class="reference internal" href="#config-mesh-host"><em>host</em></a>, <a class="reference internal" href="#config-mesh-address"><em>address</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The tag directive labels the parent object in a custom way. This label can then be used in a <a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a> definition to match items sharing the same tag. A good example is if you want to tag some &lt;address&gt; directives as &#8220;latency&#8221; and others as &#8220;throughput&#8221; on a dual-homed host. You can then define a host tag that selects only the &#8220;throughput&#8221; interfaces for throughput tests and &#8220;latency&#8221; interfaces for latency tests.</p>
+</div>
+<div class="section" id="host-class-directive">
+<span id="config-mesh-host-class"></span><h3>&lt;host_class&gt; Directive<a class="headerlink" href="#host-class-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines a set of criteria that if a host meets, then will be included in this class. the class can then be referenced by name in test definitions to include groups of hosts.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;host_class&gt;...&lt;host_class&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The &lt;host_class&gt; structure is one of the more complex in the MeshConfig. It is the foundational element in generating dynamic lists of hosts. A host_class has a <em>name</em> used to identify it, one or more <em>data sources</em> that contain an initial list of hosts, and a set of <em>filters</em> used to select hosts from the data sources that meet certain criteria. Optionally it may also have <em>host properties</em> used to set attributes on matching hosts such as measurement archives for storing test results. This host class can then be referenced in a <a class="reference internal" href="#config-mesh-group"><em>&lt;group&gt; Directive</em></a> as a member using the notation <em>host_class::NAME</em> where NAME is the name of the hos class. For example, below we define a host_class that matches all hosts in our current mesh file (that&#8217;s our data source in this case) belonging to organization Acme:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      acme_org
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   organization
+           description   Acme
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+<p>We could then letter reference this host_class in a group as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_group&gt;
+    type mesh
+
+    member 10.0.1.1
+    member 10.0.1.2
+    member host_class::acme_org
+&lt;/group&gt;
+</pre></div>
+</div>
+<p>An hosts we add to our mesh in the future with organization &#8220;Acme&#8221; will automatically get added to the test definitions using this group.</p>
+</div>
+<div class="section" id="name-directive">
+<span id="config-mesh-dynamic-gen-name"></span><h3>name Directive<a class="headerlink" href="#name-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Names a host_class. This is used to reference the host class in <a class="reference internal" href="#config-mesh-group"><em>group</em></a> definitions later.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">name</span> <span class="pre">CLASSNAME</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="data-source-directive">
+<span id="config-mesh-dynamic-gen-data-source"></span><h3>data_source Directive<a class="headerlink" href="#data-source-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The data source from which to build an initial list of hosts before applying filters. See &lt;config_mesh-dynamic_sources&gt; for information in different types of data sources and their options.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;data_source&gt;...&lt;/data_source&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="match-directive">
+<span id="config-mesh-dynamic-gen-match"></span><h3>match Directive<a class="headerlink" href="#match-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Contains a list of <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filters</em></a> that must be matched. An empty match filter matches everything. The <a class="reference internal" href="#config-mesh-dynamic-gen-exclude"><em>exclude</em></a> directive takes precedence if they both match the same host. Within a match directive, <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filters</em></a> of the same type have an implied OR condition and filter of a different type have an implied AND condition.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;match&gt;...&lt;/match&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="exclude-directive">
+<span id="config-mesh-dynamic-gen-exclude"></span><h3>exclude Directive<a class="headerlink" href="#exclude-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Contains a list of <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filters</em></a> that if matched, exclude the host from the class. An empty exclude filter matches excludes nothing. This directive takes precedence over the <a class="reference internal" href="#config-mesh-dynamic-gen-match"><em>match</em></a> directive if they both match the same host. Within an exclude directive, <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filters</em></a> of the same type have an implied OR condition and filter of a different type have an implied AND condition.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;exclude&gt;...&lt;/exclude&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="filter-directive">
+<span id="config-mesh-dynamic-gen-filter"></span><h3>filter Directive<a class="headerlink" href="#filter-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Used in <a class="reference internal" href="#config-mesh-dynamic-gen-match"><em>match</em></a>, <a class="reference internal" href="#config-mesh-dynamic-gen-exclude"><em>exclude</em></a> and certain other ref:<cite>filter &lt;config_mesh-dynamic_gen-filter&gt;</cite> directives to select a host. See <a class="reference internal" href="#config-mesh-dynamic-filters"><em>Dynamic Mesh Filters</em></a> for a list of filter types and their options.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;filter&gt;...&lt;/filter&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-match"><em>match Directive</em></a>, <a class="reference internal" href="#config-mesh-dynamic-gen-exclude"><em>exclude Directive</em></a>, <a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>and</em>, <em>or</em> or <em>not</em>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="host-properties-directive">
+<span id="config-mesh-dynamic-gen-host-properties"></span><h3>&lt;host_properties&gt; Directive<a class="headerlink" href="#host-properties-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines properties to assign  hosts that match the specified class. Primarily used to set the measurement archives where test results will be stored. This is a <a class="reference internal" href="#config-mesh-host"><em>host</em></a> directive, so any sub-directives supported by <a class="reference internal" href="#config-mesh-host"><em>host</em></a> are also supported by host_properties. You do not need to set the address. In general, this will only contain <a class="reference internal" href="#config-mesh-ma"><em>measurement archive</em></a> directives. If the properties set in the block conflict with any already set in an explicit <a class="reference internal" href="#config-mesh-host"><em>host</em></a> directive, then the configurations will be merged. For measurement archives this means that both sets of archives will be used.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;host_properties&gt;...&lt;host_properties&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="dynamic-mesh-data-sources">
+<span id="config-mesh-dynamic-sources"></span><h2>Dynamic Mesh Data Sources<a class="headerlink" href="#dynamic-mesh-data-sources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="config-mesh-dynamic-sources-type">
+<span id="id23"></span><h3>type Directive<a class="headerlink" href="#config-mesh-dynamic-sources-type" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the type of data source to be used to build the initial list of hosts</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">current_mesh|requesting_agent</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-data-source"><em>data_source Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The type of data source defines where a <a class="reference internal" href="#config-mesh-host-class"><em>&lt;host_class&gt; Directive</em></a> get the initial list of hosts where filters will be applied. The following are valid values for the type:</p>
+<ul class="simple">
+<li><strong>current_mesh</strong> - Looks at all <a class="reference internal" href="#config-mesh-host"><em>host</em></a> definitions in the current mesh file</li>
+<li><strong>requesting_agent</strong> - Looks at the client reading the mesh file as a host</li>
+</ul>
+</div>
+</div>
+<div class="section" id="dynamic-mesh-filters">
+<span id="config-mesh-dynamic-filters"></span><h2>Dynamic Mesh Filters<a class="headerlink" href="#dynamic-mesh-filters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="config-mesh-dynamic-filters-type">
+<span id="id24"></span><h3>type Directive<a class="headerlink" href="#config-mesh-dynamic-filters-type" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the type of filter.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">address_type|and|class|netmask|not|or|organization|site|tag</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+<p>The type of filter indicates what property of the address or its parent elements to match against. There are also some special filters that define boolean operations across multiple filters. The valid types and their meanings are:</p>
+<ul class="simple">
+<li><strong>address_type</strong> - Matches addresses on hosts of the specified type (e.g. ipv4 or ipv6)</li>
+<li><strong>and</strong> - A special operand that takes a set of filters and will return true if ALL filters match</li>
+<li><strong>class</strong> - This takes the name of another class and only returns true if the host also belong to the specified class. This allows a simple form of inheritance between classes.</li>
+<li><strong>netmask</strong> - Matches a address if it is in the specified IP netmask</li>
+<li><strong>not</strong> -  A special operand that returns true only if the underlying filters return false and vice versa</li>
+<li><strong>or</strong> -  A special operand that takes a set of filters and will return true if ANY filters match</li>
+<li><strong>organization</strong> - Matches the organization ref:<cite>description &lt;config_mesh-description&gt;</cite> of a host</li>
+<li><strong>site</strong> - Matches the site ref:<cite>description &lt;config_mesh-description&gt;</cite> of a host</li>
+<li><strong>tag</strong> - Matches a <a class="reference internal" href="#config-mesh-dynamic-gen-tag"><em>tag</em></a> on an <a class="reference internal" href="#config-mesh-address"><em>address</em></a> or its parent <a class="reference internal" href="#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="#config-mesh-site"><em>site</em></a>, or <a class="reference internal" href="#config-mesh-host"><em>host</em></a></li>
+</ul>
+</div>
+<div class="section" id="address-type-directive">
+<span id="config-mesh-dynamic-filters-address-type"></span><h3>address_type Directive<a class="headerlink" href="#address-type-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the type of address to match against for filters with type <em>address_type</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">address_type</span> <span class="pre">ipv4|ipv6</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>address_type</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="class-directive">
+<span id="config-mesh-dynamic-filters-class"></span><h3>class Directive<a class="headerlink" href="#class-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the name of the <a class="reference internal" href="#config-mesh-host-class"><em>host_class</em></a> to match against for filters with type <em>class</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">class</span> <span class="pre">CLASSNAME</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>class</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-mesh-dynamic-filters-description">
+<span id="id25"></span><h3>description Directive<a class="headerlink" href="#config-mesh-dynamic-filters-description" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines the description of the parent <a class="reference internal" href="#config-mesh-organization"><em>organization</em></a> or <a class="reference internal" href="#config-mesh-site"><em>site</em></a> to match for hosts belonging to this class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">description</span> <span class="pre">DESCRIPTION</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>organization</em> or <em>site</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="exact-directive">
+<span id="config-mesh-dynamic-filters-exact"></span><h3>exact Directive<a class="headerlink" href="#exact-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates the given match should be case-sensitive if enabled. Disabled (i.e. case-insensitive matches) by default if not specified.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">exact</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>tag</em>, <em>organization</em> or <em>site</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="netmask-directive">
+<span id="config-mesh-dynamic-filters-netmask"></span><h3>netmask Directive<a class="headerlink" href="#netmask-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The IP netmask used to match addresses when filter type is <em>netmask</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">netmask</span> <span class="pre">NETMASK</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>netmask</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-mesh-dynamic-filters-tag">
+<span id="id26"></span><h3>tag Directive<a class="headerlink" href="#config-mesh-dynamic-filters-tag" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tag to match for an address or its parent elements in order for it to be included in the mesh</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tag</span> <span class="pre">TAG</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-dynamic-gen-filter"><em>filter Directive</em></a> where type is <em>tag</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="optional-descriptive-fields">
+<h2>Optional Descriptive Fields<a class="headerlink" href="#optional-descriptive-fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="administrator-directive">
+<span id="config-mesh-administrator"></span><h3>&lt;administrator&gt; Directive<a class="headerlink" href="#administrator-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Defines contact information for administrator of parent element</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;administrator&gt;...&lt;/administrator&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="#config-mesh-site"><em>site</em></a>, <a class="reference internal" href="#config-mesh-host"><em>host</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or more</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+<p>This element is primarily used for informational purposes. If defined at the top-level, it is assumed it is the contact information of the person managing this mesh. It is not strictly required in any of it&#8217;s parent elements but may be useful in keeping track of the various administrators of meshes, organization, hosts and/or sites.</p>
+</div>
+<div class="section" id="id27">
+<h3>name Directive<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The full name of the administrator.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">name</span> <span class="pre">ADMINISTRATOR</span> <span class="pre">NAME</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-administrator"><em>administrator</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one per parent</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="email-directive">
+<h3>email Directive<a class="headerlink" href="#email-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The full name of the administrator.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">email</span> <span class="pre">ADMIN&#64;MYDOMAIN</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-administrator"><em>administrator</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one per parent</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="location-directive">
+<span id="config-mesh-location"></span><h3>&lt;location&gt; Directive<a class="headerlink" href="#location-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A directive to describe the location of the parent</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;location&gt;...&lt;/location&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="#config-mesh-site"><em>site</em></a>, <a class="reference internal" href="#config-mesh-host"><em>host</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<p>This element&#8217;s intent is primarily for uses for displays that are capable of showing location information. At this point it is largely unused and may be skipped if so desired.</p>
+</div>
+<div class="section" id="street-address-directive">
+<h3>street_address Directive<a class="headerlink" href="#street-address-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The street address (e.g. 1 Cyclotron Road) of the parent location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">street_address</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-location"><em>location</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="city-directive">
+<h3>city Directive<a class="headerlink" href="#city-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The city (e.g. Berkeley) of the parent location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">city</span> <span class="pre">CITY</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-location"><em>location</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="state-directive">
+<h3>state Directive<a class="headerlink" href="#state-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The state, province or other country-specific region (e.g. CA) of the parent location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">state</span> <span class="pre">STATE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-location"><em>location</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="country-directive">
+<h3>country Directive<a class="headerlink" href="#country-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The 2-letter ISO country code (e.g. US) of the parent location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">country</span> <span class="pre">COUNTRY</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-location"><em>location</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="postal-code-directive">
+<h3>postal_code Directive<a class="headerlink" href="#postal-code-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The postal code (e.g. 94720) of the parent location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">postal_code</span> <span class="pre">POSTAL_CODE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-location"><em>location</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="latitude-directive">
+<h3>latitude Directive<a class="headerlink" href="#latitude-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The latitude (e.g. 37.8717) of the parent location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">latitude</span> <span class="pre">LATITUDE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-location"><em>location</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="longitude-directive">
+<h3>longitude Directive<a class="headerlink" href="#longitude-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The longitude (e.g. -122.2728) of the parent location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">longitude</span> <span class="pre">LONGITUDE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-location"><em>location</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="config-mesh-tag"></span></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Mesh Configuration (.conf) file</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#naming">Naming</a><ul>
+<li><a class="reference internal" href="#description-directive">description Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#grouping">Grouping</a><ul>
+<li><a class="reference internal" href="#organization-directive">&lt;organization&gt; Directive</a></li>
+<li><a class="reference internal" href="#site-directive">&lt;site&gt; Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hosts">Hosts</a><ul>
+<li><a class="reference internal" href="#host-directive">&lt;host&gt; Directive</a></li>
+<li><a class="reference internal" href="#no-agent-directive">no_agent Directive</a></li>
+<li><a class="reference internal" href="#toolkit-url-directive">toolkit_url Directive</a></li>
+<li><a class="reference internal" href="#address-directive">&lt;address&gt; Directive</a></li>
+<li><a class="reference internal" href="#id1">address Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#storing-results">Storing Results</a><ul>
+<li><a class="reference internal" href="#measurement-archive-directive">&lt;measurement_archive&gt; Directive</a></li>
+<li><a class="reference internal" href="#type-directive">type Directive</a></li>
+<li><a class="reference internal" href="#read-url-directive">read_url Directive</a></li>
+<li><a class="reference internal" href="#write-url-directive">write_url Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defining-test-parameters">Defining Test Parameters</a><ul>
+<li><a class="reference internal" href="#test-spec-directive">&lt;test_spec&gt; Directive</a></li>
+<li><a class="reference internal" href="#id2">type Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defining-throughput-test-parameters">Defining Throughput Test Parameters</a><ul>
+<li><a class="reference internal" href="#tool-directive">tool Directive</a></li>
+<li><a class="reference internal" href="#duration-directive">duration Directive</a></li>
+<li><a class="reference internal" href="#interval-directive">interval Directive</a></li>
+<li><a class="reference internal" href="#buffer-length-directive">buffer_length Directive</a></li>
+<li><a class="reference internal" href="#force-bidirectional-directive">force_bidirectional Directive</a></li>
+<li><a class="reference internal" href="#ipv4-only-directive">ipv4_only Directive</a></li>
+<li><a class="reference internal" href="#ipv6-only-directive">ipv6_only Directive</a></li>
+<li><a class="reference internal" href="#latest-time-directive">latest_time Directive</a></li>
+<li><a class="reference internal" href="#omit-interval-directive">omit_interval Directive</a></li>
+<li><a class="reference internal" href="#protocol-directive">protocol Directive</a></li>
+<li><a class="reference internal" href="#random-start-percentage-directive">random_start_percentage Directive</a></li>
+<li><a class="reference internal" href="#report-interval-directive">report_interval Directive</a></li>
+<li><a class="reference internal" href="#streams-directive">streams Directive</a></li>
+<li><a class="reference internal" href="#tos-bits-directive">tos_bits Directive</a></li>
+<li><a class="reference internal" href="#udp-bandwidth-directive">udp_bandwidth Directive</a></li>
+<li><a class="reference internal" href="#window-size-directive">window_size Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defining-streaming-one-way-delay-test-parameters">Defining Streaming One-way Delay Test Parameters</a><ul>
+<li><a class="reference internal" href="#bucket-width-directive">bucket_width Directive</a></li>
+<li><a class="reference internal" href="#packet-interval-directive">packet_interval Directive</a></li>
+<li><a class="reference internal" href="#sample-count-directive">sample_count Directive</a></li>
+<li><a class="reference internal" href="#id3">force_bidirectional Directive</a></li>
+<li><a class="reference internal" href="#id4">ipv4_only Directive</a></li>
+<li><a class="reference internal" href="#id5">ipv6_only Directive</a></li>
+<li><a class="reference internal" href="#packet-padding-directive">packet_padding Directive</a></li>
+<li><a class="reference internal" href="#loss-threshold-directive">loss_threshold Directive</a></li>
+<li><a class="reference internal" href="#session-count-directive">session_count Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defining-ping-test-parameters">Defining Ping Test Parameters</a><ul>
+<li><a class="reference internal" href="#test-interval-directive">test_interval Directive</a></li>
+<li><a class="reference internal" href="#id6">force_bidirectional Directive</a></li>
+<li><a class="reference internal" href="#id7">ipv4_only Directive</a></li>
+<li><a class="reference internal" href="#id8">ipv6_only Directive</a></li>
+<li><a class="reference internal" href="#packet-count-directive">packet_count Directive</a></li>
+<li><a class="reference internal" href="#id9">packet_interval Directive</a></li>
+<li><a class="reference internal" href="#packet-size-directive">packet_size Directive</a></li>
+<li><a class="reference internal" href="#packet-ttl-directive">packet_ttl Directive</a></li>
+<li><a class="reference internal" href="#id10">random_start_percentage Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defining-traceroute-parameters">Defining Traceroute Parameters</a><ul>
+<li><a class="reference internal" href="#id11">test_interval Directive</a></li>
+<li><a class="reference internal" href="#first-ttl-directive">first_ttl Directive</a></li>
+<li><a class="reference internal" href="#id12">force_bidirectional Directive</a></li>
+<li><a class="reference internal" href="#id13">ipv4_only Directive</a></li>
+<li><a class="reference internal" href="#id14">ipv6_only Directive</a></li>
+<li><a class="reference internal" href="#id15">packet_size Directive</a></li>
+<li><a class="reference internal" href="#timeout-directive">timeout Directive</a></li>
+<li><a class="reference internal" href="#id16">tool Directive</a></li>
+<li><a class="reference internal" href="#max-ttl-directive">max_ttl Directive</a></li>
+<li><a class="reference internal" href="#id17">protocol Directive</a></li>
+<li><a class="reference internal" href="#id18">random_start_percentage Directive</a></li>
+<li><a class="reference internal" href="#pause-directive">pause Directive</a></li>
+<li><a class="reference internal" href="#waittime-directive">waittime Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defining-test-topology">Defining Test Topology</a><ul>
+<li><a class="reference internal" href="#group-directive">&lt;group&gt; Directive</a></li>
+<li><a class="reference internal" href="#config-mesh-group-type">type Directive</a></li>
+<li><a class="reference internal" href="#a-member-directive">a_member Directive</a></li>
+<li><a class="reference internal" href="#b-member-directive">b_member Directive</a></li>
+<li><a class="reference internal" href="#center-address-directive">center_address Directive</a></li>
+<li><a class="reference internal" href="#member-directive">member Directive</a></li>
+<li><a class="reference internal" href="#config-mesh-group-no-agent">no_agent Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defining-tests">Defining Tests</a><ul>
+<li><a class="reference internal" href="#test-directive">&lt;test&gt; Directive</a></li>
+<li><a class="reference internal" href="#config-mesh-test-test-spec">group Directive</a></li>
+<li><a class="reference internal" href="#id22">test_spec Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dynamic-mesh-generation">Dynamic Mesh Generation</a><ul>
+<li><a class="reference internal" href="#tag-directive">tag Directive</a></li>
+<li><a class="reference internal" href="#host-class-directive">&lt;host_class&gt; Directive</a></li>
+<li><a class="reference internal" href="#name-directive">name Directive</a></li>
+<li><a class="reference internal" href="#data-source-directive">data_source Directive</a></li>
+<li><a class="reference internal" href="#match-directive">match Directive</a></li>
+<li><a class="reference internal" href="#exclude-directive">exclude Directive</a></li>
+<li><a class="reference internal" href="#filter-directive">filter Directive</a></li>
+<li><a class="reference internal" href="#host-properties-directive">&lt;host_properties&gt; Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dynamic-mesh-data-sources">Dynamic Mesh Data Sources</a><ul>
+<li><a class="reference internal" href="#config-mesh-dynamic-sources-type">type Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dynamic-mesh-filters">Dynamic Mesh Filters</a><ul>
+<li><a class="reference internal" href="#config-mesh-dynamic-filters-type">type Directive</a></li>
+<li><a class="reference internal" href="#address-type-directive">address_type Directive</a></li>
+<li><a class="reference internal" href="#class-directive">class Directive</a></li>
+<li><a class="reference internal" href="#config-mesh-dynamic-filters-description">description Directive</a></li>
+<li><a class="reference internal" href="#exact-directive">exact Directive</a></li>
+<li><a class="reference internal" href="#netmask-directive">netmask Directive</a></li>
+<li><a class="reference internal" href="#config-mesh-dynamic-filters-tag">tag Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#optional-descriptive-fields">Optional Descriptive Fields</a><ul>
+<li><a class="reference internal" href="#administrator-directive">&lt;administrator&gt; Directive</a></li>
+<li><a class="reference internal" href="#id27">name Directive</a></li>
+<li><a class="reference internal" href="#email-directive">email Directive</a></li>
+<li><a class="reference internal" href="#location-directive">&lt;location&gt; Directive</a></li>
+<li><a class="reference internal" href="#street-address-directive">street_address Directive</a></li>
+<li><a class="reference internal" href="#city-directive">city Directive</a></li>
+<li><a class="reference internal" href="#state-directive">state Directive</a></li>
+<li><a class="reference internal" href="#country-directive">country Directive</a></li>
+<li><a class="reference internal" href="#postal-code-directive">postal_code Directive</a></li>
+<li><a class="reference internal" href="#latitude-directive">latitude Directive</a></li>
+<li><a class="reference internal" href="#longitude-directive">longitude Directive</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="config_ls_registration.html">Previous topic</a>
+                  <ul><li><a href="config_ls_registration.html" title="previous chapter">ls_registration_daemon.conf</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="config_mesh_agent.html">Next topic</a>
+                      <ul><li><a href="config_mesh_agent.html" title="next chapter">agent_configuration.conf</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="config_mesh_agent.html" title="agent_configuration.conf"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="config_ls_registration.html" title="ls_registration_daemon.conf"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.net/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2015, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
