@@ -13,7 +13,7 @@ System Requirements
 .. _Puppet Install Documentation: http://docs.puppetlabs.com/guides/install_puppet/pre_install.html
 
 Server Installation
-============
+====================
 
 1. Install the `EPEL` repository::
 
@@ -24,7 +24,7 @@ Server Installation
     sudo yum install puppet puppet-server
 
 Client Installation
-============
+====================
 
 You must install puppet on each client node.
 
