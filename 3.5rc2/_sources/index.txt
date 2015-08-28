@@ -130,11 +130,17 @@ Accessing Raw Data
 Configuration Reference
 -----------------------
 
+Listing of perfSONAR Files
+==========================
+.. toctree::
+   :maxdepth: 2
+   
+   config_files
 
 BWCTL
 =====
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    config_bwctl
    config_bwctl_limits
@@ -142,14 +148,14 @@ BWCTL
 Lookup Service Registration Daemon
 ==================================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    config_ls_registration
    
 MeshConfig
 ==========
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    config_mesh
    config_mesh_agent
@@ -159,14 +165,14 @@ MeshConfig
 OPPD
 ====
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    config_oppd
 
 OWAMP
 =====
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    config_owamp
    config_owamp_limits
@@ -174,10 +180,11 @@ OWAMP
 Regular Testing
 ===============
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    config_regular_testing
 
+   
 Further Information
 -------------------
 * `Project Homepage <http://www.perfsonar.net>`_

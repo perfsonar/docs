@@ -312,7 +312,7 @@
 </div>
 <div class="section" id="meshconfig-client-configuration">
 <span id="multi-mesh-autoconfig-fixed-client"></span><h3>MeshConfig Client Configuration<a class="headerlink" href="#meshconfig-client-configuration" title="Permalink to this headline">¶</a></h3>
-<p>On each automatically configured tester you bring-up, you&#8217;ll need to point it at the JSON file generated in the previous section. Assuming the JSON file is at <a class="reference external" href="http://mesh.example/mesh.json">http://mesh.example/mesh.json</a>, you can do this in <em>/opt/perfsonar_ps/mesh_config/etc/agent_configuration.conf</em> as follows:</p>
+<p>On each automatically configured tester you bring-up, you&#8217;ll need to point it at the JSON file generated in the previous section. Assuming the JSON file is at <a class="reference external" href="http://mesh.example/mesh.json">http://mesh.example/mesh.json</a>, you can do this in the <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-agent"><em>agent configuration file</em></a> as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;mesh&gt;
     configuration_url   http://mesh.example/mesh.json
 &lt;/mesh&gt;
@@ -326,8 +326,13 @@
 <div class="highlight-python"><div class="highlight"><pre>use_toolkit 0
 </pre></div>
 </div>
-<p>Finally, you&#8217;ll want to make sure your <em>/opt/perfsonar_ps/regular_testing/etc/regular_testing.conf</em> file only has the following lines uncommented:</p>
+<p>Finally, you&#8217;ll want to make sure your <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> only has the following lines uncommented:</p>
+<p><strong>RedHat/CentOS</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">test_result_directory</span>   <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">regular_testing</span>
+</pre></div>
+</div>
+<p><strong>Debian</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">test_result_directory</span>   <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">regulartesting</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -364,7 +369,7 @@
 ...
 </pre></div>
 </div>
-<p>In this case, how do we tag our agent downloading the file so that it matches this class? Normally we would do it in the <a class="reference internal" href="config_mesh.html#config-mesh-host"><em>host</em></a> directive but by definition our requesting agent does not have one of those. Instead we have to add a <em>local_host</em> block to the clients <em>agent_configuration.conf</em> file:</p>
+<p>In this case, how do we tag our agent downloading the file so that it matches this class? Normally we would do it in the <a class="reference internal" href="config_mesh.html#config-mesh-host"><em>host</em></a> directive but by definition our requesting agent does not have one of those. Instead we have to add a <em>local_host</em> block to the clients <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-agent"><em>agent configuration file</em></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;local_host&gt;
     tag latency
 &lt;/local_host&gt;
@@ -396,7 +401,7 @@
 <p>In order for this case to work you will need access to a lookup service. It is <strong>highly recommended</strong> you use a <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService">private lookup service</a> for this purpose. Using the public lookup service exposes the risk of others being able to (intentionally or unintentionally) change the tests your host runs, perhaps in ways you do not desire. For more information on setting up a private lookup service see <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService">this document</a>. Assuming you have a private lookup service setup, you can complete the configuration process by defining the appropriate directives in your <a class="reference internal" href="#multi-mesh-autoconfig-dynamic-server"><em>central MeshConfig file</em></a> and in the <a class="reference internal" href="#multi-mesh-autoconfig-dynamic-client"><em>agent configuration</em></a> of the new testers.</p>
 <div class="section" id="multi-mesh-autoconfig-dynamic-server">
 <span id="id1"></span><h3>MeshConfig Server Configuration<a class="headerlink" href="#multi-mesh-autoconfig-dynamic-server" title="Permalink to this headline">¶</a></h3>
-<p>On our MeshConfig server, the first thing we need to setup is a file that defines the hosts we want to extract from the lookup service. By default, you will find this file in <em>/opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf</em>. An example of this file using a configuration that extracts all hosts running OWAMP (the service that performs one-way latency measurements) and tagged with the community <em>example</em>:</p>
+<p>On our MeshConfig server, the first thing we need to setup is a file that defines the hosts we want to extract from the lookup service. By default, you will find it as listed <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-lookup-hosts"><em>here</em></a> for your operating system. An example of this file using a configuration that extracts all hosts running OWAMP (the service that performs one-way latency measurements) and tagged with the community <em>example</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>ls_instance http://private-ls.example:8090/lookup/records
 
 &lt;query&gt;
@@ -446,7 +451,7 @@
 <p>If you don&#8217;t define any filters then all services of the specified type in the lookup service will return. For each filter that you do define, there is a <em>filter_key</em> and a <em>filter_value</em>. The key is the name of a lookup service field name you wish to match in the <strong>service</strong> record. You can find a complete list of valid field names in the <a class="reference external" href="https://docs.google.com/document/u/1/d/1dEROeTwW0R4qcLHKnA2fsWEz8fQWnPKSpPVf_FuB2Vc/pub">Lookup Service Records reference guide</a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The lookup_hosts.conf file currently only supports fields for <strong>service</strong> records and not fields in the host, interface, person or other records.</p>
+<p class="last">The <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-lookup-hosts"><em>lookup hosts configuration file</em></a> currently only supports fields for <strong>service</strong> records and not fields in the host, interface, person or other records.</p>
 </div>
 <p>The <em>filter_value</em> is the value you want the field specified by the <em>filter_key</em> to take in order to match. In our example we want the <em>group-communities</em> of the service record to take the value of <em>example</em>.</p>
 <p>Finally, with our filters defined, we can create <em>output_settings</em> which define what the <a class="reference internal" href="config_mesh.html#config-mesh-host"><em>host</em></a> directives look like in our MeshConfig file:</p>
@@ -465,7 +470,12 @@
 </div>
 <p>None of the fields are required but the example highlights a few common ones to set. First we can set the <em>organization_name</em>. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an <em>address_tag</em> of <em>owamp</em>. Last, we can also set a <a class="reference internal" href="config_mesh.html#config-mesh-ma"><em>measurement_archive</em></a> that we want the generated host elements to use. These look just like the same element we&#8217;d define in a MeshConfig file with a <em>type</em>, <em>read_url</em> and <em>write_url</em>.</p>
 <p>Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command:</p>
+<p><strong>RedHat/CentOS</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /var/www/html/dynamic_host_list.json
+</pre></div>
+</div>
+<p><strong>Debian</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/bin/lookup_hosts --input /etc/perfsonar/lookuphosts.conf --output /var/www/dynamic_host_list.json
 </pre></div>
 </div>
 <p>The <em>&#8211;input</em> parameter points to the file we just generated. The <em>&#8211;output</em> points to a location we we want the generated JSON file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service.</p>
@@ -541,14 +551,14 @@ include http://mesh.example/dynamic_host_list.json
 <p>The configuration of the client in terms of the MeshConfig agent is largely the same as what is described in <a class="reference internal" href="multi_mesh_agent_config.html"><em>Reading a Central Configuration File</em></a> and <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><em>MeshConfig Client Configuration</em></a>. There is not anything further to add on that file, but there is extra configuration to be done of the service that registers your clients in the lookup service. Specifically you need to do the following:</p>
 <ul class="simple">
 <li>Add a pointer to your private lookup service</li>
-<li>Configure any fields you use as a filter in lookup_hosts.conf file if they are not automatically generated (for example, fields like <em>group-communities</em>).</li>
+<li>Configure any fields you use as a filter in <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-lookup-hosts"><em>lookup hosts configuration file</em></a> if they are not automatically generated (for example, fields like <em>group-communities</em>).</li>
 </ul>
-<p>For our example we can do this simply by adding the following lines to the top of <em>/opt/perfsonar/ls_registration_daemon/etc/ls_registration_daemon.conf</em>:</p>
+<p>For our example we can do this simply by adding the following lines to the top of the <a class="reference internal" href="config_files.html#config-files-lsreg-conf-main"><em>LS Registration configuration file</em></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre>ls_instance http://private-ls.example:8090/lookup/records
 site_project example #site_project is group-communities in the lookup service
 </pre></div>
 </div>
-<p>For more information on the options available in ls_registration_daemon.conf see <a class="reference internal" href="config_ls_registration.html"><em>ls_registration_daemon.conf</em></a> for a complete configuration reference.</p>
+<p>For more information on the options available in the <a class="reference internal" href="config_files.html#config-files-lsreg-conf-main"><em>LS Registration configuration file</em></a> see <a class="reference internal" href="config_ls_registration.html"><em>Lookup Service Registration Daemon Configuration File</em></a> for a complete configuration reference.</p>
 </div>
 </div>
 <div class="section" id="examples-of-common-host-class-configurations">

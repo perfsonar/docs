@@ -83,7 +83,7 @@ As an archive administrator you may create an account that authenticates based o
 
 Configuring Measurement Hosts
 ==============================
-Each measurement host must be configured to register its data to the central archive. You do this by adding a ``measurement_archive`` block to **/opt/perfsonar_ps/regular_testing/etc/regular_testing.conf** for each type of data to be registered in the central measurement archive. Valid test types are:
+Each measurement host must be configured to register its data to the central archive. You do this by adding a ``measurement_archive`` block to the :ref:`regular testing configuration file <config_files-regtesting-conf-main>` for each type of data to be registered in the central measurement archive. Valid test types are:
 
 * esmond/latency
 * esmond/throughput
@@ -204,13 +204,20 @@ Given all the information above, lets look at an example where we want to regist
         ca_certificate_path /etc/ssl/certs
     </measurement_archive>
 
-After adding the above to you configuration you will need to restart your regular testing::
+After adding the above to you configuration you will need to restart your regular testing:
+
+**RedHat/CentOS**::
 
     /sbin/service regular_testing restart
+    
+**Debian**::
+
+    /etc/init.d/perfsonar-regulartesting restart
+
 
 Registering to Multiple Measurement Archives
 --------------------------------------------
-You may register to multiple measurement archives by adding multiple ``measurement_archive`` blocks to */opt/perfsonar_ps/regular_testing/etc/regular_testing.conf* of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following::
+You may register to multiple measurement archives by adding multiple ``measurement_archive`` blocks to the :ref:`regular testing configuration file <config_files-regtesting-conf-main>` of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following::
 
     <measurement_archive>
         type                esmond/traceroute

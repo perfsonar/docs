@@ -1,6 +1,6 @@
-***********
-bwctld.conf
-***********
+*********************************
+BWCTL Server Configuration File
+*********************************
 
 By default, the /etc/bwctld/bwctld.conf on the perfSONAR toolkit uses the following ports:
 

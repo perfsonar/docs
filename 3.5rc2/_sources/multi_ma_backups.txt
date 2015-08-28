@@ -198,6 +198,8 @@ You can then restore the data as follows::
     chown -R postgres:postgres /var/lib/pgsql/*
     /sbin/service pgsql start
 
+.. _multi_ma_backups-delete:
+
 Deleting Old Data
 =================
 

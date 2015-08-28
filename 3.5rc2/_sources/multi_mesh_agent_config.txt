@@ -21,7 +21,7 @@ The best way to discover meshes is to talk to others you test with (or would lik
 Configuring a Host To Participate in a Mesh
 ============================================
 
-Once you have the URL(s) you would like to use for you mesh configuration file, you simply need to add it to a *mesh* block in */opt/perfsonar_ps/mesh_config/etc/agent_configuration.conf*. In this block you can define the URL as follows::
+Once you have the URL(s) you would like to use for you mesh configuration file, you simply need to add it to a *mesh* block in :ref:`agent_configuration.conf <config_files-meshconfig-conf-agent>`. In this block you can define the URL as follows::
 
     <mesh>
         configuration_url             https://host.otherdomain.edu/mesh.json
@@ -37,7 +37,12 @@ Additionally if a mesh config is hosted by a server running https you can add fu
 
 You may add multiple mesh blocks to the file to participate in multiple meshes. Also note that any :doc:`manually <manage_regular_tests>` defined tests will remain intact. See the agent configuration section of :doc:`config_mesh` for more details on options in this file.
 
-Your regular tests will be updated nightly by the cronjob defined in */etc/cron.d/cron-mesh_config_agent*. If you would like to update your regular tests sooner then manually run the following::
+Your regular tests will be updated nightly by a :ref:`cron script <config_files-meshconfig-cron-generate_configuration>`. If you would like to update your regular tests sooner then manually run the following:
+
+**RedHat/CentOS**::
 
     /opt/perfsonar_ps/mesh_config/bin/generate_configuration
 
+**Debian**::
+
+    /usr/lib/perfsonar/bin/generate_configuration

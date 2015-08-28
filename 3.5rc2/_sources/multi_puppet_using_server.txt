@@ -1,6 +1,6 @@
-****************************
+**************************************
 Configuring the puppet master (server)
-****************************
+**************************************
 
 Notes
 ===============
@@ -24,7 +24,7 @@ The only part you should have to change is the hostname at the top::
 Substitute your server's hostname here. Note that this parameter is optional for the server, but if you configure it here, you can use the same puppet.conf on the clients and on the server.
 
 Installing the Puppet Module
-=======================
+============================
 
 To use the perfSONAR puppet module, `download it from Github`_. You can clone it via git or download a ZIP file.
 

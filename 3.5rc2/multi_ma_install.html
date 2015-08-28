@@ -172,7 +172,7 @@ python esmond/manage.py add_timeseries_post_user example_user
 </div>
 <div class="section" id="configuring-measurement-hosts">
 <h2>Configuring Measurement Hosts<a class="headerlink" href="#configuring-measurement-hosts" title="Permalink to this headline">¶</a></h2>
-<p>Each measurement host must be configured to register its data to the central archive. You do this by adding a <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> block to <strong>/opt/perfsonar_ps/regular_testing/etc/regular_testing.conf</strong> for each type of data to be registered in the central measurement archive. Valid test types are:</p>
+<p>Each measurement host must be configured to register its data to the central archive. You do this by adding a <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> block to the <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> for each type of data to be registered in the central measurement archive. Valid test types are:</p>
 <ul class="simple">
 <li>esmond/latency</li>
 <li>esmond/throughput</li>
@@ -185,7 +185,7 @@ python esmond/manage.py add_timeseries_post_user example_user
 <li><strong>password</strong> - The API key used to authenticate to the archive.  This can be excluded if you plan to authenticate based on IP. Example: 9130962c6b38722c0b9968e6903e1927e94e16fd</li>
 <li><strong>ca_certificate_path</strong> - For https, this is the path to a directory where CA certificates are kept that can be used to verify the presented SSL certificate from the server running the archive. Example: /etc/ssl/certs</li>
 </ol>
-<p>In addition, a <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> block contains a number of <tt class="docutils literal"><span class="pre">summary</span></tt> blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see <a class="reference internal" href="config_regular_testing.html"><em>regular_testing.conf</em></a>.</p>
+<p>In addition, a <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> block contains a number of <tt class="docutils literal"><span class="pre">summary</span></tt> blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see <a class="reference internal" href="config_regular_testing.html"><em>Regular Testing Configuration File</em></a>.</p>
 <p>Given all the information above, lets look at an example where we want to register all types of data to a measurement archive running at <em>https://acme.local/esmond/perfsonar/archive/</em>. The username and API key assigned to us by the archive administrator are <em>example_user</em> and <em>9130962c6b38722c0b9968e6903e1927e94e16fd</em> respectively. Also, since the server uses https we have installed the CA certificate in <em>/etc/ssl/certs</em>. Applying these details yields the following configuration:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;measurement_archive&gt;
     type                esmond/latency
@@ -293,12 +293,17 @@ python esmond/manage.py add_timeseries_post_user example_user
 </pre></div>
 </div>
 <p>After adding the above to you configuration you will need to restart your regular testing:</p>
+<p><strong>RedHat/CentOS</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>/sbin/service regular_testing restart
+</pre></div>
+</div>
+<p><strong>Debian</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>/etc/init.d/perfsonar-regulartesting restart
 </pre></div>
 </div>
 <div class="section" id="registering-to-multiple-measurement-archives">
 <h3>Registering to Multiple Measurement Archives<a class="headerlink" href="#registering-to-multiple-measurement-archives" title="Permalink to this headline">¶</a></h3>
-<p>You may register to multiple measurement archives by adding multiple <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> blocks to <em>/opt/perfsonar_ps/regular_testing/etc/regular_testing.conf</em> of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following:</p>
+<p>You may register to multiple measurement archives by adding multiple <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> blocks to the <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;measurement_archive&gt;
     type                esmond/traceroute
     database            https://acme.local/esmond/perfsonar/archive/
