@@ -1,6 +1,6 @@
-**************
-bwctld.limits
-**************
+******************
+BWCTL Limits File
+******************
 
 You can control access to the bwctl server via the file /etc/bwctld/bwctld.limits.
 

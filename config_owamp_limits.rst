@@ -1,6 +1,6 @@
-*************
-owampd.limits
-*************
+**************************************
+OWAMP Limits Configuration File
+**************************************
 
 You can control the total traffic load to the owamp server via the file /etc/owampd/owampd.limits.
 
