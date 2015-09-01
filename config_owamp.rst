@@ -1,6 +1,6 @@
-***********
-owampd.conf
-***********
+*************************************
+OWAMP Server Configuration File
+*************************************
 
 By default, the /etc/owampd/owampd.conf on the perfSONAR toolkit uses the following ports:
 

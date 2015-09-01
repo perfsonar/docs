@@ -261,7 +261,7 @@ We can then use the *build_json* script as described in :doc:`multi_mesh_server_
 MeshConfig Client Configuration
 --------------------------------------
 
-On each automatically configured tester you bring-up, you'll need to point it at the JSON file generated in the previous section. Assuming the JSON file is at http://mesh.example/mesh.json, you can do this in */opt/perfsonar_ps/mesh_config/etc/agent_configuration.conf* as follows::
+On each automatically configured tester you bring-up, you'll need to point it at the JSON file generated in the previous section. Assuming the JSON file is at http://mesh.example/mesh.json, you can do this in the :ref:`agent configuration file <config_files-meshconfig-conf-agent>` as follows::
 
     <mesh>
         configuration_url   http://mesh.example/mesh.json
@@ -275,10 +275,16 @@ You'll also want to set the follow if you are NOT use a Toolkit deployment or th
 
     use_toolkit 0
     
-Finally, you'll want to make sure your */opt/perfsonar_ps/regular_testing/etc/regular_testing.conf* file only has the following lines uncommented::
+Finally, you'll want to make sure your :ref:`regular testing configuration file <config_files-regtesting-conf-main>` only has the following lines uncommented:
+
+**RedHat/CentOS**:: 
 
     test_result_directory   /var/lib/perfsonar/regular_testing
 
+**Debian**:: 
+
+    test_result_directory   /var/lib/perfsonar/regulartesting
+    
 .. note:: If you have additional *measurement_archive* directives in the file then your tests will be stored there IN ADDITION to those automatically configured by the mesh. This may or may not be desirable depending on your case.
 
 .. _multi_mesh_autoconfig-fixed-tags:
@@ -313,7 +319,7 @@ Lets modify our host_class for this example to use a *tag* instead of a *netmask
     </host_class>
     ...
 
-In this case, how do we tag our agent downloading the file so that it matches this class? Normally we would do it in the :ref:`host <config_mesh-host>` directive but by definition our requesting agent does not have one of those. Instead we have to add a *local_host* block to the clients *agent_configuration.conf* file::
+In this case, how do we tag our agent downloading the file so that it matches this class? Normally we would do it in the :ref:`host <config_mesh-host>` directive but by definition our requesting agent does not have one of those. Instead we have to add a *local_host* block to the clients :ref:`agent configuration file <config_files-meshconfig-conf-agent>`::
 
     <local_host>
         tag latency
@@ -350,7 +356,7 @@ In order for this case to work you will need access to a lookup service. It is *
 MeshConfig Server Configuration
 ------------------------------- 
  
-On our MeshConfig server, the first thing we need to setup is a file that defines the hosts we want to extract from the lookup service. By default, you will find this file in */opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf*. An example of this file using a configuration that extracts all hosts running OWAMP (the service that performs one-way latency measurements) and tagged with the community *example*::
+On our MeshConfig server, the first thing we need to setup is a file that defines the hosts we want to extract from the lookup service. By default, you will find it as listed :ref:`here <config_files-meshconfig-conf-lookup_hosts>` for your operating system. An example of this file using a configuration that extracts all hosts running OWAMP (the service that performs one-way latency measurements) and tagged with the community *example*::
  
     ls_instance http://private-ls.example:8090/lookup/records
 
@@ -399,7 +405,7 @@ In our example we want *owamp* services. It may also be something like *bwctl* o
 
 If you don't define any filters then all services of the specified type in the lookup service will return. For each filter that you do define, there is a *filter_key* and a *filter_value*. The key is the name of a lookup service field name you wish to match in the **service** record. You can find a complete list of valid field names in the `Lookup Service Records reference guide <https://docs.google.com/document/u/1/d/1dEROeTwW0R4qcLHKnA2fsWEz8fQWnPKSpPVf_FuB2Vc/pub>`_. 
 
-.. note:: The lookup_hosts.conf file currently only supports fields for **service** records and not fields in the host, interface, person or other records. 
+.. note:: The :ref:`lookup hosts configuration file <config_files-meshconfig-conf-lookup_hosts>` currently only supports fields for **service** records and not fields in the host, interface, person or other records. 
 
 The *filter_value* is the value you want the field specified by the *filter_key* to take in order to match. In our example we want the *group-communities* of the service record to take the value of *example*. 
 
@@ -419,10 +425,17 @@ Finally, with our filters defined, we can create *output_settings* which define 
     
 None of the fields are required but the example highlights a few common ones to set. First we can set the *organization_name*. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an *address_tag* of *owamp*. Last, we can also set a :ref:`measurement_archive <config_mesh-ma>` that we want the generated host elements to use. These look just like the same element we'd define in a MeshConfig file with a *type*, *read_url* and *write_url*. 
 
-Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command::
+Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command:
+
+**RedHat/CentOS**::
 
     /opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /var/www/html/dynamic_host_list.json
+
+**Debian**::
     
+    /usr/lib/perfsonar/bin/lookup_hosts --input /etc/perfsonar/lookuphosts.conf --output /var/www/dynamic_host_list.json
+    
+
 The *--input* parameter points to the file we just generated. The *--output* points to a location we we want the generated JSON file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service. 
     
 .. note:: It is highly recommended you add the *lookup_hosts* command to cron so the host list is frequently updated. 
@@ -499,14 +512,14 @@ MeshConfig Client Configuration
 The configuration of the client in terms of the MeshConfig agent is largely the same as what is described in :doc:`multi_mesh_agent_config` and :ref:`multi_mesh_autoconfig-fixed-client`. There is not anything further to add on that file, but there is extra configuration to be done of the service that registers your clients in the lookup service. Specifically you need to do the following:
 
 * Add a pointer to your private lookup service
-* Configure any fields you use as a filter in lookup_hosts.conf file if they are not automatically generated (for example, fields like *group-communities*). 
+* Configure any fields you use as a filter in :ref:`lookup hosts configuration file <config_files-meshconfig-conf-lookup_hosts>` if they are not automatically generated (for example, fields like *group-communities*). 
 
-For our example we can do this simply by adding the following lines to the top of */opt/perfsonar/ls_registration_daemon/etc/ls_registration_daemon.conf*::
+For our example we can do this simply by adding the following lines to the top of the :ref:`LS Registration configuration file <config_files-lsreg-conf-main>`::
 
     ls_instance http://private-ls.example:8090/lookup/records
     site_project example #site_project is group-communities in the lookup service
     
-For more information on the options available in ls_registration_daemon.conf see :doc:`config_ls_registration` for a complete configuration reference.
+For more information on the options available in the :ref:`LS Registration configuration file <config_files-lsreg-conf-main>` see :doc:`config_ls_registration` for a complete configuration reference.
 
 .. _multi_mesh_autoconfig-examples:
 

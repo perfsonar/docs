@@ -1,6 +1,6 @@
-****************************
+*******************************
 Configuring the puppet clients
-****************************
+*******************************
 
 Notes
 ===============
@@ -8,11 +8,12 @@ Notes
 * The puppet version in `EPEL` is old (2.7.23)
 * Full configuration instructions can be found in the `Puppet Post-Install Documentation`_
 * Don't forget to create and sign a `certificate for each client node`_
+
 .. _Puppet Post-Install Documentation: http://docs.puppetlabs.com/guides/install_puppet/post_install.html 
 .. _certificate for each client node: http://docs.puppetlabs.com/guides/install_puppet/post_install.html#sign-the-new-nodes-certificate
 
 Configuring the client nodes
-================
+=============================
 
 If you have configured your server according to the example :doc:`/multi_puppet_using_server`, you can use the same puppet.conf on your client nodes. Simply copy ``/etc/puppet/puppet.conf`` from your server to any client nodes.
 

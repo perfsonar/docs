@@ -1,8 +1,8 @@
-*********************
-regular_testing.conf
-*********************
+****************************************
+Regular Testing Configuration File
+****************************************
 
-The file *regular_testing.conf* is used to define the schedule of measurements that your host will run and the location(s) where the results of those tests will be stored. In general you will not need to edit this file by hand. Most configurations use either the :doc:`central mesh configuration software <multi_overview>` (often referred to as MeshConfig) or the the :doc:`perfSONAR Toolkit web interface <manage_regular_tests>` to generate this file. Some cases where you may need to edit this file by hand are as follows (this is not an exhaustive list):
+The :ref:`regular testing configuration file <config_files-regtesting-conf-main>` is used to define the schedule of measurements that your host will run and the location(s) where the results of those tests will be stored. In general you will not need to edit this file by hand. Most configurations use either the :doc:`central mesh configuration software <multi_overview>` (often referred to as MeshConfig) or the the :doc:`perfSONAR Toolkit web interface <manage_regular_tests>` to generate this file. Some cases where you may need to edit this file by hand are as follows (this is not an exhaustive list):
 
 * You are running only a small number of non-Toolkit measurement hosts and have no central mesh defined.
 * You would like to set parameters not supported by the GUI or MeshConfig.
@@ -15,7 +15,7 @@ The basic structure of this file is as follows:
 * The list of tests you want to run
 * The list of measurement archives where data should be stored. 
 
-With these items in mind the remainder of this section contains a full reference of the options available in the *regular_testing.conf* file. 
+With these items in mind the remainder of this section contains a full reference of the options available in the ref:`regular testing configuration file <config_files-regtesting-conf-main>`. 
 
 .. _config_regular_testing-top_level:
 
@@ -834,7 +834,7 @@ powstream_cmd Directive
 
 receive_port_range Directive
 ------------------------------
-:Description: The range of ports to use for receiving UDP data packets used to perform OWAMP measurements.  Note that powstream does not talk to the local OWAMPD instance, so this needs to be set separately from the corresponding value in owampd.conf. Corresponds to powstream *-P* option.
+:Description: The range of ports to use for receiving UDP data packets used to perform OWAMP measurements.  Note that powstream does not talk to the local OWAMPD instance, so this needs to be set separately from the corresponding value in OWAMP server configuration. Corresponds to powstream *-P* option.
 :Syntax: ``receive_port_range RANGE``
 :Contexts: :ref:`parameters <config_regular_testing-parameters>`, :ref:`override_parameters <config_regular_testing-override_parameters>`, :ref:`default_parameters <config_regular_testing-default_parameters>` where :ref:`type <config_regular_testing-test-test_type>` is *powstream*
 :Occurrences:  Zero or One
