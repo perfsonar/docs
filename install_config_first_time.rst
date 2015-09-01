@@ -29,7 +29,6 @@ Follow the prompts to complete the process as shown below:
 #. After entering your password the account is created. You will be prompted if you would like to create a privileged user and disable SSH access for root account. Note that for security reasons it is recommended to disable SSH root login.  The default is to answer *yes*.
 
     .. image:: images/install_config_first_time-user5.png
-	
 #. You will get a prompt to create a new user. Enter the username you'd like to create.
 
     .. image:: images/install_config_first_time-user7.png

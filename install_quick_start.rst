@@ -17,24 +17,24 @@ These instructions are for the full Toolkit installation. For other perfSONAR in
 #. You will be prompted to create a user and password that can be used to administer the host through the web interface. Follow the prompts to complete this step.
     .. image:: images/install_config_first_time-user5.png
 #. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host
-#. Click on **Administrative Info** in the left menu and login as the user created in the previous step
+#. Click on **Edit** in the host information section of the main page or **Configuration** button in the right-upper corner and login as the web administrator user created in the previous step
     
     .. image:: images/install_quick_start-admininfo.png
-#. On the page that loads, click the *Edit* button (1) and enter the requested information in the provided fields. Click *OK* (2) and then *Save* (3) when you are done.
+#. On the page that loads, enter the requested information in the provided fields. Click **Save** when you are done.
 
     .. image:: images/install_quick_start-admininfo2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
-#. You are now ready to add some regular tests. Click on *Configure Tests* in the left menu.
+#. You are now ready to add some regular tests. Click on **Configure tests** in main page.
 
     .. image:: images/install_quick_start-configtests1.png
-#. On the page that loads use the buttons to select the types of tests you want to add (1). You will initially be prompted for test parameters. Enter a human-readable description of the tests and change any parameters you desire (2). In general the defaults will be fine for most cases. Click *Add* when done (3).
+#. On the page that loads use the buttons to select the types of tests you want to add (1). You will initially be prompted for test parameters. Enter a human-readable description of the tests and change any parameters you desire (2). In general the defaults will be fine for most cases. Click **Add** when done (3).
 
     .. image:: images/install_quick_start-configtests2.png
-#. You now need to select other hosts to test against. You may do so by explicitly adding a host or selecting a *community* and browsing the list (1). When you are done adding tests, hit *Save* (2).
+#. You now need to select other hosts to test against. You may do so by explicitly adding a host or selecting a *community* and browsing the list (1). When you are done adding tests, hit **Save** (2).
 
     .. image:: images/install_quick_start-configtests3.png
     .. seealso:: For more information on adding regular tests see :doc:`manage_regular_tests`
-#. After some time you may view the results of your tests by clicking on **Throughput/Latency Graphs** or **Traceroute Graphs** in the left menu (depending on the test type).
+#. After some time you may view the results of your tests in section **Test Results** in the main page.
 
     .. image:: images/install_quick_start-graphs.png
 
