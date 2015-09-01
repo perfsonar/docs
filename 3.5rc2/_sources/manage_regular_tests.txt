@@ -11,9 +11,9 @@ A core function of the perfSONAR Toolkit is to run regularly scheduled network m
 Accessing the Configuration interface
 =====================================
 #. Open **http://<hostname>** in your browser where **<hostname>** is the name of your toolkit host
-#. Click on *Configure Tests* in the left-hand menu
+#. Click on *Configure Tests* in near the middle of the page that loads
 
-    .. image:: images/manage_regular_tests-configtests1.png
+    .. image:: images/install_quick_start-configtests1.png
 #. Login using the web administrator username and password.
     .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
 #. The page that loads can be used to manage regular tests. See the remainder of this document for details on :ref:`adding <manage_reg_tests_add>`, :ref:`modifying <manage_reg_tests_modify>`, :ref:`disabling <manage_reg_tests_disable>` and :ref:`deleting <manage_reg_tests_delete>` tests.
@@ -108,6 +108,8 @@ Adding Regular Tests
     | Field                 | Default    | Description                         |
     +=======================+============+=====================================+    
     | Interface             | Default    | |add_params_iface|                  |
+    +-----------------------+------------+-------------------------------------+
+    | Tool                  | Default    | |add_params_traceroute_tool|        |
     +-----------------------+------------+-------------------------------------+
     | Time Between Tests    | 10 minutes | |add_params_traceroute_interval|    |
     +-----------------------+------------+-------------------------------------+
@@ -317,6 +319,7 @@ You may delete a test with the following steps:
 .. |add_params_owdelay_packet_rate|     replace:: The number of packets sent each second. Note that each OWAMP daemon has limitations on the bandwidth for tests.  If the packet rate and packet size exceed available bandwidth, tests may be denied.  
 .. |add_params_owdelay_packet_size|     replace:: The size of the packets sent.  Note that each OWAMP daemon has limitations on the bandwidth for tests.  If the packet rate and packet size exceed available bandwidth, tests may be denied.  
 
+.. |add_params_traceroute_tool|         replace:: The command-line utility used to perform the traceroute. If **Default** is selected then it will run the **tracepath** command and fall back to **traceroute** if both endpoints do not support the tool. Alternatively you can select amongst one of **tracepath**, **traceroute** or **paris-traceroute**.
 .. |add_params_traceroute_interval|     replace:: The amount of time in between tests. Traceroute tests are low bandwidth and may run every few minutes.
 .. |add_params_traceroute_packet_size|  replace:: The size of the packets sent
 .. |add_params_traceroute_first_hop|    replace:: The first hop to report starting at 1. The default is to report all hops. If you would like to hide the first few hops, set this to a value greater than 1. 
