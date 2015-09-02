@@ -29,7 +29,8 @@ Step-by-Step Guide
      .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK``
 #. Insert the media containing the ISO into the target end system
 #. Power on the host 
-#. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit in text mode** and hit enter (or wait 60 seconds for installation to automatically proceed).
+#. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit in text mode** and hit enter.
+    .. note:: By default the Full Install will use a graphical installer. This provides more options related to partitioning and may be more appropriate for those with access to a monitor. Instructions on this installation mode will be coming in a future version of this document. 
     .. image:: images/install_fullinstall-1boot.png
 #. You will next be asked to select your language. Make your choice and select **OK** to continue.
     .. image:: images/install_fullinstall-3language.png
