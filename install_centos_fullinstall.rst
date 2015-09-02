@@ -22,17 +22,15 @@ Step-by-Step Guide
 
         .. code-block:: console
 
-            $ md5sum pS-Performance_Toolkit-FullInstall-3.X.iso;cat pS-Performance_Toolkit-FullInstall-3.X.iso.md5
+            $ md5sum pS-Toolkit-3.X-FullInstall-i386.iso;cat pS-Toolkit-3.X-FullInstall-i386.iso.md5
 
 #. Mount the ISO to a DVD or USB drive 
      .. note:: The Full Install ISO is generally too large to fit on current writable CDs
      .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK``
 #. Insert the media containing the ISO into the target end system
 #. Power on the host 
-#. You will be presented with a screen asking you to select how you want to install the system. Select **Install using kickstart** and hit enter (or wait 60 seconds for installation to automatically proceed).
+#. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit in text mode** and hit enter (or wait 60 seconds for installation to automatically proceed).
     .. image:: images/install_fullinstall-1boot.png
-#. You will now be presented with a welcome screen. Use *tab* on your keyboard to select the **OK** box and hit *Enter* to continue. 
-    .. image:: images/install_fullinstall-2welcome.png
 #. You will next be asked to select your language. Make your choice and select **OK** to continue.
     .. image:: images/install_fullinstall-3language.png
 #. On the next prompt select your keyboard layout and select **OK** to continue.
