@@ -57,6 +57,7 @@ The two :doc:`bundles <install_options>` we currently provide for Debian contain
   * ls-registration daemon
   * regular-testing daemon
   * oppd
+  * meshconfig-agent to participate in a test mesh, see :doc:`multi_mesh_agent_config` for more details
   * toolkit-security containing iptables rules to protect your node, see :doc:`manage_security` for more details
   * toolkit-sysctl fine tuning your host for better performance measurements, see :doc:`manage_tuning` for more details
 
