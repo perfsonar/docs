@@ -8,7 +8,7 @@
     
     <title>Clustering a Measurement Archive &mdash; perfSONAR Toolkit 3.5rc2 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Managing Measurement Archive Data" href="multi_ma_backups.html" />
     <link rel="prev" title="Deploying a Central Measurement Archive" href="multi_ma_install.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="clustering-a-measurement-archive">
 <h1>Clustering a Measurement Archive<a class="headerlink" href="#clustering-a-measurement-archive" title="Permalink to this headline">¶</a></h1>
@@ -81,9 +81,9 @@
 </ol>
 <p>The esmond software is built on three primary components all capable of being configured in a cluster. The components are:</p>
 <ol class="arabic simple">
-<li><a class="reference external" href="https://cassandra.apache.org">Cassandra</a> - This is the database that stores the results of a measurement. Cassandra was designed with <em>horizontal scaling</em> in mind and as such provides a number of options for data replication, failovers, load balancing and adding/removing/replacing nodes over time. See <a class="reference internal" href="#multi-ma-clustering-cassandra"><em>Clustering Cassandra</em></a> for more details.</li>
-<li><a class="reference external" href="http://www.postgresql.org">PostgreSQL</a> - This is the database that stores measurement metadata (description about the tests run such as the type of test and the parameters used). It also stores the usernames, API keys and/or authorized IP addresses that are used to add new information to esmond. PostgreSQL supports a number of data replication options and tools exist to support failovers and load balancing. See <a class="reference internal" href="#multi-ma-clustering-postgresql"><em>Clustering PostgreSQL</em></a></li>
-<li><a class="reference external" href="http://www.postgresql.org">Apache httpd</a> - Esmond runs on the Apache HTTPD web server. Apache has a number of options for handling failovers and load balancing that are detailed in <a class="reference internal" href="#multi-ma-clustering-httpd"><em>Clustering Apache httpd</em></a>.</li>
+<li><a class="reference external" href="https://cassandra.apache.org">Cassandra</a> - This is the database that stores the results of a measurement. Cassandra was designed with <em>horizontal scaling</em> in mind and as such provides a number of options for data replication, failovers, load balancing and adding/removing/replacing nodes over time. See <a class="reference internal" href="#multi-ma-clustering-cassandra"><span>Clustering Cassandra</span></a> for more details.</li>
+<li><a class="reference external" href="http://www.postgresql.org">PostgreSQL</a> - This is the database that stores measurement metadata (description about the tests run such as the type of test and the parameters used). It also stores the usernames, API keys and/or authorized IP addresses that are used to add new information to esmond. PostgreSQL supports a number of data replication options and tools exist to support failovers and load balancing. See <a class="reference internal" href="#multi-ma-clustering-postgresql"><span>Clustering PostgreSQL</span></a></li>
+<li><a class="reference external" href="http://www.postgresql.org">Apache httpd</a> - Esmond runs on the Apache HTTPD web server. Apache has a number of options for handling failovers and load balancing that are detailed in <a class="reference internal" href="#multi-ma-clustering-httpd"><span>Clustering Apache httpd</span></a>.</li>
 </ol>
 <p>You may cluster some or all of the components if you so choose. For example, you could have a cassandra cluster but run PostgreSQL and Apache on a single server. It should also be noted that all of these components have been around for a number of years and the documentation that exists on clustering them is extensive. This document will do its best to identify key features and common configurations but is by no means an exhaustive list. It is highly recommended you consult each components documentation before embarking on an attempt to create a clustered configuration.</p>
 <div class="section" id="clustering-cassandra">
@@ -112,7 +112,7 @@
 <dd><ul class="first simple">
 <li><strong>TCP ports 7000 and 7001</strong> are needed for internode communication. These are only used between cassandra servers so you only need to allow the other hosts in the cluster to connect to these ports.</li>
 <li><strong>TCP port 9160</strong> is needed so esmond can communicate with the cassandra servers. You may firewall this port so only the host(s) with the esmond package installed may reach this port.</li>
-<li>You will also want <strong>TCP port 7199</strong> open <strong>FOR LOCALHOST ONLY</strong> so that you may run the <tt class="docutils literal"><span class="pre">nodetool</span></tt> command to get the status of and perform various administrator tasks on the cluster.</li>
+<li>You will also want <strong>TCP port 7199</strong> open <strong>FOR LOCALHOST ONLY</strong> so that you may run the <code class="docutils literal"><span class="pre">nodetool</span></code> command to get the status of and perform various administrator tasks on the cluster.</li>
 </ul>
 <div class="last admonition seealso">
 <p class="first admonition-title">See also</p>
@@ -121,7 +121,7 @@
 </dd>
 </dl>
 </li>
-<li><p class="first">Next we need to name our cluster. In this example we will name it &#8220;Esmond Cluster&#8221;. On each node open <em>/etc/cassandra/conf/cassandra.yaml</em> and change <tt class="docutils literal"><span class="pre">cluster_name</span></tt> to this value:</p>
+<li><p class="first">Next we need to name our cluster. In this example we will name it &#8220;Esmond Cluster&#8221;. On each node open <em>/etc/cassandra/conf/cassandra.yaml</em> and change <code class="docutils literal"><span class="pre">cluster_name</span></code> to this value:</p>
 <div class="highlight-python"><div class="highlight"><pre>cluster_name: &#39;Esmond Cluster&#39;
 </pre></div>
 </div>
@@ -146,7 +146,7 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Our two node cluster should be running. We can verify this with the <tt class="docutils literal"><span class="pre">nodetool</span> <span class="pre">status</span></tt> command on either host:</p>
+<li><p class="first">Our two node cluster should be running. We can verify this with the <code class="docutils literal"><span class="pre">nodetool</span> <span class="pre">status</span></code> command on either host:</p>
 <div class="highlight-python"><div class="highlight"><pre># nodetool status
 Note: Ownership information does not include topology; for complete information, specify a keyspace
 Datacenter: datacenter1
@@ -188,7 +188,7 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
 </pre></div>
 </div>
 </li>
-<li><p class="first">On <strong>every</strong> cassandra node, run <tt class="docutils literal"><span class="pre">nodetool</span> <span class="pre">repair</span></tt>. Do not run in parallel, wait for the command to complete before moving on to the next node. Note that running this command may take awhile depending on the amount of data.</p>
+<li><p class="first">On <strong>every</strong> cassandra node, run <code class="docutils literal"><span class="pre">nodetool</span> <span class="pre">repair</span></code>. Do not run in parallel, wait for the command to complete before moving on to the next node. Note that running this command may take awhile depending on the amount of data.</p>
 </li>
 </ol>
 </div>
@@ -208,9 +208,9 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
 <h3>Basics of Cassandra Clustering<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>It is possible to cluster your Apache httpd instances running esmond. Each esmond installation will point at the same Cassandra and PostgreSQL instances/clusters. Clustering Apache will allow incoming requests to be load-balanced and/or failover if one of your Apache instances goes down. This section highlights some of the common load balancing and failover techniques such as:</p>
 <ul class="simple">
-<li><strong>DNS Round-Robin</strong> - This approach involves registering a set of IP addresses in DNS and allowing that protocol to round-robin requests between the servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-dns"><em>DNS Round Robin</em></a> for more details.</li>
-<li><strong>mod_proxy_balancer</strong> - This approach uses a common Apache module to distribute requests between a set of configured servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-modproxy"><em>mod-proxy-balancer</em></a> for more details.</li>
-<li><strong>HAProxy and keepalived</strong> - <a class="reference external" href="http://www.haproxy.org">HAProxy</a>  and <a class="reference external" href="http://www.keepalived.org">keepalived</a> are popular open source tools for handling load balancing for a large number of requests while also providing a robust failover mechanism. See <a class="reference internal" href="#multi-ma-clustering-httpd-haproxy"><em>HAProxy and keepalived</em></a> for more details.</li>
+<li><strong>DNS Round-Robin</strong> - This approach involves registering a set of IP addresses in DNS and allowing that protocol to round-robin requests between the servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-dns"><span>DNS Round Robin</span></a> for more details.</li>
+<li><strong>mod_proxy_balancer</strong> - This approach uses a common Apache module to distribute requests between a set of configured servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-modproxy"><span>mod-proxy-balancer</span></a> for more details.</li>
+<li><strong>HAProxy and keepalived</strong> - <a class="reference external" href="http://www.haproxy.org">HAProxy</a>  and <a class="reference external" href="http://www.keepalived.org">keepalived</a> are popular open source tools for handling load balancing for a large number of requests while also providing a robust failover mechanism. See <a class="reference internal" href="#multi-ma-clustering-httpd-haproxy"><span>HAProxy and keepalived</span></a> for more details.</li>
 </ul>
 <p>This is by no means an exhaustive list of all your options. Scaling Apache is a topic that has been around for several years now, so there is no shortage of literature on the subject. The sections below will hopefully give you an idea of some of your options, but you should not heistate to do your own research in deciding the best solution for you and/or your organization.</p>
 </div>
@@ -306,7 +306,7 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -318,7 +318,7 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
         <li class="right" >
           <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -356,9 +356,9 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

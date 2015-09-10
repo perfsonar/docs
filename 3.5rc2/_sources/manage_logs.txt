@@ -53,9 +53,14 @@ Users with administrative rights may look at all the log files under **/var/log/
 
 Determining Who Is Testing to Your Host
 =======================================
-The web interface provides log analysis tools that read log files of BWCTL, OWAMP, and NDT and report who ran tests to your server and when. You can access these interfaces as follows:
 
-    #. From your toolkit web interface, click *BWCTL Log Analysis*, *OWAMP Log Analysis*, or *NDT Log Analysis* (depending on the log you want analyzed) on the left menu
+You may install a cron job that analyzes the logs of BWCTL, OWAMP, and NDT hourly and generates a report of who tested to your host when. You can install access these reports as follows:
+    #. Copy the cron script to */etc/cron.hourly*::
+    
+        cp /opt/perfsonar_ps/toolkit/scripts/logscraper.cron /etc/cron.hourly/logscraper.cron
+    #. Wait at least an hour for the script to run
+    #. Visit the old tookit web interface at *http://hostaddress/toolkit-old*
+    #. Click *BWCTL Log Analysis*, *OWAMP Log Analysis*, or *NDT Log Analysis* (depending on the log you want analyzed) on the left menu
     
         .. image:: images/manage_logs-analyze1.png
     #. Login using the web administrator username and password.
@@ -64,6 +69,7 @@ The web interface provides log analysis tools that read log files of BWCTL, OWAM
     
         .. image:: images/manage_logs-analyze2.png
 
+.. warning:: The cron script may consume significant system resources. Prior to version 3.5 the script was installed by default, but was removed due to this constraint. If you reinstall the file as detailed above, please use caution and note that it may affect your regular tests.
 
 .. |log_descr_bwctl|  replace:: Every BWCTL and OWAMP test (both on the client and server side) is logged in this file. It should be used when a BWCTL or OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an *owampd* or *bwctld* process crashes unexpectedly.
 .. |log_descr_esmond|  replace:: If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. *esmond.log* has information from the archive itself (e.g. improperly formatted requests). The HTTPD error log has information such as if esmond was able to connect to it's underlying databases. Speaking of databases, esmond connects to both Cassandra and PostgreSQL so it may be worth checking those logs as well.

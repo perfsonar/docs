@@ -8,7 +8,7 @@
     
     <title>Reading Log Files &mdash; perfSONAR Toolkit 3.5rc2 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Updating the Toolkit" href="manage_update.html" />
     <link rel="prev" title="Configuring NTP" href="manage_ntp.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="manage_ntp.html" title="Configuring NTP"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="reading-log-files">
 <h1>Reading Log Files<a class="headerlink" href="#reading-log-files" title="Permalink to this headline">¶</a></h1>
@@ -171,10 +171,19 @@
 </div>
 <div class="section" id="determining-who-is-testing-to-your-host">
 <h2>Determining Who Is Testing to Your Host<a class="headerlink" href="#determining-who-is-testing-to-your-host" title="Permalink to this headline">¶</a></h2>
-<p>The web interface provides log analysis tools that read log files of BWCTL, OWAMP, and NDT and report who ran tests to your server and when. You can access these interfaces as follows:</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p class="first">From your toolkit web interface, click <em>BWCTL Log Analysis</em>, <em>OWAMP Log Analysis</em>, or <em>NDT Log Analysis</em> (depending on the log you want analyzed) on the left menu</p>
+<dl class="docutils">
+<dt>You may install a cron job that analyzes the logs of BWCTL, OWAMP, and NDT hourly and generates a report of who tested to your host when. You can install access these reports as follows:</dt>
+<dd><ol class="first last arabic">
+<li><p class="first">Copy the cron script to <em>/etc/cron.hourly</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cp</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">perfsonar_ps</span><span class="o">/</span><span class="n">toolkit</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">logscraper</span><span class="o">.</span><span class="n">cron</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">cron</span><span class="o">.</span><span class="n">hourly</span><span class="o">/</span><span class="n">logscraper</span><span class="o">.</span><span class="n">cron</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Wait at least an hour for the script to run</p>
+</li>
+<li><p class="first">Visit the old tookit web interface at <em>http://hostaddress/toolkit-old</em></p>
+</li>
+<li><p class="first">Click <em>BWCTL Log Analysis</em>, <em>OWAMP Log Analysis</em>, or <em>NDT Log Analysis</em> (depending on the log you want analyzed) on the left menu</p>
 <blockquote>
 <div><img alt="_images/manage_logs-analyze1.png" src="_images/manage_logs-analyze1.png" />
 </div></blockquote>
@@ -194,7 +203,12 @@
 </div></blockquote>
 </li>
 </ol>
-</div></blockquote>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The cron script may consume significant system resources. Prior to version 3.5 the script was installed by default, but was removed due to this constraint. If you reinstall the file as detailed above, please use caution and note that it may affect your regular tests.</p>
+</div>
 </div>
 </div>
 
@@ -234,7 +248,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -246,7 +260,7 @@
         <li class="right" >
           <a href="manage_ntp.html" title="Configuring NTP"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -284,9 +298,9 @@
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

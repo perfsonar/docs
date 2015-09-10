@@ -8,7 +8,7 @@
     
     <title>Deploying a Central Measurement Archive &mdash; perfSONAR Toolkit 3.5rc2 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Clustering a Measurement Archive" href="multi_ma_clustering.html" />
     <link rel="prev" title="Automatic Test Configuration" href="multi_mesh_autoconfig.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="multi_mesh_autoconfig.html" title="Automatic Test Configuration"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="deploying-a-central-measurement-archive">
 <h1>Deploying a Central Measurement Archive<a class="headerlink" href="#deploying-a-central-measurement-archive" title="Permalink to this headline">¶</a></h1>
@@ -172,20 +172,20 @@ python esmond/manage.py add_timeseries_post_user example_user
 </div>
 <div class="section" id="configuring-measurement-hosts">
 <h2>Configuring Measurement Hosts<a class="headerlink" href="#configuring-measurement-hosts" title="Permalink to this headline">¶</a></h2>
-<p>Each measurement host must be configured to register its data to the central archive. You do this by adding a <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> block to the <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> for each type of data to be registered in the central measurement archive. Valid test types are:</p>
+<p>Each measurement host must be configured to register its data to the central archive. You do this by adding a <code class="docutils literal"><span class="pre">measurement_archive</span></code> block to the <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><span>regular testing configuration file</span></a> for each type of data to be registered in the central measurement archive. Valid test types are:</p>
 <ul class="simple">
 <li>esmond/latency</li>
 <li>esmond/throughput</li>
 <li>esmond/traceroute</li>
 </ul>
-<p>If you want all of the test types registered in the central archive then you will need to add three separate <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> blocks. Each block has the following values related to the central archive:</p>
+<p>If you want all of the test types registered in the central archive then you will need to add three separate <code class="docutils literal"><span class="pre">measurement_archive</span></code> blocks. Each block has the following values related to the central archive:</p>
 <ol class="arabic simple">
 <li><strong>database</strong> - This is the URL of your archive. Example: <a class="reference external" href="https://acme.local/esmond/perfsonar/archive/">https://acme.local/esmond/perfsonar/archive/</a></li>
 <li><strong>username</strong> - The username used to authenticate to the archive. This can be excluded if you plan to authenticate based on IP. Example: example_user</li>
 <li><strong>password</strong> - The API key used to authenticate to the archive.  This can be excluded if you plan to authenticate based on IP. Example: 9130962c6b38722c0b9968e6903e1927e94e16fd</li>
 <li><strong>ca_certificate_path</strong> - For https, this is the path to a directory where CA certificates are kept that can be used to verify the presented SSL certificate from the server running the archive. Example: /etc/ssl/certs</li>
 </ol>
-<p>In addition, a <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> block contains a number of <tt class="docutils literal"><span class="pre">summary</span></tt> blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see <a class="reference internal" href="config_regular_testing.html"><em>Regular Testing Configuration File</em></a>.</p>
+<p>In addition, a <code class="docutils literal"><span class="pre">measurement_archive</span></code> block contains a number of <code class="docutils literal"><span class="pre">summary</span></code> blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see <a class="reference internal" href="config_regular_testing.html"><em>Regular Testing Configuration File</em></a>.</p>
 <p>Given all the information above, lets look at an example where we want to register all types of data to a measurement archive running at <em>https://acme.local/esmond/perfsonar/archive/</em>. The username and API key assigned to us by the archive administrator are <em>example_user</em> and <em>9130962c6b38722c0b9968e6903e1927e94e16fd</em> respectively. Also, since the server uses https we have installed the CA certificate in <em>/etc/ssl/certs</em>. Applying these details yields the following configuration:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;measurement_archive&gt;
     type                esmond/latency
@@ -303,7 +303,7 @@ python esmond/manage.py add_timeseries_post_user example_user
 </div>
 <div class="section" id="registering-to-multiple-measurement-archives">
 <h3>Registering to Multiple Measurement Archives<a class="headerlink" href="#registering-to-multiple-measurement-archives" title="Permalink to this headline">¶</a></h3>
-<p>You may register to multiple measurement archives by adding multiple <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> blocks to the <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following:</p>
+<p>You may register to multiple measurement archives by adding multiple <code class="docutils literal"><span class="pre">measurement_archive</span></code> blocks to the <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><span>regular testing configuration file</span></a> of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;measurement_archive&gt;
     type                esmond/traceroute
     database            https://acme.local/esmond/perfsonar/archive/
@@ -366,7 +366,7 @@ python esmond/manage.py add_timeseries_post_user example_user
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -378,7 +378,7 @@ python esmond/manage.py add_timeseries_post_user example_user
         <li class="right" >
           <a href="multi_mesh_autoconfig.html" title="Automatic Test Configuration"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5rc2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -416,9 +416,9 @@ python esmond/manage.py add_timeseries_post_user example_user
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
