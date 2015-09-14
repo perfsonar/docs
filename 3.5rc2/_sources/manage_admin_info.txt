@@ -32,13 +32,13 @@ Editing Host Information
             The name of the organization to which this host belongs
         
         City
-            The city where the host resides.
+            The city where the host resides
         
         State
             The state, province or other country-specific region where the host resides. May be the 2-letter abbreviation if applicable.
     
         Country
-            The two-letter `ISO 3166 <http://www.iso.org/iso/home/standards/country_codes.htm>`_ country code where the host resides.
+            The country where the host resides
     
         Zip Code
             The postal code of the location where the host resides
@@ -50,12 +50,12 @@ Editing Host Information
             The email address where correspondence regarding this host may be sent
     
         Latitude
-            The latitude of the host as a signed floating-point number between -90 and 90. Note that if you are in the southern hemisphere this value should be negative.
+            The latitude of the host as a decimal number between -90 and 90. Note that if you are in the southern hemisphere, this value should be negative.
     
         Longitude
-            The longitude of the host as a signed floating-point number between -180 and 180. Note that if you are in the western hemisphere this value should be negative. 
+            The longitude of the host as a decimal number between -180 and 180. Note that if you are in the western hemisphere, this value should be negative. 
         
-#. When you are done making changes click **Save** in the bottom of the page
+#. When you are done making changes, click **Save** at the bottom of the page
 
 Adding a Community
 ==================

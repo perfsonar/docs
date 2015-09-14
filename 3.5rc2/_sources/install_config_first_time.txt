@@ -71,7 +71,7 @@ After completing this step, you should be able to access the **Global Services**
 
 Managing Toolkit Security
 =========================
-perfSONAR hosts are just like any other host and need to be actively managed to avoid being compromised. perfSONAR hosts run a number of common services, listen on numerous ports and may be outside you site's normal firewall. No set of steps will make your host invincible, but below are some steps that can be taken to contribute toward protecting your host:
+perfSONAR hosts are just like any other host and need to be actively managed to avoid being compromised. perfSONAR hosts run a number of common services, listen on numerous ports and may be outside your site's normal firewall. No set of steps will make your host invincible, but below are some steps that can be taken to contribute toward protecting your host:
  
   * An important aspect of security is to stay informed. Multiple system administrators from your site should be subscribed to the perfsonar security `announcement list <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_. This mailing list keeps users up-to-date on actions that need to be taken when critical security updates for both perfSONAR and third-party packages are released. 
   * Always follow best common security practices when it comes to creating user accounts and choosing passwords. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.
