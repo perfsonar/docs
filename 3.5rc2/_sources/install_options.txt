@@ -12,8 +12,8 @@ perfSONAR has historically been packaged as the **perfSONAR Toolkit**: an ISO co
 Starting with perfSONAR 3.5, there are several other installation options as well for certain versions of both **CentOS** and **Debian/Ubuntu**:
 
 #. **perfSONAR-Tools:** This bundle includes all tools used by perfSONAR. These tools are useful for network testing and troubleshooting in general, and we recommend you install these tools on any host where you need to maximize network performance, such as a `Data Transfer Node <http://fasterdata.es.net/science-dmz/DTN/>`_. 
-#. **perfSONAR-TestPoint:** This is the most basic perfSONAR installation, and is targeted at organizations that run a centrally managed test mesh and use a central measurement archive. It contains all perfSONAR tools, along with tools to publish the location of these services to the perfSONAR-PS Simple Lookup Service. This is also the bundle to use on :doc:`low-end hardware <low_cost_nodes>`.
-#. **perfSONAR-Core:** The perfSONAR-Core install includes everything in the perfSONAR-TestPoint install plus clients to automatically run scheduled tests over specified time intervals. 
+#. **perfSONAR-TestPoint:** This bundle is targeted at organizations that run a centrally managed test mesh and use a central measurement archive. It contains all perfSONAR tools, including those to publish the location of these services to the perfSONAR-PS Simple Lookup Service and to run scheduled measurements. This is also the bundle to use on :doc:`low-end hardware <low_cost_nodes>`.
+#. **perfSONAR-Core:** The perfSONAR-Core install includes everything in the perfSONAR-TestPoint install plus the measurement archive. 
 #. **perfSONAR-Complete:** This is the full set of perfSONAR packages Toolkit distribution. It includes everything in perfSONAR-Core and also contains web interfaces and Toolkit configuration. This provides an option for installing these packages without using the Toolkit ISO. 
 #. **perfSONAR-CentralManagement:** The perfSONAR-CentralManagement Bundle installs the :doc:`central mesh config </multi_overview>`, Maddash, centralized config service and the autoconfig. 
 
