@@ -4,7 +4,7 @@ perfSONAR on Low Cost Nodes
 
 A number of folks in the perfSONAR community have been experimenting with running perfSONAR on low cost (less than $150) hardware such as the Raspberry Pi, the cubox, and the Liva. In general this works well, with some caveats. 
 
-#. time sync issues: Some low end hardware have issues with clock drift, which impacts latency measurements. 
+#. Time sync issues: Some low end hardware have issues with clock drift, which impacts latency measurements. 
 #. CPU performance issues: current ARM processors are not able to push TCP much more than about 300Mbps. Celeron processors do better, and get around 930Mbps. 
 #. None of these devices are powerful enough to run the full perfSONAR toolkit which install a measurement archive.
 
@@ -20,7 +20,7 @@ Most of these low cost devices seem to work best running Ubuntu. The perfsonar-t
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
 
-We recommend a device with at least 1MB of RAM and 16MB of disk.
+We recommend a device with at least 1MB of RAM and 16MB of disk. At this point in time, the most extensively tested platform in this category is the `$100 Liva <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA_SPEC.aspx?DetailID=1560&LanID=0>`_. 
 
 Installation Instructions
 =========================
