@@ -39,7 +39,7 @@ Selecting the Closest Servers
 #. After a loading screen you should see a possibly new list of selected servers. Note that by default perfSONAR selects the closest servers so it is possible this list will remain unchanged.
 
     .. image:: images/manage_ntp-closest2.png
-#. Click **Save** to apply your changes. Green message appears to confirm successfull configuration change.
+#. Click **Save** to apply your changes. Green message appears to confirm successful configuration change.
 
 .. _manage_ntp-known:
 
@@ -54,7 +54,7 @@ Manually Selecting a Known Server
 #. Instead of selecting from the list of know servers you may simply click on the list of servers area and start writing the NTP server hostname or its description. Matching servers will automatically appear as available selections in the list below.
 
 	.. image:: images/manage_ntp-known3.png
-#. Click **Save** to apply your changes. Green message appears to confirm successfull configuration change.
+#. Click **Save** to apply your changes. Green message appears to confirm successful configuration change.
 
 .. _manage_ntp-manual:
 
@@ -69,7 +69,7 @@ Manually Adding a Server
 #. The new server is added to the list of known NTP servers. You may add more servers if needed. When finished click **OK** to accept the current list of NTP servers.
 
     .. image:: images/manage_ntp-add3.png
-#. The new NTP server is also automatically added to the list of currently used servers. Click **Save** to apply all changes. Green message appears to confirm successfull configuration change.
+#. The new NTP server is also automatically added to the list of currently used servers. Click **Save** to apply all changes. Green message appears to confirm successful configuration change.
 
 	.. image:: images/manage_ntp-add4.png
 	
@@ -82,7 +82,7 @@ If you wish to deselect a server so that it remains in the known servers list bu
 #. In the *NTP Servers* section, click **x** symbol next to the server you want to deselect. As a result the list no longer contains your NTP server.
 
     .. image:: images/manage_ntp-deselect1.png
-#. Click **Save** to apply your changes. Green message appears to confirm successfull configuration change.
+#. Click **Save** to apply your changes. Green message appears to confirm successful configuration change.
 
 .. _manage_ntp-delete_known:
 
@@ -96,5 +96,5 @@ You may wish to permanently remove a server from the list of known servers. This
 #. A list of NTP servers loads. Click **Delete x** next to the server you wish to remove from the list. As a result the list no longer contains your NTP server.
 
     .. image:: images/manage_ntp-delete_known1.png
-#. Click **Save** to apply your changes. Green message appears to confirm successfull configuration change.
+#. Click **Save** to apply your changes. Green message appears to confirm successful configuration change.
 
