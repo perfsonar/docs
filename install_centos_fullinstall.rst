@@ -35,15 +35,15 @@ Step-by-Step Guide using graphical installer
 ============================================
 #. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit** and hit enter.
     .. image:: images/install_fullinstall-graph-1boot.png
-#. You will next be asked to select your language. Make your choice and select **OK** to continue.
+#. You will next be asked to select your language. Make your choice and select **Next** to continue.
     .. image:: images/install_fullinstall-graph-3language.png
-#. On the next prompt select your keyboard layout and select **OK** to continue.
+#. On the next prompt select your keyboard layout and select **Next** to continue.
     .. image:: images/install_fullinstall-graph-4keyboard.png
-#. The next screen asks you to select a timezone. Make your choice and select **OK** to continue.
+#. The next screen asks you to select a timezone. Make your choice and select **Next** to continue.
     .. image:: images/install_fullinstall-graph-5timezone.png
-#. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.  After entering and confirming the password *tab* to the **OK** box and hit *Enter* on your keyboard.
+#. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.  After entering and confirming the password select **Next** to continue.
     .. image:: images/install_fullinstall-graph-6password.png
-#. The next screen asks you where you would like to install the operating and how you would like to partition the drive. After you have selected the desired partitioning scheme and hard drive, select **OK** and hit *Enter* on your keyboard. The following options are available for partitioning:
+#. The next screen asks you where you would like to install the operating and how you would like to partition the drive. After you have selected the desired partitioning scheme and hard drive, select **Next** to continue. The following options are available for partitioning:
     * *Use All Space* - Use this option if there is nothing else installed on the selected hard drive. It will remove any existing data on the hard drive and dedicate the entire disk to the operating system
     * *Replace Existing Linux System(s)* - This option removes any Linux partitions on the disk but will keep any non-Linux partitions. 
     * *Use Free Space* - This option will not touch any existing partitions and will give any remaining space to the hard drive.
