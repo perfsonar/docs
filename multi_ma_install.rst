@@ -64,6 +64,8 @@ At this point provide the administrator of the measurement host wishing to regis
 
 .. note:: There is no technical limitation preventing multiple measurement hosts from sharing a username and API key. It is up to you as an archive administrator to make a decision about whether you will share accounts between multiple measurement hosts or require unique accounts for each. It is the responsibility of both you and the measurement host administrator to follow best commons security practices and common sense in preventing unwanted parties from obtaining these credentials.
 
+.. _multi_ma_install-auth_ip:
+
 Authenticating by IP Address
 ----------------------------
 
