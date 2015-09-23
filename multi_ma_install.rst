@@ -216,6 +216,7 @@ After adding the above to you configuration you will need to restart your regula
 
     /etc/init.d/perfsonar-regulartesting restart
 
+.. note:: If you central measurement archive goes down for any reason, the regular_testing daemon will queue results on the local disk under the :ref:`test results directory <config_regular_testing-test_result_directory>` as specified in your :ref:`regular_testing.conf <config_files-regtesting-conf-main>` file. It will try to register any results on disk when your measurement archive returns. Since accumulating too many files can cause trouble for disk space and/or the regular_testing daemon's ability to keep up with registering data, these files are cleaned nightly on toolkit installations. 
 
 Registering to Multiple Measurement Archives
 --------------------------------------------
@@ -235,3 +236,4 @@ You may register to multiple measurement archives by adding multiple ``measureme
         password            5bd139bdb77a85cfe65847e44556a2883a857942
     </measurement_archive>
 
+.. note:: If one or more of your measurement archives goes down, data will continue to be registered to the running archive(s). Data for the down archives will be queued on disk and it will attempt to re-register the data when it returns (as described in the note at the bottom of the previous section). 
