@@ -64,3 +64,4 @@ Special Upgrade Notes
 =====================
 * Note that updates from versions older than 3.4 are not currently supported. You will need to do a :ref:`clean installation <GettingChooseInstall>` if you wish to move to a newer version.
 * When you upgrade from a version of the software older than 3.5, you will be asked to create a sudo user if you have not already and disable root SSH by default. It is recommended you answer yes to this question and follow the prompts to create a sudo user.
+* Version 3.5 of the Toolkit introduces a new web interface. If you wish to use the old web interface, it is still installed and can be reached by visiting *http://yourhost/toolkit-old* in your web browser. You may see the `previous version <previous_releases/3.4.2>`_ of the documentation for details on using the interface. 
