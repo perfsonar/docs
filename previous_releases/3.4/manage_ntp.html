@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuring NTP &mdash; perfSONAR Toolkit 3.4 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.4 documentation" href="index.html" />
+    <link rel="next" title="Reading Log Files" href="manage_logs.html" />
+    <link rel="prev" title="Managing Services" href="manage_services.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_logs.html" title="Reading Log Files"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_services.html" title="Managing Services"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="configuring-ntp">
+<h1>Configuring NTP<a class="headerlink" href="#configuring-ntp" title="Permalink to this headline">¶</a></h1>
+<p>For perfSONAR tests to work correctly, it is critical that the Network Time Protocol (NTP) be configured properly. Almost all the measurements require an accurate system clock to calculate time-based metrics. Failure to have a synced clock can lead to unexpected results such as negative latency values. It is recommended to sync with <strong>4-5 servers (not more)</strong>, and that they all be fairly <strong>close in proximity (less than 20ms RTT)</strong>. The perfSONAR web interface provides a convenient way to configure NTP. It allows you to select time servers using the following methods:</p>
+<ol class="arabic simple">
+<li>By default the perfSONAR Toolkit will select the five closest known servers (perfSONAR ships with a known list of NTP servers). For details on refreshing this selection see <a class="reference internal" href="#manage-ntp-closest"><em>Selecting the Closest Servers</em></a></li>
+<li>You may also manually select servers from the list of known NTP servers as detailed in <a class="reference internal" href="#manage-ntp-known"><em>Manually Selecting a Known Server</em></a></li>
+<li>Finally, you may manually define servers not in the default list as detailed in <a class="reference internal" href="#manage-ntp-manual"><em>Manually Adding a Server</em></a></li>
+</ol>
+<dl class="docutils">
+<dt>If your network can not connect to enough close servers, you&#8217;ll want to identify some additional close NTP servers. Talk to your network administrator to see what NTP servers are typically used at your site, or look here for a nearby server:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://support.ntp.org/bin/view/Servers/StratumOneTimeServers">http://support.ntp.org/bin/view/Servers/StratumOneTimeServers</a></li>
+<li><a class="reference external" href="https://support.ntp.org/bin/view/Servers/StratumTwoTimeServers">https://support.ntp.org/bin/view/Servers/StratumTwoTimeServers</a></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="http://www.pool.ntp.org">www.pool.ntp.org</a> servers are not typically accurate enough for perfSONAR&#8217;s requirements, and should be avoided.</p>
+</div>
+<div class="section" id="accessing-the-ntp-interface">
+<span id="manage-ntp-access"></span><h2>Accessing the NTP Interface<a class="headerlink" href="#accessing-the-ntp-interface" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Open <strong>http://&lt;hostname&gt;</strong> in your browser where <strong>&lt;hostname&gt;</strong> is the name of your toolkit host</p>
+</li>
+<li><p class="first">Click on <em>NTP</em> in the left-hand menu</p>
+<blockquote>
+<div><img alt="_images/manage_ntp-access.png" src="_images/manage_ntp-access.png" />
+</div></blockquote>
+</li>
+<li><dl class="first docutils">
+<dt>Login using the web administrator username and password.</dt>
+<dd><div class="first last admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account</p>
+</div>
+</dd>
+</dl>
+</li>
+<li><p class="first">The page that loads can be used to manage NTP. See the remainder of this document for details on using this interface.</p>
+<blockquote>
+<div><img alt="_images/manage_ntp-access2.png" src="_images/manage_ntp-access2.png" />
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="selecting-the-closest-servers">
+<span id="manage-ntp-closest"></span><h2>Selecting the Closest Servers<a class="headerlink" href="#selecting-the-closest-servers" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">On the main page of the NTP web interface, click <strong>Select Closest Servers</strong></p>
+<blockquote>
+<div><img alt="_images/manage_ntp-closest1.png" src="_images/manage_ntp-closest1.png" />
+</div></blockquote>
+</li>
+<li><p class="first">After a loading screen you should see a green success message with the list of selected servers below it. Note that by default perfSONAR selects the closest servers so it is possible this list will remain unchanged.</p>
+<blockquote>
+<div><img alt="_images/manage_ntp-closest2.png" src="_images/manage_ntp-closest2.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Click <strong>Save</strong> to apply your changes</p>
+</li>
+</ol>
+</div>
+<div class="section" id="manually-selecting-a-known-server">
+<span id="manage-ntp-known"></span><h2>Manually Selecting a Known Server<a class="headerlink" href="#manually-selecting-a-known-server" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">On the main page of the NTP web interface, click <strong>Manually Select Servers</strong></p>
+<blockquote>
+<div><img alt="_images/manage_ntp-known1.png" src="_images/manage_ntp-known1.png" />
+</div></blockquote>
+</li>
+<li><p class="first">A rather long list of NTP servers loads. Select the servers you&#8217;d like to use with the checkbox next to the name.  Also, be sure to recall previously mentioned guidelines about good NTP server selection (4-5 servers less than 20ms RTT away).</p>
+<blockquote>
+<div><img alt="_images/manage_ntp-known2.png" src="_images/manage_ntp-known2.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Click <strong>Save</strong> to apply your changes</p>
+</li>
+</ol>
+</div>
+<div class="section" id="manually-adding-a-server">
+<span id="manage-ntp-manual"></span><h2>Manually Adding a Server<a class="headerlink" href="#manually-adding-a-server" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">On the main page of the NTP web interface, click <strong>Add NTP server</strong></p>
+<blockquote>
+<div><img alt="_images/manage_ntp-add1.png" src="_images/manage_ntp-add1.png" />
+</div></blockquote>
+</li>
+<li><p class="first">At the prompt enter the address and a human-readable description of the NTP server and click <strong>OK</strong></p>
+<blockquote>
+<div><img alt="_images/manage_ntp-add2.png" src="_images/manage_ntp-add2.png" />
+</div></blockquote>
+</li>
+<li><p class="first">You should see a success message and your NTP server in the list</p>
+<blockquote>
+<div><img alt="_images/manage_ntp-add3.png" src="_images/manage_ntp-add3.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Click <strong>Save</strong> to apply your changes</p>
+</li>
+</ol>
+</div>
+<div class="section" id="deselecting-a-server">
+<span id="manage-ntp-remove"></span><h2>Deselecting a Server<a class="headerlink" href="#deselecting-a-server" title="Permalink to this headline">¶</a></h2>
+<p>If you wish to deselect a server so that it remains in the known servers list but is not actively used to sync the clock then perform the following steps:</p>
+<ol class="arabic">
+<li><p class="first">On the main page of the NTP web interface, click <strong>Remove</strong> next to the server you want to deselect</p>
+<blockquote>
+<div><img alt="_images/manage_ntp-deselect1.png" src="_images/manage_ntp-deselect1.png" />
+</div></blockquote>
+</li>
+<li><p class="first">On the page that loads you should see a success message and that the list no longer contains your NTP server</p>
+</li>
+<li><p class="first">Click <strong>Save</strong> to apply your changes</p>
+</li>
+</ol>
+</div>
+<div class="section" id="deleting-a-known-server">
+<span id="manage-ntp-delete-known"></span><h2>Deleting a Known Server<a class="headerlink" href="#deleting-a-known-server" title="Permalink to this headline">¶</a></h2>
+<p>You may wish to permanently remove a server from the list of known servers. This removes it from consideration for closest server entirely and prevents accidental selection of the server by removing it from the list entirely. This task may be executed with the following steps:</p>
+<ol class="arabic">
+<li><p class="first">On the main page of the NTP web interface, click <strong>Manually Select Servers</strong></p>
+<blockquote>
+<div><img alt="_images/manage_ntp-known1.png" src="_images/manage_ntp-known1.png" />
+</div></blockquote>
+</li>
+<li><p class="first">A rather long list of NTP servers loads. Click <strong>Delete</strong> next to the server you wish to remove from the list</p>
+<blockquote>
+<div><img alt="_images/manage_ntp-delete_known1.png" src="_images/manage_ntp-delete_known1.png" />
+</div></blockquote>
+</li>
+<li><p class="first">A success message should display indicating the server was deleted and it should no longer be in the list</p>
+</li>
+<li><p class="first">Click <strong>Save</strong> to apply your changes</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Configuring NTP</a><ul>
+<li><a class="reference internal" href="#accessing-the-ntp-interface">Accessing the NTP Interface</a></li>
+<li><a class="reference internal" href="#selecting-the-closest-servers">Selecting the Closest Servers</a></li>
+<li><a class="reference internal" href="#manually-selecting-a-known-server">Manually Selecting a Known Server</a></li>
+<li><a class="reference internal" href="#manually-adding-a-server">Manually Adding a Server</a></li>
+<li><a class="reference internal" href="#deselecting-a-server">Deselecting a Server</a></li>
+<li><a class="reference internal" href="#deleting-a-known-server">Deleting a Known Server</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="manage_services.html">Previous topic</a>
+                  <ul><li><a href="manage_services.html" title="previous chapter">Managing Services</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_logs.html">Next topic</a>
+                      <ul><li><a href="manage_logs.html" title="next chapter">Reading Log Files</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_logs.html" title="Reading Log Files"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_services.html" title="Managing Services"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.net/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2014, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
