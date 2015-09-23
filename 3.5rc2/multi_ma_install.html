@@ -147,7 +147,7 @@ python esmond/manage.py add_timeseries_post_user example_user
 </div>
 </div>
 <div class="section" id="authenticating-by-ip-address">
-<h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this headline">¶</a></h3>
+<span id="multi-ma-install-auth-ip"></span><h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this headline">¶</a></h3>
 <p>As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a username and password (API key) to be defined for each host in their regular testing file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows:</p>
 <ol class="arabic">
 <li><p class="first">Change to the esmond install directory:</p>
@@ -301,6 +301,10 @@ python esmond/manage.py add_timeseries_post_user example_user
 <div class="highlight-python"><div class="highlight"><pre>/etc/init.d/perfsonar-regulartesting restart
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you central measurement archive goes down for any reason, the regular_testing daemon will queue results on the local disk under the <a class="reference internal" href="config_regular_testing.html#config-regular-testing-test-result-directory"><em>test results directory</em></a> as specified in your <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular_testing.conf</em></a> file. It will try to register any results on disk when your measurement archive returns. Since accumulating too many files can cause trouble for disk space and/or the regular_testing daemon&#8217;s ability to keep up with registering data, these files are cleaned nightly on toolkit installations.</p>
+</div>
 <div class="section" id="registering-to-multiple-measurement-archives">
 <h3>Registering to Multiple Measurement Archives<a class="headerlink" href="#registering-to-multiple-measurement-archives" title="Permalink to this headline">¶</a></h3>
 <p>You may register to multiple measurement archives by adding multiple <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> blocks to the <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following:</p>
@@ -318,6 +322,10 @@ python esmond/manage.py add_timeseries_post_user example_user
     password            5bd139bdb77a85cfe65847e44556a2883a857942
 &lt;/measurement_archive&gt;
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If one or more of your measurement archives goes down, data will continue to be registered to the running archive(s). Data for the down archives will be queued on disk and it will attempt to re-register the data when it returns (as described in the note at the bottom of the previous section).</p>
 </div>
 </div>
 </div>
