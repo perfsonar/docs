@@ -29,3 +29,24 @@ This will generate a set of HTML files that can be opened in your browser under 
 ##Deploying Documentation to docs.perfsonar.net
 
 Simply push your changes to the master branch and the documentation will be published within 15 minutes to http://docs.perfsonar.net. This is handled by a script running on the hosting server that polls the git repository every 15 minutes and rebuilds the site if changes are detected. If you can't wait that long, run `make html` followed by `deploy.sh` to deploy your changes.
+
+### Deploying a previous release
+
+A script is provided to deploy documentation for previous releases. The basic process is that the documentation for the previous release must be tagged on master where the version number is the tag. This will in turn create a link under /previous_releases/VERSION with the old version of the documentation. 
+
+Following the process above, the first step is to create the tag, where *TAG* is the version number (e.g. 3.4.2) and *COMMIT* is the commit hash (e.g. 4305a6e72c0df0b929412fea19f7402f74b1ab8f):
+
+```bash
+git tag TAG COMMIT
+```
+
+Next we simply run the *deploy_prev_release.sh* script to publish the tag (again substituting TAG with the version number):
+
+```bash
+./deploy_prev_release.sh TAG
+```
+
+Finally, you will want to add a link to *previous_releases.rst* and publish by hand when you are ready to share.
+
+
+
