@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Publishing a Central Configuration File &mdash; perfSONAR Toolkit 3.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.4.2 documentation" href="index.html" />
+    <link rel="next" title="Reading a Central Configuration File" href="multi_agent_config.html" />
+    <link rel="prev" title="Central Configuration Overview" href="multi_overview.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="multi_agent_config.html" title="Reading a Central Configuration File"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="multi_overview.html" title="Central Configuration Overview"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="publishing-a-central-configuration-file">
+<h1>Publishing a Central Configuration File<a class="headerlink" href="#publishing-a-central-configuration-file" title="Permalink to this headline">¶</a></h1>
+<p>This page details how to create and publish a central configuration that can be consumed by multiple perfSONAR hosts to build their regular testing configuration. The steps to do so can be broken down as follows and are covered in the remainder of this document:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#multi-service-config-install"><em>Installing the Required Software</em></a> -  If you are building the configuration file on a perfSONAR Toolkit host you may skip this step as your host has everything it needs. Otherwise, you need to install some tools to help build the configuration files.</li>
+<li><a class="reference internal" href="#multi-service-config-gen"><em>Generating the Configuration</em></a> - You will need to generate a configuration file in the proper format that defines all the tests you want run.</li>
+<li><a class="reference internal" href="#multi-service-config-json"><em>Converting to JSON</em></a> - The configuration file in the last step will need o be converted to JSON which is the format consumers of the file will understand</li>
+<li><a class="reference internal" href="#multi-service-config-publish"><em>Publishing</em></a> - The JSON version of the configuration file will need to be published to a web server reachable by the perfSONAR that need to read it to generate there regular tests.</li>
+</ol>
+<div class="section" id="installing-the-required-software">
+<span id="multi-service-config-install"></span><h2>Installing the Required Software<a class="headerlink" href="#installing-the-required-software" title="Permalink to this headline">¶</a></h2>
+<p>If you are building the configuration file on a perfSONAR Toolkit host you may skip this step as your host has everything it needs. Otherwise, you will need to install the tool used to convert the configuration you build to its final format. You can install this tool via <em>yum</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will need to point your system at the Internet2 yum repository as detailed at their <a class="reference external" href="http://software.internet2.edu">software site</a>.</p>
+</div>
+<p>You may install the package with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install perl-perfSONAR_PS-MeshConfig-JSONBuilder
+</pre></div>
+</div>
+</div>
+<div class="section" id="generating-the-configuration">
+<span id="multi-service-config-gen"></span><h2>Generating the Configuration<a class="headerlink" href="#generating-the-configuration" title="Permalink to this headline">¶</a></h2>
+<p>You need to build a configuration file using your favorite text editor. The syntax of the file is in <a class="reference external" href="http://httpd.apache.org/docs/current/configuring.html">Apache configuration format</a>. For a full list of options see <a class="reference internal" href="config_mesh.html"><em>Mesh Configuration</em></a>. It is also helpful to look at a few examples:</p>
+<ul class="simple">
+<li>Login to any perfSONAR Toolkit node and look at <em>/opt/perfsonar_ps/mesh_config/doc/example.conf</em></li>
+<li><a class="reference external" href="http://www.es.net">ESnet</a> makes the mesh configuration files they use for their regular testing available <a class="reference external" href="https://github.com/esnet/esnet-perfsonar-mesh">here</a>.</li>
+</ul>
+<p>Let&#8217;s take a quick look at a simple example:</p>
+<div class="highlight-python"><div class="highlight"><pre>description Example Mesh Config
+
+&lt;administrator&gt;
+  name       John Smith
+  email      jsmith@acme.local
+&lt;/administrator&gt;
+
+&lt;organization&gt;
+    description     Acme Examples, Inc
+
+    &lt;site&gt;
+        &lt;host&gt;
+              description Acme East
+              address east-bwctl.acme.local
+              address east-owamp.acme.local
+        &lt;/host&gt;
+    &lt;/site&gt;
+
+     &lt;site&gt;
+        &lt;host&gt;
+              description Acme West
+              address west-bwctl.acme.local
+              address west-owamp.acme.local
+        &lt;/host&gt;
+    &lt;/site&gt;
+&lt;/organization&gt;
+
+&lt;test_spec bwctl_test&gt;
+  type              perfsonarbuoy/bwctl  # Perform a bwctl test (i.e. achievable bandwidth)
+  tool              bwctl/iperf3         # Use &#39;iperf&#39; to do the bandwidh test
+  protocol          tcp                  # Run a TCP bandwidth test
+  interval          21600                # Run the test every 6 hours
+  duration          20                   # Perform a 20 second test
+  force_bidirectional 1                  # do bidirectional test
+  random_start_percentage 10             # randomize start time
+  omit_interval     5                    # ignore first few seconds of test
+&lt;/test_spec&gt;
+
+&lt;test_spec owamp_test&gt;
+  type              perfsonarbuoy/owamp  # Perform a constant low-bandwidth OWAMP test
+  packet_interval   0.1                  # Send 10 packets every second (i.e. pause 0.1 seconds between each packet)
+  loss_threshold    10                   # Wait no more than 10 seconds for a response
+  session_count     10800                # Refresh the test every half hour (once every 18000 packets)
+  sample_count      600                  # Send results back every 60 seconds (once every 600 packets)
+  packet_padding    0                    # The size of the packets (not including the IP/UDP headers)
+  bucket_width      0.0001               # The granularity of the measurements
+  force_bidirectional 1                  # do bidirectional test
+&lt;/test_spec&gt;
+
+
+&lt;group acme_bwctl_group&gt;
+    type       mesh
+
+    member     east-bwctl.acme.local
+    member     west-bwctl.acme.local
+&lt;/group&gt;
+
+&lt;group acme_owamp_group&gt;
+    type       mesh
+
+    member     east-owamp.acme.local
+    member     west-owamp.acme.local
+&lt;/group&gt;
+
+&lt;test&gt;
+  description       Example Throughput Testing
+  group             acme_bwctl_group
+  test_spec         bwctl_test
+&lt;/test&gt;
+
+&lt;test&gt;
+  description       Example OWAMP Testing
+  group             acme_owamp_group
+  test_spec         owamp_test
+&lt;/test&gt;
+</pre></div>
+</div>
+<p>Let&#8217;s take a closer look at each section:</p>
+<ul class="simple">
+<li>The first thing we define is an <strong>administrator</strong> with a name and email. This is simply contact information if someone has questions about the mesh. You may define multiple administrator blocks.</li>
+<li>The second block is the <strong>organization</strong>. Here we provide the name of the organization and a list of <strong>site</strong> blocks. A site represents a physical location, such as if you an organization has a North American and European office. This construct is not relevant to the test and is primarily there for keeping things organized. In the example we only have one organization, <em>Acme Examples, Inc.</em> and they have two sites: <em>Acme East</em> and <em>Acme West</em>.</li>
+<li>Inside each <strong>site</strong> block is one or more <strong>host</strong> blocks. This is where we define the location of perfSONAR hosts that will perform tests. A host may have one or more <em>addresses</em>. In this example each site has one host and each host has two addresses. Each address corresponds to a different interface on the host. We can specify which address we want a test to use later to allow for regular testing to select the desired interface. For more information on hosts with multiple interfaces see <a class="reference internal" href="manage_dual_xface.html"><em>Configuring a Host with Multiple Interfaces</em></a>.</li>
+<li>The <strong>test_spec</strong> blocks define the parameters of our test. In this example we have two test specs: one defining BWCTL throughput test parameters and another defining OWAMP test parameters.</li>
+<li>The <strong>group</strong> blocks define different testing topologies. In this example we define two groups each with a <em>mesh</em> topology (meaning every group member tests to all other group members). In this example they each have two members, one contains both the interfaces to be used for BWCTL tests another contains both the interfaces to be used for OWAMP tests.</li>
+<li>Finally, the <strong>test</strong> blocks bring everything together by associating a <em>group</em> and <em>test_spec</em>. This means all tests will be run given the group topology using the given test specification&#8217;s parameters.</li>
+</ul>
+<p>That&#8217;s the basic idea and considerable variation can be seen in these files. As indicated earlier the best resource is to look at the provided examples and the <a class="reference internal" href="config_mesh.html"><em>syntax guide</em></a> for more details.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is an important file! You should create back-ups if possible or consider putting it in some type of source control repository (git, subversion, etc). Losing this file after putting effort into building a large test configuration can be very frustrating, so avoid that pitfall if you can.</p>
+</div>
+</div>
+<div class="section" id="converting-to-json">
+<span id="multi-service-config-json"></span><h2>Converting to JSON<a class="headerlink" href="#converting-to-json" title="Permalink to this headline">¶</a></h2>
+<p>Once you have created your configuration file, you will need to convert it to a JSON format. This format is the one understood by the perfSONAR client software reading it, but is not so easily generated by a human with a text editor (hence the conversion step). You will need to run the command <em>/opt/perfsonar_ps/mesh_config/bin/build_json</em> and give it the location of the configuration file to be converted and the file to output the JSON. The example below accepts the configuration file <em>example.conf</em> as input and outputs to <em>/var/www/html/example.json</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/mesh_config/bin/build_json -o /var/www/html/example.json example.conf
+</pre></div>
+</div>
+<p>Replace those paths with values appropriate to your setup. If it throws any errors it may be because of a syntax error so go back and review your file carefully. After the command successfully runs you should have a file to publish.</p>
+</div>
+<div class="section" id="publishing">
+<span id="multi-service-config-publish"></span><h2>Publishing<a class="headerlink" href="#publishing" title="Permalink to this headline">¶</a></h2>
+<p>Once you have a JSON file you simply need to copy it to a web server. A few other things to consider when publishing your file:</p>
+<ul class="simple">
+<li>It is recommended you configure your web server with https. The encryption aspect of https is less important here as you are not passing around sensitive information, but the server authentication aspects have real value. This will allow those reading the file to verify the identity of the server and help prevent certain types of attacks.</li>
+<li>There should be no sensitive information in the generated JSON. If you are concerned about restricting access, it is recommended you use methods such as iptables or similar to restrict IPs that have access to the web server hosting the JSON file.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Publishing a Central Configuration File</a><ul>
+<li><a class="reference internal" href="#installing-the-required-software">Installing the Required Software</a></li>
+<li><a class="reference internal" href="#generating-the-configuration">Generating the Configuration</a></li>
+<li><a class="reference internal" href="#converting-to-json">Converting to JSON</a></li>
+<li><a class="reference internal" href="#publishing">Publishing</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="multi_overview.html">Previous topic</a>
+                  <ul><li><a href="multi_overview.html" title="previous chapter">Central Configuration Overview</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="multi_agent_config.html">Next topic</a>
+                      <ul><li><a href="multi_agent_config.html" title="next chapter">Reading a Central Configuration File</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="multi_agent_config.html" title="Reading a Central Configuration File"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="multi_overview.html" title="Central Configuration Overview"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2014, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
