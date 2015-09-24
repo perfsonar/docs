@@ -31,8 +31,10 @@ Downloading installation media and booting the system
 	
 Step-by-Step Guide using graphical installer
 ============================================
-	.. note:: NetInstall will use a text mode for a few first screens. After downloading the image it will enter graphical mode.
+.. note:: NetInstall will use a text mode for a few first screens. After downloading the image it will enter graphical mode.
 	
+#. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit** and hit enter.
+    .. image:: images/install_netinstall-graph-1boot.png
 #. You will first be asked to select your language. Make your choice and select **OK** to continue.
     .. image:: images/install_netinstall-language.png
 #. On the next prompt select your keyboard layout and select **OK** to continue.
@@ -56,8 +58,6 @@ Step-by-Step Guide using graphical installer
 
 #. The next screen will download some of the initial installation files. If any errors occur during this phase, you may need to check your network settings. 
     .. image:: images/install_netinstall-2retrieve.png
-#. You will now be presented with a welcome screen. Use *tab* on your keyboard to select the **OK** box and hit *Enter* to continue. 
-    .. image:: images/install_netinstall-graph-1welcome.png
 #. You will next be prompted to choose your timezone. You may do so by using the *tab* and *arrow* keys on your keyboard. When you have chosen your timezone, *tab* to the **OK** box and hit *Enter*.
     .. image:: images/install_netinstall-graph-3timezone.png
 #. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach. After entering and confirming the password *tab* to the **OK** box and hit *Enter* on your keyboard.
@@ -68,6 +68,7 @@ Step-by-Step Guide using graphical installer
     * *Use free space* - This option will not touch any existing partitions and will give any remaining space to the hard drive.
 
     .. image:: images/install_netinstall-graph-5drive.png
+    .. note:: You may select the *Review and modify partitioning layout* checkbox to setup a custom partitioning scheme
 #. You will now see a series of loading screesn as packages are downloaded and installed. You do not need to do anything except wait. 
     .. note:: This process may take several minutes or longer depending on your network connectivity to the download server.
     .. image:: images/install_netinstall-graph-6retrieveinfo.png
@@ -81,12 +82,14 @@ Step-by-Step Guide using graphical installer
 #. If the installation is successful you will be presented with the screen below. Select **Reboot** to restart the host. 
     .. image:: images/install_netinstall-graph-10endinstall.png
 #. After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to :doc:`install_config_first_time`
-    .. image:: images/install_netinstall-graph-11login.png
+    .. image:: images/install_netinstall-11login.png
 
-	.. _install_centos_net_text:
+.. _install_centos_net_text:
 
 Step-by-Step Guide using text mode
 ==================================
+#. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit in text mode** and hit enter.
+    .. image:: images/install_netinstall-1boot.png
 #. You will be first asked to select your language. Make your choice and select **OK** to continue.
     .. image:: images/install_netinstall-language.png
 #. On the next prompt select your keyboard layout and select **OK** to continue.
