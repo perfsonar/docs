@@ -152,7 +152,7 @@ If you have installed the perfSONAR_PS-Toolkit-security package, then you can co
 The package also installs fail2ban.
 
 
-Or, if you would like to configure the rules manually, then please review `perfSONAR FAQ entry <http://www.perfsonar.net/about/faq/#Q6>`_ and/or the `document here <http://stats.es.net/ps-downloads/20130308-Firewall-PerfWG.pdf>`_ on the ports that need to be open.
+Or, if you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
 Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctld.limits. You may read the bwctld.limits man page or look at the example file provided under /etc/bwctld/bwctld.limits file. ESnet uses a bwctld.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
 
