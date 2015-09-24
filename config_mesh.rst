@@ -804,7 +804,7 @@ no_agent Directive
 -------------------
 :Description: Defines an :ref:`address <config_mesh-address>` that will not initiate tests when used in this group. This will override the :ref:`no_agent <config_mesh-host-no_agent>` field specified in the :ref:`host <config_mesh-host>` directive if defined. It is recommended you use the host directive to define this if a address cannot initiate tests for any group. Only use this form if you want a host to initiate tests when used in some groups but not others. 
 :Syntax: ``no_agent ADDRESS``
-:Contexts: :ref:`group <config_mesh-group>` where :ref:`type <config_mesh-group-type>` is *mesh*, *ordered_mesh* or *star*
+:Contexts: :ref:`group <config_mesh-group>`
 :Occurrences:  Zero or more
 :Compatibility: 3.3 or later
 
