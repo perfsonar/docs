@@ -184,7 +184,13 @@ Regular Testing
    
    config_regular_testing
 
+Previous Releases
+-----------------
+.. toctree::
+   :maxdepth: 1
    
+   previous_releases
+
 Further Information
 -------------------
 * `Project Homepage <http://www.perfsonar.net>`_
