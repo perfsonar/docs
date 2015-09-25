@@ -82,45 +82,56 @@ An example that will block access to port 8000 for all traffic is shown in the s
         Table: filter
         Chain INPUT (policy ACCEPT)
         num  target     prot opt source               destination         
-        1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
-        2    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED 
-        3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:22 
-        4    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           state NEW udp spt:547 dpt:546 
-        5    REJECT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8000 reject-with icmp-port-unreachable 
-        6    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0           
-        7    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable 
+        1    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0           
 
         Chain FORWARD (policy ACCEPT)
         num  target     prot opt source               destination         
-        1    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable 
 
         Chain OUTPUT (policy ACCEPT)
         num  target     prot opt source               destination         
-        1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
 
         Chain perfSONAR (1 references)
         num  target     prot opt source               destination         
         1    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255 
-        2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 state NEW,ESTABLISHED 
-        3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:443 state NEW,ESTABLISHED 
-        4    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp 
-        5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634 
-        6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8000 
-        7    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8001:8020 
-        8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7123 
-        9    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:3001:3003 
-        10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:861 
-        11   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960 
-        12   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:4823 
-        13   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200 
-        14   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200 
-        15   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5000:5600 
-        16   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5000:5900 
-        17   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:10101:10300 
-        18   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:10101:10300 
-        19   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7 
-        20   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:7 
-        21   RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
+        2    ACCEPT     icmpv6--  0.0.0.0/0            0.0.0.0/0           
+        3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 state NEW,ESTABLISHED 
+        4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:443 state NEW,ESTABLISHED 
+        5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp 
+        6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8090 
+        7    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634 
+        8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8000 
+        9    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8001:8020 
+        10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:843 
+        11   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7123 
+        12   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:3001:3003 
+        13   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:861 
+        14   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960 
+        15   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:4823 
+        16   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200 
+        17   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200 
+        18   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5000:5900 
+        19   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5000:5900 
+        20   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300 
+        21   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5001:5300 
+        22   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300 
+        23   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5001:5300 
+        24   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600 
+        25   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5301:5600 
+        26   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600 
+        27   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5301:5600 
+        28   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900 
+        29   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5601:5900 
+        30   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900 
+        31   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5601:5900 
+        32   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200 
+        33   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200 
+        34   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200 
+        35   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200 
+        36   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960 
+        37   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8760:9960 
+        38   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960 
+        39   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8760:9960 
+        40   RETURN     all  --  0.0.0.0/0            0.0.0.0/0      
 
 .. note:: Prior to version 3.4, custom firewall rules were not handled properly. As such you may find that when upgrading from versions older than 3.4 that you will lose any custom rules. Following the steps above should ensure your rules are maintained for updates beyond 3.4 in the foreseeable future.
 
