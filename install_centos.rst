@@ -62,10 +62,10 @@ Step 2: Install RPM
 
     Or, you can manually install them by running:  
 
-     * ``yum install perfSONAR_PS-Toolkit-service-watcher``
-     * ``yum install perfSONAR_PS-Toolkit-ntp``
-     * ``yum install perfSONAR_PS-Toolkit-security``
-     * ``yum install perfSONAR_PS-Toolkit-sysctl``
+     * ``yum install perl-perfSONAR_PS-Toolkit-service-watcher``
+     * ``yum install perl-perfSONAR_PS-Toolkit-ntp``
+     * ``yum install perl-perfSONAR_PS-Toolkit-security``
+     * ``yum install perl-perfSONAR_PS-Toolkit-sysctl``
 
 In particular, you should install perfSONAR_PS-Toolkit-ntp if you are not managing your ntp.conf file in some other manner.
 
@@ -84,10 +84,10 @@ In particular, you should install perfSONAR_PS-Toolkit-ntp if you are not managi
 
     Or, you can manually install them by running:
 
-       * ``yum install perfSONAR_PS-Toolkit-service-watcher``
-       * ``yum install perfSONAR_PS-Toolkit-ntp``
-       * ``yum install perfSONAR_PS-Toolkit-security``
-       * ``yum install perfSONAR_PS-Toolkit-sysctl``
+       * ``yum install perl-perfSONAR_PS-Toolkit-service-watcher``
+       * ``yum install perl-perfSONAR_PS-Toolkit-ntp``
+       * ``yum install perl-perfSONAR_PS-Toolkit-security``
+       * ``yum install perl-perfSONAR_PS-Toolkit-sysctl``
 
 
 
