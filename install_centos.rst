@@ -113,7 +113,7 @@ Step 3: Verify NTP and Tuning Parameters
   
     If the optional package was installed, then run::
     
-    /opt/perfsonar_ps/toolkit/scripts/system_environment/configure_ntpd
+    /opt/perfsonar_ps/toolkit/scripts/configure_ntpd
     /opt/perfsonar_ps/toolkit/scripts/system_environment/enable_ntpd
 
   - **Manual**: 
@@ -132,7 +132,7 @@ Step 3: Verify NTP and Tuning Parameters
     
     Run::  
 
-    /opt/perfsonar_ps/toolkit/scripts/system_environment/configure_sysctl
+    /opt/perfsonar_ps/toolkit/scripts/configure_sysctl
 
   - **Manual Tuning**
     
