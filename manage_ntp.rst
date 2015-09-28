@@ -19,67 +19,70 @@ If your network can not connect to enough close servers, you'll want to identify
 Accessing the NTP Interface
 ===========================
 #. Open **http://<hostname>** in your browser where **<hostname>** is the name of your toolkit host
-#. Click on *NTP* in the left-hand menu
+#. Click on **Configuration** button in the right-upper corner of the main page and login as the web administrator user
 
     .. image:: images/manage_ntp-access.png
-#. Login using the web administrator username and password.
+
     .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
-#. The page that loads can be used to manage NTP. See the remainder of this document for details on using this interface.
+#. In the page that loads select *Host* tab to access NTP configuration. Section *NTP Servers* in the page that loads can be used to manage NTP. See the remainder of this document for details on using this interface.
 
         .. image:: images/manage_ntp-access2.png
-
 
 .. _manage_ntp-closest:
 
 Selecting the Closest Servers
 =============================
 
-#. On the main page of the NTP web interface, click **Select Closest Servers**
+#. In order to refresh and select the closest NTP servers, go to the *NTP Servers* section and click **Select the closest servers**
 
     .. image:: images/manage_ntp-closest1.png
-#. After a loading screen you should see a green success message with the list of selected servers below it. Note that by default perfSONAR selects the closest servers so it is possible this list will remain unchanged.
+#. After a loading screen you should see a possibly new list of selected servers. Note that by default perfSONAR selects the closest servers so it is possible this list will remain unchanged.
 
     .. image:: images/manage_ntp-closest2.png
-#. Click **Save** to apply your changes
+#. Click **Save** to apply your changes. Green message appears to confirm successful configuration change.
 
 .. _manage_ntp-known:
 
 Manually Selecting a Known Server
 =================================
-#. On the main page of the NTP web interface, click **Manually Select Servers**
+#. In order to manually select a known NTP server available in a list of known servers, go to the *NTP Servers* section and click on the list of servers area.
 
     .. image:: images/manage_ntp-known1.png
-#. A rather long list of NTP servers loads. Select the servers you'd like to use with the checkbox next to the name.  Also, be sure to recall previously mentioned guidelines about good NTP server selection (4-5 servers less than 20ms RTT away).
+#. A list of NTP servers opens. Select the servers you'd like to use (highlighted in blue). Other servers already selected in a list are highlighted in grey. Use *Ctrl* and *Shift* keys to select multiple servers at once. Selected servers will immediately be added to the list. Also, be sure to recall previously mentioned guidelines about good NTP server selection (4-5 servers less than 20ms RTT away).
 
     .. image:: images/manage_ntp-known2.png
-#. Click **Save** to apply your changes
+#. Instead of selecting from the list of know servers you may simply click on the list of servers area and start writing the NTP server hostname or its description. Matching servers will automatically appear as available selections in the list below.
+
+	.. image:: images/manage_ntp-known3.png
+#. Click **Save** to apply your changes. Green message appears to confirm successful configuration change.
 
 .. _manage_ntp-manual:
 
 Manually Adding a Server
 ========================
-#. On the main page of the NTP web interface, click **Add NTP server**
+#. In order to manually add an NTP server not yet available in a list of known servers, go to the *NTP Servers* section, click **Manage available NTP servers**
 
     .. image:: images/manage_ntp-add1.png
-#. At the prompt enter the address and a human-readable description of the NTP server and click **OK**
+#. In the windows that opens enter the address and a human-readable description of the NTP server and click **Add server**. 
 
     .. image:: images/manage_ntp-add2.png
-#. You should see a success message and your NTP server in the list
+#. The new server is added to the list of known NTP servers. You may add more servers if needed. When finished click **OK** to accept the current list of NTP servers.
 
     .. image:: images/manage_ntp-add3.png
-#. Click **Save** to apply your changes
+#. The new NTP server is also automatically added to the list of currently used servers. Click **Save** to apply all changes. Green message appears to confirm successful configuration change.
 
+	.. image:: images/manage_ntp-add4.png
+	
 .. _manage_ntp-remove:
 
 Deselecting a Server
 ====================
 If you wish to deselect a server so that it remains in the known servers list but is not actively used to sync the clock then perform the following steps:
 
-#. On the main page of the NTP web interface, click **Remove** next to the server you want to deselect
+#. In the *NTP Servers* section, click **x** symbol next to the server you want to deselect. As a result the list no longer contains your NTP server.
 
     .. image:: images/manage_ntp-deselect1.png
-#. On the page that loads you should see a success message and that the list no longer contains your NTP server
-#. Click **Save** to apply your changes
+#. Click **Save** to apply your changes. Green message appears to confirm successful configuration change.
 
 .. _manage_ntp-delete_known:
 
@@ -87,12 +90,11 @@ Deleting a Known Server
 =======================
 You may wish to permanently remove a server from the list of known servers. This removes it from consideration for closest server entirely and prevents accidental selection of the server by removing it from the list entirely. This task may be executed with the following steps:
 
-#. On the main page of the NTP web interface, click **Manually Select Servers**
+#. In the *NTP Servers* section, click **Manage available NTP servers**
 
-    .. image:: images/manage_ntp-known1.png
-#. A rather long list of NTP servers loads. Click **Delete** next to the server you wish to remove from the list
+    .. image:: images/manage_ntp-add1.png
+#. A list of NTP servers loads. Click **Delete x** next to the server you wish to remove from the list. As a result the list no longer contains your NTP server.
 
     .. image:: images/manage_ntp-delete_known1.png
-#. A success message should display indicating the server was deleted and it should no longer be in the list
-#. Click **Save** to apply your changes
+#. Click **Save** to apply your changes. Green message appears to confirm successful configuration change.
 

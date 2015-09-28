@@ -13,12 +13,12 @@ One of the most important parts about managing multiple hosts is maintaining the
 
 You can find information on each of the steps outlined by the diagram in the following sections:
 
-    * **Step 1** of defining the configuration file and **step 2** of publishing the configuration to the web are covered in :doc:`multi_server_config`. This will be beneficial to administrators planning to run a central configuration file. It is not required reading if you only plan to consume a central configuration file. 
-    * **Step 3** of downloading the configuration file is covered in :doc:`multi_agent_config`. This describes what needs to be done to a perfSONAR host to participate in a mesh configuration and will be beneficial if you have one or more hosts that need to consume one or more central configuration files.
+    * **Step 1** of defining the configuration file and **step 2** of publishing the configuration to the web are covered in :doc:`multi_mesh_server_config`. This will be beneficial to administrators planning to run a central configuration file. It is not required reading if you only plan to consume a central configuration file. 
+    * **Step 3** of downloading the configuration file is covered in :doc:`multi_mesh_agent_config`. This describes what needs to be done to a perfSONAR host to participate in a mesh configuration and will be beneficial if you have one or more hosts that need to consume one or more central configuration files.
 
 Storing Your Measurements
 =========================
-Measurement results are stored in a component called the measurement archive (MA). If you are running the perfSONAR Toolkit, then your results will be stored in an MA on your local Toolkit node by default. It is possible to configure multiple perfSONAR hosts to write to the same remote MA. This may be especially desirable if your hosts that are performing measurements do not have powerful hardware and do not want to waste resources hosting a measurement archive. For more information on running a central MA see :doc:`multi_central_MA`.
+Measurement results are stored in a component called the measurement archive (MA). If you are running the perfSONAR Toolkit, then your results will be stored in an MA on your local Toolkit node by default. It is possible to configure multiple perfSONAR hosts to write to the same remote MA. This may be especially desirable if your hosts that are performing measurements do not have powerful hardware and do not want to waste resources hosting a measurement archive. For more information on running a central MA see :doc:`multi_ma_install`.
 
 Visualizing the Results
 =======================

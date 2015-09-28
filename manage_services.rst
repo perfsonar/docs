@@ -21,6 +21,8 @@ NPAD                No                  Controls *npad* service that allows clie
 
 .. note:: Starting in 3.4, SSH was removed as a service from this listing.  To enable/disable SSHD, use *chkconfig*
 
+.. note:: Starting in 3.5, NPAD support was removed. It is only listed if NPAD is installed.
+
 Choosing Services to Enable
 ===========================
 It is important to understand what services might impact other services. For example, if you run throughput tests (e.g. BWCTL + iperf3) and latency/loss tests (e.g. OWAMP ) on the same network interface, the throughput tests will possibly cause the host to drop packets. This may lead to a misleading interpretation of data if these events are not properly correlated. In general it is recommended you use the following guidelines when deciding which services to enable:
@@ -34,19 +36,21 @@ It is important to understand what services might impact other services. For exa
 Enabling/Disabling Services
 ===========================
 
-#. Click on **Enabled Services** in the left-hand menu
+#. Click on **Enable/disable services** in the main page *Services* section header. You may also click **Configure** in the the right-upper corner of the main page and then go to *Services* tab.
 
     .. image:: images/manage_services-enable1.png
 #. Login using the web administrator username and password.
 
     .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
-#. A list of services and a description of each is provided on the screen that loads. Check the services you wish to enable and uncheck the services you wish to disable. Alternatively, you may use the *Only Enable Bandwith Services* and *Only Enable Latency Services* to enable only tests related to throughput and one-way delay testing, respectively. 
+#. A list of services and a description of each is provided on the screen that loads. 
 
     .. image:: images/manage_services-enable2.png
-#. Click **Save** to apply your changes
-#. After a loading screen you should see a message indicating the services have been successfully restarted and the new configuration has been applied.
+#. Check the services you wish to enable and uncheck the services you wish to disable. Alternatively, you may use the *Select only bandwidth services* and *Select only latency services* to enable only tests related to throughput and one-way delay testing, respectively. Click **Save** to apply your changes
 
     .. image:: images/manage_services-enable3.png
+#. After that you should see a green message indicating the services have been successfully restarted and the new configuration has been applied.
+
+    .. image:: images/manage_services-enable4.png
 
 .. note:: Starting in 3.4, you may also enable/disable any of the underlying services with the *chkconfig* command and the changes will be reflected in the GUI and maintained on reboot.
 
