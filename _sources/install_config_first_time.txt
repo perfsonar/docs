@@ -26,9 +26,20 @@ Follow the prompts to complete the process as shown below:
 #. You will be prompted to give the user a password and then to confirm it. Remember this password as it will be used to log-in to the web interface to perform administrative functions. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.
 
     .. image:: images/install_config_first_time-user4.png
-#. After entering your password the account is created
+#. After entering your password the account is created. You will be prompted if you would like to create a privileged user and disable SSH access for root account. Note that for security reasons it is recommended to disable SSH root login.  The default is to answer *yes*.
 
     .. image:: images/install_config_first_time-user5.png
+#. You will get a prompt to create a new user. Enter the username you'd like to create.
+
+    .. image:: images/install_config_first_time-user7.png
+
+#. You will be prompted to give the user a password and then to confirm it. Remember this password as it will be used to log-in to via SSH to perform remote administrative functions.
+
+    .. image:: images/install_config_first_time-user8.png
+
+#. After entering your password the account is created. You may now use this account to login via SSH and administer the host with sudo.
+
+    .. image:: images/install_config_first_time-user9.png
 
 .. seealso:: For more information on adding and managing users see :doc:`manage_users`
 
@@ -48,10 +59,10 @@ Updating Your Administrative Information
 You may notice on the left-side of the web interface that **Administrative Info** is highlighted in yellow. This is to highlight that this information needs to be populated. You will be prompted for basic location and contact information. This information is needed so other perfSONAR users can more accurately find your node. To populate the information do the following:
 
 #. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host
-#. Click on **Administrative Info** in the left menu and login as the user created in the previous step
+#. Click on **Edit** in the host information section of the main page or **Configuration** button in the right-upper corner and login as the web administrator user created in the previous step
     
     .. image:: images/install_quick_start-admininfo.png
-#. On the page that loads, click the *Edit* button (1) and enter the requested information in the provided fields. Click *OK* (2) and then *Save* (3) when you are done.
+#. On the page that loads, enter the requested information in the provided fields. Click *Save* when you are done.
 
     .. image:: images/install_quick_start-admininfo2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
@@ -60,7 +71,7 @@ After completing this step, you should be able to access the **Global Services**
 
 Managing Toolkit Security
 =========================
-perfSONAR hosts are just like any other host and need to be actively managed to avoid being compromised. perfSONAR hosts run a number of common services, listen on numerous ports and may be outside you site's normal firewall. No set of steps will make your host invincible, but below are some steps that can be taken to contribute toward protecting your host:
+perfSONAR hosts are just like any other host and need to be actively managed to avoid being compromised. perfSONAR hosts run a number of common services, listen on numerous ports and may be outside your site's normal firewall. No set of steps will make your host invincible, but below are some steps that can be taken to contribute toward protecting your host:
  
   * An important aspect of security is to stay informed. Multiple system administrators from your site should be subscribed to the perfsonar security `announcement list <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_. This mailing list keeps users up-to-date on actions that need to be taken when critical security updates for both perfSONAR and third-party packages are released. 
   * Always follow best common security practices when it comes to creating user accounts and choosing passwords. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.
@@ -81,7 +92,7 @@ Scheduling Regular Measurements
 ===============================
 You will now want to schedule some tests that run on regular time intervals. There are two commonly used ways to add these tests and you may take one or both of these approaches depending on your needs:
  #. *Configure your tests via the web interface* - This approach can be used if you have a small number of perfSONAR nodes running a small number of tests. You will use the web interface to find and define tests. See :doc:`manage_regular_tests`.
- #. *Participate in a centrally managed mesh*  - This approach is best if you manage a large number of hosts or are participating in a large community of organizations running measurements. This requires updating a configuration file to point at a centrally managed file. See :doc:`multi_agent_config` for more details. 
+ #. *Participate in a centrally managed mesh*  - This approach is best if you manage a large number of hosts or are participating in a large community of organizations running measurements. This requires updating a configuration file to point at a centrally managed file. See :doc:`multi_mesh_agent_config` for more details. 
  
 What next?
 ==========

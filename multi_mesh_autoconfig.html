@@ -1,0 +1,857 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Automatic Test Configuration &mdash; perfSONAR Toolkit 3.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.5 documentation" href="index.html" />
+    <link rel="next" title="Deploying a Central Measurement Archive" href="multi_ma_install.html" />
+    <link rel="prev" title="Reading a Central Configuration File" href="multi_mesh_agent_config.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="multi_mesh_agent_config.html" title="Reading a Central Configuration File"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="automatic-test-configuration">
+<h1>Automatic Test Configuration<a class="headerlink" href="#automatic-test-configuration" title="Permalink to this headline">¶</a></h1>
+<p>If you have a very large mesh or a mesh that frequently is adding and removing test members, then it may become cumbersome to manually update your tests. For this reason the perfSONAR MeshConfig software has the concept of <em>automatic test configuration</em>.</p>
+<p>Automatic test configuration&#8217;s goal is NOT zero configuration, instead the idea is that there will be some initial configuration steps performed on a server hosting the MeshConfig that describes the tests in a general sense as opposed to explicitly naming each host that will be involved in a test. The MeshConfig provides constructs in the form of <em>host classes</em> and <em>tags</em> in support of this idea. See <a class="reference internal" href="#multi-mesh-autoconfig-classes"><em>Introducing Host Classes and Tags</em></a> for more information on these constructs.</p>
+<p>Once this initial configuration has taken place, each new host can simply point at this central file and know the tests to run <em>without the administrator of the central mesh configuration file having to update the mesh every time a new host is added</em> (this last part is what distinguishes it from a traditional MeshConfig setup). The configuration on the end host should also be minimized (though again it will be greater than zero). The configuration primarily consists of pointing at the URL where the central mesh lives (and perhaps optionally pointing at a private lookup service).</p>
+<p>The individual client configurations are simplified even further by using external configuration management software such as <a class="reference external" href="https://puppetlabs.com">Puppet</a> or similar. Essentially the configuration management software of your choice will need to copy one or two (depending on your use case) configuration files to each new host. See our document on using the <a class="reference internal" href="multi_puppet_install.html"><em>perfSONAR Puppet module</em></a> for more information on using this type of setup with puppet specifically or for ideas on how to integrate with another configuration managements software of your choosing.</p>
+<p>Once you have the basic ideas, there are a few common setups worth discussing further. First, using automated testing  constructs you can develop a simple automated configuration that tests to a fixed set of endpoints. For example, every new host that comes up may always test to the same two hosts, not aware of any other host that comes-up. See <a class="reference internal" href="#multi-mesh-autoconfig-fixed"><em>Testing to a Fixed Set of Target Hosts</em></a> for more details.</p>
+<p>You may also go even further and build a dynamic list of hosts from the perfSONAR Lookup Service. In this configuration, new nodes are discovered by other nodes in the mesh and the endpoint to which they test are changed accordingly. For information on this configuration, see <a class="reference internal" href="#multi-mesh-autoconfig-dynamic"><em>Testing to a Dynamic Set of Target Hosts</em></a>.</p>
+<div class="section" id="introducing-host-classes-and-tags">
+<span id="multi-mesh-autoconfig-classes"></span><h2>Introducing Host Classes and Tags<a class="headerlink" href="#introducing-host-classes-and-tags" title="Permalink to this headline">¶</a></h2>
+<p>There are two main constructs that go into generating dynamic meshes: <em>host classes</em> and <em>tags</em>. Host classes allow you to describe criteria for a host and its addresses that you want in a test configuration. This is in constrast to the traditional case where you explicitly define the host. You then reference a class instead of a host address in your test groups allowing for any new hosts that match the defined criteria to automatically be included. Let&#8217;s take a look at a simple example that matches all IP addresses of hosts in the current mesh file with the subnet 10.0.1.0/24:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      my_subnet_class
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   netmask
+           netmask   10.0.1.0/24
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+<p>The example above contains the following structural parts common to all classes (see also <a class="reference internal" href="config_mesh.html#config-mesh-dynamic-gen"><em>Dynamic Mesh Generation</em></a> for more details):</p>
+<ul class="simple">
+<li>The class <em>name</em> that identifies the class. We&#8217;ll use this later in a <a class="reference internal" href="config_mesh.html#config-mesh-group"><em>group</em></a> definition to indicate we want class members in a specific group.</li>
+<li>The <em>data source</em> which indicates the initial list of hosts to filter against. In this case, we specified <em>current_mesh</em>, which means any host defined in this mesh or it&#8217;s include files. For other types of data sources see <a class="reference internal" href="config_mesh.html#config-mesh-dynamic-sources"><em>Dynamic Mesh Data Sources</em></a>.</li>
+<li>The <em>filters</em> in the form of a <em>match</em> block. The filter directives define the criteria a host must meet and the match directive indicates if the criteria are met to include ir in the mesh. Not shown is the <em>exclude</em> block which defines criteria for  hosts you want excluded for the mesh. For more information on the types of filters available see <a class="reference internal" href="config_mesh.html#config-mesh-dynamic-filters"><em>Dynamic Mesh Filters</em></a>.</li>
+</ul>
+<p>Host classes allow for a lot of interesting selection criteria. They are made even more powerful though by the second construct: <em>tags</em>. Tags are custom labels you can add to any  <a class="reference internal" href="config_mesh.html#config-mesh-organization"><em>organization</em></a>, <a class="reference internal" href="config_mesh.html#config-mesh-site"><em>site</em></a>, <a class="reference internal" href="config_mesh.html#config-mesh-host"><em>host</em></a>, or <a class="reference internal" href="config_mesh.html#config-mesh-address"><em>address</em></a> directive. You can then match against these using the <em>tag</em> filter in your host class. A common use case for this is to tag addresses designated for latency tests and those for throughput tests as such. If we extend our example above and assume that we have tagged addresses in the 10.0.1.0/24 as latency or throughput, we can define the following two classes to distinguish each:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      my_subnet_latency_class
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   netmask
+           netmask   10.0.1.0/24
+       &lt;/filter&gt;
+       &lt;filter&gt;
+           type   tag
+           tag    latency
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+
+&lt;host_class&gt;
+    name      my_subnet_throughput_class
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   netmask
+           netmask   10.0.1.0/24
+       &lt;/filter&gt;
+       &lt;filter&gt;
+           type   tag
+           tag    throughput
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+<p>Notice that each match block has two filters: one of type netmask and another of type tag. There is an implied AND condition between filters like this of different types.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can also explicitly define filters such as AND, OR and NOT. See <a class="reference internal" href="config_mesh.html#config-mesh-dynamic-filters"><em>Dynamic Mesh Filters</em></a></p>
+</div>
+<p>This example really just focuses the host class and tag constructs. It is also not an exhaustive list of all the options available for each of these constructs. See the sections that follow for some further examples of the uses of these constructs.</p>
+</div>
+<div class="section" id="testing-to-a-fixed-set-of-target-hosts">
+<span id="multi-mesh-autoconfig-fixed"></span><h2>Testing to a Fixed Set of Target Hosts<a class="headerlink" href="#testing-to-a-fixed-set-of-target-hosts" title="Permalink to this headline">¶</a></h2>
+<p>Perhaps the simplest way to get started with automatic test configuration is having each each new tester test to a fixed set of locations. This test scenario is the right case for you if all of the following hold true:</p>
+<ul class="simple">
+<li>You want every dynamic tester to test to the same set of endpoints</li>
+<li>You do not need each tester to know about the other automatically configured testers</li>
+<li>You do not want your automatic tester to appear in a dashboard</li>
+</ul>
+<p>In order for this case to work you will need to define the appropriate directives in your <a class="reference internal" href="#multi-mesh-autoconfig-fixed-server"><em>central MeshConfig file</em></a> and in the <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><em>agent configuration</em></a> of the new testers.</p>
+<div class="section" id="meshconfig-server-configuration">
+<span id="multi-mesh-autoconfig-fixed-server"></span><h3>MeshConfig Server Configuration<a class="headerlink" href="#meshconfig-server-configuration" title="Permalink to this headline">¶</a></h3>
+<p>As an example, let&#8217;s use the following MeshConfig file:</p>
+<div class="highlight-python"><div class="highlight"><pre>description      Example Mesh
+
+&lt;organization&gt;
+  description    Acme
+
+  &lt;site&gt;
+    &lt;host&gt;
+      description    host1.example
+      address        host1.example
+    &lt;/host&gt;
+  &lt;/site&gt;
+
+  &lt;site&gt;
+    &lt;host&gt;
+      description    host2.example
+      address        host2.example
+    &lt;/host&gt;
+  &lt;/site&gt;
+
+&lt;/organization&gt;
+
+&lt;host_class&gt;
+    name      owamp_agents
+
+    &lt;data_source&gt;
+        type     requesting_agent
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   netmask
+           netmask   10.0.1.0/24
+       &lt;/filter&gt;
+    &lt;/match&gt;
+
+    &lt;host_properties&gt;
+        &lt;measurement_archive&gt;
+        type        perfsonarbuoy/owamp
+        read_url    http://ma.example/esmond/perfsonar/archive
+        write_url   http://ma.example/esmond/perfsonar/archive
+      &lt;/measurement_archive&gt;
+    &lt;/host_properties&gt;
+&lt;/host_class&gt;
+
+&lt;group owamp_group&gt;
+  type              disjoint
+
+  a_member          host1.example
+  a_member          host2.example
+
+  b_member          host_class::owamp_agents
+&lt;/group&gt;
+
+&lt;test_spec owamp_test&gt;
+  type              perfsonarbuoy/owamp
+  packet_interval   0.1
+  sample_count      600every 600 packets)
+&lt;/test_spec&gt;
+
+&lt;test&gt;
+  description       OWAMP Tests
+  group             owamp_group
+  test_spec         owamp_test
+&lt;/test&gt;
+</pre></div>
+</div>
+<p>Let&#8217;s break down each portion of this file. At the top we define an organization with 2 sites, each containing one host:</p>
+<div class="highlight-python"><div class="highlight"><pre>...
+&lt;organization&gt;
+  description    Acme
+
+  &lt;site&gt;
+    &lt;host&gt;
+      description    host1.example
+      address        host1.example
+    &lt;/host&gt;
+  &lt;/site&gt;
+
+  &lt;site&gt;
+    &lt;host&gt;
+      description    host2.example
+      address        host2.example
+    &lt;/host&gt;
+  &lt;/site&gt;
+
+&lt;/organization&gt;
+...
+</pre></div>
+</div>
+<p>The addresses of these hosts are <em>host1.example</em> and <em>host2.example</em> respectively. These hosts will be the fixed endpoints of any new testers we bring up matching the host class we have defined. Our host class, named <em>owamp_agents</em> is defined as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>...
+&lt;host_class&gt;
+    name      owamp_agents
+
+    &lt;data_source&gt;
+        type     requesting_agent
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   netmask
+           netmask   10.0.1.0/24
+       &lt;/filter&gt;
+    &lt;/match&gt;
+
+    &lt;host_properties&gt;
+        &lt;measurement_archive&gt;
+        type        perfsonarbuoy/owamp
+        read_url    http://ma.example/esmond/perfsonar/archive
+        write_url   http://ma.example/esmond/perfsonar/archive
+      &lt;/measurement_archive&gt;
+    &lt;/host_properties&gt;
+&lt;/host_class&gt;
+...
+</pre></div>
+</div>
+<p>The first portion to note is the <em>data_source</em> of type <em>requesting_agent</em>. This means the host class is only compared against client hosts reading this mesh. The <em>match filter</em> defined specifies we match against any host&#8217;s address that has a netmask of <em>10.0.1.0/24</em>.  In this class, we also define something called <em>host_properties</em>. This is not used for matching, instead it is properties given to a host that matches this class. In this example, it sets the measurement archive for any matching host to store data at <em>http://ma.example/esmond/perfsonar/archive</em> (our central archive in this example).</p>
+<p>Once the class <em>owamp_agents</em> is defined, we are free to reference it in a test <em>group</em> as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;group owamp_group&gt;
+  type              disjoint
+
+  a_member          host1.example
+  a_member          host2.example
+
+  b_member          host_class::owamp_agents
+&lt;/group&gt;
+</pre></div>
+</div>
+<p>Next we define the parameters for our test:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;test_spec owamp_test&gt;
+   type              perfsonarbuoy/owamp
+   packet_interval   0.1
+   sample_count      600every 600 packets)
+&lt;/test_spec&gt;
+</pre></div>
+</div>
+<p>Finally we bring it all together in the test definition:</p>
+<div class="highlight-python"><div class="highlight"><pre> &lt;test&gt;
+  description       OWAMP Tests
+  group             owamp_group
+  test_spec         owamp_test
+&lt;/test&gt;
+</pre></div>
+</div>
+<p>We can then use the <em>build_json</em> script as described in <a class="reference internal" href="multi_mesh_server_config.html"><em>Publishing a Central Configuration File</em></a> to publish our file to a web server where clients may download it.</p>
+</div>
+<div class="section" id="meshconfig-client-configuration">
+<span id="multi-mesh-autoconfig-fixed-client"></span><h3>MeshConfig Client Configuration<a class="headerlink" href="#meshconfig-client-configuration" title="Permalink to this headline">¶</a></h3>
+<p>On each automatically configured tester you bring-up, you&#8217;ll need to point it at the JSON file generated in the previous section. Assuming the JSON file is at <a class="reference external" href="http://mesh.example/mesh.json">http://mesh.example/mesh.json</a>, you can do this in the <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-agent"><em>agent configuration file</em></a> as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;mesh&gt;
+    configuration_url   http://mesh.example/mesh.json
+&lt;/mesh&gt;
+</pre></div>
+</div>
+<p>You&#8217;ll also want to make sure the following is set if you would like to use the measurement archive specified in the host class:</p>
+<div class="highlight-python"><div class="highlight"><pre>configure_archives 1
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This <em>configure_archives</em> option assumes the measurement archive provided by the mesh configuration file has <a class="reference internal" href="multi_ma_install.html#multi-ma-install-auth-ip"><em>IP authentication</em></a> setup for this host. This is because the mesh configuration cannot securely distribute usernames and API keys. See the <a class="reference internal" href="multi_ma_install.html#multi-ma-install-auth-ip"><em>measurement archive documentation</em></a> for information on how to configure IP authentication on your archive server.</p>
+</div>
+<p>You&#8217;ll also want to set the follow if you are NOT use a Toolkit deployment or the perfSONAR-Complete bundle:</p>
+<div class="highlight-python"><div class="highlight"><pre>use_toolkit 0
+</pre></div>
+</div>
+<p>Finally, you&#8217;ll want to make sure your <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> only has the following lines uncommented:</p>
+<p><strong>RedHat/CentOS</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">test_result_directory</span>   <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">regular_testing</span>
+</pre></div>
+</div>
+<p><strong>Debian</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">test_result_directory</span>   <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">regulartesting</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you have additional <em>measurement_archive</em> directives in the file then your tests will be stored there IN ADDITION to those automatically configured by the mesh. This may or may not be desirable depending on your case.</p>
+</div>
+</div>
+<div class="section" id="using-tags-with-requesting-agents">
+<span id="multi-mesh-autoconfig-fixed-tags"></span><h3>Using Tags with Requesting Agents<a class="headerlink" href="#using-tags-with-requesting-agents" title="Permalink to this headline">¶</a></h3>
+<p>Lets modify our host_class for this example to use a <em>tag</em> instead of a <em>netmask</em> as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>...
+&lt;host_class&gt;
+    name      owamp_agents
+
+    &lt;data_source&gt;
+        type     requesting_agent
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type     tag
+           netmask  latency
+       &lt;/filter&gt;
+    &lt;/match&gt;
+
+    &lt;host_properties&gt;
+        &lt;measurement_archive&gt;
+        type        perfsonarbuoy/owamp
+        read_url    http://ma.example/esmond/perfsonar/archive
+        write_url   http://ma.example/esmond/perfsonar/archive
+      &lt;/measurement_archive&gt;
+    &lt;/host_properties&gt;
+&lt;/host_class&gt;
+...
+</pre></div>
+</div>
+<p>In this case, how do we tag our agent downloading the file so that it matches this class? Normally we would do it in the <a class="reference internal" href="config_mesh.html#config-mesh-host"><em>host</em></a> directive but by definition our requesting agent does not have one of those. Instead we have to add a <em>local_host</em> block to the clients <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-agent"><em>agent configuration file</em></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;local_host&gt;
+    tag latency
+&lt;/local_host&gt;
+</pre></div>
+</div>
+<p>If the agent host as more than one address we can also tag individual addresses as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;local_host&gt;
+    &lt;address&gt;
+        address 10.0.1.1
+        tag latency
+    &lt;/address&gt;
+    &lt;address&gt;
+        address 10.0.2.1
+        tag throughput
+    &lt;/address&gt;
+&lt;/local_host&gt;
+</pre></div>
+</div>
+<p>While it does require some additional configuration on the client, it also adds flexibility in using tags to build host classes with <em>requesting_agent</em> data sources.</p>
+</div>
+</div>
+<div class="section" id="testing-to-a-dynamic-set-of-target-hosts">
+<span id="multi-mesh-autoconfig-dynamic"></span><h2>Testing to a Dynamic Set of Target Hosts<a class="headerlink" href="#testing-to-a-dynamic-set-of-target-hosts" title="Permalink to this headline">¶</a></h2>
+<p>In many cases, having every host test to a fixed set of endpoints may not meet your needs. Instead, you may want a more dynamic mesh where each tester detects the existence of the others and adjusts it&#8217;s test set accordingly as members come and go. This is possible by using the MeshConfig constructs already discussed in conjunction with the <em>perfSONAR Lookup Service</em>. Such a configuration will allow you to do the following:</p>
+<ul class="simple">
+<li>Allow clients to automatically detect new testers, and remove any testers no longer in a mesh</li>
+<li>Include dynamically added testers in an automatically generated dashboard</li>
+</ul>
+<p>In order for this case to work you will need access to a lookup service. It is <strong>highly recommended</strong> you use a <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService">private lookup service</a> for this purpose. Using the public lookup service exposes the risk of others being able to (intentionally or unintentionally) change the tests your host runs, perhaps in ways you do not desire. For more information on setting up a private lookup service see <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService">this document</a>. Assuming you have a private lookup service setup, you can complete the configuration process by defining the appropriate directives in your <a class="reference internal" href="#multi-mesh-autoconfig-dynamic-server"><em>central MeshConfig file</em></a> and in the <a class="reference internal" href="#multi-mesh-autoconfig-dynamic-client"><em>agent configuration</em></a> of the new testers.</p>
+<div class="section" id="multi-mesh-autoconfig-dynamic-server">
+<span id="id1"></span><h3>MeshConfig Server Configuration<a class="headerlink" href="#multi-mesh-autoconfig-dynamic-server" title="Permalink to this headline">¶</a></h3>
+<p>On our MeshConfig server, the first thing we need to setup is a file that defines the hosts we want to extract from the lookup service. By default, you will find it as listed <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-lookup-hosts"><em>here</em></a> for your operating system. An example of this file using a configuration that extracts all hosts running OWAMP (the service that performs one-way latency measurements) and tagged with the community <em>example</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>ls_instance http://private-ls.example:8090/lookup/records
+
+&lt;query&gt;
+    service_type owamp
+
+    &lt;filter&gt;
+        filter_key group-communities
+        filter_value example
+    &lt;/filter&gt;
+
+    &lt;output_settings&gt;
+        organization_name Acme
+
+        &lt;measurement_archive&gt;
+            type perfsonarbuoy/owamp
+            read_url http://ma.example/esmond/perfsonar/archive
+            write_url http://ma.example/esmond/perfsonar/archive
+        &lt;/measurement_archive&gt;
+
+        address_tag owamp
+    &lt;/output_settings&gt;
+&lt;/query&gt;
+</pre></div>
+</div>
+<p>Let&#8217;s breakdown the major components of the file. First we have the <em>ls_instance</em> property which sets the private lookup service we want to use to query for hosts:</p>
+<div class="highlight-python"><div class="highlight"><pre>ls_instance http://private-ls.example:8090/lookup/records
+...
+</pre></div>
+</div>
+<p>We can have one or more of these. If you provide multiple, each lookup service will be queried in search of hosts matching the criteria. Next up we have the <em>query</em> block:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;query&gt;
+...
+&lt;/query&gt;
+</pre></div>
+</div>
+<p>We may have one or more of these blocks in the file. This is where a bulk of the work happens. Within each query you have to define one or more service types:</p>
+<div class="highlight-python"><div class="highlight"><pre>service_type owamp
+</pre></div>
+</div>
+<p>In our example we want <em>owamp</em> services. It may also be something like <em>bwctl</em> or <em>traceroute</em>. Next we may optionally define a list of filters:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;filter&gt;
+    filter_key group-communities
+    filter_value example
+&lt;/filter&gt;
+</pre></div>
+</div>
+<p>If you don&#8217;t define any filters then all services of the specified type in the lookup service will return. For each filter that you do define, there is a <em>filter_key</em> and a <em>filter_value</em>. The key is the name of a lookup service field name you wish to match in the <strong>service</strong> record. You can find a complete list of valid field names in the <a class="reference external" href="https://docs.google.com/document/u/1/d/1dEROeTwW0R4qcLHKnA2fsWEz8fQWnPKSpPVf_FuB2Vc/pub">Lookup Service Records reference guide</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-lookup-hosts"><em>lookup hosts configuration file</em></a> currently only supports fields for <strong>service</strong> records and not fields in the host, interface, person or other records.</p>
+</div>
+<p>The <em>filter_value</em> is the value you want the field specified by the <em>filter_key</em> to take in order to match. In our example we want the <em>group-communities</em> of the service record to take the value of <em>example</em>.</p>
+<p>Finally, with our filters defined, we can create <em>output_settings</em> which define what the <a class="reference internal" href="config_mesh.html#config-mesh-host"><em>host</em></a> directives look like in our MeshConfig file:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;output_settings&gt;
+    organization_name Acme
+    address_tag owamp
+
+    &lt;measurement_archive&gt;
+        type perfsonarbuoy/owamp
+        read_url http://ma.example/esmond/perfsonar/archive
+        write_url http://ma.example/esmond/perfsonar/archive
+    &lt;/measurement_archive&gt;
+
+&lt;/output_settings&gt;
+</pre></div>
+</div>
+<p>None of the fields are required but the example highlights a few common ones to set. First we can set the <em>organization_name</em>. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an <em>address_tag</em> of <em>owamp</em>. Last, we can also set a <a class="reference internal" href="config_mesh.html#config-mesh-ma"><em>measurement_archive</em></a> that we want the generated host elements to use. These look just like the same element we&#8217;d define in a MeshConfig file with a <em>type</em>, <em>read_url</em> and <em>write_url</em>.</p>
+<p>Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command:</p>
+<p><strong>RedHat/CentOS</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /var/www/html/dynamic_host_list.json
+</pre></div>
+</div>
+<p><strong>Debian</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/bin/lookup_hosts --input /etc/perfsonar/lookuphosts.conf --output /var/www/dynamic_host_list.json
+</pre></div>
+</div>
+<p>The <em>&#8211;input</em> parameter points to the file we just generated. The <em>&#8211;output</em> points to a location we we want the generated JSON file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is highly recommended you add the <em>lookup_hosts</em> command to cron so the host list is frequently updated.</p>
+</div>
+<p>Assuming the JSON is published, we are ready to setup our MeshConfig file. We can do so as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>description      Example Dynamic Mesh
+
+include http://mesh.example/dynamic_host_list.json
+
+&lt;host_class&gt;
+    name      owamp_agents
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   tag
+           netmask   owamp
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+
+&lt;group owamp_group&gt;
+  type              mesh
+
+  member          host_class::owamp_agents
+&lt;/group&gt;
+
+&lt;test_spec owamp_test&gt;
+  type              perfsonarbuoy/owamp
+  packet_interval   0.1
+  sample_count      600every 600 packets)
+&lt;/test_spec&gt;
+
+&lt;test&gt;
+  description       OWAMP Tests
+  group             owamp_group
+  test_spec         owamp_test
+&lt;/test&gt;
+</pre></div>
+</div>
+<p>This file should look pretty familiar at this point, but let&#8217;s highlight some of the important parts. First we use an <em>include</em> directive to insert our dynamically generated host list:</p>
+<div class="highlight-python"><div class="highlight"><pre>include http://mesh.example/dynamic_host_list.json
+...
+</pre></div>
+</div>
+<p>Next we define a <em>host_class</em> that uses the current mesh as the data source (since it has an include of our dynamic list) that matches anything tagged <em>owamp</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      owamp_agents
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   tag
+           netmask   owamp
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+<p>Notice that we do not need to explicitly define any hosts in this case. You of course, can mix explicit and dynamically generated hosts but for this simple example it is unnecessary. With this file defined, we can now convert it to JSON and publish it for our clients to consume.</p>
+</div>
+<div class="section" id="multi-mesh-autoconfig-dynamic-client">
+<span id="id2"></span><h3>MeshConfig Client Configuration<a class="headerlink" href="#multi-mesh-autoconfig-dynamic-client" title="Permalink to this headline">¶</a></h3>
+<p>The configuration of the client in terms of the MeshConfig agent is largely the same as what is described in <a class="reference internal" href="multi_mesh_agent_config.html"><em>Reading a Central Configuration File</em></a> and <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><em>MeshConfig Client Configuration</em></a>. There is not anything further to add on that file, but there is extra configuration to be done of the service that registers your clients in the lookup service. Specifically you need to do the following:</p>
+<ul class="simple">
+<li>Add a pointer to your private lookup service</li>
+<li>Configure any fields you use as a filter in <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-lookup-hosts"><em>lookup hosts configuration file</em></a> if they are not automatically generated (for example, fields like <em>group-communities</em>).</li>
+</ul>
+<p>For our example we can do this simply by adding the following lines to the top of the <a class="reference internal" href="config_files.html#config-files-lsreg-conf-main"><em>LS Registration configuration file</em></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre>ls_instance http://private-ls.example:8090/lookup/records
+site_project example #site_project is group-communities in the lookup service
+</pre></div>
+</div>
+<p>For more information on the options available in the <a class="reference internal" href="config_files.html#config-files-lsreg-conf-main"><em>LS Registration configuration file</em></a> see <a class="reference internal" href="config_ls_registration.html"><em>Lookup Service Registration Daemon Configuration File</em></a> for a complete configuration reference.</p>
+</div>
+</div>
+<div class="section" id="examples-of-common-host-class-configurations">
+<span id="multi-mesh-autoconfig-examples"></span><h2>Examples of Common Host Class Configurations<a class="headerlink" href="#examples-of-common-host-class-configurations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="testing-to-addresses-tagged-throughput-and-tagged-10gige">
+<span id="multi-mesh-autoconfig-tput-lat"></span><h3>Testing to Addresses Tagged Throughput and Tagged 10GigE<a class="headerlink" href="#testing-to-addresses-tagged-throughput-and-tagged-10gige" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      throughput_hosts
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+        &lt;filter&gt;
+            type and #indicates all nested filters must be true
+
+           &lt;filter&gt;
+               type   tag
+               tag   throughput
+           &lt;/filter&gt;
+           &lt;filter&gt;
+               type   tag
+               tag   10gige
+           &lt;/filter&gt;
+        &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-to-all-addresses-in-an-ip-subnet-except-a-certain-address">
+<span id="multi-mesh-autoconfig-netmask"></span><h3>Testing to All Addresses in an IP Subnet Except a Certain Address<a class="headerlink" href="#testing-to-all-addresses-in-an-ip-subnet-except-a-certain-address" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      most_of_subnet
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   netmask
+           netmask   10.0.1.0/24
+       &lt;/filter&gt;
+    &lt;/match&gt;
+    &lt;exclude&gt;
+        &lt;filter&gt;
+           type   netmask
+           netmask   10.0.1.1/32 # Excludes 10.0.1.1 from matching
+       &lt;/filter&gt;
+    &lt;/exclude&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-to-all-addresses-not-in-an-organization">
+<span id="multi-mesh-autoconfig-organization"></span><h3>Testing to All Addresses NOT in an Organization<a class="headerlink" href="#testing-to-all-addresses-not-in-an-organization" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      non_acme_inc_hosts
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+        &lt;filter&gt;
+           type not
+
+           &lt;filter&gt;
+               type   organization
+               description   acme
+           &lt;/filter&gt;
+        &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+<p>Alternatively using an exclude block:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      non_acme_inc_hosts
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;exclude&gt;
+       &lt;filter&gt;
+           type   organization
+           description   acme
+       &lt;/filter&gt;
+    &lt;/exclude&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-to-all-ipv6-addresses-tagged-latency">
+<h3>Testing to All IPv6 Addresses Tagged Latency<a class="headerlink" href="#testing-to-all-ipv6-addresses-tagged-latency" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      ipv6_latency_hosts
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   address_type
+           address_type   ipv6
+       &lt;/filter&gt;
+       &lt;filter&gt;
+           type   tag
+           tag    latency
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="combining-multiple-classes-in-a-match">
+<h3>Combining Multiple Classes in a Match<a class="headerlink" href="#combining-multiple-classes-in-a-match" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
+    name      subnet1_latency
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   tag
+           tag   latency
+       &lt;/filter&gt;
+       &lt;filter&gt;
+           type  netmask
+           tag   10.0.1.0/24
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+
+&lt;host_class&gt;
+    name      subnet2_latency
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   tag
+           tag   latency
+       &lt;/filter&gt;
+       &lt;filter&gt;
+           type  netmask
+           tag   10.0.2.0/24
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+
+&lt;host_class&gt;
+    name      subnet1and2_latency
+
+    &lt;data_source&gt;
+        type     current_mesh
+    &lt;/data_source&gt;
+
+    &lt;match&gt;
+       &lt;filter&gt;
+           type   class
+           class  subnet1_latency
+       &lt;/filter&gt;
+       &lt;filter&gt;
+           type   class
+           class  subnet2_latency
+       &lt;/filter&gt;
+    &lt;/match&gt;
+&lt;/host_class&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Automatic Test Configuration</a><ul>
+<li><a class="reference internal" href="#introducing-host-classes-and-tags">Introducing Host Classes and Tags</a></li>
+<li><a class="reference internal" href="#testing-to-a-fixed-set-of-target-hosts">Testing to a Fixed Set of Target Hosts</a><ul>
+<li><a class="reference internal" href="#meshconfig-server-configuration">MeshConfig Server Configuration</a></li>
+<li><a class="reference internal" href="#meshconfig-client-configuration">MeshConfig Client Configuration</a></li>
+<li><a class="reference internal" href="#using-tags-with-requesting-agents">Using Tags with Requesting Agents</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-to-a-dynamic-set-of-target-hosts">Testing to a Dynamic Set of Target Hosts</a><ul>
+<li><a class="reference internal" href="#multi-mesh-autoconfig-dynamic-server">MeshConfig Server Configuration</a></li>
+<li><a class="reference internal" href="#multi-mesh-autoconfig-dynamic-client">MeshConfig Client Configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#examples-of-common-host-class-configurations">Examples of Common Host Class Configurations</a><ul>
+<li><a class="reference internal" href="#testing-to-addresses-tagged-throughput-and-tagged-10gige">Testing to Addresses Tagged Throughput and Tagged 10GigE</a></li>
+<li><a class="reference internal" href="#testing-to-all-addresses-in-an-ip-subnet-except-a-certain-address">Testing to All Addresses in an IP Subnet Except a Certain Address</a></li>
+<li><a class="reference internal" href="#testing-to-all-addresses-not-in-an-organization">Testing to All Addresses NOT in an Organization</a></li>
+<li><a class="reference internal" href="#testing-to-all-ipv6-addresses-tagged-latency">Testing to All IPv6 Addresses Tagged Latency</a></li>
+<li><a class="reference internal" href="#combining-multiple-classes-in-a-match">Combining Multiple Classes in a Match</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="multi_mesh_agent_config.html">Previous topic</a>
+                  <ul><li><a href="multi_mesh_agent_config.html" title="previous chapter">Reading a Central Configuration File</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="multi_ma_install.html">Next topic</a>
+                      <ul><li><a href="multi_ma_install.html" title="next chapter">Deploying a Central Measurement Archive</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="multi_mesh_agent_config.html" title="Reading a Central Configuration File"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2015, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

@@ -1,8 +1,19 @@
 *******************************************
-perfSONAR Toolkit User Guide
+perfSONAR User Guide
 *******************************************
 
-The perfSONAR Toolkit is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using the perfSONAR Toolkit on one or more hosts. 
+perfSONAR is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using the perfSONAR on one or more hosts. 
+
+
+perfSONAR Installation Options
+------------------------------
+.. toctree::
+   :maxdepth: 2
+   
+   install_options
+
+perfSONAR Toolkit
+-----------------
 
 Installation
 ============
@@ -33,16 +44,6 @@ Managing the perfSONAR Toolkit
    manage_dual_xface
    manage_security
    manage_extra_tools
-
-Managing Multiple perfSONAR Toolkits
-====================================
-.. toctree::
-   :maxdepth: 2
-   
-   multi_overview
-   multi_server_config
-   multi_agent_config
-   multi_central_MA
    
 Using the perfSONAR Toolkit
 ============================
@@ -53,47 +54,145 @@ Using the perfSONAR Toolkit
    using_ndt
    using_npad
    using_ext_tools
-   
-Using Additional Tools
-======================
+
+Additional Installation Options
+--------------------------------
+.. toctree::
+   :maxdepth: 2
+
+   install_centos 
+   install_debian
+   low_cost_nodes
+
+Additional perfSONAR Tools
+--------------------------
+
+perfSONAR UI
+============
 .. toctree::
    :maxdepth: 2
    
    install_psui
    using_psui
 
-Additional Installation Options
-===============================
+Managing Multiple perfSONAR Hosts
+----------------------------------
+
+Introduction to Central Management
+==================================
 .. toctree::
    :maxdepth: 2
+   
+   multi_overview
 
-   install_level12
-   install_debian
+Central Test Configuration
+===========================
+.. toctree::
+   :maxdepth: 2
+   
+   multi_mesh_server_config
+   multi_mesh_agent_config
+   multi_mesh_autoconfig
+   
+Central Measurement Archive
+===========================
+.. toctree::
+   :maxdepth: 2
+   
+   multi_ma_install
+   multi_ma_clustering
+   multi_ma_backups
+
+Central Logging
+===============
+.. toctree::
+   :maxdepth: 2
+   
+   multi_logging
+   
+Managing Nodes with Puppet
+==========================
+.. toctree::
+   :maxdepth: 2
+   
+   multi_puppet_overview
+   multi_puppet_install
+   multi_puppet_using_server
+   multi_puppet_using_client
    
 Accessing Raw Data 
-=======================
+------------------
 .. toctree::
    :maxdepth: 1
    
    client_apis
 
 Configuration Reference
-=======================
+-----------------------
+
+Listing of perfSONAR Files
+==========================
 .. toctree::
    :maxdepth: 2
    
+   config_files
+
+BWCTL
+=====
+.. toctree::
+   :maxdepth: 1
+   
    config_bwctl
    config_bwctl_limits
-   config_esmond_data_cleaner
+   
+Lookup Service Registration Daemon
+==================================
+.. toctree::
+   :maxdepth: 1
+   
    config_ls_registration
+   
+MeshConfig
+==========
+.. toctree::
+   :maxdepth: 1
+   
    config_mesh
+   config_mesh_agent
+   config_mesh_gui
+   config_mesh_lookup_hosts
+   
+OPPD
+====
+.. toctree::
+   :maxdepth: 1
+   
    config_oppd
+
+OWAMP
+=====
+.. toctree::
+   :maxdepth: 1
+   
    config_owamp
    config_owamp_limits
+
+Regular Testing
+===============
+.. toctree::
+   :maxdepth: 1
+   
    config_regular_testing
 
+Previous Releases
+-----------------
+.. toctree::
+   :maxdepth: 1
+   
+   previous_releases
+
 Further Information
-===================
+-------------------
 * `Project Homepage <http://www.perfsonar.net>`_
 * `Source Code Repository <https://github.com/perfsonar>`_
 * `Issue Tracker <https://github.com/perfsonar/project/issues>`_
@@ -101,11 +200,11 @@ Further Information
 * `Frequently Asked Questions (FAQs) <http://www.perfsonar.net/about/faq/>`_
 * Mailing Lists
 
-  * `User Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-user>`_ - Forum where users may ask and answer questions about their perfSONAR Toolkit deployments
+  * `User Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-user>`_ - Forum where users may ask and answer questions about their perfSONAR deployments
   * `Announcement Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_ - List where important announcements such as new releases and security updates are posted.
 
 Related Projects
-================
+----------------
 * `esmond <http://software.es.net/esmond/>`_
 * `iperf3 <http://software.es.net/iperf/>`_
 * `Lookup Service <http://code.google.com/p/simple-lookup-service/>`_
@@ -114,6 +213,6 @@ Related Projects
 * `psUI <https://forge.geant.net/forge/display/perfsonar/Change+Log/>`_
  
 Search
-==================
+----------------
 
 * :ref:`search`

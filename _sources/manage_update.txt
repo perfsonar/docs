@@ -21,7 +21,7 @@ Automatic Updates
 
 .. note:: Automatic updates are enabled by default starting in version 3.4 of the perfSONAR Toolkit.
 
-You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. Specifically kernel updates may break NDT and NPAD if a non-web100 version is applied. See this `FAQ <http://www.perfsonar.net/about/faq/#Q25>`_ for more information. The following rule of thumb from `Fedora <http://fedoraproject.org/wiki/AutoUpdates>`_ may be useful when considering whether to enable this feature:
+You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. Specifically, kernel updates may break NDT and NPAD if a non-web100 version is applied. See this `FAQ <http://www.perfsonar.net/about/faq/#Q25>`_ for more information. The following rule of thumb from `Fedora <http://fedoraproject.org/wiki/AutoUpdates>`_ may be useful when considering whether to enable this feature:
 
 .. epigraph::
         
@@ -32,19 +32,20 @@ It is also important to note that automatic updates do not perform all required 
 You may enable/disable automatic updates from the web interface as follows:
 
 #. Open your toolkit web interface in a browser
-#. Click on **Enabled Services** in the left-hand menu
+#. Click on **Configuration** in the upper right-hand menu
 
-    .. image:: images/manage_services-enable1.png
+    .. image:: images/manage_updates-config.png
 #. Login using the web administrator username and password.
 
     .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
-#. On the page that loads check the box next to **Automatic Updates** to enable them or uncheck it to disable them
+#. Click he **Host** tab on the page that loads
+    
+    .. image:: images/manage_update-host_tab.png
+#. On the page that loads click the button under the *Auto Updates* heading to enable or disable auto-updates as indicated by the color and status text of the button.
     
     .. image:: images/manage_update-auto.png
 #. Click **Save** to apply your changes
-#. After a loading screen you should see a message indicating the services have been successfully restarted and the new configuration has been applied.
-
-    .. image:: images/manage_services-enable3.png
+#. After a loading screen you should see a message at the bottom indicating your changes have been saved.
     
 Alternatively, you may enable them from the command-line with the following commands (must be run as a root user)::
   
@@ -59,49 +60,8 @@ Likewise, you may disable auto-updates from the command-line by running::
 
 Also note that the main configuration file for auto-updates lives at */etc/sysconfig/yum-cron*. See the yum-cron man page or the page `here <http://fedoraproject.org/wiki/AutoUpdates>`_ for more information on using auto-updates and advanced options like excluding packages from updates. 
 
-
-Migrating from a 3.3.2 LiveCD/LiveUSB
-=====================================
-Starting in 3.4, the LiveCD and LiveUSB distributions are no longer provided. If you do not wish to keep any existing data you may ignore this section and do a normal :ref:`clean installation <GettingChooseInstall>`. For existing users of the LiveCD wishing to migrate their data to the latest distribution see the steps below:
-    
-#. Login in to your 3.3.2 LiveCD/LiveUSB via SSH or the terminal
-#. Run the command below to create a backup of all relevant files in *~/ps-toolkit-livecd-backup.tgz* ::
-
-    /opt/perfsonar_ps/toolkit/scripts/ps-toolkit-migrate-backup.sh  ~/ps-toolkit-livecd-backup.tgz
-#. Copy the backup file *~/ps-toolkit-livecd-backup.tgz* from your LiveCD/LiveUSB host to a safe location. We will need to copy this to our new installation later. If you will be overwriting the LiveCD/LiveUSB with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.
-#. Logout of the LiveCD/LiveUSB host
-#. Perform a clean installation of the Toolkit using the latest released version. See :ref:`GettingChooseInstall` for help choosing the right distribution and pointers to installation instructions. You may choose to install on the existing LiveCD/LiveUSB hardware or a completely new host. If it is the former, make sure you have downloaded your LiveCD/LiveUSB backup file to a safe location.
-#. Copy the file ~/ps-toolkit-livecd-backup.tgz from the location chosen in step 3 to your new system. The exact command to do this will depend on where you placed the file (e.g. use *scp*). 
-#. Login to your new installation via SSH or the terminal
-#. Run the following commands to create a few databases and directories to hold the old LiveCD/LiveUSB data::
-    
-    mkdir -p /opt/perfsonar_ps/perfsonarbuoy_ma/etc
-    mysql -u root -e "CREATE DATABASE owamp"
-    mysql -u root -e "CREATE DATABASE bwctl"
-    mysql -u root -e "CREATE DATABASE traceroute_ma"
-    mysql -u root -e "CREATE DATABASE pingerMA"
-    mysql -u root -e "CREATE DATABASE cacti"
-#. Run the command below to restore your data::
-
-    /opt/perfsonar_ps/toolkit/scripts/ps-toolkit-migrate-restore.sh  ~/ps-toolkit-livecd-backup.tgz
-#. Run the command below to re-install the toolkit which should apply any required updates to the transfered configuration files:
-    
-    yum reinstall perl-perfSONAR_PS-Toolkit
-#. Reboot your host::
-
-    reboot
-    
-Your host should now be migrated.
-
-.. note:: After the reboot, it still may take many hours to migrate all historical OWAMP, BWCTL and traceroute data to the new measurement archive so please be patient. You may look in */var/log/perfsonar/psb_to_esmond.log* for information on the progress of the migration. 
-
 Special Upgrade Notes
 =====================
-* Note that updates from versions older than 3.3 are not currently supported. You will need to do a :ref:`clean installation <GettingChooseInstall>` if you wish to move to a newer version.
-* When upgrading from version 3.3 to 3.4, your archived BWCTL, OWAMP and traceroute data will automatically be migrated to the new measurement archive introduced in that version. This may take many hours depending on the amount of historical data on your system. See */var/log/perfsonar_ps/psb_to_esmond.log* for logs and progress on the conversion. If you do not wish to convert data you may discard all old data with the following::
- 
-    mysql -u root -e "DROP DATABASE owamp"
-    mysql -u root -e "DROP DATABASE bwctl"
-    mysql -u root -e "DROP DATABASE traceroute_ma"
-* When you upgrade from a version of the software older than 3.4, automatic updates will be enabled for you. See the :ref:`previous section <manage_update-auto>` in this document for information on implications and how to disable them if desired.
-* When you upgrade from a version of the software older than version 3.4, you may be asked to create a new user to login to the web interface. This is because any user in wheel (e.g. root) is no longer allowed to access the web interface. Given this new constraint, if none of your existing users can login to the web interface you will be prompted to create a new one the first time you login as root. See :doc:`manage_users` for more information.
+* Note that updates from versions older than 3.4 are not currently supported. You will need to do a :ref:`clean installation <GettingChooseInstall>` if you wish to move to a newer version.
+* When you upgrade from a version of the software older than 3.5, you will be asked to create a sudo user if you have not already and disable root SSH by default. It is recommended you answer yes to this question and follow the prompts to create a sudo user.
+* Version 3.5 of the Toolkit introduces a new web interface. If you wish to use the old web interface, it is still installed and can be reached by visiting *http://yourhost/toolkit-old* in your web browser. You may see the `previous version <previous_releases/3.4.2>`_ of the documentation for details on using the interface. 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Regular Testing &mdash; perfSONAR Toolkit 3.4.2 documentation</title>
+    <title>Regular Testing Configuration File &mdash; perfSONAR Toolkit 3.5 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.4.2',
+        VERSION:     '3.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,8 +25,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.4.2 documentation" href="index.html" />
-    <link rel="prev" title="OWAMP Limits" href="config_owamp_limits.html" /> 
+    <link rel="top" title="perfSONAR Toolkit 3.5 documentation" href="index.html" />
+    <link rel="next" title="Previous Release Documentation" href="previous_releases.html" />
+    <link rel="prev" title="OWAMP Limits Configuration File" href="config_owamp_limits.html" /> 
   </head>
   <body>
     <header>
@@ -54,9 +55,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="config_owamp_limits.html" title="OWAMP Limits"
+          <a href="previous_releases.html" title="Previous Release Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="config_owamp_limits.html" title="OWAMP Limits Configuration File"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -68,12 +72,1512 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="regular-testing">
-<h1>Regular Testing<a class="headerlink" href="#regular-testing" title="Permalink to this headline">¶</a></h1>
-<p>The file /opt/perfsonar_ps/regular_testing/etc/regular_testing.conf is used to define what regular tests will run.</p>
-<p>This file in generated from the GUI, and normally should not be modified by hand. The exception to this is if you want to
-send your results to a remote measurement archive.</p>
-<p>To Do: add info on configuring a remote MA, and sending to multiple MAs</p>
+  <div class="section" id="regular-testing-configuration-file">
+<h1>Regular Testing Configuration File<a class="headerlink" href="#regular-testing-configuration-file" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> is used to define the schedule of measurements that your host will run and the location(s) where the results of those tests will be stored. In general you will not need to edit this file by hand. Most configurations use either the <a class="reference internal" href="multi_overview.html"><em>central mesh configuration software</em></a> (often referred to as MeshConfig) or the the <a class="reference internal" href="manage_regular_tests.html"><em>perfSONAR Toolkit web interface</em></a> to generate this file. Some cases where you may need to edit this file by hand are as follows (this is not an exhaustive list):</p>
+<ul class="simple">
+<li>You are running only a small number of non-Toolkit measurement hosts and have no central mesh defined.</li>
+<li>You would like to set parameters not supported by the GUI or MeshConfig.</li>
+<li>You need to change or set authentication tokens used to register to a measurement archive.</li>
+<li>You want to use an alternative or additional measurement archive as opposed to the one defined by your default toolkit installation and/or in your central mesh configuration file</li>
+</ul>
+<p>The basic structure of this file is as follows:</p>
+<ul class="simple">
+<li>A set of top-level directives that set values of general user and/or global defaults</li>
+<li>The list of tests you want to run</li>
+<li>The list of measurement archives where data should be stored.</li>
+</ul>
+<p>With these items in mind the remainder of this section contains a full reference of the options available in the ref:<cite>regular testing configuration file &lt;config_files-regtesting-conf-main&gt;</cite>.</p>
+<div class="section" id="general-settings">
+<span id="config-regular-testing-top-level"></span><h2>General Settings<a class="headerlink" href="#general-settings" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="added-by-mesh-directive">
+<span id="config-regular-testing-added-by-mesh"></span><h3>added_by_mesh Directive<a class="headerlink" href="#added-by-mesh-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If set to 1, indicates the parent element was added by the MeshConfig software. This means the MeshConfig software will change or remove the test as needed. If set to 0 (the default) then the MeshConfig will not change the parent element.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">added_by_mesh</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a>,: ref:<cite>test &lt;config_regular_testing-test&gt;</cite>,</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="default-parameters-directive">
+<span id="config-regular-testing-default-parameters"></span><h3>default_parameters Directive<a class="headerlink" href="#default-parameters-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A set of parameters to assign to any test of the specified <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> where the provided parameters are not otherwise set. For valid parameters see the relevant type-specific test parameters section.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;default_parameters&gt;...&lt;/default_parameters&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="description-directive">
+<span id="config-regular-testing-description"></span><h3>description Directive<a class="headerlink" href="#description-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A human-readable description of the parent directive. For display and identification purposes only.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">description</span> <span class="pre">DESCRIPTION</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a>, <a class="reference internal" href="#config-regular-testing-test"><em>test</em></a>, <a class="reference internal" href="#config-regular-testing-target"><em>target</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="measurement-archive-directive">
+<span id="config-regular-testing-measurement-archive"></span><h3>measurement_archive Directive<a class="headerlink" href="#measurement-archive-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Describes a measurement archive where results can be stored. See <a class="reference internal" href="#config-regular-testing-ma"><em>Measurement Archives</em></a> for more details on the parameters that can be set in this block.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;measurement_archive&gt;...&lt;/measurement_archive&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-regular-testing-test"><em>test</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="test-result-directory-directive">
+<span id="config-regular-testing-test-result-directory"></span><h3>test_result_directory Directive<a class="headerlink" href="#test-result-directory-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The directory where results are temporarily queued before being sent to the measurement archive(s)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">test_result_directory</span> <span class="pre">DIR</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">/var/lib/perfsonar/regular_tests</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="test-directive">
+<span id="config-regular-testing-test"></span><h3>test Directive<a class="headerlink" href="#test-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Describes a measurement to be performed. See <a class="reference internal" href="#config-regular-testing-tests"><em>Tests</em></a> for more details on defining this block.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;test&gt;...&lt;/test&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="measurement-archives">
+<span id="config-regular-testing-ma"></span><h2>Measurement Archives<a class="headerlink" href="#measurement-archives" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ca-certificate-file-directive">
+<span id="config-regular-testing-ca-certificate-file"></span><h3>ca_certificate_file Directive<a class="headerlink" href="#ca-certificate-file-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The location of a certificate authority&#8217;s (CA) certificate file that can be used to verify a server&#8217;s SSL certificate when using HTTPS.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ca_certificate_file</span> <span class="pre">FILE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ca-certificate-path-directive">
+<span id="config-regular-testing-ca-certificate-path"></span><h3>ca_certificate_path Directive<a class="headerlink" href="#ca-certificate-path-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The location of a directory containing one or more certificate authority (CA) certificate files that can be used to verify a server&#8217;s SSL certificate when using HTTPS.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ca_certificate_path</span> <span class="pre">DIR</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="database-directive">
+<span id="config-regular-testing-database"></span><h3>database Directive<a class="headerlink" href="#database-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL of the measurement archive where results will be stored.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">database</span> <span class="pre">URL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="disable-default-summaries-directive">
+<span id="config-regular-testing-disable-default-summaries"></span><h3>disable_default_summaries Directive<a class="headerlink" href="#disable-default-summaries-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Disables a default set of summaries being used if no <a class="reference internal" href="#config-regular-testing-summary"><em>summary</em></a> directives are provided.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disable_default_summaries</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.5 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="max-parallelism-directive">
+<span id="config-regular-testing-max-parallelism"></span><h3>max_parallelism Directive<a class="headerlink" href="#max-parallelism-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum number of processes to concurrently spawn dedicated to writing results to this measurement archive.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">max_parallelism</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">5</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="password-directive">
+<span id="config-regular-testing-password"></span><h3>password Directive<a class="headerlink" href="#password-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The password or API key to use when authenticating to the measurement archive. If not set, then IP authentication or another means must be configured on the server.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">password</span> <span class="pre">PASSWD</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="queue-directory-directive">
+<span id="config-regular-testing-queue-directory"></span><h3>queue_directory Directive<a class="headerlink" href="#queue-directory-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The directory to keep results while they are in the queue to be written to the measurement archive.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">queue_directory</span> <span class="pre">DIR</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">A subdirectory named with <a class="reference internal" href="#config-regular-testing-ma-type"><em>type</em></a> and the host portion of <a class="reference internal" href="#config-regular-testing-database"><em>database</em></a> under the directory defined by <a class="reference internal" href="#config-regular-testing-test-result-directory"><em>test_results_directory</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="summary-directive">
+<span id="config-regular-testing-summary"></span><h3>summary Directive<a class="headerlink" href="#summary-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Describes a summarization you would like the measurement archive to perform on the data. See <a class="reference internal" href="#config-regular-testing-ma-summaries"><em>Measurement Archive Summaries</em></a> for more information.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;summary&gt;...&lt;summary&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="timeout-directive">
+<span id="config-regular-testing-timeout"></span><h3>timeout Directive<a class="headerlink" href="#timeout-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of seconds to wait for the archive server to return a response when writing data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">timeout</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">60</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="type-directive">
+<span id="config-regular-testing-ma-type"></span><h3>type Directive<a class="headerlink" href="#type-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of measurement archive.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">esmond/latency|esmond/throughput|esmond/traceroute|null</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+<p>The currently supported options for this value are:</p>
+<ul class="simple">
+<li><strong>esmond/latency</strong> - Stores OWAMP(powstream and bwping) and Ping results</li>
+<li><strong>esmond/throughput</strong> - Stores BWCTL results that use throughput tools like iperf and iperf3</li>
+<li><strong>esmond/raceroute</strong> - Stores traceroute (and similar tools such as tracepath and paris-traceroute) results as reported by bwtraceroute.</li>
+<li><strong>null</strong> - For testing only. Does not store results anywhere.</li>
+</ul>
+</div>
+<div class="section" id="username-directive">
+<span id="config-regular-testing-username"></span><h3>username Directive<a class="headerlink" href="#username-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The username to use when authenticating to a measurement archive. If not set, then it is assumed IP authentication or some other mechanism will be used to register data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">username</span> <span class="pre">USER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="verify-hostname-directive">
+<span id="config-regular-testing-verify-hostname"></span><h3>verify_hostname Directive<a class="headerlink" href="#verify-hostname-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If using https, indicates whether the hostname should be matched against the common name in the server&#8217;s X.509 certificate.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">verify_hostname</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-measurement-archive"><em>measurement_archive</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="measurement-archive-summaries">
+<span id="config-regular-testing-ma-summaries"></span><h2>Measurement Archive Summaries<a class="headerlink" href="#measurement-archive-summaries" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="event-type-directive">
+<span id="config-regular-testing-event-type"></span><h3>event_type Directive<a class="headerlink" href="#event-type-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The event type to summarize. See the official <a class="reference external" href="http://software.es.net/esmond/perfsonar_client_rest.html#full-list-of-event-types">event type list</a> for valid values.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">event_type</span> <span class="pre">TYPE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-summary"><em>summary</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="summary-type-directive">
+<span id="config-regular-testing-summary-type"></span><h3>summary_type Directive<a class="headerlink" href="#summary-type-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of summary. Valid values are <em>aggregation</em>, <em>average</em> and <em>statistics</em> though which of those is supported is dependent on the <a class="reference internal" href="#config-regular-testing-event-type"><em>event type</em></a>. See the <a class="reference external" href="https://docs.google.com/document/u/1/d/1DFl4bgFxIQtRqYIZPHAT8xW4TACppKq2UeYK13ZsUDk/pub">API specification</a> for full details</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">summary_type</span> <span class="pre">TYPE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-summary"><em>summary</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="summary-window-directive">
+<span id="config-regular-testing-summary-window"></span><h3>summary_window Directive<a class="headerlink" href="#summary-window-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time in seconds over which the data should be summarized.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">summary_window</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-summary"><em>summary</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="tests">
+<span id="config-regular-testing-tests"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="disabled-directive">
+<span id="config-regular-testing-disabled"></span><h3>disabled Directive<a class="headerlink" href="#disabled-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If set to 1, then the enclosing <a class="reference internal" href="#config-regular-testing-test"><em>test</em></a> is not run</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disabled</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-test"><em>test</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="local-address-directive">
+<span id="config-regular-testing-local-address"></span><h3>local_address Directive<a class="headerlink" href="#local-address-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The IP address or hostname to use as the local address for tests. This must map to an address on the host where regular_testing is running. Takes precedence over <a class="reference internal" href="#config-regular-testing-local-interface"><em>local_interface</em></a> if both specified.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">local_address</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-test"><em>test</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The address on <a class="reference internal" href="#config-regular-testing-local-interface"><em>local_interface</em></a> if set or the address on the outgoing interface as chosen by the local routing tables</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="local-interface-directive">
+<span id="config-regular-testing-local-interface"></span><h3>local_interface Directive<a class="headerlink" href="#local-interface-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The name of the interface where tests should be run. This must map to an interface name on the host where regular_testing is running. This is ignored in favor of <a class="reference internal" href="#config-regular-testing-local-address"><em>local_address</em></a> if both specified.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">local_interface</span> <span class="pre">IFNAME</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-test"><em>test</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The address set by <a class="reference internal" href="#config-regular-testing-local-address"><em>local_address</em></a> if set or the address on the outgoing interface as chosen by the local routing tables</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="parameters-directive">
+<span id="config-regular-testing-parameters"></span><h3>parameters Directive<a class="headerlink" href="#parameters-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The parameters of the test. See <a class="reference internal" href="#config-regular-testing-params-general"><em>General Test Parameters</em></a> for details on common parameters and the type specific sections for tool-related values.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;parameters&gt;...&lt;/parameters&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-test"><em>test</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="schedule-directive">
+<span id="config-regular-testing-schedule"></span><h3>schedule Directive<a class="headerlink" href="#schedule-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The schedule indicating how often the tests will run. See <a class="reference internal" href="#config-regular-testing-schedules"><em>Test Schedules</em></a> for more details on the options available.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;schedule&gt;...&lt;/schedule&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-test"><em>test</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="target-directive">
+<span id="config-regular-testing-target"></span><h3>target Directive<a class="headerlink" href="#target-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The remote location to and from which tests should be performed. The syntax for this directive can take a simple form where it is given just an address and a complex form where a block is provided that allows parameters to be overwritten to just the target address. See <a class="reference internal" href="#config-regular-testing-targets"><em>Test Targets</em></a> for more details on the complex form.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Syntax (Simple):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><tt class="docutils literal"><span class="pre">target</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Syntax (Complex):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;target&gt;...&lt;/target&gt;</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-test"><em>test</em></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="test-targets">
+<span id="config-regular-testing-targets"></span><h2>Test Targets<a class="headerlink" href="#test-targets" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="address-directive">
+<span id="config-regular-testing-target-address"></span><h3>address Directive<a class="headerlink" href="#address-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The IP address or hostname of the target with which to perform a test.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">address</span> <span class="pre">ADDRESS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-target"><em>target</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="override-parameters-directive">
+<span id="config-regular-testing-override-parameters"></span><h3>override_parameters Directive<a class="headerlink" href="#override-parameters-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A set of parameters to use only to this target. It will override any parameters of the same type already set. See <a class="reference internal" href="#config-regular-testing-params-general"><em>General Test Parameters</em></a> and the test-specific parameter sections for a list of valid options.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;override_parameters&gt;...&lt;/override_parameters&gt;</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-target"><em>target</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="test-schedules">
+<span id="config-regular-testing-schedules"></span><h2>Test Schedules<a class="headerlink" href="#test-schedules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="interval-directive">
+<span id="config-regular-testing-sched-interval"></span><h3>interval Directive<a class="headerlink" href="#interval-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of seconds to wait in between tests to the same <a class="reference internal" href="#config-regular-testing-target"><em>target</em></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-schedule"><em>schedule</em></a> where <a class="reference internal" href="#config-regular-testing-sched-type"><em>type</em></a> is <em>regular_intervals</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="random-start-percentage-directive">
+<span id="config-regular-testing-random-start-percentage"></span><h3>random_start_percentage Directive<a class="headerlink" href="#random-start-percentage-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The percentage of variation between <a class="reference internal" href="#config-regular-testing-sched-interval"><em>intervals</em></a> of a test. Specified as a number between 0 and 50 (inclusive).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">random_start_percentage</span> <span class="pre">PERCENTAGE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-schedule"><em>schedule</em></a> where <a class="reference internal" href="#config-regular-testing-sched-type"><em>type</em></a> is <em>regular_intervals</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="time-slot-directive">
+<span id="config-regular-testing-time-slot"></span><h3>time_slot Directive<a class="headerlink" href="#time-slot-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A list of specific times at which to run a test. Can be specified as <tt class="docutils literal"><span class="pre">HH:MM</span></tt> or <tt class="docutils literal"><span class="pre">*:MM</span></tt> where <tt class="docutils literal"><span class="pre">*</span></tt> indicates that the test should be run every hour. Only compatible with tools that support timed scheduling and actual runtime with respect to the time defined may vary depending on the tool. You can specify multiple times.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">time_slot</span> <span class="pre">HH:MM|*:MM</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-schedule"><em>schedule</em></a> where <a class="reference internal" href="#config-regular-testing-sched-type"><em>type</em></a> is <em>time_schedule</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-regular-testing-sched-type">
+<span id="id1"></span><h3>type Directive<a class="headerlink" href="#config-regular-testing-sched-type" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of schedule. See below for valid options. Certain tests only support certain schedules.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">TYPE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-schedule"><em>schedule</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+<p>Valid types include:</p>
+<ul class="simple">
+<li><em>regular_intervals</em> - Runs a test a specified number of seconds apart (see <a class="reference internal" href="#config-regular-testing-sched-interval"><em>interval Directive</em></a>) with an optional variation (see <a class="reference internal" href="#config-regular-testing-random-start-percentage"><em>random_start_percentage Directive</em></a>).</li>
+<li><em>streaming</em> - Constantly runs test.</li>
+<li><em>time_schedule</em> - Runs a test at an explicitly set sequence of times (see <a class="reference internal" href="#config-regular-testing-time-slot"><em>time_slot Directive</em></a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="general-test-parameters">
+<span id="config-regular-testing-params-general"></span><h2>General Test Parameters<a class="headerlink" href="#general-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="force-ipv4-directive">
+<span id="config-regular-testing-test-force-ipv4"></span><h3>force_ipv4 Directive<a class="headerlink" href="#force-ipv4-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces the test to use IPv4.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">force_ipv4</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="force-ipv6-directive">
+<span id="config-regular-testing-test-force-ipv6"></span><h3>force_ipv6 Directive<a class="headerlink" href="#force-ipv6-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces the test to use IPv6.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">force_ipv6</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="latest-time-directive">
+<span id="config-regular-testing-test-latest-time"></span><h3>latest_time Directive<a class="headerlink" href="#latest-time-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of seconds in the future a test may be scheduled before being considered failed. Corresponds to the various bwctl or bwctl2 tools <em>-L</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">latest_time</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is one of the <em>bwctl</em>, <em>bwctl2</em>, <em>bwping</em>, <em>bwping2</em>, <em>bwping/owamp</em>, <em>bwping2/owamp</em>, <em>bwtraceroute</em>,  <em>bwtraceroute2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="local-firewall-directive">
+<span id="config-regular-testing-test-local-firewall"></span><h3>local_firewall Directive<a class="headerlink" href="#local-firewall-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates the local host is behind a NAT or firewall so the connection initiator should always be the local host to prevent incoming connections that will get blocked. Corresponds to the bwctl or bwctl2 tools <em>-o</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">local_firewall</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is one of the <em>bwctl</em>, <em>bwctl2</em>, <em>bwping</em>, <em>bwping2</em>, <em>bwping/owamp</em>, <em>bwping2/owamp</em>, <em>bwtraceroute</em>,  <em>bwtraceroute2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-tos-bits-directive">
+<span id="config-regular-testing-test-packet-tos-bits"></span><h3>packet_tos_bits Directive<a class="headerlink" href="#packet-tos-bits-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The TOS bits to set in the IP header as an integer. Corresponds to BWCTL <em>-S</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_tos_bits</span> <span class="pre">TOS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em>, <em>bwctl2</em>, <em>bwping</em>, <em>bwping2</em>, <em>bwtraceroute</em>, <em>bwtraceroute2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="receive-only-directive">
+<span id="config-regular-testing-test-receive-only"></span><h3>receive_only Directive<a class="headerlink" href="#receive-only-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates that tests should only be run in the direction where the local host is the receiver and the target host is the sender.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">receive_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="send-only-directive">
+<span id="config-regular-testing-test-send-only"></span><h3>send_only Directive<a class="headerlink" href="#send-only-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates that tests should only be run in the direction where the local host is the sender and the target host is the receiver.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">send_only</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="test-ipv4-ipv6-directive">
+<span id="config-regular-testing-test-test-ipv4-ipv6"></span><h3>test_ipv4_ipv6 Directive<a class="headerlink" href="#test-ipv4-ipv6-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates both an IPv4 and IPv6 test should be performed.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">test_ipv4_ipv6</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-regular-testing-test-test-type">
+<span id="id2"></span><h3>type Directive<a class="headerlink" href="#config-regular-testing-test-test-type" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of test to run. Determines the set of supported directives in the rest of this block. See below for more details.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">TYPE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+<p>Valid types include:</p>
+<ul class="simple">
+<li><em>bwctl</em> - Runs a BWCTL throughput test. See for <a class="reference internal" href="#config-regular-testing-params-bwctl"><em>bwctl Test Parameters</em></a> for supported parameters specific to this type.</li>
+<li><em>bwctl2</em> - <em>WARNING: BETA ONLY.</em>  Runs a BWCTL2 throughput test. See <a class="reference internal" href="#config-regular-testing-params-bwctl"><em>bwctl Test Parameters</em></a> for supported parameters specific to this type.</li>
+<li><em>bwping</em> - Runs a scheduled ping test using bwping. See <a class="reference internal" href="#config-regular-testing-params-bwping"><em>bwping Test Parameters</em></a> for supported parameters specific to this type.</li>
+<li><em>bwping2</em> - <em>WARNING: BETA ONLY.</em> Runs a scheduled ping test using bwping2. See <a class="reference internal" href="#config-regular-testing-params-bwping"><em>bwping Test Parameters</em></a> for supported parameters specific to this type.</li>
+<li><em>bwping/owamp</em> - Runs a scheduled OWAMP test using bwping. See <a class="reference internal" href="#config-regular-testing-params-bwping"><em>bwping Test Parameters</em></a> for supported parameters specific to this type.</li>
+<li><em>bwping2/owamp</em> - <em>WARNING: BETA ONLY.</em> Runs a scheduled OWAMP test using bwping2. See <a class="reference internal" href="#config-regular-testing-params-bwping"><em>bwping Test Parameters</em></a> for supported parameters specific to this type.</li>
+<li><em>bwtraceroute</em> - Runs a scheduled traceroute test using bwtraceroute. See <a class="reference internal" href="#config-regular-testing-params-bwtraceroute"><em>bwtraceroute Test Parameters</em></a> for supported parameters specific to this type.</li>
+<li><em>bwtraceroute2</em> - <em>WARNING: BETA ONLY.</em> Runs a scheduled traceroute test using bwtraceroute2. See <a class="reference internal" href="#config-regular-testing-params-bwtraceroute"><em>bwtraceroute Test Parameters</em></a> for supported parameters specific to this type.</li>
+<li><em>powstream</em> - Runs a streaming OWAMP test using the powstream tool. See <a class="reference internal" href="#config-regular-testing-params-powstream"><em>powstream Test Parameters</em></a> for supported parameters specific to this type.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="bwctl-test-parameters">
+<span id="config-regular-testing-params-bwctl"></span><h2>bwctl Test Parameters<a class="headerlink" href="#bwctl-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="buffer-length-directive">
+<span id="config-regular-testing-test-buffer-length"></span><h3>buffer_length Directive<a class="headerlink" href="#buffer-length-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The length of read/write buffers in bytes. Corresponds to the BWCTL <em>-l</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">buffer_length</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="bwctl-cmd-directive">
+<span id="config-regular-testing-test-bwctl-cmd"></span><h3>bwctl_cmd Directive<a class="headerlink" href="#bwctl-cmd-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The path to the bwctl command to run</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">bwctl_cmd</span> <span class="pre">CMD</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">/usr/bin/bwctl for <em>bwctl</em> and /usr/bin/bwctl2 for <em>bwctl2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="duration-directive">
+<span id="config-regular-testing-test-duration"></span><h3>duration Directive<a class="headerlink" href="#duration-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time in seconds to run the test. Corresponds to the BWCTL <em>-t</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">duration</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="omit-interval-directive">
+<span id="config-regular-testing-test-omit-interval"></span><h3>omit_interval Directive<a class="headerlink" href="#omit-interval-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of seconds at the beginning of the test to ignore results. Useful for high-latency TCP transfers where throughput needs time to ramp-up. Note that this extends the time of the test the number of seconds specified. Corresponds to BWCTL <em>-O</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">omit_interval</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em> and <a class="reference internal" href="#config-regular-testing-test-bwctl-tool"><em>tool</em></a> is <em>iperf3</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="streams-directive">
+<span id="config-regular-testing-test-streams"></span><h3>streams Directive<a class="headerlink" href="#streams-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of parallel streams to run. Corresponds to BWCTL <em>-P</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">streams</span> <span class="pre">COUNT</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tool-directive">
+<span id="config-regular-testing-test-bwctl-tool"></span><h3>tool Directive<a class="headerlink" href="#tool-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tool to use when running the BWCTL test. Valid values are <em>iperf</em> and <em>iperf3</em>. Separating the tools by commas tells BWCTL to try the first tool in the list and fallback in sequence to the remaining tools in the list until it finds one both endpoints have in common. Corresponds to the BWCTL -T option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">TOOL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">iperf</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="udp-bandwidth-directive">
+<span id="config-regular-testing-test-udp-bandwidth"></span><h3>udp_bandwidth Directive<a class="headerlink" href="#udp-bandwidth-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">For UDP tests, the rate at which to send packets in bits per second (bps). Corresponds to BWCTL <em>-b</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">udp_bandwidth</span> <span class="pre">BITSPERSECOND</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em> AND <a class="reference internal" href="#config-regular-testing-test-use-udp"><em>use_udp</em></a> is 1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="use-udp-directive">
+<span id="config-regular-testing-test-use-udp"></span><h3>use_udp Directive<a class="headerlink" href="#use-udp-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether this is a UDP test. Corresponds to BWCTL <em>-u</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">use_udp</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="window-size-directive">
+<span id="config-regular-testing-test-window-size"></span><h3>window_size Directive<a class="headerlink" href="#window-size-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The TCP window size. Corresponds to BWCTL <em>-w</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">window_size</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwctl</em> or <em>bwctl2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="bwping-test-parameters">
+<span id="config-regular-testing-params-bwping"></span><h2>bwping Test Parameters<a class="headerlink" href="#bwping-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bwping-cmd-directive">
+<span id="config-regular-testing-test-bwping-cmd"></span><h3>bwping_cmd Directive<a class="headerlink" href="#bwping-cmd-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The location of the bwping command</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">bwping_cmd</span> <span class="pre">CMD</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwping</em>, <em>bwping2</em>, <em>bwping/owamp</em> or <em>bwping2/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">/usr/bin/bwping for <em>bwping</em> and <em>bwping/owamp</em>. /usr/bin/bwping2 for <em>bwping2</em> and <em>bwping2/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="inter-packet-time-directive">
+<span id="config-regular-testing-test-inter-packet-time"></span><h3>inter_packet_time Directive<a class="headerlink" href="#inter-packet-time-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time in seconds to wait in between packets. Corresponds to the bwping <em>-i</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">inter_packet_time</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwping</em>, <em>bwping2</em>, <em>bwping/owamp</em> or <em>bwping2/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-count-directive">
+<span id="config-regular-testing-test-packet-count"></span><h3>packet_count Directive<a class="headerlink" href="#packet-count-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of packets to send. Corresponds to the bwping <em>-N</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_count</span> <span class="pre">COUNT</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwping</em>, <em>bwping2</em>, <em>bwping/owamp</em> or <em>bwping2/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-length-directive">
+<span id="config-regular-testing-test-packet-length"></span><h3>packet_length Directive<a class="headerlink" href="#packet-length-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size in bytes of packets to send. Corresponds to the bwping <em>-l</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_length</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwping</em>, <em>bwping2</em>, <em>bwping/owamp</em> or <em>bwping2/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1000</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-ttl-directive">
+<span id="config-regular-testing-test-packet-ttl"></span><h3>packet_ttl Directive<a class="headerlink" href="#packet-ttl-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum number of hops a packet may traverse before being dropped. Corresponds to the bwping <em>-t</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_ttl</span> <span class="pre">TTL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwping</em>, <em>bwping2</em>, <em>bwping/owamp</em> or <em>bwping2/owamp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="bwtraceroute-test-parameters">
+<span id="config-regular-testing-params-bwtraceroute"></span><h2>bwtraceroute Test Parameters<a class="headerlink" href="#bwtraceroute-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bwtraceroute-cmd-directive">
+<span id="config-regular-testing-test-bwtraceroute-cmd"></span><h3>bwtraceroute_cmd Directive<a class="headerlink" href="#bwtraceroute-cmd-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The location of the bwtraceroute command</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">bwtraceroute_cmd</span> <span class="pre">CMD</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwtraceroute</em> or <em>bwtraceroute2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">/usr/bin/bwtraceroute for <em>bwping</em> and /usr/bin/bwtraceroute2 for <em>bwtraceroute2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-first-ttl-directive">
+<span id="config-regular-testing-test-packet-first-ttl"></span><h3>packet_first_ttl Directive<a class="headerlink" href="#packet-first-ttl-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Only compatible when <a class="reference internal" href="#config-regular-testing-test-bwtraceroute-tool"><em>tool</em></a> is <em>traceroute</em>. The first hop to display (starting at 1) of the traceroute. Corresponds to the bwtraceroute <em>-F</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">TOOL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwtraceroute</em> or <em>bwtraceroute2</em> and <a class="reference internal" href="#config-regular-testing-test-bwtraceroute-tool"><em>tool</em></a> is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-regular-testing-test-bwtraceroute-packet-length">
+<span id="id3"></span><h3>packet_length Directive<a class="headerlink" href="#config-regular-testing-test-bwtraceroute-packet-length" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size of the packets to send in bytes. Corresponds to the bwtraceroute <em>-l</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwtraceroute</em> or <em>bwtraceroute2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-max-ttl-directive">
+<span id="config-regular-testing-test-packet-max-ttl"></span><h3>packet_max_ttl Directive<a class="headerlink" href="#packet-max-ttl-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Only compatible when <a class="reference internal" href="#config-regular-testing-test-bwtraceroute-tool"><em>tool</em></a> is <em>traceroute</em>. The maximum number of hops traceroute will try before reaching the destination. Corresponds to the bwtraceroute <em>-M</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">TOOL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwtraceroute</em> or <em>bwtraceroute2</em> and <a class="reference internal" href="#config-regular-testing-test-bwtraceroute-tool"><em>tool</em></a> is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="config-regular-testing-test-bwtraceroute-tool">
+<span id="id4"></span><h3>tool Directive<a class="headerlink" href="#config-regular-testing-test-bwtraceroute-tool" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tool to use when running the bwtraceroute test. Valid values are <em>traceroute</em>, <em>tracepath</em> and <em>paris-traceroute</em>. Separating the tools by commas tells BWCTL to try the first tool in the list and fallback in sequence to the remaining tools in the list until it finds one both endpoints have in common. Corresponds to the bwtraceroute <em>-T</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">TOOL</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>bwtraceroute</em> or <em>bwtraceroute2</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">tracepath,traceroute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="powstream-test-parameters">
+<span id="config-regular-testing-params-powstream"></span><h2>powstream Test Parameters<a class="headerlink" href="#powstream-test-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="config-regular-testing-test-powstream-inter-packet-time">
+<span id="id5"></span><h3>inter_packet_time Directive<a class="headerlink" href="#config-regular-testing-test-powstream-inter-packet-time" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of seconds in between sending packets. Note that this may be a floating-point number less than 1 to send multiple packets per second.  Corresponds to powstream <em>-i</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">inter_packet_time</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>powstream</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">.1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="log-level-directive">
+<span id="config-regular-testing-test-log-level"></span><h3>log_level Directive<a class="headerlink" href="#log-level-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Controls the number and detail of messages sent to syslog. Keeping this reasonable is especially important when using a central syslog server as not to flood the server with requests. Corresponds to powstream <em>-g</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">log_level</span> <span class="pre">FATAL|WARN|INFO|DEBUG|ALL|NONE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>powstream</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Tool default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="owstats-cmd-directive">
+<span id="config-regular-testing-test-owstats-cmd"></span><h3>owstats_cmd Directive<a class="headerlink" href="#owstats-cmd-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The location of the owstats command</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">owstats_cmd</span> <span class="pre">CMD</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>powstream</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">/usr/bin/owstats</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id6">
+<h3>packet_length Directive<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size in bytes to add to the packet payload.  Corresponds to powstream <em>-s</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_length</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>powstream</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="powstream-cmd-directive">
+<span id="config-regular-testing-test-powstream-cmd"></span><h3>powstream_cmd Directive<a class="headerlink" href="#powstream-cmd-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The location of the powstream command</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">powstream_cmd</span> <span class="pre">CMD</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>powstream</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">/usr/bin/powstream</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="receive-port-range-directive">
+<span id="config-regular-testing-test-receive-port-range"></span><h3>receive_port_range Directive<a class="headerlink" href="#receive-port-range-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The range of ports to use for receiving UDP data packets used to perform OWAMP measurements.  Note that powstream does not talk to the local OWAMPD instance, so this needs to be set separately from the corresponding value in OWAMP server configuration. Corresponds to powstream <em>-P</em> option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">receive_port_range</span> <span class="pre">RANGE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>powstream</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="resolution-directive">
+<span id="config-regular-testing-test-resolution"></span><h3>resolution Directive<a class="headerlink" href="#resolution-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of seconds to run a test before reporting results.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">resolution</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-regular-testing-parameters"><em>parameters</em></a>, <a class="reference internal" href="#config-regular-testing-override-parameters"><em>override_parameters</em></a>, <a class="reference internal" href="#config-regular-testing-default-parameters"><em>default_parameters</em></a> where <a class="reference internal" href="#config-regular-testing-test-test-type"><em>type</em></a> is <em>powstream</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">60</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 
 
@@ -85,15 +1589,124 @@ send your results to a remote measurement archive.</p>
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">Regular Testing</a></li>
+<li><a class="reference internal" href="#">Regular Testing Configuration File</a><ul>
+<li><a class="reference internal" href="#general-settings">General Settings</a><ul>
+<li><a class="reference internal" href="#added-by-mesh-directive">added_by_mesh Directive</a></li>
+<li><a class="reference internal" href="#default-parameters-directive">default_parameters Directive</a></li>
+<li><a class="reference internal" href="#description-directive">description Directive</a></li>
+<li><a class="reference internal" href="#measurement-archive-directive">measurement_archive Directive</a></li>
+<li><a class="reference internal" href="#test-result-directory-directive">test_result_directory Directive</a></li>
+<li><a class="reference internal" href="#test-directive">test Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#measurement-archives">Measurement Archives</a><ul>
+<li><a class="reference internal" href="#ca-certificate-file-directive">ca_certificate_file Directive</a></li>
+<li><a class="reference internal" href="#ca-certificate-path-directive">ca_certificate_path Directive</a></li>
+<li><a class="reference internal" href="#database-directive">database Directive</a></li>
+<li><a class="reference internal" href="#disable-default-summaries-directive">disable_default_summaries Directive</a></li>
+<li><a class="reference internal" href="#max-parallelism-directive">max_parallelism Directive</a></li>
+<li><a class="reference internal" href="#password-directive">password Directive</a></li>
+<li><a class="reference internal" href="#queue-directory-directive">queue_directory Directive</a></li>
+<li><a class="reference internal" href="#summary-directive">summary Directive</a></li>
+<li><a class="reference internal" href="#timeout-directive">timeout Directive</a></li>
+<li><a class="reference internal" href="#type-directive">type Directive</a></li>
+<li><a class="reference internal" href="#username-directive">username Directive</a></li>
+<li><a class="reference internal" href="#verify-hostname-directive">verify_hostname Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#measurement-archive-summaries">Measurement Archive Summaries</a><ul>
+<li><a class="reference internal" href="#event-type-directive">event_type Directive</a></li>
+<li><a class="reference internal" href="#summary-type-directive">summary_type Directive</a></li>
+<li><a class="reference internal" href="#summary-window-directive">summary_window Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tests">Tests</a><ul>
+<li><a class="reference internal" href="#disabled-directive">disabled Directive</a></li>
+<li><a class="reference internal" href="#local-address-directive">local_address Directive</a></li>
+<li><a class="reference internal" href="#local-interface-directive">local_interface Directive</a></li>
+<li><a class="reference internal" href="#parameters-directive">parameters Directive</a></li>
+<li><a class="reference internal" href="#schedule-directive">schedule Directive</a></li>
+<li><a class="reference internal" href="#target-directive">target Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test-targets">Test Targets</a><ul>
+<li><a class="reference internal" href="#address-directive">address Directive</a></li>
+<li><a class="reference internal" href="#override-parameters-directive">override_parameters Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test-schedules">Test Schedules</a><ul>
+<li><a class="reference internal" href="#interval-directive">interval Directive</a></li>
+<li><a class="reference internal" href="#random-start-percentage-directive">random_start_percentage Directive</a></li>
+<li><a class="reference internal" href="#time-slot-directive">time_slot Directive</a></li>
+<li><a class="reference internal" href="#config-regular-testing-sched-type">type Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#general-test-parameters">General Test Parameters</a><ul>
+<li><a class="reference internal" href="#force-ipv4-directive">force_ipv4 Directive</a></li>
+<li><a class="reference internal" href="#force-ipv6-directive">force_ipv6 Directive</a></li>
+<li><a class="reference internal" href="#latest-time-directive">latest_time Directive</a></li>
+<li><a class="reference internal" href="#local-firewall-directive">local_firewall Directive</a></li>
+<li><a class="reference internal" href="#packet-tos-bits-directive">packet_tos_bits Directive</a></li>
+<li><a class="reference internal" href="#receive-only-directive">receive_only Directive</a></li>
+<li><a class="reference internal" href="#send-only-directive">send_only Directive</a></li>
+<li><a class="reference internal" href="#test-ipv4-ipv6-directive">test_ipv4_ipv6 Directive</a></li>
+<li><a class="reference internal" href="#config-regular-testing-test-test-type">type Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bwctl-test-parameters">bwctl Test Parameters</a><ul>
+<li><a class="reference internal" href="#buffer-length-directive">buffer_length Directive</a></li>
+<li><a class="reference internal" href="#bwctl-cmd-directive">bwctl_cmd Directive</a></li>
+<li><a class="reference internal" href="#duration-directive">duration Directive</a></li>
+<li><a class="reference internal" href="#omit-interval-directive">omit_interval Directive</a></li>
+<li><a class="reference internal" href="#streams-directive">streams Directive</a></li>
+<li><a class="reference internal" href="#tool-directive">tool Directive</a></li>
+<li><a class="reference internal" href="#udp-bandwidth-directive">udp_bandwidth Directive</a></li>
+<li><a class="reference internal" href="#use-udp-directive">use_udp Directive</a></li>
+<li><a class="reference internal" href="#window-size-directive">window_size Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bwping-test-parameters">bwping Test Parameters</a><ul>
+<li><a class="reference internal" href="#bwping-cmd-directive">bwping_cmd Directive</a></li>
+<li><a class="reference internal" href="#inter-packet-time-directive">inter_packet_time Directive</a></li>
+<li><a class="reference internal" href="#packet-count-directive">packet_count Directive</a></li>
+<li><a class="reference internal" href="#packet-length-directive">packet_length Directive</a></li>
+<li><a class="reference internal" href="#packet-ttl-directive">packet_ttl Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bwtraceroute-test-parameters">bwtraceroute Test Parameters</a><ul>
+<li><a class="reference internal" href="#bwtraceroute-cmd-directive">bwtraceroute_cmd Directive</a></li>
+<li><a class="reference internal" href="#packet-first-ttl-directive">packet_first_ttl Directive</a></li>
+<li><a class="reference internal" href="#config-regular-testing-test-bwtraceroute-packet-length">packet_length Directive</a></li>
+<li><a class="reference internal" href="#packet-max-ttl-directive">packet_max_ttl Directive</a></li>
+<li><a class="reference internal" href="#config-regular-testing-test-bwtraceroute-tool">tool Directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#powstream-test-parameters">powstream Test Parameters</a><ul>
+<li><a class="reference internal" href="#config-regular-testing-test-powstream-inter-packet-time">inter_packet_time Directive</a></li>
+<li><a class="reference internal" href="#log-level-directive">log_level Directive</a></li>
+<li><a class="reference internal" href="#owstats-cmd-directive">owstats_cmd Directive</a></li>
+<li><a class="reference internal" href="#id6">packet_length Directive</a></li>
+<li><a class="reference internal" href="#powstream-cmd-directive">powstream_cmd Directive</a></li>
+<li><a class="reference internal" href="#receive-port-range-directive">receive_port_range Directive</a></li>
+<li><a class="reference internal" href="#resolution-directive">resolution Directive</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
                 <ul>
                   <li>
                   <a href="config_owamp_limits.html">Previous topic</a>
-                  <ul><li><a href="config_owamp_limits.html" title="previous chapter">OWAMP Limits</a></li></ul>
+                  <ul><li><a href="config_owamp_limits.html" title="previous chapter">OWAMP Limits Configuration File</a></li></ul>
                   </li>
                 </ul>
+                  <ul>
+                      <li>
+                      <a href="previous_releases.html">Next topic</a>
+                      <ul><li><a href="previous_releases.html" title="next chapter">Previous Release Documentation</a></li></ul>
+                      </li>
+                  </ul>
                 
                 
             </nav>
@@ -108,9 +1721,12 @@ send your results to a remote measurement archive.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="config_owamp_limits.html" title="OWAMP Limits"
+          <a href="previous_releases.html" title="Previous Release Documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="config_owamp_limits.html" title="OWAMP Limits Configuration File"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.4.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -149,7 +1765,7 @@ send your results to a remote measurement archive.</p>
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2014, perfSONAR Project.
+        &copy; Copyright 2015, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
