@@ -20,7 +20,7 @@ Most of these low cost devices seem to work best running Ubuntu. The perfsonar-t
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
 
-We recommend a device with at least 1MB of RAM and 16MB of disk. At this point in time, the most extensively tested platform in this category is the `$100 Liva <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA_SPEC.aspx?DetailID=1560&LanID=0>`_. 
+We recommend a device with at least 1GB of RAM and 16MB of disk. At this point in time, the most extensively tested platform in this category is the `$100 Liva <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA_SPEC.aspx?DetailID=1560&LanID=0>`_. 
 
 Installation Instructions
 =========================
