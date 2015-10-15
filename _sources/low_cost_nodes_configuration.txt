@@ -31,6 +31,6 @@ Mesh Configuration
 
 perfSONAR 3.5 added the ability to add "tags" to mesh and mesh agent configuration files, allowing for auto discovery and joining of meshes. It is highly encouraged that small nodes make use of this feature to maintain sanity while adding and removing nodes. For more information on mesh auto configuration, :doc:`see this page <multi_mesh_autoconfig>`.
 
-It is also encouraged that MA setup be :doc:`based on IP <multi_ma_install#multi-ma-install-auth-ip>`, though not required. If IP based auth is not setup, the MA credential information will need to be setup in the regular testing file on the small node so that it is able to authenticate sending results back.
+It is also encouraged that MA setup be :doc:`based on IP <multi_ma_install>`, though not required. If IP based auth is not setup, the MA credential information will need to be setup in the regular testing file on the small node so that it is able to authenticate sending results back.
 
 
