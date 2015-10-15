@@ -63,6 +63,7 @@ Additional Installation Options
    install_centos 
    install_debian
    low_cost_nodes
+   low_cost_nodes_configuration
 
 Additional perfSONAR Tools
 --------------------------
