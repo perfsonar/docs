@@ -26,7 +26,9 @@ We recommend a device with at least 1GB of RAM and 16MB of disk. Many devices wi
 
 At this point in time, the most extensively tested platform in this category is the `$100 Liva <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA_SPEC.aspx?DetailID=1560&LanID=0>`_ and its second generation the `$150 Liva X <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA.aspx?DetailID=1593&LanID=0>`_. Each of these is capable of full 1Gbps and work with a standard `Ubuntu 12.04.05 <http://releases.ubuntu.com/12.04/ubuntu-12.04.5-desktop-amd64.iso>`_ Desktop ISO installation.
 
-The Liva X being the second generation hardware seems to be more robust and comes pre-assembled, though a bit more expensive. Both have been proven to work. The perfSONAR team is not formally endorsing this particular platform - just providing it as an example of a possible turnkey solution.
+The Liva X being the second generation hardware seems to be more robust and comes pre-assembled, though a bit more expensive. Both are available for purchase on common sites such as Newegg or Amazon.
+
+Please note that the perfSONAR team is not formally endorsing this particular product - just providing it as an example of a possible turnkey solution for users interested in that sort of thing.
 
 
 Installation Instructions
