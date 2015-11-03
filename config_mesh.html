@@ -1162,7 +1162,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The first hop to look at starting at 1. This can be used to hide local routers. <strong>Not supported by tracepath</strong></td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The first hop to look at starting at 1. This can be used to hide local routers. <strong>Not supported by tracepath or paris-traceroute</strong></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">first_ttl</span> <span class="pre">TTL</span></tt></td>
 </tr>
@@ -1246,11 +1246,11 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size of packets to send in bytes when performing the traceroute</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size of packets to send in bytes when performing the traceroute. <strong>Not supported by tracepath or paris-traceroute</strong></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_size</span> <span class="pre">BYTES</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em> and tool is <em>tarceroute</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -1290,7 +1290,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tool to use to perform the traceroute.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">traceroute|tracepath</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">traceroute|tracepath|paris-traceroute</span></tt></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
 </tr>
@@ -1306,6 +1306,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <ul class="simple">
 <li><strong>traceroute</strong> - This is the default and generally the more reliable of the tools. It also includes more options in terms of setting the TTL and properly binding to interfaces.</li>
 <li><strong>tracepath</strong> - The main advantage of this tool is it reports MTU by default. It has  fewer options than standard traceroute for setting TTLs and binding to local interfaces. It also is UDP-only and may be blocked by firewalls. It&#8217;s also been reported to have a harder time with MTU mismatches on the destination host.</li>
+<li><strong>paris-traceroute</strong> - This is another approach to running traceroute that tries to identify load balanced routes and similar. It requires the client to grant the paris-traceroute command the CAP_NET_RAW privilege on the system in order to run as a non-root user.</li>
 </ul>
 </div>
 <div class="section" id="max-ttl-directive">
@@ -1314,7 +1315,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum number of hops before a traceroute fails. <strong>Not supported by tracepath</strong></td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum number of hops before a traceroute fails. <strong>Not supported by tracepath or paris-traceroute</strong></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">max_ttl</span> <span class="pre">TTL</span></tt></td>
 </tr>
@@ -1335,7 +1336,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether to use ICMP or UDP for the traceroute. <strong>Not supported by tracepath</strong></td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether to use ICMP or UDP for the traceroute. <strong>Not supported by tracepath or paris-traceroute</strong></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">protocol</span> <span class="pre">icmp|udp</span></tt></td>
 </tr>
