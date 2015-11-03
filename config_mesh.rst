@@ -564,7 +564,7 @@ test_interval Directive
 
 first_ttl Directive
 -------------------
-:Description: The first hop to look at starting at 1. This can be used to hide local routers. **Not supported by tracepath**
+:Description: The first hop to look at starting at 1. This can be used to hide local routers. **Not supported by tracepath or paris-traceroute**
 :Syntax: ``first_ttl TTL``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *traceroute*
 :Occurrences:  Zero or more
@@ -600,9 +600,9 @@ ipv6_only Directive
 
 packet_size Directive
 ------------------------
-:Description: The size of packets to send in bytes when performing the traceroute
+:Description: The size of packets to send in bytes when performing the traceroute. **Not supported by tracepath or paris-traceroute**
 :Syntax: ``packet_size BYTES``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *tarceroute*
 :Occurrences:  Zero or one
 :Default: Tool default
 :Compatibility: 3.3 or later
@@ -619,7 +619,7 @@ timeout Directive
 tool Directive
 --------------
 :Description: The tool to use to perform the traceroute.
-:Syntax: ``tool traceroute|tracepath``
+:Syntax: ``tool traceroute|tracepath|paris-traceroute``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
 :Occurrences:  Zero or more
 :Default: traceroute
@@ -629,10 +629,12 @@ You can specify on of the following tools for a traceroute test:
 
 * **traceroute** - This is the default and generally the more reliable of the tools. It also includes more options in terms of setting the TTL and properly binding to interfaces.
 * **tracepath** - The main advantage of this tool is it reports MTU by default. It has  fewer options than standard traceroute for setting TTLs and binding to local interfaces. It also is UDP-only and may be blocked by firewalls. It's also been reported to have a harder time with MTU mismatches on the destination host. 
+* **paris-traceroute** - This is another approach to running traceroute that tries to identify load balanced routes and similar. It requires the client to grant the paris-traceroute command the CAP_NET_RAW privilege on the system in order to run as a non-root user. 
+
 
 max_ttl Directive
 -----------------
-:Description: The maximum number of hops before a traceroute fails. **Not supported by tracepath**
+:Description: The maximum number of hops before a traceroute fails. **Not supported by tracepath or paris-traceroute**
 :Syntax: ``max_ttl TTL``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *traceroute*
 :Occurrences:  Zero or more
@@ -641,7 +643,7 @@ max_ttl Directive
 
 protocol Directive
 ------------------
-:Description: Indicates whether to use ICMP or UDP for the traceroute. **Not supported by tracepath**
+:Description: Indicates whether to use ICMP or UDP for the traceroute. **Not supported by tracepath or paris-traceroute**
 :Syntax: ``protocol icmp|udp``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *traceroute*
 :Occurrences:  Zero or more
