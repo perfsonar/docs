@@ -199,6 +199,7 @@ To run the script manually, run::
 
 Step 6: Register your services 
 ------------------------------- 
+*Can be ignored and done through the web interface for perfSONAR-Complete*
 
 In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/opt/perfsonar_ps/ls_registration_daemon/etc/ls_registration_daemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
 
@@ -227,8 +228,17 @@ You can start all the services by rebooting the host since all are configured to
 
 Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctld and owampd.
 
-
 Configuring Central Management
-------------------------------
-
+-------------------------------
 Refer to the documentation here: :doc:`/multi_overview`
+
+Configuring through the web interface
+--------------------------------------
+After installing the perfSONAR-Complete bundle, you should disable SELinux to gain access to the web interface.  This is done with the following commands:
+::
+
+    echo 0 >/selinux/enforce
+    sed 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+
+After that, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
+
