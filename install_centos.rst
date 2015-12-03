@@ -238,7 +238,7 @@ After installing the perfSONAR-Complete bundle, you should disable SELinux to ga
 ::
 
     echo 0 >/selinux/enforce
-    sed 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+    sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
 After that, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
 
