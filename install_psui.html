@@ -96,7 +96,7 @@ perfsonarUI allows the user to browse several types of MA for available measurem
 <h2>Installation process<a class="headerlink" href="#installation-process" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="supported-platform">
 <h3>Supported platform<a class="headerlink" href="#supported-platform" title="Permalink to this headline">¶</a></h3>
-<p>The perfsonarUI packages are built for Red Hat Enterprise Linux 6.5 and Debian 7.4. No issues are expected for future minor versions.</p>
+<p>The perfsonarUI packages are built for Red Hat Enterprise Linux 6 and Debian 7. No issues are expected for future minor versions.</p>
 </div>
 <div class="section" id="prerequisite-software">
 <h3>Prerequisite software<a class="headerlink" href="#prerequisite-software" title="Permalink to this headline">¶</a></h3>
@@ -105,32 +105,30 @@ perfsonarUI allows the user to browse several types of MA for available measurem
 <li>Java version 7 - Oracle&#8217;s Java and OpenJDK are tested and supported. Other flavors of Java are not tested but should work;</li>
 <li>Apache Tomcat version 6 (for RedHat based systems) or version 7 (for Debian based systems).</li>
 </ol>
-<p>Debian and RHEL package systems should able to automatically satisfy perfsonarUI&#8217;s dependency to Tomcat or Tomcat could be installed beforehand through default repositories.</p>
+<p>Debian and RHEL package systems are able to automatically satisfy perfsonarUI&#8217;s dependency to Tomcat or Tomcat could be installed beforehand through default repositories.</p>
 </div>
 </div>
 <div class="section" id="installing-on-linux-using-repositotry">
 <h2>Installing on Linux using repositotry<a class="headerlink" href="#installing-on-linux-using-repositotry" title="Permalink to this headline">¶</a></h2>
-<p>Recommended way of installation of perfsonarUI is by adding GÉANT stable repository and installing the package using native packaging system.</p>
+<p>Recommended way of installation of perfsonarUI is by adding the perfSONAR repositories and installing the package using native packaging system.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">It is recommended that you rely solely on the package dependencies to install the other required software.  Installing packages manually can result in incompatibility issues.</p>
 </div>
-<div class="section" id="adding-the-geant-repository">
-<h3>Adding the GEANT Repository<a class="headerlink" href="#adding-the-geant-repository" title="Permalink to this headline">¶</a></h3>
-<p>PerfsonarUI packages are hosted in GEANT repositories.</p>
-<div class="section" id="adding-the-geant-repository-on-a-debian-system">
-<h4>Adding the GEANT repository on a Debian system<a class="headerlink" href="#adding-the-geant-repository-on-a-debian-system" title="Permalink to this headline">¶</a></h4>
-<p>It is necessary to place a definition file in the <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d</span></tt> directory. You must have root access to this directory. To copy the definition file perfsonar-stable.list, run the following command:</p>
+<div class="section" id="adding-the-perfsonar-repository">
+<h3>Adding the perfSONAR Repository<a class="headerlink" href="#adding-the-perfsonar-repository" title="Permalink to this headline">¶</a></h3>
+<p>PerfsonarUI packages are hosted in the regular perfSONAR repositories.</p>
+<div class="section" id="adding-the-perfsonar-repository-on-a-debian-system">
+<h4>Adding the perfSONAR repository on a Debian system<a class="headerlink" href="#adding-the-perfsonar-repository-on-a-debian-system" title="Permalink to this headline">¶</a></h4>
+<p>It is necessary to place a definition file in the <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d</span></tt> directory. You must have root access to this directory. To copy the repository source, run the following command:</p>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget http://downloads.perfsonar.eu/repositories/deb/perfsonar-stable.list
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
 </pre></div>
 </div>
 </div></blockquote>
 <p>Use the following commands to add the repository’s PGP key:</p>
 <blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget http://downloads.perfsonar.eu/repositories/perfsonar.asc
-<span class="gp">#</span> apt-key add perfsonar.asc
-<span class="gp">#</span> apt-key list
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.gpg.key | apt-key add -
 </pre></div>
 </div>
 </div></blockquote>
@@ -149,22 +147,13 @@ perfsonarUI allows the user to browse several types of MA for available measurem
 </div></blockquote>
 <p>You should see the perfsonarUI web package listed.</p>
 </div>
-<div class="section" id="adding-the-geant-repository-on-a-red-hat-enterprise-linux-system">
-<h4>Adding the GEANT repository on a Red Hat Enterprise Linux system<a class="headerlink" href="#adding-the-geant-repository-on-a-red-hat-enterprise-linux-system" title="Permalink to this headline">¶</a></h4>
-<p>It is necessary to place a definition file in the <tt class="docutils literal"><span class="pre">/etc/yum.repos.d</span></tt> directory. You must have root access to this directory. To copy the definition file perfsonar-stable.repo use the following commands.</p>
+<div class="section" id="adding-the-perfsonar-repository-on-a-red-hat-enterprise-linux-system">
+<h4>Adding the perfSONAR repository on a Red Hat Enterprise Linux system<a class="headerlink" href="#adding-the-perfsonar-repository-on-a-red-hat-enterprise-linux-system" title="Permalink to this headline">¶</a></h4>
+<p>It is necessary to add the Internet2-repo RPM with the following command (as root):</p>
 <blockquote>
-<div><p>For 32 bit machines (i386) use:</p>
-<blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget http://downloads.perfsonar.eu/repositories/rpm/perfsonar-stable.repo
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
 </pre></div>
 </div>
-</div></blockquote>
-<p>For 64 bit machines (x86_64) use:</p>
-<blockquote>
-<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget http://downloads.perfsonar.eu/repositories/rpm/perfsonar-stable-x86_64.repo
-</pre></div>
-</div>
-</div></blockquote>
 </div></blockquote>
 <p>To check if the repository is correctly added run the following command</p>
 <blockquote>
@@ -208,11 +197,11 @@ perfsonarUI allows the user to browse several types of MA for available measurem
 <div class="section" id="installing-on-linux-manually-by-downloading-binary-packages">
 <h2>Installing on Linux manually by downloading binary packages<a class="headerlink" href="#installing-on-linux-manually-by-downloading-binary-packages" title="Permalink to this headline">¶</a></h2>
 <p>Installation of perfsonarUI can be done by downloading binary package and installing it.</p>
-<p>As of July 21st, 2015, current version of the psUI is 1.5.1 and can be downloaded as:</p>
+<p>As of November 27th, 2015, current version of the psUI is 1.6 and can be downloaded as:</p>
 <blockquote>
 <div><ul class="simple">
-<li>An <a class="reference external" href="http://downloads.perfsonar.eu/repositories/rpm/stable/6/noarch/Packages/perfsonar-ui-web-1.5.1.rpm">RPM package</a> for RHEL 6, CentOS 6 or Scientific Linux 6;</li>
-<li>A <a class="reference external" href="http://downloads.perfsonar.eu/repositories/deb/pool/main/p/perfsonar-ui-web/perfsonar-ui-web_1.5.1_all.deb">Debian 7 package</a>.</li>
+<li>An <a class="reference external" href="http://downloads.perfsonar.net/redhat/branches/staging/rpms/el6/i386/main/RPMS/perfsonar-ui-web-1.6.0.el6.noarch.rpm">RPM package</a> for RHEL 6, CentOS 6 or Scientific Linux 6;</li>
+<li>A <a class="reference external" href="http://downloads.perfsonar.net/debian/pool/main/p/perfsonar-ui-web/perfsonar-ui-web_1.6.0_all.deb">Debian 7 package</a> for Debian 7 Wheezy, Ubuntu 12.04 or Ubuntu 14.04.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -444,9 +433,9 @@ To modify the global list perform the following procedure:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#installing-on-linux-using-repositotry">Installing on Linux using repositotry</a><ul>
-<li><a class="reference internal" href="#adding-the-geant-repository">Adding the GEANT Repository</a><ul>
-<li><a class="reference internal" href="#adding-the-geant-repository-on-a-debian-system">Adding the GEANT repository on a Debian system</a></li>
-<li><a class="reference internal" href="#adding-the-geant-repository-on-a-red-hat-enterprise-linux-system">Adding the GEANT repository on a Red Hat Enterprise Linux system</a></li>
+<li><a class="reference internal" href="#adding-the-perfsonar-repository">Adding the perfSONAR Repository</a><ul>
+<li><a class="reference internal" href="#adding-the-perfsonar-repository-on-a-debian-system">Adding the perfSONAR repository on a Debian system</a></li>
+<li><a class="reference internal" href="#adding-the-perfsonar-repository-on-a-red-hat-enterprise-linux-system">Adding the perfSONAR repository on a Red Hat Enterprise Linux system</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#installation-of-packages">Installation of packages</a><ul>

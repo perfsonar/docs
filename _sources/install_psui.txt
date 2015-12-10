@@ -24,7 +24,7 @@ Installation process
 Supported platform
 ------------------
 
-The perfsonarUI packages are built for Red Hat Enterprise Linux 6.5 and Debian 7.4. No issues are expected for future minor versions.
+The perfsonarUI packages are built for Red Hat Enterprise Linux 6 and Debian 7. No issues are expected for future minor versions.
 
 Prerequisite software
 ---------------------
@@ -34,37 +34,35 @@ For the perfsonarUI to be able to work properly, you need to provide the followi
 #. Java version 7 - Oracle's Java and OpenJDK are tested and supported. Other flavors of Java are not tested but should work;
 #. Apache Tomcat version 6 (for RedHat based systems) or version 7 (for Debian based systems). 
 
-Debian and RHEL package systems should able to automatically satisfy perfsonarUI's dependency to Tomcat or Tomcat could be installed beforehand through default repositories.
+Debian and RHEL package systems are able to automatically satisfy perfsonarUI's dependency to Tomcat or Tomcat could be installed beforehand through default repositories.
 
 
 Installing on Linux using repositotry
 =====================================
 
-Recommended way of installation of perfsonarUI is by adding GÉANT stable repository and installing the package using native packaging system.
+Recommended way of installation of perfsonarUI is by adding the perfSONAR repositories and installing the package using native packaging system.
 
 .. note:: It is recommended that you rely solely on the package dependencies to install the other required software.  Installing packages manually can result in incompatibility issues.
 
-Adding the GEANT Repository
----------------------------
+Adding the perfSONAR Repository
+-------------------------------
 
-PerfsonarUI packages are hosted in GEANT repositories.
+PerfsonarUI packages are hosted in the regular perfSONAR repositories.
 
-Adding the GEANT repository on a Debian system
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding the perfSONAR repository on a Debian system
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is necessary to place a definition file in the ``/etc/apt/sources.list.d`` directory. You must have root access to this directory. To copy the definition file perfsonar-stable.list, run the following command:
+It is necessary to place a definition file in the ``/etc/apt/sources.list.d`` directory. You must have root access to this directory. To copy the repository source, run the following command:
 
 	.. code-block:: console 
 
-		# wget http://downloads.perfsonar.eu/repositories/deb/perfsonar-stable.list
+		# wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
 
 Use the following commands to add the repository’s PGP key:
 
 	.. code-block:: console 
 
-		# wget http://downloads.perfsonar.eu/repositories/perfsonar.asc
-		# apt-key add perfsonar.asc
-		# apt-key list
+                # wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.gpg.key | apt-key add -
 
 Then clean and update the package list on your system using:
 
@@ -81,22 +79,14 @@ To check if the repository is correctly added run the following command:
 
 You should see the perfsonarUI web package listed.
 
-Adding the GEANT repository on a Red Hat Enterprise Linux system
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding the perfSONAR repository on a Red Hat Enterprise Linux system
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is necessary to place a definition file in the ``/etc/yum.repos.d`` directory. You must have root access to this directory. To copy the definition file perfsonar-stable.repo use the following commands.
+It is necessary to add the Internet2-repo RPM with the following command (as root):
 
-	For 32 bit machines (i386) use:
+        .. code-block:: console 
 
-		.. code-block:: console 
-
-		  	# wget http://downloads.perfsonar.eu/repositories/rpm/perfsonar-stable.repo
-
-	For 64 bit machines (x86_64) use:
-  
-		.. code-block:: console 
-
-		  	# wget http://downloads.perfsonar.eu/repositories/rpm/perfsonar-stable-x86_64.repo
+                # rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
 
 To check if the repository is correctly added run the following command
 
