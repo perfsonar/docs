@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuring the puppet master (server) &mdash; perfSONAR Toolkit 3.5.1-0.a1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.5.1-0.a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.5.1-0.a1 documentation" href="index.html" />
+    <link rel="next" title="Configuring the puppet clients" href="multi_puppet_using_client.html" />
+    <link rel="prev" title="Installing Puppet" href="multi_puppet_install.html" /> 
+  </head>
+  <body role="document">
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="multi_puppet_using_client.html" title="Configuring the puppet clients"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="multi_puppet_install.html" title="Installing Puppet"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5.1-0.a1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuring-the-puppet-master-server">
+<h1>Configuring the puppet master (server)<a class="headerlink" href="#configuring-the-puppet-master-server" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The puppet version in <cite>EPEL</cite> is old (2.7.23)</li>
+<li>Full configuration instructions can be found in the <a class="reference external" href="http://docs.puppetlabs.com/guides/install_puppet/post_install.html">Puppet Post-Install Documentation</a></li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>After installing Puppet, edit the default /etc/puppet/puppet.conf that was created during the install process, or use <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/config-management/puppet/etc/puppet/puppet.conf">this example puppet.conf</a>.</p>
+<p>The only part you should have to change is the hostname at the top:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">server</span> <span class="o">=</span> <span class="n">hostname</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>Substitute your server&#8217;s hostname here. Note that this parameter is optional for the server, but if you configure it here, you can use the same puppet.conf on the clients and on the server.</p>
+</div>
+<div class="section" id="installing-the-puppet-module">
+<h2>Installing the Puppet Module<a class="headerlink" href="#installing-the-puppet-module" title="Permalink to this headline">¶</a></h2>
+<p>To use the perfSONAR puppet module, <a class="reference external" href="https://github.com/perfsonar/central-management/">download it from Github</a>. You can clone it via git or download a ZIP file.</p>
+<p>Once you have downloaded the module, change to the <code class="docutils literal"><span class="pre">config-management/puppet/</span></code> directory. There are two folders here:
+* <code class="docutils literal"><span class="pre">manifests</span></code>
+* <code class="docutils literal"><span class="pre">modules</span></code></p>
+<p>Copy the perfsonar directory to <code class="docutils literal"><span class="pre">/etc/puppet/</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo cp -R perfsonar /etc/puppet/
+</pre></div>
+</div>
+<p>You should now have a <code class="docutils literal"><span class="pre">/etc/puppet/perfsonar</span></code> directory containing the perfsonar module.</p>
+</div>
+<div class="section" id="declaring-your-nodes">
+<h2>Declaring your nodes<a class="headerlink" href="#declaring-your-nodes" title="Permalink to this headline">¶</a></h2>
+<p>To define your nodes, edit the Manifest file,  <code class="docutils literal"><span class="pre">perfsonar/manifests/site_rhel6.pp</span></code>; modify it to suit your needs. This file is <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/config-management/puppet/perfsonar/manifests/site_rhel6.pp">also available here</a>.</p>
+<p>The example starts by defining a file bucket, which you can ignore:</p>
+<div class="highlight-python"><div class="highlight"><pre>filebucket {
+  main:
+    path =&gt; false,
+    server =&gt; puppet;
+  local:
+    path =&gt; &quot;/var/lib/puppet/clientbucket/&quot;;
+}
+</pre></div>
+</div>
+<p>Define the hostname of your syslog server, if you are using a central syslog:</p>
+<div class="highlight-python"><div class="highlight"><pre># The hostname of your syslog server
+$syslog_server = &quot;syslog.test.com&quot;
+</pre></div>
+</div>
+<p>Declare a &#8220;default&#8221; node. Every node will use this configuration, unless its hostname matches any of the specific definitions later in the file:</p>
+<div class="highlight-python"><div class="highlight"><pre>node default {
+    class {&#39;rhel6&#39;:
+        web100 =&gt; true}
+    class {&#39;perfsonar&#39;:
+        mesh =&gt; &#39;mesh1&#39;,
+        owamp =&gt; true,
+        bwctl =&gt; false,
+        rsyslog_client =&gt; true,
+        rsyslog_server_host =&gt; $syslog_server,
+        rsyslog_server =&gt; false,
+        apache_enable =&gt; true,
+        #mesh_config_server =&gt; true,
+        # optional port definitions (if undefined, defaults are used)
+        #rsyslog_tcp_port =&gt; &#39;600&#39;,
+        #http_port =&gt; 8000
+    }
+}
+</pre></div>
+</div>
+<p>In the example, our default node is set to use a web100 kernel, a member of &#8216;mesh1&#8217;, owamp is enabled, bwctl is disabled, it&#8217;s configured as a syslog client, apache is enabled, and none of our ports are overridden. Some examples have been included to illustrate how to override ports. In addition to installing the needed software, the module will enable and disable services, and manage the iptables firewall to match the configuration specified here.</p>
+<p>Now we have a specific host definition. The host with the hostname <cite>host1.test.com</cite> will use this configuration, rather than the default:</p>
+<div class="highlight-python"><div class="highlight"><pre>## host1
+node &#39;host1.test.com&#39; {
+    include rhel6
+    class {&#39;perfsonar&#39;:
+        mesh =&gt; &#39;mesh1&#39;,
+        owamp =&gt; true,
+        bwctl =&gt; true,
+        regular_testing =&gt; true,
+        ls_registration_daemon =&gt; true,
+        mesh_config_client =&gt; true,
+        mesh_config_server =&gt; false,
+        esmond =&gt; true,
+        esmond_pg_password =&gt; &#39;asdf&#39;,
+        rsyslog_server_host =&gt; $syslog_server,
+        #rsyslog_client =&gt; &#39;true&#39;,
+        #rsyslog_tcp_port =&gt; &#39;600&#39;,
+        rsyslog_server =&gt; false,
+        rsyslog_udp =&gt; false,
+        #rsyslog_client =&gt; true,
+    }
+}
+</pre></div>
+</div>
+<p>Another specific host configuration:</p>
+<div class="highlight-python"><div class="highlight"><pre># host2
+node &#39;host2.test.com&#39; {
+    class {&#39;rhel6&#39;:
+        web100 =&gt; false}
+    class {&#39;perfsonar&#39;:
+        mesh =&gt; &#39;testbed&#39;,
+        owamp =&gt; true,
+        bwctl =&gt; true,
+        rsyslog_client =&gt; true,
+        rsyslog_server_host =&gt; $syslog_server,
+        mesh_config_client =&gt; true,
+        rsyslog_server =&gt; true,
+        #rsyslog_tcp_port =&gt; &#39;600&#39;,
+        #mesh_config_server =&gt; true,
+        #apache_enable =&gt; true,
+    }
+}
+</pre></div>
+</div>
+<p>Here is a declaration for our syslog server:</p>
+<div class="highlight-python"><div class="highlight"><pre># syslog server
+
+node &#39;syslog.test.com&#39; {
+    class {&#39;rhel6&#39;:
+        web100 =&gt; false}
+    class {&#39;perfsonar&#39;:
+        mesh =&gt; &#39;testbed&#39;,
+        owamp =&gt; true,
+        bwctl =&gt; true,
+        rsyslog_server =&gt; true,
+        #rsyslog_tcp_port =&gt; &#39;600&#39;,
+    }
+}
+</pre></div>
+</div>
+<p>You can have as many node definitions as you like. Additional, you can specify regular expressions in your node definitions. Read the <a class="reference external" href="http://docs.puppetlabs.com/puppet/3.8/reference/lang_node_definitions.html">Puppet node definition documentation</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Configuring the puppet master (server)</a><ul>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#installing-the-puppet-module">Installing the Puppet Module</a></li>
+<li><a class="reference internal" href="#declaring-your-nodes">Declaring your nodes</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="multi_puppet_install.html">Previous topic</a>
+                  <ul><li><a href="multi_puppet_install.html" title="previous chapter">Installing Puppet</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="multi_puppet_using_client.html">Next topic</a>
+                      <ul><li><a href="multi_puppet_using_client.html" title="next chapter">Configuring the puppet clients</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="multi_puppet_using_client.html" title="Configuring the puppet clients"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="multi_puppet_install.html" title="Installing Puppet"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 3.5.1-0.a1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>
