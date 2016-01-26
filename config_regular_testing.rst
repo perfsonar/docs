@@ -434,6 +434,18 @@ Valid types include:
 General Test Parameters
 ========================
 
+.. _config_regular_testing-test-control_address:
+
+control_address Directive
+-------------------------
+:Description: The IP address of the interface out which you want BWCTL control messages sent. Use this if you want to send control messages over a separate interface than the data packets. You will most likely do this for firewall reasons. 
+:Syntax: ``control_address ADDRESS``
+:Contexts: :ref:`parameters <config_regular_testing-parameters>`, :ref:`override_parameters <config_regular_testing-override_parameters>`, :ref:`default_parameters <config_regular_testing-default_parameters>` where :ref:`type <config_regular_testing-test-test_type>` is one of the *bwctl*, *bwping*, *bwping/owamp*, *bwtraceroute*
+:Occurrences:  Zero or One
+:Default: Uses local routing table
+:Compatibility: 3.5.1 and later
+
+
 .. _config_regular_testing-test-force_ipv4:
 
 force_ipv4 Directive
