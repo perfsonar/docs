@@ -182,7 +182,7 @@ You can start all the services by rebooting the host since all are configured to
 
     /etc/init.d/bwctl-server start
     /etc/init.d/owampd start
-    /etc/init.d/lsregistrationdaemon start
+    /etc/init.d/perfsonar-lsregistrationdaemon start
     /etc/init.d/perfsonar-regulartesting start
     /etc/init.d/perfsonar-oppd-server start
 
