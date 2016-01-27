@@ -396,7 +396,7 @@ Toolkit Configuration Script
 Configuration Daemon Start-up Script
 #######################################
 :Description: The script used to start/stop/restart the service used by the administrative web interface to configure the host
-:RedHat: ``/etc/init.d/regular_testing``
+:RedHat: ``/etc/init.d/config_daemon``
 :Debian: *N/A*
 
 .. _config_files-toolkit-scripts-configure_nic_parameters:
