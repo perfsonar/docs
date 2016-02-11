@@ -49,8 +49,6 @@ If this is the first time you have installed MCA, you can run following to initi
 
     service mca setup
 
-You should now be able to access MCA UI at https://<yourhostname>/meshconfig
-
 Stacking MCA on existing toolkit instance on RHEL6
 *****************************************************
 
@@ -113,11 +111,58 @@ If you are upgrading to a new version of MCA, MCA services should automatically 
 
     pm2 restart all
 
-You should now be able to access MCA UI at https://<yourhostname>/meshconfig
-
 Debian
 ============
 
 TODO.
+
+Post Installation Configuration
+###################################
+
+HTTPS Certificate
+========================
+
+You will need to request and install a new HTTP/SSL certificate. By default, MCA comes with a self-signed certificate installed on /opt/mca/mca/deploy/conf/ssl/server/self.cert.pem. How to request the HTTP/SSL certificate is out of scope for this document. Please contact an administrator from your campus / institution to find out more.
+
+Once you have obtained your HTTP/SSL certificate, you can install it on /etc/grid-security/http, and you will need to adjust the apache configuration (/etc/httpd/conf.d/apache-mca.conf) to point to your new certificate (for both port 443 and 9443 - if you are using X509 authentication)
+
+::
+
+    <VirtualHost _default:443>
+        SSLCertificateFile /etc/grid-security/http/cert.pem
+        SSLCertificateKeyFile /etc/grid-security/http/key.pem
+        SSLCertificateChainFile /etc/grid-security/http/chain.pem
+
+::
+
+    <VirtualHost _default:9443>
+        SSLCertificateFile /etc/grid-security/http/cert.pem
+        SSLCertificateKeyFile /etc/grid-security/http/key.pem
+        SSLCertificateChainFile /etc/grid-security/http/chain.pem
+
+Firewall
+========================
+
+Open following ports on your firewall
+
+* 80: Used to expose generated MeshConfig
+* 443: Used for admin UI
+* 9443: Used by SCA authentication service to allow X509 based login
+
+For systemd
+--------------------
+
+::
+
+    firewall-cmd --add-service=http --zone=public
+    firewall-cmd --add-service=http --zone=public --permanent
+    firewall-cmd --add-service=https --zone=public
+    firewall-cmd --add-service=https --zone=public --permanent
+    firewall-cmd --add-port=9443/tcp --zone=public
+    firewall-cmd --add-port=9443/tcp --zone=public --permanent
+
+MCA should now be running with the default configuration at https://<yourhostname>/meshconfig
+
+Please see :doc:`mca_configure` next.
 
 
