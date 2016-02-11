@@ -22,16 +22,16 @@ Most perfSONAR related services keep log files under the directory */var/log/per
 |                                              | /var/log/ndt/fakewww_error.log                |                                            |
 |                                              | /var/log/ndt/fakewww_access.log               |                                            |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| perfSONAR Configuration Daemon               | /var/log/perfsonar/config_daemon.log          | |log_descr_config|                         |
+| perfSONAR Configuration Daemon               | /var/log/perfsonar/configdaemon.log           | |log_descr_config|                         |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| perfSONAR Lookup Service Cache Daemon        | /var/log/perfsonar/ls_cache_daemon.log        | |log_descr_lscache|                        |
+| perfSONAR Lookup Service Cache Daemon        | /var/log/perfsonar/lscachedaemon.log          | |log_descr_lscache|                        |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| perfSONAR Lookup Service Registration Daemon | /var/log/perfsonar/ls_registration_daemon.log | |log_descr_lsreg|                          |
-|                                              | /var/log/SimpleLS/SimpleLSBootStrapClient.log |                                            |
+| perfSONAR Lookup Service Registration Daemon | /var/log/perfsonar/lsregistrationdaemon.log   | |log_descr_lsreg|                          |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| perfSONAR Regular Testing Scheduler          | /var/log/perfsonar/regular_testing.log        | |log_descr_tests|                          |
+| perfSONAR Regular Testing Scheduler          | /var/log/perfsonar/regulartesting.log         | |log_descr_tests|                          |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| perfSONAR Service Watcher                    | /var/log/perfsonar/service_watcher.log        | |log_descr_watcher|                        |
+| perfSONAR Service Watcher                    | /var/log/perfsonar/servicewatcher.log         | |log_descr_watcher|                        |
+|                                              | /var/log/perfsonar/servicewatcher_error.log   |                                            |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | perfSONAR Web Interface                      | /var/log/perfsonar/web_admin/web_admin.log    | |log_descr_web|                            |
 |                                              | /var/log/httpd/error_log                      |                                            |
@@ -57,7 +57,7 @@ Determining Who Is Testing to Your Host
 You may install a cron job that analyzes the logs of BWCTL, OWAMP, and NDT hourly and generates a report of who tested to your host when. You can install access these reports as follows:
     #. Copy the cron script to */etc/cron.hourly*::
     
-        cp /opt/perfsonar_ps/toolkit/scripts/logscraper.cron /etc/cron.hourly/logscraper.cron
+        cp /usr/lib/perfsonar/scripts/logscraper.cron /etc/cron.hourly/logscraper.cron
     #. Wait at least an hour for the script to run
     #. Visit the old tookit web interface at *http://hostaddress/toolkit-old*
     #. Click *BWCTL Log Analysis*, *OWAMP Log Analysis*, or *NDT Log Analysis* (depending on the log you want analyzed) on the left menu

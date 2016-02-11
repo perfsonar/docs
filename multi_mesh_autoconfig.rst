@@ -279,12 +279,6 @@ You'll also want to set the follow if you are NOT use a Toolkit deployment or th
     
 Finally, you'll want to make sure your :ref:`regular testing configuration file <config_files-regtesting-conf-main>` only has the following lines uncommented:
 
-**RedHat/CentOS**:: 
-
-    test_result_directory   /var/lib/perfsonar/regular_testing
-
-**Debian**:: 
-
     test_result_directory   /var/lib/perfsonar/regulartesting
     
 .. note:: If you have additional *measurement_archive* directives in the file then your tests will be stored there IN ADDITION to those automatically configured by the mesh. This may or may not be desirable depending on your case.
@@ -428,14 +422,8 @@ Finally, with our filters defined, we can create *output_settings* which define 
 None of the fields are required but the example highlights a few common ones to set. First we can set the *organization_name*. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an *address_tag* of *owamp*. Last, we can also set a :ref:`measurement_archive <config_mesh-ma>` that we want the generated host elements to use. These look just like the same element we'd define in a MeshConfig file with a *type*, *read_url* and *write_url*. 
 
 Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command:
-
-**RedHat/CentOS**::
-
-    /opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /var/www/html/dynamic_host_list.json
-
-**Debian**::
     
-    /usr/lib/perfsonar/bin/lookup_hosts --input /etc/perfsonar/lookuphosts.conf --output /var/www/dynamic_host_list.json
+    /usr/lib/perfsonar/bin/lookup_hosts --input /etc/perfsonar/meshconfig-lookuphosts.conf --output /var/www/dynamic_host_list.json
     
 
 The *--input* parameter points to the file we just generated. The *--output* points to a location we we want the generated JSON file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service. 

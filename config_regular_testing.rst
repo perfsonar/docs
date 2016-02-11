@@ -74,7 +74,7 @@ test_result_directory Directive
 :Syntax: ``test_result_directory DIR``
 :Contexts: top level
 :Occurrences:  Zero or One
-:Default: /var/lib/perfsonar/regular_tests
+:Default: /var/lib/perfsonar/regulartesting
 :Compatibility: 3.4 and later
 
 .. _config_regular_testing-test:

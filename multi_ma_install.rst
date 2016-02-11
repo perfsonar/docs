@@ -46,7 +46,7 @@ As an archive administrator you may create a username, generate an API key, and 
 
 #. Change to the esmond install directory::
 
-    cd /opt/esmond
+    cd /usr/lib/esmond
 #. **RedHat/CentOS users only**: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a **bash** shell, you can enable Python 2.7 for your current shell with the following commands::
 
     source /opt/rh/python27/enable
@@ -73,7 +73,7 @@ As an archive administrator you may create an account that authenticates based o
 
 #. Change to the esmond install directory::
 
-    cd /opt/esmond
+    cd /usr/lib/esmond
 #. **RedHat/CentOS users only**: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a **bash** shell, you can enable Python 2.7 for your current shell with the following commands::
 
     source /opt/rh/python27/enable

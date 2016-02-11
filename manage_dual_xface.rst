@@ -32,7 +32,7 @@ Adding Routes
 -------------
 When a regular test is run (or you run a measurement at the command-line using an option to specify the source address), the operating system may or may not use the provided source IP address when deciding which interface on the local host to use for forwarding. Most default routing tables only look at the destination address when making forwarding decisions which can lead to unexpected behavior with your measurements.
 
-In order to avoid this situation, you need to run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at */opt/perfsonar_ps/toolkit/scripts/mod_interface_route*. For **each interface on the host** you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:
+In order to avoid this situation, you need to run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at */usr/lib/perfsonar/scripts/mod_interface_route*. For **each interface on the host** you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:
     
     * Interface 1
         :Interface Name: eth0
@@ -51,8 +51,8 @@ In order to avoid this situation, you need to run a special script to aid in rou
     
 Below is an example of the commands we would run to install the rules required to correctly use both interfaces for measurement traffic::
 
-    /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
-    /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
+    /usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
+    /usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
 
 Replace the options above with those relevant to each interface on your host to create the necessary rules. 
 
@@ -68,9 +68,9 @@ An example **/sbin/ifup-local** script based on the example interfaces above::
     INTERFACE=$1
 
     if [ "$INTERFACE" == "eth0" ]; then
-        /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
+        /usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
     elif [ "$INTERFACE" == "eth1" ]; then
-        /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
+        /usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
     fi
 
 An example **/sbin/ifdown-local** script based on the example interfaces above::
@@ -80,7 +80,7 @@ An example **/sbin/ifdown-local** script based on the example interfaces above::
     INTERFACE=$1
 
     if [ "$INTERFACE" == "eth0" -o "$INTERFACE" == "eth1" ]; then
-        /opt/perfsonar_ps/toolkit/scripts/mod_interface_route  --command delete --device  $1
+        /usr/lib/perfsonar/scripts/mod_interface_route  --command delete --device  $1
     fi
 
 After you have created those scripts, make sure that they are executable by running **chmod ugo+x /sbin/ifup-local /sbin/ifdown-local**.
@@ -109,7 +109,7 @@ Deleting Routes
 ---------------
 If you would like to remove previously added rules and routes, simply give the *mod_interface_route* script the *delete* command and the device for which you want the rules removed. For example to remove both the rules from our previous example, run::
     
-    /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command delete --device eth0
-    /opt/perfsonar_ps/toolkit/scripts/scripts/mod_interface_route --command delete --device eth1
+    /usr/lib/perfsonar/scripts/mod_interface_route --command delete --device eth0
+    /usr/lib/perfsonar/scripts/scripts/mod_interface_route --command delete --device eth1
 
 

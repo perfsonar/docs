@@ -1216,7 +1216,7 @@ client_uuid_file Directive
 :Syntax: ``client_uuid_file FILE``
 :Contexts: top level
 :Occurrences:  Zero or One
-:Default: */var/lib/perfsonar/ls_registration_daemon/client_uuid*
+:Default: */var/lib/perfsonar/lsregistrationdaemon/client_uuid*
 
 .. _config_ls_registration-group:
 
@@ -1236,7 +1236,7 @@ ls_key_db Directive
 :Syntax: ``ls_key_db DB``
 :Contexts: top level
 :Occurrences:  Zero or One
-:Default: */var/lib/perfsonar/ls_registration_daemon/lsKey.db*
+:Default: */var/lib/perfsonar/lsregistrationdaemon/lsKey.db*
 
 .. _config_ls_registration-pidfile:
 
