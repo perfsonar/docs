@@ -52,7 +52,7 @@ Log Files
 Primary Log file
 ##########################
 :Description: BWCTL servers and clients can each write to log files. The location of the log file is dependent on your syslog configuration. The entries in this table assume a default configuration. 
-:RedHat: **RPM Only**: ``/var/log/messages`` **Toolkit or Complete Install:** ``/var/log/perfsonar/owamp_bwctl.log``
+:RedHat: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp_bwctl.log``
 :Debian: ``/var/log/messages`` 
 
 
@@ -337,7 +337,7 @@ Log Files
 Primary Log file
 ##########################
 :Description: OWAMP servers and clients can each write to log files. The location of the log file is dependent on your syslog configuration. The entries in this table assume a default configuration. 
-:RedHat: **RPM Only**: ``/var/log/messages`` **Toolkit or Complete Install:** ``/var/log/perfsonar/owamp_bwctl.log``
+:RedHat: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp_bwctl.log``
 :Debian: ``/var/log/messages`` 
 
 Regular Testing

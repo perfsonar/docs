@@ -208,15 +208,9 @@ Given all the information above, lets look at an example where we want to regist
 
 After adding the above to you configuration you will need to restart your regular testing:
 
-**RedHat/CentOS**::
-
-    /sbin/service regular_testing restart
-    
-**Debian**::
-
     /etc/init.d/perfsonar-regulartesting restart
 
-.. note:: If you central measurement archive goes down for any reason, the regular_testing daemon will queue results on the local disk under the :ref:`test results directory <config_regular_testing-test_result_directory>` as specified in your :ref:`regular_testing.conf <config_files-regtesting-conf-main>` file. It will try to register any results on disk when your measurement archive returns. Since accumulating too many files can cause trouble for disk space and/or the regular_testing daemon's ability to keep up with registering data, these files are cleaned nightly on toolkit installations. 
+.. note:: If you central measurement archive goes down for any reason, the regular_testing daemon will queue results on the local disk under the :ref:`test results directory <config_regular_testing-test_result_directory>` as specified in your :ref:`regulartesting.conf <config_files-regtesting-conf-main>` file. It will try to register any results on disk when your measurement archive returns. Since accumulating too many files can cause trouble for disk space and/or the regular_testing daemon's ability to keep up with registering data, these files are cleaned nightly on toolkit installations. 
 
 Registering to Multiple Measurement Archives
 --------------------------------------------
