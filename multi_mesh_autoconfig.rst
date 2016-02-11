@@ -273,7 +273,7 @@ You'll also want to make sure the following is set if you would like to use the 
 
 .. note:: This *configure_archives* option assumes the measurement archive provided by the mesh configuration file has :ref:`IP authentication <multi_ma_install-auth_ip>` setup for this host. This is because the mesh configuration cannot securely distribute usernames and API keys. See the :ref:`measurement archive documentation <multi_ma_install-auth_ip>` for information on how to configure IP authentication on your archive server. 
 
-You'll also want to set the follow if you are NOT use a Toolkit deployment or the perfSONAR-Complete bundle::
+You'll also want to set the following if you are NOT using a Toolkit deployment or the perfSONAR-Complete bundle::
 
     use_toolkit 0
     
