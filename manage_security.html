@@ -91,63 +91,60 @@
 <p>The rules added by the perfSONAR toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update.</p>
 <p>An example that will block access to port 8000 for all traffic is shown in the steps below (note it is not recommended you run this command as it will block access to the NPAD tool):</p>
 <blockquote>
+<div><blockquote>
 <div><ol class="arabic">
 <li><p class="first">Login to your host via SSH or the terminal as a root user</p>
 </li>
 <li><p class="first">View your current iptables rules with the following <tt class="docutils literal"><span class="pre">/sbin/service</span> <span class="pre">iptables</span> <span class="pre">status</span></tt> command. Note that the command does not necessarily show all the details of each rule and you should look in <em>/etc/sysconfig/iptables</em> for a full description. For example  the second rule in the INPUT chain may look like it accepts all traffic, but in reality it only accepts all traffic <em>from the loopback interface</em>. An example is shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre># /sbin/service iptables status
+<div class="highlight-python"><div class="highlight"><pre>Table: filter
 Chain INPUT (policy ACCEPT)
 num  target     prot opt source               destination
-1    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0
+1    f2b-sshd   tcp  --  0.0.0.0/0            0.0.0.0/0           multiport dports 22
+2    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0
+3    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable
 
 Chain FORWARD (policy ACCEPT)
 num  target     prot opt source               destination
+1    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable
 
 Chain OUTPUT (policy ACCEPT)
 num  target     prot opt source               destination
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain f2b-sshd (1 references)
+num  target     prot opt source               destination
+1    RETURN     all  --  0.0.0.0/0            0.0.0.0/0
 
 Chain perfSONAR (1 references)
 num  target     prot opt source               destination
-1    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255
-2    ACCEPT     icmpv6--  0.0.0.0/0            0.0.0.0/0
-3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 state NEW,ESTABLISHED
-4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:443 state NEW,ESTABLISHED
-5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp
-6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8090
-7    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634
-8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8000
-9    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8001:8020
-10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:843
-11   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7123
-12   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:3001:3003
-13   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:861
-14   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
-15   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:4823
-16   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200
-17   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
-18   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5000:5900
-19   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5000:5900
-20   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300
-21   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5001:5300
-22   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300
-23   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5001:5300
-24   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600
-25   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5301:5600
-26   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600
-27   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5301:5600
-28   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900
-29   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5601:5900
-30   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900
-31   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5601:5900
-32   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
-33   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200
-34   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
-35   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200
-36   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
-37   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8760:9960
-38   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
-39   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8760:9960
-40   RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+1    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300
+2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5001:5300
+3    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600
+4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5301:5600
+5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900
+6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5601:5900
+7    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
+8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:6001:6200
+9    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
+10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:8760:9960
+11   ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255
+12   ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+13   ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED
+14   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:22
+15   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp
+16   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           state NEW udp spt:547 dpt:546
+17   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634
+18   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:8001:8020
+19   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:3001:3003
+20   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:4823
+21   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:861
+22   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8000
+23   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:7123
+24   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:843
+25   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:80
+26   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:443
+27   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8090
+28   RETURN     all  --  0.0.0.0/0            0.0.0.0/0
 </pre></div>
 </div>
 </li>
@@ -166,56 +163,52 @@ num  target     prot opt source               destination
 Chain INPUT (policy ACCEPT)
 num  target     prot opt source               destination
 1    REJECT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8000 reject-with icmp-port-unreachable
-2    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0
+2    f2b-sshd   tcp  --  0.0.0.0/0            0.0.0.0/0           multiport dports 22
+3    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0
+4    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable
 
 Chain FORWARD (policy ACCEPT)
 num  target     prot opt source               destination
+1    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable
 
 Chain OUTPUT (policy ACCEPT)
 num  target     prot opt source               destination
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain f2b-sshd (1 references)
+num  target     prot opt source               destination
+1    RETURN     all  --  0.0.0.0/0            0.0.0.0/0
 
 Chain perfSONAR (1 references)
 num  target     prot opt source               destination
-1    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255
-2    ACCEPT     icmpv6--  0.0.0.0/0            0.0.0.0/0
-3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 state NEW,ESTABLISHED
-4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:443 state NEW,ESTABLISHED
-5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp
-6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8090
-7    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634
-8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:8000
-9    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8001:8020
-10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:843
-11   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:7123
-12   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:3001:3003
-13   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:861
-14   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
-15   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:4823
-16   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200
-17   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
-18   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5000:5900
-19   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5000:5900
-20   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300
-21   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5001:5300
-22   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300
-23   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5001:5300
-24   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600
-25   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5301:5600
-26   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600
-27   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5301:5600
-28   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900
-29   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5601:5900
-30   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900
-31   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:5601:5900
-32   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
-33   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200
-34   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
-35   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:6001:6200
-36   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
-37   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8760:9960
-38   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
-39   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpts:8760:9960
-40   RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+1    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300
+2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5001:5300
+3    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600
+4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5301:5600
+5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900
+6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5601:5900
+7    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200
+8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:6001:6200
+9    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960
+10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:8760:9960
+11   ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255
+12   ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+13   ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED
+14   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:22
+15   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp
+16   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           state NEW udp spt:547 dpt:546
+17   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634
+18   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:8001:8020
+19   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:3001:3003
+20   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:4823
+21   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:861
+22   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8000
+23   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:7123
+24   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:843
+25   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:80
+26   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:443
+27   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8090
+28   RETURN     all  --  0.0.0.0/0            0.0.0.0/0
 </pre></div>
 </div>
 </li>
@@ -225,6 +218,7 @@ num  target     prot opt source               destination
 <p class="first admonition-title">Note</p>
 <p class="last">Prior to version 3.4, custom firewall rules were not handled properly. As such you may find that when upgrading from versions older than 3.4 that you will lose any custom rules. Following the steps above should ensure your rules are maintained for updates beyond 3.4 in the foreseeable future.</p>
 </div>
+</div></blockquote>
 </div>
 <div class="section" id="fail2ban-intrusion-detection-system">
 <h2>Fail2ban Intrusion Detection System<a class="headerlink" href="#fail2ban-intrusion-detection-system" title="Permalink to this headline">¶</a></h2>
