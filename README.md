@@ -30,6 +30,19 @@ This will generate a set of HTML files that can be opened in your browser under 
 
 Simply push your changes to the master branch and the documentation will be published within 15 minutes to http://docs.perfsonar.net. This is handled by a script running on the hosting server that polls the git repository every 15 minutes and rebuilds the site if changes are detected. If you can't wait that long, run `make html` followed by `deploy.sh` to deploy your changes.
 
+### Deploying a release candidate
+
+A script is provided to deploy documentation for a release candidate. The basic process is that the documentation for the release candidate is done in a branch and then we push out the branch using a shell script. 
+
+Once your branch is ready simply run the *deploy_release_candidate.sh* script to publish the branch (substituting BRANCH with the BRANCH name):
+
+```bash
+./deploy_prev_release.sh BRANCH
+```
+
+This will create a new directory with the docs at http://docs.perfsonar.net/release_candidates/BRANCH. If you need to update existing docs, simply run the script again to push out changes. 
+
+
 ### Deploying a previous release
 
 A script is provided to deploy documentation for previous releases. The basic process is that the documentation for the previous release must be tagged on master where the version number is the tag. This will in turn create a link under /previous_releases/VERSION with the old version of the documentation. 
