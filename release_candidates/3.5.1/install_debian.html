@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation on Debian &mdash; perfSONAR Toolkit 3.5.1-0.a1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.5.1-0.a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 3.5.1-0.a1 documentation" href="index.html" />
+    <link rel="next" title="perfSONAR on Low Cost Nodes" href="low_cost_nodes.html" />
+    <link rel="prev" title="Installation of CentOS Bundles" href="install_centos.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="low_cost_nodes.html" title="perfSONAR on Low Cost Nodes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_centos.html" title="Installation of CentOS Bundles"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1-0.a1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation-on-debian">
+<h1>Installation on Debian<a class="headerlink" href="#installation-on-debian" title="Permalink to this headline">¶</a></h1>
+<p>For perfSONAR 3.5 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:</p>
+<ul class="simple">
+<li>Debian 7 Wheezy</li>
+<li>Ubuntu 12 Precise</li>
+<li>Ubuntu 14 Trusty</li>
+</ul>
+<p>Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.</p>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>Hardware:</strong> We provide Debian packages for 4 different architectures:<ul>
+<li>32-bit (i386)</li>
+<li>64-bit (amd64)</li>
+<li>ARMv4t and up (armel)</li>
+<li>ARMv7 and up (armhf)</li>
+</ul>
+</li>
+<li><strong>Operating System:</strong>  Any system running a Debian 7, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.</li>
+</ul>
+</div>
+<div class="section" id="installation-instructions">
+<h2>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-1-configure-apt">
+<span id="install-debian-step1"></span><h3>Step 1: Configure APT<a class="headerlink" href="#step-1-configure-apt" title="Permalink to this headline">¶</a></h3>
+<p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
+wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
+wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.gpg.key | apt-key add -
+</pre></div>
+</div>
+<p>Then refresh the packages list:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get update
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-install-the-packages">
+<span id="install-debian-step2"></span><h3>Step 2: Install the packages<a class="headerlink" href="#step-2-install-the-packages" title="Permalink to this headline">¶</a></h3>
+<p>The two <a class="reference internal" href="install_options.html"><em>bundles</em></a> we currently provide for Debian contains the following packages:</p>
+<ul class="simple">
+<li><strong>perfsonar-tools</strong> contains all the tools you need to make measurements from the CLI:<ul>
+<li>iperf and iperf3</li>
+<li>owamp client and server</li>
+<li>bwctl client and server</li>
+<li>ndt client</li>
+</ul>
+</li>
+<li><strong>perfsonar-testpoint</strong> contains the perfsonar-tools and the perfSONAR software you need to get your perfSONAR measurement point part of the global perfSONAR measurement infrastructure:<ul>
+<li>ls-registration daemon</li>
+<li>regular-testing daemon</li>
+<li>oppd</li>
+<li>meshconfig-agent to participate in a test mesh, see <a class="reference internal" href="multi_mesh_agent_config.html"><em>Reading a Central Configuration File</em></a> for more details</li>
+</ul>
+</li>
+</ul>
+<p>Choose the bundle you want to install and call <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span></tt> with it:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-testpoint
+</pre></div>
+</div>
+<p><em>Optional Packages</em></p>
+<p>Additionally, you may also install the toolkit security, sysctl and ntp configuration packages manually:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>perfsonar-toolkit-security</strong> containing iptables rules and fail2ban to protect your node, see <a class="reference internal" href="manage_security.html"><em>Firewalls and Security Software</em></a> for more details.</li>
+<li><strong>perfsonar-toolkit-sysctl</strong> fine tuning your host for better performance measurements, see <a class="reference internal" href="manage_tuning.html"><em>Host Tuning</em></a> for more details.</li>
+<li><strong>perfsonar-toolkit-ntp</strong> provides you with a list of known NTP servers and a script to choose the closest ones.</li>
+</ul>
+</div></blockquote>
+<p>The installation of these packages can be done with each of the commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-toolkit-security
+apt-get install perfsonar-toolkit-sysctl
+apt-get install perfsonar-toolkit-ntp
+</pre></div>
+</div>
+<p>During the installation of the <tt class="docutils literal"><span class="pre">perfsonar-toolkit-security</span></tt> package you&#8217;ll be asked if you want to keep your current set of iptables rules, both for IPV4 and for IPv6. This is part of the usual installation process of the <tt class="docutils literal"><span class="pre">iptables-persistent</span></tt> package that we use to setup the firewall protecting your perfSONAR node.  Whatever you answer to the question, your current rules will be saved as part of the <tt class="docutils literal"><span class="pre">perfsonar-toolkit-security</span></tt> package installation.</p>
+</div>
+<div class="section" id="step-3-verify-ntp-and-tuning-parameters">
+<span id="install-debian-step3"></span><h3>Step 3: Verify NTP and Tuning Parameters<a class="headerlink" href="#step-3-verify-ntp-and-tuning-parameters" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><strong>NTP</strong></p>
+<p>After installing the <tt class="docutils literal"><span class="pre">perfsonar-toolkit-ntp</span></tt> package, you can run the following script to have perfSONAR choose the closest NTP servers for you:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_ntpd new
+service ntp restart
+</pre></div>
+</div>
+<p>You can also configure your own set of NTP servers manually.</p>
+<p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL will not even run unless NTP is configured. You can verify NTP is running with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ntpq</span> <span class="o">-</span><span class="n">p</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>System Tuning</strong></p>
+<p>It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that cubic, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  If you have installed the <tt class="docutils literal"><span class="pre">perfsonar-toolkit-sysctl</span></tt> package, all should be ready for you.</p>
+<p>Please refer to <a class="reference external" href="http://fasterdata.es.net/host-tuning/linux/">linux host tuning</a> for more information.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="step-4-firewall-and-security-considerations">
+<span id="install-debian-step4"></span><h3>Step 4: Firewall and Security Considerations<a class="headerlink" href="#step-4-firewall-and-security-considerations" title="Permalink to this headline">¶</a></h3>
+<p>If you have installed the <cite>perfsonar-toolkit-security</cite> package, then your iptables are already configured with our default rules.  The package also installs fail2ban.</p>
+<p>If you would like to configure the rules manually, then please review the <a class="reference external" href="http://www.perfsonar.net/deploy/security-considerations/">document here</a> on the ports that need to be open.</p>
+<p>Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctld.limits. You may read the bwctld.limits man page or look at the example file provided under /etc/bwctld/bwctld.limits file. ESnet uses a bwctld.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:</p>
+<ul class="simple">
+<li>Allow unrestricted UDP tests from ESnet test system prefixes.</li>
+<li>Allow up to 200Mbps UDP tests from ESnet sites.</li>
+<li>Deny UDP tests from any other locations.</li>
+<li>Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.</li>
+<li>Deny TCP tests from everywhere else.</li>
+</ul>
+<p>To use the ESnet bwctld.limits file, get this file from ESnet as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/bwctl
+mv bwctld.limits bwctld.limits.dist
+wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
+</pre></div>
+</div>
+<p>ESnet provides a shell script that will download and install the latest bwctld.limits file. The bwctld.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctld.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/bwctl
+wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
+chmod +x update_limits.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-5-auto-updates">
+<span id="install-debian-step5"></span><h3>Step 5: Auto updates<a class="headerlink" href="#step-5-auto-updates" title="Permalink to this headline">¶</a></h3>
+<p>To ensure you always have the most current and hopefully most secure packages you can install and configure <tt class="docutils literal"><span class="pre">cron-apt</span></tt> to be run every night.  You’ll need to configure it to actually install the available updates and not just download the newly available packages (which is the default configuration).  This can be done with the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get install cron-apt
+echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts=&quot;/dev/null&#39; &gt;&gt; /etc/cron-apt/action.d/5-install
+</pre></div>
+</div>
+<p>A cronjob will automatically install new packages present in the perfsonar-wheezy-release repository every night (check <tt class="docutils literal"><span class="pre">/etc/cron.d/cron-apt</span></tt>). You may want to do the same with the security updates provided by Debian/Ubuntu.</p>
+<p>A trace of all updates applied will be stored in <tt class="docutils literal"><span class="pre">/var/log/cron-apt/log</span></tt></p>
+</div>
+<div class="section" id="step-6-register-your-services">
+<span id="install-debian-step6"></span><h3>Step 6: Register your services<a class="headerlink" href="#step-6-register-your-services" title="Permalink to this headline">¶</a></h3>
+<p>In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening <strong>/etc/perfsonar/lsregistrationdaemon.conf</strong>. You will see numerous properties you may populate. They are commented out meaning you need to remove the <tt class="docutils literal"><span class="pre">#</span></tt> at the beginning of the line for them to take effect. The properties you are <strong>required</strong> to set are as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">##Hostname or IP address others can use to access your service</span>
+<span class="c">#external_address   myhost.mydomain.example</span>
+
+<span class="c">##Primary interface on host</span>
+<span class="c">#external_address_if_name eth0</span>
+</pre></div>
+</div>
+<p>and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are <strong>highly recommended</strong>.</p>
+<p>In the example above remove the leading <tt class="docutils literal"><span class="pre">#</span></tt> before external_address and external_address_if_name respectively. Also replace <em>myhost.mydomain.example</em> and <em>eth0</em> with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the installation.</p>
+</div>
+<div class="section" id="step-7-starting-your-services">
+<span id="install-debian-step7"></span><h3>Step 7: Starting your services<a class="headerlink" href="#step-7-starting-your-services" title="Permalink to this headline">¶</a></h3>
+<p>You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with the following commands as a root user:</p>
+<div class="highlight-python"><div class="highlight"><pre>/etc/init.d/bwctl-server start
+/etc/init.d/owampd start
+/etc/init.d/perfsonar-lsregistrationdaemon start
+/etc/init.d/perfsonar-regulartesting start
+/etc/init.d/perfsonar-oppd-server start
+</pre></div>
+</div>
+<p>Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owampd.</p>
+</div>
+<div class="section" id="configuring-central-management">
+<h3>Configuring Central Management<a class="headerlink" href="#configuring-central-management" title="Permalink to this headline">¶</a></h3>
+<p>Refer to the documentation here: <a class="reference internal" href="multi_overview.html"><em>Central Configuration Overview</em></a></p>
+</div>
+</div>
+<div class="section" id="configuration-files">
+<h2>Configuration files<a class="headerlink" href="#configuration-files" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re used to the perfSONAR toolkit deployed on a CentOS/RHEL host, the configuration files for the different perfSONAR tools are the same as for the regular toolkit, but they are located in a different location.  You&#8217;ll have to look for configuration files directly in <tt class="docutils literal"><span class="pre">/etc/</span></tt>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/etc/bwctl/</span></tt> for the bwctl server</li>
+<li><tt class="docutils literal"><span class="pre">/etc/owampd/</span></tt> for the owamp server</li>
+<li><tt class="docutils literal"><span class="pre">/etc/perfsonar/</span></tt> for the oppd, the ls-registration daemon and the regular-testing daemon</li>
+</ul>
+</div></blockquote>
+<p>Also, the name of the services are a bit different from the CentOS/RHEL ones, Debian services names are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">bwctl-server</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">owampd</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">perfsonar-lsregistrationdaemon</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">perfsonar-oppd-server</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">perfsonar-regulartesting</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="support">
+<h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
+<p>Support for Debian installations is provided by the perfSONAR community through the usual communication channels.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Installation on Debian</a><ul>
+<li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li><a class="reference internal" href="#installation-instructions">Installation Instructions</a><ul>
+<li><a class="reference internal" href="#step-1-configure-apt">Step 1: Configure APT</a></li>
+<li><a class="reference internal" href="#step-2-install-the-packages">Step 2: Install the packages</a></li>
+<li><a class="reference internal" href="#step-3-verify-ntp-and-tuning-parameters">Step 3: Verify NTP and Tuning Parameters</a></li>
+<li><a class="reference internal" href="#step-4-firewall-and-security-considerations">Step 4: Firewall and Security Considerations</a></li>
+<li><a class="reference internal" href="#step-5-auto-updates">Step 5: Auto updates</a></li>
+<li><a class="reference internal" href="#step-6-register-your-services">Step 6: Register your services</a></li>
+<li><a class="reference internal" href="#step-7-starting-your-services">Step 7: Starting your services</a></li>
+<li><a class="reference internal" href="#configuring-central-management">Configuring Central Management</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-files">Configuration files</a></li>
+<li><a class="reference internal" href="#support">Support</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_centos.html">Previous topic</a>
+                  <ul><li><a href="install_centos.html" title="previous chapter">Installation of CentOS Bundles</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="low_cost_nodes.html">Next topic</a>
+                      <ul><li><a href="low_cost_nodes.html" title="next chapter">perfSONAR on Low Cost Nodes</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="low_cost_nodes.html" title="perfSONAR on Low Cost Nodes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_centos.html" title="Installation of CentOS Bundles"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1-0.a1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
