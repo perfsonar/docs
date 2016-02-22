@@ -192,6 +192,13 @@ Previous Releases
    
    previous_releases
 
+Future Releases
+---------------
+.. toctree::
+   :maxdepth: 1
+   
+   install_rcs
+   
 Further Information
 -------------------
 * `Project Homepage <http://www.perfsonar.net>`_
