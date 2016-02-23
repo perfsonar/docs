@@ -37,7 +37,7 @@ A script is provided to deploy documentation for a release candidate. The basic 
 Once your branch is ready simply run the *deploy_release_candidate.sh* script to publish the branch (substituting BRANCH with the BRANCH name):
 
 ```bash
-./deploy_prev_release.sh BRANCH
+./deploy_release_candidate.sh BRANCH
 ```
 
 This will create a new directory with the docs at http://docs.perfsonar.net/release_candidates/BRANCH. If you need to update existing docs, simply run the script again to push out changes. 
