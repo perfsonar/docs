@@ -122,7 +122,7 @@ Sample Criterias
 
 .. code-block:: javascript
 
-    if(~host.info.toolkitversion.indexOf("3.5") === 0) return true;
+    if(~host.info.toolkitversion.indexOf("3.5")) return true;
 
 **Select all hosts**
 
