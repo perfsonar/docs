@@ -2,7 +2,7 @@
 BWCTL Server Configuration File
 *********************************
 
-By default, the /etc/bwctld/bwctld.conf on the perfSONAR toolkit uses the following ports:
+By default, the /etc/bwctl-server/bwctl-server.conf on the perfSONAR toolkit uses the following ports:
 
    .. code-block:: none
 
@@ -15,8 +15,8 @@ By default, the /etc/bwctld/bwctld.conf on the perfSONAR toolkit uses the follow
 You can edit that file if you want to change those port ranges. Note that if you make the port
 range too small, tests to/from your host will fail. 
 
-You can also control what tests are allowed using bwctld.conf. For example, if want to allow
-bwctld to run low bandwidth tools like ping and owping, but not throughput tools, you can use 'disable_[tool name]'.
+You can also control what tests are allowed using bwctl-server.conf. For example, if want to allow
+bwctl-server to run low bandwidth tools like ping and owping, but not throughput tools, you can use 'disable_[tool name]'.
 For example:
 
    .. code-block:: none
@@ -27,6 +27,6 @@ For example:
     disable_nuttcp
 
 
-More information on bwctld.conf is available at:
+More information on bwctl-server.conf is available at:
   * http://software.internet2.edu/bwctl/bwctld.conf.man.html
 

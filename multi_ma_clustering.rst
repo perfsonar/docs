@@ -81,7 +81,7 @@ Now, Let's assume we have a two node cluster we wish to initialize. Our nodes ha
 
 Configuring Esmond to use the Cluster
 -------------------------------------
-Once the cluster has been initialized, we must configure esmond to use the cluster. This requires setting *cassandra_servers* in */opt/esmond/esmond.conf* to the list of nodes in our cluster::
+Once the cluster has been initialized, we must configure esmond to use the cluster. This requires setting *cassandra_servers* in */etc/esmond/esmond.conf* to the list of nodes in our cluster::
 
     cassandra_servers = 10.0.1.35:9160,10.0.1.36:9160
 
@@ -95,7 +95,7 @@ Changing the replication_factor
 -------------------------------
  You may want to change he replication_factor as you add more nodes, requirements change or if you started esmond before deciding on the value. If you would like to change this do the following:
 
-#. On your esmond node(s), open */opt/esmond/esmond.conf* ant set the property *cassandra_replicas* to the new value: For example::
+#. On your esmond node(s), open */etc/esmond/esmond.conf* ant set the property *cassandra_replicas* to the new value: For example::
 
     cassandra_replicas = 2
 #. On any **single** cassandra node run the following (replacing *10.0.1.35* with your host and *2* with the replication factor you desire)::
@@ -110,7 +110,7 @@ Clustering PostgreSQL
 PostgreSQL provides a number of options for high availability, data replication, and load balancing. It actually has too many options to realistically cover in this document. The `PostgreSQL High Availability, Load Balancing and Replication <http://www.postgresql.org/docs/current/interactive/high-availability.html>`_ page does a thorough job of comparing and contrasting the various alternatives. It also directs you how to get started on the various options, so there isn't need to rehash that here. If you have clustered Postgres or another relational database before, many of the considerations and strategies should be familiar. A few important pieces of information specific to esmond that may be useful for deciding on and configuring the proposed method:
 
 * The name of the database where the esmond information is kept is *esmond*
-* You can change the PostgreSQL username, password and host that esmond uses in */opt/esmond/esmond.conf* by changing  *sql_db_user*, *sql_db_password*, and *sql_db_host* respectively
+* You can change the PostgreSQL username, password and host that esmond uses in */etc/esmond/esmond.conf* by changing  *sql_db_user*, *sql_db_password*, and *sql_db_host* respectively
 * Often when choosing a replication strategy it is important to understand the write profile of a database. Esmond will only insert new rows into PostgreSQL if you add new tests to be run or change the parameters of an existing test. For example, changing the parameters of a BWCTL test to run for 30 seconds instead of 20 seconds. Esmond also executes an update on a single column every time it adds new data to Cassandra so that it can keep track of when data was last updated. This means that there will likely be lots of small updates but very few inserts of new data. 
 
 

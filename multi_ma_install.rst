@@ -46,7 +46,7 @@ As an archive administrator you may create a username, generate an API key, and 
 
 #. Change to the esmond install directory::
 
-    cd /opt/esmond
+    cd /usr/lib/esmond
 #. **RedHat/CentOS users only**: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a **bash** shell, you can enable Python 2.7 for your current shell with the following commands::
 
     source /opt/rh/python27/enable
@@ -73,7 +73,7 @@ As an archive administrator you may create an account that authenticates based o
 
 #. Change to the esmond install directory::
 
-    cd /opt/esmond
+    cd /usr/lib/esmond
 #. **RedHat/CentOS users only**: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a **bash** shell, you can enable Python 2.7 for your current shell with the following commands::
 
     source /opt/rh/python27/enable
@@ -208,15 +208,9 @@ Given all the information above, lets look at an example where we want to regist
 
 After adding the above to you configuration you will need to restart your regular testing:
 
-**RedHat/CentOS**::
-
-    /sbin/service regular_testing restart
-    
-**Debian**::
-
     /etc/init.d/perfsonar-regulartesting restart
 
-.. note:: If you central measurement archive goes down for any reason, the regular_testing daemon will queue results on the local disk under the :ref:`test results directory <config_regular_testing-test_result_directory>` as specified in your :ref:`regular_testing.conf <config_files-regtesting-conf-main>` file. It will try to register any results on disk when your measurement archive returns. Since accumulating too many files can cause trouble for disk space and/or the regular_testing daemon's ability to keep up with registering data, these files are cleaned nightly on toolkit installations. 
+.. note:: If you central measurement archive goes down for any reason, the regular_testing daemon will queue results on the local disk under the :ref:`test results directory <config_regular_testing-test_result_directory>` as specified in your :ref:`regulartesting.conf <config_files-regtesting-conf-main>` file. It will try to register any results on disk when your measurement archive returns. Since accumulating too many files can cause trouble for disk space and/or the regular_testing daemon's ability to keep up with registering data, these files are cleaned nightly on toolkit installations. 
 
 Registering to Multiple Measurement Archives
 --------------------------------------------

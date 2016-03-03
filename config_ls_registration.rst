@@ -5,7 +5,7 @@ Lookup Service Registration Daemon Configuration File
 Overview
 ========
 
-The file *ls_registration_daemon.conf* is used to define what gets registered into the lookup service. The file allows a degree of flexibility in what is manually defined versus what is automatically discovered. In most cases, the defaults of this file will be suitable and you should not need to make any changes. Some situations where you might want to edit this file though are (this is not an exhaustive list):
+The file *lsregistrationdaemon.conf* is used to define what gets registered into the lookup service. The file allows a degree of flexibility in what is manually defined versus what is automatically discovered. In most cases, the defaults of this file will be suitable and you should not need to make any changes. Some situations where you might want to edit this file though are (this is not an exhaustive list):
 
 * You have a private lookup service and would like to only register to that service. See :ref:`config_ls_registration-ls_instance`
 * You have a host with multiple network interfaces and would like to choose the interface on which a particular service or set of services run
@@ -19,9 +19,9 @@ The basic structure of the file is as follows:
 * A list of :ref:`host <config_ls_registration-host>` directives within those sites that represent the host to be registered. If the host in question is the host on which the LS Registration Daemon is running, than many of the values can be auto-discovered. 
 * A list of :ref:`service <config_ls_registration-service>` directives within those hosts that represent the services to be registered. 
 
-The *ls_registration_daemon.conf* has the feature that almost any directive can be defined at a higher level in the configuration hierarchy and be inherited by all the descendents. For example, one can define the :ref:`latitude <config_ls_registration-latitude>` and :ref:`longitude <config_ls_registration-longitude>` directives at the top-level of the file. All registered hosts and services will in turn inherit these properties. In contrast, you can define them directly in each host directive if you want each individual host to have different values. You can even define both and have the more specific values in the host directive override the ones defined at a higher level in the hierarchy. 
+The *lsregistrationdaemon.conf* has the feature that almost any directive can be defined at a higher level in the configuration hierarchy and be inherited by all the descendents. For example, one can define the :ref:`latitude <config_ls_registration-latitude>` and :ref:`longitude <config_ls_registration-longitude>` directives at the top-level of the file. All registered hosts and services will in turn inherit these properties. In contrast, you can define them directly in each host directive if you want each individual host to have different values. You can even define both and have the more specific values in the host directive override the ones defined at a higher level in the hierarchy. 
 
-With these items in mind the remainder of this section contains a full reference of the options available in the *ls_registration_daemon.conf* file. 
+With these items in mind the remainder of this section contains a full reference of the options available in the *lsregistrationdaemon.conf* file. 
 
 
 
@@ -1216,7 +1216,7 @@ client_uuid_file Directive
 :Syntax: ``client_uuid_file FILE``
 :Contexts: top level
 :Occurrences:  Zero or One
-:Default: */var/lib/perfsonar/ls_registration_daemon/client_uuid*
+:Default: */var/lib/perfsonar/lsregistrationdaemon/client_uuid*
 
 .. _config_ls_registration-group:
 
@@ -1236,7 +1236,7 @@ ls_key_db Directive
 :Syntax: ``ls_key_db DB``
 :Contexts: top level
 :Occurrences:  Zero or One
-:Default: */var/lib/perfsonar/ls_registration_daemon/lsKey.db*
+:Default: */var/lib/perfsonar/lsregistrationdaemon/lsKey.db*
 
 .. _config_ls_registration-pidfile:
 
