@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Managing Measurement Archive Data &mdash; perfSONAR Toolkit 3.5 documentation</title>
+    <title>Managing Measurement Archive Data &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5',
+        VERSION:     '3.5.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
     <link rel="next" title="Central Logging Configuration" href="multi_logging.html" />
     <link rel="prev" title="Clustering a Measurement Archive" href="multi_ma_clustering.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="multi_ma_clustering.html" title="Clustering a Measurement Archive"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -215,7 +215,7 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <p>This will create a tarball file in the current directory named esmond.tar. Note that this is a new file and though compressed, will consume additional disk space.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/opt/esmond/esmond.conf</em></p>
+<p class="last">If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/etc/esmond/esmond.conf</em></p>
 </div>
 </div>
 <div class="section" id="moving-the-snapshot-to-a-remote-server">
@@ -233,7 +233,7 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/opt/esmond/esmond.conf</em></p>
+<p class="last">If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/etc/esmond/esmond.conf</em></p>
 </div>
 <p>This will delete any existing data and replace it with the backup. See the pg_restore documentation for more details.</p>
 </div>
@@ -294,7 +294,7 @@ chown -R postgres:postgres /var/lib/pgsql/*
 <h3>Using <cite>ps_remove_data.py</cite><a class="headerlink" href="#using-ps-remove-data-py" title="Permalink to this headline">¶</a></h3>
 <p><cite>ps_remove_data.py</cite> allows you to specify a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The command is installed by default with esmond and can be found at:</p>
 <ul class="simple">
-<li>/opt/esmond/util/ps_remove_data.py</li>
+<li>/usr/lib/esmond/util/ps_remove_data.py</li>
 </ul>
 <p>This script accepts the following arguments:</p>
 <ul class="simple">
@@ -308,7 +308,7 @@ chown -R postgres:postgres /var/lib/pgsql/*
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you are curious about the summary types and summary windows being used, look in the <em>measurement_archive</em> blocks of you /opt/perfsonar_ps/regular_testing/etc/regular_testing.conf files on your testing nodes.</p>
+<p class="last">If you are curious about the summary types and summary windows being used, look in the <em>measurement_archive</em> blocks of you /etc/perfsonar/regulartesting.conf files on your testing nodes.</p>
 </div>
 <p>In addition to the matching fields you must also set the following:</p>
 <ul class="simple">
@@ -408,18 +408,18 @@ order of event_type, summary_type and then summary_window. For example, assume a
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">The example above  can also be found in <em>/opt/esmond/util/ps_remove_data.conf</em> of the system where esmond is installed</p>
+<p class="last">The example above  can also be found in <em>/usr/lib/esmond/util/ps_remove_data.conf</em> of the system where esmond is installed</p>
 </div>
 <p>The example contains several policies. The order of the policies is NOT significant. The first policy is a catch-all that removes anything older than 365 days if it does not match any other policies. This policy has a <tt class="docutils literal"><span class="pre">*</span></tt> for every value and is the least specific of a match possible. That means if any part of the other policies match, they will override the expiration of this policy. The second policy, matches all 24 hour (86400 seconds) summaries and keeps them for 5 years. Notice that it extends the life of these types of data from the default policy. The remaining policies match a specific event type and a summary window of 0 (which means unsummarized data) and expires it after 180 days (roughly 6 months). The event types all match that registered by the OWAMP tool, which writes new data every minute. Given the amount of data, this policy deletes it sooner that it would other (presumably less frequently written) data.</p>
 <p>If you would like to run the tool, you will need to first run the following if you are on CentOS/RedHat 6 to initialize Python 2.7:</p>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/esmond
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/lib/esmond
 source /opt/rh/python27/enable
 /opt/rh/python27/root/usr/bin/virtualenv --prompt=&quot;(esmond)&quot; .
 . bin/activate
 </pre></div>
 </div>
 <p>You can then run the tool as follows (replacing -c with your policy file):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">python</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">conf</span>
+<div class="highlight-python"><div class="highlight"><pre>python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
 </pre></div>
 </div>
 <p>You may consider adding the commands above to a shell script called by cron to regularly clean out the old data.</p>
@@ -508,7 +508,7 @@ source /opt/rh/python27/enable
         <li class="right" >
           <a href="multi_ma_clustering.html" title="Clustering a Measurement Archive"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -547,7 +547,7 @@ source /opt/rh/python27/enable
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2015, perfSONAR Project.
+        &copy; Copyright 2016, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>

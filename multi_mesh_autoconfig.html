@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Automatic Test Configuration &mdash; perfSONAR Toolkit 3.5 documentation</title>
+    <title>Automatic Test Configuration &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5',
+        VERSION:     '3.5.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
     <link rel="next" title="Deploying a Central Measurement Archive" href="multi_ma_install.html" />
     <link rel="prev" title="Reading a Central Configuration File" href="multi_mesh_agent_config.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="multi_mesh_agent_config.html" title="Reading a Central Configuration File"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -326,19 +326,13 @@
 <p class="first admonition-title">Note</p>
 <p class="last">This <em>configure_archives</em> option assumes the measurement archive provided by the mesh configuration file has <a class="reference internal" href="multi_ma_install.html#multi-ma-install-auth-ip"><em>IP authentication</em></a> setup for this host. This is because the mesh configuration cannot securely distribute usernames and API keys. See the <a class="reference internal" href="multi_ma_install.html#multi-ma-install-auth-ip"><em>measurement archive documentation</em></a> for information on how to configure IP authentication on your archive server.</p>
 </div>
-<p>You&#8217;ll also want to set the following if you are NOT using a Toolkit deployment or the perfSONAR-Complete bundle:</p>
+<p>You&#8217;ll also want to set the following if you are NOT using a Toolkit deployment:</p>
 <div class="highlight-python"><div class="highlight"><pre>use_toolkit 0
 </pre></div>
 </div>
 <p>Finally, you&#8217;ll want to make sure your <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> only has the following lines uncommented:</p>
-<p><strong>RedHat/CentOS</strong>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">test_result_directory</span>   <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">regular_testing</span>
-</pre></div>
-</div>
-<p><strong>Debian</strong>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">test_result_directory</span>   <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">regulartesting</span>
-</pre></div>
-</div>
+<blockquote>
+<div>test_result_directory   /var/lib/perfsonar/regulartesting</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you have additional <em>measurement_archive</em> directives in the file then your tests will be stored there IN ADDITION to those automatically configured by the mesh. This may or may not be desirable depending on your case.</p>
@@ -474,14 +468,8 @@
 </div>
 <p>None of the fields are required but the example highlights a few common ones to set. First we can set the <em>organization_name</em>. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an <em>address_tag</em> of <em>owamp</em>. Last, we can also set a <a class="reference internal" href="config_mesh.html#config-mesh-ma"><em>measurement_archive</em></a> that we want the generated host elements to use. These look just like the same element we&#8217;d define in a MeshConfig file with a <em>type</em>, <em>read_url</em> and <em>write_url</em>.</p>
 <p>Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command:</p>
-<p><strong>RedHat/CentOS</strong>:</p>
-<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/mesh_config/bin/lookup_hosts --input /opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf --output /var/www/html/dynamic_host_list.json
-</pre></div>
-</div>
-<p><strong>Debian</strong>:</p>
-<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/bin/lookup_hosts --input /etc/perfsonar/lookuphosts.conf --output /var/www/dynamic_host_list.json
-</pre></div>
-</div>
+<blockquote>
+<div>/usr/lib/perfsonar/bin/lookup_hosts &#8211;input /etc/perfsonar/meshconfig-lookuphosts.conf &#8211;output /var/www/dynamic_host_list.json</div></blockquote>
 <p>The <em>&#8211;input</em> parameter points to the file we just generated. The <em>&#8211;output</em> points to a location we we want the generated JSON file saved. Either can be changed if you would like things setup differently on your system in terms of file paths. The output file, will contain any hosts found in the lookup service.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -811,7 +799,7 @@ site_project example #site_project is group-communities in the lookup service
         <li class="right" >
           <a href="multi_mesh_agent_config.html" title="Reading a Central Configuration File"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -850,7 +838,7 @@ site_project example #site_project is group-communities in the lookup service
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2015, perfSONAR Project.
+        &copy; Copyright 2016, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>

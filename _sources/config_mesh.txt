@@ -204,7 +204,7 @@ write_url Directive
 :Occurrences:  Exactly one
 :Compatibility: 3.3, ignored in 3.4, supported again in 3.5 or later
 
-This is the URL where tools, such as regular_testing on the perfSONAR Toolkit, should send results. This value is only useful if your measurement archive is using IP authentication. if using API key authentication, you will need to define the measurement archive in your local regular_testing.conf file. This is because it is not safe for the MeshConfig to share login credentials in it's current form and would be difficult to manage in a large mesh. 
+This is the URL where tools, such as regular-testing on the perfSONAR Toolkit, should send results. This value is only useful if your measurement archive is using IP authentication. if using API key authentication, you will need to define the measurement archive in your local regulartesting.conf file. This is because it is not safe for the MeshConfig to share login credentials in it's current form and would be difficult to manage in a large mesh. 
 
 Defining Test Parameters
 ========================

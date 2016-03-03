@@ -2,9 +2,10 @@
 Installation on Debian
 **********************
 
-For perfSONAR 3.5 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
+For perfSONAR 3.5.1 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
 
 * Debian 7 Wheezy
+* Debian 8 Jessie
 * Ubuntu 12 Precise
 * Ubuntu 14 Trusty
 
@@ -20,7 +21,7 @@ System Requirements
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
 
-* **Operating System:**  Any system running a Debian 7, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 7, Debian 8, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 12 or 14 might work too but are not officially supported.
 
 Installation Instructions
 =========================
@@ -30,13 +31,20 @@ Installation Instructions
 Step 1: Configure APT
 ---------------------
 
-All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands:
+All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7:
 ::
 
    cd /etc/apt/sources.list.d/
-   wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
-   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.gpg.key | apt-key add -
+   wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.1.list
+   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.1.gpg.key | apt-key add -
 
+And with the following commands for Debian 8:
+::
+
+   cd /etc/apt/sources.list.d/
+   wget http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.1.list
+   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.1.gpg.key | apt-key add -
+   
 Then refresh the packages list:
 ::
 
@@ -54,6 +62,7 @@ The two :doc:`bundles <install_options>` we currently provide for Debian contain
   * iperf and iperf3
   * owamp client and server
   * bwctl client and server
+  * paris traceroute
   * ndt client
 
 * **perfsonar-testpoint** contains the perfsonar-tools and the perfSONAR software you need to get your perfSONAR measurement point part of the global perfSONAR measurement infrastructure:
@@ -159,19 +168,12 @@ A trace of all updates applied will be stored in ``/var/log/cron-apt/log``
 Step 6: Register your services 
 ------------------------------- 
 
-In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
+In order to publish the existence of your measurement services there is a single file with some details about your host. You may edit this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. However in most cases, the defaults of this file will be suitable and you should not need to make any changes. The auto-discovery directives indicate whether the system automatically determines the value of any property not manually set in this file. The properties you may additionaly set are administrative data like for example administrator's name, email, site_name, city, country, latitude, longitude, etc. None of them are required but it is highly recommended you set them since it will make finding your services easier for others. More information on the available fields can be found in :doc:`config_ls_registration`. 
 
+After configuring the registration daemon you need to start it using the following command:
 ::
 
-    ##Hostname or IP address others can use to access your service
-    #external_address   myhost.mydomain.example
-    
-    ##Primary interface on host
-    #external_address_if_name eth0
-
-and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are **highly recommended**.
-
-In the example above remove the leading ``#`` before external_address and external_address_if_name respectively. Also replace *myhost.mydomain.example* and *eth0* with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the installation. 
+	/etc/init.d/perfsonar-registrationdaemon start
 
 .. _install_debian_step7:
 

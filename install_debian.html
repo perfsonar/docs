@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation on Debian &mdash; perfSONAR Toolkit 3.5 documentation</title>
+    <title>Installation on Debian &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5',
+        VERSION:     '3.5.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
     <link rel="next" title="perfSONAR on Low Cost Nodes" href="low_cost_nodes.html" />
     <link rel="prev" title="Installation of CentOS Bundles" href="install_centos.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="install_centos.html" title="Installation of CentOS Bundles"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -74,9 +74,10 @@
             
   <div class="section" id="installation-on-debian">
 <h1>Installation on Debian<a class="headerlink" href="#installation-on-debian" title="Permalink to this headline">¶</a></h1>
-<p>For perfSONAR 3.5 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:</p>
+<p>For perfSONAR 3.5.1 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:</p>
 <ul class="simple">
 <li>Debian 7 Wheezy</li>
+<li>Debian 8 Jessie</li>
 <li>Ubuntu 12 Precise</li>
 <li>Ubuntu 14 Trusty</li>
 </ul>
@@ -91,17 +92,23 @@
 <li>ARMv7 and up (armhf)</li>
 </ul>
 </li>
-<li><strong>Operating System:</strong>  Any system running a Debian 7, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.</li>
+<li><strong>Operating System:</strong>  Any system running a Debian 7, Debian 8, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 12 or 14 might work too but are not officially supported.</li>
 </ul>
 </div>
 <div class="section" id="installation-instructions">
 <h2>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="step-1-configure-apt">
 <span id="install-debian-step1"></span><h3>Step 1: Configure APT<a class="headerlink" href="#step-1-configure-apt" title="Permalink to this headline">¶</a></h3>
-<p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands:</p>
+<p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
-wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
-wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.gpg.key | apt-key add -
+wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.1.list
+wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.1.gpg.key | apt-key add -
+</pre></div>
+</div>
+<p>And with the following commands for Debian 8:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
+wget http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.1.list
+wget -qO - http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.1.gpg.key | apt-key add -
 </pre></div>
 </div>
 <p>Then refresh the packages list:</p>
@@ -117,6 +124,7 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.gpg.key | 
 <li>iperf and iperf3</li>
 <li>owamp client and server</li>
 <li>bwctl client and server</li>
+<li>paris traceroute</li>
 <li>ndt client</li>
 </ul>
 </li>
@@ -207,16 +215,11 @@ echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/et
 </div>
 <div class="section" id="step-6-register-your-services">
 <span id="install-debian-step6"></span><h3>Step 6: Register your services<a class="headerlink" href="#step-6-register-your-services" title="Permalink to this headline">¶</a></h3>
-<p>In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening <strong>/etc/perfsonar/lsregistrationdaemon.conf</strong>. You will see numerous properties you may populate. They are commented out meaning you need to remove the <tt class="docutils literal"><span class="pre">#</span></tt> at the beginning of the line for them to take effect. The properties you are <strong>required</strong> to set are as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">##Hostname or IP address others can use to access your service</span>
-<span class="c">#external_address   myhost.mydomain.example</span>
-
-<span class="c">##Primary interface on host</span>
-<span class="c">#external_address_if_name eth0</span>
+<p>In order to publish the existence of your measurement services there is a single file with some details about your host. You may edit this information by opening <strong>/etc/perfsonar/lsregistrationdaemon.conf</strong>. You will see numerous properties you may populate. They are commented out meaning you need to remove the <tt class="docutils literal"><span class="pre">#</span></tt> at the beginning of the line for them to take effect. However in most cases, the defaults of this file will be suitable and you should not need to make any changes. The auto-discovery directives indicate whether the system automatically determines the value of any property not manually set in this file. The properties you may additionaly set are administrative data like for example administrator&#8217;s name, email, site_name, city, country, latitude, longitude, etc. None of them are required but it is highly recommended you set them since it will make finding your services easier for others. More information on the available fields can be found in <a class="reference internal" href="config_ls_registration.html"><em>Lookup Service Registration Daemon Configuration File</em></a>.</p>
+<p>After configuring the registration daemon you need to start it using the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>/etc/init.d/perfsonar-registrationdaemon start
 </pre></div>
 </div>
-<p>and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are <strong>highly recommended</strong>.</p>
-<p>In the example above remove the leading <tt class="docutils literal"><span class="pre">#</span></tt> before external_address and external_address_if_name respectively. Also replace <em>myhost.mydomain.example</em> and <em>eth0</em> with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the installation.</p>
 </div>
 <div class="section" id="step-7-starting-your-services">
 <span id="install-debian-step7"></span><h3>Step 7: Starting your services<a class="headerlink" href="#step-7-starting-your-services" title="Permalink to this headline">¶</a></h3>
@@ -321,7 +324,7 @@ echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/et
         <li class="right" >
           <a href="install_centos.html" title="Installation of CentOS Bundles"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -360,7 +363,7 @@ echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/et
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2015, perfSONAR Project.
+        &copy; Copyright 2016, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>

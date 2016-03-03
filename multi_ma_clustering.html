@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Clustering a Measurement Archive &mdash; perfSONAR Toolkit 3.5 documentation</title>
+    <title>Clustering a Measurement Archive &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5',
+        VERSION:     '3.5.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
     <link rel="next" title="Managing Measurement Archive Data" href="multi_ma_backups.html" />
     <link rel="prev" title="Deploying a Central Measurement Archive" href="multi_ma_install.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -163,7 +163,7 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
 </div>
 <div class="section" id="configuring-esmond-to-use-the-cluster">
 <h3>Configuring Esmond to use the Cluster<a class="headerlink" href="#configuring-esmond-to-use-the-cluster" title="Permalink to this headline">¶</a></h3>
-<p>Once the cluster has been initialized, we must configure esmond to use the cluster. This requires setting <em>cassandra_servers</em> in <em>/opt/esmond/esmond.conf</em> to the list of nodes in our cluster:</p>
+<p>Once the cluster has been initialized, we must configure esmond to use the cluster. This requires setting <em>cassandra_servers</em> in <em>/etc/esmond/esmond.conf</em> to the list of nodes in our cluster:</p>
 <div class="highlight-python"><div class="highlight"><pre>cassandra_servers = 10.0.1.35:9160,10.0.1.36:9160
 </pre></div>
 </div>
@@ -178,7 +178,7 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
 <blockquote>
 <div>You may want to change he replication_factor as you add more nodes, requirements change or if you started esmond before deciding on the value. If you would like to change this do the following:</div></blockquote>
 <ol class="arabic">
-<li><p class="first">On your esmond node(s), open <em>/opt/esmond/esmond.conf</em> ant set the property <em>cassandra_replicas</em> to the new value: For example:</p>
+<li><p class="first">On your esmond node(s), open <em>/etc/esmond/esmond.conf</em> ant set the property <em>cassandra_replicas</em> to the new value: For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">cassandra_replicas</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -198,7 +198,7 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
 <p>PostgreSQL provides a number of options for high availability, data replication, and load balancing. It actually has too many options to realistically cover in this document. The <a class="reference external" href="http://www.postgresql.org/docs/current/interactive/high-availability.html">PostgreSQL High Availability, Load Balancing and Replication</a> page does a thorough job of comparing and contrasting the various alternatives. It also directs you how to get started on the various options, so there isn&#8217;t need to rehash that here. If you have clustered Postgres or another relational database before, many of the considerations and strategies should be familiar. A few important pieces of information specific to esmond that may be useful for deciding on and configuring the proposed method:</p>
 <ul class="simple">
 <li>The name of the database where the esmond information is kept is <em>esmond</em></li>
-<li>You can change the PostgreSQL username, password and host that esmond uses in <em>/opt/esmond/esmond.conf</em> by changing  <em>sql_db_user</em>, <em>sql_db_password</em>, and <em>sql_db_host</em> respectively</li>
+<li>You can change the PostgreSQL username, password and host that esmond uses in <em>/etc/esmond/esmond.conf</em> by changing  <em>sql_db_user</em>, <em>sql_db_password</em>, and <em>sql_db_host</em> respectively</li>
 <li>Often when choosing a replication strategy it is important to understand the write profile of a database. Esmond will only insert new rows into PostgreSQL if you add new tests to be run or change the parameters of an existing test. For example, changing the parameters of a BWCTL test to run for 30 seconds instead of 20 seconds. Esmond also executes an update on a single column every time it adds new data to Cassandra so that it can keep track of when data was last updated. This means that there will likely be lots of small updates but very few inserts of new data.</li>
 </ul>
 </div>
@@ -318,7 +318,7 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
         <li class="right" >
           <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -357,7 +357,7 @@ UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  r
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2015, perfSONAR Project.
+        &copy; Copyright 2016, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>

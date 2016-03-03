@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuring a Host with Multiple Interfaces &mdash; perfSONAR Toolkit 3.5 documentation</title>
+    <title>Configuring a Host with Multiple Interfaces &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5',
+        VERSION:     '3.5.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
     <link rel="next" title="Firewalls and Security Software" href="manage_security.html" />
     <link rel="prev" title="Host Tuning" href="manage_tuning.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="manage_tuning.html" title="Host Tuning"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -98,7 +98,7 @@
 <div class="section" id="adding-routes">
 <h3>Adding Routes<a class="headerlink" href="#adding-routes" title="Permalink to this headline">¶</a></h3>
 <p>When a regular test is run (or you run a measurement at the command-line using an option to specify the source address), the operating system may or may not use the provided source IP address when deciding which interface on the local host to use for forwarding. Most default routing tables only look at the destination address when making forwarding decisions which can lead to unexpected behavior with your measurements.</p>
-<p>In order to avoid this situation, you need to run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at <em>/opt/perfsonar_ps/toolkit/scripts/mod_interface_route</em>. For <strong>each interface on the host</strong> you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:</p>
+<p>In order to avoid this situation, you need to run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at <em>/usr/lib/perfsonar/scripts/mod_interface_route</em>. For <strong>each interface on the host</strong> you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:</p>
 <blockquote>
 <div><ul>
 <li><dl class="first docutils">
@@ -146,8 +146,8 @@
 </ul>
 </div></blockquote>
 <p>Below is an example of the commands we would run to install the rules required to correctly use both interfaces for measurement traffic:</p>
-<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
-/opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
+/usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
 </pre></div>
 </div>
 <p>Replace the options above with those relevant to each interface on your host to create the necessary rules.</p>
@@ -159,9 +159,9 @@
 INTERFACE=$1
 
 if [ &quot;$INTERFACE&quot; == &quot;eth0&quot; ]; then
-    /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
+    /usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
 elif [ &quot;$INTERFACE&quot; == &quot;eth1&quot; ]; then
-    /opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
+    /usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
 fi
 </pre></div>
 </div>
@@ -171,7 +171,7 @@ fi
 INTERFACE=$1
 
 if [ &quot;$INTERFACE&quot; == &quot;eth0&quot; -o &quot;$INTERFACE&quot; == &quot;eth1&quot; ]; then
-    /opt/perfsonar_ps/toolkit/scripts/mod_interface_route  --command delete --device  $1
+    /usr/lib/perfsonar/scripts/mod_interface_route  --command delete --device  $1
 fi
 </pre></div>
 </div>
@@ -200,8 +200,8 @@ fi
 <div class="section" id="deleting-routes">
 <h3>Deleting Routes<a class="headerlink" href="#deleting-routes" title="Permalink to this headline">¶</a></h3>
 <p>If you would like to remove previously added rules and routes, simply give the <em>mod_interface_route</em> script the <em>delete</em> command and the device for which you want the rules removed. For example to remove both the rules from our previous example, run:</p>
-<div class="highlight-python"><div class="highlight"><pre>/opt/perfsonar_ps/toolkit/scripts/mod_interface_route --command delete --device eth0
-/opt/perfsonar_ps/toolkit/scripts/scripts/mod_interface_route --command delete --device eth1
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/mod_interface_route --command delete --device eth0
+/usr/lib/perfsonar/scripts/scripts/mod_interface_route --command delete --device eth1
 </pre></div>
 </div>
 </div>
@@ -260,7 +260,7 @@ fi
         <li class="right" >
           <a href="manage_tuning.html" title="Host Tuning"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -299,7 +299,7 @@ fi
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2015, perfSONAR Project.
+        &copy; Copyright 2016, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
