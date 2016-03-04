@@ -56,13 +56,13 @@ You will be presented with a page like the following:
 
 Updating Your Administrative Information
 ========================================
-You may notice on the left-side of the web interface that **Administrative Info** is highlighted in yellow. This is to highlight that this information needs to be populated. You will be prompted for basic location and contact information. This information is needed so other perfSONAR users can more accurately find your node. To populate the information do the following:
+Administrative information needs to be populated first. You will be prompted for basic location and contact information. This information is needed so other perfSONAR users can more accurately find your node. To populate the information do the following:
 
 #. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host
-#. Click on **Edit** in the host information section of the main page or **Configuration** button in the right-upper corner and login as the web administrator user created in the previous step
+#. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created in the previous step
     
     .. image:: images/install_quick_start-admininfo.png
-#. On the page that loads, enter the requested information in the provided fields. Click *Save* when you are done.
+#. On the page that loads, enter the requested information in the provided fields. Click **Save** when you are done.
 
     .. image:: images/install_quick_start-admininfo2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
