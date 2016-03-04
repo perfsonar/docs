@@ -196,23 +196,6 @@ Configuring Central Management
 
 Refer to the documentation here: :doc:`/multi_overview`
 
-Configuration files
-===================
-
-If you're used to the perfSONAR toolkit deployed on a CentOS/RHEL host, the configuration files for the different perfSONAR tools are the same as for the regular toolkit, but they are located in a different location.  You'll have to look for configuration files directly in ``/etc/``:
-
-  * ``/etc/bwctl/`` for the bwctl server
-  * ``/etc/owampd/`` for the owamp server
-  * ``/etc/perfsonar/`` for the oppd, the ls-registration daemon and the regular-testing daemon
-
-Also, the name of the services are a bit different from the CentOS/RHEL ones, Debian services names are:
-
-  * ``bwctl-server``
-  * ``owampd``
-  * ``perfsonar-lsregistrationdaemon``
-  * ``perfsonar-oppd-server``
-  * ``perfsonar-regulartesting``
-
 Support
 =======
 
