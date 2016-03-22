@@ -31,7 +31,7 @@ Installation Instructions
 Step 1: Configure APT
 ---------------------
 
-All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7:
+All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7, Ubuntu 12 or Ubuntu 14:
 ::
 
    cd /etc/apt/sources.list.d/
