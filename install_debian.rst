@@ -200,3 +200,14 @@ Support
 =======
 
 Support for Debian installations is provided by the perfSONAR community through the usual communication channels.
+
+Beta packages
+=============
+
+Additionaly to the above listed packages, we also provide beta level Debian/Ubuntu packages of the following perfSONAR components:
+
+* **perfsonar-core** contains the perfsonar-testpoint and the measurement archive (esmond)
+* **perfsonar-centralmanagement** contains the cental mesh config, MaDDash and the autoconfig tools.
+
+At the moment, these packages have not undergone a thourough testing, reason why we release them as beta level packages.  Your feedback about their usability and report about any bug you find in them are welcome on the perfsonar-user mailing list.
+
