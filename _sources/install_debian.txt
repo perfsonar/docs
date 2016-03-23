@@ -157,11 +157,13 @@ To ensure you always have the most current and hopefully most secure packages yo
 ::
 
     apt-get install cron-apt
-    echo 'upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts="/dev/null' >> /etc/cron-apt/action.d/5-install
+    echo 'upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts="/dev/null"' >> /etc/cron-apt/action.d/5-install
 
 A cronjob will automatically install new packages present in the perfsonar-wheezy-release repository every night (check ``/etc/cron.d/cron-apt``). You may want to do the same with the security updates provided by Debian/Ubuntu.
 
 A trace of all updates applied will be stored in ``/var/log/cron-apt/log``
+
+Full perfSONAR toolkit upgrades might still need a manual intervention to properly conclude, but we will then announce that through our usual communication channels.
 
 .. _install_debian_step6:
 
