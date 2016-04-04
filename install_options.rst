@@ -9,20 +9,24 @@ perfSONAR has historically been packaged as the **perfSONAR Toolkit**: an ISO co
 * You plan to use the CentOS operating system
 * You do NOT wish to install perfSONAR on a host with the operating system already installed
 
-Starting with perfSONAR 3.5, there are several other installation options as well for certain versions of both **CentOS** and **Debian/Ubuntu**:
+Starting with perfSONAR 3.5, there are several other installation options as well for certain versions of both **CentOS** and **Debian/Ubuntu**. 
 
-#. **perfsonar-tools:** This bundle includes all tools used by perfSONAR. These tools are useful for network testing and troubleshooting in general, and we recommend you install these tools on any host where you need to maximize network performance, such as a `Data Transfer Node <http://fasterdata.es.net/science-dmz/DTN/>`_. 
-#. **perfsonar-testpoint:** This bundle is targeted at organizations that run a centrally managed test mesh and use a central measurement archive. It contains all perfSONAR tools, including those to publish the location of these services to the perfSONAR Simple Lookup Service and to run scheduled measurements. This is also the bundle to use on :doc:`low-end hardware <low_cost_nodes>`.
-#. **perfsonar-core:** The perfsonar-core install includes everything in the perfsonar-testpoint install plus the measurement archive. 
-#. **perfsonar-toolkit:** This is the full set of perfSONAR packages Toolkit distribution. It includes everything in perfsonar-core and also contains web interfaces and Toolkit configuration. This provides an option for installing these packages without using the Toolkit ISO. 
-#. **perfsonar-centralmanagement:** The perfsonar-centralmanagement bundle installs the :doc:`central mesh config </multi_overview>`, Maddash, centralized config service and the autoconfig. 
+#. **perfsonar-tools:** This bundle includes just the command-line clients needed to run on-demand measurements such as iperf, iperf3, bwctl and owamp. This bundle is generally best for hosts that aren't dedicated measurement nodes but want the command-line utilities available for troubleshooting as the need arises.
+#. **perfsonar-testpoint:** This includes everything from the perfsonar-tools package as well as the software required to:
+      * Automatically run tests on a regular schedule
+      * Participate in a centrally managed mesh of tests 
+      * Publish the existence of a measurement node 
 
-One of these options may be desirable if one or more of the following is true:
+    This package does NOT contain the software required to store measurements locally in an archive; the archive must be remote. This is best for dedicated testers running on lightweight hardware platforms that have a remote location in which to publish results.
+#. **perfsonar-core:** The perfsonar-core install includes everything in the perfsonar-testpoint install plus the esmond measurement archive used to store results. This is ideal for dedicated measurement hosts that want to store results locally, but do not want a full Toolkit install. In other words, they do not want to use a web interface and want the flexibility to choose default security and tuning settings.
+#. **perfsonar-toolkit:** This includes everything in perfsonar-core plus:
+    * The web interface used to manage tests
+    * Scripts used to apply system-wide default tuning and security settings
 
-* You only wish to install a subset of the measurement tools
-* You are managing a large deployment
-* You would like to use an operating system other than the version of CentOS supported by the Toolkit (such as Debian or Ubuntu)
-* You wish to install the perfSONAR packages on an existing host with an operating system pre-installed
+    This package is for those that wish to install the full suite of tools included on the perfSONAR Toolkit ISO but on an existing Linux system. 
+#. **perfsonar-centralmanagement:** The perfsonar-centralmanagement bundle is independent from the packages above and installs tools needed to centrally manage a large number of hosts and display their results. This includes the esmond measurement archive, tools for building meshes, and dashboard software for displaying results (maddash). 
+
+.. image:: images/install_options-bundle_tree.png
 
 .. _install_options_sysreq:
 
