@@ -31,7 +31,7 @@ Installation Instructions
 Step 1: Configure APT
 ---------------------
 
-All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7:
+All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7, Ubuntu 12 or Ubuntu 14:
 ::
 
    cd /etc/apt/sources.list.d/
@@ -157,11 +157,13 @@ To ensure you always have the most current and hopefully most secure packages yo
 ::
 
     apt-get install cron-apt
-    echo 'upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts="/dev/null' >> /etc/cron-apt/action.d/5-install
+    echo 'upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts="/dev/null"' >> /etc/cron-apt/action.d/5-install
 
 A cronjob will automatically install new packages present in the perfsonar-wheezy-release repository every night (check ``/etc/cron.d/cron-apt``). You may want to do the same with the security updates provided by Debian/Ubuntu.
 
 A trace of all updates applied will be stored in ``/var/log/cron-apt/log``
+
+Full perfSONAR toolkit upgrades might still need a manual intervention to properly conclude, but we will then announce that through our usual communication channels.
 
 .. _install_debian_step6:
 
@@ -200,3 +202,14 @@ Support
 =======
 
 Support for Debian installations is provided by the perfSONAR community through the usual communication channels.
+
+Beta packages
+=============
+
+Additionaly to the above listed packages, we also provide beta level Debian/Ubuntu packages of the following perfSONAR components:
+
+* **perfsonar-core** contains the perfsonar-testpoint and the measurement archive (esmond)
+* **perfsonar-centralmanagement** contains the cental mesh config, MaDDash and the autoconfig tools.
+
+At the moment, these packages have not undergone a thourough testing, reason why we release them as beta level packages.  Your feedback about their usability and report about any bug you find in them are welcome on the perfsonar-user mailing list.
+
