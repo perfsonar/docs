@@ -182,13 +182,13 @@ Adding Regular Tests
 
 #. Click the **Save** button at the bottom of the screen to apply your changes. 
     
-    .. image:: images/manage_regular_tests-configtests_add_intest6.png
+    .. image:: images/manage_regular_tests-configtests_addhost_intest6.png
 #. Wait while the configuration is applied and services are restarted. Your tests should now be running and you should see the message below on the top of the screen. 
 
-    .. image:: images/manage_regular_tests-configtests_add_intest7.png
+    .. image:: images/manage_regular_tests-configtests_addhost_intest7.png
 #. Take note that a traceroute test is automatically added when you add a non-traceroute test. 
     
-    .. image:: images/manage_regular_tests-configtests_add_intest8.png
+    .. image:: images/manage_regular_tests-configtests_addhost_intest8.png
 #. It may take several hours for throughput data to appear and several minutes (depending on the time between tests) for the other test types. If the tests are working you should be able to data in the graphs.
 
     .. seealso:: See :doc:`using_graphs` for details on reading graphs
