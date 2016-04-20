@@ -366,11 +366,11 @@ tos_bits Directive
 
 udp_bandwidth Directive
 -------------------------
-:Description: The rate at which the tool will attempt to send UDP packets. Can specify as bits per second or with suffix K, M, or G to indicated Kbps, Mbps or Gbps respectively.  
-:Syntax: ``udp_bandwidth NUMBER(K|M|G)``
+:Description: The rate at which the tool will attempt to send UDP packets in bits per second.  
+:Syntax: ``udp_bandwidth NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *udp*
 :Occurrences:  Zero or one
-:Default: 1M if a udp protocol set, n/a otherwise
+:Default: 1Mbps if a udp protocol set, n/a otherwise
 :Compatibility: 3.3 or later
 
 window_size Directive
