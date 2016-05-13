@@ -21,7 +21,7 @@ The following is a script to automatically set up a few important things such as
 		# sudo sh setup_debian_testpoint.sh
 
 
-To verify it completed successfully, you should be able to see processes like bwctld and owampd running. Ad hoc tests using bwctl or iperf directly are now possible. See below for information on setting up mesh based regular testing.
+To verify it completed successfully, you should be able to see processes like bwctl-server and owamp-server running. Ad hoc tests using bwctl or iperf directly are now possible. See below for information on setting up mesh based regular testing.
 
 Alternatively, you can walk through all of the steps manually for :doc:`Debian/Ubuntu here <install_debian>` or for :doc:`CentOS here <install_centos>`.
 
