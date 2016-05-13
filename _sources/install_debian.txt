@@ -127,7 +127,7 @@ If you have installed the `perfsonar-toolkit-security` package, then your iptabl
 
 If you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctld.limits. You may read the bwctld.limits man page or look at the example file provided under /etc/bwctld/bwctld.limits file. ESnet uses a bwctld.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
+Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. You may read the bwctl-server.limits man page or look at the example file provided under /etc/bwctl-server/bwctl-server.limits file. ESnet uses a bwctl-server.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
 
 * Allow unrestricted UDP tests from ESnet test system prefixes.
 * Allow up to 200Mbps UDP tests from ESnet sites.
@@ -135,14 +135,15 @@ Additionally, bwctl allows you to limit the parameters of tests such as duration
 * Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.
 * Deny TCP tests from everywhere else.
 
-To use the ESnet bwctld.limits file, get this file from ESnet as follows:
+To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:
 ::
 
-    cd /etc/bwctl
-    mv bwctld.limits bwctld.limits.dist
+    cd /etc/bwctl-server
+    mv bwctl-server.limits bwctl-server.limits.dist
     wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
+    mv bwctld.limits bwctl-server.limits
 
-ESnet provides a shell script that will download and install the latest bwctld.limits file. The bwctld.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctld.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
+ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
 ::
 
     cd /etc/bwctl
@@ -185,12 +186,12 @@ You can start all the services by rebooting the host since all are configured to
 ::
 
     /etc/init.d/bwctl-server start
-    /etc/init.d/owampd start
+    /etc/init.d/owamp-server start
     /etc/init.d/perfsonar-lsregistrationdaemon start
     /etc/init.d/perfsonar-regulartesting start
     /etc/init.d/perfsonar-oppd-server start
 
-Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owampd.
+Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
 
 
 Configuring Central Management
