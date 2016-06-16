@@ -66,10 +66,16 @@ Log files
     -rw-rw-r-- 1 mca mca   198110 Jan 22 20:14 cache-3.log
     -rw-rw-r-- 1 mca mca 18390157 Jan 22 20:37 cache.err
 
-Volatile Data
+Backup (Volatile Data)
 ==============
 
-MCA stores MeshConfig related information in postgreSQL. 
+MCA stores MeshConfig related information in postgreSQL. For RHEL7, postgreSQL data directory can be found in 
+::
+    /var/lib/pgsql/data
+
+For RHEL6, 
+::
+    /opt/rh/postgresql92/root/var/lib/pgsql/data
 
 SCA auth service stores authentication information in a sqlite3 DB at (by default)
 ::
@@ -87,7 +93,7 @@ Following configuration directory should be backed-up
     /opt/mca/auth/api/config
     /opt/mca/profile/api/config
 
-And UI has its own configuration files. These should be backed-up also - if you have modified from the RPM installed content
+And UI has its own set of configuration files. These should be backed-up if you have modified from the RPM installed content
 
 ::
 
