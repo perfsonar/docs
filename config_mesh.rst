@@ -204,7 +204,7 @@ write_url Directive
 :Occurrences:  Exactly one
 :Compatibility: 3.3, ignored in 3.4, supported again in 3.5 or later
 
-This is the URL where tools, such as regular_testing on the perfSONAR Toolkit, should send results. This value is only useful if your measurement archive is using IP authentication. if using API key authentication, you will need to define the measurement archive in your local regular_testing.conf file. This is because it is not safe for the MeshConfig to share login credentials in it's current form and would be difficult to manage in a large mesh. 
+This is the URL where tools, such as regular-testing on the perfSONAR Toolkit, should send results. This value is only useful if your measurement archive is using IP authentication. if using API key authentication, you will need to define the measurement archive in your local regulartesting.conf file. This is because it is not safe for the MeshConfig to share login credentials in it's current form and would be difficult to manage in a large mesh. 
 
 Defining Test Parameters
 ========================
@@ -366,11 +366,11 @@ tos_bits Directive
 
 udp_bandwidth Directive
 -------------------------
-:Description: The rate at which the tool will attempt to send UDP packets. Can specify as bits per second or with suffix K, M, or G to indicated Kbps, Mbps or Gbps respectively.  
-:Syntax: ``udp_bandwidth NUMBER(K|M|G)``
+:Description: The rate at which the tool will attempt to send UDP packets in bits per second.  
+:Syntax: ``udp_bandwidth NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *udp*
 :Occurrences:  Zero or one
-:Default: 1M if a udp protocol set, n/a otherwise
+:Default: 1Mbps if a udp protocol set, n/a otherwise
 :Compatibility: 3.3 or later
 
 window_size Directive

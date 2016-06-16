@@ -129,7 +129,7 @@ You may create a snapshot of your database with the following command::
 
 This will create a tarball file in the current directory named esmond.tar. Note that this is a new file and though compressed, will consume additional disk space.
 
-.. note:: If you are prompted for a password, see the *sql_db_password* property in */opt/esmond/esmond.conf*
+.. note:: If you are prompted for a password, see the *sql_db_password* property in */etc/esmond/esmond.conf*
 
 
 Moving the Snapshot to a Remote Server
@@ -147,7 +147,7 @@ You may restore the snapshot with the following command::
 
     pg_restore -c -U esmond -d esmond esmond.tar 
 
-.. note:: If you are prompted for a password, see the *sql_db_password* property in */opt/esmond/esmond.conf*
+.. note:: If you are prompted for a password, see the *sql_db_password* property in */etc/esmond/esmond.conf*
 
 This will delete any existing data and replace it with the backup. See the pg_restore documentation for more details.
 
@@ -209,7 +209,7 @@ Using `ps_remove_data.py`
 -------------------------
 `ps_remove_data.py` allows you to specify a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The command is installed by default with esmond and can be found at:
 
-* /opt/esmond/util/ps_remove_data.py
+* /usr/lib/esmond/util/ps_remove_data.py
 
 This script accepts the following arguments:
 
@@ -221,7 +221,7 @@ The config file is in JSON format and defines data retention policies for your d
 * **summary_type** - The type of summary to which this policy applies. Valid values are *base* for unsummarized data and any value from the list found in `this discussion <http://software.es.net/esmond/perfsonar_client_rest.html#base-data-vs-summaries>`_. You may also pass ``*`` to match any value.
 * **summary_window** - An integer indicating the summary window to match (in seconds). A value of 0 means unsummarized (a.k.a base) data. You may also pass ``*`` to match any value. 
 
-.. note:: If you are curious about the summary types and summary windows being used, look in the *measurement_archive* blocks of you /opt/perfsonar_ps/regular_testing/etc/regular_testing.conf files on your testing nodes.
+.. note:: If you are curious about the summary types and summary windows being used, look in the *measurement_archive* blocks of you /etc/perfsonar/regulartesting.conf files on your testing nodes.
 
 In addition to the matching fields you must also set the following:
 
@@ -320,20 +320,20 @@ A full example of a configuration file can be found below::
     ]
     }
 
-.. seealso:: The example above  can also be found in */opt/esmond/util/ps_remove_data.conf* of the system where esmond is installed
+.. seealso:: The example above  can also be found in */usr/lib/esmond/util/ps_remove_data.conf* of the system where esmond is installed
 
 The example contains several policies. The order of the policies is NOT significant. The first policy is a catch-all that removes anything older than 365 days if it does not match any other policies. This policy has a ``*`` for every value and is the least specific of a match possible. That means if any part of the other policies match, they will override the expiration of this policy. The second policy, matches all 24 hour (86400 seconds) summaries and keeps them for 5 years. Notice that it extends the life of these types of data from the default policy. The remaining policies match a specific event type and a summary window of 0 (which means unsummarized data) and expires it after 180 days (roughly 6 months). The event types all match that registered by the OWAMP tool, which writes new data every minute. Given the amount of data, this policy deletes it sooner that it would other (presumably less frequently written) data. 
 
 If you would like to run the tool, you will need to first run the following if you are on CentOS/RedHat 6 to initialize Python 2.7::
 
-    cd /opt/esmond
+    cd /usr/lib/esmond
     source /opt/rh/python27/enable
     /opt/rh/python27/root/usr/bin/virtualenv --prompt="(esmond)" .
     . bin/activate
 
 You can then run the tool as follows (replacing -c with your policy file)::
 
-    python /opt/esmond/util/ps_remove_data.py -c /opt/esmond/util/ps_remove_data.conf
+    python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
 
 You may consider adding the commands above to a shell script called by cron to regularly clean out the old data.
 

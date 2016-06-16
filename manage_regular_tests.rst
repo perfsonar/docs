@@ -16,7 +16,7 @@ Accessing the Configuration interface
     .. image:: images/install_quick_start-configtests1.png
 #. Login using the web administrator username and password.
     .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
-#. The page that loads can be used to manage regular tests. See the remainder of this document for details on :ref:`adding <manage_reg_tests_add>`, :ref:`modifying <manage_reg_tests_modify>`, :ref:`disabling <manage_reg_tests_disable>` and :ref:`deleting <manage_reg_tests_delete>` tests.
+#. The page that loads can be used to manage regular tests. See the remainder of this document for details on :ref:`adding <manage_reg_tests_add>`, :ref:`modifying <manage_reg_tests_modify>`, :ref:`disabling <manage_reg_tests_disable>` and :ref:`deleting <manage_reg_tests_delete>` tests as well as :ref:`adding <manage_reg_tests_add_host>`, :ref:`modifying <manage_reg_tests_modify_host>` and :ref:`deleting <manage_reg_tests_delete_host>` test hosts. 
 
     .. image:: images/manage_regular_tests-configtests2.png
 
@@ -24,7 +24,7 @@ Accessing the Configuration interface
 
 Types of Regular Tests
 ======================
-Multiple types of tests can be configured through the web interface. They are described below:
+As a first step test definition must be added. Multiple types of tests can be configured through the web interface. They are described below:
 
 .. glossary::
 
@@ -45,10 +45,13 @@ Multiple types of tests can be configured through the web interface. They are de
 
 Adding Regular Tests
 ====================
-#. On the main page of the configuration interface you will see buttons for each :ref:`test type<manage_reg_tests_types>`. Click on the button for the test type you would like to add.
+#. On the main page of the tests configuration interface click on the **+Add Test** button too choose and add the test type you would like.
 
-    .. image:: images/manage_regular_tests-configtests-add1.png
-#. A pop-up will appear prompting you for the parameters of the test. Each prompt contains a *Description* field you are required to define. The *Description* is a human-readable string and will only be used on this interface to identify the test. The remaining parameters are detailed in the tables below:
+    .. image:: images/manage_regular_tests-configtests-addtest1.png
+#. A drop-down list shows to choose the :ref:`test type<manage_reg_tests_types>`. Click on a selected test type you would like to add.
+
+    .. image:: images/manage_regular_tests-configtests-addtest2.png
+#. A new window will appear prompting you for the parameters of the test. Each test contains a *Test name/description* field you are required to define. The *Test name/description* is a human-readable string and will only be used on this interface to identify the test. The remaining parameters are detailed in the tables below:
 
     .. _manage_reg_tests_add_params:
 
@@ -57,6 +60,12 @@ Adding Regular Tests
     +-----------------------+------------+-------------------------------------+
     | Field                 | Default    | Description                         |
     +=======================+============+=====================================+    
+    | Type                  | Thoughput  | Indicates the current test type     |
+    +-----------------------+------------+-------------------------------------+
+    | Test name/description |            | A string to identify this test      |
+    +-----------------------+------------+-------------------------------------+
+    | Test Status           | Enabled    | Indicates if the test is enabled    |
+    +-----------------------+------------+-------------------------------------+
     | Interface             | Default    | |add_params_iface|                  |
     +-----------------------+------------+-------------------------------------+
     | Time Between Tests    | 6 hours    | |add_params_throughput_interval|    |
@@ -67,7 +76,7 @@ Adding Regular Tests
     +-----------------------+------------+-------------------------------------+
     |    UDP Bandwidth      | Not set    | |add_params_throughput_udp_bwidth|  |
     +-----------------------+------------+-------------------------------------+
-    | Use Autotuning        | Yes        | |add_params_throughput_autotune|    |
+    | Use Autotuning        | Enabled    | |add_params_throughput_autotune|    |
     +-----------------------+------------+-------------------------------------+
     |    Window Size        | Not Set    | |add_params_throughput_window_size| |
     +-----------------------+------------+-------------------------------------+
@@ -78,7 +87,13 @@ Adding Regular Tests
 
     +-----------------------+------------+-------------------------------------+
     | Field                 | Default    | Description                         |
-    +=======================+============+=====================================+    
+    +=======================+============+=====================================+ 
+    | Type                  | Ping       | Indicates the current test type     |
+    +-----------------------+------------+-------------------------------------+
+    | Test name/description |            | A string to identify this test      |
+    +-----------------------+------------+-------------------------------------+
+    | Test Status           | Enabled    | Indicates if the test is enabled    |
+    +-----------------------+------------+-------------------------------------+
     | Interface             | Default    | |add_params_iface|                  |
     +-----------------------+------------+-------------------------------------+
     | Time Between Tests    | 5 minutes  | |add_params_ping_interval|          |
@@ -87,26 +102,38 @@ Adding Regular Tests
     +-----------------------+------------+-------------------------------------+
     | Time Between Packets  | 1 second   | |add_params_ping_packet_interval|   |
     +-----------------------+------------+-------------------------------------+
-    | Size of Test Packets  | 1000 bytes | |add_params_ping_size|              |
+    | Packet Size (bytes)   | 1000       | |add_params_ping_size|              |
     +-----------------------+------------+-------------------------------------+
     
     **One-way delay**
 
     +-----------------------+-----------------------+-------------------------------------+
     | Field                 | Default               | Description                         |
-    +=======================+=======================+=====================================+    
+    +=======================+=======================+=====================================+  
+    | Type                  | One-way latency       | Indicates the current test type     |
+    +-----------------------+-----------------------+-------------------------------------+
+    | Test name/description |                       | A string to identify this test      |
+    +-----------------------+-----------------------+-------------------------------------+
+    | Test Status           | Enabled               | Indicates if the test is enabled    |
+    +-----------------------+-----------------------+-------------------------------------+ 
     | Interface             | Default               | |add_params_iface|                  |
     +-----------------------+-----------------------+-------------------------------------+
     | Packet Rate           | 10 packets per second | |add_params_owdelay_packet_rate|    |
     +-----------------------+-----------------------+-------------------------------------+
-    | Packet Size           | 20 bytes              | |add_params_owdelay_packet_size|    |
+    | Packet Size (bytes)   | 20                    | |add_params_owdelay_packet_size|    |
     +-----------------------+-----------------------+-------------------------------------+
     
     **Traceroute**
 
     +-----------------------+------------+-------------------------------------+
     | Field                 | Default    | Description                         |
-    +=======================+============+=====================================+    
+    +=======================+============+=====================================+ 
+    | Type                  | Traceroute | Indicates the current test type     |
+    +-----------------------+------------+-------------------------------------+
+    | Test name/description |            | A string to identify this test      |
+    +-----------------------+------------+-------------------------------------+
+    | Test Status           | Enabled    | Indicates if the test is enabled    |
+    +-----------------------+------------+-------------------------------------+        
     | Interface             | Default    | |add_params_iface|                  |
     +-----------------------+------------+-------------------------------------+
     | Tool                  | Default    | |add_params_traceroute_tool|        |
@@ -115,69 +142,53 @@ Adding Regular Tests
     +-----------------------+------------+-------------------------------------+
     | Packets Size          | 40 bytes   | |add_params_traceroute_packet_size| |
     +-----------------------+------------+-------------------------------------+
-    | First Hop to Report   | 1          | |add_params_traceroute_first_hop|   |
+    | First Hop to Report   |            | |add_params_traceroute_first_hop|   |
     +-----------------------+------------+-------------------------------------+
-    | Maximum Number of Hops| 30         | |add_params_traceroute_max_hops|    |
+    | Maximum Number of Hops|            | |add_params_traceroute_max_hops|    |
     +-----------------------+------------+-------------------------------------+
     
-#. Click the **Add** button when you are done adjusting the settings
+#. On the same window you will be able to add hosts to which you want to test. You may also :ref:`add hosts separately <manage_reg_tests_add_host_seperate>` later:
 
-    .. image:: images/manage_regular_tests-configtests_add2.png
-#. On the page that loads you will be able to add hosts to which you want to test. There are multiple ways to add hosts:
-    .. _manage_reg_tests_add_host_manual:
+    .. _manage_reg_tests_add_host_in_test:
     
-    .. container:: topic
-        
-        **Option 1: Manually add a new host**
-        
-        #. You may enter an IP or hostname manually. You can do this by first clicking the **Add New Host** button
-        
-            .. image:: images/manage_regular_tests-configtests_addman1.png
-        #. In the prompt enter the address of the host you wish to add in the *Host* field. Depending on the test type you may also add the port in the *Port* field. In most cases you will want to use the default port. You can also add a human-readable description to the *Description* field that will only be used by this interface when displaying the host.
-            
-            .. image:: images/manage_regular_tests-configtests_addman2.png
-        #. When you are done click **Add**. Repeat these steps if you would like to manually add more hosts to the test set.
-        
-            .. image:: images/manage_regular_tests-configtests_addman3.png
+#. Go to the bottom of the page and edit **Test members** section.
     
-    .. _manage_reg_tests_add_host_community:
-    .. container:: topic 
+    .. image:: images/manage_regular_tests-configtests_addhost_intest1.png
+#. Enter the address or host name of the test member you wish to add in the *Host name* field. You can also add a human-readable description to the *Host description* field that will only be used by this interface when displaying the host. If necessary select additional protocol type.
     
-        **Option 2: Search for hosts by community**
-        
-        #. Many hosts tag themselves as belonging to a particular *community*. Communities are just free-form tags used for organization purposes. You can browse hosts by community using the toolkit regular testing interface. The regular testing interface contains a word cloud of communities where communities with larger text have more members. Click on a community to view its members.
-            
-            .. image:: images/manage_regular_tests-configtests_addcomm1.png
-        #. This will load a list of hosts in a given community. If you wish to add a host to your test, click on *Add to test* 
-        
-            .. image:: images/manage_regular_tests-configtests_addcomm3.png
-        #. Repeat these steps to find and add more hosts by community.
-#. After adding your tests you may want to verify IPv4 and IPv6 are being tested as intended. You can do so by looking at the right-most column:
     .. _manage_reg_tests_add_ip_type:
-    
-    .. image:: images/manage_regular_tests-configtests-addiptype.png
 
     Valid values are:
-        * *ipv4 only* - One test is run to the target host using IPv4
-        * *ipv6 only* - One test is run to the target host using IPv6
-        * *ipv4 and ipv6* - Two tests are run to the target host: one using IPv4 and another using IPv6
+        * *IPv4* - One test is run to the target host using IPv4
+        * *IPv6* - One test is run to the target host using IPv6
     By default the interface will automatically decide on whether to setup an IPv4 and/or an IPv6 test. The behavior is described below:
         * If the selected local interface has both IPv4 and IPv6 address AND the address added to the test is a hostname with both IPv4 and IPv6 entries, then both an IPv4 and IPv6 test will be setup.
         * If the local interface has only an IPv4 address or the remote host is an IPv4 address (or a hostname with only an IPv4 entry), then only an IPv4 test will be setup.
         * If the local interface has only an IPv6 address or the remote host is an IPv6 address (or a hostname with only an IPv6 entry), then only an IPv6 test will be setup.
         
-    .. seealso:: See :ref:`manage_reg_tests_modify_ip` for more details on what these fields mean and how to modify them
+    .. image:: images/manage_regular_tests-configtests_addhost_intest2.png
+#. When you are done click **Add host**.
 
-#. Take note that a traceroute test is automatically added when you add a non-traceroute test. If you are content with this setup then there is nothing to do. If you would like to remove these tests click *Delete*. See :ref:`manage_reg_tests_modify_delmember` and :ref:`manage_reg_tests_delete` for more details on removing these tests if you so desire.
+    .. image:: images/manage_regular_tests-configtests_addhost_intest3.png
+#. The new test member for the test defined is now shown in the section **Test members**.
+
+    .. image:: images/manage_regular_tests-configtests_addhost_intest4.png
+#. Repeat the above step clicking **+Add Test Member(s)** if you would like to add more hosts to the test.
     
-    .. image:: images/manage_regular_tests-configtests_addtrace.png
-#. If you would like to add more tests, you may return to step 1. Otherwise click the **Save** button to apply your changes.
+    .. image:: images/manage_regular_tests-configtests_addhost_intest5.png
+#. If you are content with this setup then there is nothing to do. If you would like to remove these tests click *Delete*. See :ref:`manage_reg_tests_modify_delmember` and :ref:`manage_reg_tests_delete` for more details on removing these tests if you so desire. 
+
+#. Click **OK** to save test definition. If you would like to add more tests click **+Add Test** button again and repeat above steps to add new test.
+
+#. Click the **Save** button at the bottom of the screen to apply your changes. 
     
-    .. image:: images/manage_regular_tests-configtests_add_save.png
-#. Wait while the configuration is applied and services are restarted.
-    .. image:: images/manage_regular_tests-configtests_add_saving.png
-#. Your tests should now be running and you should see the message below on the top of the screen. 
-    .. image:: images/manage_regular_tests-configtests_add_saved.png
+    .. image:: images/manage_regular_tests-configtests_addhost_intest6.png
+#. Wait while the configuration is applied and services are restarted. Your tests should now be running and you should see the message below on the top of the screen. 
+
+    .. image:: images/manage_regular_tests-configtests_addhost_intest7.png
+#. Take note that a traceroute test is automatically added when you add a non-traceroute test. 
+    
+    .. image:: images/manage_regular_tests-configtests_addhost_intest8.png
 #. It may take several hours for throughput data to appear and several minutes (depending on the time between tests) for the other test types. If the tests are working you should be able to data in the graphs.
 
     .. seealso:: See :doc:`using_graphs` for details on reading graphs
@@ -187,47 +198,37 @@ Adding Regular Tests
 Editing Regular Tests
 =====================
 
-You may modify settings of a test set after adding it . Access the regular testing interface and click **Configure** next to any test you wish to change:
-
-.. image:: images/manage_regular_tests-configtests-edit.png
-
-From the page that loads you can make a number of changes. See the sections that follow for details on how to make some specific changes.
-
-
 .. _manage_reg_tests_modify_params:
 
 Changing Test Parameters
 ------------------------
+#. You may modify settings of a test after adding it. Access the regular testing interface under **Tests** tab and in the list of tests click the configuration icon under *ACTIONS* next to any test you wish to change:
 
-#. Click on **Edit Test Parameters**
+    .. image:: images/manage_regular_tests-configtests-edit.png
+#. From the page that loads you can make a number of changes. See the sections that follow for details on how to make some specific changes. See the tables :ref:`here<manage_reg_tests_add_params>` for complete listing of parameters and their meanings. Click **OK** to leave the test configuration window and keep your changes.
 
-    .. image:: images/manage_regular_tests-configtests-edit-params1.png
-#. Use the prompt to change the desired settings. See the tables :ref:`here<manage_reg_tests_add_params>` for complete listing of parameters and their meanings. Click **Set** to leave the prompt and keep your changes.
-
-    .. image:: images/manage_regular_tests-configtests-edit-params2.png
-
-#. If you are done making changes click **Save** to apply your changes
-
+#. If you are done with making necessary tests modification click the **Save** button at the bottom of the screen to apply all your changes.
 
 .. _manage_reg_tests_modify_delmember:
 
 Deleting Test Members
 ---------------------
+#. In the *Configure Test* configuration page, uder *Test members* section find the test member you wish to remove and click the trash bin symbol next to it.
 
-#. Find the test member you wish to remove and click **Delete**
+    .. image:: images/manage_regular_tests-configtests-edit-delmember1.png
+#. You will be presented with a warning message to confirm you want to delete this host.
 
-    .. image:: images/manage_regular_tests-configtests-edit-del1.png
-#. You should no longer see the host in the list
+    .. image:: images/manage_regular_tests-configtests-edit-delmember2.png
+#. After confirmation you should no longer see the host in the list of *Test members*
 
-    .. image:: images/manage_regular_tests-configtests-edit-del2.png
-#. If you are done making changes click **Save** to apply your changes
+    .. image:: images/manage_regular_tests-configtests-edit-delmember3.png
+#. If you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system.
 
 .. _manage_reg_tests_modify_addmember:
 
 Adding Test Members
 ---------------------
-
-From the configuration interface, the process for adding more test members is the same as that detailed in the section :ref:`manage_reg_tests_add`. Specifically see the discussion on :ref:`manually adding a host <manage_reg_tests_add_host_manual>` and :ref:`adding a host by community <manage_reg_tests_add_host_community>` for more details.
+From the configuration interface, the process for adding more test members is the same as that detailed in the section :ref:`_manage_reg_tests_add_host_in_test:`.
 
 .. _manage_reg_tests_modify_ip:
 
@@ -235,16 +236,13 @@ Changing Test Member IP Address Settings
 -----------------------------------------
 When you add a new test member, the configuration automatically determines if you should the test should run using IPv4, IPv6 or both. See the :ref:`discussion <manage_reg_tests_add_ip_type>` on IP type when adding a new test for more details on the default behavior. If you would like to override the default behavior or update the host address do the following:
 
-#. Find the test member you would like to update and click the **Edit** button
+#. In the *Configure Test* configuration page, uder *Test members* section find the test member you would like to update and select the desired protocol type.
     
     .. image:: images/manage_regular_tests-configtests-edit-ip1.png
-#. In the prompt change the fields you wish to update. Click **Set** to leave the prompt and maintain your changes
 
     .. warning:: Checking the IPv4 and IPv6 or text boxes will create a test that forces that address family. If the local interface or remote host does not support that address type your test will be unable to run. For example, if the remote host is an IPv4 address but only the IPv6 checkbox is selected then it will be impossible to run a test. There is also a warning in the web interface in these cases.
     
-    .. image:: images/manage_regular_tests-configtests-edit-ip2.png
-    
-#. If you are done making changes click **Save** to apply your changes
+#. If you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system.
 
 .. _manage_reg_tests_disable:
 
@@ -255,16 +253,18 @@ Disabling/Enabling Regular Tests
 
 Disabling a Regular Test
 ------------------------
-
 In some cases it may be desirable to stop running tests for a period of time, but not to delete them entirely. This allows them to be enabled again at a later time without recreating the entire test set. To disable an existing test set do the following:
 
-#. On the regular testing interface, click **Disable** next to the test set you would like to disable.
+#. Under *Tests* tab open the *Configure Test* configuration page selecting appropriate symbol from *ACTIONS* next to a test you want to disable.
+
+    .. image:: images/manage_regular_tests-configtests-edit.png
+#. Click **Test Status** switch to change test status from *Enabled* to *Disabled*.
 
     .. image:: images/manage_regular_tests-configtests-disable1.png
-#. This should strike-out the text of the disabled test as shown below
+#. This should change the switch to gray indicating disabled test as shown below
 
     .. image:: images/manage_regular_tests-configtests-disable2.png
-#. When you are done making changes click the **Save** button.
+#. When you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system. Scheduled test list will indicate the current status of this option.
 
 .. _manage_reg_tests_disable_enable:
 
@@ -273,29 +273,31 @@ Enabling a Regular Test
 
 If you have previously :ref:`disabled a test <manage_reg_tests_disable_disable>` and wish to enable it again do the following:
 
-#. On the regular testing interface, click **Enable** next to the test set you would like to enable. Only currently disabled tests (those with with stuck out text) will have this option next to them. 
+#. Under *Tests* tab open the *Configure Test* configuration page selecting appropriate symbol from *ACTIONS* next to a test you want to disable. 
+
+    .. image:: images/manage_regular_tests-configtests-edit.png
+#. Click **Test Status** switch to change test status from *Disabled* to *Enabled*.
 
     .. image:: images/manage_regular_tests-configtests-enable1.png
-#. The text should no longer be struck out
+#. The text should change the switch to green indicating enabled test
 
     .. image:: images/manage_regular_tests-configtests-enable2.png
-#. When you are done making changes click the **Save** button.
+#. When you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system. Scheduled test list will indicate the current status of this option.
 
 .. _manage_reg_tests_delete:
 
 Deleting Regular Tests
 ======================
-
 The interface allows you to completely delete a test set. This will stop all tests in the set from running and completely remove them from the configuration interface. If after deleting a test set, you would like to re-add the tests, you will have to completely recreate the test set.
 
 .. note::  Deleting a test set will NOT delete the historical results stored on the host. You will be able to view the historical data on the graphs after deleting the test set.
 
 You may delete a test with the following steps:
 
-#. On the regular testing interface, click **Delete** next to the test set you would like to delete.
+#. Go to the *Tests* tab to see the current list of tests. Uder list of tests find the test you wish to remove and click the trash bin symbol next to it. 
 
     .. image:: images/manage_regular_tests-configtests-delete1.png
-#. A message will be shown indicating the test has been removed and it will no longer appear in the list
+#. You will be presented with a warning message to confirm you want to delete this test. When confirmed you should no longer see the test in the list of tests.
 
     .. image:: images/manage_regular_tests-configtests-delete2.png
 #. When you are done making changes click the **Save** button.

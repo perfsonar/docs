@@ -57,6 +57,38 @@ Editing Host Information
         
 #. When you are done making changes, click **Save** at the bottom of the page
 
+Adding Node Metadata
+====================
+Node metadata are optional tags that can be used as a means to describe a host on the **Global node directory** page. There are two types of metadata tags:
+	.. glossary::
+		
+		Node Role
+			It describes the node roles in the domain. It helps potential users of this node to recognize the place of node installation in the owners' domain. You may select multiple Roles for a node.
+			
+		Node Access Policy
+			It is used to indicate the access policy for a node: whether it's a public access node, private with no access, R&E only or with limited access. You may select only one Access Policy for a node.
+			
+In order to tag a node with metadata:
+
+    #. In order to add a Node Role, under *Metadata*, click in the field **Node Role**. A drop-down list shows with possible values. Click on a preferred value to select it. Repeat this step to add more tags.
+    
+            .. image:: images/manage_admin_info-meta1.png
+    #. In order to add a Node Access Policy, under *Metadata*, click in the field **Node Access Policy**. A drop-down list shows with possible values. Click on a preferred value.
+    
+            .. image:: images/manage_admin_info-meta2.png
+	#. You may also add a descriptive note in **Access Policy Notes** field which is a human readable text that can optionally be added to help further describe the access policy.
+	
+    #. Click **Save** to apply your changes 
+
+Deleting Node Metadata
+======================
+You may remove a particular node metadata with the following steps:
+    
+    #. Under *Metadata*, find the tag you wish to remove and click **x** beside the name
+    
+        .. image:: images/manage_admin_info-meta3.png
+    #. Click **Save** to apply your changes
+
 Adding a Community
 ==================
 

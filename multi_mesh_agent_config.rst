@@ -39,10 +39,4 @@ You may add multiple mesh blocks to the file to participate in multiple meshes. 
 
 Your regular tests will be updated nightly by a :ref:`cron script <config_files-meshconfig-cron-generate_configuration>`. If you would like to update your regular tests sooner then manually run the following:
 
-**RedHat/CentOS**::
-
-    /opt/perfsonar_ps/mesh_config/bin/generate_configuration
-
-**Debian**::
-
     /usr/lib/perfsonar/bin/generate_configuration

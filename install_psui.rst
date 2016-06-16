@@ -24,7 +24,7 @@ Installation process
 Supported platform
 ------------------
 
-The perfsonarUI packages are built for Red Hat Enterprise Linux 6 and Debian 7. No issues are expected for future minor versions.
+The perfsonarUI packages are built for Red Hat Enterprise Linux 6, Debian 7 and Debian 8. No issues are expected for future minor versions. RHEL derivatives, such as CentOS, and Debian derivatives, such as Ubuntu, should work as well.
 
 Prerequisite software
 ---------------------

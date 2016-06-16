@@ -2,9 +2,10 @@
 Installation on Debian
 **********************
 
-For perfSONAR 3.5 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
+For perfSONAR 3.5.1 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
 
 * Debian 7 Wheezy
+* Debian 8 Jessie
 * Ubuntu 12 Precise
 * Ubuntu 14 Trusty
 
@@ -20,7 +21,7 @@ System Requirements
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
 
-* **Operating System:**  Any system running a Debian 7, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or Ubuntu 12 or 14 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 7, Debian 8, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 12 or 14 might work too but are not officially supported.
 
 Installation Instructions
 =========================
@@ -30,13 +31,20 @@ Installation Instructions
 Step 1: Configure APT
 ---------------------
 
-All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands:
+All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7, Ubuntu 12 or Ubuntu 14:
 ::
 
    cd /etc/apt/sources.list.d/
    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.gpg.key | apt-key add -
 
+And with the following commands for Debian 8:
+::
+
+   cd /etc/apt/sources.list.d/
+   wget http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.list
+   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.gpg.key | apt-key add -
+   
 Then refresh the packages list:
 ::
 
@@ -54,6 +62,7 @@ The two :doc:`bundles <install_options>` we currently provide for Debian contain
   * iperf and iperf3
   * owamp client and server
   * bwctl client and server
+  * paris traceroute
   * ndt client
 
 * **perfsonar-testpoint** contains the perfsonar-tools and the perfSONAR software you need to get your perfSONAR measurement point part of the global perfSONAR measurement infrastructure:
@@ -118,7 +127,7 @@ If you have installed the `perfsonar-toolkit-security` package, then your iptabl
 
 If you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctld.limits. You may read the bwctld.limits man page or look at the example file provided under /etc/bwctld/bwctld.limits file. ESnet uses a bwctld.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
+Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. You may read the bwctl-server.limits man page or look at the example file provided under /etc/bwctl-server/bwctl-server.limits file. ESnet uses a bwctl-server.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
 
 * Allow unrestricted UDP tests from ESnet test system prefixes.
 * Allow up to 200Mbps UDP tests from ESnet sites.
@@ -126,14 +135,15 @@ Additionally, bwctl allows you to limit the parameters of tests such as duration
 * Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.
 * Deny TCP tests from everywhere else.
 
-To use the ESnet bwctld.limits file, get this file from ESnet as follows:
+To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:
 ::
 
-    cd /etc/bwctl
-    mv bwctld.limits bwctld.limits.dist
+    cd /etc/bwctl-server
+    mv bwctl-server.limits bwctl-server.limits.dist
     wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
+    mv bwctld.limits bwctl-server.limits
 
-ESnet provides a shell script that will download and install the latest bwctld.limits file. The bwctld.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctld.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
+ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
 ::
 
     cd /etc/bwctl
@@ -148,30 +158,25 @@ To ensure you always have the most current and hopefully most secure packages yo
 ::
 
     apt-get install cron-apt
-    echo 'upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts="/dev/null' >> /etc/cron-apt/action.d/5-install
+    echo 'upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts="/dev/null"' >> /etc/cron-apt/action.d/5-install
 
 A cronjob will automatically install new packages present in the perfsonar-wheezy-release repository every night (check ``/etc/cron.d/cron-apt``). You may want to do the same with the security updates provided by Debian/Ubuntu.
 
 A trace of all updates applied will be stored in ``/var/log/cron-apt/log``
+
+Full perfSONAR toolkit upgrades might still need a manual intervention to properly conclude, but we will then announce that through our usual communication channels.
 
 .. _install_debian_step6:
 
 Step 6: Register your services 
 ------------------------------- 
 
-In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
+In order to publish the existence of your measurement services there is a single file with some details about your host. You may edit this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. However in most cases, the defaults of this file will be suitable and you should not need to make any changes. The auto-discovery directives indicate whether the system automatically determines the value of any property not manually set in this file. The properties you may additionaly set are administrative data like for example administrator's name, email, site_name, city, country, latitude, longitude, etc. None of them are required but it is highly recommended you set them since it will make finding your services easier for others. More information on the available fields can be found in :doc:`config_ls_registration`. 
 
+After configuring the registration daemon you need to start it using the following command:
 ::
 
-    ##Hostname or IP address others can use to access your service
-    #external_address   myhost.mydomain.example
-    
-    ##Primary interface on host
-    #external_address_if_name eth0
-
-and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are **highly recommended**.
-
-In the example above remove the leading ``#`` before external_address and external_address_if_name respectively. Also replace *myhost.mydomain.example* and *eth0* with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the installation. 
+	/etc/init.d/perfsonar-registrationdaemon start
 
 .. _install_debian_step7:
 
@@ -181,12 +186,12 @@ You can start all the services by rebooting the host since all are configured to
 ::
 
     /etc/init.d/bwctl-server start
-    /etc/init.d/owampd start
+    /etc/init.d/owamp-server start
     /etc/init.d/perfsonar-lsregistrationdaemon start
     /etc/init.d/perfsonar-regulartesting start
     /etc/init.d/perfsonar-oppd-server start
 
-Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owampd.
+Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
 
 
 Configuring Central Management
@@ -194,24 +199,18 @@ Configuring Central Management
 
 Refer to the documentation here: :doc:`/multi_overview`
 
-Configuration files
-===================
-
-If you're used to the perfSONAR toolkit deployed on a CentOS/RHEL host, the configuration files for the different perfSONAR tools are the same as for the regular toolkit, but they are located in a different location.  You'll have to look for configuration files directly in ``/etc/``:
-
-  * ``/etc/bwctl/`` for the bwctl server
-  * ``/etc/owampd/`` for the owamp server
-  * ``/etc/perfsonar/`` for the oppd, the ls-registration daemon and the regular-testing daemon
-
-Also, the name of the services are a bit different from the CentOS/RHEL ones, Debian services names are:
-
-  * ``bwctl-server``
-  * ``owampd``
-  * ``perfsonar-lsregistrationdaemon``
-  * ``perfsonar-oppd-server``
-  * ``perfsonar-regulartesting``
-
 Support
 =======
 
 Support for Debian installations is provided by the perfSONAR community through the usual communication channels.
+
+Beta packages
+=============
+
+Additionaly to the above listed packages, we also provide beta level Debian/Ubuntu packages of the following perfSONAR components:
+
+* **perfsonar-core** contains the perfsonar-testpoint and the measurement archive (esmond)
+* **perfsonar-centralmanagement** contains the cental mesh config, MaDDash and the autoconfig tools.
+
+At the moment, these packages have not undergone a thourough testing, reason why we release them as beta level packages.  Your feedback about their usability and report about any bug you find in them are welcome on the perfsonar-user mailing list.
+

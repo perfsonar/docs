@@ -48,9 +48,9 @@ The process configures yum to point at the necessary repositories to get package
 Step 2: Install RPM 
 -------------------------------- 
 
-* **perfSONAR-TestPoint**::
+* **perfSONAR Test Point**::
 
-    yum install perfSONAR-Bundles-TestPoint  
+    yum install perfsonar-testpoint  
 
   Additionally, you may also install the Toolkit service-watcher, ntp, security(firewall rules and sysctl packages
 
@@ -58,20 +58,20 @@ Step 2: Install RPM
 
     To install additional packages, run::
 
-    /opt/perfsonar_ps/toolkit/scripts/install-optional-packages.py
+    /usr/lib/perfsonar/scripts/install-optional-packages.py
 
     Or, you can manually install them by running:  
 
-     * ``yum install perl-perfSONAR_PS-Toolkit-service-watcher``
-     * ``yum install perl-perfSONAR_PS-Toolkit-ntp``
-     * ``yum install perl-perfSONAR_PS-Toolkit-security``
-     * ``yum install perl-perfSONAR_PS-Toolkit-sysctl``
+     * ``yum install perfsonar-toolkit-servicewatcher``
+     * ``yum install perfsonar-toolkit-ntp``
+     * ``yum install perfsonar-toolkit-security``
+     * ``yum install perfsonar-toolkit-sysctl``
 
-In particular, you should install perfSONAR_PS-Toolkit-ntp if you are not managing your ntp.conf file in some other manner.
+In particular, you should install perfsonar-toolkit-ntp if you are not managing your ntp.conf file in some other manner.
 
-* **perfSONAR-Core**::
+* **perfSONAR Core**::
 
-    yum install perfSONAR-Bundles-Core
+    yum install perfsonar-core
 
   Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.
 
@@ -79,33 +79,33 @@ In particular, you should install perfSONAR_PS-Toolkit-ntp if you are not managi
 
     To install additional packages, run::
 
-    /opt/perfsonar_ps/toolkit/scripts/install-optional-packages.py
+    /usr/lib/perfsonar/scripts/install-optional-packages.py
 
 
     Or, you can manually install them by running:
 
-       * ``yum install perl-perfSONAR_PS-Toolkit-service-watcher``
-       * ``yum install perl-perfSONAR_PS-Toolkit-ntp``
-       * ``yum install perl-perfSONAR_PS-Toolkit-security``
-       * ``yum install perl-perfSONAR_PS-Toolkit-sysctl``
+       * ``yum install perfsonar-toolkit-service-watcher``
+       * ``yum install perfsonar-toolkit-ntp``
+       * ``yum install perfsonar-toolkit-security``
+       * ``yum install perfsonar-toolkit-sysctl``
 
 
 
-* **perfSONAR-CentralManagement**::
+* **perfSONAR Central Management**::
 
-    yum install perfSONAR-Bundles-CentralManagement
+    yum install perfsonar-centralmanagement
 
 
-* **perfSONAR-Complete**::
+* **perfSONAR Toolkit**::
 
-    yum install perfSONAR-Bundles-Complete
+    yum install perfsonar-toolkit
 
 
 .. _install_centos_step3:
 
 Step 3: Verify NTP and Tuning Parameters 
 ----------------------------------------- 
-*Can be ignored for perfSONAR-Toolkit iso and perfSONAR-Complete*
+*Can be ignored for perfsonar-toolkit package*
 
 * **NTP**
 
@@ -113,8 +113,8 @@ Step 3: Verify NTP and Tuning Parameters
   
     If the optional package was installed, then run::
     
-    /opt/perfsonar_ps/toolkit/scripts/configure_ntpd
-    /opt/perfsonar_ps/toolkit/scripts/system_environment/enable_ntpd
+    /usr/lib/perfsonar/scripts/configure_ntpd
+    /usr/lib/perfsonar/scripts/system_environment/enable_ntpd
 
   - **Manual**: 
   
@@ -132,7 +132,7 @@ Step 3: Verify NTP and Tuning Parameters
     
     Run::  
 
-    /opt/perfsonar_ps/toolkit/scripts/configure_sysctl
+    /usr/lib/perfsonar/scripts/configure_sysctl
 
   - **Manual Tuning**
     
@@ -145,16 +145,16 @@ Step 3: Verify NTP and Tuning Parameters
 Step 4: Firewall and Security Considerations 
 --------------------------------------------- 
 **Package Install**
-If you have installed the perfSONAR_PS-Toolkit-security package, then you can configure the IPTable entries by running::
+If you have installed the perfsonar-toolkit-security package, then you can configure the IPTable entries by running::
 
-    /opt/perfsonar_ps/toolkit/scripts/system_environment/configure_firewall
+    /usr/lib/perfsonar/scripts/system_environment/configure_firewall
 
 The package also installs fail2ban.
 
 
 Or, if you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctld.limits. You may read the bwctld.limits man page or look at the example file provided under /etc/bwctld/bwctld.limits file. ESnet uses a bwctld.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
+Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. You may read the bwctl-server.limits man page or look at the example file provided under /etc/bwctl-server/bwctl-server.limits file. ESnet uses a bwctl-server.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
 
 * Allow unrestricted UDP tests from ESnet test system prefixes.
 * Allow up to 200Mbps UDP tests from ESnet sites.
@@ -162,17 +162,18 @@ Additionally, bwctl allows you to limit the parameters of tests such as duration
 * Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.
 * Deny TCP tests from everywhere else.
 
-To use the ESnet bwctld.limits file, get this file from ESnet as follows:
+To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:
 ::
 
-    cd /etc/bwctld
-    mv bwctld.limits bwctld.limits.dist
+    cd /etc/bwctl-server
+    mv bwctl-server.limits bwctl-server.limits.dist
     wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
+    mv bwctld.limits bwctl-server.limits
 
-ESnet provides a shell script that will download and install the latest bwctld.limits file. The bwctld.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctld.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
+ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
 ::
 
-    cd /etc/bwctld
+    cd /etc/bwctl-server
     wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
     chmod +x update_limits.sh
 
@@ -187,21 +188,21 @@ You can also enable yum ‘auto updates’ to ensure you always have the most cu
 
 Step 5: Service Watcher
 ------------------------
-The perl-perfSONAR_PS-Toolkit-service-watcher installs scripts that check if bwctl, owamp and other processes are running and restarts if they have stopped unexpectedly. 
+The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, owamp and other processes are running and restarts if they have stopped unexpectedly. 
 
 The install automatically, configures cron to run the service_watcher regularly.
 
 To run the script manually, run::
 
-  /opt/perfsonar_ps/toolkit/scripts/service_watcher
+  /usr/lib/perfsonar/scripts/service_watcher
 
 .. _install_centos_step6:
 
 Step 6: Register your services 
 ------------------------------- 
-*Can be ignored and done through the web interface for perfSONAR-Complete*
+*Can be ignored and done through the web interface for he perfsonar-toolkit package*
 
-In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/opt/perfsonar_ps/ls_registration_daemon/etc/ls_registration_daemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
+In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
 
 ::
 
@@ -222,11 +223,11 @@ Step 7: Starting your services
 You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with the following commands as a root user:
 ::
 
-    /etc/init.d/bwctld start
-    /etc/init.d/owampd start
-    /etc/init.d/ls_registration_daemon start
+    /etc/init.d/bwctl-server start
+    /etc/init.d/owamp-server start
+    /etc/init.d/perfsonar-lsregistrationdaemon start
 
-Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctld and owampd.
+Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
 
 Configuring Central Management
 -------------------------------
@@ -234,7 +235,7 @@ Refer to the documentation here: :doc:`/multi_overview`
 
 Configuring through the web interface
 --------------------------------------
-After installing the perfSONAR-Complete bundle, you should disable SELinux to gain access to the web interface.  This is done with the following commands:
+After installing the perfsonar-toolkit bundle, you should disable SELinux to gain access to the web interface.  This is done with the following commands:
 ::
 
     echo 0 >/selinux/enforce
