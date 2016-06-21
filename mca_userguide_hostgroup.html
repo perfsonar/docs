@@ -99,7 +99,7 @@
 <p>As you can see, dynamic Host Group editor will show a <em>current</em> list of hosts that matches the criteria - which may change over time.</p>
 <div class="section" id="available-attributes-inside-the-criteria-editor">
 <h3>Available Attributes inside the criteria editor<a class="headerlink" href="#available-attributes-inside-the-criteria-editor" title="Permalink to this headline">¶</a></h3>
-<p>Inside the criteria editor, you can access host object as well as service object. You can construct an arbitrary complex criteria in Javascript using this object.</p>
+<p>Inside the criteria editor, you can access service, and host object for each host. You can construct an arbitrary complex criteria in Javascript using this object (please see below for samples).</p>
 <p><em>service</em> object has following attributes</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
     <span class="s2">&quot;location&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -125,14 +125,25 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><em>host</em> object has following attributes, although <em>host</em> objects are sparsely populated. Please see the Hosts tab for list of all information available.</p>
+<p>You can also access host object which is sparsely populated (not all attributes are populated). Please see the Hosts tab in MCA UI for list of all information available.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
     <span class="s2">&quot;info&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;hardware_processorcount&quot;</span><span class="o">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;hardware_processorspeed&quot;</span><span class="o">:</span> <span class="s2">&quot;2666.674 MHz&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;os_version&quot;</span><span class="o">:</span> <span class="s2">&quot;Scientific Linux 6.6 (Carbon)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;hardware_memory&quot;</span><span class="o">:</span> <span class="s2">&quot;8192 MB&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;toolkitversion&quot;</span><span class="o">:</span> <span class="s2">&quot;3.5.0.6-1.pSPS&quot;</span>
+        <span class="s2">&quot;hardware_processorcore&quot;</span><span class="o">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;os_kernel&quot;</span><span class="o">:</span> <span class="s2">&quot;Linux 2.6.32-573.8.1.el6.web100.x86_64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;os_name&quot;</span><span class="o">:</span> <span class="s2">&quot;Scientific Linux&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hardware_processorspeed&quot;</span><span class="o">:</span> <span class="s2">&quot;2500.000 MHz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;os_version&quot;</span><span class="o">:</span> <span class="s2">&quot;6.7 (Carbon)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bundle&quot;</span><span class="o">:</span> <span class="s2">&quot;perfsonar-toolkit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;net_tcp_maxbuffer_recv&quot;</span><span class="o">:</span> <span class="s2">&quot;124928 bytes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;net_tcp_autotunemaxbuffer_send&quot;</span><span class="o">:</span> <span class="s2">&quot;4194304 bytes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;toolkitversion&quot;</span><span class="o">:</span> <span class="s2">&quot;3.5.0.6&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hardware_cpuid&quot;</span><span class="o">:</span> <span class="s2">&quot;Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hardware_processorcount&quot;</span><span class="o">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bundle_version&quot;</span><span class="o">:</span> <span class="s2">&quot;3.5.0.6&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;net_tcp_congestionalgorithm&quot;</span><span class="o">:</span> <span class="s2">&quot;cubic&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;net_tcp_autotunemaxbuffer_recv&quot;</span><span class="o">:</span> <span class="s2">&quot;4194304 bytes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hardware_memory&quot;</span><span class="o">:</span> <span class="s2">&quot;1877 MB&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;net_tcp_maxbuffer_send&quot;</span><span class="o">:</span> <span class="s2">&quot;124928 bytes&quot;</span>
     <span class="p">},</span>
     <span class="s2">&quot;communities&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;ATLAS&quot;</span><span class="p">,</span> <span class="s2">&quot;GridKa&quot;</span><span class="p">,</span> <span class="s2">&quot;WLCG&quot;</span><span class="p">],</span>
     <span class="s2">&quot;admins&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
@@ -165,14 +176,14 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Not all hosts has hostname parameter. If you try to access an attribute that does not exist for a particular service, the criteria will throw an exception, and it will not return in the final result.</p>
+<p class="last">Not all hosts has hostname parameter. If you try to access an attribute that does not exist for a particular service, the criteria will throw an exception for that particular host, and such host will not be included in the hostgroup.</p>
 </div>
 <p><strong>Select all hosts with toolkit version that starts with &#8220;3.5&#8221;</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="k">if</span><span class="p">(</span><span class="o">~</span><span class="nx">host</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">toolkitversion</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;3.5&quot;</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="k">if</span><span class="p">(</span><span class="o">~</span><span class="nx">host</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">toolkitversion</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;3.5&quot;</span><span class="p">))</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 </pre></div>
 </div>
 <p><strong>Select all hosts</strong></p>
-<p>Simply returning true will select <em>all</em> hosts (that provides specified service type from all datasources)</p>
+<p>Simply returning true will select <em>all</em> hosts with a specified service type from all datasources.</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 </pre></div>
 </div>

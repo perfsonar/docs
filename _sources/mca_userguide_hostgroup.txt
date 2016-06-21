@@ -38,7 +38,7 @@ As you can see, dynamic Host Group editor will show a *current* list of hosts th
 Available Attributes inside the criteria editor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Inside the criteria editor, you can access host object as well as service object. You can construct an arbitrary complex criteria in Javascript using this object.
+Inside the criteria editor, you can access service, and host object for each host. You can construct an arbitrary complex criteria in Javascript using this object (please see below for samples).
 
 *service* object has following attributes
 
@@ -67,17 +67,28 @@ Inside the criteria editor, you can access host object as well as service object
         "ma": null,
     }
 
-*host* object has following attributes, although *host* objects are sparsely populated. Please see the Hosts tab for list of all information available.
+You can also access host object which is sparsely populated (not all attributes are populated). Please see the Hosts tab in MCA UI for list of all information available.
 
 .. code-block:: javascript
 
     {
         "info": {
-            "hardware_processorcount": "2",
-            "hardware_processorspeed": "2666.674 MHz",
-            "os_version": "Scientific Linux 6.6 (Carbon)",
-            "hardware_memory": "8192 MB",
-            "toolkitversion": "3.5.0.6-1.pSPS"
+            "hardware_processorcore": "1",
+            "os_kernel": "Linux 2.6.32-573.8.1.el6.web100.x86_64",
+            "os_name": "Scientific Linux",
+            "hardware_processorspeed": "2500.000 MHz",
+            "os_version": "6.7 (Carbon)",
+            "bundle": "perfsonar-toolkit",
+            "net_tcp_maxbuffer_recv": "124928 bytes",
+            "net_tcp_autotunemaxbuffer_send": "4194304 bytes",
+            "toolkitversion": "3.5.0.6",
+            "hardware_cpuid": "Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz",
+            "hardware_processorcount": "1",
+            "bundle_version": "3.5.0.6",
+            "net_tcp_congestionalgorithm": "cubic",
+            "net_tcp_autotunemaxbuffer_recv": "4194304 bytes",
+            "hardware_memory": "1877 MB",
+            "net_tcp_maxbuffer_send": "124928 bytes"
         },
         "communities": ["ATLAS", "GridKa", "WLCG"],
         "admins": null,
@@ -116,17 +127,17 @@ Sample Criterias
 
     if(~host.hostname.indexOf("cern.ch")) return true;
 
-.. note:: Not all hosts has hostname parameter. If you try to access an attribute that does not exist for a particular service, the criteria will throw an exception, and it will not return in the final result.
+.. note:: Not all hosts has hostname parameter. If you try to access an attribute that does not exist for a particular service, the criteria will throw an exception for that particular host, and such host will not be included in the hostgroup.
 
 **Select all hosts with toolkit version that starts with "3.5"**
 
 .. code-block:: javascript
 
-    if(~host.info.toolkitversion.indexOf("3.5") === 0) return true;
+    if(~host.info.toolkitversion.indexOf("3.5")) return true;
 
 **Select all hosts**
 
-Simply returning true will select *all* hosts (that provides specified service type from all datasources)
+Simply returning true will select *all* hosts with a specified service type from all datasources.
 
 .. code-block:: javascript
 
