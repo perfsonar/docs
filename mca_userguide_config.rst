@@ -31,7 +31,7 @@ Start adding a new mesh config by clicking "Add New" at the buttom of the page.
 
 * Config Name: Name of the config. Also used as description for mesh config
 
-* url: Trailing URL for this mesh config. For example, if you enter us-atlas, you will be able to download this mesh config via http://<hostname>/meshconfig/pub/us-atlas
+* url: Trailing URL for this mesh config. For example, if you enter us-atlas, you will be able to download this mesh config via http://<hostname>/meshconfig/pub/config/us-atlas
 
 * Admins: List of users can edit this meshconfig.
 
