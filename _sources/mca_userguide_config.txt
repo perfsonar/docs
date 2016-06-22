@@ -15,6 +15,12 @@ rather than picking a specific meshconfig.
 
 To generate Auto meshconfig, simply choose a hostname from the hostname dropdown list.
 
+Here is an example of Auto Mesh Config URL
+
+``http://meshconfig-itb.grid.iu.edu/meshconfig/pub/auto/psmsu01.aglt2.org``
+
+You can modify the trailing hostname to create a different auto-URL.
+
 Mesh Config List
 ----------------------------------
 
