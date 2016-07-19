@@ -61,13 +61,13 @@ You may install the appropriate source list as follows for **Debian 7 (Wheezy)**
     
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.gpg.key | apt-key add -
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-snapshot.gpg.key | apt-key add -
     
 Likewise for **Debian 8 (Jessie)**::
 
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.gpg.key | apt-key add -
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-jessie-snapshot.gpg.key | apt-key add -
 
 Once installed you may proceed to follow the steps in :doc:`install_debian` to complete the installation.
 
