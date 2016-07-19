@@ -62,7 +62,7 @@ Use the following commands to add the repository’s PGP key:
 
 	.. code-block:: console 
 
-                # wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.gpg.key | apt-key add -
+                # wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-official.gpg.key | apt-key add -
 
 Then clean and update the package list on your system using:
 

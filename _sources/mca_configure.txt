@@ -1,6 +1,6 @@
-****
+*************
 Configuration
-****
+*************
 
 Most of the configuration files for MCA can be found in **/opt/mca/mca/api/config** directory. At minimum, you need to configure the datasources for your instance before you can start using MCA.
 
@@ -81,7 +81,7 @@ MeshConfig Admin uses `Sequelize <http://docs.sequelizejs.com/en/1.7.0/docs/usag
 When you update this file, all meshconfig services will automatically restarts. Please monitor logs by "sudo -u mca pm2 logs"
 
 Test Spec Default parameters
-============
+============================
 
 **meshconfig.js** contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).
 
@@ -98,7 +98,7 @@ Others
 **index.js** contains all other configuration such as ports and host names to bind MCA server and MCA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.
 
 Authentication Service (sca-auth)
-============
+=================================
 
 MCA uses authentication microservices developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying /opt/mca/auth/api/config/ .
 
@@ -114,7 +114,7 @@ You need to sign out & login again in order for this change to take effect.
 Please refer to `sca-auth gitrepo <https://github.com/soichih/sca-auth>`_ for more information.
 
 Profile Service (sca-profile)
-============
+=============================
 
 MCA uses profile microservices developed by SCA (Scalable Computing Archive) group at IU. Please refer to `sca-profile gitrepo <https://github.com/soichih/sca-profile>`_ for more information.
 
