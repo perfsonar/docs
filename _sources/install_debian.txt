@@ -36,14 +36,14 @@ All you need to do is to configure the perfSONAR Debian repository source, along
 
    cd /etc/apt/sources.list.d/
    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
-   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-official.gpg.key | apt-key add -
+   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 
 And with the following commands for Debian 8:
 ::
 
    cd /etc/apt/sources.list.d/
    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.list
-   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-jessie-official.gpg.key | apt-key add -
+   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
    
 Then refresh the packages list:
 ::
