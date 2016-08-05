@@ -126,7 +126,7 @@ Step 3: Verify NTP and Tuning Parameters
 
 * **System Tuning**
   
-  It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that cubic, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  
+  It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  
 
   - **Package Install**
     
@@ -147,7 +147,7 @@ Step 4: Firewall and Security Considerations
 **Package Install**
 If you have installed the perfsonar-toolkit-security package, then you can configure the IPTable entries by running::
 
-    /usr/lib/perfsonar/scripts/system_environment/configure_firewall
+    /usr/lib/perfsonar/scripts/configure_firewall
 
 The package also installs fail2ban.
 
