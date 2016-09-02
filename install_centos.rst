@@ -113,8 +113,8 @@ Step 3: Verify NTP and Tuning Parameters
   
     If the optional package was installed, then run::
     
-    /usr/lib/perfsonar/scripts/configure_ntpd
-    /usr/lib/perfsonar/scripts/system_environment/enable_ntpd
+    /usr/lib/perfsonar/scripts/configure_ntpd new
+    service ntpd restart
 
   - **Manual**: 
   
