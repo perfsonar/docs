@@ -51,9 +51,9 @@ copyright = u'2016, perfSONAR Project'
 # built documents.
 #
 # The short X.Y version.
-version = '3.5.1'
+version = '4.0'
 # The full version, including alpha/beta/rc tags.
-release = '3.5.1'
+release = '4.0rc1'
 # The date the ISOs were built
 iso_netinstall_build_date = '2016Mar03'
 iso_fullinstall_build_date = '2016Jun16'
@@ -286,7 +286,7 @@ texinfo_documents = [
 ps_download_url = 'http://downloads.perfsonar.net/toolkit'
 #ps_download_url = 'http://downloads.perfsonar.net/toolkit/release_candidates/%s' % release
 #CentOS version
-centos_version = '6'
+centos_version = '7'
 
 #Create a |version| substitution variable that c an be used in .rst files
 rst_epilog = """
@@ -299,7 +299,7 @@ rst_epilog = """
 #   :centos_netinstall_iso:`x86_64`
 #   :centos_netinstall_iso:`toolkit iso <x86_64>`
 extlinks = {
-    'centos': ("http://www.centos.org", 'CentOS 6'),
+    'centos': ("http://www.centos.org", 'CentOS %s' % centos_version),
     'centos_netinstall_iso': ("%s/pS-Toolkit-%s-NetInstall-%s-%s.iso" % (ps_download_url, release, '%s', iso_netinstall_build_date), ''),
     'centos_netinstall_md5': ("%s/pS-Toolkit-%s-NetInstall-%s-%s.iso.md5" % (ps_download_url, release, '%s', iso_netinstall_build_date), ''),
     'centos_fullinstall_iso': ("%s/pS-Toolkit-%s-FullInstall-%s-%s.iso" % (ps_download_url, release, '%s', iso_fullinstall_build_date), ''),
