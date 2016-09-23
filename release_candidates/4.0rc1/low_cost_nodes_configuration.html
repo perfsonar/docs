@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Low Cost Nodes Configuration &mdash; perfSONAR Toolkit 4.0rc1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0rc1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0rc1 documentation" href="index.html" />
+    <link rel="next" title="perfsonarUI Installation Guide" href="install_psui.html" />
+    <link rel="prev" title="perfSONAR on Low Cost Nodes" href="low_cost_nodes.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_psui.html" title="perfsonarUI Installation Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="low_cost_nodes.html" title="perfSONAR on Low Cost Nodes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="low-cost-nodes-configuration">
+<h1>Low Cost Nodes Configuration<a class="headerlink" href="#low-cost-nodes-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Running low cost nodes function in much the same way as running a &#8220;regular&#8221; perfsonar node with a few exceptions. Instead of running an entire toolkit stack with a local MA and a web UI and all that, these nodes are intended to be run as testpoints and report their results back to a centrally configured measurement archive. See the &#8220;System Requirements&#8221; section of the <a class="reference internal" href="low_cost_nodes.html"><em>low cost nodes</em></a> page for more information on specifications.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>There is currently no pre-configured ISO installation for Debian or CentOS that is not a full toolkit install. The following assumes that an <a class="reference external" href="http://releases.ubuntu.com/12.04/ubuntu-12.04.5-desktop-amd64.iso">Ubuntu 12.04.05</a> has been installed on your device via standard means such as a USB stick and that network connectivity is available.</p>
+<p>The following is a script to automatically set up a few important things such as SSH, NTP, the perfSONAR repositories, the stock perfSONAR tuning and security, as well as auto updates. Simply copy/paste these instructions and at the end you will be left with a fully functional perfSONAR Ubuntu testpoint.</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget http://docs.perfsonar.net/_static/setup_debian_testpoint.sh
+<span class="gp">#</span> sudo sh setup_debian_testpoint.sh
+</pre></div>
+</div>
+</div></blockquote>
+<p>To verify it completed successfully, you should be able to see processes like bwctl-server and owamp-server running. Ad hoc tests using bwctl or iperf directly are now possible. See below for information on setting up mesh based regular testing.</p>
+<p>Alternatively, you can walk through all of the steps manually for <a class="reference internal" href="install_debian.html"><em>Debian/Ubuntu here</em></a> or for <a class="reference internal" href="install_centos.html"><em>CentOS here</em></a>.</p>
+</div>
+<div class="section" id="mesh-configuration">
+<h2>Mesh Configuration<a class="headerlink" href="#mesh-configuration" title="Permalink to this headline">¶</a></h2>
+<p>perfSONAR 3.5 added the ability to add &#8220;tags&#8221; to mesh and mesh agent configuration files, allowing for auto discovery and joining of meshes. It is highly encouraged that small nodes make use of this feature to maintain sanity while adding and removing nodes. For more information on mesh auto configuration, <a class="reference internal" href="multi_mesh_autoconfig.html"><em>see this page</em></a>.</p>
+<p>It is also encouraged that MA setup be <a class="reference internal" href="multi_ma_install.html"><em>based on IP</em></a>, though not required. If IP based auth is not setup, the MA credential information will need to be setup in the regular testing file on the small node so that it is able to authenticate sending results back.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Low Cost Nodes Configuration</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#mesh-configuration">Mesh Configuration</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="low_cost_nodes.html">Previous topic</a>
+                  <ul><li><a href="low_cost_nodes.html" title="previous chapter">perfSONAR on Low Cost Nodes</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="install_psui.html">Next topic</a>
+                      <ul><li><a href="install_psui.html" title="next chapter">perfsonarUI Installation Guide</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_psui.html" title="perfsonarUI Installation Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="low_cost_nodes.html" title="perfSONAR on Low Cost Nodes"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

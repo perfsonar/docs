@@ -1,0 +1,540 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>perfsonarUI Installation Guide &mdash; perfSONAR Toolkit 4.0rc1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0rc1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0rc1 documentation" href="index.html" />
+    <link rel="next" title="perfsonarUI User Guide" href="using_psui.html" />
+    <link rel="prev" title="Low Cost Nodes Configuration" href="low_cost_nodes_configuration.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="using_psui.html" title="perfsonarUI User Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="low_cost_nodes_configuration.html" title="Low Cost Nodes Configuration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="perfsonarui-installation-guide">
+<h1>perfsonarUI Installation Guide<a class="headerlink" href="#perfsonarui-installation-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The perfsonarUI web application enables users to visualize measurement results from perfSONAR services. It can provide insight into historical measurement stored in a
+perfSONAR Measurement Archive (MA), or request an on-demand measurement to be performed by a perfSONAR Measurement Point (MP). It provides the following functionalities:</p>
+<ul>
+<li><p class="first">Access to link utilization data stored in a RRD Measurement Archive</p>
+</li>
+<li><p class="first">Access to one-way delay, jitter, one-way packet loss and traceroute data stored in a HADES Measurement Archive</p>
+</li>
+<li><p class="first">Access to historical achievable throughput data stored in a  SQL Measurement Archive</p>
+</li>
+<li><p class="first">Request an on-demand measurement to measure achievable throughput from a BWCTL Measurement Point</p>
+<img alt="_images/install_psui-01_overview.png" src="_images/install_psui-01_overview.png" />
+</li>
+</ul>
+<p>In order to visualize a measurement the client sends a request through the web browser. The UI web server creates a NMWG (Network Measurement Working Group) request and sends it to the MA or MP. When the MA or MP respond, measurement values are extracted from the response and sent to the web browser where they are presented to the client in numerical and graphical form.
+perfsonarUI allows the user to browse several types of MA for available measurements. These are RRD MA, HADES MA and SQL MA. It also allows the user to request a measurement between two BWCTL MPs to be performed. In addition perfsonarUI is also able to retrieve data from the Internet2’s perfSONAR-PS SNMP MA and make on-demand tests to BWCTL endpoint such as Internet2’s perfSONAR-PS BWCTL.</p>
+</div>
+<div class="section" id="installation-process">
+<h2>Installation process<a class="headerlink" href="#installation-process" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="supported-platform">
+<h3>Supported platform<a class="headerlink" href="#supported-platform" title="Permalink to this headline">¶</a></h3>
+<p>The perfsonarUI packages are built for Red Hat Enterprise Linux 6, Debian 7 and Debian 8. No issues are expected for future minor versions. RHEL derivatives, such as CentOS, and Debian derivatives, such as Ubuntu, should work as well.</p>
+</div>
+<div class="section" id="prerequisite-software">
+<h3>Prerequisite software<a class="headerlink" href="#prerequisite-software" title="Permalink to this headline">¶</a></h3>
+<p>For the perfsonarUI to be able to work properly, you need to provide the following software:</p>
+<ol class="arabic simple">
+<li>Java version 7 - Oracle&#8217;s Java and OpenJDK are tested and supported. Other flavors of Java are not tested but should work;</li>
+<li>Apache Tomcat version 6 (for RedHat based systems) or version 7 (for Debian based systems).</li>
+</ol>
+<p>Debian and RHEL package systems are able to automatically satisfy perfsonarUI&#8217;s dependency to Tomcat or Tomcat could be installed beforehand through default repositories.</p>
+</div>
+</div>
+<div class="section" id="installing-on-linux-using-repositotry">
+<h2>Installing on Linux using repositotry<a class="headerlink" href="#installing-on-linux-using-repositotry" title="Permalink to this headline">¶</a></h2>
+<p>Recommended way of installation of perfsonarUI is by adding the perfSONAR repositories and installing the package using native packaging system.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is recommended that you rely solely on the package dependencies to install the other required software.  Installing packages manually can result in incompatibility issues.</p>
+</div>
+<div class="section" id="adding-the-perfsonar-repository">
+<h3>Adding the perfSONAR Repository<a class="headerlink" href="#adding-the-perfsonar-repository" title="Permalink to this headline">¶</a></h3>
+<p>PerfsonarUI packages are hosted in the regular perfSONAR repositories.</p>
+<div class="section" id="adding-the-perfsonar-repository-on-a-debian-system">
+<h4>Adding the perfSONAR repository on a Debian system<a class="headerlink" href="#adding-the-perfsonar-repository-on-a-debian-system" title="Permalink to this headline">¶</a></h4>
+<p>It is necessary to place a definition file in the <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d</span></tt> directory. You must have root access to this directory. To copy the repository source, run the following command:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
+</pre></div>
+</div>
+</div></blockquote>
+<p>Use the following commands to add the repository’s PGP key:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-official.gpg.key | apt-key add -
+</pre></div>
+</div>
+</div></blockquote>
+<p>Then clean and update the package list on your system using:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> apt-get clean
+<span class="gp">#</span> apt-get update
+</pre></div>
+</div>
+</div></blockquote>
+<p>To check if the repository is correctly added run the following command:</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> apt-cache search perfsonar-ui-web
+</pre></div>
+</div>
+</div></blockquote>
+<p>You should see the perfsonarUI web package listed.</p>
+</div>
+<div class="section" id="adding-the-perfsonar-repository-on-a-red-hat-enterprise-linux-system">
+<h4>Adding the perfSONAR repository on a Red Hat Enterprise Linux system<a class="headerlink" href="#adding-the-perfsonar-repository-on-a-red-hat-enterprise-linux-system" title="Permalink to this headline">¶</a></h4>
+<p>It is necessary to add the Internet2-repo RPM with the following command (as root):</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+</pre></div>
+</div>
+</div></blockquote>
+<p>To check if the repository is correctly added run the following command</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> yum search perfsonar-ui-web
+</pre></div>
+</div>
+</div></blockquote>
+<p>Now you should see the perfsonarUI web package.</p>
+</div>
+</div>
+<div class="section" id="installation-of-packages">
+<h3>Installation of packages<a class="headerlink" href="#installation-of-packages" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="installing-perfsonarui-on-rpm-distributions">
+<h4>Installing perfsonarUI on RPM distributions<a class="headerlink" href="#installing-perfsonarui-on-rpm-distributions" title="Permalink to this headline">¶</a></h4>
+<p>To install perfsonarUI in Red Hat and similar distributions perform the following procedure:</p>
+<ol class="arabic">
+<li><p class="first">Log on as root to the machine on which you want to host the perfsonarUI.</p>
+</li>
+<li><p class="first">Install perfsonarUI using the package management system with the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="go">yum install perfsonar-ui-web</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="installing-perfsonarui-on-debian-distributions">
+<h4>Installing perfsonarUI on Debian distributions<a class="headerlink" href="#installing-perfsonarui-on-debian-distributions" title="Permalink to this headline">¶</a></h4>
+<p>To install perfsonarUI in Debian and similar distributions perform the following procedure:</p>
+<ol class="arabic">
+<li><p class="first">Log on as root to the machine on which you want to host the perfsonarUI.</p>
+</li>
+<li><p class="first">Install perfsonarUI using the package management system with the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="go">apt-get install perfsonar-ui-web</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="installing-on-linux-manually-by-downloading-binary-packages">
+<h2>Installing on Linux manually by downloading binary packages<a class="headerlink" href="#installing-on-linux-manually-by-downloading-binary-packages" title="Permalink to this headline">¶</a></h2>
+<p>Installation of perfsonarUI can be done by downloading binary package and installing it.</p>
+<p>As of July 13th, 2016, current version of the psUI is 1.7.1 and can be downloaded as:</p>
+<blockquote>
+<div><ul class="simple">
+<li>An <a class="reference external" href="http://downloads.perfsonar.net/redhat/main/rpms/el6/i386/main/RPMS/perfsonar-ui-web-1.7.1.el6.noarch.rpm">RPM package</a> for RHEL 6, CentOS 6 or Scientific Linux 6;</li>
+<li>A <a class="reference external" href="http://downloads.perfsonar.net/debian/pool/main/p/perfsonar-ui-web/perfsonar-ui-web_1.7.1_all.deb">Debian 7 package</a> for Debian 7 Wheezy, Ubuntu 12.04 or Ubuntu 14.04.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If installing directly on your Toolkit host you will need to use the RPM.</p>
+</div>
+</div></blockquote>
+<p>When you download the package you can install perfsonarUI using standard commands:</p>
+<blockquote>
+<div><ul class="simple">
+<li>for RHEL-based systems type:</li>
+</ul>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> rpm -ihv perfsonar-ui-web-x.y.z.rpm
+</pre></div>
+</div>
+</div></blockquote>
+<ul class="simple">
+<li>for Debian based systems type:</li>
+</ul>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> dpkg -i perfsonar-ui-web_x.y.z_all.deb
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All prerequisite software must be installed before attempting manual installation!</p>
+</div>
+</div>
+<div class="section" id="testing-the-installation">
+<h2>Testing the installation<a class="headerlink" href="#testing-the-installation" title="Permalink to this headline">¶</a></h2>
+<p>To test if you have correctly installed the perfsonarUI open your browser and point your browser to following address:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre>http://perfSONAR_UI_server_IP:8080/perfsonar-ui/
+</pre></div>
+</div>
+</div></blockquote>
+<p>If the installation is correct you are asked to provide login credentials.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For more information about accessing the application see <a class="reference internal" href="using_psui.html#psui-usage-access"><em>Access To the Application</em></a> chapter of Usage Guide.</p>
+</div>
+</div>
+<div class="section" id="optional-configuration">
+<h2>Optional configuration<a class="headerlink" href="#optional-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuring-included-list-of-services-global-configuration">
+<span id="psui-installation-internal"></span><h3>Configuring included list of services (global configuration)<a class="headerlink" href="#configuring-included-list-of-services-global-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Global configuration, or global services list, of perfsonarUI is an included list of services (MA and MP) which are queried for historical or on-demand measurements. A default list is distributed with the perfsonarUI package and its content can be viewed through the UI (Settings &gt; Configure Service List &gt; Internal). This list can be edited or replaced with another by the user depending on his environment.
+To modify the global list perform the following procedure:</p>
+<ol class="arabic">
+<li><p class="first">Open <tt class="docutils literal"><span class="pre">/usr/share/perfsonar-ui-web/perfsonar-ui/WEB-INF/classes/endpoints.list</span></tt> with your favourite editor;</p>
+</li>
+<li><p class="first">Remove, add or edit the lines. Each line in the file represents a single instance of perfSONAR service. The format of the line is:</p>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><div class="highlight-none"><div class="highlight"><pre>service_name#service_group#service_URL#service_type
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="glossary docutils">
+<dt id="term-service-name">service_name</dt>
+<dd><p class="first last">chosen name for the service instance</p>
+</dd>
+<dt id="term-service-group">service_group</dt>
+<dd><p class="first last">service community</p>
+</dd>
+<dt id="term-service-url">service_URL</dt>
+<dd><p class="first last">URL for this service instance</p>
+</dd>
+<dt id="term-service-type">service_type</dt>
+<dd><p class="first last">the type of the perfSONAR component</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>service_type</strong> value should be one of the following (corresponding to the type of service):</p>
+<blockquote>
+<div><dl class="glossary docutils">
+<dt id="term-rrd-ma">RRD_MA</dt>
+<dd><p class="first last">perfSONAR MDM RRD Measurement Archive or Internet2&#8217;s perfSONAR-PS SNMP Measurement Archive</p>
+</dd>
+<dt id="term-hades-ma">HADES_MA</dt>
+<dd><p class="first last">perfSONAR MDM HADES Measurement Archive</p>
+</dd>
+<dt id="term-bwctl-ma">BWCTL_MA</dt>
+<dd><p class="first last">perfSONAR MDM SQL Measurement Archive</p>
+</dd>
+<dt id="term-bwctl-mp">BWCTL_MP</dt>
+<dd><p class="first last">perfSONAR MDM BWCTL Measurement Point</p>
+</dd>
+<dt id="term-owamp-mp">OWAMP_MP</dt>
+<dd><p class="first last">perfSONAR MDM OWAMP Measurement Point</p>
+</dd>
+<dt id="term-bwctl-ps">BWCTL_PS</dt>
+<dd><p class="first last">Internet2&#8217;s pSBuoy Measurement Archive with historical bandwidth data</p>
+</dd>
+<dt id="term-owamp-ps">OWAMP_PS</dt>
+<dd><p class="first last">Internet2&#8217;s pSBuoy Measurement Archive with historical latency data</p>
+</dd>
+<dt id="term-owamp">OWAMP</dt>
+<dd><p class="first last">non-perfSONAR MDM owamp endpoint</p>
+</dd>
+<dt id="term-bwctl">BWCTL</dt>
+<dd><p class="first last">non-perfSONAR MDM bwctl endpoint</p>
+</dd>
+<dt id="term-tracert">TRACERT</dt>
+<dd><p class="first last">perfSONAR MDM trace route Measurement Point</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>For example, a valid entry in the list representing a BWCTL MP called GEANT_Frankfurt would be:</p>
+<div class="highlight-none"><div class="highlight"><pre>GEANT_Frankfurt#http://mp1.fra.de.geant2.net:8090/services/MP/BWCTL#BWCTL_MP
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Restart Tomcat.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="customising-the-perfsonarui-logos">
+<h3>Customising the perfsonarUI logos<a class="headerlink" href="#customising-the-perfsonarui-logos" title="Permalink to this headline">¶</a></h3>
+<p>There are 3 logos on the main page of perfsonarUI and can be replaced by your own logos. Left side navigation panel holds two logos: at the top and bottom of the panel. There is also a bigger main logo on the welcome screen. The location of the logos and corresponding names are depicted:</p>
+<blockquote>
+<div><img alt="_images/install_psui-02_logos.png" src="_images/install_psui-02_logos.png" />
+</div></blockquote>
+<p>To upload own logos perform the following procedure:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Prepare your own graphics and make sure they have the following properties:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>logo_top</strong>: 250x100 px, filename: <tt class="docutils literal"><span class="pre">logo_top.png</span></tt></li>
+<li><strong>logo_bottom</strong>: 90x40 px, filename: <tt class="docutils literal"><span class="pre">logo_bottom.png</span></tt></li>
+<li><strong>logo_main</strong>: 556x102 px, filename: <tt class="docutils literal"><span class="pre">logo_main.png</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Navigate to <tt class="docutils literal"><span class="pre">/usr/share/perfsonar-ui-web/perfsonar-ui/images</span></tt> folder which contains the logo graphics;</p>
+</li>
+<li><p class="first">Remove the existing image file(s) for the logo to change;</p>
+</li>
+<li><p class="first">Upload the new image file(s);</p>
+</li>
+<li><p class="first">Restart Tomcat.</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="enabling-and-disabling-plugins">
+<span id="psui-installation-plugins"></span><h3>Enabling and disabling plugins<a class="headerlink" href="#enabling-and-disabling-plugins" title="Permalink to this headline">¶</a></h3>
+<p>The perfsonarUI enables administrators to manage which plugins the application loads. To modify the visibility of plugins perform the following procedure:</p>
+<ol class="arabic">
+<li><p class="first">Navigate to <tt class="docutils literal"><span class="pre">/usr/share/perfsonar-ui-web/perfsonar-ui/WEB-INF/classes</span></tt> folder which contains the file plugins.list.</p>
+</li>
+<li><p class="first">Each line is the plugin property in the form of</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre>plugin_key={ENABLE | DISABLE}.
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>plugin_key</strong> is the name of the plugin to configure corresponding to perfSONAR functionalities and data and can be one of the following: <strong>analyse, rrd_ma, hades_ma, bwctl_ma, bwctl_mp, owamp_mp, owamp_ma, traceroute</strong>. For example <strong>bwctl_mp</strong> is the property for the plugin that makes on demand throughput tests with the use of <strong>BWCTL MP</strong> component. <strong>ENABLE</strong> or <strong>DISABLE</strong> specify whether to enable or disable the plugin named in the configuration file.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default all the possible plugin properties are provided, and only the <strong>OWAMP MA</strong> and <strong>Traceroute</strong> are disabled (these features are not completed yet).</p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">If, for any reason, the configuration file is missing, or the values inside it are not valid for the perfsonarUI to parse all the plugins will be visible.</p>
+</li>
+<li><p class="first">Restart Tomcat.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="logging-and-usage-statistics">
+<h2>Logging and usage statistics<a class="headerlink" href="#logging-and-usage-statistics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="log-files">
+<h3>Log files<a class="headerlink" href="#log-files" title="Permalink to this headline">¶</a></h3>
+<p>After perfsonarUI installation, all user actions are logged inside the <tt class="docutils literal"><span class="pre">/var/log/perfsonar-ui/ui_usage.log</span></tt> file.  And errors are logged to <tt class="docutils literal"><span class="pre">/var/log/perfsonar-ui/ui_error.log</span></tt>.</p>
+<p>A log line in <strong>ui_usage.log</strong> has the following format:</p>
+<div class="highlight-python"><div class="highlight"><pre>01/Sep/2013:00:09:14 session_id user_ip &quot;user_action&quot; &quot;action_parameters&quot; result_status request_time
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage-statistics">
+<h3>Usage statistics<a class="headerlink" href="#usage-statistics" title="Permalink to this headline">¶</a></h3>
+<p>The perfsonarUI installation provides you with a script that analyses the <tt class="docutils literal"><span class="pre">ui_usage.log</span></tt> file and output interesting statistics about the perfsonarUI usage.  The script is <tt class="docutils literal"><span class="pre">/usr/bin/psui-usage-report.pl</span></tt> and it output statistics in two different formats: human readable text and <strong>CSV</strong> file for further processing in a spreadsheet.</p>
+<p>The statistics produced include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>counts of the types of actions performed by the users</li>
+<li>counts of the services types queried by the users</li>
+<li>the list of clients using the perfsonarUI</li>
+<li>some useful totals about usage</li>
+</ul>
+</div></blockquote>
+<p>More information is provided as part of the script if you run it with the <strong>-help</strong> or <strong>-man</strong> options.</p>
+</div>
+<div class="section" id="prerequisite">
+<h3>Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this headline">¶</a></h3>
+<p>The analysis script has a prerequisite to its installation - it needs to have access to the Net::Whois:RIPE perl library in version 2 or above. There is no package available for this library on Debian nor on RHEL. The easiest way to install it is to use cpan with the following command (to be run with root privileges):</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> cpan -i Net::Whois::RIPE
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">perfsonarUI Installation Guide</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#installation-process">Installation process</a><ul>
+<li><a class="reference internal" href="#supported-platform">Supported platform</a></li>
+<li><a class="reference internal" href="#prerequisite-software">Prerequisite software</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installing-on-linux-using-repositotry">Installing on Linux using repositotry</a><ul>
+<li><a class="reference internal" href="#adding-the-perfsonar-repository">Adding the perfSONAR Repository</a><ul>
+<li><a class="reference internal" href="#adding-the-perfsonar-repository-on-a-debian-system">Adding the perfSONAR repository on a Debian system</a></li>
+<li><a class="reference internal" href="#adding-the-perfsonar-repository-on-a-red-hat-enterprise-linux-system">Adding the perfSONAR repository on a Red Hat Enterprise Linux system</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation-of-packages">Installation of packages</a><ul>
+<li><a class="reference internal" href="#installing-perfsonarui-on-rpm-distributions">Installing perfsonarUI on RPM distributions</a></li>
+<li><a class="reference internal" href="#installing-perfsonarui-on-debian-distributions">Installing perfsonarUI on Debian distributions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installing-on-linux-manually-by-downloading-binary-packages">Installing on Linux manually by downloading binary packages</a></li>
+<li><a class="reference internal" href="#testing-the-installation">Testing the installation</a></li>
+<li><a class="reference internal" href="#optional-configuration">Optional configuration</a><ul>
+<li><a class="reference internal" href="#configuring-included-list-of-services-global-configuration">Configuring included list of services (global configuration)</a></li>
+<li><a class="reference internal" href="#customising-the-perfsonarui-logos">Customising the perfsonarUI logos</a></li>
+<li><a class="reference internal" href="#enabling-and-disabling-plugins">Enabling and disabling plugins</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#logging-and-usage-statistics">Logging and usage statistics</a><ul>
+<li><a class="reference internal" href="#log-files">Log files</a></li>
+<li><a class="reference internal" href="#usage-statistics">Usage statistics</a></li>
+<li><a class="reference internal" href="#prerequisite">Prerequisite</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="low_cost_nodes_configuration.html">Previous topic</a>
+                  <ul><li><a href="low_cost_nodes_configuration.html" title="previous chapter">Low Cost Nodes Configuration</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="using_psui.html">Next topic</a>
+                      <ul><li><a href="using_psui.html" title="next chapter">perfsonarUI User Guide</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="using_psui.html" title="perfsonarUI User Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="low_cost_nodes_configuration.html" title="Low Cost Nodes Configuration"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

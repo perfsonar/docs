@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Deploying a Central Measurement Archive &mdash; perfSONAR Toolkit 4.0rc1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0rc1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0rc1 documentation" href="index.html" />
+    <link rel="next" title="Clustering a Measurement Archive" href="multi_ma_clustering.html" />
+    <link rel="prev" title="Operational Guide" href="mca_operation.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="multi_ma_clustering.html" title="Clustering a Measurement Archive"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mca_operation.html" title="Operational Guide"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="deploying-a-central-measurement-archive">
+<h1>Deploying a Central Measurement Archive<a class="headerlink" href="#deploying-a-central-measurement-archive" title="Permalink to this headline">¶</a></h1>
+<p>Measurement results from your regular tests are stored in a <strong>measurement archive (MA)</strong>. This leads to the definition of two categories of hosts:</p>
+<ol class="arabic simple">
+<li>The <strong>measurement host</strong> that runs regular tests such as throughput, one-way latency, ping and traceroute measurements.</li>
+<li>The <strong>archive host</strong> that stores the results from the measurement host(s)</li>
+</ol>
+<p>By default the perfSONAR Toolkit is both measurement host AND archive host. It comes installed with both the regular testing infrastructure and the measurement archive software. The measurement archive stores all the results from measurements defined in the regular testing configuration of the local host. In most cases, this is an adequate storage strategy.</p>
+<p>As an alternative, you may decide to separate your measurement hosts and archive host(s). This allows a single &#8220;centralized&#8221; archive host to store results from multiple measurement hosts. A few use cases where this may be desirable are as follows:</p>
+<ul class="simple">
+<li>Your measurement hosts are on less powerful (and likely lower cost) hardware that you don&#8217;t want having the overhead of running the measurement archive. The measurement archive has higher hardware requirements than the measurement tools, so removing it can result in considerable resource savings.</li>
+<li>Your site has the experience and the infrastructure to manage large databases that you would like to leverage for storing measurment results on a dedicated archive host.</li>
+<li>You want to store results in multiple places. For example, you may store your results locally but also store them in a central archive where complex analysis tools operate on all the data from multiple hosts in one location.</li>
+</ul>
+<p>Those are just a few examples. If you think a central measurement archive is right for your measurement strategy, then read the remainder of this document for instructions on how to configure both your archive host and measurement hosts.</p>
+<div class="section" id="installing-the-measurement-archive-software">
+<h2>Installing the Measurement Archive Software<a class="headerlink" href="#installing-the-measurement-archive-software" title="Permalink to this headline">¶</a></h2>
+<p>The measurement archive is implemented using a software package named <a class="reference external" href="http://software.es.net/esmond/">esmond</a>. If your central archive is a perfSONAR Toolkit, then esmond is already installed. It is more likely though that you will install your measurement archive on an instance completely separate from the perfSONAR Toolkit. There are a few options for installing esmond:</p>
+<ol class="arabic simple">
+<li>RedHat Linux (including CentOS) users may install a standalone instance of esmond using an RPM. See the <a class="reference external" href="http://software.es.net/esmond/rpm_install.html">RPM installation page</a> for details on installing a standalone RPM.</li>
+<li>You may install esmond as part of the perfSONAR CentralManagement bundle. See <a class="reference internal" href="install_options.html"><em>perfSONAR Installation Options</em></a> for more information.</li>
+<li>You may consult the <a class="reference external" href="http://software.es.net/esmond/">esmond web site</a> for more guidance on various other deployment options.</li>
+</ol>
+</div>
+<div class="section" id="authenticating-measurement-hosts">
+<h2>Authenticating Measurement Hosts<a class="headerlink" href="#authenticating-measurement-hosts" title="Permalink to this headline">¶</a></h2>
+<p>Measurement hosts need to authenticate to the measurement archive when they register data. This is implemented in esmond using one of two methods:</p>
+<ol class="arabic simple">
+<li>A username and API key that is passed in the HTTP header of all requests.</li>
+<li>Using IP based authentication</li>
+</ol>
+<p>The remainder of this section describes how to setup both type of accounts.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may have a combination of the above where some accounts authenticate based on IP address and others based on API key.  If a request matches both an API key account and an IP address account, then the API account will be tried first. If the API key authentication fails, then it will fallback to the IP address account.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is <strong>highly recommended</strong> you run your measurement archive server with HTTPS. This encrypts transfers and protects the username and API key (if applicable) from being exposed in plain text since it is just in the HTTP header. See the Apache HTTPD documentation for information on how to configure HTTPS.</p>
+</div>
+<div class="section" id="authenticating-by-username-and-api-key">
+<h3>Authenticating by Username and API Key<a class="headerlink" href="#authenticating-by-username-and-api-key" title="Permalink to this headline">¶</a></h3>
+<p>As an archive administrator you may create a username, generate an API key, and assign the needed permissions to register data with the commands below:</p>
+<ol class="arabic">
+<li><p class="first">Change to the esmond install directory:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>RedHat/CentOS users only</strong>: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a <strong>bash</strong> shell, you can enable Python 2.7 for your current shell with the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>source /opt/rh/python27/enable
+/opt/rh/python27/root/usr/bin/virtualenv --prompt=&quot;(esmond)&quot; .
+. bin/activate
+</pre></div>
+</div>
+</li>
+<li><p class="first">Run the commands below replacing <em>example_user</em> with the username of the account you would like to create:</p>
+<div class="highlight-python"><div class="highlight"><pre>python esmond/manage.py add_ps_metadata_post_user example_user
+python esmond/manage.py add_timeseries_post_user example_user
+</pre></div>
+</div>
+</li>
+<li><p class="first">After running the commands above you should see the generated API key in the output (if not, re-run the commands above and they will re-show you the generated API key without affecting the user you just created). An example of the output line showing the API key (<em>9130962c6b38722c0b9968e6903e1927e94e16fd</em> in this example) is below:</p>
+<div class="highlight-python"><div class="highlight"><pre>Key: 9130962c6b38722c0b9968e6903e1927e94e16fd for example_user
+</pre></div>
+</div>
+</li>
+</ol>
+<p>At this point provide the administrator of the measurement host wishing to register data with the username and API key.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There is no technical limitation preventing multiple measurement hosts from sharing a username and API key. It is up to you as an archive administrator to make a decision about whether you will share accounts between multiple measurement hosts or require unique accounts for each. It is the responsibility of both you and the measurement host administrator to follow best commons security practices and common sense in preventing unwanted parties from obtaining these credentials.</p>
+</div>
+</div>
+<div class="section" id="authenticating-by-ip-address">
+<span id="multi-ma-install-auth-ip"></span><h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this headline">¶</a></h3>
+<p>As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a username and password (API key) to be defined for each host in their tasks file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows:</p>
+<ol class="arabic">
+<li><p class="first">Change to the esmond install directory:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>RedHat/CentOS users only</strong>: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a <strong>bash</strong> shell, you can enable Python 2.7 for your current shell with the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>source /opt/rh/python27/enable
+/opt/rh/python27/root/usr/bin/virtualenv --prompt=&quot;(esmond)&quot; .
+. bin/activate
+</pre></div>
+</div>
+</li>
+<li><p class="first">Run the commands below to create the account. You must provide a username as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of <em>X.X.X.X</em> or <em>X.X.X.X/Y</em> where <em>X</em> is each octet and <em>Y</em> is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host 10.0.1.1 or any host in the 10.0.2.0/24 subnet to register data to esmond:</p>
+<div class="highlight-python"><div class="highlight"><pre>python esmond/manage.py add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="configuring-measurement-hosts">
+<h2>Configuring Measurement Hosts<a class="headerlink" href="#configuring-measurement-hosts" title="Permalink to this headline">¶</a></h2>
+<p>Each measurement host must be configured to register its data to the central archive. You do this by adding a <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> block to the <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-agent-tasks"><em>MeshConfig agent tasks file</em></a> for each type of data to be registered in the central measurement archive. Valid test types are:</p>
+<ul class="simple">
+<li>esmond/latency</li>
+<li>esmond/throughput</li>
+<li>esmond/traceroute</li>
+</ul>
+<p>If you want all of the test types registered in the central archive then you will need to add three separate <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> blocks. Each block has the following values related to the central archive:</p>
+<ol class="arabic simple">
+<li><strong>database</strong> - This is the URL of your archive. Example: <a class="reference external" href="https://acme.local/esmond/perfsonar/archive/">https://acme.local/esmond/perfsonar/archive/</a></li>
+<li><strong>username</strong> - The username used to authenticate to the archive. This can be excluded if you plan to authenticate based on IP. Example: example_user</li>
+<li><strong>password</strong> - The API key used to authenticate to the archive.  This can be excluded if you plan to authenticate based on IP. Example: 9130962c6b38722c0b9968e6903e1927e94e16fd</li>
+<li><strong>ca_certificate_path</strong> - For https, this is the path to a directory where CA certificates are kept that can be used to verify the presented SSL certificate from the server running the archive. Example: /etc/ssl/certs</li>
+</ol>
+<p>In addition, a <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> block contains a number of <tt class="docutils literal"><span class="pre">summary</span></tt> blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see <a class="reference internal" href="config_mesh_agent_tasks.html"><em>MeshConfig Agent Tasks File</em></a>.</p>
+<p>Given all the information above, lets look at an example where we want to register all types of data to a measurement archive running at <em>https://acme.local/esmond/perfsonar/archive/</em>. The username and API key assigned to us by the archive administrator are <em>example_user</em> and <em>9130962c6b38722c0b9968e6903e1927e94e16fd</em> respectively. Also, since the server uses https we have installed the CA certificate in <em>/etc/ssl/certs</em>. Applying these details yields the following configuration:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;measurement_archive&gt;
+    type                esmond/latency
+    username            example_user
+    database            https://acme.local/esmond/perfsonar/archive/
+    password            9130962c6b38722c0b9968e6903e1927e94e16fd
+    ca_certificate_path /etc/ssl/certs
+
+    &lt;summary&gt;
+        summary_window   300
+        event_type   packet-loss-rate
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   300
+        event_type   histogram-owdelay
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   300
+        event_type   histogram-owdelay
+        summary_type   statistics
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   3600
+        event_type   packet-loss-rate
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   3600
+        event_type   packet-loss-rate-bidir
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   3600
+        event_type   histogram-owdelay
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   3600
+        event_type   histogram-rtt
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   3600
+        event_type   histogram-owdelay
+        summary_type   statistics
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   3600
+        event_type   histogram-rtt
+        summary_type   statistics
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   86400
+        event_type   packet-loss-rate
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   86400
+        event_type   packet-loss-rate-bidir
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   86400
+        event_type   histogram-owdelay
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   86400
+        event_type   histogram-owdelay
+        summary_type   statistics
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   86400
+        event_type   histogram-rtt
+        summary_type   aggregation
+    &lt;/summary&gt;
+    &lt;summary&gt;
+        summary_window   86400
+        event_type   histogram-rtt
+        summary_type   statistics
+    &lt;/summary&gt;
+&lt;/measurement_archive&gt;
+&lt;measurement_archive&gt;
+    type                esmond/throughput
+    database            https://acme.local/esmond/perfsonar/archive/
+    username            example_user
+    password            9130962c6b38722c0b9968e6903e1927e94e16fd
+    ca_certificate_path /etc/ssl/certs
+
+    &lt;summary&gt;
+        summary_window   86400
+        event_type   throughput
+        summary_type   average
+    &lt;/summary&gt;
+&lt;/measurement_archive&gt;
+&lt;measurement_archive&gt;
+    type                esmond/traceroute
+    database            https://acme.local/esmond/perfsonar/archive/
+    username            example_user
+    password            9130962c6b38722c0b9968e6903e1927e94e16fd
+    ca_certificate_path /etc/ssl/certs
+&lt;/measurement_archive&gt;
+</pre></div>
+</div>
+<p>After adding the above to you configuration you DO NOT need to restart any daemons, the change will automatically be detected by the meshconfig-agent daemon.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If your central measurement archive goes down for any reason, pScheduler will store the results in the database and try to re-register them when there server returns. By default it will  try for one day after the failure occurs before abandoning the result.</p>
+</div>
+<div class="section" id="registering-to-multiple-measurement-archives">
+<h3>Registering to Multiple Measurement Archives<a class="headerlink" href="#registering-to-multiple-measurement-archives" title="Permalink to this headline">¶</a></h3>
+<p>You may register to multiple measurement archives by adding multiple <tt class="docutils literal"><span class="pre">measurement_archive</span></tt> blocks to the <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-agent-tasks"><em>MeshConfig Agent tasks file</em></a> of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;measurement_archive&gt;
+    type                esmond/traceroute
+    database            https://acme.local/esmond/perfsonar/archive/
+    username            example_user
+    password            9130962c6b38722c0b9968e6903e1927e94e16fd
+    ca_certificate_path /etc/ssl/certs
+&lt;/measurement_archive&gt;
+ &lt;measurement_archive&gt;
+    type                esmond/traceroute
+    database            http://localhost/esmond/perfsonar/archive/
+    username            perfsonar
+    password            5bd139bdb77a85cfe65847e44556a2883a857942
+&lt;/measurement_archive&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If one or more of your measurement archives goes down, data will continue to be registered to the running archive(s). Data for the down archives will be kept in the pScheduler database and it will attempt to re-register the data when it returns (as described in the note at the bottom of the previous section).</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Deploying a Central Measurement Archive</a><ul>
+<li><a class="reference internal" href="#installing-the-measurement-archive-software">Installing the Measurement Archive Software</a></li>
+<li><a class="reference internal" href="#authenticating-measurement-hosts">Authenticating Measurement Hosts</a><ul>
+<li><a class="reference internal" href="#authenticating-by-username-and-api-key">Authenticating by Username and API Key</a></li>
+<li><a class="reference internal" href="#authenticating-by-ip-address">Authenticating by IP Address</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-measurement-hosts">Configuring Measurement Hosts</a><ul>
+<li><a class="reference internal" href="#registering-to-multiple-measurement-archives">Registering to Multiple Measurement Archives</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="mca_operation.html">Previous topic</a>
+                  <ul><li><a href="mca_operation.html" title="previous chapter">Operational Guide</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="multi_ma_clustering.html">Next topic</a>
+                      <ul><li><a href="multi_ma_clustering.html" title="next chapter">Clustering a Measurement Archive</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="multi_ma_clustering.html" title="Clustering a Measurement Archive"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mca_operation.html" title="Operational Guide"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
