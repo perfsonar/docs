@@ -15,5 +15,6 @@ If you are MCA super-admin, you can edit the host information and override Measu
 
 * No Agent: (As commented in UI)
 
-* MA Overrides: If this toolkit instance should send test results to MA (Measurement Archives) other than the one that's running locally to this instance
-please select the *central* MA to be used by this instance.
+* MA Overrides: If this toolkit instance should send test results to MA (Measurement Archives) other than the one that's running locally to this instance please select the *central* MA to be used by this instance.
+
+

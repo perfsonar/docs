@@ -277,9 +277,7 @@ You'll also want to set the following if you are NOT using a Toolkit deployment:
 
     use_toolkit 0
     
-Finally, you'll want to make sure your :ref:`regular testing configuration file <config_files-regtesting-conf-main>` only has the following lines uncommented:
-
-    test_result_directory   /var/lib/perfsonar/regulartesting
+Finally, you'll want to make sure your :ref:`MeshConfig Agent tasks file <config_files-meshconfig-conf-agent-tasks>` has no extra measurement archives uncommented. In general having no uncommented lines is just fine.
     
 .. note:: If you have additional *measurement_archive* directives in the file then your tests will be stored there IN ADDITION to those automatically configured by the mesh. This may or may not be desirable depending on your case.
 

@@ -109,15 +109,15 @@ Step 3: Verify NTP and Tuning Parameters
 
 * **NTP**
 
-  - **Package Install**:
-  
-    If the optional package was installed, then run::
+  - **Package Install**
     
-    /usr/lib/perfsonar/scripts/configure_ntpd new
-    service ntpd restart
+    If the optional package was installed, then run::
 
-  - **Manual**: 
-  
+        /usr/lib/perfsonar/scripts/configure_ntpd new
+        service ntpd restart
+
+  - **Manual**
+
     The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL will not even run unless NTP is configured. You can verify NTP is running with the following command::
 
     /usr/sbin/ntpq -p  

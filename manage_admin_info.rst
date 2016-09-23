@@ -76,8 +76,8 @@ In order to tag a node with metadata:
     #. In order to add a Node Access Policy, under *Metadata*, click in the field **Node Access Policy**. A drop-down list shows with possible values. Click on a preferred value.
     
             .. image:: images/manage_admin_info-meta2.png
-	#. You may also add a descriptive note in **Access Policy Notes** field which is a human readable text that can optionally be added to help further describe the access policy.
-	
+    #. You may also add a descriptive note in **Access Policy Notes** field which is a human readable text that can optionally be added to help further describe the access policy.
+    
     #. Click **Save** to apply your changes 
 
 Deleting Node Metadata

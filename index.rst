@@ -94,6 +94,7 @@ Central Test Configuration
    multi_mesh_server_config
    multi_mesh_agent_config
    multi_mesh_autoconfig
+   mca
    
 Central Measurement Archive
 ===========================
@@ -160,6 +161,7 @@ MeshConfig
    
    config_mesh
    config_mesh_agent
+   config_mesh_agent_tasks
    config_mesh_gui
    config_mesh_lookup_hosts
    
@@ -177,13 +179,6 @@ OWAMP
    
    config_owamp
    config_owamp_limits
-
-Regular Testing
-===============
-.. toctree::
-   :maxdepth: 1
-   
-   config_regular_testing
 
 Previous Releases
 -----------------

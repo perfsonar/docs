@@ -37,6 +37,4 @@ Additionally if a mesh config is hosted by a server running https you can add fu
 
 You may add multiple mesh blocks to the file to participate in multiple meshes. Also note that any :doc:`manually <manage_regular_tests>` defined tests will remain intact. See the agent configuration section of :doc:`config_mesh` for more details on options in this file.
 
-Your regular tests will be updated nightly by a :ref:`cron script <config_files-meshconfig-cron-generate_configuration>`. If you would like to update your regular tests sooner then manually run the following:
-
-    /usr/lib/perfsonar/bin/generate_configuration
+Your regular tests will be updated hourly by the perfsonar-meshconfig-agent daemon.

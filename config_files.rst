@@ -40,9 +40,10 @@ Start-up Script
 ##########################
 
 :Description: The script used to start/stop/restart a BWCTL server
-:RedHat (<v1.6): ``/etc/init.d/bwctld``
-:RedHat: ``/etc/init.d/bwctl-server``
-:Debian: ``/etc/init.d/bwctl-server``
+:RedHat 6 (<v1.6): ``/etc/init.d/bwctld start|stop|restart``
+:RedHat 6: ``/etc/init.d/bwctl-server start|stop|restart``
+:RedHat 7: ``systemctl start|stop|restart bwctl-server``
+:Debian: ``/etc/init.d/bwctl-server start|stop|restart``
 
 Log Files
 ---------
@@ -80,7 +81,9 @@ Important Scripts
 Start-up Script
 ##########################
 :Description: Esmond is started/stopped/restarted when HTTPD is started/stopped/restarted 
-:RedHat: ``/etc/init.d/httpd``
+:RedHat 6 (<v4.0): ``/etc/init.d/httpd start|stop|restart``
+:RedHat 6: ``/etc/init.d/httpd24-httpd start|stop|restart``
+:RedHat 7: ``systemctl httpd start|stop|restart``
 :Debian: ``/etc/init.d/httpd``
 
 .. _config_files-esmond-scripts-ps_remove_data:
@@ -146,8 +149,9 @@ Important Scripts
 Start-up Script
 ##########################
 :Description: The script used to start/stop/restart a LS Registation Daemon server
-:RedHat (<v3.5.1): ``/etc/init.d/ls_registration_daemon``
-:RedHat: ``/etc/init.d/perfsonar-lsregistrationdaemon``
+:RedHat 6(<v3.5.1): ``/etc/init.d/ls_registration_daemon``
+:RedHat 6: ``/etc/init.d/perfsonar-lsregistrationdaemon``
+:RedHat 7: ``systemctl perfsonar-lsregistrationdaemon start|stop|restart``
 :Debian: ``/etc/init.d/perfsonar-lsregistrationdaemon``
 
 
@@ -181,7 +185,17 @@ Agent Configuration File
 :Debian: ``/etc/perfsonar/meshconfig-agent.conf``
 :Documentation: :doc:`config_mesh_agent`
 
+.. _config_files-meshconfig-conf-agent-tasks:
+
+Agent Tasks File
+#############################
+:Description: This file contains the tasks to be run by the host as defined manually, via the toolkit web interface and/or any remote mesh configuration files. They are submitted to pScheduler. This file is the successor to the former regulartesting.conf file.
+:RedHat: ``/etc/perfsonar/meshconfig-agent-tasks.conf``
+:Debian: ``/etc/perfsonar/meshconfig-agent-tasks.conf``
+:Documentation: :doc:`config_mesh_agent_tasks`
+
 .. _config_files-meshconfig-conf-gui_agent:
+
 
 GUI Agent Configuration File
 #############################
@@ -207,6 +221,14 @@ Dynamic Host Lookup Configuration File
 
 Important Scripts
 -----------------
+.. _config_files-meshconfig-scripts-agent:
+
+MeshConfig Agent Start-up Script
+#################################
+:Description: The script used to start/stop/restart a MeshConfig Agent. This daemon builds :ref:`meshconfig-agent-tasks.conf<config_files-meshconfig-conf-agent-tasks>` from remote meshes and picks up any manual changes and submits the tasks to pScheduler.
+:RedHat 6: ``/etc/init.d/perfsonar-meshconfig-agent start|stop|restart``
+:RedHat 7: ``systemctl perfsonar-meshconfig-agent start|stop|restart``
+:Debian: ``/etc/init.d/perfsonar-meshconfig-agent start|stop|restart``
 
 .. _config_files-meshconfig-scripts-json:
 
@@ -216,15 +238,6 @@ JSON Builder
 :RedHat (<v3.5.1): ``/opt/perfsonar_ps/mesh_config/bin/build_json``
 :RedHat: ``/usr/lib/perfsonar/bin/build_json``
 :Debian: ``/usr/lib/perfsonar/bin/build_json``
-
-.. _config_files-meshconfig-scripts-generate_configuration:
-
-Test Configuration Generator
-#############################
-:Description: The script used to generate a :ref:`regular testing configuration file <config_files-regtesting-conf-main>` from a downloaded central configuration file
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/mesh_config/bin/generate_configuration``
-:RedHat: ``/usr/lib/perfsonar/bin/generate_configuration``
-:Debian: ``/usr/lib/perfsonar/bin/generate_configuration``
 
 .. _config_files-meshconfig-scripts-generate_gui_configuration:
 
@@ -247,15 +260,6 @@ Dynamic Host List Generator
 Installed Cron Jobs
 -------------------
 
-.. _config_files-meshconfig-cron-generate_configuration:
-
-Test Configuration Generator Cron
-#####################################
-:Description: Runs the :ref:`test configuration generator <config_files-meshconfig-scripts-generate_configuration>` every night at 2AM
-:RedHat (<v3.5.1): ``/etc/cron.d/cron-mesh_config_agent``
-:RedHat: ``/etc/cron.d/perfsonar-meshconfig-agent``
-:Debian: ``/etc/cron.d/perfsonar-meshconfig-agent``
-
 .. _config_files-meshconfig-cron-generate_gui_configuration:
 
 GUI/Dashboard Configuration Generator Cron
@@ -270,11 +274,11 @@ Log Files
 
 .. _config_files-meshconfig-logs-generate_configuration:
 
-Test Configuration Generator Log
+MeshConfig Agent Log
 ################################
-:Description: The log file written when the :ref:`test generator <config_files-meshconfig-scripts-generate_configuration>` is run from :ref:`cron <config_files-meshconfig-cron-generate_configuration>`.
-:RedHat: ``/var/log/perfsonar/mesh_configuration_agent.log``
-:Debian: ``/var/log/perfsonar/mesh_configuration_agent.log`` 
+:Description: The log file written when the :ref:`MeshConfig agent <config_files-meshconfig-scripts-agent>` is run.
+:RedHat: ``/var/log/meshconfig-agent.log``
+:Debian: ``/var/log/perfsonar/meshconfig-agent.log`` 
 
 .. _config_files-meshconfig-logs-generate_gui_configuration:
 
@@ -324,10 +328,11 @@ Start-up Script
 ##########################
 
 :Description: The script used to start/stop/restart an OWAMP server
-:RedHat (<v3.5): ``/etc/init.d/owampd``
-:Debian (<v3.5): ``/etc/init.d/owampd``
-:RedHat: ``/etc/init.d/owamp-server``
-:Debian: ``/etc/init.d/owamp-server``
+:RedHat (<v3.5): ``/etc/init.d/owampd start|stop|restart``
+:Debian (<v3.5): ``/etc/init.d/owampd start|stop|restart``
+:RedHat 6: ``/etc/init.d/owamp-server start|stop|restart``
+:RedHat 7: ``systemctl owamp-server start|stop|restart``
+:Debian: ``/etc/init.d/owamp-server start|stop|restart``
 
 Log Files
 ---------
@@ -339,58 +344,6 @@ Primary Log file
 :Description: OWAMP servers and clients can each write to log files. The location of the log file is dependent on your syslog configuration. The entries in this table assume a default configuration. 
 :RedHat: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp_bwctl.log``
 :Debian: ``/var/log/messages`` 
-
-Regular Testing
-================
-
-Configuration Files
---------------------
-
-.. _config_files-regtesting-conf-main:
-
-Main Configuration File
-#############################
-:Description: The main configuration file for Regular Testing that describes the schedule of tests to run.
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/regular_testing/etc/regular_testing.conf``
-:RedHat: ``/etc/perfsonar/regulartesting.conf``
-:Debian: ``/etc/perfsonar/regulartesting.conf``
-:Documentation: :doc:`config_regular_testing`
-
-.. _config_files-regtesting-conf-logging:
-
-Logging Configuration File
-#############################
-:Description: Configuration file for setting log location, level of detail and various other log-related settings.
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/regular_testing/etc/regular_testing-logger.conf``
-:RedHat: ``/etc/perfsonar/regulartesting-logger.conf``
-:Debian: ``/etc/perfsonar/regulartesting-logger.conf``
-:Documentation: `Log4perl Reference <http://search.cpan.org/~mschilli/Log-Log4perl-1.46/lib/Log/Log4perl.pm>`_
-
-Important Scripts
------------------
-
-.. _config_files-regtesting-scripts-startup:
-
-Start-up Script
-##########################
-:Description: The script used to start/stop/restart Regular Testing
-:RedHat (<v3.5.1): ``/etc/init.d/regular_testing``
-:RedHat: ``/etc/init.d/perfsonar-regulartesting``
-:Debian: ``/etc/init.d/perfsonar-regulartesting``
-
-
-Log Files
----------
-
-.. _config_files-regtesting-logs-primary:
-
-Primary Log file
-##########################
-:Description: The log file to which Regular Testing writes as configured in the default :ref:`logging configuration file <config_files-regtesting-conf-logging>`
-:RedHat (<v3.5.1): ``/var/log/perfsonar/regular_testing.log``
-:RedHat: ``/var/log/perfsonar/regulartesting.log``
-:Debian: ``/var/log/perfsonar/regulartesting.log``
-
 
 
 Toolkit
@@ -430,36 +383,39 @@ Toolkit Configuration Script
 Configuration Daemon Start-up Script
 #######################################
 :Description: The script used to start/stop/restart the service used by the administrative web interface to configure the host
-:RedHat (<v3.5.1): ``/etc/init.d/config_daemon``
-:RedHat: ``/etc/init.d/perfsonar-configdaemon``
-:Debian: ``/etc/init.d/perfsonar-configdaemon``
+:RedHat (<v3.5.1): ``/etc/init.d/config_daemon start|stop|restart``
+:RedHat 6: ``/etc/init.d/perfsonar-configdaemon start|stop|restart``
+:RedHat 7: ``systemctl perfsonar-configdaemon start|stop|restart``
+:Debian: ``/etc/init.d/perfsonar-configdaemon start|stop|restart``
 
 .. _config_files-toolkit-scripts-configure_nic_parameters:
 
 Network Interface Card Configuration Script
 ###########################################
 :Description: The script detects if NDT or NPAD is running and makes necessary configuration changes to NIC if they are. 
-:RedHat (<v3.5.1): ``/etc/init.d/configure_nic_parameters``
-:RedHat: ``/etc/init.d/perfsonar-configure_nic_parameters``
-:Debian: ``/etc/init.d/perfsonar-configure_nic_parameters``
+:RedHat (<v3.5.1): ``/etc/init.d/configure_nic_parameters start|stop|restart``
+:RedHat 6: ``/etc/init.d/perfsonar-configure_nic_parameters start|stop|restart``
+:RedHat 7: ``systemctl perfsonar-configure_nic_parameters start|stop|restart``
+:Debian: ``/etc/init.d/perfsonar-configure_nic_parameters start|stop|restart``
 
 .. _config_files-toolkit-scripts-generate_motd:
 
 'Message of the Day' Script
 ###########################################
 :Description: Generates the login message on start-up that appears to command-line users
-:RedHat (<v3.5.1): ``/etc/init.d/generate_motd``
-:RedHat: ``/etc/init.d/perfsonar-generate_motd``
-:Debian: ``/etc/init.d/perfsonar-generate_motd``
+:RedHat (<v3.5.1): ``/etc/init.d/generate_motd start|stop|restart``
+:RedHat 6: ``/etc/init.d/perfsonar-generate_motd start|stop|restart``
+:RedHat 7: ``systemctl perfsonar-generate_motd start|stop|restart``
+:Debian: ``/etc/init.d/perfsonar-generate_motd start|stop|restart``
 
 .. _config_files-toolkit-scripts-psb_to_esmond:
 
 Measurement Archive Upgrade Script
 ###########################################
 :Description: Upgrades data from a pre-3.4 Toolkit to the current version. If there is no data to upgrade then it exits.
-:RedHat (<v3.5.1): ``/etc/init.d/psb_to_esmond``
-:RedHat: ``/etc/init.d/perfsonar-psb_to_esmond``
-:Debian: ``/etc/init.d/perfsonar-psb_to_esmond``
+:RedHat (<v3.5.1): ``/etc/init.d/psb_to_esmond start|stop|restart``
+:RedHat: ``/etc/init.d/perfsonar-psb_to_esmond start|stop|restart``
+:Debian: ``/etc/init.d/perfsonar-psb_to_esmond start|stop|restart``
 
 .. _config_files-toolkit-scripts-mod_interface_route:
 
@@ -480,7 +436,7 @@ Installed Cron Jobs
 Measurement Archive Data Cleaner
 #####################################
 :Description: Cleans out data in the measurement archive according to retention policy in :ref:`config_files-toolkit-conf-clean_esmond_db`. Runs at 2:30AM every morning.
-:RedHat (<v3.5.1): ``/etc/cron.d/cron-clean_esmond_db``
+:RedHat: ``/etc/cron.d/cron-clean_esmond_db``
 :Debian: *N/A*
 
 .. _config_files-toolkit-cron-service_watcher:
@@ -488,7 +444,7 @@ Measurement Archive Data Cleaner
 Regular Service Restarts and Maintenance
 ###########################################
 :Description: Verifies expected processes are running every hour and performs a regular restart of services that require it every moring at 1:05AM. It also cleans out stale files from OWAMP and Regular Testing at this time.
-:RedHat (<v3.5.1): ``/etc/cron.d/cron-service_watcher``
+:RedHat: ``/etc/cron.d/cron-service_watcher``
 :Debian: *N/A*
 
 Log Files

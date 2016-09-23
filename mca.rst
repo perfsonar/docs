@@ -1,5 +1,5 @@
 *************************************
-MeshConfig Administartor / Publisher
+MeshConfig Administrative GUI
 *************************************
 
 .. note:: BETA
@@ -17,7 +17,7 @@ MeshConfig Publisher allows users to download defined meshconfig in JSON format.
 MCA relies on ESNET `Simple Loookup Service <https://github.com/esnet/simple-lookup-service/wiki>`_ to provide a list of hosts that administrator
 can select in MCA's host group editor. MCA can also load hosts from the Global lookup service if you want to load hosts from the global registry.
 
-Contents
+Guide
 -------------------------
 
 .. toctree::
