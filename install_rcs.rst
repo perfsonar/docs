@@ -19,6 +19,9 @@ You may consult `the testing checklist <https://github.com/perfsonar/project/wik
 
 Testing a Clean Installation of the Toolkit ISOs
 ================================================
+
+.. warning:: The 4.0rc1 ISOs are not yet available at this time
+
 You may download the latest release candidate ISOs at the following URL :
 
     * http://downloads.perfsonar.net/toolkit/release_candidates/
