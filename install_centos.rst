@@ -10,7 +10,7 @@ System Requirements
 ==================== 
 * **Operating System:**
 
-  * Any system running either a 32-bit or 64-bit **CentOS 6** operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.
+  * Any system running either a 32-bit or 64-bit **CentOS 6** or a  64-bit **CentOS 7** operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.
 
 * See the general :ref:`install_options_sysreq` for hardware requirements and more
 
@@ -26,15 +26,24 @@ Step 1: Configure Yum
 The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below:
 
 1. Install the EPEL RPM:
-::
+    *CentOS 6*::
 
-    rpm -hUv https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+        rpm -hUv https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+    *CentOS 7*::
+
+        rpm -hUv https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
 
 
 2. Install the Internet2-repo RPM:
-::
 
-    rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+    *CentOS 6*::
+
+        rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+
+    *CentOS 7*::
+
+        rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
 
 
 4. Refresh yum's cache so it detects the new RPMS
