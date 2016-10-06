@@ -9,20 +9,18 @@ The CentOS Full Install distribution of the perfSONAR toolkit is an ISO image th
 Downloading installation media and booting the system
 =====================================================
 
-#. Download the ISO image appropriate for your architecture from :ref:`GettingDownloads` or below:
+#. Download the ISO image from :ref:`GettingDownloads` or below:
 
     +--------------+-------------------------------------------------------------------------------+
     | Architecture | Downloads                                                                     |
     +==============+===============================================================================+
-    | i386         | :centos_fullinstall_iso:`iso <i386>` :centos_fullinstall_md5:`md5 <i386>`     |
-    +--------------+-------------------------------------------------------------------------------+
     | x86_64       | :centos_fullinstall_iso:`iso <x86_64>` :centos_fullinstall_md5:`md5 <x86_64>` |
     +--------------+-------------------------------------------------------------------------------+
 #. Verify the md5 checksum by verifying the two lines output are the same when you run the command below (replace the filenames with that of the downloaded iso and md5). If they do no match then you may need to re-download the iso images:
 
         .. code-block:: console
 
-            $ md5sum pS-Toolkit-3.X-FullInstall-i386.iso;cat pS-Toolkit-3.X-FullInstall-i386.iso.md5
+            $ md5sum pS-Toolkit-4.X-CentOS7-FullInstall-x86_64.iso;cat pS-Toolkit-4.X-CentOS7-FullInstall-x86_64.iso.md5
 
 #. Mount the ISO to a DVD or USB drive 
      .. note:: The Full Install ISO is generally too large to fit on current writable CDs

@@ -20,17 +20,14 @@ The perfSONAR Toolkit is currently made available as an ISO image that can be mo
 
 Downloads
 =========
+.. note:: As of perfSONAR Toolkit 4.0 only CentOS 7 ISOs are supported. CentOS 7 only supports x86_64 architectures so i386 is dropped as well.
 
 +----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
 | Installation Type          | Architecture | Downloads                                                                     | Step-by-Step Install Guide        |
 +============================+==============+===============================================================================+===================================+
-| |CentOS| NetInstall        | i386         | :centos_netinstall_iso:`iso <i386>` :centos_netinstall_md5:`md5 <i386>`       | :doc:`install_centos_netinstall`  |
+| |CentOS| NetInstall        | x86_64       | :centos_netinstall_iso:`iso <x86_64>` :centos_netinstall_md5:`md5 <x86_64>`   | :doc:`install_centos_netinstall`  |
 +----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
-|                            | x86_64       | :centos_netinstall_iso:`iso <x86_64>` :centos_netinstall_md5:`md5 <x86_64>`   |                                   +
-+----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
-| |CentOS| Full Install      | i386         | :centos_fullinstall_iso:`iso <i386>` :centos_fullinstall_md5:`md5 <i386>`     | :doc:`install_centos_fullinstall` |
-+----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
-|                            | x86_64       | :centos_fullinstall_iso:`iso <x86_64>` :centos_fullinstall_md5:`md5 <x86_64>` |                                   +
+| |CentOS| Full Install      | x86_64       | :centos_fullinstall_iso:`iso <x86_64>` :centos_fullinstall_md5:`md5 <x86_64>` | :doc:`install_centos_fullinstall` |
 +----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
 
 

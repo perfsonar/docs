@@ -4,7 +4,7 @@ Toolkit Installation Quick Start
 
 These instructions are for the full Toolkit installation. For other perfSONAR installtion options, see :doc:`install_options`.
 
-#. Download the NetInstall ISO for :centos_netinstall_iso:`i386` or :centos_netinstall_iso:`x86_64` depending on your system's architecture.
+#. Download the NetInstall ISO from :centos_netinstall_iso:`here <x86_64>`
 
         .. seealso:: The NetInstall is the recommended installation type, but for more information on other installation types see :doc:`install_getting`.
 #. Using your favorite software, burn the image to a CD, DVD or USB drive and insert the chosen installation media into your host.  
