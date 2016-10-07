@@ -26,6 +26,7 @@ Installation
    install_centos_netinstall
    install_centos_fullinstall
    install_config_first_time
+   install_migrate_centos7
    
 Managing the perfSONAR Toolkit
 ==============================
