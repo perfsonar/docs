@@ -8,20 +8,18 @@ The CentOS NetInstall distribution of the perfSONAR Toolkit is an ISO image that
 
 Downloading installation media and booting the system
 =====================================================
-#. Download the ISO image appropriate for your architecture from :ref:`GettingDownloads` or below:
+#. Download the ISO image from :ref:`GettingDownloads` or below:
 
     +--------------+-------------------------------------------------------------------------------+
     | Architecture | Downloads                                                                     |
     +==============+===============================================================================+
-    | i386         | :centos_netinstall_iso:`iso <i386>` :centos_netinstall_md5:`md5 <i386>`       |
-    +--------------+-------------------------------------------------------------------------------+
     | x86_64       | :centos_netinstall_iso:`iso <x86_64>` :centos_netinstall_md5:`md5 <x86_64>`   |
     +--------------+-------------------------------------------------------------------------------+
 #. Verify the md5 checksum by verifying the two lines output are the same when you run the command below (replace the filenames with that of the downloaded iso and md5). If they do no match then you may need to re-download the iso images:
 
         .. code-block:: console
 
-            $ md5sum pS-Toolkit-3.X-NetInstall-i386.iso;cat pS-Toolkit-3.X-NetInstall-i386.iso.md5
+            $ md5sum pS-Toolkit-4.X-CentOS7-NetInstall-x86_64.iso;cat pS-Toolkit-4.X-CentOS7-NetInstall-x86_64.iso.md5
 
 #. Mount the ISO to a CD, DVD, or USB drive
      .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK``

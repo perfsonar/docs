@@ -2,24 +2,25 @@
 Installation on Debian
 **********************
 
-For perfSONAR 3.5.1 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
+perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
 * Debian 7 Wheezy
 * Debian 8 Jessie
 * Ubuntu 12 Precise
 * Ubuntu 14 Trusty
 
-Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.
+Debian meta packages are available to install the bundles described in :doc:`install_options`. Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.
 
 System Requirements
 ===================
 
-* **Hardware:** We provide Debian packages for 4 different architectures:
+* **Hardware:** We provide Debian packages for 5 different architectures:
 
   * 32-bit (i386)
   * 64-bit (amd64)
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
+  * ARM64 (arm64) (only for Debian 8)
 
 * **Operating System:**  Any system running a Debian 7, Debian 8, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 12 or 14 might work too but are not officially supported.
 
@@ -35,14 +36,14 @@ All you need to do is to configure the perfSONAR Debian repository source, along
 ::
 
    cd /etc/apt/sources.list.d/
-   wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
+   wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-4.0.list
    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 
 And with the following commands for Debian 8:
 ::
 
    cd /etc/apt/sources.list.d/
-   wget http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.list
+   wget http://downloads.perfsonar.net/debian/perfsonar-jessie-4.0.list
    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
    
 Then refresh the packages list:
@@ -55,22 +56,13 @@ Then refresh the packages list:
 Step 2: Install the packages
 ----------------------------
 
-The two :doc:`bundles <install_options>` we currently provide for Debian contains the following packages:
+You're now ready to choose which bundle, as describe in :doc:`install_options`, you want to install on your Debian/Ubuntu host.
 
-* **perfsonar-tools** contains all the tools you need to make measurements from the CLI:
-
-  * iperf and iperf3
-  * owamp client and server
-  * bwctl client and server
-  * paris traceroute
-  * ndt client
-
-* **perfsonar-testpoint** contains the perfsonar-tools and the perfSONAR software you need to get your perfSONAR measurement point part of the global perfSONAR measurement infrastructure:
-
-  * ls-registration daemon
-  * regular-testing daemon
-  * oppd
-  * meshconfig-agent to participate in a test mesh, see :doc:`multi_mesh_agent_config` for more details
+* **perfsonar-tools**
+* **perfsonar-testpoint** (which contains perfsonar-tools and the meshconfig-agent to participate in a test mesh, see :doc:`multi_mesh_agent_config` for more details)
+* **perfsonar-core** (which contains perfsonar-testpoint)
+* **perfsonar-toolkit** (the full perfSONAR toolkit, containing perfsonar-core)
+* **perfsonar-centralmanagement** (to host a central MA and a dashboard)
 
 Choose the bundle you want to install and call ``apt-get install`` with it:
 ::
@@ -79,7 +71,7 @@ Choose the bundle you want to install and call ``apt-get install`` with it:
 
 *Optional Packages*
 
-Additionally, you may also install the toolkit security, sysctl and ntp configuration packages manually:
+Additionally, if not installing the perfsonar-toolkit bundle, you may also install the toolkit security, sysctl and ntp configuration packages manually:
 
   * **perfsonar-toolkit-security** containing iptables rules and fail2ban to protect your node, see :doc:`manage_security` for more details.
   * **perfsonar-toolkit-sysctl** fine tuning your host for better performance measurements, see :doc:`manage_tuning` for more details.
@@ -188,29 +180,23 @@ You can start all the services by rebooting the host since all are configured to
     /etc/init.d/bwctl-server start
     /etc/init.d/owamp-server start
     /etc/init.d/perfsonar-lsregistrationdaemon start
-    /etc/init.d/perfsonar-regulartesting start
-    /etc/init.d/perfsonar-oppd-server start
 
 Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
 
+Configuration
+=============
 
 Configuring Central Management
 ------------------------------
 
 Refer to the documentation here: :doc:`/multi_overview`
 
+Configuring through the web interface
+--------------------------------------
+After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
+
 Support
 =======
 
 Support for Debian installations is provided by the perfSONAR community through the usual communication channels.
-
-Beta packages
-=============
-
-Additionaly to the above listed packages, we also provide beta level Debian/Ubuntu packages of the following perfSONAR components:
-
-* **perfsonar-core** contains the perfsonar-testpoint and the measurement archive (esmond)
-* **perfsonar-centralmanagement** contains the cental mesh config, MaDDash and the autoconfig tools.
-
-At the moment, these packages have not undergone a thourough testing, reason why we release them as beta level packages.  Your feedback about their usability and report about any bug you find in them are welcome on the perfsonar-user mailing list.
 
