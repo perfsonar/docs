@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Choosing a Management Method &mdash; perfSONAR Toolkit 4.0rc1 documentation</title>
+    <title>Migrating from CentOS 6 to CentOS 7 &mdash; perfSONAR Toolkit 4.0rc1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="perfSONAR Toolkit 4.0rc1 documentation" href="index.html" />
-    <link rel="next" title="Configuring Regular Tests" href="manage_regular_tests.html" />
-    <link rel="prev" title="Migrating from CentOS 6 to CentOS 7" href="install_migrate_centos7.html" /> 
+    <link rel="next" title="Choosing a Management Method" href="manage_choose.html" />
+    <link rel="prev" title="Configuring the Toolkit for the First Time" href="install_config_first_time.html" /> 
   </head>
   <body>
     <header>
@@ -55,10 +55,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="manage_regular_tests.html" title="Configuring Regular Tests"
+          <a href="manage_choose.html" title="Choosing a Management Method"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="install_migrate_centos7.html" title="Migrating from CentOS 6 to CentOS 7"
+          <a href="install_config_first_time.html" title="Configuring the Toolkit for the First Time"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">perfSONAR Toolkit 4.0rc1 documentation</a> &raquo;</li> 
       </ul>
@@ -72,33 +72,66 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="choosing-a-management-method">
-<h1>Choosing a Management Method<a class="headerlink" href="#choosing-a-management-method" title="Permalink to this headline">¶</a></h1>
-<dl class="docutils">
-<dt>perfSONAR nodes can be managed in the following ways:</dt>
-<dd><ul class="first last simple">
-<li>a standalone node</li>
-<li>part of a centrally managed mesh</li>
-<li>a combination of the both of these methods</li>
+  <div class="section" id="migrating-from-centos-6-to-centos-7">
+<h1>Migrating from CentOS 6 to CentOS 7<a class="headerlink" href="#migrating-from-centos-6-to-centos-7" title="Permalink to this headline">¶</a></h1>
+<p>This page describes the migration procedure for moving a Toolkit installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same version of perfSONAR Toolkit installed. If you do not wish to keep any existing data from the CentOS 6 host you may ignore this section and do a normal clean installation.</p>
+<div class="section" id="migration-process">
+<h2>Migration Process<a class="headerlink" href="#migration-process" title="Permalink to this headline">¶</a></h2>
+<p>For existing users wishing to migrate their configuration and data to the CentOS 7 installation see the steps below:</p>
+<ol class="arabic">
+<li><p class="first">Login in to your CentOS 6 host via SSH or the terminal</p>
+</li>
+<li><p class="first">Upgrade your CentOS 6 host to the same version of perfSONAR as the CentOS 7 host if you have not already done so.</p>
+</li>
+<li><p class="first">Run one of the commands below to create a backup of all relevant configuration files in <cite>~/ps-toolkit-backup.tgz</cite> and/or optionally your data:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Ignore measurement archive data (quicker since measurement archive data may be large):</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-backup.sh ~/ps-toolkit-backup.tgz
+</pre></div>
+</div>
+</li>
+<li><p class="first">Alternatively, if you also wish to migrate the measurement archive databases add the <cite>&#8211;data</cite> paremeter:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-backup.sh --data ~/ps-toolkit-backup.tgz
+</pre></div>
+</div>
+</li>
 </ul>
-</dd>
-</dl>
-<div class="section" id="standalone-node">
-<h2>Standalone Node<a class="headerlink" href="#standalone-node" title="Permalink to this headline">¶</a></h2>
-<p>If you only have one or two perfSONAR hosts, this is probably what you&#8217;ll want to do.
-In this mode, all configuration is done using the web interface on the perfSONAR node itself.</p>
-<p>This is described under <a class="reference internal" href="manage_regular_tests.html"><em>Configuring Regular Tests</em></a>.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Copy the backup file <cite>~/ps-toolkit-backup.tgz</cite> from your CentOS 6 host to a safe location. We will need to copy this to our new installation later. If you will be overwriting the CentOS 6 host with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.</p>
+</li>
+<li><p class="first">Logout of the CentOS 6 host</p>
+</li>
+<li><p class="first">Perform a clean installation of the Toolkit on a CentOS 7 host using the same Toolkit version that was installed on a CentOS 6 host. You may choose to install on the existing CentOS 6 hardware or a completely new host. If it is the former, make sure you have downloaded your CentOS 6 backup file to a safe location.</p>
+</li>
+<li><p class="first">Copy the file <cite>~/ps-toolkit-backup.tgz</cite> from the location chosen in step 3 to your new system. The exact command to do this will depend on where you placed the file (e.g. use scp).</p>
+</li>
+<li><p class="first">Login to your new CentOS 7 Toolkit installation via SSH or the terminal</p>
+</li>
+<li><p class="first">Run one of the commands below to restore your configuration:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Ignore measurement archive data (quicker since measurement archive data may be large):</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-restore.sh ~/ps-toolkit-backup.tgz
+</pre></div>
 </div>
-<div class="section" id="centrally-managed-node">
-<h2>Centrally Managed Node<a class="headerlink" href="#centrally-managed-node" title="Permalink to this headline">¶</a></h2>
-<p>If you want to create a perfSONAR dashboard such as <a class="reference external" href="http://ps-dashboard.es.net">http://ps-dashboard.es.net</a>, or have several perfSONAR hosts to manage,
-you probably want to use this method. Details are described under <a class="reference internal" href="multi_overview.html"><em>Managing Multiple perfSONAR Toolkits</em></a>.</p>
+</li>
+<li><p class="first">Alternatively, to also restore the measurements databases add the <cite>&#8211;data</cite> paremeter:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-restore.sh --data ~/ps-toolkit-backup.tgz
+</pre></div>
 </div>
-<div class="section" id="combination-node">
-<h2>Combination Node<a class="headerlink" href="#combination-node" title="Permalink to this headline">¶</a></h2>
-<p>If you configure tests via the web GUI, and put the host in a managed mesh, your host will run both sets of tests.
-This is not recommended, as it can be confusing to figure out which tests are configured where. However
-it can be useful if some other organization is managing the mesh that your host is in.</p>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Reboot your host:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">reboot</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Your host should now be migrated.</p>
 </div>
 </div>
 
@@ -111,24 +144,22 @@ it can be useful if some other organization is managing the mesh that your host 
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">Choosing a Management Method</a><ul>
-<li><a class="reference internal" href="#standalone-node">Standalone Node</a></li>
-<li><a class="reference internal" href="#centrally-managed-node">Centrally Managed Node</a></li>
-<li><a class="reference internal" href="#combination-node">Combination Node</a></li>
+<li><a class="reference internal" href="#">Migrating from CentOS 6 to CentOS 7</a><ul>
+<li><a class="reference internal" href="#migration-process">Migration Process</a></li>
 </ul>
 </li>
 </ul>
 
                 <ul>
                   <li>
-                  <a href="install_migrate_centos7.html">Previous topic</a>
-                  <ul><li><a href="install_migrate_centos7.html" title="previous chapter">Migrating from CentOS 6 to CentOS 7</a></li></ul>
+                  <a href="install_config_first_time.html">Previous topic</a>
+                  <ul><li><a href="install_config_first_time.html" title="previous chapter">Configuring the Toolkit for the First Time</a></li></ul>
                   </li>
                 </ul>
                   <ul>
                       <li>
-                      <a href="manage_regular_tests.html">Next topic</a>
-                      <ul><li><a href="manage_regular_tests.html" title="next chapter">Configuring Regular Tests</a></li></ul>
+                      <a href="manage_choose.html">Next topic</a>
+                      <ul><li><a href="manage_choose.html" title="next chapter">Choosing a Management Method</a></li></ul>
                       </li>
                   </ul>
                 
@@ -145,10 +176,10 @@ it can be useful if some other organization is managing the mesh that your host 
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="manage_regular_tests.html" title="Configuring Regular Tests"
+          <a href="manage_choose.html" title="Choosing a Management Method"
              >next</a> |</li>
         <li class="right" >
-          <a href="install_migrate_centos7.html" title="Migrating from CentOS 6 to CentOS 7"
+          <a href="install_config_first_time.html" title="Configuring the Toolkit for the First Time"
              >previous</a> |</li>
         <li><a href="index.html">perfSONAR Toolkit 4.0rc1 documentation</a> &raquo;</li> 
       </ul>
