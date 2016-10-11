@@ -85,7 +85,7 @@ Step-by-Step Guide using graphical installer
 #. Select **ROOT PASSWORD** in order to configure root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach. After entering and confirming the password hit **Done**.
 	.. image:: images/install_netinstall-install-user-settings-rootpasswd.png
 #. The installation process will continue as shown below.
-	.. image:: install_netinstall-install-pkgs-installation.png
+	.. image:: images/install_netinstall-install-pkgs-installation.png
 #. If the installation is successful you will be presented with the screen below. Select **Reboot** to restart the host. 
     .. image:: images/install_netinstall-install-reboot.png
 #. After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to :doc:`install_config_first_time`
