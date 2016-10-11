@@ -25,7 +25,7 @@ Downloading installation media and booting the system
      .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK``
 #. Insert the media containing the ISO into the target end system
 #. Power on the host
-	.. note:: By default CentOS7 will use a graphical installer.
+    .. note:: By default CentOS7 will use a graphical installer.
     
 Step-by-Step Guide using graphical installer
 ============================================
@@ -34,7 +34,7 @@ Step-by-Step Guide using graphical installer
 #. You will first be asked to select your language. Make your choice and select **OK** to continue.
     .. image:: images/install_netinstall-language.png
 #. The next screen will be used to set up network configuration. If CentOS is able to detect your DHCP server and access the images then your may move ahead. Make sure your interface is turned **ON**. If you instead need manual interface configuration, select **Configure** and see the special topic below:
-	.. image:: images/install_netinstall-network-general.png
+    .. image:: images/install_netinstall-network-general.png
 
     .. container:: topic
 
@@ -45,8 +45,8 @@ Step-by-Step Guide using graphical installer
             .. image:: images/install_netinstall-network-manual-address.png
         #. After you selected **Manual** you need to enter the IP address, netmask, gateway and DNS server. Click **Add** to configure them.
         #. Repeat similar steps for **IPv6 Settings**.
-		#. You may also configure automatic network setting by selecting **Automatic (DHCP)** method.
-		#. When finished with all settings select **Save** to continue.
+        #. You may also configure automatic network setting by selecting **Automatic (DHCP)** method.
+        #. When finished with all settings select **Save** to continue.
     
         .. note::  After installation you may need to re-enter the network settings. These settings are only expected for use during the installation process and may be discarded once the process completes.
 
@@ -77,11 +77,12 @@ Step-by-Step Guide using graphical installer
         #. **MANUAL PARTITIONING** screen allows you to setup a custom partitioning scheme including deleting unused partitions.
         #. If you choose to manually partition the disk this screen will allow you to edit existing partitions. Select them and use **-** (minus sign) to delete partitions to free disk space. Then select **Click here to create them automatically** in order to set new partitions with default setup.
             .. image:: images/install_netinstall-install-summary-disk-manual-part1.png
-		#. New partitioning will be shown under *New CentOS 7 Installation* section as shown in the image below.
+        
+        #. New partitioning will be shown under *New CentOS 7 Installation* section as shown in the image below.
             .. image:: images/install_netinstall-install-summary-disk-manual-part2.png      
         
 #. After you have selected the desired partitioning scheme and hard drive, select **Done**. In case of disk partitioning customizations you will be then presented with a summary of changes screen. Select **Accept Changes** to proceed to the next step.
-	.. image:: images/install_netinstall-install-summary-disk-manual-changes.png
+    .. image:: images/install_netinstall-install-summary-disk-manual-changes.png
 #. You will now be presented again with a completed installation summary screen. Click **Begin Installation** to start installation process.
     .. image:: images/install_netinstall-install-summary-begin.png
 #. During package installation you will be asked to configure at least the root user settings. 

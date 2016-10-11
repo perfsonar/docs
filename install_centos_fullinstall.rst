@@ -45,7 +45,7 @@ Step-by-Step Guide using graphical installer
         #. Select **DATE&TIME** to choose your timezone. When you have chosen your timezone, hit **Done**.
             .. image:: images/install_fullinstall-install-summary-timezone.png
             
-            . note:: You will not be able to set NTP source as this installation assumes no network connectivity.
+            .. note:: You will not be able to set NTP source as this installation assumes no network connectivity.
             
         #. Select **KEYBOARD** and choose your keyboard layout and select **Done** to continue.
             .. image:: images/install_fullinstall-install-summary-keyboard.png
@@ -65,7 +65,8 @@ Step-by-Step Guide using graphical installer
         #. **MANUAL PARTITIONING** screen allows you to setup a custom partitioning scheme including deleting unused partitions.
         #. If you choose to manually partition the disk this screen will allow you to edit existing partitions. Select them and use **-** (minus sign) to delete partitions to free disk space. Then select **Click here to create them automatically** in order to set new partitions with default setup.
             .. image:: images/install_fullinstall-install-summary-disk-manual-part1.png
-		#. New partitioning will be shown under *New CentOS 7 Installation* section as shown in the image below.
+        
+        #. New partitioning will be shown under *New CentOS 7 Installation* section as shown in the image below.
             .. image:: images/install_fullinstall-install-summary-disk-manual-part2.png     
     
 #. After you have selected the hard drive and the desired partitioning scheme, select **Done**. In case of disk partitioning customizations you will be then presented with a summary of changes screen. Select **Accept Changes** to proceed to the next step.
