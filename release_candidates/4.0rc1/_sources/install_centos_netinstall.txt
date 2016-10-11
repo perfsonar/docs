@@ -25,115 +25,68 @@ Downloading installation media and booting the system
      .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK``
 #. Insert the media containing the ISO into the target end system
 #. Power on the host
-	.. note:: By default the NetInstall will use a graphical installer. This provides more options related to partitioning and may be more appropriate for those with access to a monitor. For text mode installation guide see :ref:`install_centos_net_text`
-	
+    .. note:: By default CentOS7 will use a graphical installer.
+    
 Step-by-Step Guide using graphical installer
 ============================================
-.. note:: NetInstall will use a text mode for a few first screens. After downloading the image it will enter graphical mode.
-	
 #. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit** and hit enter.
     .. image:: images/install_netinstall-graph-1boot.png
 #. You will first be asked to select your language. Make your choice and select **OK** to continue.
     .. image:: images/install_netinstall-language.png
-#. On the next prompt select your keyboard layout and select **OK** to continue.
-    .. image:: images/install_netinstall-keyboard.png
-#. If CentOS is able to detect your DHCP server and access the images then your installer will automatically move ahead to the welcome screen and you can skip this step. If you instead see a prompt asking you about your network settings, see the special topic below:
+#. The next screen will be used to set up network configuration. If CentOS is able to detect your DHCP server and access the images then your may move ahead. Make sure your interface is turned **ON**. If you instead need manual interface configuration, select **Configure** and see the special topic below:
+    .. image:: images/install_netinstall-network-general.png
+
     .. container:: topic
 
         **Special Topic: Static Networking and Web Proxies**
         
-        #. First you will be presented with a screen asking how to configure IPv4 and IPv6 on your host. You may assign a static address by using the *tab* key to select *Manual Configuration*.
+        #. In order to configure IPv4 and IPv6 on your host select **IPv4 Settings** tab. You may assign a static address by using the **Manual** method.
 
-            .. image:: images/install_netinstall-static2.png
-        #. If you select *Manual Configuration* you will get the screen below asking you to enter the IP addresses, netmask, gateway and DNS server. Enter the required information and select *OK* to continue. 
-
-            .. image:: images/install_netinstall-static3.png
-        #. If you are not behind a web proxy, you may see the welcome screen and return to the regular instructions. If you are behind a web proxy you may enter that information in the screen presented (shown below). After this screen you should be presented with a welcome screen. If not you should check your settings and network connection.
-
-            .. image:: images/install_netinstall-static4.png
+            .. image:: images/install_netinstall-network-manual-address.png
+        #. If you select **Manual** you need to enter the IP addresses, netmask, gateway and DNS server. Click **Add** to configure them. When finished select **Save** to continue.
+        #. Repeat similar steps fo **IPv6 Settings**.
+        #. You may also configure automatic network setting by selecting **Automatic (DHCP)** method.
     
         .. note::  After installation you may need to re-enter the network settings. These settings are only expected for use during the installation process and may be discarded once the process completes.
 
-#. The next screen will download some of the initial installation files. If any errors occur during this phase, you may need to check your network settings. 
-    .. image:: images/install_netinstall-2retrieve.png
-#. You will next be prompted to choose your timezone. You may do so by using the *tab* and *arrow* keys on your keyboard. When you have chosen your timezone, *tab* to the **OK** box and hit *Enter*.
-    .. image:: images/install_netinstall-graph-3timezone.png
-#. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach. After entering and confirming the password *tab* to the **OK** box and hit *Enter* on your keyboard.
-    .. image:: images/install_netinstall-graph-4password.png
-#. The next screen asks you where you would like to install the operating and how you would like to partition the drive. After you have selected the desired partitioning scheme and hard drive, select **OK** and hit *Enter* on your keyboard. The following options are available for partitioning:
-    * *Use entire drive* - Use this option if there is nothing else installed on the selected hard drive. It will remove any existing data on the hard drive and dedicate the entire disk to the operating system
-    * *Replace existing Linux system* - This option removes any Linux partitions on the disk but will keep any non-Linux partitions. 
-    * *Use free space* - This option will not touch any existing partitions and will give any remaining space to the hard drive.
+#. The next screen will present installation summary and you will be prompted to complete a few sections including at minimum localization and installation destination sections. Sections to complete are marked with special exclamation icon.
+    .. image:: images/install_netinstall-install-summary.png
 
-    .. image:: images/install_netinstall-graph-5drive.png
-    .. note:: You may select the *Review and modify partitioning layout* checkbox to setup a custom partitioning scheme
-#. You will now see a series of loading screesn as packages are downloaded and installed. You do not need to do anything except wait. 
-    .. note:: This process may take several minutes or longer depending on your network connectivity to the download server.
-    .. image:: images/install_netinstall-graph-6retrieveinfo.png
-        :width: 49%
-    .. image:: images/install_netinstall-graph-7dependencies.png
-        :width: 49%
-    .. image:: images/install_netinstall-graph-8startinstall.png
-        :width: 49%
-    .. image:: images/install_netinstall-graph-9install.png
-        :width: 49%
-#. If the installation is successful you will be presented with the screen below. Select **Reboot** to restart the host. 
-    .. image:: images/install_netinstall-graph-10endinstall.png
-#. After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to :doc:`install_config_first_time`
-    .. image:: images/install_netinstall-11login.png
-
-.. _install_centos_net_text:
-
-Step-by-Step Guide using text mode
-==================================
-#. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit in text mode** and hit enter.
-    .. image:: images/install_netinstall-1boot.png
-#. You will be first asked to select your language. Make your choice and select **OK** to continue.
-    .. image:: images/install_netinstall-language.png
-#. On the next prompt select your keyboard layout and select **OK** to continue.
-    .. image:: images/install_netinstall-keyboard.png
-#. If CentOS was able to detect your DHCP server and access the images then your installer will automatically move ahead and you can skip this step. If you instead see a prompt asking you about your network settings, see the special topic below:
     .. container:: topic
 
-        **Special Topic: Static Networking and Web Proxies**
+        **Special Topic: Localization**
         
-        #. First you will be presented with a screen asking how to configure IPv4 and IPv6 on your host. You may assign a static address by using the *tab* key to select *Manual Configuration*.
-
-            .. image:: images/install_netinstall-static2.png
-        #. If you select *Manual Configuration* you will get the screen below asking you to enter the IP addresses, netmask, gateway and DNS server. Enter the required information and select *OK* to continue. 
-
-            .. image:: images/install_netinstall-static3.png
-        #. If you are not behind a web proxy, you may see the welcome screen and return to the regular instructions. If you are behind a web proxy you may enter that information in the screen presented (shown below). After this screen you should be presented with a welcome screen. If not you should check your settings and network connection.
-
-            .. image:: images/install_netinstall-static4.png
-    
-        .. note::  After installation you may need to re-enter the network settings. These settings are only expected for use during the installation process and may be discarded once the process completes.
-
-#. The next screen will download some of the initial installation files. If any errors occur during this phase, you may need to check your network settings. 
-    .. image:: images/install_netinstall-2retrieve.png
-#. You will now be presented with a welcome screen. Use *tab* on your keyboard to select the **OK** box and hit *Enter* to continue. 
-    .. image:: images/install_netinstall-1welcome.png
-#. You will next be prompted to choose your timezone. You may do so by using the *tab* and *arrow* keys on your keyboard. When you have chosen your timezone, *tab* to the **OK** box and hit *Enter*.
-    .. image:: images/install_netinstall-3timezone.png
-#. You will now be asked to set your root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach. After entering and confirming the password *tab* to the **OK** box and hit *Enter* on your keyboard.
-    .. image:: images/install_netinstall-4password.png
-#. The next screen asks you where you would like to install the operating and how you would like to partition the drive. After you have selected the desired partitioning scheme and hard drive, select **OK** and hit *Enter* on your keyboard. The following options are available for partitioning:
-    * *Use entire drive* - Use this option if there is nothing else installed on the selected hard drive. It will remove any existing data on the hard drive and dedicate the entire disk to the operating system
-    * *Replace existing Linux system* - This option removes any Linux partitions on the disk but will keep any non-Linux partitions. 
-    * *Use free space* - This option will not touch any existing partitions and will give any remaining space to the hard drive.
-
-    .. image:: images/install_netinstall-5drive.png
-#. You will now see a series of loading screesn as packages are downloaded and installed. You do not need to do anything except wait. 
-    .. note:: This process may take several minutes or longer depending on your network connectivity to the download server.
-    .. image:: images/install_netinstall-6retrieveinfo.png
-        :width: 49%
-    .. image:: images/install_netinstall-7dependencies.png
-        :width: 49%
-    .. image:: images/install_netinstall-8startinstall.png
-        :width: 49%
-    .. image:: images/install_netinstall-9install.png
-        :width: 49%
+        #. Select **DATE&TIME** to choose your timezone. When you have chosen your timezone, hit **Done**.
+            .. image:: images/install_netinstall-install-summary-timezone.png
+        #. Select **KEYBOARD** and choose your keyboard layout and select **Done** to continue.
+            .. image:: images/install_netinstall-install-summary-keyboard.png
+            
+        **Special Topic: Instalation destination**
+        
+        #. Scroll down the screen and select **INSTALLATION DESTINATION** to choose where you would like to install the operating system and how you would like to partition the drive. 
+        #. First select the device you would like to install to by clicking on a selected **Local Standard Disks**.
+            .. image:: images/install_netinstall-install-summary-disk-select.png
+        #. If you use clean disk you may select **Automatically configure partitioning**. If you want to change partitioning schema or delete unused partitions go to **Other Storage Options** and select **I will configure partitioning**
+            .. image:: images/install_netinstall-install-summary-disk-select2.png
+            
+            .. note:: Manual partitioning will be required if you want to replace existing partitions on the disk.
+        
+        **Special Topic: Manual partitioning**
+        
+        #. **MANUAL PARTITIONING** screen allows you to setup a custom partitioning scheme including deleting unused partitions.
+        #. If you choose to manually partition the disk this screen will allow you to edit existing partitions. Select them and use **-** to delete partitions to free disk space. Then select **Click here to create them automatically** in order to set new partitions with default setup. New partitioning will be shown under *New CentOS 7 Installation* section.
+            .. image:: images/install_netinstall-install-summary-disk-manual-part1.png
+            .. image:: images/install_netinstall-install-summary-disk-manual-part2.png      
+        
+#. After you have selected the desired partitioning scheme and hard drive, select **Done**. In case of disk partitioning customizations you will be then presented with a summary of changes screen. Select **Accept Changes** to proceed to the next step.
+#. You will now be presented again with a completed installation summary screen. Click **Begin Installation** to start installation process.
+    .. image:: images/install_netinstall-install-summary-begin.png
+#. During package installation you will be asked to configure at least the root user settings. 
+    .. image:: images/install_netinstall-install-user-settings.png
+#. Select **ROOT PASSWORD** in order to configure root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach. After entering and confirming the password hit **Done**.
+    .. image:: images/install_netinstall-install-user-settings-rootpasswd.png
+#. The installation process will continue as shown below.
+    .. image:: images/install_netinstall-install-pkgs-installation.png
 #. If the installation is successful you will be presented with the screen below. Select **Reboot** to restart the host. 
-    .. image:: images/install_netinstall-10endinstall.png
+    .. image:: images/install_netinstall-install-reboot.png
 #. After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to :doc:`install_config_first_time`
-    .. image:: images/install_netinstall-11login.png
