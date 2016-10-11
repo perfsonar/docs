@@ -26,7 +26,7 @@ Downloading installation media and booting the system
 #. Insert the media containing the ISO into the target end system
 #. Power on the host
 	.. note:: By default CentOS7 will use a graphical installer.
-	
+    
 Step-by-Step Guide using graphical installer
 ============================================
 #. You will be presented with a screen asking you to select how you want to install the system. Select **Install the perfSONAR Toolkit** and hit enter.
@@ -51,44 +51,45 @@ Step-by-Step Guide using graphical installer
         .. note::  After installation you may need to re-enter the network settings. These settings are only expected for use during the installation process and may be discarded once the process completes.
 
 #. The next screen will present installation summary and you will be prompted to complete a few sections including at minimum localization and installation destination sections. Sections to complete are marked with special exclamation icon.
-	.. image:: images/install_netinstall-install-summary.png
+    .. image:: images/install_netinstall-install-summary.png
 
-	.. container:: topic
+    .. container:: topic
 
         **Special Topic: Localization**
-		
-		#. Select **DATE&TIME** to choose your timezone. When you have chosen your timezone, hit **Done**.
-			.. image:: images/install_netinstall-install-summary-timezone.png
-		#. Select **KEYBOARD** and choose your keyboard layout and select **Done** to continue.
-			.. image:: images/install_netinstall-install-summary-keyboard.png
-			
-		**Special Topic: Instalation destination**
-		
-		#. Scroll down the screen and select **INSTALLATION DESTINATION** to choose where you would like to install the operating system and how you would like to partition the drive. 
-		#. First select the device you would like to install to by clicking on a selected **Local Standard Disks**.
-			.. image:: images/install_netinstall-install-summary-disk-select.png
-		#. If you use clean disk you may select **Automatically configure partitioning** under **Other Storage Options**. If you want to change partitioning schema or delete unused partitions go to **Other Storage Options** and select **I will configure partitioning**
-			.. image:: images/install_netinstall-install-summary-disk-select2.png
-			. note:: Manual partitioning will be required if you want to replace existing partitions on the disk.
-		
-		**Special Topic: Manual partitioning**
-		
-		#. **MANUAL PARTITIONING** screen allows you to setup a custom partitioning scheme including deleting unused partitions.
-		#. If you choose to manually partition the disk this screen will allow you to edit existing partitions. Select them and use **-** (minus sign) to delete partitions to free disk space. Then select **Click here to create them automatically** in order to set new partitions with default setup. 
-			.. image:: images/install_netinstall-install-summary-disk-manual-part1.png
+
+        #. Select **DATE&TIME** to choose your timezone. When you have chosen your timezone, hit **Done**.
+            .. image:: images/install_netinstall-install-summary-timezone.png
+        #. Select **KEYBOARD** and choose your keyboard layout and select **Done** to continue.
+            .. image:: images/install_netinstall-install-summary-keyboard.png
+            
+        **Special Topic: Instalation destination**
+        
+        #. Scroll down the screen and select **INSTALLATION DESTINATION** to choose where you would like to install the operating system and how you would like to partition the drive. 
+        #. First select the device you would like to install to by clicking on a selected **Local Standard Disks**.
+            .. image:: images/install_netinstall-install-summary-disk-select.png
+        #. If you use clean disk you may select **Automatically configure partitioning** under **Other Storage Options**. If you want to change partitioning schema or delete unused partitions go to **Other Storage Options** and select **I will configure partitioning**
+            .. image:: images/install_netinstall-install-summary-disk-select2.png
+            
+            .. note:: Manual partitioning will be required if you want to replace existing partitions on the disk.
+        
+        **Special Topic: Manual partitioning**
+        
+        #. **MANUAL PARTITIONING** screen allows you to setup a custom partitioning scheme including deleting unused partitions.
+        #. If you choose to manually partition the disk this screen will allow you to edit existing partitions. Select them and use **-** (minus sign) to delete partitions to free disk space. Then select **Click here to create them automatically** in order to set new partitions with default setup.
+            .. image:: images/install_netinstall-install-summary-disk-manual-part1.png
 		#. New partitioning will be shown under *New CentOS 7 Installation* section as shown in the image below.
-			.. image:: images/install_netinstall-install-summary-disk-manual-part2.png		
-		
-#. After you have selected the hard drive and the desired partitioning scheme, select **Done**. In case of disk partitioning customizations you will be then presented with a summary of changes screen. Select **Accept Changes** to proceed to the next step.
+            .. image:: images/install_netinstall-install-summary-disk-manual-part2.png      
+        
+#. After you have selected the desired partitioning scheme and hard drive, select **Done**. In case of disk partitioning customizations you will be then presented with a summary of changes screen. Select **Accept Changes** to proceed to the next step.
 	.. image:: images/install_netinstall-install-summary-disk-manual-changes.png
 #. You will now be presented again with a completed installation summary screen. Click **Begin Installation** to start installation process.
-	.. image:: images/install_netinstall-install-summary-begin.png
+    .. image:: images/install_netinstall-install-summary-begin.png
 #. During package installation you will be asked to configure at least the root user settings. 
     .. image:: images/install_netinstall-install-user-settings.png
 #. Select **ROOT PASSWORD** in order to configure root password. Please make note of this password as it will be required to login to the host after installation completes. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach. After entering and confirming the password hit **Done**.
-	.. image:: images/install_netinstall-install-user-settings-rootpasswd.png
+    .. image:: images/install_netinstall-install-user-settings-rootpasswd.png
 #. The installation process will continue as shown below.
-	.. image:: images/install_netinstall-install-pkgs-installation.png
+    .. image:: images/install_netinstall-install-pkgs-installation.png
 #. If the installation is successful you will be presented with the screen below. Select **Reboot** to restart the host. 
     .. image:: images/install_netinstall-install-reboot.png
 #. After the reboot you will be presented with a login screen. You can login with the root user and the password set during the installation process. You are now ready to move on to :doc:`install_config_first_time`
