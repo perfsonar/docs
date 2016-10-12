@@ -15,7 +15,7 @@ These instructions are for the full Toolkit installation. For other perfSONAR in
         .. seealso:: For a complete walkthrough of these prompts see :doc:`install_centos_netinstall`
 #. Once the installation completes and the host reboots, login from the console using the root password you created during the previous step
 #. You will be prompted to create a user and password that can be used to administer the host through the web interface. Follow the prompts to complete this step.
-    .. image:: images/install_config_first_time-user5.png
+    .. image:: images/install_config_first_time-first-login-prompt.png
 #. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host
 #. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created in the previous step
     
