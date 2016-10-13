@@ -23,14 +23,14 @@ NPAD                No                  Controls *npad* service that allows clie
 
 The following services are listed under **Services** list in the main page but cannot be managed directly through the web interface. To start/stop them use *systemctl start|stop* and to enable/disable them, use *systemctl enable|disable* from command line. Please note that disabling these services may negatively impact running toolkit installation.:
 
-=================== =================== ==================================================================
-Name                Default Enabled     Description
-=================== =================== ==================================================================
-**esmond**			Yes					Controls *esmond* service that keeps data in measurement archive.
-**lsregistration**	Yes					Controls *perfsonar-lsregistrationdaemon* service that allows host to register records in the Lookup Service.
-**meshconfig-agent**Yes					Controls *perfsonar-meshconfig-agent* service that cooridnates various test definitions and manages them in pscheduler.
-**pscheduler**		Yes					Controls *pscheduler-scheduler* service that is used for the scheduling and supervision of automated measurements and sending the results off for storage.
-=================== =================== ==================================================================
+==================== =================== ==================================================================
+Name                 Default Enabled     Description
+==================== =================== ==================================================================
+**esmond**           Yes                 Controls *esmond* service that keeps data in measurement archive.
+**lsregistration**   Yes                 Controls *perfsonar-lsregistrationdaemon* service that allows host to register records in the Lookup Service.
+**meshconfig-agent** Yes                 Controls *perfsonar-meshconfig-agent* service that cooridnates various test definitions and manages them in pscheduler.
+**pscheduler**       Yes                 Controls *pscheduler-scheduler* service that is used for the scheduling and supervision of automated measurements and sending the results off for storage.
+==================== =================== ==================================================================
 
 Choosing Services to Enable
 ===========================
