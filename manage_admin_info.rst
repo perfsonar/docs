@@ -13,7 +13,7 @@ Accessing the Administrative Info Interface
 
 #. Login using the web administrator username and password.
     .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
-	
+    
 #. The page that loads can be used to edit your administrative information. See the remainder of this document for details on making specific edits.
     .. image:: images/manage_admin_info-overview.png
 
@@ -23,52 +23,52 @@ Editing Host Information
 
     .. image:: images/manage_admin_info-filled.png
     
-	.. container:: topic
-	
-		**Special Topic: Administrative Information fields**
+    .. container:: topic
     
-		.. glossary::
+        **Special Topic: Administrative Information fields**
+    
+        .. glossary::
 
-			Organization Name
-				The name of the organization to which this host belongs
-			
-			City
-				The city where the host resides
-			
-			State/Province
-				The state, province or other country-specific region where the host resides. May be the 2-letter abbreviation if applicable.
-		
-			Country
-				The country where the host resides
-		
-			ZIP/Postal Code
-				The postal code of the location where the host resides
-		
-			Administrator Name
-				The full name of a person to contact about this host
-		
-			Administrator Email
-				The email address where correspondence regarding this host may be sent
-		
-			Latitude
-				The latitude of the host as a decimal number between -90 and 90. Note that if you are in the southern hemisphere, this value should be negative.
-		
-			Longitude
-				The longitude of the host as a decimal number between -180 and 180. Note that if you are in the western hemisphere, this value should be negative. 
+            Organization Name
+                The name of the organization to which this host belongs
+            
+            City
+                The city where the host resides
+            
+            State/Province
+                The state, province or other country-specific region where the host resides. May be the 2-letter abbreviation if applicable.
+        
+            Country
+                The country where the host resides
+        
+            ZIP/Postal Code
+                The postal code of the location where the host resides
+        
+            Administrator Name
+                The full name of a person to contact about this host
+        
+            Administrator Email
+                The email address where correspondence regarding this host may be sent
+        
+            Latitude
+                The latitude of the host as a decimal number between -90 and 90. Note that if you are in the southern hemisphere, this value should be negative.
+        
+            Longitude
+                The longitude of the host as a decimal number between -180 and 180. Note that if you are in the western hemisphere, this value should be negative. 
         
 #. When you are done making changes, click **Save** at the bottom of the page.
 
 Adding Node Metadata
 ====================
 Node metadata are optional tags that can be used as a means to describe a host on the **Global node directory** page. There are two types of metadata tags:
-	.. glossary::
-		
-		Node Role
-			It describes the node roles in the domain. It helps potential users of this node to recognize the place of node installation in the owners' domain. You may select multiple Roles for a node.
-			
-		Node Access Policy
-			It is used to indicate the access policy for a node: whether it's a public access node, private with no access, R&E only or with limited access. You may select only one Access Policy for a node.
-			
+    .. glossary::
+        
+        Node Role
+            It describes the node roles in the domain. It helps potential users of this node to recognize the place of node installation in the owners' domain. You may select multiple Roles for a node.
+            
+        Node Access Policy
+            It is used to indicate the access policy for a node: whether it's a public access node, private with no access, R&E only or with limited access. You may select only one Access Policy for a node.
+            
 In order to tag a node with metadata:
 
     #. In order to add a Node Role, under **Metadata**, click in the field **Node Role**. A drop-down list shows with possible values. Click on a preferred value to select it. Repeat this step to add more tags.
@@ -94,11 +94,11 @@ Selecting From Existing Communities
 ===================================
 Communities are self-defined tags that can be used as a means to search for a host on the **Global node directory** page. There are two ways to select from existing communities. One method is to select from the list of existing communities or by typing the known community (note that communities are case-sensitive):
 
-	#. Under **Communities**, click the field *Select communities*. A list will be shown with existing communities. Select your choice.
-	
-		.. image:: images/manage_admin_info-comm-select.png
-	#. You may also start typing the known community in the field *Select communities* to match against existing communities.
-	#. Click **Save** to apply your changes.
+    #. Under **Communities**, click the field *Select communities*. A list will be shown with existing communities. Select your choice.
+    
+        .. image:: images/manage_admin_info-comm-select.png
+    #. You may also start typing the known community in the field *Select communities* to match against existing communities.
+    #. Click **Save** to apply your changes.
 
 Adding a Community
 ==================
