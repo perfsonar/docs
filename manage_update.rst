@@ -19,7 +19,7 @@ Automatic Updates
 
 .. note:: Automatic updates are enabled by default in the perfSONAR Toolkit.
 
-You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. Specifically, kernel updates may break NDT and NPAD if a non-web100 version is applied. See this `FAQ <http://www.perfsonar.net/about/faq/#Q25>`_ for more information. The following rule of thumb from `Fedora <http://fedoraproject.org/wiki/AutoUpdates>`_ may be useful when considering whether to enable this feature:
+You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. The following rule of thumb from `Fedora <http://fedoraproject.org/wiki/AutoUpdates>`_ may be useful when considering whether to enable this feature:
 
 .. epigraph::
         
