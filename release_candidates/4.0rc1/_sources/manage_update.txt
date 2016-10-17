@@ -12,16 +12,14 @@ Anytime you want to manually update your host, simply run the following::
     
 The *yum* package manager is used by RedHat-based operating systems like CentOS to update packages. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.
 
-.. note:: The Toolkit runs a `Web100 <http://www.web100.org>`_ patched version of the kernel. In some cases CentOS may release a new kernel before the perfSONAR development team has had a chance to create and test a patched version. This will cause an unpatched version to be downloaded, thus disabling the tools NDT and NPAD that rely on the patch. For some users that do not leverage these tools this may not be a concern. Please see our `FAQ <http://www.perfsonar.net/about/faq/#Q25>`_ for more details.
-
 .. _manage_update-auto:
 
 Automatic Updates
 =================
 
-.. note:: Automatic updates are enabled by default starting in version 3.4 of the perfSONAR Toolkit.
+.. note:: Automatic updates are enabled by default in the perfSONAR Toolkit.
 
-You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. Specifically, kernel updates may break NDT and NPAD if a non-web100 version is applied. See this `FAQ <http://www.perfsonar.net/about/faq/#Q25>`_ for more information. The following rule of thumb from `Fedora <http://fedoraproject.org/wiki/AutoUpdates>`_ may be useful when considering whether to enable this feature:
+You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. The following rule of thumb from `Fedora <http://fedoraproject.org/wiki/AutoUpdates>`_ may be useful when considering whether to enable this feature:
 
 .. epigraph::
         
@@ -31,35 +29,32 @@ It is also important to note that automatic updates do not perform all required 
 
 You may enable/disable automatic updates from the web interface as follows:
 
-#. Open your toolkit web interface in a browser
-#. Click on **Configuration** in the upper right-hand menu
+#. Open your toolkit web interface in a browser.
+#. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created during installation.
 
-    .. image:: images/manage_updates-config.png
-#. Login using the web administrator username and password.
+    .. image:: images/manage_update-configure-icon.png
 
-    .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
-#. Click he **Host** tab on the page that loads
+    .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account.
+#. On the **Host** tab click the button under the **Auto Updates** heading to enable or disable auto-updates as indicated by the color and status text of the button.
     
-    .. image:: images/manage_update-host_tab.png
-#. On the page that loads click the button under the *Auto Updates* heading to enable or disable auto-updates as indicated by the color and status text of the button.
+    .. image:: images/manage_update-enable.png
+
+#. Click **Save** to apply your changes. After a loading screen you should see a message at the bottom indicating your changes have been saved.
     
-    .. image:: images/manage_update-auto.png
-#. Click **Save** to apply your changes
-#. After a loading screen you should see a message at the bottom indicating your changes have been saved.
-    
-Alternatively, you may enable them from the command-line with the following commands (must be run as a root user)::
+Alternatively, in CentOS7, you may enable auto updates from the command-line with the following commands (must be run as a root user):
   
-    /sbin/chkconfig --add yum-cron
-    /sbin/chkconfig yum-cron on
-    /sbin/service yum-cron start
+    systemctl enable yum-cron
+    systemctl start yum-cron
     
-Likewise, you may disable auto-updates from the command-line by running::
+Likewise, you may disable auto-updates from the command-line by running:
 
-    /sbin/service yum-cron stop
-    /sbin/chkconfig yum-cron off
+    systemctl stop yum-cron
+    systemctl disable yum-cron
 
-Also note that the main configuration file for auto-updates lives at */etc/sysconfig/yum-cron*. See the yum-cron man page or the page `here <http://fedoraproject.org/wiki/AutoUpdates>`_ for more information on using auto-updates and advanced options like excluding packages from updates. 
+For CentOS6, use *chkconfig* and *service* equivalents.
+
+Also note that the main configuration file for auto-updates lives at */etc/yum*. See the yum-cron man page or the page `here <http://fedoraproject.org/wiki/AutoUpdates>`_ for more information on using auto-updates and advanced options like excluding packages from updates. 
 
 Special Upgrade Notes
 =====================
-* 4.0 can run on both CentOS 6 and CentOS 7. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`
+* 4.0 can run on both CentOS 6 and CentOS 7. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`.

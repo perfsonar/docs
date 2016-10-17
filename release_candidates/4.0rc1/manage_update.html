@@ -82,70 +82,53 @@
 </pre></div>
 </div>
 <p>The <em>yum</em> package manager is used by RedHat-based operating systems like CentOS to update packages. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The Toolkit runs a <a class="reference external" href="http://www.web100.org">Web100</a> patched version of the kernel. In some cases CentOS may release a new kernel before the perfSONAR development team has had a chance to create and test a patched version. This will cause an unpatched version to be downloaded, thus disabling the tools NDT and NPAD that rely on the patch. For some users that do not leverage these tools this may not be a concern. Please see our <a class="reference external" href="http://www.perfsonar.net/about/faq/#Q25">FAQ</a> for more details.</p>
-</div>
 </div>
 <div class="section" id="automatic-updates">
 <span id="manage-update-auto"></span><h2>Automatic Updates<a class="headerlink" href="#automatic-updates" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Automatic updates are enabled by default starting in version 3.4 of the perfSONAR Toolkit.</p>
+<p class="last">Automatic updates are enabled by default in the perfSONAR Toolkit.</p>
 </div>
-<p>You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. Specifically, kernel updates may break NDT and NPAD if a non-web100 version is applied. See this <a class="reference external" href="http://www.perfsonar.net/about/faq/#Q25">FAQ</a> for more information. The following rule of thumb from <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">Fedora</a> may be useful when considering whether to enable this feature:</p>
+<p>You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. The following rule of thumb from <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">Fedora</a> may be useful when considering whether to enable this feature:</p>
 <blockquote class="epigraph">
 <div>If the machine is a critical server, for which unplanned downtime of a service on the machine can not be tolerated, then you should not use automatic updates. Otherwise, you <strong>may</strong> choose to use them.</div></blockquote>
 <p>It is also important to note that automatic updates do not perform all required system reboots or service restarts. Also, auto-updates happen nightly so there may be a period of up to 24 hours where you do not receive a patch. Enabling this feature still requires close monitoring of the host to make sure all updates are applied completely and properly.</p>
 <p>You may enable/disable automatic updates from the web interface as follows:</p>
 <ol class="arabic">
-<li><p class="first">Open your toolkit web interface in a browser</p>
+<li><p class="first">Open your toolkit web interface in a browser.</p>
 </li>
-<li><p class="first">Click on <strong>Configuration</strong> in the upper right-hand menu</p>
+<li><p class="first">Click on <strong>Edit</strong> (A) in the host information section of the main page or <strong>Configuration</strong> (B) button in the right-upper corner and login as the web administrator user created during installation.</p>
 <blockquote>
-<div><img alt="_images/manage_updates-config.png" src="_images/manage_updates-config.png" />
-</div></blockquote>
-</li>
-<li><p class="first">Login using the web administrator username and password.</p>
-<blockquote>
-<div><div class="admonition seealso">
+<div><img alt="_images/manage_update-configure-icon.png" src="_images/manage_update-configure-icon.png" />
+<div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account</p>
+<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account.</p>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">Click he <strong>Host</strong> tab on the page that loads</p>
+<li><p class="first">On the <strong>Host</strong> tab click the button under the <strong>Auto Updates</strong> heading to enable or disable auto-updates as indicated by the color and status text of the button.</p>
 <blockquote>
-<div><img alt="_images/manage_update-host_tab.png" src="_images/manage_update-host_tab.png" />
+<div><img alt="_images/manage_update-enable.png" src="_images/manage_update-enable.png" />
 </div></blockquote>
 </li>
-<li><p class="first">On the page that loads click the button under the <em>Auto Updates</em> heading to enable or disable auto-updates as indicated by the color and status text of the button.</p>
-<blockquote>
-<div><img alt="_images/manage_update-auto.png" src="_images/manage_update-auto.png" />
-</div></blockquote>
-</li>
-<li><p class="first">Click <strong>Save</strong> to apply your changes</p>
-</li>
-<li><p class="first">After a loading screen you should see a message at the bottom indicating your changes have been saved.</p>
+<li><p class="first">Click <strong>Save</strong> to apply your changes. After a loading screen you should see a message at the bottom indicating your changes have been saved.</p>
 </li>
 </ol>
-<p>Alternatively, you may enable them from the command-line with the following commands (must be run as a root user):</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/chkconfig --add yum-cron
-/sbin/chkconfig yum-cron on
-/sbin/service yum-cron start
-</pre></div>
-</div>
+<p>Alternatively, in CentOS7, you may enable auto updates from the command-line with the following commands (must be run as a root user):</p>
+<blockquote>
+<div>systemctl enable yum-cron
+systemctl start yum-cron</div></blockquote>
 <p>Likewise, you may disable auto-updates from the command-line by running:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service yum-cron stop
-/sbin/chkconfig yum-cron off
-</pre></div>
-</div>
-<p>Also note that the main configuration file for auto-updates lives at <em>/etc/sysconfig/yum-cron</em>. See the yum-cron man page or the page <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">here</a> for more information on using auto-updates and advanced options like excluding packages from updates.</p>
+<blockquote>
+<div>systemctl stop yum-cron
+systemctl disable yum-cron</div></blockquote>
+<p>For CentOS6, use <em>chkconfig</em> and <em>service</em> equivalents.</p>
+<p>Also note that the main configuration file for auto-updates lives at <em>/etc/yum</em>. See the yum-cron man page or the page <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">here</a> for more information on using auto-updates and advanced options like excluding packages from updates.</p>
 </div>
 <div class="section" id="special-upgrade-notes">
 <h2>Special Upgrade Notes<a class="headerlink" href="#special-upgrade-notes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>4.0 can run on both CentOS 6 and CentOS 7. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at <a class="reference internal" href="install_migrate_centos7.html"><em>Migrating from CentOS 6 to CentOS 7</em></a></li>
+<li>4.0 can run on both CentOS 6 and CentOS 7. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at <a class="reference internal" href="install_migrate_centos7.html"><em>Migrating from CentOS 6 to CentOS 7</em></a>.</li>
 </ul>
 </div>
 </div>
