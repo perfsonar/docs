@@ -19,7 +19,7 @@ If your network can not connect to enough close servers, you'll want to identify
 Accessing the NTP Interface
 ===========================
 #. Open **http://<hostname>** in your browser where **<hostname>** is the name of your toolkit host.
-#. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created in the previous step.
+#. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created during installation.
 
     .. image:: images/manage_ntp-configure-icon.png
 
