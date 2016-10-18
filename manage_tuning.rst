@@ -2,6 +2,8 @@
 Host Tuning
 ***********
 
+Default Tuning Settings
+=======================
 By default, the perfSONAR Toolkit installation follows the advice of ESnet's "fasterdata" knowledge base for test and measurement hosts:
 
 http://fasterdata.es.net/host-tuning/linux/test-measurement-host-tuning/
@@ -24,4 +26,7 @@ For such cases, you may want to increase the max buffer settings in /etc/sysctl.
 
 Note that any time you upgrade the perfSONAR Toolkit, you should make sure your modified settings are still in place.
 
+Manually Enabling Tuning Settings
+=================================
+In case you didn't use toolkit installation an optional *perfsonar-toolkit-sysctl* package is available that configures the system with perfSONAR settings. For more information on optional script installation see :ref:`install_centos_installation`.
 
