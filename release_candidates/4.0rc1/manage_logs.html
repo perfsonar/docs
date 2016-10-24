@@ -77,65 +77,7 @@
 <p>The tools and services running on your host keep log files of major activity. The perfSONAR Toolkit provides utilities for exposing these logs via the web interface as well as tools to analyze their results. This page decribes the log files available and the additional tools provided for analyzing them.</p>
 <div class="section" id="important-log-files">
 <h2>Important Log Files<a class="headerlink" href="#important-log-files" title="Permalink to this headline">¶</a></h2>
-<p>Most perfSONAR related services keep log files under the directory <em>/var/log/perfsonar</em>. Some external tools store them in other areas under <em>/var/log/</em> or elsewhere. There are many log files on the system but some of the most important ones (organized by the service that populates them) can be found below:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="34%" />
-<col width="34%" />
-<col width="32%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Service</th>
-<th class="head">Log File(s)</th>
-<th class="head">When to Use</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>BWCTL and OWAMP</td>
-<td>/var/log/perfsonar/owamp_bwctl.log</td>
-<td>Every BWCTL and OWAMP test (both on the client and server side) is logged in this file. It should be used when a BWCTL or OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an <em>owamp-server</em> or <em>bwctl-server</em> process crashes unexpectedly.</td>
-</tr>
-<tr class="row-odd"><td>Esmond Measurement Archive</td>
-<td>/var/log/esmond/esmond.log
-/var/log/httpd/error_log
-/var/log/cassandra/cassandra.log
-/var/lib/pgsql/pgstartup.log</td>
-<td>If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. <em>esmond.log</em> has information from the archive itself (e.g. improperly formatted requests). The HTTPD error log has information such as if esmond was able to connect to it&#8217;s underlying databases. Speaking of databases, esmond connects to both Cassandra and PostgreSQL so it may be worth checking those logs as well.</td>
-</tr>
-<tr class="row-even"><td>Network Diagnostic Tool (NDT)</td>
-<td>/var/log/ndt/web100srv.log
-/var/log/ndt/fakewww_error.log
-/var/log/ndt/fakewww_access.log</td>
-<td>Use these logs when you encounter problems running NDT either from the command-line or Java applet</td>
-</tr>
-<tr class="row-odd"><td>perfSONAR Configuration Daemon</td>
-<td>/var/log/perfsonar/configdaemon.log</td>
-<td>If you are unable to save changes to the configuration made through the web interface, this is a good place to look.</td>
-</tr>
-<tr class="row-even"><td>perfSONAR Lookup Service Cache Daemon</td>
-<td>/var/log/perfsonar/lscachedaemon.log</td>
-<td>If you get a message saying that your communities or lookup service cache are out of date, this log file may contain more information.</td>
-</tr>
-<tr class="row-odd"><td>perfSONAR Lookup Service Registration Daemon</td>
-<td>/var/log/perfsonar/lsregistrationdaemon.log</td>
-<td>Look here if your toolkit web page says that your host is not registered with the lookup service or you cannot find your host in the global services directory.</td>
-</tr>
-<tr class="row-even"><td>perfSONAR Regular Testing Scheduler</td>
-<td>/var/log/perfsonar/regulartesting.log</td>
-<td>If you are not seeing test results in the graphs or you are concerned some tests are not running, this log may have more information.</td>
-</tr>
-<tr class="row-odd"><td>perfSONAR Service Watcher</td>
-<td>/var/log/perfsonar/servicewatcher.log
-/var/log/perfsonar/servicewatcher_error.log</td>
-<td>This log contains information about nightly restarts.</td>
-</tr>
-<tr class="row-even"><td>perfSONAR Web Interface</td>
-<td>/var/log/perfsonar/web_admin/web_admin.log
-/var/log/httpd/error_log</td>
-<td>Use these logs when you encounter problems with the web interface</td>
-</tr>
-</tbody>
-</table>
+<p>Most perfSONAR related services keep log files under the directory <strong>/var/log/perfsonar</strong>. Some external tools store them in other areas under <em>/var/log/</em> or elsewhere. pScheduler writes to <strong>/var/log/messages</strong>. There are many log files on the system but some of the most important ones (organized by the service that populates them) can be found below:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The table above is not an exhaustive list of every log file on the system. It&#8217;s intended to point at some <em>important</em> log files that are commonly used to debug issues with perfSONAR tools. Depending on the exact issue you may need to view other log files on the system to diagnose a problem.</p>
@@ -146,23 +88,23 @@
 <dl class="docutils">
 <dt>Users with administrative rights may look at all the log files under <strong>/var/log/perfsonar/</strong> through the web interface. This obviously does not include all logs on the system, but does allow easy access for some of the major perfSONAR logs. To access this interface perform the following steps:</dt>
 <dd><ol class="first last arabic">
-<li><p class="first">From your toolkit web interface, click <em>perfSONAR Logs</em> on the left menu</p>
+<li><p class="first">From your toolkit main web interface, look at the right side of <strong>Services</strong> section, under <strong>SERVICE LOGS</strong>. This place provides links to web interface access to selected toolkit logs.</p>
 <blockquote>
-<div><img alt="_images/manage_logs-view1.png" src="_images/manage_logs-view1.png" />
+<div><img alt="images/manage_logs-main.png" src="images/manage_logs-main.png" />
 </div></blockquote>
 </li>
 <li><dl class="first docutils">
 <dt>Login using the web administrator username and password.</dt>
 <dd><div class="first last admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account</p>
+<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account.</p>
 </div>
 </dd>
 </dl>
 </li>
-<li><p class="first">The log files should be listed on the page that loads</p>
+<li><p class="first">Selected log files should be listed on the page that loads.</p>
 <blockquote>
-<div><img alt="_images/manage_logs-view2.png" src="_images/manage_logs-view2.png" />
+<div><img alt="images/manage_logs-list.png" src="images/manage_logs-list.png" />
 </div></blockquote>
 </li>
 </ol>
@@ -179,7 +121,7 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Wait at least an hour for the script to run</p>
+<li><p class="first">Wait at least an hour for the script to run.</p>
 </li>
 <li><p class="first">Visit the old tookit web interface at <em>http://hostaddress/toolkit-old</em></p>
 </li>
@@ -207,7 +149,7 @@
 </dl>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The cron script may consume significant system resources. Prior to version 3.5 the script was installed by default, but was removed due to this constraint. If you reinstall the file as detailed above, please use caution and note that it may affect your regular tests.</p>
+<p class="last">The cron script may consume significant system resources. If you install the file as detailed above, please use caution and note that it may affect your regular tests.</p>
 </div>
 </div>
 </div>

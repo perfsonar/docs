@@ -39,19 +39,19 @@ You may enable/disable automatic updates from the web interface as follows:
     
     .. image:: images/manage_update-enable.png
 
-#. Click **Save** to apply your changes. After a loading screen you should see a message at the bottom indicating your changes have been saved.
+#. Click **Save** to apply your changes. After a loading screen you should see a green message at the bottom indicating your changes have been saved.
     
-Alternatively, in CentOS7, you may enable auto updates from the command-line with the following commands (must be run as a root user):
+Alternatively, in CentOS7, you may enable auto updates from the command-line with the following commands (must be run as a root user)::
   
     systemctl enable yum-cron
     systemctl start yum-cron
     
-Likewise, you may disable auto-updates from the command-line by running:
+Likewise, you may disable auto-updates from the command-line by running::
 
     systemctl stop yum-cron
     systemctl disable yum-cron
 
-For CentOS6, use *chkconfig* and *service* equivalents.
+For CentOS6, use *chkconfig* and *service start|stop* equivalents.
 
 Also note that the main configuration file for auto-updates lives at */etc/yum*. See the yum-cron man page or the page `here <http://fedoraproject.org/wiki/AutoUpdates>`_ for more information on using auto-updates and advanced options like excluding packages from updates. 
 

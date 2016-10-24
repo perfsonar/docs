@@ -16,7 +16,7 @@ Accessing the Configuration interface
     .. image:: images/manage_regular_tests-main-page.png
 #. Login using the web administrator username and password.
     .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account.
-#. The page that loads can be used to manage regular tests. See the remainder of this document for details on :ref:`adding <manage_reg_tests_add>`, :ref:`modifying <manage_reg_tests_modify>`, :ref:`disabling <manage_reg_tests_disable>` and :ref:`deleting <manage_reg_tests_delete>` tests as well as :ref:`adding <manage_reg_tests_add_host>`, :ref:`modifying <manage_reg_tests_modify_host>` and :ref:`deleting <manage_reg_tests_delete_host>` test hosts. 
+#. The page that loads can be used to manage regular tests. See the remainder of this document for details on :ref:`modifying <manage_reg_tests_modify>` tests and test hosts. 
 
     .. image:: images/manage_regular_tests-tests-overview.png
 
@@ -55,11 +55,12 @@ Adding Regular Tests
 
     .. _manage_reg_tests_add_params:
 
-    . container:: topic
+    .. container:: topic
     
         **Throughput**
 
         .. image:: images/manage_regular_tests-tests-add-test-bw-params.png
+        
         +----------------------------+------------------+-------------------------------------+
         | Field                      | Default          | Description                         |
         +============================+==================+=====================================+    
@@ -98,11 +99,12 @@ Adding Regular Tests
         | TOS bits                   | 0                | |add_params_throughput_tos|         |
         +----------------------------+------------------+-------------------------------------+
 
-    . container:: topic
+    .. container:: topic
 
         **Ping**
 
         .. image:: images/manage_regular_tests-tests-add-test-ping-params.png
+        
         +-----------------------+------------+-------------------------------------+
         | Field                 | Default    | Description                         |
         +=======================+============+=====================================+ 
@@ -125,11 +127,12 @@ Adding Regular Tests
         | Packet Size (bytes)   | 1000       | |add_params_ping_size|              |
         +-----------------------+------------+-------------------------------------+
     
-    . container:: topic
+    .. container:: topic
 
         **One-way delay**
 
         .. image:: images/manage_regular_tests-tests-add-test-owamp-params.png
+        
         +-----------------------+-----------------------+-------------------------------------+
         | Field                 | Default               | Description                         |
         +=======================+=======================+=====================================+  
@@ -146,11 +149,12 @@ Adding Regular Tests
         | Packet Size (bytes)   | 20                    | |add_params_owdelay_packet_size|    |
         +-----------------------+-----------------------+-------------------------------------+
     
-    . container:: topic
+    .. container:: topic
 
         **Traceroute**
 
         .. image:: images/manage_regular_tests-tests-add-test-tracert-params.png
+        
         +-----------------------+------------+-------------------------------------+
         | Field                 | Default    | Description                         |
         +=======================+============+=====================================+ 
@@ -176,7 +180,7 @@ Adding Regular Tests
         +-----------------------+------------+-------------------------------------+
 
     
-#. On the same window you will be able to add hosts to which you want to test. You may also :ref:`add hosts separately <manage_reg_tests_add_host_seperate>` later:
+#. On the same window you will be able to add hosts to which you want to test. You may also add hosts separately later.
 
     .. _manage_reg_tests_add_host_in_test:
     
@@ -210,7 +214,7 @@ Adding Regular Tests
 #. Click the **Save** button at the bottom of the screen to apply your changes. 
     
     .. image:: images/manage_regular_tests-tests-add-test-save.png
-#. Wait while the configuration is applied and services are restarted. Your tests should now be running and you should see the message below on the top of the screen. 
+#. Wait while the configuration is applied and services are restarted. Your tests should now be running and you should see the green message as shwon below. 
 
     .. image:: images/manage_regular_tests-tests-add-test-saved.png
 #. Take note that a traceroute test is automatically added when you add a non-traceroute test. 
@@ -246,13 +250,13 @@ Deleting Test Members
 #. You should no longer see the host in the list of **Test members**.
 
     .. image:: images/manage_regular_tests-tests-delete-member-deleted.png
-#. If you are done making changes click **Save** to accept test configuration change and apply your changes to the system.
+#. If you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system.
 
 .. _manage_reg_tests_modify_addmember:
 
 Adding Test Members
 ---------------------
-From the configuration interface, the process for adding more test members is the same as that detailed in the section :ref:`_manage_reg_tests_add_host_in_test:`.
+From the configuration interface, the process for adding more test members is the same as that detailed in the section :ref:`here<manage_reg_tests_add_host_in_test>`.
 
 .. _manage_reg_tests_modify_ip:
 
@@ -290,6 +294,9 @@ In some cases it may be desirable to stop running tests for a period of time, bu
 
 Deleting Regular Tests
 ======================
+
+.. _manage_reg_tests_delete:
+
 The interface allows you to completely delete a test set. This will stop all tests in the set from running and completely remove them from the configuration interface. If after deleting a test set, you would like to re-add the tests, you will have to completely recreate the test set.
 
 .. note::  Deleting a test set will NOT delete the historical results stored on the host. You will be able to view the historical data on the graphs after deleting the test set.
