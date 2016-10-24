@@ -78,6 +78,68 @@
 <div class="section" id="important-log-files">
 <h2>Important Log Files<a class="headerlink" href="#important-log-files" title="Permalink to this headline">¶</a></h2>
 <p>Most perfSONAR related services keep log files under the directory <strong>/var/log/perfsonar</strong>. Some external tools store them in other areas under <em>/var/log/</em> or elsewhere. pScheduler writes to <strong>/var/log/messages</strong>. There are many log files on the system but some of the most important ones (organized by the service that populates them) can be found below:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="34%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service</th>
+<th class="head">Log File(s)</th>
+<th class="head">When to Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>BWCTL and OWAMP</td>
+<td>/var/log/perfsonar/owamp_bwctl.log</td>
+<td>Every BWCTL and OWAMP test (both on the client and server side) is logged in this file. It should be used when a BWCTL or OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an <em>owamp-server</em> or <em>bwctl-server</em> process crashes unexpectedly.</td>
+</tr>
+<tr class="row-odd"><td>Esmond Measurement Archive</td>
+<td>/var/log/esmond/esmond.log
+/var/log/httpd/error_log
+/var/log/cassandra/cassandra.log
+/var/lib/pgsql/pgstartup.log</td>
+<td>If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. <em>esmond.log</em> has information from the archive itself (e.g. improperly formatted requests). The HTTPD error log has information such as if esmond was able to connect to it&#8217;s underlying databases. Speaking of databases, esmond connects to both Cassandra and PostgreSQL so it may be worth checking those logs as well.</td>
+</tr>
+<tr class="row-even"><td>Network Diagnostic Tool (NDT)</td>
+<td>/var/log/ndt/web100srv.log
+/var/log/ndt/fakewww_error.log
+/var/log/ndt/fakewww_access.log</td>
+<td>Use these logs when you encounter problems running NDT either from the command-line or Java applet</td>
+</tr>
+<tr class="row-odd"><td>perfSONAR Configuration Daemon</td>
+<td>/var/log/perfsonar/configdaemon.log</td>
+<td>If you are unable to save changes to the configuration made through the web interface, this is a good place to look.</td>
+</tr>
+<tr class="row-even"><td>perfSONAR Lookup Service Cache Daemon</td>
+<td>/var/log/perfsonar/lscachedaemon.log</td>
+<td>If you get a message saying that your communities or lookup service cache are out of date, this log file may contain more information.</td>
+</tr>
+<tr class="row-odd"><td>perfSONAR Lookup Service Registration Daemon</td>
+<td>/var/log/perfsonar/lsregistrationdaemon.log</td>
+<td>Look here if your toolkit web page says that your host is not registered with the lookup service or you cannot find your host in the global services directory.</td>
+</tr>
+<tr class="row-even"><td>perfSONAR Mesh Configuration Daemon</td>
+<td>/var/log/perfsonar/meshconfig-agent.log</td>
+<td>If you encounter problems with the MeshConfig agent used to build configuration from remote meshes.</td>
+</tr>
+<tr class="row-odd"><td>perfSONAR Regular Testing Scheduler</td>
+<td>/var/log/perfsonar/regulartesting.log</td>
+<td>If you are not seeing test results in the graphs or you are concerned some tests are not running, this log may have more information.</td>
+</tr>
+<tr class="row-even"><td>perfSONAR Service Watcher</td>
+<td>/var/log/perfsonar/servicewatcher.log
+/var/log/perfsonar/servicewatcher_error.log</td>
+<td>This log contains information about nightly restarts.</td>
+</tr>
+<tr class="row-odd"><td>perfSONAR Web Interface</td>
+<td>/var/log/perfsonar/web_admin/web_admin.log
+/var/log/httpd/error_log</td>
+<td>Use these logs when you encounter problems with the web interface.</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The table above is not an exhaustive list of every log file on the system. It&#8217;s intended to point at some <em>important</em> log files that are commonly used to debug issues with perfSONAR tools. Depending on the exact issue you may need to view other log files on the system to diagnose a problem.</p>

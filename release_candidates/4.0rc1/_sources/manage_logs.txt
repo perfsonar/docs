@@ -28,7 +28,7 @@ Most perfSONAR related services keep log files under the directory **/var/log/pe
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | perfSONAR Lookup Service Registration Daemon | /var/log/perfsonar/lsregistrationdaemon.log   | |log_descr_lsreg|                          |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| perfSONAR Mesh Configuration Daemon          | /var/log/perfsonar/meshconfig-agent.log       | |log_descr_meshag|                          |
+| perfSONAR Mesh Configuration Daemon          | /var/log/perfsonar/meshconfig-agent.log       | |log_descr_meshag|                         |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | perfSONAR Regular Testing Scheduler          | /var/log/perfsonar/regulartesting.log         | |log_descr_tests|                          |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
