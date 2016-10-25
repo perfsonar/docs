@@ -244,7 +244,7 @@ Refer to the documentation here: :doc:`/multi_overview`
 
 Configuring through the web interface
 --------------------------------------
-After installing the perfsonar-toolkit bundle, you should disable SELinux to gain access to the web interface.  This is done with the following commands:
+After installing the perfsonar-toolkit or perfsonar-centralmanagement bundle, you should disable SELinux to gain access to the web interface.  This is done with the following commands:
 ::
 
     echo 0 >/selinux/enforce
