@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Migrating from CentOS 6 to CentOS 7 &mdash; perfSONAR Toolkit 4.0rc2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0rc2 documentation" href="index.html" />
+    <link rel="next" title="Choosing a Management Method" href="manage_choose.html" />
+    <link rel="prev" title="Configuring the Toolkit for the First Time" href="install_config_first_time.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_choose.html" title="Choosing a Management Method"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_config_first_time.html" title="Configuring the Toolkit for the First Time"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="migrating-from-centos-6-to-centos-7">
+<h1>Migrating from CentOS 6 to CentOS 7<a class="headerlink" href="#migrating-from-centos-6-to-centos-7" title="Permalink to this headline">¶</a></h1>
+<p>This page describes the migration procedure for moving a Toolkit installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same version of perfSONAR Toolkit installed. If you do not wish to keep any existing data from the CentOS 6 host you may ignore this section and do a normal clean installation.</p>
+<div class="section" id="migration-process">
+<h2>Migration Process<a class="headerlink" href="#migration-process" title="Permalink to this headline">¶</a></h2>
+<p>For existing users wishing to migrate their configuration and data to the CentOS 7 installation see the steps below:</p>
+<ol class="arabic">
+<li><p class="first">Login in to your CentOS 6 host via SSH or the terminal</p>
+</li>
+<li><p class="first">Upgrade your CentOS 6 host to the same version of perfSONAR as the CentOS 7 host if you have not already done so.</p>
+</li>
+<li><p class="first">Run one of the commands below to create a backup of all relevant configuration files in <cite>~/ps-toolkit-backup.tgz</cite> and/or optionally your data:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Ignore measurement archive data (quicker since measurement archive data may be large):</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-backup.sh ~/ps-toolkit-backup.tgz
+</pre></div>
+</div>
+</li>
+<li><p class="first">Alternatively, if you also wish to migrate the measurement archive databases add the <cite>&#8211;data</cite> paremeter:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-backup.sh --data ~/ps-toolkit-backup.tgz
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Copy the backup file <cite>~/ps-toolkit-backup.tgz</cite> from your CentOS 6 host to a safe location. We will need to copy this to our new installation later. If you will be overwriting the CentOS 6 host with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.</p>
+</li>
+<li><p class="first">Logout of the CentOS 6 host</p>
+</li>
+<li><p class="first">Perform a clean installation of the Toolkit on a CentOS 7 host using the same Toolkit version that was installed on a CentOS 6 host. You may choose to install on the existing CentOS 6 hardware or a completely new host. If it is the former, make sure you have downloaded your CentOS 6 backup file to a safe location.</p>
+</li>
+<li><p class="first">Copy the file <cite>~/ps-toolkit-backup.tgz</cite> from the location chosen in step 3 to your new system. The exact command to do this will depend on where you placed the file (e.g. use scp).</p>
+</li>
+<li><p class="first">Login to your new CentOS 7 Toolkit installation via SSH or the terminal</p>
+</li>
+<li><p class="first">Run one of the commands below to restore your configuration:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Ignore measurement archive data (quicker since measurement archive data may be large):</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-restore.sh ~/ps-toolkit-backup.tgz
+</pre></div>
+</div>
+</li>
+<li><p class="first">Alternatively, to also restore the measurements databases add the <cite>&#8211;data</cite> paremeter:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-restore.sh --data ~/ps-toolkit-backup.tgz
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Reboot your host:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">reboot</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Your host should now be migrated.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Migrating from CentOS 6 to CentOS 7</a><ul>
+<li><a class="reference internal" href="#migration-process">Migration Process</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_config_first_time.html">Previous topic</a>
+                  <ul><li><a href="install_config_first_time.html" title="previous chapter">Configuring the Toolkit for the First Time</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_choose.html">Next topic</a>
+                      <ul><li><a href="manage_choose.html" title="next chapter">Choosing a Management Method</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_choose.html" title="Choosing a Management Method"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_config_first_time.html" title="Configuring the Toolkit for the First Time"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

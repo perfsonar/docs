@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation of CentOS Bundles &mdash; perfSONAR Toolkit 4.0rc2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0rc2 documentation" href="index.html" />
+    <link rel="next" title="Installation on Debian" href="install_debian.html" />
+    <link rel="prev" title="External Tools" href="using_ext_tools.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_debian.html" title="Installation on Debian"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="using_ext_tools.html" title="External Tools"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation-of-centos-bundles">
+<h1>Installation of CentOS Bundles<a class="headerlink" href="#installation-of-centos-bundles" title="Permalink to this headline">¶</a></h1>
+<p>perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit distribution (as detailed at <a class="reference internal" href="install_getting.html"><em>Getting the Toolkit Software</em></a>) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you&#8217;d like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind RPMs are available that install the bundles described in <a class="reference internal" href="install_options.html"><em>perfSONAR Installation Options</em></a>. The steps in the remaining sections of this document detail the steps required for installing these bundles.</p>
+<div class="section" id="system-requirements">
+<span id="install-centos-sysreq"></span><h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>Operating System:</strong><ul>
+<li>Any system running either a 32-bit or 64-bit <strong>CentOS 6</strong> or a  64-bit <strong>CentOS 7</strong> operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.</li>
+</ul>
+</li>
+<li>See the general <a class="reference internal" href="install_options.html#install-options-sysreq"><em>System Requirements</em></a> for hardware requirements and more</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<span id="install-centos-installation"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-1-configure-yum">
+<span id="install-centos-step1"></span><h3>Step 1: Configure Yum<a class="headerlink" href="#step-1-configure-yum" title="Permalink to this headline">¶</a></h3>
+<p>The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below:</p>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt>Install the EPEL RPM:</dt>
+<dd><p class="first"><em>CentOS 6</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>rpm -hUv https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+</pre></div>
+</div>
+<p><em>CentOS 7</em>:</p>
+<div class="last highlight-python"><div class="highlight"><pre>rpm -hUv https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><p class="first">Install the Internet2-repo RPM:</p>
+<blockquote>
+<div><p><em>CentOS 6</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+</pre></div>
+</div>
+<p><em>CentOS 7</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>4. Refresh yum&#8217;s cache so it detects the new RPMS</p>
+<div class="highlight-python"><div class="highlight"><pre>yum clean all
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-install-rpm">
+<span id="install-centos-step2"></span><h3>Step 2: Install RPM<a class="headerlink" href="#step-2-install-rpm" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><strong>perfSONAR Test Point</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install perfsonar-testpoint
+</pre></div>
+</div>
+<p>Additionally, you may also install the Toolkit service-watcher, ntp, security(firewall rules and sysctl packages</p>
+<p><em>Optional Packages</em></p>
+<blockquote>
+<div><p>To install additional packages, run:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/install-optional-packages.py
+</pre></div>
+</div>
+<p>Or, you can manually install them by running:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-servicewatcher</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-sysctl</span></tt></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<p>In particular, you should install perfsonar-toolkit-ntp if you are not managing your ntp.conf file in some other manner.</p>
+<ul>
+<li><p class="first"><strong>perfSONAR Core</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install perfsonar-core
+</pre></div>
+</div>
+<p>Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.</p>
+<p><em>Optional Packages</em></p>
+<blockquote>
+<div><p>To install additional packages, run:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/install-optional-packages.py
+</pre></div>
+</div>
+<p>Or, you can manually install them by running:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-service-watcher</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-sysctl</span></tt></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>perfSONAR Central Management</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install perfsonar-centralmanagement
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>perfSONAR Toolkit</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install perfsonar-toolkit
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="step-3-verify-ntp-and-tuning-parameters">
+<span id="install-centos-step3"></span><h3>Step 3: Verify NTP and Tuning Parameters<a class="headerlink" href="#step-3-verify-ntp-and-tuning-parameters" title="Permalink to this headline">¶</a></h3>
+<p><em>Can be ignored for perfsonar-toolkit package</em></p>
+<ul>
+<li><p class="first"><strong>NTP</strong></p>
+<ul>
+<li><p class="first"><strong>Package Install</strong></p>
+<p>If the optional package was installed, then run:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_ntpd new
+service ntpd restart
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Manual</strong></p>
+<p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL will not even run unless NTP is configured. You can verify NTP is running with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/sbin/ntpq -p
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first"><strong>System Tuning</strong></p>
+<p>It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.</p>
+<ul>
+<li><p class="first"><strong>Package Install</strong></p>
+<p>Run:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_sysctl
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Manual Tuning</strong></p>
+<p>Please refer to <cite>http://fasterdata.es.net/host-tuning/linux/</cite></p>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="step-4-firewall-and-security-considerations">
+<span id="install-centos-step4"></span><h3>Step 4: Firewall and Security Considerations<a class="headerlink" href="#step-4-firewall-and-security-considerations" title="Permalink to this headline">¶</a></h3>
+<p><strong>Package Install</strong>
+If you have installed the perfsonar-toolkit-security package, then you can configure the IPTable entries by running:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_firewall
+</pre></div>
+</div>
+<p>The package also installs fail2ban.</p>
+<p>Or, if you would like to configure the rules manually, then please review the <a class="reference external" href="http://www.perfsonar.net/deploy/security-considerations/">document here</a> on the ports that need to be open.</p>
+<p>Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. You may read the bwctl-server.limits man page or look at the example file provided under /etc/bwctl-server/bwctl-server.limits file. ESnet uses a bwctl-server.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:</p>
+<ul class="simple">
+<li>Allow unrestricted UDP tests from ESnet test system prefixes.</li>
+<li>Allow up to 200Mbps UDP tests from ESnet sites.</li>
+<li>Deny UDP tests from any other locations.</li>
+<li>Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.</li>
+<li>Deny TCP tests from everywhere else.</li>
+</ul>
+<p>To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/bwctl-server
+mv bwctl-server.limits bwctl-server.limits.dist
+wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
+mv bwctld.limits bwctl-server.limits
+</pre></div>
+</div>
+<p>ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/bwctl-server
+wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
+chmod +x update_limits.sh
+</pre></div>
+</div>
+<p>You can also enable yum ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this, do the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>/sbin/chkconfig --add yum-cron
+/sbin/chkconfig yum-cron on
+/sbin/service yum-cron start
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-5-service-watcher">
+<span id="install-centos-step5"></span><h3>Step 5: Service Watcher<a class="headerlink" href="#step-5-service-watcher" title="Permalink to this headline">¶</a></h3>
+<p>The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, owamp and other processes are running and restarts if they have stopped unexpectedly.</p>
+<p>The install automatically, configures cron to run the service_watcher regularly.</p>
+<p>To run the script manually, run:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/service_watcher
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-6-register-your-services">
+<span id="install-centos-step6"></span><h3>Step 6: Register your services<a class="headerlink" href="#step-6-register-your-services" title="Permalink to this headline">¶</a></h3>
+<p><em>Can be ignored and done through the web interface for he perfsonar-toolkit package</em></p>
+<p>In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening <strong>/etc/perfsonar/lsregistrationdaemon.conf</strong>. You will see numerous properties you may populate. They are commented out meaning you need to remove the <tt class="docutils literal"><span class="pre">#</span></tt> at the beginning of the line for them to take effect. The properties you are <strong>required</strong> to set are as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">##Hostname or IP address others can use to access your service</span>
+<span class="c">#external_address   myhost.mydomain.example</span>
+
+<span class="c">##Primary interface on host</span>
+<span class="c">#external_address_if_name eth0</span>
+</pre></div>
+</div>
+<p>and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are <strong>highly recommended</strong>.</p>
+<p>In the example above remove the leading <tt class="docutils literal"><span class="pre">#</span></tt> before external_address and external_address_if_name respectively. Also replace <em>myhost.mydomain.example</em> and <em>eth0</em> with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the RPM install.</p>
+</div>
+<div class="section" id="step-7-starting-your-services">
+<span id="install-centos-step7"></span><h3>Step 7: Starting your services<a class="headerlink" href="#step-7-starting-your-services" title="Permalink to this headline">¶</a></h3>
+<p>You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with the following commands as a root user:</p>
+<div class="highlight-python"><div class="highlight"><pre>/etc/init.d/bwctl-server start
+/etc/init.d/owamp-server start
+/etc/init.d/perfsonar-lsregistrationdaemon start
+</pre></div>
+</div>
+<p>Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.</p>
+</div>
+<div class="section" id="configuring-central-management">
+<h3>Configuring Central Management<a class="headerlink" href="#configuring-central-management" title="Permalink to this headline">¶</a></h3>
+<p>Refer to the documentation here: <a class="reference internal" href="multi_overview.html"><em>Central Configuration Overview</em></a></p>
+</div>
+<div class="section" id="configuring-through-the-web-interface">
+<h3>Configuring through the web interface<a class="headerlink" href="#configuring-through-the-web-interface" title="Permalink to this headline">¶</a></h3>
+<p>After installing the perfsonar-toolkit or perfsonar-centralmanagement bundle, you should disable SELinux to gain access to the web interface.  This is done with the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>echo 0 &gt;/selinux/enforce
+sed -i &#39;s/^SELINUX=enforcing/SELINUX=permissive/&#39; /etc/selinux/config
+</pre></div>
+</div>
+<p>After that, you can refer to the general perfSONAR configuration from <a class="reference internal" href="install_config_first_time.html"><em>Configuring the Toolkit for the First Time</em></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Installation of CentOS Bundles</a><ul>
+<li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#step-1-configure-yum">Step 1: Configure Yum</a></li>
+<li><a class="reference internal" href="#step-2-install-rpm">Step 2: Install RPM</a></li>
+<li><a class="reference internal" href="#step-3-verify-ntp-and-tuning-parameters">Step 3: Verify NTP and Tuning Parameters</a></li>
+<li><a class="reference internal" href="#step-4-firewall-and-security-considerations">Step 4: Firewall and Security Considerations</a></li>
+<li><a class="reference internal" href="#step-5-service-watcher">Step 5: Service Watcher</a></li>
+<li><a class="reference internal" href="#step-6-register-your-services">Step 6: Register your services</a></li>
+<li><a class="reference internal" href="#step-7-starting-your-services">Step 7: Starting your services</a></li>
+<li><a class="reference internal" href="#configuring-central-management">Configuring Central Management</a></li>
+<li><a class="reference internal" href="#configuring-through-the-web-interface">Configuring through the web interface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="using_ext_tools.html">Previous topic</a>
+                  <ul><li><a href="using_ext_tools.html" title="previous chapter">External Tools</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="install_debian.html">Next topic</a>
+                      <ul><li><a href="install_debian.html" title="next chapter">Installation on Debian</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_debian.html" title="Installation on Debian"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="using_ext_tools.html" title="External Tools"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
