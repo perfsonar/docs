@@ -54,6 +54,10 @@ Once you are pointing at the staging repository you may follow the steps at :doc
 
 Testing Upgrades of an Existing Toolkit or CentOS Bundle Installation
 =====================================================================
+.. note:: These instructions will work on both CentOS 6 and CentOS 7
+
+.. note:: If upgrading from 4.0rc1 to 4.0rc2 is is recommended you run `pscheduler internal reset` followed by a host reboot. While not strictly required it will give a clean slate for testing and eliminate any lingering bugs from previous versions.
+
 You can test upgrades of any existing CentOS-based perfSONAR installation by first pointing your existing CentOS installation at the perfSONAR staging yum repository and then running yum update::
 
         yum install Internet2-repo-staging
