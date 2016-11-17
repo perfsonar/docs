@@ -181,6 +181,14 @@ OWAMP
    config_owamp
    config_owamp_limits
 
+pScheduler
+==========
+.. toctree::
+   :maxdepth: 1
+
+   config_pscheduler
+   config_pscheduler_limits
+
 Previous Releases
 -----------------
 .. toctree::
