@@ -10,9 +10,11 @@ System Requirements
 ==================== 
 * **Operating System:**
 
-  * Any system running either a 32-bit or 64-bit **CentOS 6** or a  64-bit **CentOS 7** operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.
+  * Any system running **CentOS 7**. perfSONAR 4.0 toolkit ISOs are only available as CentOS 7. CentOS 7 drops support for i386/i686 architectures and as a result there are only x86_64 versions of the CentOS 7 perfSONAR 4.0 packages available.
+  * We still offer packages support for any system running either a 32-bit or 64-bit **CentOS 6**.  Existing CentOS 6 users will be able to auto-update.
+  * Other RedHat-based operating systems may work, but are not officially supported at this time.
 
-* See the general :ref:`install_options_sysreq` for hardware requirements and more
+* See the general :ref:`install_options_sysreq` for hardware requirements and more.
 
 .. _install_centos_installation:
 
@@ -23,19 +25,18 @@ Installation
 
 Step 1: Configure Yum 
 ---------------------- 
-The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below:
+The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below as priviledged user:
 
-1. Install the EPEL RPM:
+#. Install the EPEL RPM:
     *CentOS 6*::
 
-        rpm -hUv https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+        rpm -hUv https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
 
     *CentOS 7*::
 
-        rpm -hUv https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
+        rpm -hUv https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-
-2. Install the Internet2-repo RPM:
+#. Install the Internet2-repo RPM:
 
     *CentOS 6*::
 
@@ -45,8 +46,7 @@ The process configures yum to point at the necessary repositories to get package
 
         rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
 
-
-4. Refresh yum's cache so it detects the new RPMS
+#. Refresh yum's cache so it detects the new RPMS
 ::
 
     yum clean all
@@ -61,7 +61,7 @@ Step 2: Install RPM
 
     yum install perfsonar-testpoint  
 
-  Additionally, you may also install the Toolkit service-watcher, ntp, security(firewall rules and sysctl packages
+  Additionally, you may also install the Toolkit service-watcher, ntp, security(firewall rules and sysctl packages.
 
   *Optional Packages*
 
@@ -116,36 +116,39 @@ Step 3: Verify NTP and Tuning Parameters
 ----------------------------------------- 
 *Can be ignored for perfsonar-toolkit package*
 
-* **NTP**
+* **NTP Tuning**
 
-  - **Package Install**
+  - **Auto-select NTP servers based on proximity**
     
-    If the optional package was installed, then run::
+    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If the optional package was installed, then run::
 
         /usr/lib/perfsonar/scripts/configure_ntpd new
+        
+        For CentOS6::
+        
         service ntpd restart
+        
+        For CentOS7::
+        
+        systemctl restart ntpd
 
-  - **Manual**
-
-    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL will not even run unless NTP is configured. You can verify NTP is running with the following command::
+    You can verify if NTP is running with the following command::
 
     /usr/sbin/ntpq -p  
-
-
 
 * **System Tuning**
   
   It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  
 
-  - **Package Install**
+  - **Configure perfSONAR sysctl settings**
     
-    Run::  
+    If the optional package was installed, then run::  
 
     /usr/lib/perfsonar/scripts/configure_sysctl
 
-  - **Manual Tuning**
+  - **Advanced Manual Tuning**
     
-    Please refer to `http://fasterdata.es.net/host-tuning/linux/`  
+    For more information please refer to `http://fasterdata.es.net/host-tuning/linux/`  
 
 
 
@@ -197,7 +200,7 @@ You can also enable yum ‘auto updates’ to ensure you always have the most cu
 
 Step 5: Service Watcher
 ------------------------
-The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, owamp and other processes are running and restarts if they have stopped unexpectedly. 
+The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
 
 The install automatically, configures cron to run the service_watcher regularly.
 
@@ -229,12 +232,19 @@ In the example above remove the leading ``#`` before external_address and extern
 
 Step 7: Starting your services 
 ------------------------------- 
-You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with the following commands as a root user:
-::
+You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with appropriate init commands as a root user. For example:
+
+    For CentOS6::
 
     /etc/init.d/bwctl-server start
     /etc/init.d/owamp-server start
-    /etc/init.d/perfsonar-lsregistrationdaemon start
+    service perfsonar-lsregistrationdaemon start
+    
+    For CentOS7::
+    
+    /etc/init.d/bwctl-server start
+    /etc/init.d/owamp-server start
+    systemctl start perfsonar-lsregistrationdaemon
 
 Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
 

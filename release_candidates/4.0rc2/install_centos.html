@@ -79,26 +79,28 @@
 <span id="install-centos-sysreq"></span><h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><strong>Operating System:</strong><ul>
-<li>Any system running either a 32-bit or 64-bit <strong>CentOS 6</strong> or a  64-bit <strong>CentOS 7</strong> operating system should be able to follow the process outlined in this document. Other RedHat-based operating systems may work, but are not officially supported at this time.</li>
+<li>Any system running <strong>CentOS 7</strong>. perfSONAR 4.0 toolkit ISOs are only available as CentOS 7. CentOS 7 drops support for i386/i686 architectures and as a result there are only x86_64 versions of the CentOS 7 perfSONAR 4.0 packages available.</li>
+<li>We still offer packages support for any system running either a 32-bit or 64-bit <strong>CentOS 6</strong>.  Existing CentOS 6 users will be able to auto-update.</li>
+<li>Other RedHat-based operating systems may work, but are not officially supported at this time.</li>
 </ul>
 </li>
-<li>See the general <a class="reference internal" href="install_options.html#install-options-sysreq"><em>System Requirements</em></a> for hardware requirements and more</li>
+<li>See the general <a class="reference internal" href="install_options.html#install-options-sysreq"><em>System Requirements</em></a> for hardware requirements and more.</li>
 </ul>
 </div>
 <div class="section" id="installation">
 <span id="install-centos-installation"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="step-1-configure-yum">
 <span id="install-centos-step1"></span><h3>Step 1: Configure Yum<a class="headerlink" href="#step-1-configure-yum" title="Permalink to this headline">¶</a></h3>
-<p>The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below:</p>
+<p>The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below as priviledged user:</p>
 <ol class="arabic">
 <li><dl class="first docutils">
 <dt>Install the EPEL RPM:</dt>
 <dd><p class="first"><em>CentOS 6</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>rpm -hUv https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+<div class="highlight-python"><div class="highlight"><pre>rpm -hUv https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
 </pre></div>
 </div>
 <p><em>CentOS 7</em>:</p>
-<div class="last highlight-python"><div class="highlight"><pre>rpm -hUv https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
+<div class="last highlight-python"><div class="highlight"><pre>rpm -hUv https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 </pre></div>
 </div>
 </dd>
@@ -117,7 +119,7 @@
 </div></blockquote>
 </li>
 </ol>
-<p>4. Refresh yum&#8217;s cache so it detects the new RPMS</p>
+<p>#. Refresh yum&#8217;s cache so it detects the new RPMS</p>
 <div class="highlight-python"><div class="highlight"><pre>yum clean all
 </pre></div>
 </div>
@@ -129,7 +131,7 @@
 <div class="highlight-python"><div class="highlight"><pre>yum install perfsonar-testpoint
 </pre></div>
 </div>
-<p>Additionally, you may also install the Toolkit service-watcher, ntp, security(firewall rules and sysctl packages</p>
+<p>Additionally, you may also install the Toolkit service-watcher, ntp, security(firewall rules and sysctl packages.</p>
 <p><em>Optional Packages</em></p>
 <blockquote>
 <div><p>To install additional packages, run:</p>
@@ -188,17 +190,22 @@
 <span id="install-centos-step3"></span><h3>Step 3: Verify NTP and Tuning Parameters<a class="headerlink" href="#step-3-verify-ntp-and-tuning-parameters" title="Permalink to this headline">¶</a></h3>
 <p><em>Can be ignored for perfsonar-toolkit package</em></p>
 <ul>
-<li><p class="first"><strong>NTP</strong></p>
+<li><p class="first"><strong>NTP Tuning</strong></p>
 <ul>
-<li><p class="first"><strong>Package Install</strong></p>
-<p>If the optional package was installed, then run:</p>
+<li><p class="first"><strong>Auto-select NTP servers based on proximity</strong></p>
+<p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If the optional package was installed, then run:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_ntpd new
+
+For CentOS6::
+
 service ntpd restart
+
+For CentOS7::
+
+systemctl restart ntpd
 </pre></div>
 </div>
-</li>
-<li><p class="first"><strong>Manual</strong></p>
-<p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL will not even run unless NTP is configured. You can verify NTP is running with the following command:</p>
+<p>You can verify if NTP is running with the following command:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/sbin/ntpq -p
 </pre></div>
 </div>
@@ -208,14 +215,14 @@ service ntpd restart
 <li><p class="first"><strong>System Tuning</strong></p>
 <p>It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.</p>
 <ul>
-<li><p class="first"><strong>Package Install</strong></p>
-<p>Run:</p>
+<li><p class="first"><strong>Configure perfSONAR sysctl settings</strong></p>
+<p>If the optional package was installed, then run:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_sysctl
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>Manual Tuning</strong></p>
-<p>Please refer to <cite>http://fasterdata.es.net/host-tuning/linux/</cite></p>
+<li><p class="first"><strong>Advanced Manual Tuning</strong></p>
+<p>For more information please refer to <cite>http://fasterdata.es.net/host-tuning/linux/</cite></p>
 </li>
 </ul>
 </li>
@@ -260,7 +267,7 @@ chmod +x update_limits.sh
 </div>
 <div class="section" id="step-5-service-watcher">
 <span id="install-centos-step5"></span><h3>Step 5: Service Watcher<a class="headerlink" href="#step-5-service-watcher" title="Permalink to this headline">¶</a></h3>
-<p>The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, owamp and other processes are running and restarts if they have stopped unexpectedly.</p>
+<p>The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly.</p>
 <p>The install automatically, configures cron to run the service_watcher regularly.</p>
 <p>To run the script manually, run:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/service_watcher
@@ -283,12 +290,21 @@ chmod +x update_limits.sh
 </div>
 <div class="section" id="step-7-starting-your-services">
 <span id="install-centos-step7"></span><h3>Step 7: Starting your services<a class="headerlink" href="#step-7-starting-your-services" title="Permalink to this headline">¶</a></h3>
-<p>You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with the following commands as a root user:</p>
+<p>You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with appropriate init commands as a root user. For example:</p>
+<blockquote>
+<div><p>For CentOS6:</p>
 <div class="highlight-python"><div class="highlight"><pre>/etc/init.d/bwctl-server start
 /etc/init.d/owamp-server start
-/etc/init.d/perfsonar-lsregistrationdaemon start
 </pre></div>
 </div>
+<p>service perfsonar-lsregistrationdaemon start</p>
+<p>For CentOS7:</p>
+<div class="highlight-python"><div class="highlight"><pre>/etc/init.d/bwctl-server start
+/etc/init.d/owamp-server start
+</pre></div>
+</div>
+<p>systemctl start perfsonar-lsregistrationdaemon</p>
+</div></blockquote>
 <p>Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.</p>
 </div>
 <div class="section" id="configuring-central-management">

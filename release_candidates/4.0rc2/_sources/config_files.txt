@@ -345,6 +345,54 @@ Primary Log file
 :RedHat: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp_bwctl.log``
 :Debian: ``/var/log/messages`` 
 
+pScheduler
+==========
+
+Configuration Files
+--------------------
+
+.. _config_files-pscheduler-conf-limits:
+
+Limits File
+##########################
+
+:Description: The pScheduler limits file that defines authentication and authorization parameters for testing.
+:RedHat: ``/etc/pscheduler/limits.conf``
+:Debian: ``/etc/pscheduler/limits.conf``
+:Documentation: :doc:`config_pscheduler_limits`
+
+.. _config_files-pscheduler-conf-archives:
+
+Archives Configuration Files
+############################
+
+:Description: The configuration files for pScheduler's archives. Contains individual archive specifications applied to every measurement the system runs.
+:RedHat: ``/etc/pscheduler/default-archives/*``
+:Debian: ``/etc/pscheduler/default-archives/*``
+:Documentation: 
+
+.. _config_files-pscheduler-conf-database:
+
+Database Configuration Files
+############################
+
+:Description: The configuration files for pScheduler's database. Contains files maintained by the system and should not be altered at the risk of breaking pScheduler’s ability to use its database.
+:RedHat: ``/etc/pscheduler/database/*``
+:Debian: ``/etc/pscheduler/database/*``
+:Documentation: 
+
+
+Log Files
+---------
+
+.. _config_files-pscheduler-logs-primary:
+
+Primary Log file
+##########################
+:Description: The log file written when the pScheduler daemon is run.
+:RedHat: ``/var/log/pscheduler/pscheduler.log``
+:Debian: ``/var/log/messages`` 
+
 
 Toolkit
 ========

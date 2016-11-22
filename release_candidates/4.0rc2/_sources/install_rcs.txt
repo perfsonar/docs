@@ -80,6 +80,8 @@ You may install the appropriate source list as follows for **Debian 7 (Wheezy)**
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-4.0.list
     wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+
+These Debian 7 packages should also work on Ubuntu 12-LTS (Precise Pangolin) and Ubuntu 14-LTS (Trusty Tahr).
     
 Likewise for **Debian 8 (Jessie)**::
 
@@ -89,7 +91,7 @@ Likewise for **Debian 8 (Jessie)**::
 
 Once installed you may proceed to follow the steps in :doc:`install_debian` to complete the installation.
 
-.. note:: If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours
+.. note:: If you have auto-updates enabled, once you point your host at this 4.0 repository, you will automatically get any new test packages that are added within 24 hours
 
 
 .. _install_rcs-upgrades-debian:
