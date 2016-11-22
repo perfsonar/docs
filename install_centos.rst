@@ -236,15 +236,15 @@ You can start all the services by rebooting the host since all are configured to
 
     For CentOS6::
 
-    /etc/init.d/bwctl-server start
-    /etc/init.d/owamp-server start
-    service perfsonar-lsregistrationdaemon start
-    
+        /etc/init.d/bwctl-server start
+        /etc/init.d/owamp-server start
+        service perfsonar-lsregistrationdaemon start
+
     For CentOS7::
-    
-    /etc/init.d/bwctl-server start
-    /etc/init.d/owamp-server start
-    systemctl start perfsonar-lsregistrationdaemon
+
+        /etc/init.d/bwctl-server start
+        /etc/init.d/owamp-server start
+        systemctl start perfsonar-lsregistrationdaemon
 
 Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
 
