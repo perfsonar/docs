@@ -46,8 +46,7 @@ The process configures yum to point at the necessary repositories to get package
 
         rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
 
-#. Refresh yum's cache so it detects the new RPMS
-::
+#. Refresh yum's cache so it detects the new RPMS::
 
     yum clean all
 
@@ -124,11 +123,11 @@ Step 3: Verify NTP and Tuning Parameters
 
         /usr/lib/perfsonar/scripts/configure_ntpd new
         
-        For CentOS6::
+    For CentOS6::
         
         service ntpd restart
         
-        For CentOS7::
+    For CentOS7::
         
         systemctl restart ntpd
 
@@ -157,6 +156,7 @@ Step 3: Verify NTP and Tuning Parameters
 Step 4: Firewall and Security Considerations 
 --------------------------------------------- 
 **Package Install**
+
 If you have installed the perfsonar-toolkit-security package, then you can configure the IPTable entries by running::
 
     /usr/lib/perfsonar/scripts/configure_firewall
