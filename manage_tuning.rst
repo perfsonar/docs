@@ -38,6 +38,7 @@ This can be very helpful for cases where you want to ensure that your perfSONAR 
 For example, to ensure your 10G host never exceeds 7Gbps, run this command:
 
    .. code-block:: none
+   
      tc qdisc add dev $ETH root fq maxrate 7gbit
 
 Where $ETH is the name of your host NIC. Add that command to /etc/rc.local to run at system boot time.
