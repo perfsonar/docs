@@ -173,6 +173,17 @@ queue_directory Directive
 :Default: A subdirectory named with :ref:`type <config_mesh_agent_tasks-ma-type>` and the host portion of :ref:`database <config_mesh_agent_tasks-database>` under the directory defined by :ref:`test_results_directory <config_mesh_agent_tasks-test_result_directory>`
 :Compatibility: 3.4 and later
 
+.. _config_mesh_agent_tasks-retry_policy:
+
+retry_policy Directive
+-------------------------
+:Description: Describes policy for retrying registrations to this archive when initial attempts fail. See :ref:`config_mesh_agent_tasks-ma_retry_policy` for more information.
+:Syntax: ``<retry_policy>...<retry_policy>``
+:Contexts: :ref:`measurement_archive <config_mesh_agent_tasks-measurement_archive>`
+:Occurrences:  Zero or One
+:Default: A retry policy based on test interval is applied.
+:Compatibility: 4.0 and later
+
 .. _config_mesh_agent_tasks-summary:
 
 summary Directive
@@ -234,6 +245,55 @@ verify_hostname Directive
 :Occurrences:  Zero or One
 :Default: 0
 :Compatibility: 3.4 and later
+
+.. _config_mesh_agent_tasks-ma_retry_policy:
+
+Measurement Archive Retry Policies
+===================================
+
+.. _config_mesh_agent_tasks-retry_policy-ttl:
+
+ttl Directive
+-------------------------
+:Description: The maximum time in seconds that a retry can be tried after initial attempt. Important for cases where there is a large backlog of archivings and the retry policy may not be able to keep up. This is a catch-all to ensure its stops retrying by this point.
+:Syntax: ``ttl SECONDS``
+:Contexts: :ref:`retry_policy <config_mesh_agent_tasks-retry_policy>`
+:Occurrences:  Zero or One
+:Default: N/A
+:Compatibility: 4.0 and later
+
+.. _config_mesh_agent_tasks-retry_policy-retry:
+
+retry Directive
+-------------------------
+:Description: Defines the number of times to retry and how long to wait in between. Order is significant for these when defined multiple times. Retry blocks listed first will be executed first.
+:Syntax: ``<retry>...<retry>``
+:Contexts: :ref:`retry_policy <config_mesh_agent_tasks-retry_policy>`
+:Occurrences:  Zero or More
+:Default: N/A
+:Compatibility: 4.0 and later
+
+.. _config_mesh_agent_tasks-retry_policy-retry-attempts:
+
+attempts Directive
+-------------------------
+:Description: The number of times to retry after an initial failure.
+:Syntax: ``attempts INT``
+:Contexts: :ref:`retry <config_mesh_agent_tasks-retry_policy-retry>`
+:Occurrences:  Exactly One
+:Default: N/A
+:Compatibility: 4.0 and later
+
+.. _config_mesh_agent_tasks-retry_policy-retry-wait:
+
+wait Directive
+-------------------------
+:Description: The time in seconds to wait in between retry attempts.
+:Syntax: ``wait SECONDS``
+:Contexts: :ref:`retry <config_mesh_agent_tasks-retry_policy-retry>`
+:Occurrences:  Exactly One
+:Default: N/A
+:Compatibility: 4.0 and later
 
 .. _config_mesh_agent_tasks-ma_summaries:
 
