@@ -122,7 +122,7 @@ ca_certificate_path Directive
 
 database Directive
 --------------------------------
-:Description: The URL of the measurement archive where results will be stored.
+:Description: The URL of the measurement archive where results will be stored. Note that if a localhost or loopback address is given, some reverse tests will substitute in the address used in the test so that the remote side can attempt to reach the archive. If this is not desired, please specify this field using a public address or use the :ref:`public_url <config_mesh_agent_tasks-public_url>` option. 
 :Syntax: ``database URL``
 :Contexts: :ref:`measurement_archive <config_mesh_agent_tasks-measurement_archive>`
 :Occurrences:  Exactly One
@@ -161,6 +161,17 @@ password Directive
 :Occurrences:  Zero or One
 :Default: N/A
 :Compatibility: 3.4 and later
+
+.. _config_mesh_agent_tasks-public_url:
+
+public_url Directive
+--------------------------------
+:Description: Reverse throughput, ping and traceroute tests require the remote side to write to the measurement archive. This field is for cases where the :ref:`database <config_mesh_agent_tasks-database>` field is inaccessible by remote testers such as it being specified with a loopback or private address.
+:Syntax: ``public_url URL``
+:Contexts: :ref:`measurement_archive <config_mesh_agent_tasks-measurement_archive>`
+:Occurrences:  Zero or One
+:Default: N/A
+:Compatibility: 4.0 and later
 
 .. _config_mesh_agent_tasks-queue_directory:
 
