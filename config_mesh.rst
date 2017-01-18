@@ -364,8 +364,26 @@ tos_bits Directive
 :Default: not set
 :Compatibility: 3.3 or later
 
+dscp Directive
+--------------
+:Description: The DSCP value to set in the IP header of outgoing packets
+:Syntax: ``dscp NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and tool is *nuttcp*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+tcp_bandwidth Directive
+-----------------------
+:Description: The rate at which the tool will attempt to send TCP packets. Can specify as bits per second or with suffix K, M, or G to indicated Kbps, Mbps or Gbps respectively.
+:Syntax: ``tcp_bandwidth NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
 udp_bandwidth Directive
--------------------------
+-----------------------
 :Description: The rate at which the tool will attempt to send UDP packets in bits per second.  
 :Syntax: ``udp_bandwidth NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *udp*
@@ -374,13 +392,59 @@ udp_bandwidth Directive
 :Compatibility: 3.3 or later
 
 window_size Directive
--------------------------
+---------------------
 :Description: TCP window size (bytes) 0 indicates system defaults
 :Syntax: ``window_size NUMBYTES``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp*
 :Occurrences:  Zero or one
 :Default: 0 (i.e. use endpoint host default)
 :Compatibility: 3.3 or later
+
+mss Directive
+-------------
+:Description: Tell the tool to use a MSS of N bytes
+:Syntax: ``mss BYTES``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and tool is *nuttcp*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+congestion Directive
+--------------------
+:Description: Use this TCP congestion control algorithm (cubic, htcp, bbr, etc)
+:Syntax: ``congestion VALUE``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp* and tool is *iperf3*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+no_delay Directive
+------------------
+:Description: Set TCP_NODELAY option for the tests
+:Syntax: ``no_delay 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+client_cpu_affinity Directive
+-----------------------------
+:Description: which cores to use for the client tool (useful for 40/100G NUMA hosts)
+:Syntax: ``client_cpu_affinity NUMBER|NUMBER-NUMBER`` Single core ID or range of cores
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+server_cpu_affinity Directive
+-----------------------------
+:Description: which cores to use for the server tool (useful for 40/100G NUMA hosts)
+:Syntax: ``server_cpu_affinity NUMBER|NUMBER-NUMBER`` Single core ID or range of cores
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
 
 .. _config_mesh-test_spec-owamp:
 
