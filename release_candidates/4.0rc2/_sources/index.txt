@@ -66,8 +66,25 @@ Additional Installation Options
    low_cost_nodes
    low_cost_nodes_configuration
 
-Additional perfSONAR Tools
+perfSONAR Tools
 --------------------------
+.. toctree::
+   :maxdepth: 3
+
+pScheduler
+==========
+.. toctree::
+    using_pscheduler
+
+owamp
+=====
+.. toctree::
+    using_owamp
+
+Other Tools
+===========
+.. toctree::
+    other_tools
 
 perfSONAR UI
 ============
