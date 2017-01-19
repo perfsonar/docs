@@ -182,7 +182,7 @@ This specifies the type of data to be stored. The supported values refer to an o
 
 * **perfsonarbuoy/bwctl** - Throughput tests such as those initated by BWCTL running iperf or iperf3
 * **perfsonarbuoy/owamp** - OWAMP tests initiated by the powstream tool
-* **pinger** - Ping tests initiated by bwping or OWAMP tests initiated by bwping running OWAMP
+* **pinger** - Ping tests initiated by ping, bwping or OWAMP tests initiated by bwping running OWAMP
 * **traceroute** - Any type of test initiated by bwtraceroute
 
 read_url Directive
@@ -233,7 +233,7 @@ The types have the following meanings:
 
 * **perfsonarbuoy/bwctl** - Throughput tests such as those initated by BWCTL running iperf or iperf3. See :ref:`config_mesh-test_spec-throughput` for directives specific to this type of test.
 * **perfsonarbuoy/owamp** - OWAMP tests initiated by the powstream tool. See :ref:`config_mesh-test_spec-owamp` for directives specific to this type of test.
-* **pinger** - Ping tests initiated by bwping or OWAMP tests initiated by bwping running OWAMP. See :ref:`config_mesh-test_spec-ping` for directives specific to this type of test.
+* **pinger** - Ping tests initiated by ping, bwping or OWAMP tests initiated by bwping running OWAMP. See :ref:`config_mesh-test_spec-ping` for directives specific to this type of test.
 * **traceroute** - Any type of test initiated by bwtraceroute. See :ref:`config_mesh-test_spec-traceroute` for directives specific to this type of test.
 
 .. _config_mesh-test_spec-throughput:
@@ -511,6 +511,15 @@ packet_padding Directive
 :Default: 0
 :Compatibility: 3.3 or later
 
+output_raw Directive
+--------------------
+:Description: This will store the raw owamp results as JSON in the measurement archive. 
+:Syntax: ``output_raw 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
+:Occurrences:  Exactly one
+:Default: 0
+:Compatibility: 4.0 or later
+
 loss_threshold Directive
 ------------------------
 :Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4.
@@ -528,6 +537,7 @@ session_count Directive
 :Compatibility: Deprecated in 3.4.
 
 
+
 .. _config_mesh-test_spec-ping:
 
 Defining Ping Test Parameters
@@ -535,7 +545,7 @@ Defining Ping Test Parameters
 
 test_interval Directive
 ------------------------
-:Description: The time in between ping tests in seconds
+:Description: The time in between ping tests in seconds 
 :Syntax: ``test_interval SECONDS``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Exactly one
@@ -552,7 +562,7 @@ force_bidirectional Directive
 
 ipv4_only Directive
 -------------------
-:Description: Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint
+:Description: Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint (-4)
 :Syntax: ``ipv4_only 0|1``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or one
@@ -561,7 +571,7 @@ ipv4_only Directive
 
 ipv6_only Directive
 -------------------
-:Description: Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint
+:Description: Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint (-6)
 :Syntax: ``ipv6_only 0|1``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or one
@@ -570,7 +580,7 @@ ipv6_only Directive
 
 packet_count Directive
 ----------------------
-:Description: The number of packets to send per test. This multiplied by packet_interval is the duration of the test.
+:Description: The number of packets to send per test. This multiplied by packet_interval is the duration of the test. 
 :Syntax: ``packet_count NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or One
@@ -579,7 +589,7 @@ packet_count Directive
 
 packet_interval Directive
 -------------------------
-:Description: The average time between packets. A decimal value less than one means to send multiple packets per second (e.g. .1 means 10 packets per second). This multiplied by packet_count is the duration of the test.
+:Description: The average time between packets. A decimal value less than one means to send multiple packets per second (e.g. .1 means 10 packets per second). This multiplied by packet_count is the duration of the test. (-i)
 :Syntax: ``packet_interval SECONDS``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or One
@@ -588,18 +598,18 @@ packet_interval Directive
 
 packet_size Directive
 ----------------------
-:Description: The size of packets in bytes.
+:Description: The size of packets in bytes. (ping -s)
 :Syntax: ``packet_size BYTES``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
 :Occurrences:  Zero or One
 :Default: Tool default
 :Compatibility: 3.3 or later
 
 packet_ttl Directive
 ----------------------
-:Description: The TTL to set in the IP header of outgoing packets
+:Description: The TTL to set in the IP header of outgoing packets (ping -t)
 :Syntax: ``packet_ttl TTL``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
 :Occurrences:  Zero or One
 :Default: System default
 :Compatibility: 3.3 or later
@@ -612,6 +622,51 @@ random_start_percentage Directive
 :Occurrences:  Zero or one
 :Default: 10
 :Compatibility: 3.3 or later
+
+flowlabel Directive
+-------------------
+:Description: Set the flow label on echo request packets. (ping6 -F) 
+:Syntax: ``flowlabel FLOWLABEL``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping6*
+:Occurrences:  Zero or One
+:Default: System default
+:Compatibility: 4.0 or later
+
+suppress_loopback Directive
+---------------------------
+:Description: Suppress loopback of multicast packets (ping -L)
+:Syntax: ``suppress_loopback 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
+:Occurrences:  Zero or One
+:Default: System default
+:Compatibility: 4.0 or later
+
+deadline Directive
+------------------
+:Description: Specify a timeout, in seconds, before ping exits regardless of how many packets have been sent  (ping -w)
+:Syntax: ``deadline SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
+:Occurrences:  Zero or One
+:Default: System default
+:Compatibility: 4.0 or later
+
+timeout Directive
+-----------------
+:Description: Time to wait for a response (ping -W)
+:Syntax: ``timeout SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
+:Occurrences:  Zero or One
+:Default: System default
+:Compatibility: 4.0 or later
+
+hostnames Directive
+-------------------
+:Description: Do not try to map IP addresses to host names when displaying them. (ping -n)
+:Syntax: ``hostnames 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *ping*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
 
 .. _config_mesh-test_spec-traceroute:
 
@@ -666,7 +721,7 @@ packet_size Directive
 ------------------------
 :Description: The size of packets to send in bytes when performing the traceroute. **Not supported by tracepath or paris-traceroute**
 :Syntax: ``packet_size BYTES``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *tarceroute*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *traceroute*
 :Occurrences:  Zero or one
 :Default: Tool default
 :Compatibility: 3.3 or later
@@ -722,6 +777,70 @@ random_start_percentage Directive
 :Occurrences:  Zero or one
 :Default: 10
 :Compatibility: 3.3 or later
+
+fragment Directive
+------------------
+:Description: Set the 'do not fragment' bit (traceroute -F)
+:Syntax: ``fragment 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default (1)
+:Compatibility: 4.0 or later
+
+probe_type Directive
+--------------------
+:Description: Sets the Probe type to UDP or ICMP or TCP SYN
+:Syntax: ``probe_type STRING``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+sendwait Directive
+-------------------
+:Description: Minimal time interval between probes (traceroute -z) 
+:Syntax: ``sendwait SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+queries Directive
+------------------
+:Description: Sets the number of probe packets per hop (traceroute -q)
+:Syntax: ``queries NUM``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+wait Directive
+---------------
+:Description: Set the time (in seconds) to wait for a response to a probe (traceroute -w)
+:Syntax: ``wait SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+as Directive
+--------------
+:Description: Perform AS path lookups in routing registries and print results directly after the corresponding addresses. (traceroute -A)
+:Syntax: ``as 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+hostnames Directive
+-------------------
+:Description: Do not try to map IP addresses to host names when displaying them. (traceroute -n)
+:Syntax: ``hostnames 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
 
 pause Directive
 ---------------------------------
