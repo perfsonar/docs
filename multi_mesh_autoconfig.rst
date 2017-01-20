@@ -19,7 +19,7 @@ You may also go even further and build a dynamic list of hosts from the perfSONA
 
 Introducing Host Classes and Tags
 =================================
-There are two main constructs that go into generating dynamic meshes: *host classes* and *tags*. Host classes allow you to describe criteria for a host and its addresses that you want in a test configuration. This is in constrast to the traditional case where you explicitly define the host. You then reference a class instead of a host address in your test groups allowing for any new hosts that match the defined criteria to automatically be included. Let's take a look at a simple example that matches all IP addresses of hosts in the current mesh file with the subnet 10.0.1.0/24::
+There are two main constructs that go into generating dynamic meshes: *host classes* and *tags*. Host classes allow you to describe criteria for a host and its addresses that you want in a test configuration. This is in contrast to the traditional case where you explicitly define the host. You then reference a class instead of a host address in your test groups allowing for any new hosts that match the defined criteria to automatically be included. Let's take a look at a simple example that matches all IP addresses of hosts in the current mesh file with the subnet 10.0.1.0/24::
 
     <host_class>
         name      my_subnet_class

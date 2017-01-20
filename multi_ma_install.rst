@@ -12,7 +12,7 @@ By default the perfSONAR Toolkit is both measurement host AND archive host. It c
 As an alternative, you may decide to separate your measurement hosts and archive host(s). This allows a single "centralized" archive host to store results from multiple measurement hosts. A few use cases where this may be desirable are as follows:
 
 * Your measurement hosts are on less powerful (and likely lower cost) hardware that you don't want having the overhead of running the measurement archive. The measurement archive has higher hardware requirements than the measurement tools, so removing it can result in considerable resource savings.
-* Your site has the experience and the infrastructure to manage large databases that you would like to leverage for storing measurment results on a dedicated archive host.
+* Your site has the experience and the infrastructure to manage large databases that you would like to leverage for storing measurement results on a dedicated archive host.
 * You want to store results in multiple places. For example, you may store your results locally but also store them in a central archive where complex analysis tools operate on all the data from multiple hosts in one location.
 
 Those are just a few examples. If you think a central measurement archive is right for your measurement strategy, then read the remainder of this document for instructions on how to configure both your archive host and measurement hosts.

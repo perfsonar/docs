@@ -4,16 +4,16 @@ Clustering a Measurement Archive
 
 The perfSONAR Measurement Archive software `esmond <http://software.es.net/esmond>`_ is built-on a number of technologies that allow you to run the service across a collection of servers. A collection of servers configured in such a manner is often referred to as a *cluster*. In general, the primary motivation behind running the measurement archive on a cluster is for one or more of the reasons below:
 
-#. *High availability* - If you are running your archive on one server and a component of the software goes down, such as a database, your archive will not be able to service any requests. Clustering can be used to configure things like data replication across servers and failovers to another dataset if a host goes down. 
+#. *High availability* - If you are running your archive on one server and a component of the software goes down, such as a database, your archive will not be able to service any requests. Clustering can be used to configure things like data replication across servers and fail over to another dataset if a host goes down. 
 #. *Load balancing* - If your measurement archive is servicing a large number of requests, you may want to create a cluster so multiple servers can share the load. There are number of strategies for doing this such as round-robing requests or splitting read and write operations.
 
 The esmond software is built on three primary components all capable of being configured in a cluster. The components are:
 
-#. `Cassandra <https://cassandra.apache.org>`_ - This is the database that stores the results of a measurement. Cassandra was designed with *horizontal scaling* in mind and as such provides a number of options for data replication, failovers, load balancing and adding/removing/replacing nodes over time. See :ref:`multi_ma_clustering-cassandra` for more details.
-#. `PostgreSQL <http://www.postgresql.org>`_ - This is the database that stores measurement metadata (description about the tests run such as the type of test and the parameters used). It also stores the usernames, API keys and/or authorized IP addresses that are used to add new information to esmond. PostgreSQL supports a number of data replication options and tools exist to support failovers and load balancing. See :ref:`multi_ma_clustering-postgresql`
-#. `Apache httpd <http://www.postgresql.org>`_ - Esmond runs on the Apache HTTPD web server. Apache has a number of options for handling failovers and load balancing that are detailed in :ref:`multi_ma_clustering-httpd`.
+#. `Cassandra <https://cassandra.apache.org>`_ - This is the database that stores the results of a measurement. Cassandra was designed with *horizontal scaling* in mind and as such provides a number of options for data replication, fail over, load balancing and adding/removing/replacing nodes over time. See :ref:`multi_ma_clustering-cassandra` for more details.
+#. `PostgreSQL <http://www.postgresql.org>`_ - This is the database that stores measurement metadata (description about the tests run such as the type of test and the parameters used). It also stores the usernames, API keys and/or authorized IP addresses that are used to add new information to esmond. PostgreSQL supports a number of data replication options and tools exist to support fail-overs and load balancing. See :ref:`multi_ma_clustering-postgresql`
+#. `Apache httpd <http://www.postgresql.org>`_ - Esmond runs on the Apache HTTPD web server. Apache has a number of options for handling fail-overs and load balancing that are detailed in :ref:`multi_ma_clustering-httpd`.
 
-You may cluster some or all of the components if you so choose. For example, you could have a cassandra cluster but run PostgreSQL and Apache on a single server. It should also be noted that all of these components have been around for a number of years and the documentation that exists on clustering them is extensive. This document will do its best to identify key features and common configurations but is by no means an exhaustive list. It is highly recommended you consult each components documentation before embarking on an attempt to create a clustered configuration. 
+You may cluster some or all of the components if you so choose. For example, you could have a Cassandra cluster but run PostgreSQL and Apache on a single server. It should also be noted that all of these components have been around for a number of years and the documentation that exists on clustering them is extensive. This document will do its best to identify key features and common configurations but is by no means an exhaustive list. It is highly recommended you consult each components documentation before embarking on an attempt to create a clustered configuration. 
 
 .. _multi_ma_clustering-cassandra:
 
@@ -27,24 +27,24 @@ Cassandra is the component that holds all of the measurement results. Cassandra 
 #. The number of nodes in your cluster
 #. The replication_factor of your dataset
 
-There are of course other factors, but these are fundamental to getting a basic cluster working. The replication_factor is the total number of complete copies of the data that live in the cluster. For example, let's say we have two nodes and the replication_factor is 1. In this case there is 1 copy of data distributed between the two nodes. Cassandra organizes itself in a token ring, and evenly distributes data amongst each host. In this case that means each node has roughly 50% of the data at a given time. That also means, if one of the nodes goes down, we lose half our data and cassandra cannot run. 
+There are of course other factors, but these are fundamental to getting a basic cluster working. The replication_factor is the total number of complete copies of the data that live in the cluster. For example, let's say we have two nodes and the replication_factor is 1. In this case there is 1 copy of data distributed between the two nodes. Cassandra organizes itself in a token ring, and evenly distributes data amongst each host. In this case that means each node has roughly 50% of the data at a given time. That also means, if one of the nodes goes down, we lose half our data and Cassandra cannot run. 
 
 As another example, let's say we still have two nodes but the replication factor is increased to 2. This means that our cluster will keep 2 copies of the data distributed evenly among the nodes. Each node has 100% of the data, so 1 node may go down and our archive can still access the complete set of data.  The main takeaway from this example is that **increasing the replication factor has increased the number of nodes we can tolerate as down**.
 
-As a final example, let's say we keep the replication_factor fixed at 2 but increase to 10 nodes. How many nodes can go down without affecting the cluster? The answer is still only 1. The reason is that adding more nodes further distributes the data amongst the host, with each having roughly 20% of the data (2 replicas divided by 10 hosts = 20% each) but does not increase the number of copies. Thus if we lose 2 nodes, we have no way guaranteeing they didn't overlap in the data they contained. In general, you can only support (replication_factor - 1) hosts going down regadless the number of nodes. In other words, **increasing the number of nodes increases data distribution, but does not increase fault tolerance unless there is a corresponding increase in the replication_factor**.
+As a final example, let's say we keep the replication_factor fixed at 2 but increase to 10 nodes. How many nodes can go down without affecting the cluster? The answer is still only 1. The reason is that adding more nodes further distributes the data amongst the host, with each having roughly 20% of the data (2 replicas divided by 10 hosts = 20% each) but does not increase the number of copies. Thus if we lose 2 nodes, we have no way guaranteeing they didn't overlap in the data they contained. In general, you can only support (replication_factor - 1) hosts going down regardless the number of nodes. In other words, **increasing the number of nodes increases data distribution, but does not increase fault tolerance unless there is a corresponding increase in the replication_factor**.
 
 Those are the basic ideas but there are lots more details published if you are interested. For more information on how Cassandra distributes data see the `Datastax Cassandra Documentation <http://docs.datastax.com/en/cassandra/2.0/cassandra/architecture/architectureDataDistributeAbout_c.html>`_.
 
 Initializing the Cluster
 ------------------------
-Assuming you have read about clustering cassandra, decided it is the best course and identified an initial set of nodes to use in your cluster, you are ready to start configuring your cluster. It is highly recommended you read the `Datastax Cluster Initialization <http://docs.datastax.com/en/cassandra/2.0/cassandra/initialize/initializeTOC.html>`_ page for specifics on how build your cluster. We will go through a simple two node example in this document to give a general idea of the process, but for more information it is highly recommended you see the official documentation.
+Assuming you have read about clustering Cassandra, decided it is the best course and identified an initial set of nodes to use in your cluster, you are ready to start configuring your cluster. It is highly recommended you read the `Datastax Cluster Initialization <http://docs.datastax.com/en/cassandra/2.0/cassandra/initialize/initializeTOC.html>`_ page for specifics on how build your cluster. We will go through a simple two node example in this document to give a general idea of the process, but for more information it is highly recommended you see the official documentation.
 
 Now, Let's assume we have a two node cluster we wish to initialize. Our nodes have IP addresses 10.0.1.35 and 10.0.1.36 respectively. The steps to configure these into a cluster are as follows:
 
 #. `Install cassandra <http://docs.datastax.com/en/cassandra/2.0/cassandra/install/install_cassandraTOC.html>`_ on each node
 #. On each node you will need to open the following firewall ports:
     * **TCP ports 7000 and 7001** are needed for internode communication. These are only used between cassandra servers so you only need to allow the other hosts in the cluster to connect to these ports. 
-    * **TCP port 9160** is needed so esmond can communicate with the cassandra servers. You may firewall this port so only the host(s) with the esmond package installed may reach this port.
+    * **TCP port 9160** is needed so esmond can communicate with the Cassandra servers. You may firewall this port so only the host(s) with the esmond package installed may reach this port.
     * You will also want **TCP port 7199** open **FOR LOCALHOST ONLY** so that you may run the ``nodetool`` command to get the status of and perform various administrator tasks on the cluster.
     
     .. seealso:: See the `Datastax Firewall Documentation <http://docs.datastax.com/en/cassandra/2.0/cassandra/security/secureFireWall_r.html>`_ for more details.
@@ -172,7 +172,7 @@ Using HAProxy and keepalived is a good approach if any of the following holds tr
 
 * You expect a lot of requests (which you probably do or you wouldn't be load balancing) and want a highly scalable solution.
 * You want to automatically remove servers from the load balancing pool if they go down
-* You want to have automatic failovers if a load balancer goes down
+* You want to have automatic fail-overs if a load balancer goes down
 * You would like a load balancer that works with more than just HTTPD, such as PostgreSQL
 * You are familiar with the tools or are willing to learn something new
 

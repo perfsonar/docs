@@ -8,7 +8,7 @@ Other Tools used by perfSONAR
 - tracepath_
 - paris-traceroute_
 - ping_
-- bwctl_  (Note: bwctl will be depricated in the next release)
+- bwctl_  (Note: bwctl will be deprecated in the next release)
 
 .. _iperf3: http://software.es.net/iperf
 .. _nuttcp: https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/nuttcp/

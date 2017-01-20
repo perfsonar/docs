@@ -2,7 +2,7 @@
 Toolkit Installation Quick Start
 *********************************
 
-These instructions are for the full Toolkit installation. For other perfSONAR installtion options, see :doc:`install_options`.
+These instructions are for the full Toolkit installation. For other perfSONAR installation options, see :doc:`install_options`.
 
 #. Download the NetInstall ISO from :centos_netinstall_iso:`here <x86_64>`
 
@@ -48,7 +48,7 @@ These instructions are for the full Toolkit installation. For other perfSONAR in
 
     .. image:: images/install_quick_start-test-results.png
 
-    .. warning:: It will take time for data to be collected and display on the graphs. For throughput data this may be serveral hours depending on the test interval. For all other test types, you should see data within 30 minutes.
+    .. warning:: It will take time for data to be collected and display on the graphs. For throughput data this may be several hours depending on the test interval. For all other test types, you should see data within 30 minutes.
     .. seealso:: For more information on using the graphs :doc:`using_graphs`
 
 

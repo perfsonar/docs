@@ -148,7 +148,7 @@ Important Scripts
 
 Start-up Script
 ##########################
-:Description: The script used to start/stop/restart a LS Registation Daemon server
+:Description: The script used to start/stop/restart a LS Registration Daemon server
 :RedHat 6(<v3.5.1): ``/etc/init.d/ls_registration_daemon``
 :RedHat 6: ``/etc/init.d/perfsonar-lsregistrationdaemon``
 :RedHat 7: ``systemctl perfsonar-lsregistrationdaemon start|stop|restart``

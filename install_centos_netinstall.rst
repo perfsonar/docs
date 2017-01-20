@@ -62,7 +62,7 @@ Step-by-Step Guide using graphical installer
         #. Select **KEYBOARD** and choose your keyboard layout and select **Done** to continue.
             .. image:: images/install_netinstall-install-summary-keyboard.png
             
-        **Special Topic: Instalation destination**
+        **Special Topic: Installation destination**
         
         #. Scroll down the screen and select **INSTALLATION DESTINATION** to choose where you would like to install the operating system and how you would like to partition the drive. 
         #. First select the device you would like to install to by clicking on a selected **Local Standard Disks**.

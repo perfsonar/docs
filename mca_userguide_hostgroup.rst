@@ -98,7 +98,7 @@ You can also access host object which is sparsely populated (not all attributes 
         "ip": "134.76.97.128"
     }
 
-Sample Criterias
+Sample Criteria
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Select all hosts from ALGT2 site**

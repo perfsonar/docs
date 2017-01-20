@@ -2,7 +2,7 @@
 Reading Log Files
 *****************
 
-The tools and services running on your host keep log files of major activity. The perfSONAR Toolkit provides utilities for exposing these logs via the web interface as well as tools to analyze their results. This page decribes the log files available and the additional tools provided for analyzing them.
+The tools and services running on your host keep log files of major activity. The perfSONAR Toolkit provides utilities for exposing these logs via the web interface as well as tools to analyze their results. This page describes the log files available and the additional tools provided for analyzing them.
 
 Important Log Files
 ===================

@@ -4,7 +4,7 @@ Firewalls and Security Software
 
 The perfSONAR Toolkit utilizes a number of tools the help protect against attacks on the system. Some of these tools include:
  
-    * A default set of iptables and ip6tables firewall rules that only allow connections to ports required by perfSONAR tools.
+    * A default set of iptables and ip6tables (or firewalld for CentOS7) rules that only allow connections to ports required by perfSONAR tools.
     * Inclusion of the `fail2ban`_ intrusion detection system (IDS) to log suspicious activity such as brute-force SSH attacks
 
 None of these solutions will protect your host from all kinds of attacks so best common practices and good sense should be used when administering your host. In addition to tools like above it's important :doc:`update your host <manage_update>` with the latest packages and to watch the `mailing lists <http://www.perfsonar.net/about/getting-help/>`_ for important security announcements. 
@@ -132,7 +132,7 @@ An example that will block access to port 8000 for all traffic is shown in the s
         27   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8090 
         28   RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
   
-  .. note:: Prior to version 3.4, custom firewall rules were not handled properly. As such you may find that when upgrading from versions older than 3.4 that you will lose any custom rules. Following the steps above should ensure your rules are maintained for updates beyond 3.4 in the foreseeable future.
+ 
 
 Fail2ban Intrusion Detection System
 ====================================
