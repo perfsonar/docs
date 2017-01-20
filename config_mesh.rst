@@ -357,7 +357,7 @@ streams Directive
 
 tos_bits Directive
 ------------------
-:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-63.
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
 :Syntax: ``tos_bits NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Zero or one
@@ -531,7 +531,7 @@ output_raw Directive
 
 tos_bits Directive
 ------------------
-:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-63.
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
 :Syntax: ``tos_bits NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
 :Occurrences:  Zero or one
@@ -670,7 +670,7 @@ hostnames Directive
 
 tos_bits Directive
 ------------------
-:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-63.
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
 :Syntax: ``tos_bits NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or one
@@ -761,7 +761,7 @@ You can specify on of the following tools for a traceroute test:
 
 tos_bits Directive
 ------------------
-:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-63.
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
 :Syntax: ``tos_bits NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
 :Occurrences:  Zero or one
