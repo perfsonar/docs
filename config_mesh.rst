@@ -616,7 +616,7 @@ random_start_percentage Directive
 :Compatibility: 3.3 or later
 
 flow_label Directive
--------------------
+--------------------
 :Description: Set the flow label on echo request packets. (ping6 -F) 
 :Syntax: ``flow_label FLOWLABEL``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping6*
