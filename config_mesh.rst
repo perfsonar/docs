@@ -251,7 +251,7 @@ tool Directive
 
 duration Directive
 -------------------
-:Description: The length to run each throughput test in seconds
+:Description: The length to run each throughput test in seconds, or in ISO8601 format (e.g.: "PT10S")
 :Syntax: ``duration SECONDS``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Exactly one
@@ -259,7 +259,7 @@ duration Directive
 
 interval Directive
 -------------------
-:Description: The time in between throughput tests in seconds
+:Description: The time in between throughput tests in seconds, or in ISO8601 format (e.g.: "PT10S")
 :Syntax: ``interval SECONDS``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Exactly one
@@ -393,7 +393,7 @@ udp_bandwidth Directive
 
 window_size Directive
 ---------------------
-:Description: TCP window size (in bytes). 0 indicates system defaults
+:Description: TCP window size (in bytes). Can use K or M to indicate Kilo or Mega bytes. 
 :Syntax: ``window_size NUMBYTES``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp*
 :Occurrences:  Zero or one
@@ -615,10 +615,10 @@ random_start_percentage Directive
 :Default: 10
 :Compatibility: 3.3 or later
 
-flowlabel Directive
+flow_label Directive
 -------------------
 :Description: Set the flow label on echo request packets. (ping6 -F) 
-:Syntax: ``flowlabel FLOWLABEL``
+:Syntax: ``flow_label FLOWLABEL``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping6*
 :Occurrences:  Zero or One
 :Default: System default
