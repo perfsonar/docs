@@ -106,7 +106,7 @@ Step 3: Verify NTP and Tuning Parameters
 
 * **System Tuning**
   
-  It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that cubic, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  If you have installed the ``perfsonar-toolkit-sysctl`` package, all should be ready for you.
+  It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp or cubic, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  If you have installed the ``perfsonar-toolkit-sysctl`` package, all should be ready for you.
 
   Please refer to `linux host tuning <http://fasterdata.es.net/host-tuning/linux/>`_ for more information.
 
@@ -163,7 +163,7 @@ Full perfSONAR toolkit upgrades might still need a manual intervention to proper
 Step 6: Register your services 
 ------------------------------- 
 
-In order to publish the existence of your measurement services there is a single file with some details about your host. You may edit this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. However in most cases, the defaults of this file will be suitable and you should not need to make any changes. The auto-discovery directives indicate whether the system automatically determines the value of any property not manually set in this file. The properties you may additionaly set are administrative data like for example administrator's name, email, site_name, city, country, latitude, longitude, etc. None of them are required but it is highly recommended you set them since it will make finding your services easier for others. More information on the available fields can be found in :doc:`config_ls_registration`. 
+In order to publish the existence of your measurement services there is a single file with some details about your host. You may edit this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. However in most cases, the defaults of this file will be suitable and you should not need to make any changes. The auto-discovery directives indicate whether the system automatically determines the value of any property not manually set in this file. The properties you may additionally set are administrative data like for example administrator's name, email, site_name, city, country, latitude, longitude, etc. None of them are required but it is highly recommended you set them since it will make finding your services easier for others. More information on the available fields can be found in :doc:`config_ls_registration`. 
 
 After configuring the registration daemon you need to start it using the following command:
 ::

@@ -4,7 +4,7 @@ Operational Guide
 Service Status
 ===============
 
-MCA uses pm2 to monitor various MCA realted services and load-balance incoming requests. You can see a list of services by ..
+MCA uses pm2 to monitor various MCA related services and load-balance incoming requests. You can see a list of services by ..
 
 ::
 

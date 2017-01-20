@@ -4,7 +4,7 @@ MeshConfig Administrative GUI
 
 .. note:: BETA
 
-MeshConfig Administrator (MCA) is a web UI for toolkit adminitrators to publish MeshConfig which automates tests executed by tookit agent, and provides topology information to various services such as MadDash, OSG/WLCG datastore, and others.
+MeshConfig Administrator (MCA) is a web UI for toolkit administrators to publish MeshConfig which automates tests executed by toolkit agent, and provides topology information to various services such as MadDash, OSG/WLCG datastore, and others.
 
 .. image:: images/mca/index.png
     :width: 450px

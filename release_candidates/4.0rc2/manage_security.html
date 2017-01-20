@@ -77,7 +77,7 @@
 <p>The perfSONAR Toolkit utilizes a number of tools the help protect against attacks on the system. Some of these tools include:</p>
 <blockquote>
 <div><ul class="simple">
-<li>A default set of iptables and ip6tables firewall rules that only allow connections to ports required by perfSONAR tools.</li>
+<li>A default set of iptables and ip6tables (or firewalld for CentOS7) rules that only allow connections to ports required by perfSONAR tools.</li>
 <li>Inclusion of the <a class="reference external" href="http://www.fail2ban.org">fail2ban</a> intrusion detection system (IDS) to log suspicious activity such as brute-force SSH attacks</li>
 </ul>
 </div></blockquote>
@@ -91,7 +91,6 @@
 <p>The rules added by the perfSONAR toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update.</p>
 <p>An example that will block access to port 8000 for all traffic is shown in the steps below (note it is not recommended you run this command as it will block access to the NPAD tool):</p>
 <blockquote>
-<div><blockquote>
 <div><ol class="arabic">
 <li><p class="first">Login to your host via SSH or the terminal as a root user</p>
 </li>
@@ -213,11 +212,6 @@ num  target     prot opt source               destination
 </div>
 </li>
 </ol>
-</div></blockquote>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Prior to version 3.4, custom firewall rules were not handled properly. As such you may find that when upgrading from versions older than 3.4 that you will lose any custom rules. Following the steps above should ensure your rules are maintained for updates beyond 3.4 in the foreseeable future.</p>
-</div>
 </div></blockquote>
 </div>
 <div class="section" id="fail2ban-intrusion-detection-system">

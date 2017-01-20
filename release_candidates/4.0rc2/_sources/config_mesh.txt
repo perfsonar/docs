@@ -180,7 +180,7 @@ type Directive
 
 This specifies the type of data to be stored. The supported values refer to an older version of the perfSONAR software where different data types were stored in different archives. Even if the data ultimately ends up in the same archive you need to define multiple <measurement_archive> directives for each type of data you plan to store. The types have the following meanings:
 
-* **perfsonarbuoy/bwctl** - Throughput tests such as those initated by BWCTL running iperf or iperf3
+* **perfsonarbuoy/bwctl** - Throughput tests such as those initiated by BWCTL running iperf or iperf3
 * **perfsonarbuoy/owamp** - OWAMP tests initiated by the powstream tool
 * **pinger** - Ping tests initiated by ping, bwping or OWAMP tests initiated by bwping running OWAMP
 * **traceroute** - Any type of test initiated by bwtraceroute
@@ -231,7 +231,7 @@ type Directive
 
 The types have the following meanings:
 
-* **perfsonarbuoy/bwctl** - Throughput tests such as those initated by BWCTL running iperf or iperf3. See :ref:`config_mesh-test_spec-throughput` for directives specific to this type of test.
+* **perfsonarbuoy/bwctl** - Throughput tests such as those initiated by BWCTL running iperf or iperf3. See :ref:`config_mesh-test_spec-throughput` for directives specific to this type of test.
 * **perfsonarbuoy/owamp** - OWAMP tests initiated by the powstream tool. See :ref:`config_mesh-test_spec-owamp` for directives specific to this type of test.
 * **pinger** - Ping tests initiated by ping, bwping or OWAMP tests initiated by bwping running OWAMP. See :ref:`config_mesh-test_spec-ping` for directives specific to this type of test.
 * **traceroute** - Any type of test initiated by bwtraceroute. See :ref:`config_mesh-test_spec-traceroute` for directives specific to this type of test.
@@ -314,7 +314,7 @@ omit_interval Directive
 -------------------------
 :Description: The time to ignore results at the beginning of a test in seconds. Useful for excluding TCP ramp-up time. Note that this is added to the duration (e.g. omit_interval of 5 and duration 30 leads to a 35 second test).
 :Syntax: ``omit_interval SECONDS``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp* and tool is *iperf3*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp* and tool is *iperf3*
 :Occurrences:  Zero or one
 :Default: 0
 :Compatibility: 3.3 or later
@@ -393,9 +393,9 @@ udp_bandwidth Directive
 
 window_size Directive
 ---------------------
-:Description: TCP window size (bytes) 0 indicates system defaults
+:Description: TCP window size (in bytes). 0 indicates system defaults
 :Syntax: ``window_size NUMBYTES``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp*
 :Occurrences:  Zero or one
 :Default: 0 (i.e. use endpoint host default)
 :Compatibility: 3.3 or later
@@ -413,16 +413,16 @@ congestion Directive
 --------------------
 :Description: Use this TCP congestion control algorithm (cubic, htcp, bbr, etc)
 :Syntax: ``congestion VALUE``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp* and tool is *iperf3*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp* and tool is *iperf3*
 :Occurrences:  Zero or one
-:Default: not set
+:Default: not set, will use system default
 :Compatibility: 4.0 or later
 
 no_delay Directive
 ------------------
 :Description: Set TCP_NODELAY option for the tests
 :Syntax: ``no_delay 0|1``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp*
 :Occurrences:  Zero or one
 :Default: not set
 :Compatibility: 4.0 or later
@@ -430,7 +430,7 @@ no_delay Directive
 client_cpu_affinity Directive
 -----------------------------
 :Description: which cores to use for the client tool (useful for 40/100G NUMA hosts)
-:Syntax: ``client_cpu_affinity NUMBER|NUMBER-NUMBER`` Single core ID or range of cores
+:Syntax: ``client_cpu_affinity NUMBER`` CPU socket ID, used to start tool with 'numactl -N ID'
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Zero or one
 :Default: not set
@@ -439,8 +439,17 @@ client_cpu_affinity Directive
 server_cpu_affinity Directive
 -----------------------------
 :Description: which cores to use for the server tool (useful for 40/100G NUMA hosts)
-:Syntax: ``server_cpu_affinity NUMBER|NUMBER-NUMBER`` Single core ID or range of cores
+:Syntax: ``server_cpu_affinity NUMBER`` CPU socket ID, used to start tool with 'numactl -N ID'
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+flow_label Directive
+---------------------
+:Description: set the IPv6 flow label (iperf3 -L)
+:Syntax: ``flow_label FLOWLABEL`` 
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and tool is *iperf3*
 :Occurrences:  Zero or one
 :Default: not set
 :Compatibility: 4.0 or later
@@ -519,23 +528,6 @@ output_raw Directive
 :Occurrences:  Exactly one
 :Default: 0
 :Compatibility: 4.0 or later
-
-loss_threshold Directive
-------------------------
-:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4.
-:Syntax: ``loss_threshold SECONDS``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
-:Occurrences:  Exactly one
-:Compatibility: Deprecated in 3.4.
-
-session_count Directive
------------------------
-:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4.
-:Syntax: ``session_count NUMBER``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
-:Occurrences:  Exactly one
-:Compatibility: Deprecated in 3.4.
-
 
 
 .. _config_mesh-test_spec-ping:
@@ -790,7 +782,7 @@ fragment Directive
 probe_type Directive
 --------------------
 :Description: Sets the Probe type to UDP or ICMP or TCP SYN
-:Syntax: ``probe_type STRING``
+:Syntax: ``probe_type icmp|udp|tcp``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
 :Occurrences:  Zero or one
 :Default: system default 
@@ -841,24 +833,15 @@ hostnames Directive
 :Default: system default 
 :Compatibility: 4.0 or later
 
-
-pause Directive
----------------------------------
-:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4
-:Syntax: ``pause SECONDS``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+algorithm Directive
+-------------------
+:Description: Sets the algorithm used by paris-traceroute (paris-traceroute -a)
+:Syntax: ``algorithm hopbyhop|packetbypacket|concurrent|scout|exhaustive``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *paris-traceroute*
 :Occurrences:  Zero or one
-:Default: Underlying tool default
-:Compatibility: Deprecated in 3.4.
+:Default: system default 
+:Compatibility: 4.0 or later
 
-waittime Directive
----------------------------------
-:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4
-:Syntax: ``waittime SECONDS``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
-:Occurrences:  Zero or one
-:Default: Underlying tool default
-:Compatibility: Deprecated in 3.4.
 
 Defining Test Topology
 ======================

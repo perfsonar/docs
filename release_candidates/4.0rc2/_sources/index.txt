@@ -52,8 +52,6 @@ Using the perfSONAR Toolkit
    :maxdepth: 2
    
    using_graphs
-   using_ndt
-   using_npad
    using_ext_tools
 
 Additional Installation Options

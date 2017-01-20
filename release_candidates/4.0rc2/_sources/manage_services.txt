@@ -28,7 +28,7 @@ Name                 Default Enabled     Description
 ==================== =================== ==================================================================
 **esmond**           Yes                 Controls *esmond* service that keeps data in measurement archive.
 **lsregistration**   Yes                 Controls *perfsonar-lsregistrationdaemon* service that allows host to register records in the Lookup Service.
-**meshconfig-agent** Yes                 Controls *perfsonar-meshconfig-agent* service that cooridnates various test definitions and manages them in pscheduler.
+**meshconfig-agent** Yes                 Controls *perfsonar-meshconfig-agent* service that coordinates various test definitions and manages them in pscheduler.
 **pscheduler**       Yes                 Controls *pscheduler-scheduler* service that is used for the scheduling and supervision of automated measurements and sending the results off for storage.
 ==================== =================== ==================================================================
 
@@ -36,7 +36,7 @@ Choosing Services to Enable
 ===========================
 It is important to understand what services might impact other services. For example, if you run throughput tests (e.g. bwctl/pscheduler + iperf3) and latency/loss tests (e.g. owamp ) on the same network interface, the throughput tests will possibly cause the host to drop packets. This may lead to a misleading interpretation of data if these events are not properly correlated. In general it is recommended you use the following guidelines when deciding which services to enable:
 
-* BWCTL/pscheduler throughput and OWAMP tests **should** be run on separate hosts or interfaces (see :doc:`manage_dual_xface`) for best results that minimise risk of interference
+* BWCTL/pscheduler throughput and OWAMP tests **should** be run on separate hosts or interfaces (see :doc:`manage_dual_xface`) for best results that minimize risk of interference
 * If the above is not possible, you **may** run them on the same host and interface, but be conscious that you will need to work diligently to rule out network performance issues caused by overlapping tests
 * NDT and NPAD **should not** be run on hosts also running regular tests of any type. Their tests may interfere with regular tests and the administrator has less control over when they occur since they are run on-demand by an end-user.
 

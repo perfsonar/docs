@@ -67,7 +67,7 @@ Let's take a quick look at a simple example::
 
     <test_spec bwctl_test>
       type              perfsonarbuoy/bwctl  # Perform a bwctl test (i.e. achievable bandwidth)
-      tool              bwctl/iperf3         # Use 'iperf' to do the bandwidh test
+      tool              bwctl/iperf3         # Use 'iperf' to do the bandwidth test
       protocol          tcp                  # Run a TCP bandwidth test
       interval          21600                # Run the test every 6 hours
       duration          20                   # Perform a 20 second test

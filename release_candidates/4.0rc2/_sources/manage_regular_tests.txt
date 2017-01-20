@@ -51,7 +51,7 @@ Adding Regular Tests
 #. A drop-down list shows to choose the :ref:`test type<manage_reg_tests_types>`. Click on a selected test type you would like to add.
 
     .. image:: images/manage_regular_tests-tests-add-test-type.png
-#. A new window will appear prompting you for the parameters of the test. Each test contains a **Test name/description** field you are required to define. The **Test name/description** is a human-readable string and will only be used on this interface to identify the test. In order to access additional test paramteres click **+Advanced Parameters**. The tables below describe remaining parameters including *Advanced Parameters*:
+#. A new window will appear prompting you for the parameters of the test. Each test contains a **Test name/description** field you are required to define. The **Test name/description** is a human-readable string and will only be used on this interface to identify the test. In order to access additional test parameters click **+Advanced Parameters**. The tables below describe remaining parameters including *Advanced Parameters*:
 
     .. _manage_reg_tests_add_params:
 
@@ -264,7 +264,7 @@ Changing Test Member IP Address Settings
 -----------------------------------------
 When you add a new test member, the configuration automatically determines if you should the test should run using IPv4, IPv6 or both. See the :ref:`discussion <manage_reg_tests_add_ip_type>` on IP type when adding a new test for more details on the default behavior. If you would like to override the default behavior or update the host address do the following:
 
-#. In the **Configure Test** configuration page, uder **Test members** section find the test member you would like to update and select the desired protocol type.
+#. In the **Configure Test** configuration page, under **Test members** section find the test member you would like to update and select the desired protocol type.
     
     .. image:: images/manage_regular_tests-tests-change-member-ip.png
 

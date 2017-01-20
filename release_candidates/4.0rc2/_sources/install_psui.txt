@@ -37,7 +37,7 @@ For the perfsonarUI to be able to work properly, you need to provide the followi
 Debian and RHEL package systems are able to automatically satisfy perfsonarUI's dependency to Tomcat or Tomcat could be installed beforehand through default repositories.
 
 
-Installing on Linux using repositotry
+Installing on Linux using repository
 =====================================
 
 Recommended way of installation of perfsonarUI is by adding the perfSONAR repositories and installing the package using native packaging system.

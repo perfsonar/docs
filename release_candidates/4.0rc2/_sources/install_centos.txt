@@ -25,7 +25,7 @@ Installation
 
 Step 1: Configure Yum 
 ---------------------- 
-The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below as priviledged user:
+The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below as privileged user:
 
 #. Install the EPEL RPM:
     *CentOS 6*::
