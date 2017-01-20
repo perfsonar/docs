@@ -14,7 +14,6 @@ Main Configuration File
 ##########################
 
 :Description: The main configuration file for a BWCTL server
-:RedHat (<v1.6): ``/etc/bwctld/bwctld.conf``
 :RedHat: ``/etc/bwctl-server/bwctl-server.conf``
 :Debian: ``/etc/bwctl-server/bwctl-server.conf``
 :Documentation: :doc:`config_bwctl`
@@ -25,7 +24,6 @@ Limits File
 ##########################
 
 :Description: The BWCTL limits file that defines authentication and authorization parameters for testing
-:RedHat (<v1.6): ``/etc/bwctld/bwctld.limits``
 :RedHat: ``/etc/bwctl-server/bwctl-server.limits``
 :Debian: ``/etc/bwctl-server/bwctl-server.limits``
 :Documentation: :doc:`config_bwctl_limits`
@@ -40,7 +38,6 @@ Start-up Script
 ##########################
 
 :Description: The script used to start/stop/restart a BWCTL server
-:RedHat 6 (<v1.6): ``/etc/init.d/bwctld start|stop|restart``
 :RedHat 6: ``/etc/init.d/bwctl-server start|stop|restart``
 :RedHat 7: ``systemctl start|stop|restart bwctl-server``
 :Debian: ``/etc/init.d/bwctl-server start|stop|restart``
@@ -68,7 +65,6 @@ Configuration Files
 Main Configuration File 
 #######################
 :Description: The main configuration file for esmond
-:RedHat (<v2.0): ``/opt/esmond/esmond.conf``
 :RedHat: ``/etc/esmond/esmond.conf``
 :Debian: ``/etc/esmond/esmond.conf``
 :Documentation: *N/A*
@@ -81,7 +77,6 @@ Important Scripts
 Start-up Script
 ##########################
 :Description: Esmond is started/stopped/restarted when HTTPD is started/stopped/restarted 
-:RedHat 6 (<v4.0): ``/etc/init.d/httpd start|stop|restart``
 :RedHat 6: ``/etc/init.d/httpd24-httpd start|stop|restart``
 :RedHat 7: ``systemctl httpd start|stop|restart``
 :Debian: ``/etc/init.d/httpd``
@@ -91,7 +86,6 @@ Start-up Script
 Data Cleaner
 ##########################
 :Description: Cleans out old esmond data given a policy file.
-:RedHat (<v2.0): ``/opt/esmond/utils/ps_remove_data.py``
 :RedHat: ``/usr/lib/esmond/utils/ps_remove_data.py``
 :Debian: ``/usr/share/esmond/util/ps_remove_data.py``
 :Documentation: :ref:`multi_ma_backups-delete`
@@ -126,7 +120,6 @@ Configuration Files
 Main Configuration File
 #############################
 :Description: The main configuration file for the LS Registration Daemon that describes what you want registered in the Lookup Service.
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/ls_registration_daemon/etc/ls_registration_daemon.conf``
 :RedHat: ``/etc/perfsonar/lsregistrationdaemon.conf``
 :Debian: ``/etc/perfsonar/lsregistrationdaemon.conf``
 :Documentation: :doc:`config_ls_registration`
@@ -136,7 +129,6 @@ Main Configuration File
 Logging Configuration File
 #############################
 :Description: Configuration file for setting log location, level of detail and various other log-related settings.
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/ls_registration_daemon/etc/ls_registration_daemon-logger.conf``
 :RedHat: ``/etc/perfsonar/lsregistrationdaemon-logger.conf``
 :Debian: ``/etc/perfsonar/lsregistrationdaemon-logger.conf``
 :Documentation: `Log4perl Reference <http://search.cpan.org/~mschilli/Log-Log4perl-1.46/lib/Log/Log4perl.pm>`_
@@ -149,7 +141,6 @@ Important Scripts
 Start-up Script
 ##########################
 :Description: The script used to start/stop/restart a LS Registration Daemon server
-:RedHat 6(<v3.5.1): ``/etc/init.d/ls_registration_daemon``
 :RedHat 6: ``/etc/init.d/perfsonar-lsregistrationdaemon``
 :RedHat 7: ``systemctl perfsonar-lsregistrationdaemon start|stop|restart``
 :Debian: ``/etc/init.d/perfsonar-lsregistrationdaemon``
@@ -163,7 +154,6 @@ Log Files
 Primary Log file
 ##########################
 :Description: The log file to which the LS Registration daemon writes to as configured in the default :ref:`logging configuration file <config_files-lsreg-conf-logging>`
-:RedHat (<v3.5.1): ``/var/log/perfsonar/ls_registration_daemon.log``
 :RedHat: ``/var/log/perfsonar/lsregistrationdaemon.log`` 
 :Debian: ``/var/log/perfsonar/lsregistrationdaemon.log`` 
 
@@ -179,8 +169,6 @@ Configuration Files
 Agent Configuration File
 #############################
 :Description: The configuration file used by clients to download a mesh and build a local test configuration
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/mesh_config/etc/agent_configuration.conf``
-:Debian (<v3.5.1): ``/etc/perfsonar/agentconfiguration.conf``
 :RedHat: ``/etc/perfsonar/meshconfig-agent.conf``
 :Debian: ``/etc/perfsonar/meshconfig-agent.conf``
 :Documentation: :doc:`config_mesh_agent`
@@ -200,8 +188,6 @@ Agent Tasks File
 GUI Agent Configuration File
 #############################
 :Description: The configuration file used to download a mesh and build a `MaDDash <http://software.es.net/maddash>`_ configuration
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/mesh_config/etc/gui_agent_configuration.conf``
-:Debian (<v3.5.1): ``/etc/perfsonar/guiagentconfiguration.conf``
 :RedHat: ``/etc/perfsonar/meshconfig-guiagent.conf``
 :Debian: ``/etc/perfsonar/meshconfig-guiagent.conf``
 
@@ -212,8 +198,6 @@ GUI Agent Configuration File
 Dynamic Host Lookup Configuration File
 #######################################
 :Description: The configuration file used to contact the lookup service and build a set of hosts to be used in the mesh
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/mesh_config/etc/lookup_hosts.conf``
-:Debian (<v3.5.1): ``/etc/perfsonar/lookuphosts.conf``
 :RedHat: ``/etc/perfsonar/meshconfig-lookuphosts.conf``
 :Debian: ``/etc/perfsonar/meshconfig-lookuphosts.conf``
 :Documentation: :doc:`config_mesh_lookup_hosts`
@@ -235,7 +219,6 @@ MeshConfig Agent Start-up Script
 JSON Builder
 ############
 :Description: The script used to convert a central configuration file to JSON consumable by agents
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/mesh_config/bin/build_json``
 :RedHat: ``/usr/lib/perfsonar/bin/build_json``
 :Debian: ``/usr/lib/perfsonar/bin/build_json``
 
@@ -244,7 +227,6 @@ JSON Builder
 GUI/Dashboard Configuration Generator
 #####################################
 :Description: The script used to generate a `MaDDash configuration file <http://software.es.net/maddash/config_server.html>`_ from a downloaded central configuration file
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/mesh_config/bin/generate_gui_configuration``
 :RedHat: ``/usr/lib/perfsonar/bin/generate_gui_configuration``
 :Debian: ``/usr/lib/perfsonar/bin/generate_gui_configuration``
 
@@ -253,7 +235,6 @@ GUI/Dashboard Configuration Generator
 Dynamic Host List Generator
 ###########################
 :Description: The script used to contact the lookup service and build a set of hosts to be used in the mesh
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/mesh_config/bin/lookup_hosts``
 :RedHat: ``/usr/lib/perfsonar/bin/lookup_hosts``
 :Debian: ``/usr/lib/perfsonar/bin/lookup_hosts``
 
@@ -265,7 +246,6 @@ Installed Cron Jobs
 GUI/Dashboard Configuration Generator Cron
 ###########################################
 :Description: Runs the :ref:`GUI configuration generator <config_files-meshconfig-scripts-generate_gui_configuration>` every night at 2AM
-:RedHat (<v3.5.1): ``/etc/cron.d/cron-mesh_config_gui_agent``
 :RedHat: ``/etc/cron.d/perfsonar-meshconfig-guiagent``
 :Debian: ``/etc/cron.d/perfsonar-meshconfig-guiagent``
 
@@ -300,8 +280,6 @@ Main Configuration File
 ##########################
 
 :Description: The main configuration file for an OWAMP server
-:RedHat (<v3.5): ``/etc/owampd/owampd.conf``
-:Debian (<v3.5): ``/etc/owampd/owampd.conf``
 :RedHat: ``/etc/owamp-server/owamp-server.conf``
 :Debian: ``/etc/owamp-server/owamp-server.conf``
 :Documentation: :doc:`config_owamp`
@@ -312,8 +290,6 @@ Limits File
 ##########################
 
 :Description: The OWAMP limits file that defines authentication and authorization parameters for testing
-:RedHat (<v3.5): ``/etc/owampd/owampd.limits``
-:Debian (<v3.5): ``/etc/owampd/owampd.limits``
 :RedHat: ``/etc/owamp-server/owamp-server.limits``
 :Debian: ``/etc/owamp-server/owamp-server.limits``
 :Documentation: :doc:`config_owamp_limits`
@@ -328,8 +304,6 @@ Start-up Script
 ##########################
 
 :Description: The script used to start/stop/restart an OWAMP server
-:RedHat (<v3.5): ``/etc/init.d/owampd start|stop|restart``
-:Debian (<v3.5): ``/etc/init.d/owampd start|stop|restart``
 :RedHat 6: ``/etc/init.d/owamp-server start|stop|restart``
 :RedHat 7: ``systemctl owamp-server start|stop|restart``
 :Debian: ``/etc/init.d/owamp-server start|stop|restart``
@@ -407,7 +381,6 @@ Configuration Files
 Measurement Archive Data Retention Policy
 #########################################
 :Description: The configuration file used by the :ref:`esmond data cleaner <config_files-esmond-scripts-ps_remove_data>` script when running in the :ref:`cron <config_files-toolkit-cron-clean_esmond_db>` installed by the Toolkit.
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/toolkit/etc/clean_esmond_db.conf``
 :RedHat: ``/etc/perfsonar/toolkit/clean_esmond_db.conf``
 :Debian: ``/etc/perfsonar/toolkit/clean_esmond_db.conf``
 :Documentation: :ref:`multi_ma_backups-delete`
@@ -421,7 +394,6 @@ Important Scripts
 Toolkit Configuration Script
 ###########################################
 :Description: A script to help configure users and other basic features of the Toolkit. 
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/toolkit/scripts/nptoolkit-configure.py``
 :RedHat: ``/usr/lib/perfsonar/scripts/nptoolkit-configure.py``
 :Debian: ``/usr/lib/perfsonar/scripts/nptoolkit-configure.py``
 :Documentation: :doc:`manage_users`
@@ -431,7 +403,6 @@ Toolkit Configuration Script
 Configuration Daemon Start-up Script
 #######################################
 :Description: The script used to start/stop/restart the service used by the administrative web interface to configure the host
-:RedHat (<v3.5.1): ``/etc/init.d/config_daemon start|stop|restart``
 :RedHat 6: ``/etc/init.d/perfsonar-configdaemon start|stop|restart``
 :RedHat 7: ``systemctl perfsonar-configdaemon start|stop|restart``
 :Debian: ``/etc/init.d/perfsonar-configdaemon start|stop|restart``
@@ -440,8 +411,7 @@ Configuration Daemon Start-up Script
 
 Network Interface Card Configuration Script
 ###########################################
-:Description: The script detects if NDT or NPAD is running and makes necessary configuration changes to NIC if they are. 
-:RedHat (<v3.5.1): ``/etc/init.d/configure_nic_parameters start|stop|restart``
+:Description: The script detects if the NIC is misconfigured, and makes necessary configuration changes to NIC if they are. 
 :RedHat 6: ``/etc/init.d/perfsonar-configure_nic_parameters start|stop|restart``
 :RedHat 7: ``systemctl perfsonar-configure_nic_parameters start|stop|restart``
 :Debian: ``/etc/init.d/perfsonar-configure_nic_parameters start|stop|restart``
@@ -451,7 +421,6 @@ Network Interface Card Configuration Script
 'Message of the Day' Script
 ###########################################
 :Description: Generates the login message on start-up that appears to command-line users
-:RedHat (<v3.5.1): ``/etc/init.d/generate_motd start|stop|restart``
 :RedHat 6: ``/etc/init.d/perfsonar-generate_motd start|stop|restart``
 :RedHat 7: ``systemctl perfsonar-generate_motd start|stop|restart``
 :Debian: ``/etc/init.d/perfsonar-generate_motd start|stop|restart``
@@ -461,7 +430,6 @@ Network Interface Card Configuration Script
 Measurement Archive Upgrade Script
 ###########################################
 :Description: Upgrades data from a pre-3.4 Toolkit to the current version. If there is no data to upgrade then it exits.
-:RedHat (<v3.5.1): ``/etc/init.d/psb_to_esmond start|stop|restart``
 :RedHat: ``/etc/init.d/perfsonar-psb_to_esmond start|stop|restart``
 :Debian: ``/etc/init.d/perfsonar-psb_to_esmond start|stop|restart``
 
@@ -470,7 +438,6 @@ Measurement Archive Upgrade Script
 Multi-Interface Routing Setup Script
 ###########################################
 :Description: A script to help with the configuration of routing for hosts running tests on multiple interfaces.
-:RedHat (<v3.5.1): ``/opt/perfsonar_ps/toolkit/scripts/mod_interface_route``
 :RedHat: ``/usr/lib/perfsonar/scripts/mod_interface_route``
 :Debian: ``/usr/lib/perfsonar/scripts/mod_interface_route``
 :Documentation: :doc:`manage_dual_xface`
@@ -503,7 +470,6 @@ Log Files
 Configuration Daemon Log
 ##########################
 :Description: The log file for the :ref:`configuration daemon <config_files-toolkit-scripts-config_daemon>`
-:RedHat (<v3.5.1): ``/var/log/perfsonar/config_daemon.log``
 :RedHat: ``/var/log/perfsonar/configdaemon.log``
 :Debian: ``/var/log/perfsonar/configdaemon.log``
 
@@ -520,7 +486,6 @@ Measurement Archive Upgrade Log
 Service Watcher Log
 ################################
 :Description: Logs generated by the :ref:`cron <config_files-toolkit-cron-service_watcher>` that verifies services are running and performs regular restarts/maintenance.
-:RedHat (<v3.5.1): ``/var/log/perfsonar/service_watcher.log`` and ``/var/log/perfsonar/service_watcher_error.log``
 :RedHat: ``/var/log/perfsonar/servicewatcher.log`` and ``/var/log/perfsonar/servicewatcher_error.log``
 :Debian: ``/var/log/perfsonar/servicewatcher.log`` and ``/var/log/perfsonar/servicewatcher_error.log``
 :Debian: *N/A*

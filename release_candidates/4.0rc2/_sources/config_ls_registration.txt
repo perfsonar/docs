@@ -897,11 +897,10 @@ Valid values for this field are currently:
 * meshconfig
 * mp-bwctl
 * mp-owamp
-* ndt
-* npad
 * owamp
 * phoebus
 * ping
+* pscheduler
 * reddnet
 * traceroute
 

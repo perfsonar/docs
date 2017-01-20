@@ -15,8 +15,6 @@ Name                Default Enabled     Description
 Automatic Updates   Yes                 Controls *yum-cron* service that updates packages on the host nightly. See :doc:`manage_update` for more details.
 **bwctl**           Yes                 Controls *bwctl-server* service that allows clients at other sites to run throughput, traceroute and ping tests to your host. Also required if you plan to run regular tests of the aforementioned types on your host.
 **owamp**           Yes                 Controls *owamp-server* service that allows clients at other sites to run one-way latency tests to this host. Also required to run regular one-way delay tests on your host.
-NDT                 No                  Controls *ndt* service that allows clients to run on-demand diagnostic tests through a Java applet or command-line tool. Starting in 4.0, NDT support was removed. It is only listed if NDT is installed.
-NPAD                No                  Controls *npad* service that allows clients run diagnostic tests through a Java applet. Starting in 3.5, NPAD support was removed. It is only listed if NPAD is installed.
 =================== =================== ==================================================================
 
 .. note:: Starting with 4.0 release, new installs on all supported operating systems do not get NDT and the Web100 kernel by default. 
@@ -38,7 +36,6 @@ It is important to understand what services might impact other services. For exa
 
 * BWCTL/pscheduler throughput and OWAMP tests **should** be run on separate hosts or interfaces (see :doc:`manage_dual_xface`) for best results that minimize risk of interference
 * If the above is not possible, you **may** run them on the same host and interface, but be conscious that you will need to work diligently to rule out network performance issues caused by overlapping tests
-* NDT and NPAD **should not** be run on hosts also running regular tests of any type. Their tests may interfere with regular tests and the administrator has less control over when they occur since they are run on-demand by an end-user.
 
 .. seealso:: For a discussion on when to run Automatic Updates see :ref:`manage_update-auto`
 

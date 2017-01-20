@@ -13,14 +13,12 @@ Most perfSONAR related services keep log files under the directory **/var/log/pe
 +==============================================+===============================================+============================================+
 | BWCTL and OWAMP                              | /var/log/perfsonar/owamp_bwctl.log            | |log_descr_bwctl|                          |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
+| pScheduler 				       | /var/log/perfsonar/pschedler.log              | |log_descr_pscheduler|                     |
++----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | Esmond Measurement Archive                   | /var/log/esmond/esmond.log                    | |log_descr_esmond|                         |
 |                                              | /var/log/httpd/error_log                      |                                            |
 |                                              | /var/log/cassandra/cassandra.log              |                                            |
 |                                              | /var/lib/pgsql/pgstartup.log                  |                                            |
-+----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| Network Diagnostic Tool (NDT)                | /var/log/ndt/web100srv.log                    | |log_descr_ndt|                            |
-|                                              | /var/log/ndt/fakewww_error.log                |                                            |
-|                                              | /var/log/ndt/fakewww_access.log               |                                            |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | perfSONAR Configuration Daemon               | /var/log/perfsonar/configdaemon.log           | |log_descr_config|                         |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
@@ -73,8 +71,8 @@ You may install a cron job that analyzes the logs of BWCTL, OWAMP, and NDT hourl
 .. warning:: The cron script may consume significant system resources. If you install the file as detailed above, please use caution and note that it may affect your regular tests.
 
 .. |log_descr_bwctl|  replace:: Every BWCTL and OWAMP test (both on the client and server side) is logged in this file. It should be used when a BWCTL or OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an *owamp-server* or *bwctl-server* process crashes unexpectedly.
+.. |log_descr_pscheduler|  replace:: Every pscheduler initiated test (both on the client and server side) is logged in this file. It should be used when a test is not completing. It contains information about denied or failed tests. It may also contain information when an *owamp-server* or *bwctl-server* process crashes unexpectedly.
 .. |log_descr_esmond|  replace:: If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. *esmond.log* has information from the archive itself (e.g. improperly formatted requests). The HTTPD error log has information such as if esmond was able to connect to it's underlying databases. Speaking of databases, esmond connects to both Cassandra and PostgreSQL so it may be worth checking those logs as well.
-.. |log_descr_ndt|  replace:: Use these logs when you encounter problems running NDT either from the command-line or Java applet
 .. |log_descr_config|  replace:: If you are unable to save changes to the configuration made through the web interface, this is a good place to look.
 .. |log_descr_lscache|  replace:: If you get a message saying that your communities or lookup service cache are out of date, this log file may contain more information.
 .. |log_descr_lsreg|  replace:: Look here if your toolkit web page says that your host is not registered with the lookup service or you cannot find your host in the global services directory.
