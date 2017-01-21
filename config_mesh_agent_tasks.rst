@@ -567,9 +567,9 @@ local_firewall Directive
 
 packet_tos_bits Directive
 --------------------------
-:Description: The TOS bits to set in the IP header as an integer. Corresponds to BWCTL *-S* option.
+:Description: The TOS bits to set in the IP header as an integer from 0 to 63
 :Syntax: ``packet_tos_bits TOS``
-:Contexts: :ref:`parameters <config_mesh_agent_tasks-parameters>`, :ref:`override_parameters <config_mesh_agent_tasks-override_parameters>`, :ref:`default_parameters <config_mesh_agent_tasks-default_parameters>` where :ref:`type <config_mesh_agent_tasks-test-test_type>` is *bwctl*, *bwctl2*, *bwping*, *bwping2*, *bwtraceroute*, *bwtraceroute2*
+:Contexts: :ref:`parameters <config_mesh_agent_tasks-parameters>`, :ref:`override_parameters <config_mesh_agent_tasks-override_parameters>`, :ref:`default_parameters <config_mesh_agent_tasks-default_parameters>` where :ref:`type <config_mesh_agent_tasks-test-test_type>` is *bwctl*, *bwctl2*, *bwping*, *bwping2*, *bwtraceroute*, *bwtraceroute2*, *bwping/owamp*, *powstream*
 :Occurrences:  Zero or One
 :Default: N/A
 :Compatibility: 3.4 and later

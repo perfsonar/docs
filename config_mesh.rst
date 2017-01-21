@@ -357,7 +357,7 @@ streams Directive
 
 tos_bits Directive
 ------------------
-:Description: The type of service to set in the IP header of outgoing packets
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
 :Syntax: ``tos_bits NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Zero or one
@@ -529,6 +529,14 @@ output_raw Directive
 :Default: 0
 :Compatibility: 4.0 or later
 
+tos_bits Directive
+------------------
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
+:Syntax: ``tos_bits NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
 
 .. _config_mesh-test_spec-ping:
 
@@ -660,6 +668,15 @@ hostnames Directive
 :Default: system default 
 :Compatibility: 4.0 or later
 
+tos_bits Directive
+------------------
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
+:Syntax: ``tos_bits NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
 .. _config_mesh-test_spec-traceroute:
 
 Defining Traceroute Parameters
@@ -742,6 +759,14 @@ You can specify on of the following tools for a traceroute test:
 * **tracepath** - The main advantage of this tool is it reports MTU by default. It has  fewer options than standard traceroute for setting TTLs and binding to local interfaces. It also is UDP-only and may be blocked by firewalls. It's also been reported to have a harder time with MTU mismatches on the destination host. 
 * **paris-traceroute** - This is another approach to running traceroute that tries to identify load balanced routes and similar. It requires the client to grant the paris-traceroute command the CAP_NET_RAW privilege on the system in order to run as a non-root user. 
 
+tos_bits Directive
+------------------
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
+:Syntax: ``tos_bits NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
 
 max_ttl Directive
 -----------------
