@@ -8,9 +8,12 @@ perfSONAR is a collection of software for performing and sharing end-to-end netw
 perfSONAR Installation Options
 ------------------------------
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    install_options
+   install_toolkit
+   install_centos
+   install_debian
 
 perfSONAR Toolkit
 -----------------
@@ -18,7 +21,7 @@ perfSONAR Toolkit
 Installation
 ============
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    install_quick_start
    install_sys_requirements
@@ -31,7 +34,7 @@ Installation
 Managing the perfSONAR Toolkit
 ==============================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    manage_choose
    manage_regular_tests
@@ -44,12 +47,13 @@ Managing the perfSONAR Toolkit
    manage_tuning
    manage_dual_xface
    manage_security
+   manage_limits
    manage_extra_tools
    
 Using the perfSONAR Toolkit
 ============================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    using_graphs
    using_ext_tools
@@ -57,17 +61,15 @@ Using the perfSONAR Toolkit
 Additional Installation Options
 --------------------------------
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   install_centos 
-   install_debian
    low_cost_nodes
    low_cost_nodes_configuration
 
 perfSONAR Tools
 --------------------------
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
 
 pScheduler
 ==========
@@ -87,7 +89,7 @@ Other Tools
 perfSONAR UI
 ============
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    install_psui
    using_psui
@@ -98,14 +100,14 @@ Managing Multiple perfSONAR Hosts
 Introduction to Central Management
 ==================================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    multi_overview
 
 Central Test Configuration
 ===========================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    multi_mesh_server_config
    multi_mesh_agent_config
@@ -115,7 +117,7 @@ Central Test Configuration
 Central Measurement Archive
 ===========================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    multi_ma_install
    multi_ma_clustering
@@ -124,14 +126,14 @@ Central Measurement Archive
 Central Logging
 ===============
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    multi_logging
    
 Managing Nodes with Puppet
 ==========================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    multi_puppet_overview
    multi_puppet_install
@@ -151,7 +153,7 @@ Configuration Reference
 Listing of perfSONAR Files
 ==========================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    config_files
 

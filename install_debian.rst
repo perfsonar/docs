@@ -119,28 +119,9 @@ If you have installed the `perfsonar-toolkit-security` package, then your iptabl
 
 If you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. You may read the bwctl-server.limits man page or look at the example file provided under /etc/bwctl-server/bwctl-server.limits file. ESnet uses a bwctl-server.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
-
-* Allow unrestricted UDP tests from ESnet test system prefixes.
-* Allow up to 200Mbps UDP tests from ESnet sites.
-* Deny UDP tests from any other locations.
-* Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.
-* Deny TCP tests from everywhere else.
-
-To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:
-::
-
-    cd /etc/bwctl-server
-    mv bwctl-server.limits bwctl-server.limits.dist
-    wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
-    mv bwctld.limits bwctl-server.limits
-
-ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
-::
-
-    cd /etc/bwctl
-    wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
-    chmod +x update_limits.sh
+Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. 
+ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and cofigure pScheduler and
+bwctl to use it are described on the page :doc:`manage_limits`.
 
 .. _install_debian_step5:
 
