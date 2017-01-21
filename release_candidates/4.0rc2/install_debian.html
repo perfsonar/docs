@@ -26,8 +26,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="perfSONAR Toolkit 4.0rc2 documentation" href="index.html" />
-    <link rel="next" title="perfSONAR on Low Cost Nodes" href="low_cost_nodes.html" />
-    <link rel="prev" title="Installation of CentOS Bundles" href="install_centos.html" /> 
+    <link rel="next" title="Toolkit Installation Quick Start" href="install_quick_start.html" />
+    <link rel="prev" title="Installation on CentOS" href="install_centos.html" /> 
   </head>
   <body role="document">
     <header>
@@ -55,10 +55,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="low_cost_nodes.html" title="perfSONAR on Low Cost Nodes"
+          <a href="install_quick_start.html" title="Toolkit Installation Quick Start"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="install_centos.html" title="Installation of CentOS Bundles"
+          <a href="install_centos.html" title="Installation on CentOS"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc2 documentation</a> &raquo;</li> 
       </ul>
@@ -173,27 +173,9 @@ service ntp restart
 <span id="install-debian-step4"></span><h3>Step 4: Firewall and Security Considerations<a class="headerlink" href="#step-4-firewall-and-security-considerations" title="Permalink to this headline">¶</a></h3>
 <p>If you have installed the <cite>perfsonar-toolkit-security</cite> package, then your iptables are already configured with our default rules.  The package also installs fail2ban.</p>
 <p>If you would like to configure the rules manually, then please review the <a class="reference external" href="http://www.perfsonar.net/deploy/security-considerations/">document here</a> on the ports that need to be open.</p>
-<p>Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. You may read the bwctl-server.limits man page or look at the example file provided under /etc/bwctl-server/bwctl-server.limits file. ESnet uses a bwctl-server.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:</p>
-<ul class="simple">
-<li>Allow unrestricted UDP tests from ESnet test system prefixes.</li>
-<li>Allow up to 200Mbps UDP tests from ESnet sites.</li>
-<li>Deny UDP tests from any other locations.</li>
-<li>Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.</li>
-<li>Deny TCP tests from everywhere else.</li>
-</ul>
-<p>To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>cd /etc/bwctl-server
-mv bwctl-server.limits bwctl-server.limits.dist
-wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
-mv bwctld.limits bwctl-server.limits
-</pre></div>
-</div>
-<p>ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>cd /etc/bwctl
-wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
-chmod +x update_limits.sh
-</pre></div>
-</div>
+<p>Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits.
+ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and cofigure pScheduler and
+bwctl to use it are described on the page <a class="reference internal" href="manage_limits.html"><em>Limiting Tests to R&amp;E Networks Only</em></a>.</p>
 </div>
 <div class="section" id="step-5-auto-updates">
 <span id="install-debian-step5"></span><h3>Step 5: Auto updates<a class="headerlink" href="#step-5-auto-updates" title="Permalink to this headline">¶</a></h3>
@@ -276,13 +258,13 @@ echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/et
                 <ul>
                   <li>
                   <a href="install_centos.html">Previous topic</a>
-                  <ul><li><a href="install_centos.html" title="previous chapter">Installation of CentOS Bundles</a></li></ul>
+                  <ul><li><a href="install_centos.html" title="previous chapter">Installation on CentOS</a></li></ul>
                   </li>
                 </ul>
                   <ul>
                       <li>
-                      <a href="low_cost_nodes.html">Next topic</a>
-                      <ul><li><a href="low_cost_nodes.html" title="next chapter">perfSONAR on Low Cost Nodes</a></li></ul>
+                      <a href="install_quick_start.html">Next topic</a>
+                      <ul><li><a href="install_quick_start.html" title="next chapter">Toolkit Installation Quick Start</a></li></ul>
                       </li>
                   </ul>
                 
@@ -299,10 +281,10 @@ echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/et
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="low_cost_nodes.html" title="perfSONAR on Low Cost Nodes"
+          <a href="install_quick_start.html" title="Toolkit Installation Quick Start"
              >next</a> |</li>
         <li class="right" >
-          <a href="install_centos.html" title="Installation of CentOS Bundles"
+          <a href="install_centos.html" title="Installation on CentOS"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc2 documentation</a> &raquo;</li> 
       </ul>

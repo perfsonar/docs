@@ -1,5 +1,5 @@
 ******************************
-Installation of CentOS Bundles
+Installation on CentOS 
 ******************************
 
 perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit distribution (as detailed at :doc:`install_getting`) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you'd like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
@@ -157,7 +157,7 @@ Step 4: Firewall and Security Considerations
 --------------------------------------------- 
 **Package Install**
 
-If you have installed the perfsonar-toolkit-security package, then you can configure the IPTable entries by running::
+If you have installed the perfsonar-toolkit-security package, then you can configure the firewalld / IPTable entries by running::
 
     /usr/lib/perfsonar/scripts/configure_firewall
 
@@ -166,29 +166,12 @@ The package also installs fail2ban.
 
 Or, if you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. You may read the bwctl-server.limits man page or look at the example file provided under /etc/bwctl-server/bwctl-server.limits file. ESnet uses a bwctl-server.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
+Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files bwctl-server.limits and pscheduler/limits.conf. 
+ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and cofigure pScheduler and
+bwctl to use it are described on the page :doc:`manage_limits`.
 
-* Allow unrestricted UDP tests from ESnet test system prefixes.
-* Allow up to 200Mbps UDP tests from ESnet sites.
-* Deny UDP tests from any other locations.
-* Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.
-* Deny TCP tests from everywhere else.
-
-To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:
-::
-
-    cd /etc/bwctl-server
-    mv bwctl-server.limits bwctl-server.limits.dist
-    wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
-    mv bwctld.limits bwctl-server.limits
-
-ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
-::
-
-    cd /etc/bwctl-server
-    wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
-    chmod +x update_limits.sh
-
+Step 5: Install Auto updates
+----------------------------
 You can also enable yum ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this, do the following:
 ::
 
@@ -198,7 +181,7 @@ You can also enable yum ‘auto updates’ to ensure you always have the most cu
 
 .. _install_centos_step5:
 
-Step 5: Service Watcher
+Step 6: Service Watcher
 ------------------------
 The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
 
@@ -210,7 +193,7 @@ To run the script manually, run::
 
 .. _install_centos_step6:
 
-Step 6: Register your services 
+Step 7: Register your services 
 ------------------------------- 
 *Can be ignored and done through the web interface for he perfsonar-toolkit package*
 
@@ -230,7 +213,7 @@ In the example above remove the leading ``#`` before external_address and extern
 
 .. _install_centos_step7:
 
-Step 7: Starting your services 
+Step 8: Starting your services 
 ------------------------------- 
 You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with appropriate init commands as a root user. For example:
 
