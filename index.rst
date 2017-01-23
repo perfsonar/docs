@@ -84,7 +84,7 @@ owamp
 Other Tools
 ===========
 .. toctree::
-    other_tools
+    using_other_tools
 
 perfSONAR UI
 ============
