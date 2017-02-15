@@ -92,7 +92,7 @@ In particular, you should install perfsonar-toolkit-ntp if you are not managing 
 
     Or, you can manually install them by running:
 
-       * ``yum install perfsonar-toolkit-service-watcher``
+       * ``yum install perfsonar-toolkit-servicewatcher``
        * ``yum install perfsonar-toolkit-ntp``
        * ``yum install perfsonar-toolkit-security``
        * ``yum install perfsonar-toolkit-sysctl``
