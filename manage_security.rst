@@ -142,7 +142,7 @@ By default the perfSONAR Toolkit installs and configures the `fail2ban`_ Intrusi
 .. _fail2ban manual: http://www.fail2ban.org/wiki/index.php/MANUAL_0_8
 
 Limiting tests to Research and Education Networks Only
-=====================================================
+======================================================
 
 ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and 
 bwctl to use it are described on the page :doc:`manage_limits`.
