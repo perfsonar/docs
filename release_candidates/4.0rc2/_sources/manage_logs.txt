@@ -13,7 +13,7 @@ Most perfSONAR related services keep log files under the directory **/var/log/pe
 +==============================================+===============================================+============================================+
 | BWCTL and OWAMP                              | /var/log/perfsonar/owamp_bwctl.log            | |log_descr_bwctl|                          |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| pScheduler 				       | /var/log/perfsonar/pschedler.log              | |log_descr_pscheduler|                     |
+| pScheduler 				       | /var/log/perfsonar/pscheduler.log             | |log_descr_pscheduler|                     |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | Esmond Measurement Archive                   | /var/log/esmond/esmond.log                    | |log_descr_esmond|                         |
 |                                              | /var/log/httpd/error_log                      |                                            |

@@ -8,7 +8,7 @@ Adding a User
 When adding users to the toolkit, in particular those that you want to access the web interface or SSH into the host, it is recommended you use the provided script |nptoolkit_script|. To add users with that script run the following:
 
 #. Login to the system as a root user
-#. Run **|nptoolkit_script|**
+#. Run ** |nptoolkit_script| **
 #. At the prompt, select option **2. Manage Users**::
 
     perfSONAR Toolkit customization script
