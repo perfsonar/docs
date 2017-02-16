@@ -5,6 +5,7 @@ pScheduler User Guide
 pScheduler is the perfSONAR Scheduler, a new system for the scheduling and supervision of automated measurements and sending the results off for storage.  It is a complete replacement for the Bandwidth Test Controller (BWCTL), which has been part of perfSONAR since its early days.  The core development team conducted an evaluation of BWCTL and BWCTL2 (a re-implementation attempted in 2015) against the list of features and additional sophistication demanded by the perfSONAR’s users.  The result of that evaluation was a determination that a clean-slate redesign and reimplementation was the best option to meet the new requirements and enable future enhancements without running afoul of BWCTL’s architectural limitations.
  
 Among the features of the new software are:
+
 ·         Significantly-improved visibility into prior, current and scheduled future activities
 ·         Easy availability of diagnostic information
 ·         Full-featured, repeating testing for all measurement types baked into the core of the system
