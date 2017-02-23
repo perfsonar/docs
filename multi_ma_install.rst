@@ -82,7 +82,8 @@ As an archive administrator you may create an account that authenticates based o
     /opt/rh/python27/root/usr/bin/virtualenv --prompt="(esmond)" .
     . bin/activate
     
-    **RedHat/CentOS rhel 7 users only**: Skip the first two parts of the above. Only the " . bin/activate" is necessary on rhel 7.
+    **RedHat/CentOS rhel 7 users only**: Skip the first two lines of the above. 
+Only " . bin/activate" is necessary on this step for rhel 7.
     
 #. Run the commands below to create the account. You must provide a username as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of *X.X.X.X* or *X.X.X.X/Y* where *X* is each octet and *Y* is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host 10.0.1.1 or any host in the 10.0.2.0/24 subnet to register data to esmond::
 
