@@ -447,8 +447,8 @@ server_cpu_affinity Directive
 
 flow_label Directive
 ---------------------
-:Description: set the IPv6 flow label (iperf3 -L)
-:Syntax: ``flow_label FLOWLABEL`` 
+:Description: set the IPv6 flow label (iperf3 -L) integer
+:Syntax: ``flow_label INT`` 
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and tool is *iperf3*
 :Occurrences:  Zero or one
 :Default: not set
@@ -625,8 +625,8 @@ random_start_percentage Directive
 
 flow_label Directive
 --------------------
-:Description: Set the flow label on echo request packets. (ping6 -F) 
-:Syntax: ``flow_label FLOWLABEL``
+:Description: Set the flow label on echo request packets as an integer. (ping6 -F) 
+:Syntax: ``flow_label INT``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and test is running over IPv6
 :Occurrences:  Zero or One
 :Default: System default
