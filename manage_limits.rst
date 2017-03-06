@@ -1,33 +1,19 @@
-******************************************************
+***************************************
 Limiting Tests to R&E Networks Only
-******************************************************
+***************************************
 
-**Note: this page still needs to be updated for v4.0/pschedler!**
+You can control access to the pscheduler server via the file /etc/pscheduler/limits.conf
 
-ESnet provides a file containing all Research and Education Network subnets based on it's routing table and is updated nightly. 
-This file is used to generate a sample bwctl-server.limits and pscheduler/limits.conf file.
+Sample files for various use cases are available at:
+  * https://raw.githubusercontent.com/perfsonar/pscheduler/pscheduler-docs/pscheduler-docs/limit-examples/
 
-It implements the following general policies:
+ESnet generates a nightly update of a list of subnets that can be used to limit testing only to Research and Education 
+networks around the world, and nothing else.
 
-* Allow unrestricted UDP tests from ESnet test system prefixes.
-* Allow up to 200Mbps UDP tests from ESnet sites.
-* Deny UDP tests from any other locations.
-* Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.
-* Deny TCP tests from everywhere else.
+Information on how to use this file is available at:
+  * http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-limits-file/
 
-To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:
-::
-
-    cd /etc/bwctl-server
-    mv bwctl-server.limits bwctl-server.limits.dist
-    wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
-    mv bwctld.limits bwctl-server.limits
-
-ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
-::
-
-    cd /etc/bwctl-server
-    wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
-    chmod +x update_limits.sh
+More information on how to use the limits system can be found at:
+  * http://docs.perfsonar.net/config_pscheduler_limits.html
 
 
