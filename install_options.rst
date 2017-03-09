@@ -28,6 +28,10 @@ Starting with perfSONAR 3.5, there are several other installation options as wel
 
 .. image:: images/install_options-bundle_tree.png
 
+
+This flowchart was created to help pick the correct option:
+.. image:: images/bundle_flowchart.png"
+
 .. _install_options_sysreq:
 
 System Requirements 
