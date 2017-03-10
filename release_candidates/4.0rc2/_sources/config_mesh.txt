@@ -244,7 +244,7 @@ Defining Throughput Test Parameters
 tool Directive
 --------------
 :Description: The tool to use in performing the throughput test
-:Syntax: ``tool iperf|iperf3``
+:Syntax: ``tool iperf|iperf3|nuttcp``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Exactly one
 :Compatibility: 3.3 or later
@@ -447,8 +447,8 @@ server_cpu_affinity Directive
 
 flow_label Directive
 ---------------------
-:Description: set the IPv6 flow label (iperf3 -L)
-:Syntax: ``flow_label FLOWLABEL`` 
+:Description: set the IPv6 flow label (iperf3 -L) integer
+:Syntax: ``flow_label INT`` 
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and tool is *iperf3*
 :Occurrences:  Zero or one
 :Default: not set
@@ -625,9 +625,9 @@ random_start_percentage Directive
 
 flow_label Directive
 --------------------
-:Description: Set the flow label on echo request packets. (ping6 -F) 
-:Syntax: ``flow_label FLOWLABEL``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping6*
+:Description: Set the flow label on echo request packets as an integer. (ping6 -F) 
+:Syntax: ``flow_label INT``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and test is running over IPv6
 :Occurrences:  Zero or One
 :Default: System default
 :Compatibility: 4.0 or later
@@ -663,7 +663,7 @@ hostnames Directive
 -------------------
 :Description: Do not try to map IP addresses to host names when displaying them. (ping -n)
 :Syntax: ``hostnames 0|1``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *ping*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or one
 :Default: system default 
 :Compatibility: 4.0 or later
