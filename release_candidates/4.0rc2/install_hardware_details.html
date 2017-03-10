@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installing the perfSONAR Toolkit &mdash; perfSONAR Toolkit 4.0rc2 documentation</title>
+    <title>Detailed Information on perfSONAR Hardware Requirements &mdash; perfSONAR Toolkit 4.0rc2 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="perfSONAR Toolkit 4.0rc2 documentation" href="index.html" />
-    <link rel="next" title="Installation on CentOS" href="install_centos.html" />
-    <link rel="prev" title="perfSONAR Installation Options" href="install_options.html" /> 
+    <link rel="next" title="Toolkit Installation Quick Start" href="install_quick_start.html" />
+    <link rel="prev" title="Installation on Debian" href="install_debian.html" /> 
   </head>
   <body role="document">
     <header>
@@ -55,10 +55,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="install_centos.html" title="Installation on CentOS"
+          <a href="install_quick_start.html" title="Toolkit Installation Quick Start"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="install_options.html" title="perfSONAR Installation Options"
+          <a href="install_debian.html" title="Installation on Debian"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc2 documentation</a> &raquo;</li> 
       </ul>
@@ -72,14 +72,14 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="installing-the-perfsonar-toolkit">
-<h1>Installing the perfSONAR Toolkit<a class="headerlink" href="#installing-the-perfsonar-toolkit" title="Permalink to this headline">¶</a></h1>
-<p>There are two options for installing the CentOS-based Toolkit.
-These are described in <a class="reference internal" href="install_getting.html"><em>Getting the Toolkit Software</em></a>.</p>
-<ul class="simple">
-<li><a class="reference internal" href="install_centos_fullinstall.html"><em>Toolkit Full Install Guide</em></a>.</li>
-<li><a class="reference internal" href="install_centos_netinstall.html"><em>Toolkit NetInstall Guide</em></a>.</li>
-</ul>
+  <div class="section" id="detailed-information-on-perfsonar-hardware-requirements">
+<h1>Detailed Information on perfSONAR Hardware Requirements<a class="headerlink" href="#detailed-information-on-perfsonar-hardware-requirements" title="Permalink to this headline">¶</a></h1>
+<p>A core port of the perfSONAR philosophy is test isolation: only one test should run on the host at a time. This
+ensures that test results are not impacted by other tests. Otherwise it is much more difficult to interpret test results, which may vary due to host effects rather then network effects. For this reason, the heart of perfSONAR is the tool &#8216;pscheduler&#8217; (formerly bwctl), which is designed to carefully schedule one test at a time.</p>
+<p>This means you should not run perfSONAR tools on a host running a web server, a data server, or on a virtual machine, because in all of these cases it is not possible to guarantee test isolation.</p>
+<p>As long as you have two or more cores, it is now safe to run a database, a.k.a. the perfSONAR Measurement Archive (MA), on the perfSONAR host. Inserts and queries to the database appear to have no impact on test results. Its also OK to run latency/loss tests (owamp) on one NIC, and throughput tests (iperf3/nuttcp) on a second NIC, without noticeable impact on the results. For more information on configuring a perfSONAR host for two NICs, see: <a class="reference external" href="http://docs.perfsonar.net/manage_dual_xface.html">http://docs.perfsonar.net/manage_dual_xface.html</a></p>
+<p>Note: Running both owamp and iperf at the same time on the same NIC is a problem, and should be avoided.
+iperf tests will often cause owamp to lose packets when running on the same NIC.</p>
 </div>
 
 
@@ -91,19 +91,19 @@ These are described in <a class="reference internal" href="install_getting.html"
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">Installing the perfSONAR Toolkit</a></li>
+<li><a class="reference internal" href="#">Detailed Information on perfSONAR Hardware Requirements</a></li>
 </ul>
 
                 <ul>
                   <li>
-                  <a href="install_options.html">Previous topic</a>
-                  <ul><li><a href="install_options.html" title="previous chapter">perfSONAR Installation Options</a></li></ul>
+                  <a href="install_debian.html">Previous topic</a>
+                  <ul><li><a href="install_debian.html" title="previous chapter">Installation on Debian</a></li></ul>
                   </li>
                 </ul>
                   <ul>
                       <li>
-                      <a href="install_centos.html">Next topic</a>
-                      <ul><li><a href="install_centos.html" title="next chapter">Installation on CentOS</a></li></ul>
+                      <a href="install_quick_start.html">Next topic</a>
+                      <ul><li><a href="install_quick_start.html" title="next chapter">Toolkit Installation Quick Start</a></li></ul>
                       </li>
                   </ul>
                 
@@ -120,10 +120,10 @@ These are described in <a class="reference internal" href="install_getting.html"
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="install_centos.html" title="Installation on CentOS"
+          <a href="install_quick_start.html" title="Toolkit Installation Quick Start"
              >next</a> |</li>
         <li class="right" >
-          <a href="install_options.html" title="perfSONAR Installation Options"
+          <a href="install_debian.html" title="Installation on Debian"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc2 documentation</a> &raquo;</li> 
       </ul>

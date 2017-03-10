@@ -10,16 +10,19 @@ perfSONAR Installation Options
 .. toctree::
    :maxdepth: 1
    
+   install_hardware
    install_options
    install_toolkit
    install_centos
    install_debian
+   :hidden:
+   install_hardware_details
 
 perfSONAR Toolkit
 -----------------
 
-Installation
-============
+Toolkit Installation
+====================
 .. toctree::
    :maxdepth: 1
    
