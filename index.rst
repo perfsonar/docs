@@ -12,6 +12,7 @@ perfSONAR Installation Options
    
    install_hardware
       install_hardware_details
+      install_virtual_machine_details
    install_options
    install_toolkit
    install_centos
@@ -52,6 +53,7 @@ Managing the perfSONAR Toolkit
    manage_security
    manage_limits
    manage_extra_tools
+   manage_daemons
    
 Using the perfSONAR Toolkit
 ============================
