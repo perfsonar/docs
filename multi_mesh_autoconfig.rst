@@ -390,7 +390,7 @@ We may have one or more of these blocks in the file. This is where a bulk of the
 
     service_type owamp
     
-In our example we want *owamp* services. It may also be something like *bwctl* or *traceroute*. Next we may optionally define a list of filters::
+In our example we want *owamp* services. It may also be something like *pscheduler* or *traceroute*. Next we may optionally define a list of filters::
 
     <filter>
         filter_key group-communities
