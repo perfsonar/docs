@@ -11,12 +11,11 @@ perfSONAR Installation Options
    :maxdepth: 1
    
    install_hardware
+      install_hardware_details
    install_options
    install_toolkit
    install_centos
    install_debian
-   :hidden:
-   install_hardware_details
 
 perfSONAR Toolkit
 -----------------
