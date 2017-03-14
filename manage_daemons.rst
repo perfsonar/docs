@@ -49,9 +49,23 @@ SysVinit pscheduler services (soon to be converted to systemd services)
 
 In addition to these, hosts running the full perfSONAR Toolkit should see these daemons:
 
+::
+
+  perfsonar-configdaemon	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+  perfsonar-configure_nic_parameters	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+  perfsonar-generate_motd	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+  perfsonar-lscachedaemon	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+  perfsonar-psb_to_esmond	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+
+  # used by esmond DB
+  mysqld         	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+  cassandra      	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+
+
 
 Hosts running a central MA should see these daemons:
 
+**add list here**
 
 Restarting Daemons 
 ===================
@@ -61,8 +75,6 @@ Run:
 ::
 
    service servicename start/stop/restart
-   e.g.:
-
 
 
 Enabling/Disabling Daemons
