@@ -17,6 +17,9 @@ perfSONAR Installation Options
    install_toolkit
    install_centos
    install_debian
+   install_low_cost_nodes
+      install_small_node_details
+
 
 perfSONAR Toolkit
 -----------------
@@ -63,19 +66,13 @@ Using the perfSONAR Toolkit
    using_graphs
    using_ext_tools
 
-Additional Installation Options
---------------------------------
-.. toctree::
-   :maxdepth: 1
-
-   low_cost_nodes
-   low_cost_nodes_configuration
 
 perfSONAR Tools
 --------------------------
 .. toctree::
    :maxdepth: 1
 
+   using_tools
    using_pscheduler
    using_owamp
    using_other_tools
@@ -127,40 +124,30 @@ Managing Nodes with Puppet
    multi_puppet_using_server
    multi_puppet_using_client
    
-Accessing Raw Data 
-------------------
-.. toctree::
-   :maxdepth: 1
-   
-   client_apis
 
 Configuration Reference
 -----------------------
 
-Listing of perfSONAR Files
-==========================
 .. toctree::
    :maxdepth: 1
    
-   config_files
+Toolkit and Tools Configuration Files
+=====================================
+.. toctree::
+   :maxdepth: 1
 
-BWCTL
-=====
-.. toctree::
-   :maxdepth: 1
-   
+   config_files
+   config_ls_registration
+   config_pscheduler
+   config_pscheduler_limits
+   config_owamp
+   config_owamp_limits
    config_bwctl
    config_bwctl_limits
+   config_oppd
    
-Lookup Service Registration Daemon
-==================================
-.. toctree::
-   :maxdepth: 1
-   
-   config_ls_registration
-   
-MeshConfig
-==========
+MeshConfig Configuration Files
+==============================
 .. toctree::
    :maxdepth: 1
    
@@ -170,28 +157,19 @@ MeshConfig
    config_mesh_gui
    config_mesh_lookup_hosts
    
-OPPD
-====
+TroubleShooting
+---------------
+.. toctree::
+   :maxdepth: 1
+
+   troubleshooting_overview
+
+Accessing Raw Data 
+------------------
 .. toctree::
    :maxdepth: 1
    
-   config_oppd
-
-OWAMP
-=====
-.. toctree::
-   :maxdepth: 1
-   
-   config_owamp
-   config_owamp_limits
-
-pScheduler
-==========
-.. toctree::
-   :maxdepth: 1
-
-   config_pscheduler
-   config_pscheduler_limits
+   client_apis
 
 Previous Releases
 -----------------
