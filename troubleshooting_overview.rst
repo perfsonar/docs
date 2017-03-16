@@ -14,7 +14,18 @@ This page contains some hints on how to troubleshoot perfSONAR 4.0.
    pscheduler task idle --duration PT2S
    pscheduler task rtt --dest 127.0.0.1
 
-2.  Make sure Selinux is set to Permissive or disabled
+2.  Make sure SElinux is set to ``permissive`` or ``disabled``
+::
+
+To disable SElinux, run:
+::
+
+    echo 0 >/selinux/enforce
+
+To make it permanently in the ``permissive`` mode, run:
+::
+
+    sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
 3.  Confirm firewall settings are correct by running some tests from the command line.
 ::
@@ -26,8 +37,9 @@ This page contains some hints on how to troubleshoot perfSONAR 4.0.
 Also try reversing source/dest for all of these.
 
 4. Make sure pscheduler is behaving properly.
+::
 
-Look for ERRORs in /var/log/pscheduler.log
+Look for ERRORs in ``/var/log/pscheduler.log``
 
 To enable additional logging, run (as the pscheduler or root user):
 ::
