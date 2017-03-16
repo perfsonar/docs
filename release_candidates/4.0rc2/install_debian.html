@@ -101,19 +101,19 @@
 <div class="section" id="step-1-configure-apt">
 <span id="install-debian-step1"></span><h3>Step 1: Configure APT<a class="headerlink" href="#step-1-configure-apt" title="Permalink to this headline">¶</a></h3>
 <p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7, Ubuntu 12 or Ubuntu 14:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>cd /etc/apt/sources.list.d/
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
 wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
 wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 </pre></div>
 </div>
 <p>And with the following commands for Debian 8:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>cd /etc/apt/sources.list.d/
+<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
 wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
 wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 </pre></div>
 </div>
 <p>Then refresh the packages list:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>apt-get update
+<div class="highlight-python"><div class="highlight"><pre>apt-get update
 </pre></div>
 </div>
 </div>
@@ -128,7 +128,7 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 <li><strong>perfsonar-centralmanagement</strong> (to host a central MA and a dashboard)</li>
 </ul>
 <p>Choose the bundle you want to install and call <code class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span></code> with it:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>apt-get install perfsonar-testpoint
+<div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-testpoint
 </pre></div>
 </div>
 <p><em>Optional Packages</em></p>
@@ -141,7 +141,7 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 </ul>
 </div></blockquote>
 <p>The installation of these packages can be done with each of the commands:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>apt-get install perfsonar-toolkit-security
+<div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-toolkit-security
 apt-get install perfsonar-toolkit-sysctl
 apt-get install perfsonar-toolkit-ntp
 </pre></div>
@@ -153,13 +153,13 @@ apt-get install perfsonar-toolkit-ntp
 <ul>
 <li><p class="first"><strong>NTP</strong></p>
 <p>After installing the <code class="docutils literal"><span class="pre">perfsonar-toolkit-ntp</span></code> package, you can run the following script to have perfSONAR choose the closest NTP servers for you:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/configure_ntpd new
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_ntpd new
 service ntp restart
 </pre></div>
 </div>
 <p>You can also configure your own set of NTP servers manually.</p>
 <p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL will not even run unless NTP is configured. You can verify NTP is running with the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">ntpq</span> <span class="o">-</span><span class="n">p</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ntpq</span> <span class="o">-</span><span class="n">p</span>
 </pre></div>
 </div>
 </li>
@@ -180,7 +180,7 @@ bwctl to use it are described on the page <a class="reference internal" href="ma
 <div class="section" id="step-5-auto-updates">
 <span id="install-debian-step5"></span><h3>Step 5: Auto updates<a class="headerlink" href="#step-5-auto-updates" title="Permalink to this headline">¶</a></h3>
 <p>To ensure you always have the most current and hopefully most secure packages you can install and configure <code class="docutils literal"><span class="pre">cron-apt</span></code> to be run every night.  You’ll need to configure it to actually install the available updates and not just download the newly available packages (which is the default configuration).  This can be done with the following commands:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>apt-get install cron-apt
+<div class="highlight-python"><div class="highlight"><pre>apt-get install cron-apt
 echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts=&quot;/dev/null&quot;&#39; &gt;&gt; /etc/cron-apt/action.d/5-install
 </pre></div>
 </div>
@@ -192,14 +192,14 @@ echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/et
 <span id="install-debian-step6"></span><h3>Step 6: Register your services<a class="headerlink" href="#step-6-register-your-services" title="Permalink to this headline">¶</a></h3>
 <p>In order to publish the existence of your measurement services there is a single file with some details about your host. You may edit this information by opening <strong>/etc/perfsonar/lsregistrationdaemon.conf</strong>. You will see numerous properties you may populate. They are commented out meaning you need to remove the <code class="docutils literal"><span class="pre">#</span></code> at the beginning of the line for them to take effect. However in most cases, the defaults of this file will be suitable and you should not need to make any changes. The auto-discovery directives indicate whether the system automatically determines the value of any property not manually set in this file. The properties you may additionally set are administrative data like for example administrator&#8217;s name, email, site_name, city, country, latitude, longitude, etc. None of them are required but it is highly recommended you set them since it will make finding your services easier for others. More information on the available fields can be found in <a class="reference internal" href="config_ls_registration.html"><em>Lookup Service Registration Daemon Configuration File</em></a>.</p>
 <p>After configuring the registration daemon you need to start it using the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/etc/init.d/perfsonar-registrationdaemon start
+<div class="highlight-python"><div class="highlight"><pre>/etc/init.d/perfsonar-registrationdaemon start
 </pre></div>
 </div>
 </div>
 <div class="section" id="step-7-starting-your-services">
 <span id="install-debian-step7"></span><h3>Step 7: Starting your services<a class="headerlink" href="#step-7-starting-your-services" title="Permalink to this headline">¶</a></h3>
 <p>You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with the following commands as a root user:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/etc/init.d/bwctl-server start
+<div class="highlight-python"><div class="highlight"><pre>/etc/init.d/bwctl-server start
 /etc/init.d/owamp-server start
 /etc/init.d/perfsonar-lsregistrationdaemon start
 </pre></div>
@@ -326,7 +326,7 @@ echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/et
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

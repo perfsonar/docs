@@ -117,25 +117,25 @@
 <p>As an archive administrator you may create a username, generate an API key, and assign the needed permissions to register data with the commands below:</p>
 <ol class="arabic">
 <li><p class="first">Change to the esmond install directory:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>RedHat/CentOS users only</strong>: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a <strong>bash</strong> shell, you can enable Python 2.7 for your current shell with the following commands:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>source /opt/rh/python27/enable
+<div class="highlight-python"><div class="highlight"><pre>source /opt/rh/python27/enable
 /opt/rh/python27/root/usr/bin/virtualenv --prompt=&quot;(esmond)&quot; .
 . bin/activate
 </pre></div>
 </div>
 </li>
 <li><p class="first">Run the commands below replacing <em>example_user</em> with the username of the account you would like to create:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>python esmond/manage.py add_ps_metadata_post_user example_user
+<div class="highlight-python"><div class="highlight"><pre>python esmond/manage.py add_ps_metadata_post_user example_user
 python esmond/manage.py add_timeseries_post_user example_user
 </pre></div>
 </div>
 </li>
 <li><p class="first">After running the commands above you should see the generated API key in the output (if not, re-run the commands above and they will re-show you the generated API key without affecting the user you just created). An example of the output line showing the API key (<em>9130962c6b38722c0b9968e6903e1927e94e16fd</em> in this example) is below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>Key: 9130962c6b38722c0b9968e6903e1927e94e16fd for example_user
+<div class="highlight-python"><div class="highlight"><pre>Key: 9130962c6b38722c0b9968e6903e1927e94e16fd for example_user
 </pre></div>
 </div>
 </li>
@@ -151,12 +151,12 @@ python esmond/manage.py add_timeseries_post_user example_user
 <p>As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a username and password (API key) to be defined for each host in their tasks file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows:</p>
 <ol class="arabic">
 <li><p class="first">Change to the esmond install directory:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>RedHat/CentOS users only</strong>: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a <strong>bash</strong> shell, you can enable Python 2.7 for your current shell with the following commands:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>source /opt/rh/python27/enable
+<div class="highlight-python"><div class="highlight"><pre>source /opt/rh/python27/enable
 /opt/rh/python27/root/usr/bin/virtualenv --prompt=&quot;(esmond)&quot; .
 . bin/activate
 
@@ -168,7 +168,7 @@ python esmond/manage.py add_timeseries_post_user example_user
 <p>Only &#8221; . bin/activate&#8221; is necessary on this step for rhel 7.</p>
 <ol class="arabic">
 <li><p class="first">Run the commands below to create the account. You must provide a username as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of <em>X.X.X.X</em> or <em>X.X.X.X/Y</em> where <em>X</em> is each octet and <em>Y</em> is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host 10.0.1.1 or any host in the 10.0.2.0/24 subnet to register data to esmond:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>python esmond/manage.py add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
+<div class="highlight-python"><div class="highlight"><pre>python esmond/manage.py add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
 </pre></div>
 </div>
 </li>
@@ -192,7 +192,7 @@ python esmond/manage.py add_timeseries_post_user example_user
 </ol>
 <p>In addition, a <code class="docutils literal"><span class="pre">measurement_archive</span></code> block contains a number of <code class="docutils literal"><span class="pre">summary</span></code> blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see <a class="reference internal" href="config_mesh_agent_tasks.html"><em>MeshConfig Agent Tasks File</em></a>.</p>
 <p>Given all the information above, lets look at an example where we want to register all types of data to a measurement archive running at <em>https://acme.local/esmond/perfsonar/archive/</em>. The username and API key assigned to us by the archive administrator are <em>example_user</em> and <em>9130962c6b38722c0b9968e6903e1927e94e16fd</em> respectively. Also, since the server uses https we have installed the CA certificate in <em>/etc/ssl/certs</em>. Applying these details yields the following configuration:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;measurement_archive&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;measurement_archive&gt;
     type                esmond/latency
     username            example_user
     database            https://acme.local/esmond/perfsonar/archive/
@@ -305,7 +305,7 @@ python esmond/manage.py add_timeseries_post_user example_user
 <div class="section" id="registering-to-multiple-measurement-archives">
 <h3>Registering to Multiple Measurement Archives<a class="headerlink" href="#registering-to-multiple-measurement-archives" title="Permalink to this headline">¶</a></h3>
 <p>You may register to multiple measurement archives by adding multiple <code class="docutils literal"><span class="pre">measurement_archive</span></code> blocks to the <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-agent-tasks"><span>MeshConfig Agent tasks file</span></a> of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;measurement_archive&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;measurement_archive&gt;
     type                esmond/traceroute
     database            https://acme.local/esmond/perfsonar/archive/
     username            example_user
@@ -423,7 +423,7 @@ python esmond/manage.py add_timeseries_post_user example_user
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

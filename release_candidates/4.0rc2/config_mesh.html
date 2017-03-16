@@ -153,7 +153,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 <p>A site can group hosts within an organization together. For example, if an organization has multiple campuses with two hosts deployed at each, then the site directive can be used to group the hosts at each campus. This example is illustrate below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;site&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;site&gt;
     description Site 1
     &lt;host&gt;...&lt;/host&gt;
     &lt;host&gt;...&lt;/host&gt;
@@ -255,11 +255,11 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 <p>An address is a required element of a host that defines an IPv4address , IPv6 address or hostname assigned to an interface on the host. You can and likely will define multiple of these for a single a host. If using a hostname it is not required to also define theIP addresses to which the hostname maps as the tools will do the look-ups automatically.</p>
 <p>You can define address in one of two forms. In the simple form you simply provide the address. Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>address 10.0.1.1
+<div class="highlight-python"><div class="highlight"><pre>address 10.0.1.1
 </pre></div>
 </div>
 <p>In the complex form you make it a block and can optionally add the <em>tags</em> field to label the address. Tags are used when defining a <a class="reference internal" href="#config-mesh-host-class"><span>host class</span></a>. Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;address&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;address&gt;
     address 10.0.1.1
     tag latency
 &lt;/address&gt;
@@ -1881,7 +1881,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 <p>The group directive is one of the primary elements used for defining your configuration. Each group has a at a minimum a type and a list of members. The combination of these elements defines which tests are run. Each member of a group must reference either an <a class="reference internal" href="#config-mesh-address"><span>address</span></a> defined in a <a class="reference internal" href="#config-mesh-host"><span>host</span></a> block or a <a class="reference internal" href="#config-mesh-host-class"><span>host_class</span></a>. For example, the following defines a group named example_group where each host tests to every other host in the list (i.e. type is mesh). The first two addresses in the list are explicitly defined (10.0.1.1 and 10.0.1.2) and the third is a host class (host_class::ten_gige):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;group example_group&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_group&gt;
     type mesh
 
     member 10.0.1.1
@@ -1913,7 +1913,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <p>The type can be one of the following values:</p>
 <ul>
 <li><p class="first"><strong>disjoint</strong> - This type of test defines that tests are performed between a set of addresses in group A and a second set of addresses in group B. It is possible for an address to be in both groups. See <a class="reference internal" href="#config-mesh-group-a-member"><span>a_member Directive</span></a>, <a class="reference internal" href="#config-mesh-group-b-member"><span>b_member Directive</span></a> and <a class="reference internal" href="#config-mesh-group-no-agent"><span>no_agent Directive</span></a> for more information on defining members. Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;group example_disjoint_group&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_disjoint_group&gt;
     type disjoint
 
     a_member 10.0.1.1
@@ -1926,7 +1926,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </div>
 </li>
 <li><p class="first"><strong>mesh</strong> - This type of test defines that tests are performed between all addresses in the given list.  See <a class="reference internal" href="#config-mesh-group-member"><span>member Directive</span></a> and <a class="reference internal" href="#config-mesh-group-no-agent"><span>no_agent Directive</span></a> for more information on defining members. Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;group example_mesh_group&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_mesh_group&gt;
     type mesh
 
     member 10.0.1.1
@@ -1937,7 +1937,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </div>
 </li>
 <li><p class="first"><strong>ordered_mesh</strong> - A special type of group were the order an address is listed matters. The first address is responsible for testing to all the hosts listed below it, the second host is responsible for testing to all the hosts below that, etc until the last address is reached, which does not initiate any tests. This ultimately leads to a full mesh, with hosts toward the top of the list taking on a larger burden for initiating and storing tests. This may be desirable if you have a set of more powerful hosts (in terms of hardware) you can put toward the top of this list with less powerful hosts toward the bottom.   See <a class="reference internal" href="#config-mesh-group-member"><span>member Directive</span></a> for more information on defining members.  Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;group example_ordered_group&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_ordered_group&gt;
     type ordered_mesh
 
     member 10.0.1.1
@@ -1949,7 +1949,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </div>
 </li>
 <li><p class="first"><strong>star</strong> - A mesh where a single center address tests to all other members of the group.  See <a class="reference internal" href="#config-mesh-group-center-address"><span>center_address Directive</span></a> and <a class="reference internal" href="#config-mesh-group-member"><span>member Directive</span></a> for more information on defining members. Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span> &lt;group example_star_group&gt;
+<div class="highlight-python"><div class="highlight"><pre> &lt;group example_star_group&gt;
     type star
 
     center_address 10.0.0.1
@@ -2086,7 +2086,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 <p>A &lt;test&gt; directive is essentially the final step in defining the set of measurements to be run on participating hosts. By mapping a <a class="reference internal" href="#config-mesh-test-spec"><span>test_spec</span></a> to a
 <a class="reference internal" href="#config-mesh-group"><span>group</span></a>, you are declaring you want a test run with the parameters defined in <a class="reference internal" href="#config-mesh-test-spec"><span>test_spec</span></a> for each point-to-point pair defined in <a class="reference internal" href="#config-mesh-group"><span>group</span></a>. You also provided a <a class="reference internal" href="#config-mesh-description"><span>description</span></a> to name the test. The <a class="reference internal" href="#config-mesh-description"><span>description</span></a> has little significance to the tests themselves, but may be used for display purposes in a user interface, such as naming a grid in a dashboard. An example is below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;test&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;test&gt;
     description Example BWCTL Tests
     test_spec example_bwctl_spec
     group example_mesh_group
@@ -2174,7 +2174,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 <p>The &lt;host_class&gt; structure is one of the more complex in the MeshConfig. It is the foundational element in generating dynamic lists of hosts. A host_class has a <em>name</em> used to identify it, one or more <em>data sources</em> that contain an initial list of hosts, and a set of <em>filters</em> used to select hosts from the data sources that meet certain criteria. Optionally it may also have <em>host properties</em> used to set attributes on matching hosts such as measurement archives for storing test results. This host class can then be referenced in a <a class="reference internal" href="#config-mesh-group"><span>&lt;group&gt; Directive</span></a> as a member using the notation <em>host_class::NAME</em> where NAME is the name of the hos class. For example, below we define a host_class that matches all hosts in our current mesh file (that&#8217;s our data source in this case) belonging to organization Acme:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;host_class&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
     name      acme_org
 
     &lt;data_source&gt;
@@ -2191,7 +2191,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </pre></div>
 </div>
 <p>We could then letter reference this host_class in a group as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;group example_group&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;group example_group&gt;
     type mesh
 
     member 10.0.1.1
@@ -2952,7 +2952,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

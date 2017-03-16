@@ -102,7 +102,7 @@
 <h3>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h3>
 <p>Before you can configure the client, you must configure the server to receive logs from other systems over the network. <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.conf">This example config file</a> is available.
 This should work without any changes, but you may wish to customize it. In this example, the server is configured to store its local logs locally and centrally along with those submitted by remote servers. If you wish to disable this, comment out or remove this line:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>*.* @@127.0.0.1:514
+<div class="highlight-python"><div class="highlight"><pre>*.* @@127.0.0.1:514
 </pre></div>
 </div>
 <p>You also need to include one or two files in <code class="docutils literal"><span class="pre">/etc/rsyslog.d</span></code></p>
@@ -119,7 +119,7 @@ This should work without any changes, but you may wish to customize it. In this 
 </ul>
 </div></blockquote>
 <p>Configure your server by editing <code class="docutils literal"><span class="pre">/etc/rsyslog.d/rsyslog-server.conf</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span># Provides TCP syslog reception
+<div class="highlight-python"><div class="highlight"><pre># Provides TCP syslog reception
 $ModLoad imtcp.so
 $InputTCPServerRun 514
 
@@ -136,15 +136,15 @@ $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
 </div>
 <p>In the example configuration file, the server is set to listen on TCP port 514. Comment out or remove the TCP section if you don&#8217;t want TCP enabled. Similarly, you may uncomment the UDP section to enable listening over UDP. TCP is more reliable, and is recommended.</p>
 <p>If you change the protocol/port the host is listening on, revise the host specifier line in <code class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></code> to reflect this change. The number after the colon (:) is the port. For TCP, use &#64;&#64; when specifying the host:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>*.* @@127.0.0.1:514
+<div class="highlight-python"><div class="highlight"><pre>*.* @@127.0.0.1:514
 </pre></div>
 </div>
 <p>For UDP, use &#64; when specifying the host:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>*.* @127.0.0.1:514
+<div class="highlight-python"><div class="highlight"><pre>*.* @127.0.0.1:514
 </pre></div>
 </div>
 <p>In this example, the server will store all logs under <code class="docutils literal"><span class="pre">/var/log/central/</span></code>. Change the filename template as desired.:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span># Log file name - hostname/programname
+<div class="highlight-python"><div class="highlight"><pre># Log file name - hostname/programname
 $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
 </pre></div>
 </div>
@@ -159,7 +159,7 @@ $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
 <h3>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h3>
 <p>Once the server is working, the clients need to be configured to send their syslogs to the central server. As with the server, we need an <code class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></code> file. However, it should be slightly different as it needs to specify the hostname of the server where it should send its logs. An <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.conf">example client rsyslog.conf file</a>  is available here.</p>
 <p>The only required modification is changing the rmote host specification:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span># FILL THIS IN:
+<div class="highlight-python"><div class="highlight"><pre># FILL THIS IN:
 # remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional
 *.* @@remote-host:514
 </pre></div>
@@ -267,7 +267,7 @@ $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
