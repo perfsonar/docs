@@ -38,7 +38,8 @@ To enable additional logging, run (as the pscheduler or root user):
 
 To enable debug mode for these components only
 
-Other useful commands include:
+If you are missing results, it can be helpful to look closer into what the scheduler is doing.
+Some useful commands include:
 
 Look at the schedule in real time:
 ::
@@ -49,6 +50,12 @@ Look at a plot of the schedule (past and future)
 ::
 
    pscheduler plot-schedule --host hostname -PT30M +PT30M > plot.png
+
+
+Look for tests that failed to start in the past 2 hours:
+::
+
+   pscheduler schedule --host hostname -PT2H | grep -2 Non-Starter
 
 Look at schedule details for the past hour for throughput tests:
 ::

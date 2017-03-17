@@ -67,6 +67,14 @@ Hosts running a central MA should see these daemons:
 
 **add list here**
 
+::
+
+  perfsonar-meshconfig-guiagent.service       
+  httpd.service
+  maddash-server.service 
+  cassandra
+
+
 Restarting Daemons 
 ===================
 
