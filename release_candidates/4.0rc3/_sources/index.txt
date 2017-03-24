@@ -68,14 +68,13 @@ Using the perfSONAR Toolkit
 
 
 perfSONAR Tools
---------------------------
+-----------------
 .. toctree::
    :maxdepth: 1
 
    using_tools
    using_pscheduler
    using_owamp
-   using_other_tools
    using_psui
 
 Managing Multiple perfSONAR Hosts

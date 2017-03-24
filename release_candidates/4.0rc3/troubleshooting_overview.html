@@ -8,7 +8,7 @@
     
     <title>Troubleshooting perfSONAR 4.0 &mdash; perfSONAR Toolkit 4.0rc3 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="perfSONAR Client API" href="client_apis.html" />
     <link rel="prev" title="Dynamic Host Lookup Configuration File" href="config_mesh_lookup_hosts.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="config_mesh_lookup_hosts.html" title="Dynamic Host Lookup Configuration File"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,38 +70,38 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="troubleshooting-perfsonar-4-0">
 <h1>Troubleshooting perfSONAR 4.0<a class="headerlink" href="#troubleshooting-perfsonar-4-0" title="Permalink to this headline">¶</a></h1>
 <p>(page under construction!)</p>
 <p>This page contains some hints on how to troubleshoot perfSONAR 4.0.</p>
 <p>1.  Confirm that pScheduler on the local system is functioning:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler ping localhost
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler ping localhost
 pscheduler task idle --duration PT2S
 pscheduler task rtt --dest 127.0.0.1
 </pre></div>
 </div>
-<p>2.  Make sure SElinux is set to <tt class="docutils literal"><span class="pre">permissive</span></tt> or <tt class="docutils literal"><span class="pre">disabled</span></tt></p>
+<p>2.  Make sure SElinux is set to <code class="docutils literal"><span class="pre">permissive</span></code> or <code class="docutils literal"><span class="pre">disabled</span></code></p>
 <p>To disable SElinux, run:</p>
-<div class="highlight-python"><div class="highlight"><pre>echo 0 &gt;/selinux/enforce
+<div class="highlight-python"><div class="highlight"><pre><span></span>echo 0 &gt;/selinux/enforce
 </pre></div>
 </div>
-<p>To make it permanently in the <tt class="docutils literal"><span class="pre">permissive</span></tt> mode, run:</p>
-<div class="highlight-python"><div class="highlight"><pre>sed -i &#39;s/^SELINUX=enforcing/SELINUX=permissive/&#39; /etc/selinux/config
+<p>To make it permanently in the <code class="docutils literal"><span class="pre">permissive</span></code> mode, run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>sed -i &#39;s/^SELINUX=enforcing/SELINUX=permissive/&#39; /etc/selinux/config
 </pre></div>
 </div>
 <p>3.  Confirm firewall settings are correct by running some tests from the command line.</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task throughput --dest receive_host -source send_host
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task throughput --dest receive_host -source send_host
 pscheduler task rtt --source send_host --dest receive_host
 pscheduler task trace --source send_host --dest receive_host
 </pre></div>
 </div>
 <p>Also try reversing source/dest for all of these.</p>
 <p>4. Make sure pscheduler is behaving properly.</p>
-<p>Look for ERRORs in <tt class="docutils literal"><span class="pre">/var/log/pscheduler.log</span></tt></p>
+<p>Look for ERRORs in <code class="docutils literal"><span class="pre">/var/log/pscheduler.log</span></code></p>
 <p>To enable additional logging, run (as the pscheduler or root user):</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler debug on
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler debug on
 or
 pscheduler debug on runner scheduler
 </pre></div>
@@ -110,33 +110,33 @@ pscheduler debug on runner scheduler
 <p>If you are missing results, it can be helpful to look closer into what the scheduler is doing.
 Some useful commands include:</p>
 <p>Look at the schedule in real time:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler monitor --refresh=5
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler monitor --refresh=5
 </pre></div>
 </div>
 <p>Look at a plot of the schedule (past and future)</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler plot-schedule --host hostname -PT30M +PT30M &gt; plot.png
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler plot-schedule --host hostname -PT30M +PT30M &gt; plot.png
 </pre></div>
 </div>
 <p>Look for tests that failed to start in the past 2 hours:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --host hostname -PT2H | grep -2 Non-Starter
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler schedule --host hostname -PT2H | grep -2 Non-Starter
 </pre></div>
 </div>
 <p>Look at schedule details for the past hour for throughput tests:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test=throughput -PT1H | grep -2 myTestHost | grep -2 iperf3
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler schedule --filter-test=throughput -PT1H | grep -2 myTestHost | grep -2 iperf3
 </pre></div>
 </div>
 <p>For a specific host/tool:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test=throughput -PT1H | grep -2 myTestHost | grep -2 iperf3
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler schedule --filter-test=throughput -PT1H | grep -2 myTestHost | grep -2 iperf3
 or
 pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|iperf3)&quot; | grep -2 myTestHost
 </pre></div>
 </div>
 <p>Note that these commands work to remote hosts too by adding ‘&#8211;host=hostname`</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test=throughput --host hostname -PT1H
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler schedule --filter-test=throughput --host hostname -PT1H
 </pre></div>
 </div>
 <p>To Look at results for a particular run:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler result https://hostname/pscheduler/tasks/ccdad633-db0e-460d-9a63-0064b00c1f32/runs/83948ec5-3bb4-4627-b30c-4199b335c7b8
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler result https://hostname/pscheduler/tasks/ccdad633-db0e-460d-9a63-0064b00c1f32/runs/83948ec5-3bb4-4627-b30c-4199b335c7b8
 </pre></div>
 </div>
 </div>
@@ -172,7 +172,7 @@ pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|ipe
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -184,7 +184,7 @@ pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|ipe
         <li class="right" >
           <a href="config_mesh_lookup_hosts.html" title="Dynamic Host Lookup Configuration File"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -222,9 +222,9 @@ pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|ipe
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>
