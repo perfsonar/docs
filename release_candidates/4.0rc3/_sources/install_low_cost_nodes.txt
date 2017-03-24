@@ -15,7 +15,7 @@ For installation of Ubuntu from a standard ISO, there is also a script to help a
 System Requirements
 ===================
 
-Most of these low cost devices seem to work best running Ubuntu. The perfsonar-testpoint bundle works on Ubuntu 12 and 14. We provide compatible Debian packages for 4 different hardware architectures:
+Most of these low cost devices seem to work best running Ubuntu. The perfsonar-testpoint bundle works on Ubuntu 14. We provide compatible Debian packages for 4 different hardware architectures:
 
   * 32-bit (i386)
   * 64-bit (amd64)
@@ -24,7 +24,7 @@ Most of these low cost devices seem to work best running Ubuntu. The perfsonar-t
 
 We recommend a device with at least 1GB of RAM and 16MB of disk. Many devices will fit these requirements and more depending on your desire and ability to experiment or tinker. 
 
-At this point in time, the most extensively tested platform in this category is the `$100 Liva <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA_SPEC.aspx?DetailID=1560&LanID=0>`_ and its second generation the `$150 Liva X <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA.aspx?DetailID=1593&LanID=0>`_. Each of these is capable of full 1Gbps and work with a standard `Ubuntu 12.04.05 <http://releases.ubuntu.com/12.04/ubuntu-12.04.5-desktop-amd64.iso>`_ Desktop ISO installation.
+At this point in time, the most extensively tested platform in this category is the `$100 Liva <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA_SPEC.aspx?DetailID=1560&LanID=0>`_ and its second generation the `$150 Liva X <http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA.aspx?DetailID=1593&LanID=0>`_. Each of these is capable of full 1Gbps and work with a standard Ubuntu Desktop ISO installation.
 
 The Liva X being the second generation hardware seems to be more robust and comes pre-assembled, though a bit more expensive. Both are available for purchase on common sites such as Newegg or Amazon.
 

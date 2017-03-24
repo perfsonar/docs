@@ -11,7 +11,7 @@ Running low cost nodes function in much the same way as running a "regular" perf
 Configuration
 =============
 
-There is currently no pre-configured ISO installation for Debian or CentOS that is not a full toolkit install. The following assumes that an `Ubuntu 12.04.05 <http://releases.ubuntu.com/12.04/ubuntu-12.04.5-desktop-amd64.iso>`_ has been installed on your device via standard means such as a USB stick and that network connectivity is available.
+There is currently no pre-configured ISO installation for Debian or CentOS that is not a full toolkit install. The following assumes that Ubuntu has been installed on your device via standard means such as a USB stick and that network connectivity is available.
 
 The following is a script to automatically set up a few important things such as SSH, NTP, the perfSONAR repositories, the stock perfSONAR tuning and security, as well as auto updates. Simply copy/paste these instructions and at the end you will be left with a fully functional perfSONAR Ubuntu testpoint.
 

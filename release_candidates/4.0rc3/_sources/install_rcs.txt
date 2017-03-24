@@ -81,7 +81,7 @@ You may install the appropriate source list as follows for **Debian 7 (Wheezy)**
     wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-4.0.list
     wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 
-These Debian 7 packages should also work on Ubuntu 12-LTS (Precise Pangolin) and Ubuntu 14-LTS (Trusty Tahr).
+These Debian packages should also work on Ubuntu 14.
     
 Likewise for **Debian 8 (Jessie)**::
 

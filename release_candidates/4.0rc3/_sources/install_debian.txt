@@ -6,7 +6,6 @@ perfSONAR combines various sets of measurement tools and services. For perfSONAR
 
 * Debian 7 Wheezy
 * Debian 8 Jessie
-* Ubuntu 12 Precise
 * Ubuntu 14 Trusty
 
 Debian meta packages are available to install the bundles described in :doc:`install_options`. Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.
@@ -22,7 +21,7 @@ System Requirements
   * ARMv7 and up (armhf)
   * ARM64 (arm64) (only for Debian 8)
 
-* **Operating System:**  Any system running a Debian 7, Debian 8, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 12 or 14 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 7, Debian 8, or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 14 might work too but are not officially supported.
 
 Installation Instructions
 =========================
@@ -32,14 +31,14 @@ Installation Instructions
 Step 1: Configure APT
 ---------------------
 
-All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7, Ubuntu 12 or Ubuntu 14:
+All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7 or Ubuntu 14:
 ::
 
    cd /etc/apt/sources.list.d/
    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 
-And with the following commands for Debian 8:
+Or with the following commands for Debian 8:
 ::
 
    cd /etc/apt/sources.list.d/
