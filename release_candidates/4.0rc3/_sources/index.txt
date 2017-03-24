@@ -168,6 +168,7 @@ Accessing Raw Data
 .. toctree::
    :maxdepth: 1
    
+   client_tools
    client_apis
 
 Previous Releases
