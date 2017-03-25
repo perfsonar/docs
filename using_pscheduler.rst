@@ -22,8 +22,19 @@ The most significant of pScheduler’s new features is extensibility.  A standar
 Usage
 =====
 
+The full User Guide is available at: https://github.com/perfsonar/pscheduler/wiki/CLI-User's-Guide
 
-
-More bwctl -> pscheduler conversion help can be found at: http://fasterdata.es.net/performance-testing/network-troubleshooting-tools/pscheduler
+bwctl -> pscheduler conversion help can be found at: http://fasterdata.es.net/performance-testing/network-troubleshooting-tools/pscheduler
 
 Reference link to "Cheatsheet": https://www.cheatography.com/mfeit-internet2/cheat-sheets/perfsonar-pscheduler/
+
+
+More Information
+================
+
+Additional information on on pscheduler can be found on the pscheduler project wiki:
+
+- Archiver: https://github.com/perfsonar/pscheduler/wiki/Archivers
+- Rest API: https://github.com/perfsonar/pscheduler/wiki/REST-API
+
+
