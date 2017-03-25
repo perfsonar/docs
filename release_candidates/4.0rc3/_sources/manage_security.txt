@@ -9,130 +9,60 @@ The perfSONAR Toolkit utilizes a number of tools the help protect against attack
 
 None of these solutions will protect your host from all kinds of attacks so best common practices and good sense should be used when administering your host. In addition to tools like above it's important :doc:`update your host <manage_update>` with the latest packages and to watch the `mailing lists <http://www.perfsonar.net/about/getting-help/>`_ for important security announcements. 
 
-Default Firewall Rules
-======================
-The perfSONAR Toolkit uses *iptables* and *ip6tables* to implement IPv4 and IPv6 firewall rules respectively. You can find the default configurations for each in */etc/sysconfig/iptables* and */etc/sysconfig/ip6tables*. You can find more information about the ports open and a complete list of rules on `our security page <http://www.perfsonar.net/deploy/security-considerations/>`_.
+
+Default Firewall Rules and perfSONAR port requirements
+======================================================
+The perfSONAR Toolkit uses *iptables* and *ip6tables* to implement IPv4 and IPv6 firewall rules respectively. The default configurations for each in */etc/sysconfig/iptables* and */etc/sysconfig/ip6tables*. Also see /usr/lib/firewalld/services and /etc/perfsonar/toolkit/perfsonar_firewalld_settings.conf for rules on CentOS7. 
+
+perfSONAR uses the following ports:
+
++------------------------------------------+
+| perfSONAR Tools Ports                    | 
++------------+----------------+------------+
+| Tool       | TCP ports      | UDP Ports  |
++============+================+============+
+| owamp      | 861            | 8760-9960  |
++------------+----------------+------------+
+| pscheduler | 443            |            |
++------------+----------------+------------+
+| iperf3     | 5201           |            |
++------------+----------------+------------+
+| iperf2     | 5001           |            |
++------------+----------------+------------+
+| nuttcp     | 5000, 5101     |            |
++------------+----------------+------------+
+| traceroute |                | 33434-33634|
++------------+----------------+------------+
+| ntp        |                | 123        |
++------------+----------------+------------+
+| bwctl      |4823, 5001-5900,| 5001-5900, | 
+| 	     | 6001-6200      | 6001-6200  | 
++------------+----------------+------------+
+
+**Note**: bwctl is needed for backwards compatibility with perfSONAR 3.5 hosts.
+
++--------------------------------------+
+| perfSONAR Toolkit Ports              | 
++-----------------------+--------------+
+| Tool                  | TCP ports    |
++=======================+==============+
+| management interface  | 80, 443      +   
++-----------------------+--------------+
+| esmond                | 80, 443      +   
++-----------------------+--------------+
+| Lookup Service        | 8090,8096    +   
++-----------------------+--------------+
+
 
 Adding Your Own Firewall Rules
 ==============================
 The rules added by the perfSONAR toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update. 
 
-An example that will block access to port 8000 for all traffic is shown in the steps below (note it is not recommended you run this command as it will block access to the NPAD tool):
+For more information see:
 
-    #. Login to your host via SSH or the terminal as a root user
-    #. View your current iptables rules with the following ``/sbin/service iptables status`` command. Note that the command does not necessarily show all the details of each rule and you should look in */etc/sysconfig/iptables* for a full description. For example  the second rule in the INPUT chain may look like it accepts all traffic, but in reality it only accepts all traffic *from the loopback interface*. An example is shown below::
+- https://wiki.centos.org/HowTos/Network/IPTables
+- http://www.firewalld.org/documentation/
 
-        Table: filter
-        Chain INPUT (policy ACCEPT)
-        num  target     prot opt source               destination         
-        1    f2b-sshd   tcp  --  0.0.0.0/0            0.0.0.0/0           multiport dports 22 
-        2    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0           
-        3    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable 
-
-        Chain FORWARD (policy ACCEPT)
-        num  target     prot opt source               destination         
-        1    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable 
-
-        Chain OUTPUT (policy ACCEPT)
-        num  target     prot opt source               destination         
-        1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
-
-        Chain f2b-sshd (1 references)
-        num  target     prot opt source               destination         
-        1    RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
-
-        Chain perfSONAR (1 references)
-        num  target     prot opt source               destination         
-        1    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300 
-        2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5001:5300 
-        3    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600 
-        4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5301:5600 
-        5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900 
-        6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5601:5900 
-        7    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200 
-        8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:6001:6200 
-        9    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960 
-        10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:8760:9960 
-        11   ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255 
-        12   ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
-        13   ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED 
-        14   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:22 
-        15   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp 
-        16   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           state NEW udp spt:547 dpt:546 
-        17   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634 
-        18   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:8001:8020 
-        19   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:3001:3003 
-        20   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:4823 
-        21   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:861 
-        22   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8000 
-        23   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:7123 
-        24   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:843 
-        25   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:80 
-        26   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:443 
-        27   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8090 
-        28   RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
-        
-    #. Run the  iptables command below to block port 8000. Note that we are adding this rule to the INPUT chain and leaving the perfSONAR chain untouched. We are also adding it at position 5 which ensures it is processed before the perfSONAR rules::
-    
-        iptables -I INPUT 1 -p tcp --dport 8000 -j REJECT
-    #. Now save your configuration change::
-        
-        /sbin/service iptables save
-        
-    #. We can now see our new rule was added::
-
-        Table: filter
-        Chain INPUT (policy ACCEPT)
-        num  target     prot opt source               destination      
-        1    REJECT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8000 reject-with icmp-port-unreachable    
-        2    f2b-sshd   tcp  --  0.0.0.0/0            0.0.0.0/0           multiport dports 22 
-        3    perfSONAR  all  --  0.0.0.0/0            0.0.0.0/0           
-        4    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable 
-
-        Chain FORWARD (policy ACCEPT)
-        num  target     prot opt source               destination         
-        1    REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable 
-
-        Chain OUTPUT (policy ACCEPT)
-        num  target     prot opt source               destination         
-        1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
-
-        Chain f2b-sshd (1 references)
-        num  target     prot opt source               destination         
-        1    RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
-
-        Chain perfSONAR (1 references)
-        num  target     prot opt source               destination         
-        1    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5001:5300 
-        2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5001:5300 
-        3    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5301:5600 
-        4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5301:5600 
-        5    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:5601:5900 
-        6    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:5601:5900 
-        7    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:6001:6200 
-        8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:6001:6200 
-        9    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:8760:9960 
-        10   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:8760:9960 
-        11   ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255 
-        12   ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
-        13   ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED 
-        14   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW,ESTABLISHED tcp dpt:22 
-        15   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:123 udp 
-        16   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           state NEW udp spt:547 dpt:546 
-        17   ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpts:33434:33634 
-        18   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:8001:8020 
-        19   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpts:3001:3003 
-        20   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:4823 
-        21   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:861 
-        22   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8000 
-        23   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:7123 
-        24   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:843 
-        25   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:80 
-        26   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:443 
-        27   ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:8090 
-        28   RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
-  
- 
 
 Fail2ban Intrusion Detection System
 ====================================
