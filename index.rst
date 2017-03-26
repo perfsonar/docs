@@ -156,6 +156,13 @@ MeshConfig Configuration Files
    config_mesh_gui
    config_mesh_lookup_hosts
    
+FAQ
+---------------
+.. toctree::
+   :maxdepth: 1
+
+   FAQ
+
 TroubleShooting
 ---------------
 .. toctree::
