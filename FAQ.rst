@@ -5,12 +5,13 @@ perfSONAR FAQ
 (page very under construction!)
 
 
-Here are the FAQ items from www.perfsonar.net. These need to be formatted and reorganized.
+Here are the FAQ items from www.perfsonar.net. These need to be formatted and reorganized. Note that most of the links did not copy over.
 
 categories should include:
 
 -   tool questions
 -   host admin questions
+-   installation questions
 -   perfSONAR project questions
 -   ....
 
@@ -59,86 +60,72 @@ A: Communities are not required, but they allow other individuals and organizati
 
 A: See this page XXX. Note that the perfSONAR Toolkit development team has not created hard minimum or maximum requirements - the perfSONAR Toolkit will function on almost any form of hardware. Performance considerations do favor meeting or exceeding the minimum guidelines.
 
-Q:Does my machine have to meet the System Requirements? 
+*Q: Does my machine have to meet the System Requirements?*
 
-A:
-There is nothing on the perfSONAR Toolkit that will prevent systems that do not meet the requirements from starting. Erroneous or inaccurate behavior is possible if the hardware cannot support the measurement tools.
+A: There is nothing on the perfSONAR Toolkit that will prevent systems that do not meet the requirements from starting. Erroneous or inaccurate behavior is possible if the hardware cannot support the measurement tools.
 
-Q:The colors on my Console Configuration do not match what I see on the web. Some are green already. 
+*Q: The colors on my Console Configuration do not match what I see on the web. Some are green already.*
 
-A:
-If you are upgrading from a previous version of the perfSONAR Toolkit, the colors may be green already because a particular aspect was configured previously. These do not need to be configured again.
+A: If you are upgrading from a previous version of the perfSONAR Toolkit, the colors may be green already because a particular aspect was configured previously. These do not need to be configured again.
 
-Q:The Services On This Node screen shows many services in the non-running state when first started, what is wrong? 
+*Q: The Services On This Node screen shows many services in the non-running state when first started, what is wrong?*
 
-A:
-Many of the services will be in this state because they are missing some key configuration items (e.g. from the Administrative Info). After following the configuration steps check this screen again, most should be functional.
+A: Many of the services will be in this state because they are missing some key configuration items (e.g. from the Administrative Info). After following the configuration steps check this screen again, most should be functional.
 
-Q:I do not see my service in the Directory Of Services, where is it? 
+*Q: I do not see my service in the Directory Of Services, where is it?*
 
-A:
-Much like DNS, the information that will populate the Lookup Service will take time to propagate. Please allow some time (e.g. a few hours) before your service will be fully visible.
+A: Much like DNS, the information that will populate the Lookup Service will take time to propagate. Please allow some time (e.g. a few hours) before your service will be fully visible.
 
-Q:What is the purpose of BWCTL Limits/OWAMP Limits? 
+*Q: What is the purpose of pscheduler Limits?* 
 
-A:
-These allow you to limit the influence that outside users have on your system performance. For example, to prevent your machine/network from being saturated with BWCTL tests, limit the duration and maximum bandwidth available. These screens allow a fine grained way to protect resources.
+A: These allow you to limit the influence that outside users have on your system performance. For example, to prevent your machine/network from being saturated with BWCTL tests, limit the duration and maximum bandwidth available. These screens allow a fine grained way to protect resources.
 
-Q:How can I set limits to prevent others from overusing BWCTL/OWAMP? 
+*Q: How can I set limits to prevent others from overusing BWCTL/OWAMP?*
 
-A:
-BWCTL and OWAMP have configurable dialog that allows the administrator to limit the resources consumed. To set the limits for BWCTL, consult this section. To set the limits for OWAMP, consult this section.
+A: BWCTL and OWAMP have configurable dialog that allows the administrator to limit the resources consumed. To set the limits for BWCTL, consult this section. To set the limits for OWAMP, consult this section.
 
-Q:How many NTP servers do I need, can I select them all? 
+*Q: How many NTP servers do I need, can I select them all?*
 
-A:
-It is recommended that 4 to 5 close and active servers be used. The Select Closest Servers button will help with this decision. Note that some servers may not be available due to routing (e.g. non-R&E networks vs R&E networks - a common problem for Internet2 and ESnet servers).
+A: It is recommended that 4 to 5 close and active servers be used. The Select Closest Servers button will help with this decision. Note that some servers may not be available due to routing (e.g. non-R&E networks vs R&E networks - a common problem for Internet2 and ESnet servers).
 
-Q:Can I boot from a USB key instead of a CD? 
+*Q:C an I boot from a USB key instead of a DVD?*
 
-A:
-The perfSONAR Toolkit Netinstall and Live USB images are capable of being installed on a USB stick instead of a CD. To write these images to the media, we recommend using dd:
+A: The perfSONAR Toolkit Netinstall and Fullinstall images are capable of being installed on a USB stick instead of a CD. To write these images to the media, we recommend using dd:
  
-sudo dd if=pS-Performance_Toolkit-3.4-FullInstall-x86_64.iso of=/dev/disk3
+sudo dd if=pS-Performance_Toolkit-4.0-FullInstall-x86_64.iso of=/dev/disk3
  
 
-Q:A CVE announcement was made for the current perfSONAR Toolkit Kernel, what do I do? 
+*Q: A CVE announcement was made for the current perfSONAR Toolkit Kernel, what do I do?*
 
-A:
-The perfSONAR development effort subscribes to all major outlets that will announce kernel CVEs. In the event that a CVE is announce that directly effects operation of the pS Performance Toolit, the following steps will take place:
-Announcements regarding the CVE will be posted to the perfsonar-user and perfsonar-announce mailing lists, more information on the mailing lists can be found here: https://lists.internet2.edu/sympa/info/perfsonar-user and https://lists.internet2.edu/sympa/info/perfsonar-announce
-A timeline will be relayed regarding availability of new kernels.
-The CentOS project will make the patched kernel available first, and it will be available through the yum repositories on the toolkit before the perfSONAR project is able to apply the web100 patches.
-It is strongly suggested that perfSONAR Toolkit users utilizing the NetInstall option upgrade immediately. 
-Run the following command:
-sudo yum update
-perfSONAR Toolkit users that are rely on the LiveCD option, through April of 2015, can either continue using their instance, or shut it down depending on the severity of the CVE. Note that the project will announce if a new LiveCD will be available, depending on the severity of the CVE and impact to users.
-The perfSONAR project will release a web100 patched version of the most recent kernel, and make these available through the yum repo. Announcements will be made again to the mailing lists.
+A: The perfSONAR development effort subscribes to all major outlets that will announce kernel CVEs. In the event that a CVE is announce that directly effects operation of the pS Performance Toolit, the following steps will take place:
 
-Q:During the NetInstall, I see errors about a corrupt file being downloaded. What should I do? 
+- Announcements regarding the CVE will be posted to the perfsonar-user and perfsonar-announce mailing lists, more information on the mailing lists can be found here: https://lists.internet2.edu/sympa/info/perfsonar-user and https://lists.internet2.edu/sympa/info/perfsonar-announce
+- A timeline will be relayed regarding availability of new kernels.
+- The CentOS project will make the patched kernel available first, and it will be available through the yum repositories on the toolkit before the perfSONAR project is able to apply the web100 patches.
+- It is strongly suggested that perfSONAR Toolkit users utilizing the NetInstall option upgrade immediately. 
 
-A:
-During the NetInstall, you may see some errors about a corrupt file being downloaded along with buttons like Reboot and Retry. This happens if it fails to download an RPM from a mirror, which can happen for numerous reasons. Usually, that error can be solved by hitting Retry. You may have to hit that multiple times depending on which mirrors the install is trying to download the RPM from.
+Run the following command: sudo yum update
 
-Q:How do I change the MTU for a device? 
 
-A:
-N.B. Changing the MTU on your perfSONAR host should only be done if the underlying network supports the chosen size. Please work with your local network staff before making this change on any host.
+*Q: During the NetInstall, I see errors about a corrupt file being downloaded. What should I do?*
+
+A: During the NetInstall, you may see some errors about a corrupt file being downloaded along with buttons like Reboot and Retry. This happens if it fails to download an RPM from a mirror, which can happen for numerous reasons. Usually, that error can be solved by hitting Retry. You may have to hit that multiple times depending on which mirrors the install is trying to download the RPM from.
+
+*Q: How do I change the MTU for a device?*
+
+A: Changing the MTU on your perfSONAR host should only be done if the underlying network supports the chosen size. Please work with your local network staff before making this change on any host.
 You can view the MTU of your network devices by executing the /sbin/ifconfig command.
-To temporarily change the MTU for a device, you use the ifconfig command and specify the device and the new MTU. For example:
- 
-ifconfig eth0 mtu 9000 up
- 
+To temporarily change the MTU for a device, you use the ifconfig command and specify the device and the new MTU. For example: ifconfig eth0 mtu 9000 up
  
 To make these changes permanent you need to modify the specific devices configuration file. These files are in /etc/sysconfig/network-scripts/ and have names like ifcfg-eth0 for the device eth0 and ifcfg-eth1 for eth1.
  
 For example you could add the line MTU="9000" for IPv4 or IPV6_MTU="9000" for IPv6 to /etc/sysconfig/network-scripts/ifcfg-eth0.
 After making the changes you need to restart the network services by running the command 'service network restart' as root.
 
-Q:How do I change the SSL certificate used by the web server? 
+*Q: How do I change the SSL certificate used by the web server?*
 
-A:
-The toolkit by default generates a self-signed SSL certificate that it configures for use with the Apache web server. Some users may desire to replace this certificate with a certificate signed by a certificate authority (CA).
+A: The toolkit by default generates a self-signed SSL certificate that it configures for use with the Apache web server. Some users may desire to replace this certificate with a certificate signed by a certificate authority (CA).
+
 You may also need to replace the certificate due to a problem sometimes encountered with browsers not accepting the self-signed certificate. You may see an error like the following:
  
     HOST uses an invalid security certificate.
@@ -146,14 +133,13 @@ You may also need to replace the certificate due to a problem sometimes encounte
     The certificate is only valid for localhost.localdomain
     (Error code: sec_error_untrusted_issuer)
  
- 
 You can find instructions for installing a new certificate in Apache here.
  
 
-Q:I forgot to enable IPv6 in CentOS when I installed the toolkit. How do I enable it? 
+*Q: I forgot to enable IPv6 in CentOS when I installed the toolkit. How do I enable it?*
 
-A:
-It is recommended that you always enable IPv6 during the CentOS installation portion of the toolkit setup. If you did not enable it, then you can do so with the following steps:
+A: It is recommended that you always enable IPv6 during the CentOS installation portion of the toolkit setup. If you did not enable it, then you can do so with the following steps:
+
 Login to the toolkit as a user capable of running sudo
 Run sudo and enter your sudo password
 Open the file /etc/modprobe.conf in a text editor and remove the following lines:
@@ -163,52 +149,50 @@ options ipv6 disable=1
 Restart the host
 You can now assign an IPv6 address.
 
-Q:Why is the static IPv6 address I assigned during the net-install process not configured when my host starts-up? 
+*Q: Why is the static IPv6 address I assigned during the net-install process not configured when my host starts-up?*
 
-A:
-When you perform the net-install of the toolkit, you will be prompted twice to enter networking information by CentOS. The first time is to define the networking to be used for downloading required packages. The second prompt is later in the installation and defines what will be configured on the host post-installation. It is a known CentOS behavior that IPv6 information entered at the first prompt is not automatically filled-in at the second prompt. This can be confusing because the IPv4 information does get automatically filled-in. If you do not manually enter the IPv6 information a second time, then your host will not have the address configured post-installation. You will have to manually assign the address if this happens.
+A: When you perform the net-install of the toolkit, you will be prompted twice to enter networking information by CentOS. The first time is to define the networking to be used for downloading required packages. The second prompt is later in the installation and defines what will be configured on the host post-installation. It is a known CentOS behavior that IPv6 information entered at the first prompt is not automatically filled-in at the second prompt. This can be confusing because the IPv4 information does get automatically filled-in. If you do not manually enter the IPv6 information a second time, then your host will not have the address configured post-installation. You will have to manually assign the address if this happens.
 
-Q:The drivers that are included for my "foo" network card old, what should I do? 
+*Q: The drivers that are included for my "foo" network card old, what should I do?*
 
-A:
-The perfSONAR Toolkit includes drivers from the upstream CentOS distribution and a very limited number of specially built drivers for cards that are known to be widely used (e.g. myicom). If you notice that there is a newer driver available than what the perfSONAR Toolkit provides you can do the following:
-Download the source or RPM from the manufactuers web site, build on your perfSONAR Toolkit
+A: The perfSONAR Toolkit includes drivers from the upstream CentOS distribution and a very limited number of specially built drivers for cards that are known to be widely used (e.g. myicom). If you notice that there is a newer driver available than what the perfSONAR Toolkit provides you can do the following:
+Download the source or RPM from the manufacturers web site, build on your perfSONAR Toolkit
 If you are running a netinstall version of the perfSONAR Toolkit, run modprobe after installation to load the new version
 If you are running a LiveCD, you will need to modify the local init.d script to force modprobe on each reboot to load the proper version
 
-Q:Where can I find more resources regarding timekeeping for VMWare Virtual Machines? 
+*Q: Where can I find more resources regarding timekeeping for VMWare Virtual Machines?*
 
-A:
-VMWare has two resources worth reading:
-Timekeeping In Virtual Machines
-Timekeeping best practices for Linux guests
+A: VMWare has two resources worth reading:
 
-Q:What TCP congestion control algorithm is used by the perfSONAR Toolkit? 
+- Timekeeping In Virtual Machines
+- Timekeeping best practices for Linux guests
 
-A:
-The perfSONAR toolkit uses the CentOS or Debian default TCP congestion control algorithm, which is htcp. 
+*Q: What TCP congestion control algorithm is used by the perfSONAR Toolkit?*
 
-Q:Where are the relevant logs for perfSONAR services? 
+A: The perfSONAR toolkit uses the CentOS or Debian default TCP congestion control algorithm, which is cubic. 
 
-A:
-Please see http://docs.perfsonar.net/manage_logs.html for more information. 
+*Q: Where are the relevant logs for perfSONAR services?*
 
-Q:Is it possible to change the default port for tool X? 
+A: Please see http://docs.perfsonar.net/manage_logs.html for more information. 
 
-A:
-The measurement servers use 2 kinds of ports:
-Contact ports, e.g. a well known location to contact the daemon to initiate a test
-Test ports, e.g. negotiated ports to flow test or control traffic when a test is requested
+*Q: Is it possible to change the default port for tool X?*
+
+A: The measurement servers use 2 kinds of ports:
+
+- Contact ports, e.g. a well known location to contact the daemon to initiate a test
+- Test ports, e.g. negotiated ports to flow test or control traffic when a test is requested
+
 Test ports are easily configured to run on a specific set of ports, and can be configured to be opened in a site firewall. The daemon is often able to negotiate these at run time. The contact port is well known, and because of that should never be changed to a different value. Doing so severely impacts the ability of the tool to interoperate on a global scale.
+
 As an example, the OWAMP server listens on the registered port 861 (see http://tools.ietf.org/search/rfc4656 section 2). This is the standard port for the application, in the same way that port 80 is the standard port for an HTTP server. While one can run a web server on a port other than 80, it makes the web server less useful because it's not a standard config. The same is true for OWAMP. The OWAMP protocol is standardized, and has a well-known port - port 861 - associated with it. Running the OWAMP daemon on a non-standard port introduces significant interoperability challenges between deployments.
+
 If you're going to run a measurement infrastructure inside your own organization, you are of course free to do whatever you want. If you want to integrate with the rest of the world, the measurement tools should be run on the standard port to ensure interoperability.
 
-Q:Why doesn't the perfSONAR toolkit include the most recent version of the Myricom NIC driver? 
+*Q: Why doesn't the perfSONAR toolkit include the most recent version of vendor X’s driver?*
 
-A:
-We only support the default CentOS device drivers on the toolkit. However, several groups have reported 10% performance improvements using the latest driver from Myricom. If you want to update your toolkit host to the latest version of the Myricom driver, follow the instructions here
+A: We only support the default CentOS device drivers on the toolkit. However, several groups have reported 10% performance improvements using the latest driver from Myricom. If you want to update your toolkit host to the latest version of the Myricom driver, follow the instructions here
 
-Q:Can I configure yum to exclude kernel packages from it's update procedure? 
+*Q: Can I configure yum to exclude kernel packages from it's update procedure?*
 
 A: A detailed explanation of yum configuration can be found in the RHEL documents: https://access.redhat.com/site/solutions/10185. There are two ways to exclude kernel packages from a yum update, the first solution can be invoked on the command line:
  
@@ -227,20 +211,19 @@ exclude=kernel* samba*                           <====
  
 NOTE: If there are multiple package to be excluded then separate them using a single space or comma.
  
-Q:How can I configure yum to automatically update the system? 
+*Q: How can I configure yum to automatically update the system?*
 
 A: Note that as of version 3.4, this is enabled by default. See this more for more detail: http://docs.perfsonar.net/manage_update.html#automatic-updates
 
-Q:When attempting to use BWCTL with an IPv6 address, the command fails: bwctl: Unable to connect to 2001:468:1:11::16:66:4823. What should I do? 
+*Q: When attempting to use BWCTL with an IPv6 address, the command fails: bwctl: Unable to connect to 2001:468:1:11::16:66:4823. What should I do?*
 
-A:
-Wrap the IPv6 address in square brackets and double quotes (to prevent the shell from trying to interpret the brackets). For example: bwctl -T iperf3 -t 10 -i 1-c "[2001:468:1:11::16:66]:4823"
+A: Wrap the IPv6 address in square brackets and double quotes (to prevent the shell from trying to interpret the brackets). For example: bwctl -T iperf3 -t 10 -i 1-c "[2001:468:1:11::16:66]:4823"
 
-Q:My host was impacted by Shellshock/Heartbleed/etc., what should I do? 
+*Q: My host was impacted by Shellshock/Heartbleed/etc., what should I do?*
 
 A: Please check the vulnerability archive for the specific attack you interested in, information on mitigation for perfSONAR nodes will be posted there, or in the mailing list archives.
 
-Q:I would like to install and patch perfsonar boxes behind a web proxy, is it possible to specify this on the grub command line? 
+*Q: I would like to install and patch perfsonar boxes behind a web proxy, is it possible to specify this on the grub command line?*
 
 A: Anaconda documentation indicates this grub parameter should do the trick:
  
@@ -248,7 +231,7 @@ proxy=[protocol://][username[:password]@]host[:port]
  
 Note that during a fresh network installation, Anaconda does install updates immediately (e.g. it wouldn't use a version of an RPM from when the ISO was built), and doesn't actually run any network services before the reboot. For those that are rebuilding after shellshock - using a proxy should not be necessary.
  
-Q:How can I add custom rules to IPTables? 
+*Q: How can I add custom rules to IPTables?*
 
 A: The rules added by the perfSONAR toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update.
 
@@ -326,9 +309,10 @@ A: Information on this can be found here: http://docs.perfsonar.net/multi_ma_bac
 *Q: How can I backup the data in my esmond instance?*
 
 A: Information on this can be found here: http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_backup_restore_c.html.
+
 Additionally, to back up perfSONAR data from an MA see guidance on this page: http://docs.perfsonar.net/multi_ma_backups.html.  Note that some steps may destroy data. 
 For PostgreSQL: 
-"This will delete any existing data and replace it with the backup” 
+*This will delete any existing data and replace it with the backup*
 For Cassandra and nodetool, It also overwrites existing data (via https://specs.openstack.org/openstack/trove-specs/specs/liberty/cassandra-backup-restore.html):
 "A snapshot can be restored by moving all *.db files from a snapshot directory to the respective keyspace overwriting any existing files.”
 

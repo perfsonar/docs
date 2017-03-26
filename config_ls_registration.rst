@@ -50,8 +50,7 @@ ls_instance Directive
 :Syntax: ``ls_instance URL``
 :Contexts: top level
 :Occurrences:  Exactly one
-:Default: Chooses closest server in terms of round-trip time from the `bootstrap file <http://ps-west.es.net:8096/lookup/activehosts.json>`_
-:Compatibility: 3.3 and later
+:Default: Chooses closest server in terms of round-trip time from the `bootstrap file <http://ps-west.es.net/lookup/activehosts.json>`_
 
 .. _config_ls_registration-server_flap_threshold:
 
