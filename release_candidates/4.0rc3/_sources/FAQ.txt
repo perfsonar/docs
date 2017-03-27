@@ -240,7 +240,7 @@ A: The rules added by the perfSONAR toolkit are contained within a special perfS
 
 A: There is both a ipv4_only and ipv6_only option you can set in the test parameters of a mesh config. Setting them both at the same time gives an error.
 
-Q: When trying a clean install with perfSONAR Toolkit version 3.4, the system doesn't recognize any disks/doesn't see my RAID controller. Things work with other systems (CentOS 6, Scientific Linux 6). What should I do?
+*Q: When trying a clean install with perfSONAR Toolkit version 3.4, the system doesn't recognize any disks/doesn't see my RAID controller. Things work with other systems (CentOS 6, Scientific Linux 6). What should I do?*
 
 A: If you have started with a different OS, you can attempt to install the necessary packages manually.
 First, install the EPEL repository. You can grab the RPM from http://linux.mirrors.es.net/fedora-epel/6/i386/repoview/epel-release.html.
@@ -251,22 +251,20 @@ yum install perl-perfSONAR_PS-Toolkit perl-perfSONAR_PS-Toolkit-SystemEnvironmen
 Once it’s installed, reboot the machine.
 Alternatively, if you are upgrading from a LiveCD, use 'dban' to wipe out the data partition placed there from previous use.
 
-Q:Which repository addresses will be used to get updates to the perfSONAR software?
+*Q: Which repository addresses will be used to get updates to the perfSONAR software?*
 
 A: By default, the Internet2 repo points at a mirror list hosted by software.internet2.edu. In this mirror list is linux.mirrors.es.net. In order to use the default configuration you will need to allow access to software.internet2.edu so you can grab the mirrorlist. After that, the packages can be downloaded from any of the sites listed which includes linux.mirrors.es.net, software.internet2.edu, and a few other places. You should be able to get away with just opening up access to software.internet2.edu (so it can get the mirror list) and linux.mirrors.es.net (so you can get the packages). Those should be the only places you need as linux.mirrors.es.net also has a mirror for all the base CentOS packages.
 The initial version of 3.4 contained a pointer to another repo only hosted on datstax.com, but this was dropped for release 3.4.1 and later. If you do encounter this repo you can safely run a 'yum remove datastax-repo' as the packages it provides have been copied to the Internet2 repo.
 
-Q:I see that the latency/loss tests in 3.4 use bwping. Does this mean that we can run both throughput and latency/loss tests on the same interface without interference due to the way bwctl scheduling works?
+*Q: I see that the latency/loss tests in 3.4 use bwping. Does this mean that we can run both throughput and latency/loss tests on the same interface without interference due to the way bwctl scheduling works?*
 
-A:
-Ping tests can be scheduled on the same host as throughput tests, but owamp tests can’t currently (they use powstream instead of bwping).
+A: Ping tests can be scheduled on the same host as throughput tests, but owamp tests can’t currently (they use powstream instead of bwping).
 
-Q:Where can I find documentation on interacting with perfSONAR via a custom client?
+*Q: Where can I find documentation on interacting with perfSONAR via a custom client?*
 
 A: There is a web page which outlines the REST API: http://software.es.net/esmond/perfsonar_client_rest.html, the perl API: http://software.es.net/esmond/perfsonar_client_perl.html and the python API: http://software.es.net/esmond/perfsonar_client_python.html.
 
-
-Q:When setting up a dual homed host, how can one get individual tests to use one interface or another?
+*Q: When setting up a dual homed host, how can one get individual tests to use one interface or another?*
 
 A: In the GUI when configuring the regular tests, you configure the interface that the tests will be performed using.
 The easiest way to force bwctld and owampd to listen only on their respective interfaces is to set the ‘srcnode’ variable in /etc/bwctld/bwctld.conf and /etc/owampd/owampd.conf, and then restart bwctld and owampd. Look at owampd.conf.default and bwctld.conf.default in those same directories for an example.
@@ -276,7 +274,7 @@ http://docs.perfsonar.net/manage_dual_xface.html
 
 A: perfSONAR components are licensed under the Apache 2.0 license. 
 
-Q:When attempting to publish data to esmond, a "301 MOVED PERMANENTLY" is returned. What should I do?
+*Q: When attempting to publish data to esmond, a "301 MOVED PERMANENTLY" is returned. What should I do?*
 
 A: If using the examples from:
 http://software.es.net/esmond/perfsonar_client_rest.html
@@ -308,33 +306,36 @@ A: Information on this can be found here: http://docs.perfsonar.net/multi_ma_bac
 
 *Q: How can I backup the data in my esmond instance?*
 
-A: Information on this can be found here: http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_backup_restore_c.html.
+A: Information on this can be found here: http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_backup_restore_c.html
 
-Additionally, to back up perfSONAR data from an MA see guidance on this page: http://docs.perfsonar.net/multi_ma_backups.html.  Note that some steps may destroy data. 
-For PostgreSQL: 
-*This will delete any existing data and replace it with the backup*
+Additionally, to back up perfSONAR data from an MA see guidance on this page: http://docs.perfsonar.net/multi_ma_backups.html.  
+Note that some steps may destroy data. 
+
+For PostgreSQL: *This will delete any existing data and replace it with the backup*
 For Cassandra and nodetool, It also overwrites existing data (via https://specs.openstack.org/openstack/trove-specs/specs/liberty/cassandra-backup-restore.html):
-"A snapshot can be restored by moving all *.db files from a snapshot directory to the respective keyspace overwriting any existing files.”
+A snapshot can be restored by moving all *.db files from a snapshot directory to the respective keyspace overwriting any existing files.
 
 *Q: How do I backup a perfSONAR instance or migrate the configuration and data to a new machine?*
 
-A: To back up perfSONAR configurations and logs:
-/opt/perfsonar_ps/ls_registration_daemon/etc/*
-/opt/perfsonar_ps/mesh_config/etc/*
-/opt/perfsonar_ps/regular_testing/etc/*
-/opt/perfsonar_ps/toolkit/etc/*
-/opt/perfsonar_ps/traceroute_ma/etc/*
-/opt/perfsonar_ps/serviceTest/etc/*
-/opt/perfsonar_ps/snmp_ma/etc/*
-/opt/esmond/*
-/etc/httpd/conf.d/apache-toolkit_web_gui.conf
-/etc/owampd/*
-/etc/bwctld/*
-/etc/cassandra/*
-/var/lib/pgsql/*
-/var/lib/cassandra/*
-/var/lib/perfsonar/*
-/var/log/perfsonar/*
+A: To back up perfSONAR configurations and logs::
+
+ /opt/perfsonar_ps/ls_registration_daemon/etc/*
+ /opt/perfsonar_ps/mesh_config/etc/*
+ /opt/perfsonar_ps/regular_testing/etc/*
+ /opt/perfsonar_ps/toolkit/etc/*
+ /opt/perfsonar_ps/traceroute_ma/etc/*
+ /opt/perfsonar_ps/serviceTest/etc/*
+ /opt/perfsonar_ps/snmp_ma/etc/*
+ /opt/esmond/*
+ /etc/httpd/conf.d/apache-toolkit_web_gui.conf
+ /etc/owampd/*
+ /etc/bwctld/*
+ /etc/cassandra/*
+ /var/lib/pgsql/*
+ /var/lib/cassandra/*
+ /var/lib/perfsonar/*
+ /var/log/perfsonar/*
+
 To back up perfSONAR data, see guidance on this page: http://docs.perfsonar.net/multi_ma_backups.html.
 
 *Q: How can I tune a Dell server for a high throughput and low latency?*
@@ -407,6 +408,8 @@ A: See https://github.com/perfsonar/project/wiki/Versioning if you are intereste
 A: If after running yum update you see this error:
 [user@host ~]$ sudo /etc/init.d/httpd start
 Starting httpd: Syntax error on line 1 of /etc/httpd/conf.d/apache-esmond.conf:
+::
+
 Invalid command 'WSGIScriptAlias', perhaps misspelled or defined by a module not included in the server configuration
                                                          [FAILED]
 There could be a problem with the version of one of the WSGI libraries that was pulled in. You can verify it as such:
@@ -441,116 +444,103 @@ A: Not at this time. The prohibitive cost of deploying PTP makes it unlikely to 
 
 *Q: I am seeing a "Can't locate object method 'ssl_opts' via package 'LWP::UserAgent'" error when trying to use a Central Measurement Archive. What should I do?*
 
-A: In the toolkit regular_testing.conf I added the following block:
-<measurement_archive>
-database https://<host_fqdn>/esmond/perfsonar/archive/
-password xxx
-type esmond/traceroute
-username perfsonar
-ca_certificate_path /etc/ssl/certs
-</measurement_archive>
-But no measurement is being received in the MA and the regular_testing.log is full with messages similar to the following:
-2015/10/15 10:55:32 (17628) ERROR> MeasurementArchiveChild.pm:125 perfSONAR_PS::RegularTesting::Master::MeasurementArchiveChild::__ANON__- Problem handling test results: Can't locate object method "ssl_opts" via package "LWP::UserAgent" at /opt/perfsonar_ps/regular_testing/bin/../lib/perfSONAR_PS/RegularTesting/MeasurementArchives/EsmondBase.pm line 249.
-This is due to a pretty old version of perl-libwww-perl is included with CentOS 6. If you remove “ca_certificate_path” from the configuration file things will work.
+A: This is due to a pretty old version of perl-libwww-perl is included with CentOS 6. If you remove “ca_certificate_path” from the configuration file things will work.
 
-Q:I have a central MA for my perfSONAR data, what happens if the central MA goes down for a while, or the network is unavailable between the beacons and the MA? Are the measurements lost, or are they buffered to be delivered later? Does this have any effect on the timing of subsequent measurements? 
 
-A:
-The beacons observe a "push" architecture (i.e. the perfsonar node which made a measurement connects to the central MA to store the results) to the central MA.
+*Q: I have a central MA for my perfSONAR data, what happens if the central MA goes down for a while, or the network is unavailable between the beacons and the MA? Are the measurements lost, or are they buffered to be delivered later? Does this have any effect on the timing of subsequent measurements?*
+
+A: The beacons observe a "push" architecture (i.e. the perfsonar node which made a measurement connects to the central MA to store the results) to the central MA.
 If the host MA goes down, the missed measurements are stored on local disk under /var/lib/regular_testing and the regular_testing daemon tries to register them when the MA comes back. If the MA is down too long though (where “too long” varies on the system and number of tests being run) the backlog of tests can get too big and regular-testing can’t catch-up. On a Toolkit installation, we actually clean out the backlog of tests for this reason as we have frequently seen hosts get in a state where the backlog of tests is too big.
 See also the documentation for this service: http://docs.perfsonar.net/multi_overview.html
 
-Q:What if there are multiple MAs used for a central MA architecutre, but only one is down or unreachable, what will happen? 
+*Q: What if there are multiple MAs used for a central MA architecutre, but only one is down or unreachable, what will happen?*
 
-A:
-Each MA will be treated the same as if they were the only MA in the file. In other words, the one that is up will get the data and a backlog will be kept on disk for the one that is down. When the downed MA comes back up the daemon will try to register the old data points.
+A: Each MA will be treated the same as if they were the only MA in the file. In other words, the one that is up will get the data and a backlog will be kept on disk for the one that is down. When the downed MA comes back up the daemon will try to register the old data points.
 
-Q:If you have made manual changes to regular_testing.conf to point to a different MA (or multiple MAs), and you subsequently change test configurations through the GUI, does this leave your MA customizations alone? 
+*Q: If you have made manual changes to regular_testing.conf to point to a different MA (or multiple MAs), and you subsequently change test configurations through the GUI, does this leave your MA customizations alone?*
 
-A:
-Yes. The GUI leaves all measurement_archive blocks alone.
+A: Yes. The GUI leaves all measurement_archive blocks alone.
 
-Q:How much memory is needed for a host running an MA? 
+*Q: How much memory is needed for a host running an MA?*
 
-A:
-Cassandra will try to use 4G of memory by default (if its available on the system). It is possible to tweak the memory settings if you want it to use less. Read more here: http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_tune_jvm_c.html. Tuning this makes it possible to run an MA on a host with less memory.
+A: Cassandra will try to use 4G of memory by default (if its available on the system). It is possible to tweak the memory settings if you want it to use less. Read more here: http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_tune_jvm_c.html. Tuning this makes it possible to run an MA on a host with less memory.
 
-Q:I am trying to run perfSONAR on low-cost hardware (e.g. raspberry pi, etc.). Where should I start? 
+*Q: I am trying to run perfSONAR on low-cost hardware (e.g. raspberry pi, etc.). Where should I start?*
 
-A:
-There are numerous hardware platforms that have emerged that are an attractive option for use in network performance measurement. The perfSONAR collaboration does not recommend, nor support, the use of perfSONAR on low-end, ARM-based hardware such as the Raspberry PI. It has been shown that it is difficult to distinguish network issues, from host issues, on these devices. In particular, we do not recommend these devices for testing throughput with the BWCTL, or other related tools. Use of latency based tools (Ping, OWAMP) is possible provided that an accurate clock source is available.
+A: There are numerous hardware platforms that have emerged that are an attractive option for use in network performance measurement. The perfSONAR collaboration does not recommend, nor support, the use of perfSONAR on low-end, ARM-based hardware such as the Raspberry PI. It has been shown that it is difficult to distinguish network issues, from host issues, on these devices. In particular, we do not recommend these devices for testing throughput with the BWCTL, or other related tools. Use of latency based tools (Ping, OWAMP) is possible provided that an accurate clock source is available.
 For more information, see this web page: http://www.perfsonar.net/deploy/hardware-selection/low-cost-hardware/
 
-Q:Why do I get such weird results when I test from a 10G connected host to 1G connected host? 
+*Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?*
 
-A:
-The network interface card on a host is designed to send at line rate as long as there is data being made available via the kernel. This means that a 1G card will send at either 1G, or 0G (it does not pace itself at a rate in between). In situations where a larger capacity machine is testing to a smaller capacity machine, it is inevitable that the 10Gbps stream of data will need to be buffered somewhere in the path: either one of the last hop switches or the device itself. If there is not enough buffering available, the data will be dropped and TCP will be forced to reduce sending rates.
+A: The network interface card on a host is designed to send at line rate as long as there is data being made available via the kernel. This means that a 1G card will send at either 1G, or 0G (it does not pace itself at a rate in between). In situations where a larger capacity machine is testing to a smaller capacity machine, it is inevitable that the 10Gbps stream of data will need to be buffered somewhere in the path: either one of the last hop switches or the device itself. If there is not enough buffering available, the data will be dropped and TCP will be forced to reduce sending rates.
+
 The 'choppy' behavior can be seen on this page: http://www.perfsonar.net/deploy/hardware-selection/hardware-advice/, and is challenging to mitigate unless there is a significant amount of buffer available. For these reasons, it is recommended that when designing testing scenarios, only 'like' to 'like' capacities be explored.
 
-Q:My perfSONAR results show consistent line-rate performance, but a researcher at my site is reporting really poor performance, what gives? 
+*Q: My perfSONAR results show consistent line-rate performance, but a researcher at my site is reporting really poor performance, what gives?*
 
-A:
-perfSONAR is designed to give a "best case scenario" test result for end to end testing:
+A: perfSONAR is designed to give a "best case scenario" test result for end to end testing:
 perfSONAR is typically installed on well-provisioned server-class hardware that contains adequate CPU, memory, and NIC support
 By default, tuning are applied to the TCP stack: https://fasterdata.es.net/host-tuning/linux/
 BWCTL invokes "memory to memory" test tools, e.g. the host does not pull data off of, or write to, storage during testing
-perfSONAR typically runs short single streamed TCP tests
+perfSONAR typically runs short single streamed TCP tests.
 The user of a network may not have a machine that is as tuned as a perfSONAR node, could be using an application that is incorrect for the job of data movement, and may have a bottleneck due to storage. Consider all of these factors when working with them to identify performance issues. It is often the case that the 'network' may be working fine, but the host and software infrastructure need additional attention.
 
-Q:Is there a way to visualize GridFTP results in Maddash? 
+*Q: Is there a way to visualize GridFTP results in Maddash?* 
 
-A:
-Please see documentation on the maddash web site.
+A: Please see documentation on the maddash web site.
 
-Q:How can I configure my toolkit to allow a private IP? 
+*Q: How can I configure my toolkit to allow a private IP?* 
 
-A:
-The file resides at:
+A: The file resides at:
 /usr/lib/perfsonar/web-ng/etc/web_admin.conf
 The config option is allow_internal_addresses. Set it to 1.
 
-Q:How do I change the default BWCTL tool? 
+*Q: How do I change the default BWCTL tool?* 
 
-A:
-The file resides at: /etc/perfsonar/regulartesting.conf
+A: The file resides at: /etc/perfsonar/regulartesting.conf
 
-Q:Cassandra seems to be using 100% CPU on my system and I can't figure out why. 
+*Q: Cassandra seems to be using 100% CPU on my system and I can't figure out why.*
 
-A:
-Cassandra features a nodetool utility that can be used to see what is going on. For instance, if you notice that after you restart cassandra it spends lots of time 'compacting', you can view status as such:
-[crussell@ps-bryant-bw ~]$ nodetool compactionstats
-pending tasks: 1
+A: Cassandra features a nodetool utility that can be used to see what is going on. For instance, if you notice that after you restart cassandra it spends lots of time 'compacting', you can view status as such::
+
+ $ nodetool compactionstats
+ pending tasks: 1
           compaction type        keyspace           table       completed           total      unit  progress
                Compaction          esmondrate_aggregations       140157665      2632220068     bytes     5.32%
-Active compaction remaining time :        n/a
-If after repeated runnings the total progress does not move, cassandra may be having trouble compacting. There may be the following logs in the file:
+ Active compaction remaining time :        n/a
+
+If after repeated runnings the total progress does not move, cassandra may be having trouble compacting. There may be the following logs in the file::
+
  INFO [CompactionExecutor:8] 2016-04-02 12:32:18,205 CompactionController.java (line 192) Compacting large row esmond/rate_aggregations:ps:packet_loss_rate:b30f54e8df9549ceb8292278b782f05b:2015 (121215124 bytes) incrementally
  INFO [CompactionExecutor:8] 2016-04-03 04:50:45,168 CompactionController.java (line 192) Compacting large row esmond/rate_aggregations:ps:time_error_estimates:b30f54e8df9549ceb8292278b782f05b:2015 (123923983 bytes) incrementally
  INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (line 192) Compacting large row esmond/rate_aggregations:ps:packet_loss_rate:76b654c4279241f19898dcdb8cacdfb2:2015 (120871402 bytes) incrementally
+
 It may be the case that an exceptionally large data row can't be compacted. When the size of the row exceeded 64Mb, Cassandra should try to swap to disk, and that may fail.
+
 It is possible to edit /etc/cassandra/conf/cassandra.yaml and change the "in_memory_compaction_limit_in_mb" value up from 64 to 256 and restart cassandra. Once the row or rows in question are compacted, you can change it back and restart again.
 
-Q:How do I setup a perfSONAR node to have two interfaces on the same subnet? 
+*Q: How do I setup a perfSONAR node to have two interfaces on the same subnet?*
 
-A:
-This can be accomplished by setting the following items in sysctl:
+A: This can be accomplished by setting the following items in sysctl::
  
-net.ipv4.conf.default.arp_filter = 2
-net.ipv4.conf.all.arp_filter = 2
+ net.ipv4.conf.default.arp_filter = 2
+ net.ipv4.conf.all.arp_filter = 2
+
 More information available here:
 http://z-issue.com/wp/linux-rhel-6-centos-6-two-nics-in-the-same-subnet-but-secondary-doesnt-ping/
 
-Q:Is there a way to re-image perfSONAR resources remotely? 
+*Q:Is there a way to re-image perfSONAR resources remotely?*
 
-A:
-If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a CD or USB would be mounted.
+A: If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a CD or USB would be mounted.
 As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance some services support "virtual media" if they contain a DRACs with the enterprise feature set enabled.
-For a more general solution, and going on the assumption that a remote console access is available to a servers, consider a package called iPXE. iPXE can do is attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are:
-    set net0/ip 10.9.8.7
-    set net0/netmask 255.255.255.0
-    set net0/gateway 10.9.8.1
-    set dns 10.9.8.2
-    sanboot http://server.kinber.org/toolkit.iso
+For a more general solution, and going on the assumption that a remote console access is available to a servers, consider a package called iPXE. iPXE can do is attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are::
+
+ set net0/ip 10.9.8.7
+ set net0/netmask 255.255.255.0
+ set net0/gateway 10.9.8.1
+ set dns 10.9.8.2
+ sanboot http://server.kinber.org/toolkit.iso
+
 If there is DHCP available, the four set commands can be removed and a single dhcp command put in their place. Any HTTP server used to serve the ISO must support range requests. The standard Apache on most systems will.
 Note that iPXE needs to be on a bootable medium, and it’s operationally better when separate from the disk in the machine. This means that remote locations will need to have something like a USB stick installed. Once in place, set the BIOS to ignore it and boot it explicitly when needed. Since it’s a regular USB device, it can be updated remotely while the main OS is running.
 

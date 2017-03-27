@@ -8,7 +8,7 @@
     
     <title>Central Logging Configuration &mdash; perfSONAR Toolkit 4.0rc3 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Puppet management overview" href="multi_puppet_overview.html" />
     <link rel="prev" title="Managing Measurement Archive Data" href="multi_ma_backups.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="multi_ma_backups.html" title="Managing Measurement Archive Data"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="central-logging-configuration">
 <h1>Central Logging Configuration<a class="headerlink" href="#central-logging-configuration" title="Permalink to this headline">¶</a></h1>
@@ -97,29 +97,29 @@
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>Example configuration files are available from the <a class="reference external" href="https://github.com/perfsonar/central-management/tree/master/syslog/rsyslog">perfSONAR Central Management project on Github</a></p>
-<p>The main rsyslog configuration file goes in <tt class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></tt>.  Additional files go in <tt class="docutils literal"><span class="pre">/etc/rsyslog.d/</span></tt>.</p>
+<p>The main rsyslog configuration file goes in <code class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></code>.  Additional files go in <code class="docutils literal"><span class="pre">/etc/rsyslog.d/</span></code>.</p>
 <div class="section" id="server">
 <h3>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h3>
 <p>Before you can configure the client, you must configure the server to receive logs from other systems over the network. <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.conf">This example config file</a> is available.
 This should work without any changes, but you may wish to customize it. In this example, the server is configured to store its local logs locally and centrally along with those submitted by remote servers. If you wish to disable this, comment out or remove this line:</p>
-<div class="highlight-python"><div class="highlight"><pre>*.* @@127.0.0.1:514
+<div class="highlight-python"><div class="highlight"><pre><span></span>*.* @@127.0.0.1:514
 </pre></div>
 </div>
-<p>You also need to include one or two files in <tt class="docutils literal"><span class="pre">/etc/rsyslog.d</span></tt></p>
+<p>You also need to include one or two files in <code class="docutils literal"><span class="pre">/etc/rsyslog.d</span></code></p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">rsyslog-server.conf</span></tt> [<a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.d/rsyslog-server.conf">Download rsyslog-server.conf</a>]<ul>
+<li><code class="docutils literal"><span class="pre">rsyslog-server.conf</span></code> [<a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.d/rsyslog-server.conf">Download rsyslog-server.conf</a>]<ul>
 <li><strong>Required.</strong> Enables the server functionality</li>
 </ul>
 </li>
-<li><tt class="docutils literal"><span class="pre">owamp_bwctl-syslog.conf</span></tt> [<a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.d/owamp_bwctl-syslog.conf">Download owamp_bwctl-syslog.conf</a>]</li>
+<li><code class="docutils literal"><span class="pre">owamp_bwctl-syslog.conf</span></code> [<a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.d/owamp_bwctl-syslog.conf">Download owamp_bwctl-syslog.conf</a>]</li>
 </ul>
 <blockquote>
 <div><ul class="simple">
 <li><strong>Optional.</strong> Normally installed when you install owamp or bwctl, so you may already have it.</li>
 </ul>
 </div></blockquote>
-<p>Configure your server by editing <tt class="docutils literal"><span class="pre">/etc/rsyslog.d/rsyslog-server.conf</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre># Provides TCP syslog reception
+<p>Configure your server by editing <code class="docutils literal"><span class="pre">/etc/rsyslog.d/rsyslog-server.conf</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span># Provides TCP syslog reception
 $ModLoad imtcp.so
 $InputTCPServerRun 514
 
@@ -135,16 +135,16 @@ $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
 </pre></div>
 </div>
 <p>In the example configuration file, the server is set to listen on TCP port 514. Comment out or remove the TCP section if you don&#8217;t want TCP enabled. Similarly, you may uncomment the UDP section to enable listening over UDP. TCP is more reliable, and is recommended.</p>
-<p>If you change the protocol/port the host is listening on, revise the host specifier line in <tt class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></tt> to reflect this change. The number after the colon (:) is the port. For TCP, use &#64;&#64; when specifying the host:</p>
-<div class="highlight-python"><div class="highlight"><pre>*.* @@127.0.0.1:514
+<p>If you change the protocol/port the host is listening on, revise the host specifier line in <code class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></code> to reflect this change. The number after the colon (:) is the port. For TCP, use &#64;&#64; when specifying the host:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>*.* @@127.0.0.1:514
 </pre></div>
 </div>
 <p>For UDP, use &#64; when specifying the host:</p>
-<div class="highlight-python"><div class="highlight"><pre>*.* @127.0.0.1:514
+<div class="highlight-python"><div class="highlight"><pre><span></span>*.* @127.0.0.1:514
 </pre></div>
 </div>
-<p>In this example, the server will store all logs under <tt class="docutils literal"><span class="pre">/var/log/central/</span></tt>. Change the filename template as desired.:</p>
-<div class="highlight-python"><div class="highlight"><pre># Log file name - hostname/programname
+<p>In this example, the server will store all logs under <code class="docutils literal"><span class="pre">/var/log/central/</span></code>. Change the filename template as desired.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span># Log file name - hostname/programname
 $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
 </pre></div>
 </div>
@@ -157,20 +157,20 @@ $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
 </div>
 <div class="section" id="client">
 <h3>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h3>
-<p>Once the server is working, the clients need to be configured to send their syslogs to the central server. As with the server, we need an <tt class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></tt> file. However, it should be slightly different as it needs to specify the hostname of the server where it should send its logs. An <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.conf">example client rsyslog.conf file</a>  is available here.</p>
+<p>Once the server is working, the clients need to be configured to send their syslogs to the central server. As with the server, we need an <code class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></code> file. However, it should be slightly different as it needs to specify the hostname of the server where it should send its logs. An <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.conf">example client rsyslog.conf file</a>  is available here.</p>
 <p>The only required modification is changing the rmote host specification:</p>
-<div class="highlight-python"><div class="highlight"><pre># FILL THIS IN:
+<div class="highlight-python"><div class="highlight"><pre><span></span># FILL THIS IN:
 # remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional
 *.* @@remote-host:514
 </pre></div>
 </div>
-<p>Change <tt class="docutils literal"><span class="pre">remote-host</span></tt> to the hostname or IP address of your central syslog server. Use &#8216;&#64;&#64;&#8217; for a TCP connection, or &#8216;&#64;&#8217; for a UDP connection. Specify the port after the colon.</p>
-<p>The clients also need an <tt class="docutils literal"><span class="pre">/etc/rsyslog.d/owamp_bwctl-syslog.conf</span></tt> file. This is optional, but will improve bwctl/owamp logging. This is normally installed when you install owamp, but if you need it, an <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.d/owamp_bwctl-syslog.conf">example owamp_bwctl-syslog.conf file</a> is available.</p>
+<p>Change <code class="docutils literal"><span class="pre">remote-host</span></code> to the hostname or IP address of your central syslog server. Use &#8216;&#64;&#64;&#8217; for a TCP connection, or &#8216;&#64;&#8217; for a UDP connection. Specify the port after the colon.</p>
+<p>The clients also need an <code class="docutils literal"><span class="pre">/etc/rsyslog.d/owamp_bwctl-syslog.conf</span></code> file. This is optional, but will improve bwctl/owamp logging. This is normally installed when you install owamp, but if you need it, an <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.d/owamp_bwctl-syslog.conf">example owamp_bwctl-syslog.conf file</a> is available.</p>
 <dl class="docutils">
 <dt>When you have finished configuring the client, run::</dt>
 <dd>sudo service rsyslog restart</dd>
 </dl>
-<p>Double check that the logs are being stored properly on the central server, if configured as in this example, the logs should be under <tt class="docutils literal"><span class="pre">/var/log/central/</span></tt>.</p>
+<p>Double check that the logs are being stored properly on the central server, if configured as in this example, the logs should be under <code class="docutils literal"><span class="pre">/var/log/central/</span></code>.</p>
 </div>
 </div>
 </div>
@@ -215,7 +215,7 @@ $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -227,7 +227,7 @@ $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
         <li class="right" >
           <a href="multi_ma_backups.html" title="Managing Measurement Archive Data"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -265,9 +265,9 @@ $template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>
