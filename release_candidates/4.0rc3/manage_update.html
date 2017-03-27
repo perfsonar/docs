@@ -8,7 +8,7 @@
     
     <title>Updating the Toolkit &mdash; perfSONAR Toolkit 4.0rc3 documentation</title>
     
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Managing Users" href="manage_users.html" />
     <link rel="prev" title="Reading Log Files" href="manage_logs.html" /> 
   </head>
-  <body role="document">
+  <body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="manage_logs.html" title="Reading Log Files"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <div class="section" id="updating-the-toolkit">
 <h1>Updating the Toolkit<a class="headerlink" href="#updating-the-toolkit" title="Permalink to this headline">¶</a></h1>
@@ -78,7 +78,7 @@
 <div class="section" id="manually-updating-with-yum">
 <h2>Manually Updating with Yum<a class="headerlink" href="#manually-updating-with-yum" title="Permalink to this headline">¶</a></h2>
 <p>Anytime you want to manually update your host, simply run the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>yum update
+<div class="highlight-python"><div class="highlight"><pre>yum update
 </pre></div>
 </div>
 <p>The <em>yum</em> package manager is used by RedHat-based operating systems like CentOS to update packages. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.</p>
@@ -93,7 +93,35 @@
 <blockquote class="epigraph">
 <div>If the machine is a critical server, for which unplanned downtime of a service on the machine can not be tolerated, then you should not use automatic updates. Otherwise, you <strong>may</strong> choose to use them.</div></blockquote>
 <p>It is also important to note that automatic updates do not perform all required system reboots or service restarts. Also, auto-updates happen nightly so there may be a period of up to 24 hours where you do not receive a patch. Enabling this feature still requires close monitoring of the host to make sure all updates are applied completely and properly.</p>
-<p>You may enable/disable automatic updates from the web interface as follows:</p>
+<div class="section" id="managing-automatic-updates-from-the-command-line">
+<span id="manage-update-auto-cli"></span><h3>Managing Automatic Updates from the Command-Line<a class="headerlink" href="#managing-automatic-updates-from-the-command-line" title="Permalink to this headline">¶</a></h3>
+<p>You may enable auto updates from the command-line by enabling/disabling the yum-cron service on CentOS. Run the following commands (must be run as a root user) to <strong>enable</strong> automatic updates:</p>
+<p><em>CentOS 6</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>chkconfig on yum-cron
+/sbin/service yum-cron start
+</pre></div>
+</div>
+<p><em>CentOS 7</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>systemctl enable yum-cron
+systemctl start yum-cron
+</pre></div>
+</div>
+<p>Likewise, you may disable auto-updates from the command-line by running the following:</p>
+<p><em>CentOS 6</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>chkconfig off yum-cron
+/sbin/service yum-cron stop
+</pre></div>
+</div>
+<p><em>CentOS 7</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>systemctl stop yum-cron
+systemctl disable yum-cron
+</pre></div>
+</div>
+<p>These commands will automatically update <strong>all packages</strong> on the system. Also note that the main configuration file for auto-updates lives at <em>/etc/yum</em>. See the yum-cron man page or the page <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">here</a> for more information on using auto-updates and advanced options like excluding packages from update. Also see <a class="reference internal" href="#manage-update-auto-disable"><em>Disabling Automatic Updates for perfSONAR Packages</em></a>.</p>
+</div>
+<div class="section" id="managing-automatic-updates-from-the-toolkit-web-interface">
+<span id="manage-update-auto-gui"></span><h3>Managing Automatic Updates from the Toolkit Web Interface<a class="headerlink" href="#managing-automatic-updates-from-the-toolkit-web-interface" title="Permalink to this headline">¶</a></h3>
+<p>If you are running the perfSONAR Toolkit, you may enable/disable automatic updates for <strong>all packages</strong> (not just perfSONAR) on the system from the web interface as follows:</p>
 <ol class="arabic">
 <li><p class="first">Open your toolkit web interface in a browser.</p>
 </li>
@@ -114,18 +142,15 @@
 <li><p class="first">Click <strong>Save</strong> to apply your changes. After a loading screen you should see a green message at the bottom indicating your changes have been saved.</p>
 </li>
 </ol>
-<p>Alternatively, in CentOS7, you may enable auto updates from the command-line with the following commands (must be run as a root user):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>systemctl enable yum-cron
-systemctl start yum-cron
-</pre></div>
 </div>
-<p>Likewise, you may disable auto-updates from the command-line by running:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>systemctl stop yum-cron
-systemctl disable yum-cron
-</pre></div>
+<div class="section" id="disabling-automatic-updates-for-perfsonar-packages">
+<span id="manage-update-auto-disable"></span><h3>Disabling Automatic Updates for perfSONAR Packages<a class="headerlink" href="#disabling-automatic-updates-for-perfsonar-packages" title="Permalink to this headline">¶</a></h3>
+<p>The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file <strong>/etc/yum.repos.d/Internet2.repo</strong> with the option <strong>enabled</strong> set to <strong>0</strong>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are running against one of our testing repositories you may also need to update the files <strong>/etc/yum.repos.d/Internet2-staging.repo</strong> and <strong>/etc/yum.repos.d/Internet2-nightly.repo</strong>.</p>
 </div>
-<p>For CentOS6, use <em>chkconfig</em> and <em>service start|stop</em> equivalents.</p>
-<p>Also note that the main configuration file for auto-updates lives at <em>/etc/yum</em>. See the yum-cron man page or the page <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">here</a> for more information on using auto-updates and advanced options like excluding packages from updates.</p>
+</div>
 </div>
 <div class="section" id="special-upgrade-notes">
 <h2>Special Upgrade Notes<a class="headerlink" href="#special-upgrade-notes" title="Permalink to this headline">¶</a></h2>
@@ -146,7 +171,12 @@ systemctl disable yum-cron
                 <ul>
 <li><a class="reference internal" href="#">Updating the Toolkit</a><ul>
 <li><a class="reference internal" href="#manually-updating-with-yum">Manually Updating with Yum</a></li>
-<li><a class="reference internal" href="#automatic-updates">Automatic Updates</a></li>
+<li><a class="reference internal" href="#automatic-updates">Automatic Updates</a><ul>
+<li><a class="reference internal" href="#managing-automatic-updates-from-the-command-line">Managing Automatic Updates from the Command-Line</a></li>
+<li><a class="reference internal" href="#managing-automatic-updates-from-the-toolkit-web-interface">Managing Automatic Updates from the Toolkit Web Interface</a></li>
+<li><a class="reference internal" href="#disabling-automatic-updates-for-perfsonar-packages">Disabling Automatic Updates for perfSONAR Packages</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#special-upgrade-notes">Special Upgrade Notes</a></li>
 </ul>
 </li>
@@ -171,7 +201,7 @@ systemctl disable yum-cron
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -183,7 +213,7 @@ systemctl disable yum-cron
         <li class="right" >
           <a href="manage_logs.html" title="Reading Log Files"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -221,9 +251,9 @@ systemctl disable yum-cron
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer" role="contentinfo">
+    <div class="footer">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

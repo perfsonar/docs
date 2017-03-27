@@ -27,7 +27,42 @@ You may choose to enable automatic updates to aid in applying the latest softwar
 
 It is also important to note that automatic updates do not perform all required system reboots or service restarts. Also, auto-updates happen nightly so there may be a period of up to 24 hours where you do not receive a patch. Enabling this feature still requires close monitoring of the host to make sure all updates are applied completely and properly.
 
-You may enable/disable automatic updates from the web interface as follows:
+.. _manage_update-auto-cli:
+
+Managing Automatic Updates from the Command-Line
+------------------------------------------------
+You may enable auto updates from the command-line by enabling/disabling the yum-cron service on CentOS. Run the following commands (must be run as a root user) to **enable** automatic updates:
+
+*CentOS 6*::
+
+    chkconfig on yum-cron
+    /sbin/service yum-cron start
+    
+*CentOS 7*::
+  
+    systemctl enable yum-cron
+    systemctl start yum-cron
+    
+Likewise, you may disable auto-updates from the command-line by running the following:
+
+*CentOS 6*::
+
+    chkconfig off yum-cron
+    /sbin/service yum-cron stop
+
+*CentOS 7*::
+
+    systemctl stop yum-cron
+    systemctl disable yum-cron
+
+These commands will automatically update **all packages** on the system. Also note that the main configuration file for auto-updates lives at */etc/yum*. See the yum-cron man page or the page `here <http://fedoraproject.org/wiki/AutoUpdates>`_ for more information on using auto-updates and advanced options like excluding packages from update. Also see :ref:`manage_update-auto-disable`. 
+
+
+.. _manage_update-auto-gui:
+
+Managing Automatic Updates from the Toolkit Web Interface
+---------------------------------------------------------
+If you are running the perfSONAR Toolkit, you may enable/disable automatic updates for **all packages** (not just perfSONAR) on the system from the web interface as follows:
 
 #. Open your toolkit web interface in a browser.
 #. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created during installation.
@@ -40,20 +75,16 @@ You may enable/disable automatic updates from the web interface as follows:
     .. image:: images/manage_update-enable.png
 
 #. Click **Save** to apply your changes. After a loading screen you should see a green message at the bottom indicating your changes have been saved.
-    
-Alternatively, in CentOS7, you may enable auto updates from the command-line with the following commands (must be run as a root user)::
-  
-    systemctl enable yum-cron
-    systemctl start yum-cron
-    
-Likewise, you may disable auto-updates from the command-line by running::
 
-    systemctl stop yum-cron
-    systemctl disable yum-cron
 
-For CentOS6, use *chkconfig* and *service start|stop* equivalents.
+.. _manage_update-auto-disable:
 
-Also note that the main configuration file for auto-updates lives at */etc/yum*. See the yum-cron man page or the page `here <http://fedoraproject.org/wiki/AutoUpdates>`_ for more information on using auto-updates and advanced options like excluding packages from updates. 
+Disabling Automatic Updates for perfSONAR Packages
+--------------------------------------------------
+The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file **/etc/yum.repos.d/Internet2.repo** with the option **enabled** set to **0**. 
+
+.. note:: If you are running against one of our testing repositories you may also need to update the files **/etc/yum.repos.d/Internet2-staging.repo** and **/etc/yum.repos.d/Internet2-nightly.repo**.
+
 
 Special Upgrade Notes
 =====================
