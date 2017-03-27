@@ -10,6 +10,8 @@ The perfSONAR Toolkit utilizes a number of tools the help protect against attack
 None of these solutions will protect your host from all kinds of attacks so best common practices and good sense should be used when administering your host. In addition to tools like above it's important :doc:`update your host <manage_update>` with the latest packages and to watch the `mailing lists <http://www.perfsonar.net/about/getting-help/>`_ for important security announcements. 
 
 
+.. _manage_security-firewall:
+
 Default Firewall Rules and perfSONAR port requirements
 ======================================================
 The perfSONAR Toolkit uses *iptables* and *ip6tables* to implement IPv4 and IPv6 firewall rules respectively. The default configurations for each in */etc/sysconfig/iptables* and */etc/sysconfig/ip6tables*. Also see /usr/lib/firewalld/services and /etc/perfsonar/toolkit/perfsonar_firewalld_settings.conf for rules on CentOS7. 
@@ -59,6 +61,7 @@ perfSONAR uses the following ports:
 | Lookup Service        | 8090         +   
 +-----------------------+--------------+
 
+.. _manage_security-custom:
 
 Adding Your Own Firewall Rules
 ==============================
@@ -70,12 +73,16 @@ For more information see:
 - http://www.firewalld.org/documentation/
 
 
+.. _manage_security-fail2ban:
+
 Fail2ban Intrusion Detection System
 ====================================
 By default the perfSONAR Toolkit installs and configures the `fail2ban`_ Intrusion Detection System (IDS). This software will log suspicious activity such as a rapid succession of failed SSH login attempts in */var/log/secure*. By default it will not act to mitigate any attempts, only log them (though the default IP table rules do SSH throttling). If you would like to change this default behavior to send email or block unwanted intrusions, see the configuration file */etc/fail2ban/jail.conf* and the `fail2ban manual`_ for details.
 
 .. _fail2ban: http://www.fail2ban.org
 .. _fail2ban manual: http://www.fail2ban.org/wiki/index.php/MANUAL_0_8
+
+.. _manage_security-ren:
 
 Limiting tests to Research and Education Networks Only
 ======================================================

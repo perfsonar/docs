@@ -9,13 +9,11 @@ Here are the FAQ items from www.perfsonar.net. These need to be formatted and re
 
 categories should include:
 
--   tool questions
--   host admin questions
--   installation questions
--   perfSONAR project questions
--   ....
-
-=====================================
+    -   tool questions
+    -   host admin questions
+    -   installation questions
+    -   perfSONAR project questions
+    -   etc.
 
 
 *Q: How do I join the perfSONAR Collaboration?* 
@@ -40,7 +38,7 @@ A: OWAMP (One-Way Ping) is a client server program that was developed to provide
 
 A: Please see http://www.perfsonar.net/deploy/security-considerations/ page on the perfSONAR website, that discusses firewall use.
 
-*Q: What should I enter for the Communities of interest configuration question?*
+*Q: What should I enter for the *Communities* section of my *Administrative Information* configuration?*
 
 A: The goal of *communities* is to associate some loosely coupled labels to the data that the perfSONAR Toolkit disk will be making available to the larger world. Think of this step similar to assigning labels to photos or music. Some examples of valid answers are:
 
@@ -64,31 +62,27 @@ A: See this page XXX. Note that the perfSONAR Toolkit development team has not c
 
 A: There is nothing on the perfSONAR Toolkit that will prevent systems that do not meet the requirements from starting. Erroneous or inaccurate behavior is possible if the hardware cannot support the measurement tools.
 
-*Q: The colors on my Console Configuration do not match what I see on the web. Some are green already.*
+*Q: The Services screen shows many services in the non-running state when first started, what is wrong?*
 
-A: If you are upgrading from a previous version of the perfSONAR Toolkit, the colors may be green already because a particular aspect was configured previously. These do not need to be configured again.
-
-*Q: The Services On This Node screen shows many services in the non-running state when first started, what is wrong?*
-
-A: Many of the services will be in this state because they are missing some key configuration items (e.g. from the Administrative Info). After following the configuration steps check this screen again, most should be functional.
+A: Services should start right away. It may be an indication of an installation problem. See :doc:`manage_logs` for information on where to look for more information.
 
 *Q: I do not see my service in the Directory Of Services, where is it?*
 
 A: Much like DNS, the information that will populate the Lookup Service will take time to propagate. Please allow some time (e.g. a few hours) before your service will be fully visible.
 
-*Q: What is the purpose of pscheduler Limits?* 
+*Q: What is the purpose of pscheduler limits?* 
 
-A: These allow you to limit the influence that outside users have on your system performance. For example, to prevent your machine/network from being saturated with BWCTL tests, limit the duration and maximum bandwidth available. These screens allow a fine grained way to protect resources.
+A: These allow you to limit the influence that outside users have on your system performance. For example, to prevent your machine/network from being saturated with BWCTL tests, limit the duration and maximum bandwidth available.
 
-*Q: How can I set limits to prevent others from overusing BWCTL/OWAMP?*
+*Q: How can I set limits to prevent others from overusing pScheduler/BWCTL/OWAMP?*
 
-A: BWCTL and OWAMP have configurable dialog that allows the administrator to limit the resources consumed. To set the limits for BWCTL, consult this section. To set the limits for OWAMP, consult this section.
+A: pScheduler, BWCTL and OWAMP have configurable files that allows the administrator to limit the resources consumed. See XXX for more information
 
 *Q: How many NTP servers do I need, can I select them all?*
 
 A: It is recommended that 4 to 5 close and active servers be used. The Select Closest Servers button will help with this decision. Note that some servers may not be available due to routing (e.g. non-R&E networks vs R&E networks - a common problem for Internet2 and ESnet servers).
 
-*Q:C an I boot from a USB key instead of a DVD?*
+*Q:Can I boot from a USB key instead of a DVD?*
 
 A: The perfSONAR Toolkit Netinstall and Fullinstall images are capable of being installed on a USB stick instead of a CD. To write these images to the media, we recommend using dd:
  
@@ -169,11 +163,11 @@ A: VMWare has two resources worth reading:
 
 *Q: What TCP congestion control algorithm is used by the perfSONAR Toolkit?*
 
-A: The perfSONAR toolkit uses the CentOS or Debian default TCP congestion control algorithm, which is cubic. 
+A: The perfSONAR toolkit uses the CentOS or Debian default TCP congestion control algorithm, which is htcp. 
 
 *Q: Where are the relevant logs for perfSONAR services?*
 
-A: Please see http://docs.perfsonar.net/manage_logs.html for more information. 
+A: Please see :doc:`manage_logs` for more information. 
 
 *Q: Is it possible to change the default port for tool X?*
 
@@ -213,7 +207,7 @@ NOTE: If there are multiple package to be excluded then separate them using a si
  
 *Q: How can I configure yum to automatically update the system?*
 
-A: Note that as of version 3.4, this is enabled by default. See this more for more detail: http://docs.perfsonar.net/manage_update.html#automatic-updates
+A: Note that as of version 3.4, this is enabled by default. See this more for more detail: :ref:`manage_update-auto`
 
 *Q: When attempting to use BWCTL with an IPv6 address, the command fails: bwctl: Unable to connect to 2001:468:1:11::16:66:4823. What should I do?*
 
@@ -233,14 +227,14 @@ Note that during a fresh network installation, Anaconda does install updates imm
  
 *Q: How can I add custom rules to IPTables?*
 
-A: The rules added by the perfSONAR toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update.
+A: See :ref:`manage_security-custom`
 
 
 *Q: How can I force testing over IPv4 or IPv6 in the mesh configuration?*
 
 A: There is both a ipv4_only and ipv6_only option you can set in the test parameters of a mesh config. Setting them both at the same time gives an error.
 
-*Q: When trying a clean install with perfSONAR Toolkit version 3.4, the system doesn't recognize any disks/doesn't see my RAID controller. Things work with other systems (CentOS 6, Scientific Linux 6). What should I do?*
+*Q: When trying a clean install with perfSONAR Toolkit, the system doesn't recognize any disks/doesn't see my RAID controller. Things work with other systems (CentOS 6, Scientific Linux 6). What should I do?*
 
 A: If you have started with a different OS, you can attempt to install the necessary packages manually.
 First, install the EPEL repository. You can grab the RPM from http://linux.mirrors.es.net/fedora-epel/6/i386/repoview/epel-release.html.
@@ -302,18 +296,18 @@ sudo modprobe ixgbe allow_unsupported_sfp=0
 
 *Q: How can I clean up the data in my esmond instance?*
 
-A: Information on this can be found here: http://docs.perfsonar.net/multi_ma_backups.html#multi-ma-backups-delete.
+A: Information on this can be found here: :ref:`multi_ma_backups-delete`.
 
 *Q: How can I backup the data in my esmond instance?*
 
 A: Information on this can be found here: http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_backup_restore_c.html
 
-Additionally, to back up perfSONAR data from an MA see guidance on this page: http://docs.perfsonar.net/multi_ma_backups.html.  
+Additionally, to back up perfSONAR data from an MA see guidance on this page: :doc:`multi_ma_backups`.  
 Note that some steps may destroy data. 
 
 For PostgreSQL: *This will delete any existing data and replace it with the backup*
 For Cassandra and nodetool, It also overwrites existing data (via https://specs.openstack.org/openstack/trove-specs/specs/liberty/cassandra-backup-restore.html):
-A snapshot can be restored by moving all *.db files from a snapshot directory to the respective keyspace overwriting any existing files.
+A snapshot can be restored by moving all \*.db files from a snapshot directory to the respective keyspace overwriting any existing files.
 
 *Q: How do I backup a perfSONAR instance or migrate the configuration and data to a new machine?*
 
@@ -386,14 +380,16 @@ Don’t *restart* the journaling service (i.e., don’t do “systemctl restart 
 
 A: There is information on this method of mesh configuration available at the following link:
 
-- http://docs.perfsonar.net/multi_mesh_autoconfig.html
+- :doc:`multi_mesh_autoconfig`
 
 The server and agent each have needs regarding the definition of tests, information on each can be found via these links:
 
-- http://docs.perfsonar.net/multi_mesh_server_config.html
-- http://docs.perfsonar.net/multi_mesh_agent_config.html
+- :doc:`multi_mesh_server_config`
+- :doc:`multi_mesh_agent_config`
 
 *Q: How to get rid of "There isn't a perfSONAR sudo user defined" message?*
+
+**TODO: Changes this to /etc/profile.d, check if its config(noreplace)**
 
 A: Either add a non-root user to the pssudo group or remove the line /etc/perfsonar/toolkit/scripts/add_pssudo_user —auto from /root/.bashrc. Note that future updates could revert the /root/.bashrc file.
 
@@ -410,21 +406,21 @@ A: If after running yum update you see this error:
 Starting httpd: Syntax error on line 1 of /etc/httpd/conf.d/apache-esmond.conf:
 ::
 
-Invalid command 'WSGIScriptAlias', perhaps misspelled or defined by a module not included in the server configuration
-                                                         [FAILED]
-There could be a problem with the version of one of the WSGI libraries that was pulled in. You can verify it as such:
-[user@host ~]$ yum list installed | grep -i wsgi
-python27-mod_wsgi.x86_64             3.4-12.el6.centos.alt            @scl
-Due to the specific version of python that maddash/perfSONAR requires, the workaround is to uninstall the version above, and use the version found in the perfSONAR repository:
-[user@host ~]$  sudo yum erase "python27-mod_wsgi*"
-[user@host ~]$  sudo yum --disablerepo="*" --enablerepo="Internet2" --enablerepo="base" install esmond
-Then restart cassandra, and start httpd
-[user@host ~]$  sudo /sbin/service cassandra stop
-Shutdown Cassandra: OK
-[user@host ~]$  sudo /sbin/service cassandra start
-Starting Cassandra: OK
-[user@host ~]$  sudo /sbin/service httpd start
-Starting httpd: [ OK ]
+    Invalid command 'WSGIScriptAlias', perhaps misspelled or defined by a module not included in the server configuration
+                                                             [FAILED]
+    There could be a problem with the version of one of the WSGI libraries that was pulled in. You can verify it as such:
+    [user@host ~]$ yum list installed | grep -i wsgi
+    python27-mod_wsgi.x86_64             3.4-12.el6.centos.alt            @scl
+    Due to the specific version of python that maddash/perfSONAR requires, the workaround is to uninstall the version above, and use the version found in the perfSONAR repository:
+    [user@host ~]$  sudo yum erase "python27-mod_wsgi*"
+    [user@host ~]$  sudo yum --disablerepo="*" --enablerepo="Internet2" --enablerepo="base" install esmond
+    Then restart cassandra, and start httpd
+    [user@host ~]$  sudo /sbin/service cassandra stop
+    Shutdown Cassandra: OK
+    [user@host ~]$  sudo /sbin/service cassandra start
+    Starting Cassandra: OK
+    [user@host ~]$  sudo /sbin/service httpd start
+    Starting httpd: [ OK ]
 
 *Q: What is PTP?*
 
