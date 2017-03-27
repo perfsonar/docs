@@ -33,13 +33,19 @@ perfSONAR uses the following ports:
 +------------+----------------+------------+
 | traceroute |                | 33434-33634|
 +------------+----------------+------------+
+|simplestream| 5890-5900      | 	   |
++------------+----------------+------------+
 | ntp        |                | 123        |
 +------------+----------------+------------+
 | bwctl      |4823, 5001-5900,| 5001-5900, | 
 | 	     | 6001-6200      | 6001-6200  | 
 +------------+----------------+------------+
 
-**Note**: bwctl is needed for backwards compatibility with perfSONAR 3.5 hosts.
+**Notes**: 
+
+- ICMP also needs to be open
+- bwctl is needed for backwards compatibility with perfSONAR 3.5 hosts
+- simplestream is used for pscheduler testing and troubleshooting
 
 +--------------------------------------+
 | perfSONAR Toolkit Ports              | 
