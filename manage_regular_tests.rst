@@ -292,10 +292,10 @@ In some cases it may be desirable to stop running tests for a period of time, bu
     .. image:: images/manage_regular_tests-tests-disable-disabled.png
 #. When you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system. Scheduled test list will indicate the current status of this option.
 
+.. _manage_reg_tests_delete:
+
 Deleting Regular Tests
 ======================
-
-.. _manage_reg_tests_delete:
 
 The interface allows you to completely delete a test set. This will stop all tests in the set from running and completely remove them from the configuration interface. If after deleting a test set, you would like to re-add the tests, you will have to completely recreate the test set.
 

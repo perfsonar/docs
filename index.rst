@@ -11,14 +11,10 @@ perfSONAR Installation Options
    :maxdepth: 1
    
    install_hardware
-      install_hardware_details
-      install_virtual_machine_details
    install_options
    install_toolkit
    install_centos
    install_debian
-   install_low_cost_nodes
-      install_small_node_details
 
 
 perfSONAR Toolkit

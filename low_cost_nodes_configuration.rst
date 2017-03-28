@@ -1,3 +1,5 @@
+:orphan:
+
 ****************************
 Low Cost Nodes Configuration
 ****************************
@@ -5,7 +7,7 @@ Low Cost Nodes Configuration
 Introduction
 ============
 
-Running low cost nodes function in much the same way as running a "regular" perfsonar node with a few exceptions. Instead of running an entire toolkit stack with a local MA and a web UI and all that, these nodes are intended to be run as testpoints and report their results back to a centrally configured measurement archive. See the "System Requirements" section of the :doc:`low cost nodes <low_cost_nodes>` page for more information on specifications.
+Running low cost nodes function in much the same way as running a "regular" perfsonar node with a few exceptions. Instead of running an entire toolkit stack with a local MA and a web UI and all that, these nodes are intended to be run as testpoints and report their results back to a centrally configured measurement archive. See the :ref:`install_low_cost_nodes-sysreq` section of the :doc:`low cost nodes <install_low_cost_nodes>` page for more information on specifications.
 
 
 Configuration
