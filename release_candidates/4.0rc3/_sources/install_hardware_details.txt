@@ -1,3 +1,5 @@
+:orphan:
+
 *******************************************************
 Detailed Information on perfSONAR Hardware Requirements 
 *******************************************************

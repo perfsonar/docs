@@ -1,3 +1,5 @@
+:orphan:
+
 ***************************
 perfSONAR on Low Cost Nodes
 ***************************
@@ -11,6 +13,8 @@ A number of folks in the perfSONAR community have been experimenting with runnin
 The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.
 
 For installation of Ubuntu from a standard ISO, there is also a script to help autoconfigure the perfsonar repositories and get the required software setup. See the :doc:`low cost nodes configuration <low_cost_nodes_configuration>` section for more information.
+
+.. _install_low_cost_nodes-sysreq:
 
 System Requirements
 ===================
@@ -30,6 +34,7 @@ The Liva X being the second generation hardware seems to be more robust and come
 
 Please note that the perfSONAR team is not formally endorsing this particular product - just providing it as an example of a possible turnkey solution for users interested in that sort of thing.
 
+.. _install_low_cost_nodes-instructions:
 
 Installation Instructions
 =========================
@@ -38,6 +43,8 @@ See instructions for installing the perfsonar-testpoint bundle:
 :doc:`install_debian`
 
 For installation of Ubuntu from a standard ISO, there is also a script to help autoconfigure the perfsonar repositories and get the required software setup. See the :doc:`low cost nodes configuration <low_cost_nodes_configuration>` section for more information.
+
+.. _install_low_cost_nodes-support:
 
 Support
 =======
