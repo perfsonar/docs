@@ -125,14 +125,14 @@ Configuration Reference
 
 .. toctree::
    :maxdepth: 1
-   
-Toolkit and Tools Configuration Files
-=====================================
-.. toctree::
-   :maxdepth: 1
 
    config_files
    config_ls_registration
+   config_mesh
+   config_mesh_agent
+   config_mesh_agent_tasks
+   config_mesh_gui
+   config_mesh_lookup_hosts
    config_pscheduler
    config_pscheduler_limits
    config_owamp
@@ -141,30 +141,14 @@ Toolkit and Tools Configuration Files
    config_bwctl_limits
    config_oppd
    
-MeshConfig Configuration Files
-==============================
-.. toctree::
-   :maxdepth: 1
-   
-   config_mesh
-   config_mesh_agent
-   config_mesh_agent_tasks
-   config_mesh_gui
-   config_mesh_lookup_hosts
-   
-FAQ
----------------
-.. toctree::
-   :maxdepth: 1
 
-   FAQ
-
-TroubleShooting
+Troubleshooting
 ---------------
 .. toctree::
    :maxdepth: 1
 
    troubleshooting_overview
+   FAQ
 
 Accessing Raw Data 
 ------------------
