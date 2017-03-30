@@ -55,9 +55,9 @@ A: The following commands will stop, and disable, this service:
 chkconfig ls_registration_daemon off
 
 
-*Q:Can I boot from a USB key instead of a DVD?*
+*Q: Can I boot from a USB key instead of a DVD?*
 
-A: The perfSONAR Toolkit Netinstall and Fullinstall images are capable of being installed on a USB stick instead of a CD. To write these images to the media, we recommend using dd, such as:
+A: The perfSONAR Toolkit Netinstall and Fullinstall images are capable of being installed on a USB stick instead of a CD. To write these images to the media, we recommend using dd, such as::
  
 sudo dd if=pS-Toolkit-4.0-FullInstall-x86_64.iso of=/dev/disk3
  
@@ -137,19 +137,28 @@ Tool Questions
 
 *Q: What is pscheduler, and how do I use it?*
 
+A: pscheduler is used to schedule network tests on perfSONAR hosts. See :doc:`using_pscheduler`
+
+
 *Q: What is BWCTL, and how do I use it?*
 
-A: BWCTL is... For more info see: ....
+A: BWCTL is the previous tool (before pscheduler) that was used to schedule network tests on perfSONAR hosts.
+For more info see :doc:`using_tools`. bwctl is still supported in v4.0, but will be deprecated in a future release.
+
 
 *Q: What is OWAMP, and how do I use it?*
 
 A: OWAMP (One-Way Ping) is a client server program that was developed to provide delay and jitter measurements between two target computers. At boot time, the perfSONAR Toolkit starts an OWAMP server process and leaves it listening on TCP port 861. This server may then be used by remote clients. Additionally, perfSONAR includes an OWAMP client application that can be used to test to remote instances. For more info see XXX
 
+*Q: What happened to the NDT and NPAD tools?*
+
+A: NDT and NPAD depend on web100, which is no longer support, so they have been dropped from perfSONAR. If you need similar functionality, we recommend that you use https://www.measurementlab.net/tests/
+
 
 
 *Q: What is the purpose of pscheduler limits?* 
 
-A: These allow you to limit the influence that outside users have on your system performance. For example, to prevent your machine/network from being saturated with BWCTL tests, limit the duration and maximum bandwidth available.
+A: These allow you to limit the influence that outside users have on your system performance. For example, to prevent your machine/network from being saturated with throughput tests, limit the duration and maximum bandwidth available.
 
 *Q: How can I set limits to prevent others from overusing pScheduler/BWCTL/OWAMP?*
 
@@ -183,7 +192,9 @@ A: If after running yum update you see this error::
 
     Invalid command 'WSGIScriptAlias', perhaps misspelled or defined by a module not included in the server configuration
                                                              [FAILED]
-    There could be a problem with the version of one of the WSGI libraries that was pulled in. You can verify it as such:
+   
+There could be a problem with the version of one of the WSGI libraries that was pulled in. You can verify it as such::
+
     [user@host ~]$ yum list installed | grep -i wsgi
     python27-mod_wsgi.x86_64             3.4-12.el6.centos.alt            @scl
     Due to the specific version of python that maddash/perfSONAR requires, the workaround is to uninstall the version above, and use the version found in the perfSONAR repository:
