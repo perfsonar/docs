@@ -1,5 +1,5 @@
 *************************************
-Hardware Requirements for perfSONAR
+Hardware Requirements
 *************************************
 
 The main requirements for perfSONAR are a minimum of 2 cores and 4GB of RAM.

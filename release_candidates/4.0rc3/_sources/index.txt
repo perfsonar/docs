@@ -2,11 +2,17 @@
 perfSONAR User Guide
 *******************************************
 
-perfSONAR is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using the perfSONAR on one or more hosts. 
+perfSONAR is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using perfSONAR on one or more hosts. 
 
+Getting Started
+---------------
+.. toctree::
+   :maxdepth: 1
+    
+   intro_about
 
-perfSONAR Installation Options
-------------------------------
+Installation
+------------
 .. toctree::
    :maxdepth: 1
    
@@ -26,13 +32,11 @@ Toolkit Installation
    :maxdepth: 1
    
    install_quick_start
-   install_sys_requirements
    install_getting
    install_centos_netinstall
    install_centos_fullinstall
    install_config_first_time
    install_migrate_centos7
-   install_psui
    
 Managing the perfSONAR Toolkit
 ==============================
@@ -63,15 +67,43 @@ Using the perfSONAR Toolkit
    using_ext_tools
 
 
-perfSONAR Tools
------------------
+Running Measurements with pScheduler
+-------------------------------------
+
+Getting Started
+====================
 .. toctree::
    :maxdepth: 1
 
-   using_tools
-   using_pscheduler
-   using_owamp
-   using_psui
+   pscheduler_intro
+
+pScheduler Client Commands
+==============================
+.. toctree::
+   :maxdepth: 1
+
+   pscheduler_client_tasks
+   pscheduler_client_schedule
+   pscheduler_client_utils
+
+pScheduler Server
+=================
+.. toctree::
+   :maxdepth: 1
+    
+   pscheduler_server_running
+   pscheduler_server_limits
+
+pScheduler References and Guides
+=================================
+.. toctree::
+   :maxdepth: 1
+   
+   pscheduler_ref_tests
+   pscheduler_ref_tools
+   pscheduler_ref_archivers
+   pscheduler_ref_bwctl
+
 
 Managing Multiple perfSONAR Hosts
 ----------------------------------
@@ -119,6 +151,14 @@ Managing Nodes with Puppet
    multi_puppet_using_server
    multi_puppet_using_client
    
+Additional Tools: perfsonarUI
+-----------------------------
+.. toctree::
+   :maxdepth: 1
+   
+   install_psui
+   using_psui
+
 
 Configuration Reference
 -----------------------
