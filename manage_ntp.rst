@@ -14,6 +14,8 @@ If your network can not connect to enough close servers, you'll want to identify
 
 .. note:: `www.pool.ntp.org <http://www.pool.ntp.org>`_ servers are not typically accurate enough for perfSONAR's requirements, and should be avoided.
 
+More details on NTP can be found at :doc:`ntp_overview`.
+
 .. _manage_ntp-access:
 
 Accessing the NTP Interface

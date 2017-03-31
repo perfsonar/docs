@@ -1,4 +1,5 @@
 :orphan:
+
 **************
 NTP Overview
 **************
@@ -6,8 +7,6 @@ NTP Overview
 The Network Time Protocol (NTP) is a method to synchronize clocks to UTC (timezones are set locally by the administrator).  The general goal of this software is to ensure that time is monotonically increasing, e.g. NTP will not skip a clock backwards in time and only makes adjustments that slow or speed up the local clock to move it towards the true definition of time.  NTP will minimize offset (the difference from true time) and skew (difference of time change rate from the true rate), as it operates on a host.  
 
 NTP is required to be running on perfSONAR servers that are performing OWAMP or BWCTL measurements.  Both tools are designed to make API calls to a running NTP daemon to determine the time and relative errors for hosts involved in a measurement.  As an example, OWAMP works by sending streams of small UDP packets.  Each is timestamped on one end, and then compared on the other end upon receipt.  These accurate timestamps are used to calculate latency and jitter on a more fine level than is possible via other methods (ICMP packets used in Ping).  It is possible to operate the perfSONAR tools without a running NTP daemon (e.g. by using certain switches in the tools to disable the check of time), however the resulting measurements of network performance will be skewed due to the lack of accurate timekeeping.  
-
-If a perfSONAR Toolkit is being used, there are instructions available to graphically configure the clock on the node.  More information can be found here: http://docs.perfsonar.net/manage_ntp.html
 
 If NTP is being configured manually (e.g. editing /etc/ntp.conf), there are several key points to be aware of to ensure that time is as accurate as possible on the host:
 
@@ -60,14 +59,15 @@ Latency Test Observations on Well-Tuned Machines
 
 Even on well tuned servers, time abnormalities can be witnessed due to the sensitivity of tools like OWAMP.  NTP works hard to get your host to within a couple of milliseconds of true time.  When measuring latency between hosts that are very topologically close (e.g. LAN distances up to 5 milliseconds), it is quiet possible that NTP drift will be observed over time.  The following figure shows that calculated latency can drift on the order of 1/2 a millisecond frequently as the system clocks are updated by NTP in the background.  
 
-TODO: add figure
+.. image:: images/close-ntp.png
 
 The next figure shows a closer view of this behavior.  Clocks will drift slowly between the intervals that NTP adjusts them, particularly if NTP has stabilized and is running every couple of minutes instead of a more frequent pace.  
 
-TODO: add figure
+.. image:: images/ntp-drift.png
 
 Hosts that are further away will not see this behavior, as the difference of a fractional millisecond is less important when the latency is 10s or 100s of milliseconds.  
 
+.. image:: images/ntp-far.png
 
 Statement on Precision Time Protocol (PTP)
 ------------------------------------------
