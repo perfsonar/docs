@@ -45,10 +45,16 @@ The process configures yum to point at the necessary repositories to get package
 
 .. _install_centos_step2:
 
-Step 2: Install RPM 
+Step 2: Install RPM - Choose *ONE* of the bundles below and any optional packages (NTP, sysctl, etc) listed below.
 -------------------------------- 
 
+* **perfSONAR Toolkit**::
+Full perfSONAR package including all optional content and the Web GUI.
+
+    yum install perfsonar-toolkit
+
 * **perfSONAR Test Point**::
+More minimal perfSONAR installation allowing for more cutomizable builds.
 
     yum install perfsonar-testpoint  
 
@@ -70,6 +76,7 @@ Step 2: Install RPM
 In particular, you should install perfsonar-toolkit-ntp if you are not managing your ntp.conf file in some other manner.
 
 * **perfSONAR Core**::
+Most minimal version of perfSONAR including the tools necessary for CLI testing and inclusion in mesh testing.
 
     yum install perfsonar-core
 
@@ -92,13 +99,9 @@ In particular, you should install perfsonar-toolkit-ntp if you are not managing 
 
 
 * **perfSONAR Central Management**::
+Additional minimal perfSONAR bundle for creating a Central Management point (Measurement Archive, Mesh config host)
 
     yum install perfsonar-centralmanagement
-
-
-* **perfSONAR Toolkit**::
-
-    yum install perfsonar-toolkit
 
 
 .. _install_centos_step3:
