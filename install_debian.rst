@@ -4,10 +4,10 @@ Installation on Debian
 
 For perfSONAR 3.5.1 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
 
-* Debian 7 Wheezy
-* Debian 8 Jessie
-* Ubuntu 12 Precise
-* Ubuntu 14 Trusty
+* Debian 7 Wheezy (supports pS 3.5 and 4.0)
+* Debian 8 Jessie (supports pS 3.5 and 4.0)
+* Ubuntu 12 Precise (supports pS 3.5 only; End of Life date: April 28, 2017)
+* Ubuntu 14 Trusty (supports pS 3.5 and 4.0)
 
 Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.
 
@@ -57,6 +57,8 @@ Step 2: Install the packages
 
 The two :doc:`bundles <install_options>` we currently provide for Debian contains the following packages:
 
+* **perfsonar-toolkit** contains the full toolkit build of perfSONAR, including all packages and options detailed below in more minimal builds, and the web-based graphs and administrative GUI.
+
 * **perfsonar-tools** contains all the tools you need to make measurements from the CLI:
 
   * iperf and iperf3
@@ -84,6 +86,7 @@ Additionally, you may also install the toolkit security, sysctl and ntp configur
   * **perfsonar-toolkit-security** containing iptables rules and fail2ban to protect your node, see :doc:`manage_security` for more details.
   * **perfsonar-toolkit-sysctl** fine tuning your host for better performance measurements, see :doc:`manage_tuning` for more details.
   * **perfsonar-toolkit-ntp** provides you with a list of known NTP servers and a script to choose the closest ones.
+  * **perfsonar-toolkit-systemenv** suggested support for auto-update configuration and other system environment options. (under revision)
 
 The installation of these packages can be done with each of the commands:
 ::
@@ -157,6 +160,7 @@ Step 5: Auto updates
 To ensure you always have the most current and hopefully most secure packages you can install and configure ``cron-apt`` to be run every night.  You’ll need to configure it to actually install the available updates and not just download the newly available packages (which is the default configuration).  This can be done with the following commands:
 ::
 
+Ubuntu Wheezy-specific cron configuration:
     apt-get install cron-apt
     echo 'upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts="/dev/null"' >> /etc/cron-apt/action.d/5-install
 
