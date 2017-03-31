@@ -4,12 +4,16 @@ perfSONAR User Guide
 
 perfSONAR is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using perfSONAR on one or more hosts. 
 
+.. _index-getting_started:
+
 Getting Started
 ---------------
 .. toctree::
    :maxdepth: 1
     
    intro_about
+
+.. _index-installation:
 
 Installation
 ------------
@@ -22,6 +26,8 @@ Installation
    install_centos
    install_debian
 
+
+.. _index-toolkit:
 
 perfSONAR Toolkit
 -----------------
@@ -67,6 +73,8 @@ Using the perfSONAR Toolkit
    using_ext_tools
 
 
+.. _index-pscheduler:
+
 Running Measurements with pScheduler
 -------------------------------------
 
@@ -104,6 +112,7 @@ pScheduler References and Guides
    pscheduler_ref_archivers
    pscheduler_ref_bwctl
 
+.. _index-multiple:
 
 Managing Multiple perfSONAR Hosts
 ----------------------------------
@@ -150,7 +159,9 @@ Managing Nodes with Puppet
    multi_puppet_install
    multi_puppet_using_server
    multi_puppet_using_client
-   
+
+.. _index-psui:
+
 Additional Tools: perfsonarUI
 -----------------------------
 .. toctree::
@@ -159,6 +170,8 @@ Additional Tools: perfsonarUI
    install_psui
    using_psui
 
+
+.. _index-config_ref:
 
 Configuration Reference
 -----------------------
@@ -181,6 +194,7 @@ Configuration Reference
    config_bwctl_limits
    config_oppd
    
+.. _index-troubleshooting:
 
 Troubleshooting
 ---------------
@@ -190,6 +204,8 @@ Troubleshooting
    troubleshooting_overview
    FAQ
 
+.. _index-data_access:
+
 Accessing Raw Data 
 ------------------
 .. toctree::
@@ -198,6 +214,8 @@ Accessing Raw Data
    client_tools
    client_apis
 
+.. _index-previous_releases:
+
 Previous Releases
 -----------------
 .. toctree::
@@ -205,13 +223,17 @@ Previous Releases
    
    previous_releases
 
+.. _index-future_releases:
+
 Future Releases
 ---------------
 .. toctree::
    :maxdepth: 1
    
    install_rcs
-   
+
+.. _index-further_info:
+
 Further Information
 -------------------
 * `Project Homepage <http://www.perfsonar.net>`_
@@ -224,6 +246,8 @@ Further Information
   * `User Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-user>`_ - Forum where users may ask and answer questions about their perfSONAR deployments
   * `Announcement Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_ - List where important announcements such as new releases and security updates are posted.
 
+.. _index-related:
+
 Related Projects
 ----------------
 * `esmond <http://software.es.net/esmond/>`_
@@ -231,7 +255,9 @@ Related Projects
 * `Lookup Service <http://code.google.com/p/simple-lookup-service/>`_
 * `MaDDash <http://software.es.net/maddash/>`_
 * `psUI <https://forge.geant.net/forge/display/perfsonar/Change+Log/>`_
- 
+
+.. _index-search:
+
 Search
 ----------------
 

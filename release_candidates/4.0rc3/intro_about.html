@@ -74,28 +74,87 @@
             
   <div class="section" id="what-is-perfsonar">
 <h1>What is perfSONAR?<a class="headerlink" href="#what-is-perfsonar" title="Permalink to this headline">¶</a></h1>
-<p>Page should contain at least the following:</p>
+<p>perfSONAR is a collection of open source software for performing and sharing end-to-end network measurements. It consists of multiple tools brought together in a manner best illustrated in the diagram below:</p>
+<a class="reference external image-reference" href="_images/intro_about-arch.png"><img alt="_images/intro_about-arch.png" src="_images/intro_about-arch.png" /></a>
+<p>Your deployment may install some or all of the components depending on your goals. See <a class="reference internal" href="install_options.html"><em>perfSONAR Installation Options</em></a> for a discussion on how to choose a deployment strategy that best suits your needs.</p>
+<p>The sections that follow provide a brief in overview of the components at each layer and provide links to more detail where applicable.</p>
+<div class="section" id="tools">
+<span id="intro-about-tools"></span><h2>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h2>
+<p>perfSONAR includes numerous utilities responsible for carrying out the actual network measurements and form the foundational layer of perfSONAR. In general, you will not invoke these tools directly but instead use the <a class="reference internal" href="pscheduler_intro.html"><em>pscheduler</em></a> command from the <a class="reference internal" href="#intro-about-scheduling"><span>scheduling</span></a> layer to execute them. The default tools that come with perfSONAR include:</p>
 <blockquote>
-<div><ul>
-<li><p class="first">Main point of this page is to define perfSONAR from a &#8220;this is the software you will be running&#8221; perspective. This includes:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li>say in a sentence or two what perfSONAR is</li>
-<li>list the components</li>
-<li>point at other parts of docs where can learn more about components</li>
-</ol>
-</div></blockquote>
-</li>
-<li><p class="first">Include Andy&#8217;s latest image of components - would like to reference this later on bundles page</p>
-</li>
-<li><p class="first">this page can replace <a class="reference internal" href="using_tools.html"><em>Overview of perfSONAR Network Test Tools</em></a></p>
-</li>
-<li><p class="first">can get rid of <a class="reference internal" href="using_owamp.html"><em>OWAMP User Guide</em></a> and just link to <a class="reference external" href="http://software.internet2.edu/owamp">http://software.internet2.edu/owamp</a> in this doc</p>
-</li>
-<li><p class="first">Should likely have pointers to nuttcp and iperf3 docs as well</p>
-</li>
+<div><ul class="simple">
+<li><a class="reference external" href="http://software.internet2.edu/owamp">owamp</a> - A tool primarily used for measuring packet loss and one-way delay. It includes the command <em>owping</em> for single short-lived tests and the <em>powstream</em> command for long-running background tests.</li>
+<li><a class="reference external" href="http://software.es.net/iperf">iperf3</a> - A rewrite of the classic iperf tool used to measure network throughput and associated metrics.</li>
+<li><a class="reference external" href="https://sourceforge.net/projects/iperf2/">iperf2</a> - Also known as just <em>iperf</em>, a common tool used to measure network throughput that has been around for many years.</li>
+<li><a class="reference external" href="https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/nuttcp/">nuttcp</a> - Another throughput tool with some useful options not found in other tools.</li>
+<li><a class="reference external" href="https://linux.die.net/man/8/traceroute">traceroute</a> - The classic packet trace tool used in identifying  network paths</li>
+<li><a class="reference external" href="https://linux.die.net/man/8/tracepath">tracepath</a> - Another path trace tool that also measures path MTU</li>
+<li><a class="reference external" href="http://manpages.ubuntu.com/manpages/trusty/man8/paris-traceroute.8.html">paris-traceroute</a> - A packet trace tool that attempts to identify paths in the presence of load balancers</li>
+<li><a class="reference external" href="https://linux.die.net/man/8/ping">ping</a> - The classic utility for determining reachability, round-trip time (RTT) and basic packet loss.</li>
+<li><a class="reference external" href="http://software.internet2.edu/bwctl/bwctl.man.html">bwctl</a>  - <strong>Deprecated in 4.0</strong> The original perfSONAR scheduling tool but is now only used for backward compatibility with hosts running versions older than perfSONAR 4.0. It will be completely unsupported in a future release.</li>
 </ul>
 </div></blockquote>
+</div>
+<div class="section" id="scheduling">
+<span id="intro-about-scheduling"></span><h2>Scheduling<a class="headerlink" href="#scheduling" title="Permalink to this headline">¶</a></h2>
+<p>The scheduling layer consists of a single tool named <a class="reference internal" href="pscheduler_intro.html"><em>pScheduler</em></a> and is responsible for:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Finding time-slots to run the <a class="reference internal" href="#intro-about-tools"><span>tools</span></a> while avoiding scheduling conflicts that would negatively impact results</li>
+<li>Executing the tools and gathering results</li>
+<li>Sending to the results to the <a class="reference internal" href="#intro-about-archiving"><span>archiving</span></a> layer (if needed)</li>
+</ol>
+</div></blockquote>
+<p>More information on using the pScheduler can be found in the section <a class="reference internal" href="index.html#index-pscheduler"><span>Running Measurements with pScheduler</span></a>.</p>
+</div>
+<div class="section" id="archiving">
+<span id="intro-about-archiving"></span><h2>Archiving<a class="headerlink" href="#archiving" title="Permalink to this headline">¶</a></h2>
+<p>The archiving layer currently consists a single component named <a class="reference external" href="http://software.es.net/esmond">esmond</a> that stores measurement information as time-series data. It is often referred to as the <em>measurement archive (MA)</em> and the term is used interchangeably with <em>esmond</em>. It can be installed on each measurement host if they meet hardware requirements or a single central instance may store results from multiple measurement hosts. For more information on esmond see the <a class="reference external" href="http://software.es.net/esmond">esmond documentation</a>. For information on running a central measurement archive see <a class="reference internal" href="multi_ma_install.html"><em>Deploying a Central Measurement Archive</em></a>.</p>
+</div>
+<div class="section" id="configuration">
+<span id="intro-about-configuration"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>The configuration layer is where desired measurements are defined along with instructions on where to store them. The primary component as this layer is called the <em>MeshConfig</em>. The MeshConfig consists of three main parts:</dt>
+<dd><ol class="first last arabic simple">
+<li><strong>MeshConfig Agent</strong> - This is the component that runs on the local measurement host and makes sure the scheduling layer is configured to run all the desired tests. It can do so by looking at manually defined tests in a local file or reading a remotely hosted configuration file that contains tests its supposed to run. See <a class="reference internal" href="multi_mesh_agent_config.html"><em>Reading a Central Configuration File</em></a> for more details.</li>
+<li><strong>MeshConfig GUIAgent</strong> - This component can read from a remote mesh file and generate a <a class="reference external" href="http://software.es.net/maddash">MaDDash</a> dashboard that displays the results of the tests. See <a class="reference internal" href="#intro-about-visualization"><span>Visualization</span></a> for more information on the visualization tools perfSONAR provides and the <a class="reference external" href="http://software.es.net/maddash/mesh_config.html">MaDDash Auto-configuration</a> page for more information on the MeshConfig GUIAgent.</li>
+<li><strong>MeshConfig JSON Builder</strong> - This is a simple tool that takes a configuration file in <a class="reference external" href="http://search.cpan.org/dist/Config-General/General.pm">Apache-like configuration format</a> and converts it into a JSON format readable as a remote mesh by the MeshConfig Agent and GUIAgent. See <a class="reference internal" href="multi_mesh_server_config.html"><em>Publishing a Central Configuration File</em></a> for more details.</li>
+</ol>
+</dd>
+</dl>
+<p>In order to simplify the process above there are also a few graphical interfaces for defining tests:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Toolkit GUI</strong> - This ships with every perfSONAR Toolkit and allows defining tests for the MeshConfig Agent on the local host only. See <a class="reference internal" href="manage_regular_tests.html"><em>Configuring Regular Tests</em></a> for more details.</li>
+<li><strong>MeshConfig Administrative GUI</strong> - This is a GUI for defining remote meshes that can be read by the MeshConfig Agents of multiple hosts as well as the MeshConfig GUIAgent. See <a class="reference internal" href="mca.html"><em>MeshConfig Administrative GUI</em></a> for more details.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="visualization">
+<span id="intro-about-visualization"></span><h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h2>
+<p>perfSONAR also includes components for visualizing the data. These components provide a window into the data and are the primary way most operators analyze and identify network issues.  The primary tools provided by the main perfSONAR project are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Graphs</strong> - The perfSONAR graphs package provides a set of graphs that display the various measurements over time and provide useful information about the hosts involved. See <a class="reference internal" href="using_graphs.html"><em>Test Results Graphs</em></a> for more detail.</li>
+<li><strong>MaDDash</strong> - This component queries the <a class="reference internal" href="#intro-about-archiving"><span>archiving layer</span></a> periodically for measurements and displays a dashboard indicating the performance of each relative to a set of defined thresholds. It can also send alerts based on patterns in the dashboard. See the <a class="reference external" href="http://software.es.net/maddash">MaDDash documentation</a> for more details.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="discovery">
+<span id="intro-about-discovery"></span><h2>Discovery<a class="headerlink" href="#discovery" title="Permalink to this headline">¶</a></h2>
+<p>Each perfSONAR node can run a component called the <strong>Lookup Service (LS) Registration</strong> Daemon that registers its existence in a public and/or private <a class="reference external" href="http://software.es.net/simple-lookup-service/">lookup service</a>. The registration daemon gathers information about each perfSONAR layer as well as the host on which it runs. This information is then used in multiple places to help debug problems and find hosts with which to test when building new configurations.</p>
+<p>In general, no configuration is needed of the registration component but for a guide of the options available see <a class="reference internal" href="config_ls_registration.html"><em>Lookup Service Registration Daemon Configuration File</em></a>. For a guide on automatically building test configurations based on registered lookup service content see <a class="reference internal" href="multi_mesh_autoconfig.html"><em>Automatic Test Configuration</em></a>.</p>
+</div>
+<div class="section" id="additional-components">
+<h2>Additional Components<a class="headerlink" href="#additional-components" title="Permalink to this headline">¶</a></h2>
+<p>In addition to what&#8217;s included in the diagram above, there are some additional tools available that interact with one or more of the layers shown. For example:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="using_psui.html"><em>perfSONAR UI</em></a> is a component that interacts with both the <a class="reference internal" href="#intro-about-scheduling"><span>scheduling</span></a> and <a class="reference internal" href="#intro-about-archiving"><span>archiving</span></a> layers to execute tests and visualize results. It currently uses the legacy perfSONAR scheduling system and will be updated to support pScheduler in a future release. See <a class="reference internal" href="using_psui.html"><em>perfsonarUI User Guide</em></a> for more details.</li>
+</ul>
+</div></blockquote>
+<p>Many of the layers provide open APIs, so its possible to use or write third-party tools to do even more. For information on the APIs available see <a class="reference internal" href="client_apis.html"><em>perfSONAR Client API</em></a>.</p>
+</div>
 </div>
 
 
@@ -107,7 +166,16 @@
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">What is perfSONAR?</a></li>
+<li><a class="reference internal" href="#">What is perfSONAR?</a><ul>
+<li><a class="reference internal" href="#tools">Tools</a></li>
+<li><a class="reference internal" href="#scheduling">Scheduling</a></li>
+<li><a class="reference internal" href="#archiving">Archiving</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#visualization">Visualization</a></li>
+<li><a class="reference internal" href="#discovery">Discovery</a></li>
+<li><a class="reference internal" href="#additional-components">Additional Components</a></li>
+</ul>
+</li>
 </ul>
 
                 <ul>

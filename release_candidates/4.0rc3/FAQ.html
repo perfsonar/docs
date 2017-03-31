@@ -131,7 +131,7 @@ chkconfig ls_registration_daemon off</p>
 <p><em>Q: Which repository addresses will be used to get updates to the perfSONAR software?</em></p>
 <p>A: By default, the Internet2 repo points at a mirror list hosted by software.internet2.edu. In this mirror list is linux.mirrors.es.net. In order to use the default configuration you will need to allow access to software.internet2.edu so you can grab the mirrorlist. After that, the packages can be downloaded from any of the sites listed which includes linux.mirrors.es.net, software.internet2.edu, and a few other places. You should be able to get away with just opening up access to software.internet2.edu (so it can get the mirror list) and linux.mirrors.es.net (so you can get the packages).
 Those should be the only places you need as linux.mirrors.es.net also has a mirror for all the base CentOS packages.</p>
-<p><em>Q:Is there a way to re-image perfSONAR resources remotely?</em></p>
+<p><em>Q: Is there a way to re-image perfSONAR resources remotely?</em></p>
 <p>A: If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a DVD or USB would be mounted.
 As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance some services support &#8220;virtual media&#8221; if they contain a DRACs with the enterprise feature set enabled.
 For a more general solution, and going on the assumption that a remote console access is available to a servers, consider a package called iPXE. iPXE can do is attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are:</p>
@@ -184,6 +184,9 @@ For example, to prevent your machine/network from being saturated with throughpu
 <p>A: Ping tests can be scheduled on the same host as throughput tests, but owamp tests can’t currently (they use powstream instead of owping).</p>
 <p><em>Q: How can I force testing over IPv4 or IPv6 in the mesh configuration?</em></p>
 <p>A: There is both a ipv4_only and ipv6_only option you can set in the test parameters of a mesh config. Setting them both at the same time gives an error.</p>
+<p><em>Q: How do I configure a test mesh to pace all TCP traffic to only 5Gbps, so that I don&#8217;t use all my sites bandwidth?</em></p>
+<p>A: Currently it is not possible to set iperf3&#8217;s <em>&#8211;fq-rate</em> flag via the mesh config file, but this should be in the next release. In the meantime, you can set pacing for your entire host using the commands described
+at: <a class="reference external" href="https://fasterdata.es.net/host-tuning/packet-pacing/">https://fasterdata.es.net/host-tuning/packet-pacing/</a></p>
 <p><em>Q: After upgrading to 3.5 my maddash instance won&#8217;t start (e.g. HTTP fails)?</em></p>
 <p>A: If after running yum update you see this error:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>[user@host ~]$ sudo /etc/init.d/httpd start
@@ -221,15 +224,14 @@ Starting httpd: [ OK ]
 <p><em>Q: If you have made manual changes to regular_testing.conf to point to a different MA (or multiple MAs), and you subsequently change test configurations through the GUI, does this leave your MA customizations alone?</em></p>
 <p>A: Yes. The GUI leaves all measurement_archive blocks alone.</p>
 <p><em>Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?</em></p>
-<p>A: The network interface card on a host is designed to send at line rate as long as there is data being made available via the kernel. This means that a 1G card will send at either 1G, or 0G (it does not pace itself at a rate in between). In situations where a larger capacity machine is testing to a smaller capacity machine, it is inevitable that the 10Gbps stream of data will need to be buffered somewhere in the path: either one of the last hop switches or the device itself. If there is not enough buffering available, the data will be dropped and TCP will be forced to reduce sending rates.</p>
-<p>The &#8216;choppy&#8217; behavior can be seen on this page: <a class="reference external" href="http://www.perfsonar.net/deploy/hardware-selection/hardware-advice/">http://www.perfsonar.net/deploy/hardware-selection/hardware-advice/</a>, and is challenging to mitigate unless there is a significant amount of buffer available. For these reasons, it is recommended that when designing testing scenarios, only &#8216;like&#8217; to &#8216;like&#8217; capacities be explored.</p>
+<p>A: See <a class="reference external" href="https://fasterdata.es.net/performance-testing/troubleshooting/interface-speed-mismatch/">https://fasterdata.es.net/performance-testing/troubleshooting/interface-speed-mismatch/</a></p>
 <p><em>Q: My perfSONAR results show consistent line-rate performance, but a researcher at my site is reporting really poor performance, what gives?</em></p>
 <p>A: perfSONAR is designed to give a &#8220;best case scenario&#8221; test result for end to end testing:
 perfSONAR is typically installed on well-provisioned server-class hardware that contains adequate CPU, memory, and NIC support
-By default, tuning are applied to the TCP stack: <a class="reference external" href="https://fasterdata.es.net/host-tuning/linux/">https://fasterdata.es.net/host-tuning/linux/</a></p>
-<p>pscheduler&#8217;s throughput tests invoke &#8220;memory to memory&#8221; test tools, e.g. the host does not pull data off of, or write to, storage during testing
+The perfSONAR toolkit follows this recommended host tuning: <a class="reference external" href="https://fasterdata.es.net/host-tuning/linux/">https://fasterdata.es.net/host-tuning/linux/</a></p>
+<p>pscheduler&#8217;s throughput tests invoke &#8220;memory to memory&#8221; test tools.
 perfSONAR typically runs short single streamed TCP tests.
-The user of a network may not have a machine that is as tuned as a perfSONAR node, could be using an application that is incorrect for the job of data movement, and may have a bottleneck due to storage. Consider all of these factors when working with them to identify performance issues. It is often the case that the &#8216;network&#8217; may be working fine, but the host and software infrastructure need additional attention.</p>
+The user of a network may not have a machine that is as tuned as a perfSONAR node, could be using an application that is incorrect for the job of data movement, and may have a bottleneck due to storage performance. Consider all of these factors when working with them to identify performance issues. It is often the case that the &#8216;network&#8217; may be working fine, but the host and software infrastructure need additional attention.</p>
 <p><em>Q: How do I change the default tool used in a test mesh?</em></p>
 <p>A: The file resides at: /etc/perfsonar/regulartesting.conf</p>
 <p><em>Q: Is there a way to visualize GridFTP results in Maddash?</em></p>
@@ -289,7 +291,7 @@ options ipv6 disable=1
 <p>More information available here:
 <a class="reference external" href="http://z-issue.com/wp/linux-rhel-6-centos-6-two-nics-in-the-same-subnet-but-secondary-doesnt-ping/">http://z-issue.com/wp/linux-rhel-6-centos-6-two-nics-in-the-same-subnet-but-secondary-doesnt-ping/</a></p>
 <p><em>Q: What TCP congestion control algorithm is used by the perfSONAR Toolkit?</em></p>
-<p>A: The perfSONAR toolkit uses the CentOS or Debian default TCP congestion control algorithm, which is htcp.</p>
+<p>A: The perfSONAR toolkit sets the TCP congestion control algorithm to htcp.</p>
 <p><em>Q: How can I add custom rules to IPTables?</em></p>
 <p>A: See <a class="reference internal" href="manage_security.html#manage-security-custom"><span>Adding Your Own Firewall Rules</span></a></p>
 <p><em>Q: Is it possible to change the default port for tool X?</em></p>
@@ -321,19 +323,17 @@ exclude=kernel* samba*                           &lt;====
 <p><em>Q: How can I configure yum to automatically update the system?</em></p>
 <p>A: Note that as of version v3.4, this is enabled by default. See <a class="reference internal" href="manage_update.html"><em>Updating the Toolkit</em></a>.</p>
 <p><em>Q: My host was impacted by Linux security issue (Shellshock/Heartbleed/etc.). What should I do?</em></p>
-<p>A: Please check the vulnerability archive for the specific attack you interested in, information on mitigation for perfSONAR nodes will be posted there, or in the mailing list archives.</p>
+<p>A: Please check the <a class="reference external" href="https://access.redhat.com/security/vulnerabilities">vulnerability archive</a> for updates, and upgrade your system as soon as the update is available.</p>
 <p><em>Q: A CVE announcement was made for the current perfSONAR Toolkit Kernel, what do I do?</em></p>
-<p>A: The perfSONAR development effort subscribes to all major outlets that will announce kernel CVEs. In the event that a CVE is announce that directly effects operation of the perfSONAR Toolkit, the following steps will take place:</p>
+<p>A: The perfSONAR development effort subscribes to all major outlets that will announce kernel CVEs. In the event that a CVE is announced that directly effects operation of the perfSONAR Toolkit, the following steps will take place:</p>
 <ul class="simple">
-<li>Announcements regarding the CVE will be posted to the perfsonar-user and perfsonar-announce mailing lists, more information on the mailing lists can be found here: <a class="reference external" href="https://lists.internet2.edu/sympa/info/perfsonar-user">https://lists.internet2.edu/sympa/info/perfsonar-user</a> and <a class="reference external" href="https://lists.internet2.edu/sympa/info/perfsonar-announce">https://lists.internet2.edu/sympa/info/perfsonar-announce</a></li>
+<li>Announcements regarding the CVE will be posted to the perfsonar-user and perfsonar-announce mailing lists</li>
 <li>A timeline will be relayed regarding availability of new kernels.</li>
-<li>The CentOS project will make the patched kernel available first, and it will be available through the yum repositories on the toolkit before the perfSONAR project is able to apply the web100 patches.</li>
-<li>It is strongly suggested that perfSONAR Toolkit users utilizing the NetInstall option upgrade immediately.</li>
+<li>It is strongly suggested that perfSONAR Toolkit hosts be upgraded immediately. (Run the command: sudo yum update)</li>
 </ul>
-<p>Run the following command: sudo yum update</p>
 <p><em>Q: How to get rid of &#8220;There isn&#8217;t a perfSONAR sudo user defined&#8221; message?</em></p>
-<p><strong>TODO: Changes this to /etc/profile.d, check if its config(noreplace)</strong></p>
 <p>A: Either add a non-root user to the pssudo group or remove the line /etc/perfsonar/toolkit/scripts/add_pssudo_user —auto from /root/.bashrc. Note that future updates could revert the /root/.bashrc file.</p>
+<p><strong>TODO: Change this to /etc/profile.d</strong></p>
 <p><em>Q: I am seeing a &#8220;Can&#8217;t locate object method &#8216;ssl_opts&#8217; via package &#8216;LWP::UserAgent&#8217;&#8221; error when trying to use a Central Measurement Archive. What should I do?</em></p>
 <p>A: This is due to a old version of the perl-libwww-perl package that is included with CentOS 6. If you remove “ca_certificate_path” from the configuration file things will work.</p>
 <p><em>Q: Is it possible to use non-intel SFP+ optics in the Intel X520-SR2 NIC?</em></p>
@@ -343,7 +343,8 @@ This can be tested using the fillow commands:
 sudo modprobe -r ixgbe
 sudo modprobe ixgbe allow_unsupported_sfp=0</p>
 <p><em>Q: How can I tune a Dell server for a high throughput and low latency?</em></p>
-<p>A: Dell offers a guide on tuning: <a class="reference external" href="http://i.dell.com/sites/content/shared-content/data-sheets/en/Documents/configuring-low-latency-environments-on-dell-poweredge-12g-servers.pdf">http://i.dell.com/sites/content/shared-content/data-sheets/en/Documents/configuring-low-latency-environments-on-dell-poweredge-12g-servers.pdf</a>.</p>
+<p>A: Dell offers this guide on tuning:</p>
+<p><a class="reference external" href="http://i.dell.com/sites/content/shared-content/data-sheets/en/Documents/configuring-low-latency-environments-on-dell-poweredge-12g-servers.pdf">http://i.dell.com/sites/content/shared-content/data-sheets/en/Documents/configuring-low-latency-environments-on-dell-poweredge-12g-servers.pdf</a></p>
 <p><em>Q: How do I backup a perfSONAR instance or migrate the configuration and data to a new machine?</em></p>
 <p>A: To back up perfSONAR configurations and logs:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>/opt/perfsonar_ps/ls_registration_daemon/etc/*
@@ -380,7 +381,11 @@ sudo modprobe ixgbe allow_unsupported_sfp=0</p>
 <div class="section" id="perfsonar-archive-esmond-questions">
 <h2>perfSONAR Archive (esmond) Questions<a class="headerlink" href="#perfsonar-archive-esmond-questions" title="Permalink to this headline">¶</a></h2>
 <p><em>Q: How much memory is needed for a host running an MA?</em></p>
-<p>A: Cassandra will try to use 4G of memory by default (if its available on the system). It is possible to tweak the memory settings if you want it to use less. Read more here: <a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_tune_jvm_c.html">http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_tune_jvm_c.html</a>. Tuning this makes it possible to run an MA on a host with less memory.</p>
+<p>A: Cassandra will try to use 4G of memory by default (if its available on the system). It is possible to tweak the memory settings if you want it to use less. Read more here:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_tune_jvm_c.html">http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_tune_jvm_c.html</a>.</li>
+</ul>
+<p>Tuning this makes it possible to run an MA on a host with less memory.</p>
 <p><em>Q: I have a measurement archive machine with esmond running, and there is a separate disk partition mounted on the machine where I want to store all the incoming measurement data from measurement points. What is the proper way to change the default directory location for storing the measurement archive data?</em></p>
 <p>A: Change the directory where cassandra and postgres store data. This is controlled through the respective tools configuration files and not esmond directly.</p>
 <p>For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandra: /sbin/service cassandra restart</p>
@@ -449,7 +454,8 @@ A snapshot can be restored by moving all *.db files from a snapshot directory to
 <p><em>Q: How do I join the perfSONAR Collaboration?</em></p>
 <p>A: Please contact us at <a class="reference external" href="mailto:perfsonar-lead&#37;&#52;&#48;internet2&#46;edu">perfsonar-lead<span>&#64;</span>internet2<span>&#46;</span>edu</a>.</p>
 <p><em>Q: Where can I ask questions or report bugs?</em></p>
-<p>A: For questions, send email to perfsonar-user at internet2 dot edu. You may also join the mailing list by visiting <a class="reference external" href="https://lists.internet2.edu/sympa/info/perfsonar-user">https://lists.internet2.edu/sympa/info/perfsonar-user</a>. For bugs, report at <a class="reference external" href="https://github.com/perfsonar/project/issues">https://github.com/perfsonar/project/issues</a>.</p>
+<p>A: For questions, send email to perfsonar-user at internet2 dot edu. You may also join the mailing list by visiting <a class="reference external" href="https://lists.internet2.edu/sympa/info/perfsonar-user">https://lists.internet2.edu/sympa/info/perfsonar-user</a>.</p>
+<p>Report bugs at <a class="reference external" href="https://github.com/perfsonar/project/issues">https://github.com/perfsonar/project/issues</a>.</p>
 <p><em>Q: Which licenses do perfSONAR products use?</em></p>
 <p>A: perfSONAR components are licensed under the Apache 2.0 license.</p>
 <p><em>Q: How does version numbering work for the perfSONAR project?</em></p>
