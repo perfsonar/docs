@@ -13,7 +13,7 @@ networks around the world, and nothing else.
 Information on how to use this file is available at:
   * http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-limits-file/
 
-More information on how to use the limits system can be found at:
-  * http://docs.perfsonar.net/config_pscheduler_limits.html
+More information on how to use the limits system can be found at: :doc:`pscheduler_server_limits`.
+
 
 
