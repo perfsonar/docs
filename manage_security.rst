@@ -90,3 +90,18 @@ Limiting tests to Research and Education Networks Only
 ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and 
 bwctl to use it are described on the page :doc:`manage_limits`.
 
+Managing Login Access
+======================
+perfSONAR nodes are meant to be used, both by local users and the public at large, to perform a variety of network tests.  The open access policy is at odds with ways to mitigate the risk of exposing functionality to those that would cause harm.  The following is a possible approach for managing access to the host:
+
+- SSHD can be turned off completely if remote access to the machine via the terminal is not need (e.g. in cases where console access is available either directly, or indirectly)
+
+- If SSHD is turned on, consider using a jump host setup wherein access to the perfSONAR node can only be accomplished through a single (or set) of trusted hosts.  This type of restriction can be implemented in IPTables. 
+
+
+NTAC Performance Working Group Statement
+========================================
+The NTAC Performance Working Group has published a document related to deploying perfSONAR while still justifying cybersecurity policy.  This document can be found here:
+
+- https://www.perfsonar.net/media/cms_page_media/1256/20141110-Firewall-PerfWG.pdf
+
