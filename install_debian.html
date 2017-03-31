@@ -76,10 +76,10 @@
 <h1>Installation on Debian<a class="headerlink" href="#installation-on-debian" title="Permalink to this headline">¶</a></h1>
 <p>For perfSONAR 3.5.1 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:</p>
 <ul class="simple">
-<li>Debian 7 Wheezy</li>
-<li>Debian 8 Jessie</li>
-<li>Ubuntu 12 Precise</li>
-<li>Ubuntu 14 Trusty</li>
+<li>Debian 7 Wheezy (supports pS 3.5 and 4.0)</li>
+<li>Debian 8 Jessie (supports pS 3.5 and 4.0)</li>
+<li>Ubuntu 12 Precise (supports pS 3.5 only; End of Life date: April 28, 2017)</li>
+<li>Ubuntu 14 Trusty (supports pS 3.5 and 4.0)</li>
 </ul>
 <p>Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.</p>
 <div class="section" id="system-requirements">
@@ -120,6 +120,7 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 <span id="install-debian-step2"></span><h3>Step 2: Install the packages<a class="headerlink" href="#step-2-install-the-packages" title="Permalink to this headline">¶</a></h3>
 <p>The two <a class="reference internal" href="install_options.html"><em>bundles</em></a> we currently provide for Debian contains the following packages:</p>
 <ul class="simple">
+<li><strong>perfsonar-toolkit</strong> contains the full toolkit build of perfSONAR, including all packages and options detailed below in more minimal builds, and the web-based graphs and administrative GUI.</li>
 <li><strong>perfsonar-tools</strong> contains all the tools you need to make measurements from the CLI:<ul>
 <li>iperf and iperf3</li>
 <li>owamp client and server</li>
@@ -147,6 +148,7 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 <li><strong>perfsonar-toolkit-security</strong> containing iptables rules and fail2ban to protect your node, see <a class="reference internal" href="manage_security.html"><em>Firewalls and Security Software</em></a> for more details.</li>
 <li><strong>perfsonar-toolkit-sysctl</strong> fine tuning your host for better performance measurements, see <a class="reference internal" href="manage_tuning.html"><em>Host Tuning</em></a> for more details.</li>
 <li><strong>perfsonar-toolkit-ntp</strong> provides you with a list of known NTP servers and a script to choose the closest ones.</li>
+<li><strong>perfsonar-toolkit-systemenv</strong> suggested support for auto-update configuration and other system environment options. (under revision)</li>
 </ul>
 </div></blockquote>
 <p>The installation of these packages can be done with each of the commands:</p>
@@ -207,10 +209,11 @@ chmod +x update_limits.sh
 <div class="section" id="step-5-auto-updates">
 <span id="install-debian-step5"></span><h3>Step 5: Auto updates<a class="headerlink" href="#step-5-auto-updates" title="Permalink to this headline">¶</a></h3>
 <p>To ensure you always have the most current and hopefully most secure packages you can install and configure <tt class="docutils literal"><span class="pre">cron-apt</span></tt> to be run every night.  You’ll need to configure it to actually install the available updates and not just download the newly available packages (which is the default configuration).  This can be done with the following commands:</p>
-<div class="highlight-python"><div class="highlight"><pre>apt-get install cron-apt
-echo &#39;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts=&quot;/dev/null&quot;&#39; &gt;&gt; /etc/cron-apt/action.d/5-install
-</pre></div>
-</div>
+<dl class="docutils">
+<dt>Ubuntu Wheezy-specific cron configuration:</dt>
+<dd>apt-get install cron-apt
+echo &#8216;upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts=&#8221;/dev/null&#8221;&#8217; &gt;&gt; /etc/cron-apt/action.d/5-install</dd>
+</dl>
 <p>A cronjob will automatically install new packages present in the perfsonar-wheezy-release repository every night (check <tt class="docutils literal"><span class="pre">/etc/cron.d/cron-apt</span></tt>). You may want to do the same with the security updates provided by Debian/Ubuntu.</p>
 <p>A trace of all updates applied will be stored in <tt class="docutils literal"><span class="pre">/var/log/cron-apt/log</span></tt></p>
 <p>Full perfSONAR toolkit upgrades might still need a manual intervention to properly conclude, but we will then announce that through our usual communication channels.</p>
