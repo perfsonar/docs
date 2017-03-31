@@ -15,7 +15,7 @@ The sections that follow provide a brief in overview of the components at each l
 
 Tools
 -----
-perfSONAR includes numerous utilities responsible for carrying out the actual network measurements and form the foundational layer of perfSONAR. These tools include:
+perfSONAR includes numerous utilities responsible for carrying out the actual network measurements and form the foundational layer of perfSONAR. In general, you will not invoke these tools directly but instead use the :doc:`pscheduler<pscheduler_intro>` command from the :ref:`scheduling <intro_about-scheduling>` layer to execute them. The default tools that come with perfSONAR include:
 
     * owamp_ - A tool primarily used for measuring packet loss and one-way delay. It includes the command *owping* for single short-lived tests and the *powstream* command for long-running background tests. 
     * iperf3_ - A rewrite of the classic iperf tool used to measure network throughput and associated metrics.
