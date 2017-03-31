@@ -1,11 +1,11 @@
-*****************************************
-Troubleshooting perfSONAR 4.0
-*****************************************
+******************************
+Troubleshooting perfSONAR 
+******************************
 
 (page under construction!)
 
 
-This page contains some hints on how to troubleshoot perfSONAR 4.0.
+This page contains some hints on how to troubleshoot perfSONAR 4.0 and later.
 
 1.  Confirm that pScheduler on the local system is functioning:
 ::

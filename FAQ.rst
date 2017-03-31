@@ -18,11 +18,11 @@ Installation Questions
 
 *Q: What are the hardware requirements for running the perfSONAR Toolkit?*
 
-A: See this page XXX. Note that the perfSONAR Toolkit development team has not created hard minimum or maximum requirements - the perfSONAR Toolkit will function on almost any form of hardware. Performance considerations do favor meeting or exceeding the minimum guidelines.
+A: See :doc:`install_hardware`. 
 
 *Q: Does my machine have to meet the System Requirements?*
 
-A: There is nothing on the perfSONAR Toolkit that will prevent systems that do not meet the requirements from starting. Erroneous or inaccurate behavior is possible if the hardware cannot support the measurement tools.
+A: There is nothing on the perfSONAR Toolkit that will prevent systems that do not meet the requirements from starting. Erroneous or inaccurate behavior is possible if the hardware cannot support the measurement tools. Performance considerations do favor meeting or exceeding the minimum guidelines.
 
 *Q: The Services screen shows many services in the non-running state when first started, what is wrong?*
 
@@ -55,44 +55,42 @@ A: The following commands will stop, and disable, this service:
 chkconfig ls_registration_daemon off
 
 
-*Q:Can I boot from a USB key instead of a DVD?*
+*Q: Can I boot from a USB key instead of a DVD?*
 
-A: The perfSONAR Toolkit Netinstall and Fullinstall images are capable of being installed on a USB stick instead of a CD. To write these images to the media, we recommend using dd, such as:
+A: The perfSONAR Toolkit Netinstall and Fullinstall images are capable of being installed on a USB stick instead of a DVD. To write these images to the media, we recommend using dd, such as::
  
-sudo dd if=pS-Toolkit-4.0-FullInstall-x86_64.iso of=/dev/disk3
+ sudo dd if=pS-Toolkit-4.0-FullInstall-x86_64.iso of=/dev/disk3
  
 
 *Q: During the NetInstall, I see errors about a corrupt file being downloaded. What should I do?*
 
 A: During the NetInstall, you may see some errors about a corrupt file being downloaded along with buttons like Reboot and Retry. This happens if it fails to download an RPM from a mirror, which can happen for numerous reasons. Usually, that error can be solved by hitting Retry. You may have to hit that multiple times depending on which mirrors the install is trying to download the RPM from.
 
-*Q: When trying a clean install with perfSONAR Toolkit, the system doesn't recognize any disks/doesn't see my RAID controller. Things work with other systems (CentOS 6, Scientific Linux 6). What should I do?*
+*Q: When trying a clean install with perfSONAR Toolkit, the system doesn't recognize any disks/doesn't see my RAID controller. Things work with other operating systems. What should I do?*
 
-A: If you have started with a different OS, you can attempt to install the necessary packages manually.
-First, install the EPEL repository. You can grab the RPM from http://linux.mirrors.es.net/fedora-epel/6/i386/repoview/epel-release.html.
-After that, you’ll need to install the Internet2 repository. You can grab the RPM from http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.5-3.noarch.rpm
-.
-Lastly, you can install the Toolkit by running:
-yum install perl-perfSONAR_PS-Toolkit perl-perfSONAR_PS-Toolkit-SystemEnvironment
+A: If you have started with a different OS, you can attempt to install the necessary packages via yum::
+
+ yum install perfsonar-toolkit
+
 Once it’s installed, reboot the machine.
 
 
 *Q: I would like to install and patch perfsonar boxes behind a web proxy, is it possible to specify this on the grub command line?*
 
-A: Anaconda documentation indicates this grub parameter should do the trick:
+A: Anaconda documentation indicates this grub parameter should do the trick::
  
-proxy=[protocol://][username[:password]@]host[:port]
+ proxy=[protocol://][username[:password]@]host[:port]
  
-Note that during a fresh network installation, Anaconda does install updates immediately (e.g. it wouldn't use a version of an RPM from when the ISO was built), and doesn't actually run any network services before the reboot. For those that are rebuilding after shellshock - using a proxy should not be necessary.
+Note that during a fresh network installation, Anaconda does install updates immediately (e.g. it wouldn't use a version of an RPM from when the ISO was built), and doesn't actually run any network services before the reboot. 
  
 *Q: Which repository addresses will be used to get updates to the perfSONAR software?*
 
 A: By default, the Internet2 repo points at a mirror list hosted by software.internet2.edu. In this mirror list is linux.mirrors.es.net. In order to use the default configuration you will need to allow access to software.internet2.edu so you can grab the mirrorlist. After that, the packages can be downloaded from any of the sites listed which includes linux.mirrors.es.net, software.internet2.edu, and a few other places. You should be able to get away with just opening up access to software.internet2.edu (so it can get the mirror list) and linux.mirrors.es.net (so you can get the packages). 
 Those should be the only places you need as linux.mirrors.es.net also has a mirror for all the base CentOS packages.
 
-*Q:Is there a way to re-image perfSONAR resources remotely?*
+*Q: Is there a way to re-image perfSONAR resources remotely?*
 
-A: If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a CD or USB would be mounted.
+A: If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a DVD or USB would be mounted.
 As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance some services support "virtual media" if they contain a DRACs with the enterprise feature set enabled.
 For a more general solution, and going on the assumption that a remote console access is available to a servers, consider a package called iPXE. iPXE can do is attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are::
 
@@ -109,15 +107,14 @@ Note that iPXE needs to be on a bootable medium, and it’s operationally better
 
 *Q: I am trying to run perfSONAR on low-cost hardware (e.g. raspberry pi, etc.). Where should I start?*
 
-A: There are numerous hardware platforms that have emerged that are an attractive option for use in network performance measurement. The perfSONAR collaboration does not recommend, nor support, the use of perfSONAR on low-end, ARM-based hardware such as the Raspberry PI. It has been shown that it is difficult to distinguish network issues, from host issues, on these devices. In particular, we do not recommend these devices for testing throughput with the BWCTL, or other related tools. Use of latency based tools (Ping, OWAMP) is possible provided that an accurate clock source is available.
-For more information, see this web page: http://www.perfsonar.net/deploy/hardware-selection/low-cost-hardware/
-
+A: There are numerous hardware platforms that have emerged that are an attractive option for use in network performance measurement. The perfSONAR collaboration does not recommend, nor support, the use of perfSONAR on low-end, ARM-based hardware such as the Raspberry PI. It has been shown that it is difficult to distinguish network issues, from host issues, on these devices. In particular, we do not recommend these devices for testing throughput. Use of latency based tools (Ping, OWAMP) is possible provided that an accurate clock source is available.
+For more information, see :doc:`install_low_cost_nodes`.
 
 
 *Q: I am running a small node, and seeing a lot of IO. What is going on?*
 
 A: Some users report abnormalities on their small nodes related to I/O activity (e.g. iostat reports long w_await times - sometimes measured in multiple seconds). These coincide with intervals of testing, in particular related to OWAMP.
-Deeper investigation found that there is too much I/O going on: syslogd and systemd-journald processing syslog messages from "owampd, bwctld, and powstream” in “/var/log/messages”, sometimes up to 30-40 syslog messages per second depending on the testing configuration of a host. Given that small nodes are based on flash memory, changes should be made to ensure a more balanced approach to logging:
+Deeper investigation found that there is too much I/O going on: syslogd and systemd-journald processing syslog messages from "owampd and powstream” in “/var/log/messages”, sometimes up to 30-40 syslog messages per second depending on the testing configuration of a host. Given that small nodes are based on flash memory, changes should be made to ensure a more balanced approach to logging:
 Do journaling on memory by editing “/etc/systemd/journald.conf”.
 Make option "Storage=volatile” instead of the default “Storage=auto”. Make sure to limit the maximum usage of memory for journaling. You can do this by fiddling with “RuntimeKeepFree” and “RuntimeMaxUse” options.
 Don’t *restart* the journaling service (i.e., don’t do “systemctl restart systemd-journald”). Do an *OS reboot* instead.
@@ -137,41 +134,50 @@ Tool Questions
 
 *Q: What is pscheduler, and how do I use it?*
 
+A: pscheduler is used to schedule network tests on perfSONAR hosts. See :doc:`using_pscheduler`
+
 *Q: What is BWCTL, and how do I use it?*
 
-A: BWCTL is... For more info see: ....
+A: BWCTL is the previous tool (before pscheduler) that was used to schedule network tests on perfSONAR hosts.
+For more info see :doc:`using_tools`. BWCTL is still supported in v4.0, but will be deprecated in a future release.
+
 
 *Q: What is OWAMP, and how do I use it?*
 
-A: OWAMP (One-Way Ping) is a client server program that was developed to provide delay and jitter measurements between two target computers. At boot time, the perfSONAR Toolkit starts an OWAMP server process and leaves it listening on TCP port 861. This server may then be used by remote clients. Additionally, perfSONAR includes an OWAMP client application that can be used to test to remote instances. For more info see XXX
+A: OWAMP (One-Way Ping) is a client server program that was developed to provide delay and jitter measurements between two target computers. At boot time, the perfSONAR Toolkit starts an OWAMP server process and leaves it listening on TCP port 861. This server may then be used by remote clients. Additionally, perfSONAR includes an OWAMP client application that can be used to test to remote instances. For more info see :doc:`using_tools`.
+
+*Q: What happened to the NDT and NPAD tools?*
+
+A: NDT and NPAD depend on web100, which is no longer supported, so they have been dropped from perfSONAR starting with v4.0. 
+If you need similar functionality, we recommend that you use https://www.measurementlab.net/tests/
 
 
+*Q: How can I set limits to prevent others from overusing my test host? What is the purpose of pscheduler limits?* 
 
-*Q: What is the purpose of pscheduler limits?* 
-
-A: These allow you to limit the influence that outside users have on your system performance. For example, to prevent your machine/network from being saturated with BWCTL tests, limit the duration and maximum bandwidth available.
-
-*Q: How can I set limits to prevent others from overusing pScheduler/BWCTL/OWAMP?*
-
-A: pScheduler, BWCTL and OWAMP have configurable files that allows the administrator to limit the resources consumed. See XXX for more information
-
+A: The pscheduler limits system allows you to limit the influence that outside users have on your system. 
+For example, to prevent your machine/network from being saturated with throughput tests, limit the duration and maximum bandwidth available. For more information see :doc:`pscheduler_server_limits`.
 
 
 *Q: When attempting to use BWCTL with an IPv6 address, the command fails: bwctl: Unable to connect to 2001:468:1:11::16:66:4823. What should I do?*
 
-A: Wrap the IPv6 address in square brackets and double quotes (to prevent the shell from trying to interpret the brackets). For example: bwctl -T iperf3 -t 10 -i 1-c "[2001:468:1:11::16:66]:4823"
+A: Wrap the IPv6 address in square brackets and double quotes (to prevent the shell from trying to interpret the brackets). For example::
+
+ bwctl -T iperf3 -c "[2001:468:1:11::16:66]:4823"
 
 
+*Q: Can I run both throughput and latency/loss tests on the same interface without interference due to the way pscheduler scheduling works?*
 
-*Q: I see that the latency/loss tests in 3.4 use bwping. Does this mean that we can run both throughput and latency/loss tests on the same interface without interference due to the way bwctl scheduling works?*
-
-A: Ping tests can be scheduled on the same host as throughput tests, but owamp tests can’t currently (they use powstream instead of bwping).
+A: Ping tests can be scheduled on the same host as throughput tests, but owamp tests can’t currently (they use powstream instead of owping).
 
 
 *Q: How can I force testing over IPv4 or IPv6 in the mesh configuration?*
 
 A: There is both a ipv4_only and ipv6_only option you can set in the test parameters of a mesh config. Setting them both at the same time gives an error.
 
+*Q: How do I configure a test mesh to pace all TCP traffic to only 5Gbps, so that I don't use all my sites bandwidth?*
+
+A: Currently it is not possible to set iperf3's *--fq-rate* flag via the mesh config file, but this should be in the next release. In the meantime, you can set pacing for your entire host using the commands described
+at: https://fasterdata.es.net/host-tuning/packet-pacing/
 
 
 *Q: After upgrading to 3.5 my maddash instance won't start (e.g. HTTP fails)?*
@@ -183,7 +189,9 @@ A: If after running yum update you see this error::
 
     Invalid command 'WSGIScriptAlias', perhaps misspelled or defined by a module not included in the server configuration
                                                              [FAILED]
-    There could be a problem with the version of one of the WSGI libraries that was pulled in. You can verify it as such:
+   
+There could be a problem with the version of one of the WSGI libraries that was pulled in. You can verify it as such::
+
     [user@host ~]$ yum list installed | grep -i wsgi
     python27-mod_wsgi.x86_64             3.4-12.el6.centos.alt            @scl
     Due to the specific version of python that maddash/perfSONAR requires, the workaround is to uninstall the version above, and use the version found in the perfSONAR repository:
@@ -217,18 +225,18 @@ A: Yes. The GUI leaves all measurement_archive blocks alone.
 
 *Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?*
 
-A: The network interface card on a host is designed to send at line rate as long as there is data being made available via the kernel. This means that a 1G card will send at either 1G, or 0G (it does not pace itself at a rate in between). In situations where a larger capacity machine is testing to a smaller capacity machine, it is inevitable that the 10Gbps stream of data will need to be buffered somewhere in the path: either one of the last hop switches or the device itself. If there is not enough buffering available, the data will be dropped and TCP will be forced to reduce sending rates.
+A: See https://fasterdata.es.net/performance-testing/troubleshooting/interface-speed-mismatch/
 
-The 'choppy' behavior can be seen on this page: http://www.perfsonar.net/deploy/hardware-selection/hardware-advice/, and is challenging to mitigate unless there is a significant amount of buffer available. For these reasons, it is recommended that when designing testing scenarios, only 'like' to 'like' capacities be explored.
 
 *Q: My perfSONAR results show consistent line-rate performance, but a researcher at my site is reporting really poor performance, what gives?*
 
 A: perfSONAR is designed to give a "best case scenario" test result for end to end testing:
 perfSONAR is typically installed on well-provisioned server-class hardware that contains adequate CPU, memory, and NIC support
-By default, tuning are applied to the TCP stack: https://fasterdata.es.net/host-tuning/linux/
-BWCTL invokes "memory to memory" test tools, e.g. the host does not pull data off of, or write to, storage during testing
+The perfSONAR toolkit follows this recommended host tuning: https://fasterdata.es.net/host-tuning/linux/
+
+pscheduler's throughput tests invoke "memory to memory" test tools. 
 perfSONAR typically runs short single streamed TCP tests.
-The user of a network may not have a machine that is as tuned as a perfSONAR node, could be using an application that is incorrect for the job of data movement, and may have a bottleneck due to storage. Consider all of these factors when working with them to identify performance issues. It is often the case that the 'network' may be working fine, but the host and software infrastructure need additional attention.
+The user of a network may not have a machine that is as tuned as a perfSONAR node, could be using an application that is incorrect for the job of data movement, and may have a bottleneck due to storage performance. Consider all of these factors when working with them to identify performance issues. It is often the case that the 'network' may be working fine, but the host and software infrastructure need additional attention.
 
 *Q: How do I change the default tool used in a test mesh?* 
 
@@ -236,12 +244,12 @@ A: The file resides at: /etc/perfsonar/regulartesting.conf
 
 *Q: Is there a way to visualize GridFTP results in Maddash?* 
 
-A: Please see documentation on the maddash web site.
+A: Please see documentation at http://software.es.net/esmond/perfsonar_gridftp.html
 
 
 
 Host and Network Administration Questions
------------------------------------------
+------------------------------------------
 
 
 *Q: Where are the relevant logs for perfSONAR services?*
@@ -249,22 +257,19 @@ Host and Network Administration Questions
 A: Please see :doc:`manage_logs` for more information. 
 
 
+*Q: Can I Use a firewall?*
 
-*Q: Can I Use a Firewall?*
-
-A: Please see http://www.perfsonar.net/deploy/security-considerations/ page on the perfSONAR website, that discusses firewall use.
+A: Please see :doc:`manage_security`.
 
 
 *Q: How many NTP servers do I need, can I select them all?*
 
-A: It is recommended that 4 to 5 close and active servers be used. The Select Closest Servers button will help with this decision. Note that some servers may not be available due to routing (e.g. non-R&E networks vs R&E networks - a common problem for Internet2 and ESnet servers).
+A: It is recommended that 4 to 5 close and active servers be used. The Select Closest Servers button will help with this decision. Note that some servers may not be available due to routing restrictions (e.g. non-R&E networks vs R&E networks - a common problem for Internet2 and ESnet servers).
 
 *Q: When setting up a dual homed host, how can one get individual tests to use one interface or another?*
 
-A: In the GUI when configuring the regular tests, you configure the interface that the tests will be performed using.
-The easiest way to force bwctld and owampd to listen only on their respective interfaces is to set the ‘srcnode’ variable in /etc/bwctld/bwctld.conf and /etc/owampd/owampd.conf, and then restart bwctld and owampd. Look at owampd.conf.default and bwctld.conf.default in those same directories for an example. http://docs.perfsonar.net/manage_dual_xface.html
-
-
+A: See :doc:`manage_dual_xface`.
+ 
 
 *Q: How do I change the MTU for a device?*
 
@@ -290,7 +295,7 @@ The config option is allow_internal_addresses. Set it to 1.
 
 A: The toolkit by default generates a self-signed SSL certificate that it configures for use with the Apache web server. Some users may desire to replace this certificate with a certificate signed by a certificate authority (CA).
 
-You may also need to replace the certificate due to a problem sometimes encountered with browsers not accepting the self-signed certificate. You may see an error like the following:
+You may also need to replace the certificate due to a problem sometimes encountered with browsers not accepting the self-signed certificate. You may see an error like the following::
  
     HOST uses an invalid security certificate.
     The certificate is not trusted because it is self-signed.
@@ -331,16 +336,9 @@ More information available here:
 http://z-issue.com/wp/linux-rhel-6-centos-6-two-nics-in-the-same-subnet-but-secondary-doesnt-ping/
 
 
-*Q: The drivers that are included for my "foo" network card old, what should I do?*
-
-A: The perfSONAR Toolkit includes drivers from the upstream CentOS distribution and a very limited number of specially built drivers for cards that are known to be widely used (e.g. myicom). If you notice that there is a newer driver available than what the perfSONAR Toolkit provides you can do the following:
-Download the source or RPM from the manufacturers web site, build on your perfSONAR Toolkit
-If you are running a netinstall version of the perfSONAR Toolkit, run modprobe after installation to load the new version
-If you are running a LiveCD, you will need to modify the local init.d script to force modprobe on each reboot to load the proper version
-
 *Q: What TCP congestion control algorithm is used by the perfSONAR Toolkit?*
 
-A: The perfSONAR toolkit uses the CentOS or Debian default TCP congestion control algorithm, which is htcp. 
+A: The perfSONAR toolkit sets the TCP congestion control algorithm to htcp. 
 
 *Q: How can I add custom rules to IPTables?*
 
@@ -349,7 +347,7 @@ A: See :ref:`manage_security-custom`
 
 *Q: Is it possible to change the default port for tool X?*
 
-A: The measurement servers use 2 kinds of ports:
+A: Some measurement tools use 2 kinds of ports:
 
 - Contact ports, e.g. a well known location to contact the daemon to initiate a test
 - Test ports, e.g. negotiated ports to flow test or control traffic when a test is requested
@@ -362,13 +360,13 @@ If you're going to run a measurement infrastructure inside your own organization
 
 *Q: Why doesn't the perfSONAR toolkit include the most recent version of vendor X’s driver?*
 
-A: We only support the default CentOS device drivers on the toolkit. Check your NIC verdors website to see if a newer version of the driver is available for download.
+A: We only support the default CentOS device drivers on the toolkit. Check your NIC vendor's website to see if a newer version of the driver is available for download.
 
 *Q: Can I configure yum to exclude kernel packages from it's update procedure?*
 
-A: A detailed explanation of yum configuration can be found in the RHEL documents: https://access.redhat.com/site/solutions/10185. There are two ways to exclude kernel packages from a yum update, the first solution can be invoked on the command line:
+A: A detailed explanation of yum configuration can be found in the RHEL documents: https://access.redhat.com/site/solutions/10185. There are two ways to exclude kernel packages from a yum update, the first solution can be invoked on the command line::
  
-yum update --exclude=kernel*
+  yum update --exclude=kernel*
  
 To make permanent changes, edit the /etc/yum.conf file and following entries to it::
  
@@ -384,33 +382,29 @@ NOTE: If there are multiple package to be excluded then separate them using a si
  
 *Q: How can I configure yum to automatically update the system?*
 
-A: Note that as of version 3.4, this is enabled by default. See this more for more detail: :ref:`manage_update-auto`
+A: Note that as of version v3.4, this is enabled by default. See :doc:`manage_update`.
 
-*Q: My host was impacted by Shellshock/Heartbleed/etc., what should I do?*
+*Q: My host was impacted by Linux security issue (Shellshock/Heartbleed/etc.). What should I do?*
 
-A: Please check the vulnerability archive for the specific attack you interested in, information on mitigation for perfSONAR nodes will be posted there, or in the mailing list archives.
+A: Please check the `vulnerability archive <https://access.redhat.com/security/vulnerabilities>`_ for updates, and upgrade your system as soon as the update is available.
 
 *Q: A CVE announcement was made for the current perfSONAR Toolkit Kernel, what do I do?*
 
-A: The perfSONAR development effort subscribes to all major outlets that will announce kernel CVEs. In the event that a CVE is announce that directly effects operation of the perfSONAR Toolkit, the following steps will take place:
+A: The perfSONAR development effort subscribes to all major outlets that will announce kernel CVEs. In the event that a CVE is announced that directly effects operation of the perfSONAR Toolkit, the following steps will take place:
 
-- Announcements regarding the CVE will be posted to the perfsonar-user and perfsonar-announce mailing lists, more information on the mailing lists can be found here: https://lists.internet2.edu/sympa/info/perfsonar-user and https://lists.internet2.edu/sympa/info/perfsonar-announce
+- Announcements regarding the CVE will be posted to the perfsonar-user and perfsonar-announce mailing lists 
 - A timeline will be relayed regarding availability of new kernels.
-- The CentOS project will make the patched kernel available first, and it will be available through the yum repositories on the toolkit before the perfSONAR project is able to apply the web100 patches.
-- It is strongly suggested that perfSONAR Toolkit users utilizing the NetInstall option upgrade immediately. 
-
-Run the following command: sudo yum update
+- It is strongly suggested that perfSONAR Toolkit hosts be upgraded immediately. (Run the command: sudo yum update)
 
 *Q: How to get rid of "There isn't a perfSONAR sudo user defined" message?*
 
-**TODO: Changes this to /etc/profile.d, check if its config(noreplace)**
-
 A: Either add a non-root user to the pssudo group or remove the line /etc/perfsonar/toolkit/scripts/add_pssudo_user —auto from /root/.bashrc. Note that future updates could revert the /root/.bashrc file.
 
+**TODO: Change this to /etc/profile.d**
 
 *Q: I am seeing a "Can't locate object method 'ssl_opts' via package 'LWP::UserAgent'" error when trying to use a Central Measurement Archive. What should I do?*
 
-A: This is due to a pretty old version of perl-libwww-perl is included with CentOS 6. If you remove “ca_certificate_path” from the configuration file things will work.
+A: This is due to a old version of the perl-libwww-perl package that is included with CentOS 6. If you remove “ca_certificate_path” from the configuration file things will work.
 
 
 *Q: Is it possible to use non-intel SFP+ optics in the Intel X520-SR2 NIC?*
@@ -424,7 +418,9 @@ sudo modprobe ixgbe allow_unsupported_sfp=0
 
 *Q: How can I tune a Dell server for a high throughput and low latency?*
 
-A: Dell offers a guide on tuning: http://i.dell.com/sites/content/shared-content/data-sheets/en/Documents/configuring-low-latency-environments-on-dell-poweredge-12g-servers.pdf.
+A: Dell offers this guide on tuning: 
+
+http://i.dell.com/sites/content/shared-content/data-sheets/en/Documents/configuring-low-latency-environments-on-dell-poweredge-12g-servers.pdf
 
 *Q: How do I backup a perfSONAR instance or migrate the configuration and data to a new machine?*
 
@@ -447,7 +443,7 @@ A: To back up perfSONAR configurations and logs::
  /var/lib/perfsonar/*
  /var/log/perfsonar/*
 
-To back up perfSONAR data, see guidance on this page: http://docs.perfsonar.net/multi_ma_backups.html.
+To back up perfSONAR data, see :doc:`multi_ma_backups`.
 
 *Q: What is PTP?*
 
@@ -471,13 +467,22 @@ perfSONAR Archive (esmond) Questions
 
 *Q: How much memory is needed for a host running an MA?*
 
-A: Cassandra will try to use 4G of memory by default (if its available on the system). It is possible to tweak the memory settings if you want it to use less. Read more here: http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_tune_jvm_c.html. Tuning this makes it possible to run an MA on a host with less memory.
+A: Cassandra will try to use 4G of memory by default (if its available on the system). It is possible to tweak the memory settings if you want it to use less. Read more here: 
+
+- http://docs.datastax.com/en/cassandra/2.0/cassandra/operations/ops_tune_jvm_c.html. 
+
+Tuning this makes it possible to run an MA on a host with less memory.
 
 *Q: I have a measurement archive machine with esmond running, and there is a separate disk partition mounted on the machine where I want to store all the incoming measurement data from measurement points. What is the proper way to change the default directory location for storing the measurement archive data?*
 
 A: Change the directory where cassandra and postgres store data. This is controlled through the respective tools configuration files and not esmond directly.
+
 For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandra: /sbin/service cassandra restart
-For postgres, in /var/lib/pgsql/data/postgresql.conf change the data_directory to the new location. Restart postgres: /etc/init.d postgresql restart. You will need to rebuild the esmond tables after this change is made. To do so, follow the instructions here: http://software.es.net/esmond/rpm_install.html#configuration
+
+For postgres, in /var/lib/pgsql/data/postgresql.conf change the data_directory to the new location. Restart postgres: /etc/init.d postgresql restart. 
+
+You will need to rebuild the esmond tables after this change is made. To do so, follow the instructions here: http://software.es.net/esmond/rpm_install.html#configuration
+
 An alternative way to do what you want is to stop both postgres and cassandra, move /var/lib/cassandra and /var/lib/pgsql to the new partition and then create symlinks to the new location in /var/lib/cassandra and /var/lib/pgsql. That saves the need to rebuild postgres and preserves any existing data.
 
 *Q: How can I nuke all of the data in esmond, and start from scratch?*
@@ -501,13 +506,12 @@ A: Note, many of these commands should be done as root, and will destroy existin
 
 
 
-*Q: I have a central MA for my perfSONAR data, what happens if the central MA goes down for a while, or the network is unavailable between the beacons and the MA? Are the measurements lost, or are they buffered to be delivered later? Does this have any effect on the timing of subsequent measurements?*
+*Q: I have a central MA for my perfSONAR data. What happens if the central MA goes down for a while, or the network is unavailable between the beacons and the MA? Are the measurements lost, or are they buffered to be delivered later? Does this have any effect on the timing of subsequent measurements?*
 
 A: The beacons observe a "push" architecture (i.e. the perfsonar node which made a measurement connects to the central MA to store the results) to the central MA.
-If the host MA goes down, the missed measurements are stored on local disk under /var/lib/regular_testing and the regular_testing daemon tries to register them when the MA comes back. If the MA is down too long though (where “too long” varies on the system and number of tests being run) the backlog of tests can get too big and regular-testing can’t catch-up. On a Toolkit installation, we actually clean out the backlog of tests for this reason as we have frequently seen hosts get in a state where the backlog of tests is too big.
-See also the documentation for this service: http://docs.perfsonar.net/multi_overview.html
+If the host MA goes down, the missed measurements are stored on local disk under /var/lib/regular_testing and the regular_testing daemon tries to register them when the MA comes back. If the MA is down too long though (where “too long” varies on the system and number of tests being run) the backlog of tests can get too big and regular-testing can’t catch-up. On a Toolkit installation, we actually clean out the backlog of tests for this reason as we have frequently seen hosts get in a state where the backlog of tests is too big. For more info see :doc:`multi_overview`.
 
-*Q: What if there are multiple MAs used for a central MA architecutre, but only one is down or unreachable, what will happen?*
+*Q: What if there are multiple MAs used for a central MA architecture, but only one is down or unreachable, what will happen?*
 
 A: Each MA will be treated the same as if they were the only MA in the file. In other words, the one that is up will get the data and a backlog will be kept on disk for the one that is down. When the downed MA comes back up the daemon will try to register the old data points.
 
@@ -566,7 +570,9 @@ A: Please contact us at perfsonar-lead@internet2.edu.
 
 *Q: Where can I ask questions or report bugs?*
 
-A: For questions, send email to perfsonar-user at internet2 dot edu. You may also join the mailing list by visiting https://lists.internet2.edu/sympa/info/perfsonar-user. For bugs, report at https://github.com/perfsonar/project/issues.
+A: For questions, send email to perfsonar-user at internet2 dot edu. You may also join the mailing list by visiting https://lists.internet2.edu/sympa/info/perfsonar-user. 
+
+Report bugs at https://github.com/perfsonar/project/issues.
 
 
 *Q: Which licenses do perfSONAR products use?*

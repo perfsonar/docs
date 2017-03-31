@@ -89,7 +89,7 @@ Likewise for **Debian 8 (Jessie)**::
 
 Once installed you may proceed to follow the steps in :doc:`install_debian` to complete the installation.
 
-.. note:: If you have auto-updates enabled, once you point your host at this 4.0 repository, you will automatically get any new test packages that are added within 24 hours
+.. note:: If you have auto-updates enabled, once you point your host at this repository, you will automatically get any new test packages that are added within 24 hours
 
 
 .. _install_rcs-upgrades-debian:
