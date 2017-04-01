@@ -4,7 +4,9 @@ Configuring Regular Tests
 
 A core function of the perfSONAR Toolkit is to run regularly scheduled network measurements. You can define the tests you want run through the toolkit's web interface. This section describes using the interface to manage the set of tests run by tour toolkit node.
 
-.. seealso::  See :doc:`Mesh Configuration Quick Start <multi_overview>` for information on an alternative way to configure tests when your host is participating in a large community or you manage multiple hosts. 
+.. seealso::  :doc:`Mesh Configuration Quick Start <multi_overview>` for information on an alternative way to configure tests when your host is participating in a large community or you manage multiple hosts. 
+
+.. seealso::  :doc:`manage_locating_hosts` for information on finding remote hosts to run tests to.
 
 .. _manage_reg_tests_access:
 
