@@ -10,7 +10,7 @@ System Requirements
 ==================== 
 * **Operating System:**
 
-  * Any system running **CentOS 7**. perfSONAR 4.X toolkit ISOs are only available as CentOS 7. CentOS 7 drops support for i386/i686 architectures and as a result there are only x86_64 versions of the CentOS 7 perfSONAR 4.0 packages available.
+  * Any system running **CentOS 7**. perfSONAR 4.X toolkit ISOs are only available as CentOS 7. CentOS 7 drops support for i386/i686 architectures, so there are only x86_64 versions of the CentOS 7 perfSONAR packages available.
   * We still offer packages support for any system running either a 32-bit or 64-bit **CentOS 6**.  Existing CentOS 6 users will be able to auto-update.
   * Other RedHat-based operating systems may work, but are not officially supported at this time.
 

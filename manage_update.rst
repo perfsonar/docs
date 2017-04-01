@@ -88,4 +88,4 @@ The commands in the previous sections control updates for the entire system. If 
 
 Special Upgrade Notes
 =====================
-* 4.0 can run on both CentOS 6 and CentOS 7. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`.
+* perfSONAR 4.0 can run on both CentOS 6 and CentOS 7. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`.
