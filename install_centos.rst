@@ -195,7 +195,7 @@ To run the script manually, run::
 
 Step 7: Register your services 
 ------------------------------- 
-*Can be ignored and done through the web interface for he perfsonar-toolkit package*
+*Can be ignored and done through the web interface for the perfsonar-toolkit package*
 
 In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
 
