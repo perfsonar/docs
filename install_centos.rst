@@ -2,7 +2,7 @@
 Installation on CentOS 
 ******************************
 
-perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit distribution (as detailed at :doc:`install_getting`) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you'd like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
+perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit ISO (as detailed at :doc:`install_getting`) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you'd like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
 .. _install_centos_sysreq:
 
@@ -25,7 +25,7 @@ Installation
 
 Step 1: Configure Yum 
 ---------------------- 
-The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. You will need to follow the steps below as privileged user:
+The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. **You will need to follow the steps below as privileged user**:
 
 #. Install the EPEL RPM:
     *CentOS 6*::
@@ -53,8 +53,9 @@ The process configures yum to point at the necessary repositories to get package
 
 .. _install_centos_step2:
 
-Step 2: Install RPM 
+Step 2: Install a Bundle 
 -------------------------------- 
+Choose one of the following bundles and see :doc:`install_options` page for more information about what these bundles are.
 
 * **perfSONAR Test Point**::
 
@@ -103,7 +104,8 @@ In particular, you should install perfsonar-toolkit-ntp if you are not managing 
 
     yum install perfsonar-centralmanagement
 
-
+  The Central Management bundle might be installed alongside another bundle.
+  
 * **perfSONAR Toolkit**::
 
     yum install perfsonar-toolkit
@@ -113,13 +115,13 @@ In particular, you should install perfsonar-toolkit-ntp if you are not managing 
 
 Step 3: Verify NTP and Tuning Parameters 
 ----------------------------------------- 
-*Can be ignored for perfsonar-toolkit package*
+*Both changes can be ignored for perfsonar-toolkit package*
 
 * **NTP Tuning**
 
   - **Auto-select NTP servers based on proximity**
     
-    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If the optional package was installed, then run::
+    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If an optional package was installed, then run::
 
         /usr/lib/perfsonar/scripts/configure_ntpd new
         
@@ -172,12 +174,10 @@ bwctl to use it are described on the page :doc:`manage_limits`.
 
 Step 5: Install Auto updates
 ----------------------------
-You can also enable yum ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this, do the following:
-::
 
-    /sbin/chkconfig --add yum-cron
-    /sbin/chkconfig yum-cron on
-    /sbin/service yum-cron start
+.. note:: Automatic updates are enabled by default in the perfSONAR Toolkit.
+
+You can also enable yum ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this follow the steps in :ref:`manage_update-auto-cli`.
 
 .. _install_centos_step5:
 
@@ -185,7 +185,7 @@ Step 6: Service Watcher
 ------------------------
 The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
 
-The install automatically, configures cron to run the service_watcher regularly.
+The install automatically configures cron to run the service_watcher regularly.
 
 To run the script manually, run::
 
@@ -195,7 +195,7 @@ To run the script manually, run::
 
 Step 7: Register your services 
 ------------------------------- 
-*Can be ignored and done through the web interface for the perfsonar-toolkit package*
+*This step can be done through the web interface if the perfsonar-toolkit bundle (or the ISO) was installed (see :doc:`manage_admin_info`)*
 
 In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
 
@@ -215,7 +215,23 @@ In the example above remove the leading ``#`` before external_address and extern
 
 Step 8: Starting your services 
 ------------------------------- 
-You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with appropriate init commands as a root user. For example:
+You can start all the services by rebooting the host since all are configured to run by default. In order to check services status issue the following commands:
+    
+    For CentOS6::
+
+        service bwctl-server status
+        service pscheduler-scheduler status
+        service owamp-server status
+        service perfsonar-lsregistrationdaemon status
+
+    For CentOS7::
+
+        systemctl status bwctl-server  
+        systemctl status pscheduler-scheduler.service 
+        systemctl status owamp-server.service 
+        systemctl status perfsonar-lsregistrationdaemon.service
+
+If they are not running you may start them with appropriate init commands as a root user. For example:
 
     For CentOS6::
 
@@ -233,11 +249,11 @@ Note that you may have to wait a few hours for NTP to synchronize your clock bef
 
 Configuring Central Management
 -------------------------------
-Refer to the documentation here: :doc:`/multi_overview`
+If your node is part of a measurement mesh or you installed perfsonar-centralmanagement bundle refer to the documentation here: :doc:`/multi_overview`
 
-Configuring through the web interface
+Configuring perfSONAR through the web interface
 --------------------------------------
-After installing the perfsonar-toolkit or perfsonar-centralmanagement bundle, you should disable SELinux to gain access to the web interface.  This is done with the following commands:
+After installing the perfsonar-toolkit or perfsonar-centralmanagement bundle, you should disable SELinux to gain access to the web interface. This is done with the following commands:
 ::
 
     echo 0 >/selinux/enforce
