@@ -6,6 +6,8 @@ After installing the perfSONAR Toolkit, there are a few additional steps to be t
 
 Your First Login
 ================
+*These steps apply for perfSONAR Toolkit ISO installation*
+
 The first time you login to your Toolkit you will be prompted to create a user that can perform administrative actions via the web interface. 
 
 Follow the prompts to complete the process as shown below:
@@ -34,7 +36,7 @@ Follow the prompts to complete the process as shown below:
 
     .. image:: images/install_config_first_time-first-login-finished.png
 
-.. seealso:: For more information on adding and managing users see :doc:`manage_users`
+.. seealso:: If you had your host set up already, you need to create a web interface admin user and consider disabling ssh access. For more information on adding and managing users see :doc:`manage_users`
 
 Accessing the Web Interface
 ===========================
@@ -50,7 +52,7 @@ Updating Your Administrative Information
 ========================================
 Administrative information needs to be populated first. You will be prompted for basic location and contact information. This information is needed so other perfSONAR users can more accurately find your node. To populate the information do the following:
 
-#. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host
+#. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host. 
 #. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created in the previous step
     
     .. image:: images/install_config_first_time-web-admin-info1.png
@@ -59,7 +61,9 @@ Administrative information needs to be populated first. You will be prompted for
     .. image:: images/install_config_first_time-web-admin-info2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
 
-After completing this step, you should be able to access the **Global Services** directory page and see your host listed within 24 hours of making the change.
+After completing this step, you should be able to access the `Global Services`_ directory page and see your host listed within 24 hours of making the change.
+
+.. _GlobalServices: http://stats.es.net/ServicesDirectory/
 
 Managing Toolkit Security
 =========================
