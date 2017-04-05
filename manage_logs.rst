@@ -2,33 +2,32 @@
 Reading Log Files
 *****************
 
-The tools and services running on your host keep log files of major activity. The perfSONAR Toolkit provides utilities for exposing these logs via the web interface as well as tools to analyze their results. This page describes the log files available and the additional tools provided for analyzing them.
+The tools and services running on your host keep log files of major activity. This page describes the log files available and the additional tools provided for accessing them.
 
 Important Log Files
 ===================
-Most perfSONAR related services keep log files under the directory **/var/log/perfsonar**. Some external tools store them in other areas under */var/log/* or elsewhere. pScheduler writes to **/var/log/messages**. There are many log files on the system but some of the most important ones (organized by the service that populates them) can be found below:
+Most perfSONAR related services keep log files under the directory **/var/log/perfsonar**. Some external tools store them in other areas under */var/log/* or elsewhere. There are many log files on the system but some of the most important ones (organized by the service that populates them) can be found below:
 
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | Service                                      | Log File(s)                                   | When to Use                                |
 +==============================================+===============================================+============================================+
-| BWCTL and OWAMP                              | /var/log/perfsonar/owamp_bwctl.log            | |log_descr_bwctl|                          |
-+----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| pScheduler 				       | /var/log/perfsonar/pscheduler.log             | |log_descr_pscheduler|                     |
+| pScheduler                                   | /var/log/pscheduler/pscheduler.log            | |log_descr_pscheduler|                     |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | Esmond Measurement Archive                   | /var/log/esmond/esmond.log                    | |log_descr_esmond|                         |
 |                                              | /var/log/httpd/error_log                      |                                            |
+|                                              | /var/log/httpd24/error_log (CentOS 6 only)    |                                            |
 |                                              | /var/log/cassandra/cassandra.log              |                                            |
 |                                              | /var/lib/pgsql/pgstartup.log                  |                                            |
++----------------------------------------------+-----------------------------------------------+--------------------------------------------+
+| perfSONAR Mesh Configuration Agent           | /var/log/perfsonar/meshconfig-agent.log       | |log_descr_meshag|                         |
++----------------------------------------------+-----------------------------------------------+--------------------------------------------+
+| BWCTL and OWAMP                              | /var/log/perfsonar/owamp_bwctl.log            | |log_descr_bwctl|                          |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | perfSONAR Configuration Daemon               | /var/log/perfsonar/configdaemon.log           | |log_descr_config|                         |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | perfSONAR Lookup Service Cache Daemon        | /var/log/perfsonar/lscachedaemon.log          | |log_descr_lscache|                        |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | perfSONAR Lookup Service Registration Daemon | /var/log/perfsonar/lsregistrationdaemon.log   | |log_descr_lsreg|                          |
-+----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| perfSONAR Mesh Configuration Daemon          | /var/log/perfsonar/meshconfig-agent.log       | |log_descr_meshag|                         |
-+----------------------------------------------+-----------------------------------------------+--------------------------------------------+
-| perfSONAR Regular Testing Scheduler          | /var/log/perfsonar/regulartesting.log         | |log_descr_tests|                          |
 +----------------------------------------------+-----------------------------------------------+--------------------------------------------+
 | perfSONAR Service Watcher                    | /var/log/perfsonar/servicewatcher.log         | |log_descr_watcher|                        |
 |                                              | /var/log/perfsonar/servicewatcher_error.log   |                                            |
@@ -41,7 +40,7 @@ Most perfSONAR related services keep log files under the directory **/var/log/pe
 
 Accessing Log Files Through the Web Interface
 =============================================
-Users with administrative rights may look at all the log files under **/var/log/perfsonar/** through the web interface. This obviously does not include all logs on the system, but does allow easy access for some of the major perfSONAR logs. To access this interface perform the following steps:
+Users with administrative rights may look at log files under **/var/log/perfsonar/** through the web interface. This obviously does not include all logs on the system, but does allow easy access for some of the major perfSONAR logs. To access this interface perform the following steps:
     #. From your toolkit main web interface, look at the right side of **Services** section, under **SERVICE LOGS**. This place provides links to web interface access to selected toolkit logs.
 
         .. image:: images/manage_logs-main.png
@@ -53,25 +52,11 @@ Users with administrative rights may look at all the log files under **/var/log/
 
 Determining Who Is Testing to Your Host
 =======================================
-You may install a cron job that analyzes the logs of BWCTL, OWAMP, and NDT hourly and generates a report of who tested to your host when. You can install access these reports as follows:
-    #. Copy the cron script to */etc/cron.hourly*::
-    
-        cp /usr/lib/perfsonar/scripts/logscraper.cron /etc/cron.hourly/logscraper.cron
-    #. Wait at least an hour for the script to run.
-    #. Visit the old tookit web interface at *http://hostaddress/toolkit-old*
-    #. Click *BWCTL Log Analysis*, *OWAMP Log Analysis*, or *NDT Log Analysis* (depending on the log you want analyzed) on the left menu
-    
-        .. image:: images/manage_logs-analyze1.png
-    #. Login using the web administrator username and password.
-        .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
-    #. On the page that loads, you should see a listing of IP addresses and the times that they ran tests to your host
-    
-        .. image:: images/manage_logs-analyze2.png
+This could likely be derived from the a combination pScheduler and OWAMP logs, but the best place to collect is information is likely not from the logs at all. See :doc:`pscheduler_client_schedule` for information on viewing tests initiated both by your host and others. 
 
-.. warning:: The cron script may consume significant system resources. If you install the file as detailed above, please use caution and note that it may affect your regular tests.
 
-.. |log_descr_bwctl|  replace:: Every BWCTL and OWAMP test (both on the client and server side) is logged in this file. It should be used when a BWCTL or OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an *owamp-server* or *bwctl-server* process crashes unexpectedly.
-.. |log_descr_pscheduler|  replace:: Every pscheduler initiated test (both on the client and server side) is logged in this file. It should be used when a test is not completing. It contains information about denied or failed tests. It may also contain information when an *owamp-server* or *bwctl-server* process crashes unexpectedly.
+.. |log_descr_bwctl|  replace:: Every BWCTL and OWAMP test (both on the client and server side) is logged in this file. It should be used when a BWCTL or OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an *owamp-server* or *bwctl-server* process crashes unexpectedly. Please note that BWCTL is deprecated as of version 4.0, so you may be better served looking at the pScheduler logs.
+.. |log_descr_pscheduler|  replace:: Contains logs related to the scheduling, running, and storage of measurements. This is often a good starting point if you are trying to debug a missing or failed measurement.
 .. |log_descr_esmond|  replace:: If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. *esmond.log* has information from the archive itself (e.g. improperly formatted requests). The HTTPD error log has information such as if esmond was able to connect to it's underlying databases. Speaking of databases, esmond connects to both Cassandra and PostgreSQL so it may be worth checking those logs as well.
 .. |log_descr_config|  replace:: If you are unable to save changes to the configuration made through the web interface, this is a good place to look.
 .. |log_descr_lscache|  replace:: If you get a message saying that your communities or lookup service cache are out of date, this log file may contain more information.
@@ -79,4 +64,4 @@ You may install a cron job that analyzes the logs of BWCTL, OWAMP, and NDT hourl
 .. |log_descr_tests|  replace:: If you are not seeing test results in the graphs or you are concerned some tests are not running, this log may have more information.
 .. |log_descr_watcher|  replace:: This log contains information about nightly restarts.
 .. |log_descr_web|  replace:: Use these logs when you encounter problems with the web interface.
-.. |log_descr_meshag|  replace:: If you encounter problems with the MeshConfig agent used to build configuration from remote meshes.
+.. |log_descr_meshag|  replace:: In addition to the pScheduler logs, this is a good place to debug information regarding missing measurements. The MeshConfig agent handles the submission of tasks to pScheduler, so failure to do so is a common cause of missing tests.
