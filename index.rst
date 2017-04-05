@@ -246,6 +246,15 @@ Further Information
   * `User Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-user>`_ - Forum where users may ask and answer questions about their perfSONAR deployments
   * `Announcement Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_ - List where important announcements such as new releases and security updates are posted.
 
+.. _index-deployment:
+
+Deployment Examples
+-------------------
+.. toctree::
+   :maxdepth: 1
+   
+   deployment_examples
+
 .. _index-related:
 
 Related Projects
