@@ -37,7 +37,7 @@ ESnet throughput testers at the ESnet PoPs and sites provide the ability to meas
 
 The list of current ESnet throughput test hosts can be found in one of two ways:
 
-* We maintain a static list of `ESnet test hosts <http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-bwctl-hosts/>`_
+* We maintain a static list of `ESnet test hosts <http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-iperf-hosts/>`_
 * The list of pScheduler servers in the `perfSONAR Lookup Service <http://stats.es.net/ServicesDirectory/>`_ is updated dynamically
 
 ESnet's pScheduler limits configuration
