@@ -5,18 +5,13 @@ perfSONAR Deployment Examples
 ESnet perfSONAR Deployment
 ==========================
 
-ESnet maintains throughput and latency test hosts at ESnet points of presence (PoPs) as well as test hosts connected to the ESnet routers at many Department of Energy facilities. The primary perfSONAR services ESnet provides are throughput testing (via BWCTL) and delay/loss testing (via OWAMP). Additional information can be found at this link:
-
-Link - http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/
+ESnet maintains throughput and latency test hosts at ESnet points of presence (PoPs) as well as test hosts connected to the ESnet routers at many Department of Energy facilities. The primary perfSONAR services ESnet provides are throughput testing (via iperf3) and delay/loss testing (via OWAMP). Additional information can be found here: http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/
 
 Machine Connectivity and Configuration
 --------------------------------------
 
-The ESnet test servers are connected to the ESnet network via a top-of-rack switch (1Gbps copper ports), and the throughput testers are additionally connected via 10Gbps fiber connections to the hub/site router at each PoP.  The following image illustrates how this connectivity looks logically:
-
-    .. image:: images/esnet-perfsonar-host-config-example.png
-
-ESnet utilizes a "combined" host that runs loss, latency, and traceroute tests on a 1G NIC, and throughput tests on the 10G or 40G NIC. With a 40G NIC, these hosts can drive TCP at 39Gbps. These hosts have the following configuration:
+ESnet utilizes a "combined" host that runs loss, latency, and traceroute tests on a 1G NIC, and throughput tests on the 10G NIC.
+These hosts have the following configuration:
 
 * Super X10SL7-F Motherboard
 * 1 Intel Xeon E3-1275 v3 3.5GHz (Turbo 3.9GHz) Quad Cores
@@ -32,32 +27,32 @@ ESnet OWAMP testers at the ESnet PoPs and sites provide the ability to measure o
 The list of current ESnet OWAMP test hosts can be found in one of two ways:
 
 * We maintain a static list of `ESnet OWAMP hosts <http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-owamp-hosts/>`_
-*The list of OWAMP servers in the `perfSONAR Lookup Service <http://stats.es.net/ServicesDirectory/>`_ is updated dynamically
+* The list of OWAMP servers in the `perfSONAR Lookup Service <http://stats.es.net/ServicesDirectory/>`_ is updated dynamically
 
-Throughput testing with BWCTL
------------------------------
+Throughput testing with iperf3
+--------------------------------
+
 
 ESnet throughput testers at the ESnet PoPs and sites provide the ability to measure throughput between locations on the ESnet network, and between other throughput test hosts and ESnet test hosts. ESnet maintains a set of logically-grouped throughput test results on the `ESnet perfSONAR dashboard <http://ps-dashboard.es.net/>`_.
 
 The list of current ESnet throughput test hosts can be found in one of two ways:
 
-* We maintain a static list of `ESnet BWCTL hosts <http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-bwctl-hosts/>`_
-* The list of BWCTL servers in the `perfSONAR Lookup Service <http://stats.es.net/ServicesDirectory/>`_ is updated dynamically
+* We maintain a static list of `ESnet test hosts <http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-bwctl-hosts/>`_
+* The list of pScheduler servers in the `perfSONAR Lookup Service <http://stats.es.net/ServicesDirectory/>`_ is updated dynamically
 
-ESnet bwctld.limits file
-------------------------
+ESnet's pScheduler limits configuration
+----------------------------------------
 
-ESnet permits tests to ESnet throughput testers from any ESnet site, and from any scientific or research institution that is connected to the global research and education network infrastructure. This includes US laboratories and universities, as well as research laboratories and universities in Africa, Asia, Australia, Europe, and Latin America. This is accomplished by including the global R&E routing table (the set of IP prefixes accessible via peerings with R&E networks) in the `bwctl.limits <http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-bwctld-limits-file/>`_ file used to control test access to the ESnet throughput test hosts.  Other logical groups of addresses are added to the file from time to time as the needs of the scientific community evolve.  The bwctld.limits file `documentation page <http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-bwctld-limits-file/>`_ has more detail.
+ESnet permits tests to ESnet throughput testers from any ESnet site, and from any scientific or research institution that is connected to the global research and education network infrastructure. This includes US laboratories and universities, as well as research laboratories and universities in Africa, Asia, Australia, Europe, and Latin America. 
+This is accomplished by including the global R&E routing table (the set of IP prefixes accessible via peerings with R&E networks) 
+via the :doc:`manage_limits` mechanism.
+Other logical groups of addresses such as Amazon Cloud services are added to the file from time to time as the needs of the scientific community evolve. 
+`This page <http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-limits-file/>`_ has more details.
 
 Managing local packet filters
 -----------------------------
 
-If your site maintains ACLs, the ESnet subnet listing can be found here:  http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-subnet-filters/
-
-perfSONAR Web Services
-----------------------
-
-There is a list of measurement archives at the following URL: http://stats.es.net/ServicesDirectory/
+If your site uses router ACLs, the ESnet subnet listing can be found here:  http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-subnet-filters/
 
 
 Internet2 AL2S and AL3S Monitoring
