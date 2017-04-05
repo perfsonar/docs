@@ -243,7 +243,7 @@ Defining Throughput Test Parameters
 
 tool Directive
 --------------
-:Description: The tool to use in performing the throughput test
+:Description: The tool to use in performing the throughput test.  For a description of the pros and cons of each tool, see `fasterdata.es.net <https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/>`_.
 :Syntax: ``tool iperf|iperf3|nuttcp``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Exactly one

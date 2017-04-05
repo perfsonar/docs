@@ -61,7 +61,7 @@ Administrative information needs to be populated first. You will be prompted for
     .. image:: images/install_config_first_time-web-admin-info2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
 
-After completing this step, you should be able to access the `Global Services`_ directory page and see your host listed within 24 hours of making the change.
+After completing this step, you should be able to access the `GlobalServices`_ directory page and see your host listed within 24 hours of making the change.
 
 .. _GlobalServices: http://stats.es.net/ServicesDirectory/
 

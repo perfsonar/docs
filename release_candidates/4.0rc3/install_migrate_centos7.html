@@ -74,51 +74,54 @@
             
   <div class="section" id="migrating-from-centos-6-to-centos-7">
 <h1>Migrating from CentOS 6 to CentOS 7<a class="headerlink" href="#migrating-from-centos-6-to-centos-7" title="Permalink to this headline">¶</a></h1>
-<p>This page describes the migration procedure for moving a Toolkit installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same version of perfSONAR Toolkit installed. If you do not wish to keep any existing data from the CentOS 6 host you may ignore this section and do a normal clean installation.</p>
+<p>This page describes the migration procedure for moving a perfSONAR installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same <a class="reference internal" href="install_options.html"><em>bundle</em></a> and version of perfSONAR installed. If you do not wish to keep any existing data or configuration from the CentOS 6 host you may ignore this section and do a normal clean installation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These steps can also be used to migrate an existing host to new hardware even if both systems are running the same OS version. There is nothing specific to CentOS 6 or CentOS 7 in this procedure. It is only labelled as such for convenience since for the time-being this is likely the most common type of migration to be performed by perfSONAR users.</p>
+</div>
 <div class="section" id="migration-process">
 <h2>Migration Process<a class="headerlink" href="#migration-process" title="Permalink to this headline">¶</a></h2>
-<p>For existing users wishing to migrate their configuration and data to the CentOS 7 installation see the steps below:</p>
 <ol class="arabic">
-<li><p class="first">Login in to your CentOS 6 host via SSH or the terminal</p>
+<li><p class="first">Login in to your CentOS 6 host via SSH or the terminal. You must do so as a user that has superuser privileges or is allowed to run the <cite>sudo</cite> command. <strong>All commands in this section require superuser privileges.</strong></p>
 </li>
-<li><p class="first">Upgrade your CentOS 6 host to the same version of perfSONAR as the CentOS 7 host if you have not already done so.</p>
+<li><p class="first">Upgrade your CentOS 6 host to the same version of perfSONAR as the CentOS 7 host if you have not already done so. See <a class="reference internal" href="manage_update.html"><em>Updating perfSONAR</em></a> for more details on the update process</p>
 </li>
-<li><p class="first">Run one of the commands below to create a backup of all relevant configuration files in <cite>~/ps-toolkit-backup.tgz</cite> and/or optionally your data:</p>
+<li><p class="first">Run <strong>one</strong> of the commands below to create a backup of all relevant files in <cite>~/ps-backup.tgz</cite>. The option you choose depends on whether you also want to preserve your measurement archive data:</p>
 <blockquote>
 <div><ul>
-<li><p class="first">Ignore measurement archive data (quicker since measurement archive data may be large):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-backup.sh ~/ps-toolkit-backup.tgz
+<li><p class="first"><em>Option 1:</em> Ignore measurement archive data (quicker since measurement archive data may be large):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/ps-migrate-backup.sh ~/ps-backup.tgz
 </pre></div>
 </div>
 </li>
-<li><p class="first">Alternatively, if you also wish to migrate the measurement archive databases add the <cite>&#8211;data</cite> paremeter:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-backup.sh --data ~/ps-toolkit-backup.tgz
+<li><p class="first"><em>Option 2:</em> Alternatively, if you also wish to migrate the measurement archive databases add the <cite>&#8211;data</cite> paremeter. Please note, <strong>this may take several minutes to several hours depending on the amount of data in your measurement archive</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/ps-migrate-backup.sh --data ~/ps-backup.tgz
 </pre></div>
 </div>
 </li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first">Copy the backup file <cite>~/ps-toolkit-backup.tgz</cite> from your CentOS 6 host to a safe location. We will need to copy this to our new installation later. If you will be overwriting the CentOS 6 host with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.</p>
+<li><p class="first">Copy the backup file <cite>~/ps-backup.tgz</cite> from your CentOS 6 host to a safe location. This will need to be copied to the new installation later. If you will be overwriting the CentOS 6 host with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.</p>
 </li>
 <li><p class="first">Logout of the CentOS 6 host</p>
 </li>
-<li><p class="first">Perform a clean installation of the Toolkit on a CentOS 7 host using the same Toolkit version that was installed on a CentOS 6 host. You may choose to install on the existing CentOS 6 hardware or a completely new host. If it is the former, make sure you have downloaded your CentOS 6 backup file to a safe location.</p>
+<li><p class="first">Perform a clean installation of the perfSONAR on a CentOS 7 host using the same perfSONAR bundle and version that was installed on the CentOS 6 host. You may choose to install on the existing CentOS 6 hardware or a completely new host. If it is the former, make sure you have downloaded your CentOS 6 backup file to a safe location.</p>
 </li>
-<li><p class="first">Copy the file <cite>~/ps-toolkit-backup.tgz</cite> from the location chosen in step 3 to your new system. The exact command to do this will depend on where you placed the file (e.g. use scp).</p>
+<li><p class="first">Copy the file <cite>~/ps-backup.tgz</cite> from the location chosen in step 3 to your new system. The exact command to do this will depend on where you placed the file (e.g. use scp).</p>
 </li>
 <li><p class="first">Login to your new CentOS 7 Toolkit installation via SSH or the terminal</p>
 </li>
-<li><p class="first">Run one of the commands below to restore your configuration:</p>
+<li><p class="first">Run <strong>one</strong> of the commands below to restore your configuration. The option you choose will be dependent on whether you wish to restore your measurement archive data:</p>
 <blockquote>
 <div><ul>
-<li><p class="first">Ignore measurement archive data (quicker since measurement archive data may be large):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-restore.sh ~/ps-toolkit-backup.tgz
+<li><p class="first"><em>Option 1:</em> Ignore measurement archive data (quicker since measurement archive data may be large):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/ps-migrate-restore.sh ~/ps-backup.tgz
 </pre></div>
 </div>
 </li>
-<li><p class="first">Alternatively, to also restore the measurements databases add the <cite>&#8211;data</cite> paremeter:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/ps-toolkit-migrate-restore.sh --data ~/ps-toolkit-backup.tgz
+<li><p class="first"><em>Option 2:</em> Alternatively, to also restore the measurements databases add the <cite>&#8211;data</cite> paremeter. Please note, <strong>this may take several minutes to several hours depending on the amount of data in your measurement archive</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>/usr/lib/perfsonar/scripts/ps-migrate-restore.sh --data ~/ps-backup.tgz
 </pre></div>
 </div>
 </li>
@@ -133,6 +136,27 @@
 </ol>
 <p>Your host should now be migrated.</p>
 </div>
+<div class="section" id="changing-ip-address-hostname">
+<h2>Changing IP Address/Hostname<a class="headerlink" href="#changing-ip-address-hostname" title="Permalink to this headline">¶</a></h2>
+<p>When migrating an installation, there is no requirement to change IP or hostname, in fact its likely simpler if you do not. You may stop reading if you wish to keep the address the same.</p>
+<p>If for your own purposes you need/desire to use a new address on a host you should be to do so with little to no additional configuration changes. It&#8217;s largely dependent on your perfSONAR setup. Below are some notes to help you determine if any further configuration changes are needed:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">If you are running the toolkit, everywhere your address is displayed is dynamically generated. There are no configuration files that need to be changed to display the new address. If you are still seeing the old address, check your network configuration or verify that DNS has been properly updated.</p>
+</li>
+<li><p class="first">The most likely configuration file where you will see your local address is in <em>/etc/perfsonar/meshconfig-agent-tasks.conf</em>. In particular the following two cases:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>If it is running tests defined by a remote mesh configuration. In this case the perfsonar-meshconfig-agent will overwrite the definitions when it runs (defaults to every hour or on service restart) so you are not strictly required to manually update it.</li>
+<li>It may also contain the address or interface name if you explicitly selected it through the Tookit GUI or manually defined tests. If this is the case, the manual definitions will need to be updated manually by replacing the old address with the new.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">By default, perfSONAR does not insert the local address in any files, but there are a number of advanced options that may contain it if manually set. If you are unsure, it may be a good idea to run <cite>grep -r OLDADDRESS /etc/perfsonar</cite> where <cite>OLDADDRESS</cite> is the previous IP address, hostname or interface you are looking to replace. Generally you should be safe to manually update any references you find.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 
 
@@ -146,6 +170,7 @@
                 <ul>
 <li><a class="reference internal" href="#">Migrating from CentOS 6 to CentOS 7</a><ul>
 <li><a class="reference internal" href="#migration-process">Migration Process</a></li>
+<li><a class="reference internal" href="#changing-ip-address-hostname">Changing IP Address/Hostname</a></li>
 </ul>
 </li>
 </ul>
