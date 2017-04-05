@@ -11,6 +11,5 @@ By default, the perfSONAR toolkit allows access from anywhere, and limits TCP te
 
 ESnet generates a nightly update of bwctl-server.limits that allows testing from all Research and Education networks around the world, and nothing else.
 
-Information on how to use this file is available at:
-  * http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-bwctld-limits-file/
+Information on how to use this file is available at :docs:`manage_limits`.
 
