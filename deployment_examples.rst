@@ -155,6 +155,36 @@ Cons
 * if the HDMI cable is disconnected, the screen remains blank when you plug it back in (rebooting solves this problem - but it could be a physical security hazard)
 * they have been around for a couple of years, and could be withdrawn at any time
 
+GÉANT Low Cost Nodes
+====================
+
+GÉANT enabled users to have first-hand experience on running a perfSONAR node on a small PC and introduced perfSONAR on low cost hardware to build such perfSONAR network measurement platform in Europe. It was completed by distributing pre-configured perfSONAR nodes, running on small devices and making them a part of a GÉANT maintained measurement mesh. The platform was BRIX BACE-3150 devices with 1Gb Eth interface, 120 GB SSD drives and 8 GB RAM costing about 200 Euros each. These boxes have Intel Celeron 1.6GHz with 4 cores.
+
+Configuration
+-------------
+* A master node was created with predefined configuration of CentOS 6 with perfSONAR 3.5.1 Toolkit (netinstall)
+    * Administrative accounts created
+    * root login disabled
+    * Initial networking with DHCP
+    * SNMP deamon running with configured community
+    * auto-updates enabled
+    * perfSONAR communities preconfigured
+* A master node was cloned with Clonezilla to all other mini-PCs which were distributed among users
+* This setup was centrally managed with a central server provided by the project
+* Measurements were scheduled from the small nodes to a set of 4 GÉANT MPs (for latency and throughput, for IPv4 and IPv6)
+* Users were able to configure their own tests
+* The central server was running a MaDDash instance
+* MRTG monitoring of the central server was configured to follow on resources usage
+
+
+Observations
+------------
+* Used standard Intel hardware and perfSONAR install
+* Very compact platform able to run without display and keyboard attached
+* The process of preparing pre-configured image which is then cloned to small nodes found very effective and largely contributed to the fast preparation of the whole infrastructure and the easy deployment of ready-to-work nodes
+* Tests shown it successfully supported active tests with maximum throughput equal to theoretical maximum of 1Gb Ethernet interface
+* When placed in a controlled environment (e.g. telecommunication room) small nodes were also performing well in keeping NTP stable
+
 
 100G Configuration
 ==================
