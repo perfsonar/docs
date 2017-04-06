@@ -55,12 +55,12 @@ Then refresh the packages list:
 Step 2: Install the packages
 ----------------------------
 
-You're now ready to choose which bundle, as describe in :doc:`install_options`, you want to install on your Debian/Ubuntu host.
+You're now ready to choose which bundle, as describe in :doc:`install_options`, you want to install on your Debian/Ubuntu host:
 
-* **perfsonar-tools**
-* **perfsonar-testpoint** (which contains perfsonar-tools and the meshconfig-agent to participate in a test mesh, see :doc:`multi_mesh_agent_config` for more details)
-* **perfsonar-core** (which contains perfsonar-testpoint)
 * **perfsonar-toolkit** (the full perfSONAR toolkit, containing perfsonar-core)
+* **perfsonar-core** (which contains perfsonar-testpoint)
+* **perfsonar-tools** (contains all the tools you need to make measurements from the CLI)
+* **perfsonar-testpoint** (which contains perfsonar-tools and the meshconfig-agent to participate in a test mesh, see :doc:`multi_mesh_agent_config` for more details)
 * **perfsonar-centralmanagement** (to host a central MA and a dashboard)
 
 Choose the bundle you want to install and call ``apt-get install`` with it:

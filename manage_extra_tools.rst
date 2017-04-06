@@ -44,9 +44,15 @@ The Monitoring and Debugging Dashboard (MaDDash) is software for concisely displ
 
 Installation
 ------------
-You may install MaDDash via yum with the following::
+You may install MaDDash with the following commands::
     
+*CentOS*::
+
     yum install maddash
+
+*Debian, Ubuntu*::
+
+    apt-get install maddash
 
 Usage
 -----
