@@ -99,7 +99,7 @@ These hosts have the following configuration:</p>
 <p>ESnet throughput testers at the ESnet PoPs and sites provide the ability to measure throughput between locations on the ESnet network, and between other throughput test hosts and ESnet test hosts. ESnet maintains a set of logically-grouped throughput test results on the <a class="reference external" href="http://ps-dashboard.es.net/">ESnet perfSONAR dashboard</a>.</p>
 <p>The list of current ESnet throughput test hosts can be found in one of two ways:</p>
 <ul class="simple">
-<li>We maintain a static list of <a class="reference external" href="http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-bwctl-hosts/">ESnet test hosts</a></li>
+<li>We maintain a static list of <a class="reference external" href="http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-iperf-hosts/">ESnet test hosts</a></li>
 <li>The list of pScheduler servers in the <a class="reference external" href="http://stats.es.net/ServicesDirectory/">perfSONAR Lookup Service</a> is updated dynamically</li>
 </ul>
 </div>
@@ -211,6 +211,50 @@ Other logical groups of addresses such as Amazon Cloud services are added to the
 </div>
 </div>
 </div>
+<div class="section" id="geant-low-cost-nodes">
+<h2>GÉANT Low Cost Nodes<a class="headerlink" href="#geant-low-cost-nodes" title="Permalink to this headline">¶</a></h2>
+<p>GÉANT enabled users to have first-hand experience on running a perfSONAR node on a small PC and introduced perfSONAR on low cost hardware to build such perfSONAR network measurement platform in Europe. It was completed by distributing pre-configured perfSONAR nodes, running on small devices and making them a part of a GÉANT maintained measurement mesh. The platform was BRIX BACE-3150 devices with 1Gb Eth interface, 120 GB SSD drives and 8 GB RAM costing about 200 Euros each. These boxes have Intel Celeron 1.6GHz with 4 cores.</p>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><dl class="first docutils">
+<dt>A master node was created with predefined configuration of CentOS 6 with perfSONAR 3.5.1 Toolkit (netinstall)</dt>
+<dd><ul class="first last simple">
+<li>Administrative accounts created</li>
+<li>root login disabled</li>
+<li>Initial networking with DHCP</li>
+<li>SNMP deamon running with configured community</li>
+<li>auto-updates enabled</li>
+<li>perfSONAR communities preconfigured</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">A master node was cloned with Clonezilla to all other mini-PCs which were distributed among users</p>
+</li>
+<li><p class="first">This setup was centrally managed with a central server provided by the project</p>
+</li>
+<li><p class="first">Measurements were scheduled from the small nodes to a set of 4 GÉANT MPs (for latency and throughput, for IPv4 and IPv6)</p>
+</li>
+<li><p class="first">Users were able to configure their own tests</p>
+</li>
+<li><p class="first">The central server was running a MaDDash instance</p>
+</li>
+<li><p class="first">MRTG monitoring of the central server was configured to follow on resources usage</p>
+</li>
+</ul>
+</div>
+<div class="section" id="observations">
+<h3>Observations<a class="headerlink" href="#observations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Used standard Intel hardware and perfSONAR install</li>
+<li>Very compact platform able to run without display and keyboard attached</li>
+<li>The process of preparing pre-configured image which is then cloned to small nodes found very effective and largely contributed to the fast preparation of the whole infrastructure and the easy deployment of ready-to-work nodes</li>
+<li>Tests shown it successfully supported active tests with maximum throughput equal to theoretical maximum of 1Gb Ethernet interface</li>
+<li>When placed in a controlled environment (e.g. telecommunication room) small nodes were also performing well in keeping NTP stable</li>
+</ul>
+</div>
+</div>
 <div class="section" id="g-configuration">
 <h2>100G Configuration<a class="headerlink" href="#g-configuration" title="Permalink to this headline">¶</a></h2>
 <p>The following information was researched and tested in October of 2016 to test 100G perfSONAR. Testing revealed that CentOS 7 with fair queing performed the best:</p>
@@ -258,6 +302,11 @@ Other logical groups of addresses such as Amazon Cloud services are added to the
 <li><a class="reference internal" href="#cons">Cons</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geant-low-cost-nodes">GÉANT Low Cost Nodes</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#observations">Observations</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#g-configuration">100G Configuration</a></li>
@@ -327,7 +376,7 @@ Other logical groups of addresses such as Amazon Cloud services are added to the
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

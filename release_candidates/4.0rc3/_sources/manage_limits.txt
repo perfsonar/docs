@@ -14,7 +14,10 @@ A sample pScheduler limits file to use this is available at:
 Additional information on the ESnet generated filter lists is available at:
   * http://fasterdata.es.net/performance-testing/perfsonar/esnet-perfsonar-services/esnet-limits-file/
 
-More information on how to use the limits system can be found at: :doc:`pscheduler_server_limits`.
+Note that perfSONAR 4.0 hosts running bwctl for backward compatibility will need to follow the instructions on fasterdata.es.net to add limits to bwctl as well. 
+
+More information on how to use the pScheduler limits system can be found at: :doc:`pscheduler_server_limits`.
+
 
 
 
