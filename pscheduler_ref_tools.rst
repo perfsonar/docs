@@ -126,4 +126,32 @@ Latency tests suport the following arguements::
                         substantially increase the size of a successful
                         result.
 
+Round Trip Time Tools
+=====================
+
+RTT tests suport the following arguements::
+
+ pscheduler task rtt --help
+ Usage: task [task-options] rtt [test-options]
+  -h, --help            show this help message and exit
+  --count=COUNT         Test count
+  --dest=DEST           Destination host
+  --flow-label=FLOW_LABEL
+                        Flow label
+  --hostnames           Look up hostnames from IPs
+  --no-hostnames        Don't look up hostnames from IPs
+  --interval=INTERVAL   Time to wait between packets sent
+  --ip-version=IP_VERSION
+                        IP version to use
+  --source=SOURCE       Source address or interface
+  --source-node=SOURCE_NODE
+                        Source pScheduler node, if different
+  --suppress-loopback   Suppress multicast loopback
+  --no-suppress-loopback
+                        Don't suppress multicast loopback
+  --ip-tos=IP_TOS       IP type-of-service octet (integer)
+  --length=LENGTH       Packet length
+  --ttl=TTL             Time to live
+  --deadline=DEADLINE   Deadline for all measurements to complete
+  --timeout=TIMEOUT     Timeout for each round trip
 
