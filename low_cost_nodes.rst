@@ -8,6 +8,8 @@ A number of folks in the perfSONAR community have been experimenting with runnin
 #. CPU performance issues: current ARM processors are not able to push TCP much more than about 300Mbps. Celeron processors do better, and get around 930Mbps. 
 #. None of these devices are powerful enough to run the full perfSONAR toolkit which install a measurement archive.
 
+More stable are the small nodes closer in cost to $200, such as the Intel NUC series, Zotac Zbox ci320/ci323, and many other examples available on the market as barebones small PC solutions.
+
 The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.
 
 For installation of Ubuntu from a standard ISO, there is also a script to help autoconfigure the perfsonar repositories and get the required software setup. See the :doc:`low cost nodes configuration <low_cost_nodes_configuration>` section for more information.
