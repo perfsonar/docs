@@ -68,8 +68,8 @@ array of *identifier objects*, each containing the following pairs:
  - ``name`` - A string which gives the identifier a name which must be
    unique among all identifiers.
  - ``description`` - A human-readable string describing the identifier.
- - ``type`` - A string indicating what the type of method to be used
-   in determining whether or not the requester should be identified in
+ - ``type`` - A string indicating what the method to be used in
+   determining whether or not the requester should be identified in
    this category.  (See *Identifier Types*.)
  - ``data`` - A JSON object containing ``type``-specific data used in
    determining whether the requester should be identified in this
@@ -77,7 +77,7 @@ array of *identifier objects*, each containing the following pairs:
  - ``invert`` - An optional boolean value indicating whether or not
    the identification should be inverted after evaluation (i.e.,
    ``true`` would make a requester identify in this category when it
-   otherwise would not have done so and ``false`` woud do the
+   otherwise would not have done so and ``false`` would do the
    opposite).
 
 For example::
@@ -425,13 +425,261 @@ allow or deny tasks before the wider ones.
 
 
 
-******
-Limits
-******
+*************************************
+Limits:  *What Are the Restrictions?*
+*************************************
 
-.. TODO: Write this.
+The third phase of vetting a task is determining whether or not its
+parameters fall within acceptable values.  Each limit is evaluated and
+either *passes* (i.e., the task parameters fell within the limit's
+restrictions) or *fails* (i.e., it did not).
 
-This section is forthcoming.
+The ``limits`` section of the limit configuration is nearly identical
+to the ``identifiers`` section and contains the following pairs:
+
+ - ``name`` - A string which gives the limit a name which must be
+   unique among all limits.
+ - ``description`` - A human-readable string describing the limit.
+ - ``clone`` - A string naming another limit that should be used as a
+   starting point for this one.
+ - ``type`` - If the limit was not cloned from another, a string
+   indicating what the type of limit to be checked.  (See *Limit
+   Types*.)
+ - ``data`` - A JSON object containing ``type``-specific data used in
+   determining whether the task meets this limit.  (See *Limit
+   Types*.)
+ - ``invert`` - An optional boolean value indicating whether or not
+   the result should be inverted after evaluation (i.e., ``true``
+   would pass a limit that would otherwise have failed and ``false``
+   would do the opposite).
+
+For example::
+
+    {
+        ...
+        "limits": [
+            {
+                "name": "always",
+                "description": "Always passes",
+                "type": "pass-fail",
+                "data": {
+                    "pass": true
+                }
+            },
+            {
+                "name": "innocuous-tests",
+                "description": "Tests that are harmless",
+                "type": "test-type",
+                "data": {
+                    "types": [ "idle", "latency", "rtt", "trace" ]
+                }
+            },
+            {
+                "name": "throughput-default-template",
+                "description": "Template for throughput defaults",
+                "type": "test",
+                "data": {
+                    "test": "throughput",
+                    "limit": {
+                    "duration": {
+                        "range": { "lower": "PT5S", "upper": "PT60S" }
+                    }
+                }
+            },
+            {
+                "name": "throughput-default-udp",
+                "description": "UDP throughput for all requesters",
+                "clone": "throughput-default-template",
+                "data": {
+	            "limit": {
+                        "bandwidth": {
+                            "range": { "lower": "1", "upper": "800K" },
+                        }
+                        "udp": { "match": true }
+                    }
+                }
+            },
+            {
+                "name": "throughput-default-tcp",
+                "description": "TCP throughput for all requesters",
+                "clone": "throughput-default-template",
+                "data": {
+	            "limit": {
+                        "bandwidth": {
+                            "range": { "lower": "1", "upper": "50M" },
+                        }
+                        "udp": { "match": false }
+                    }
+                }
+            }
+        ],
+        ...
+    }
+
+
+
+-----------
+Limit Types
+-----------
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``pass-fail`` - Explicitly Pass or Fail
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``pass-fail`` limit will either pass or fail depending on a value
+in its ``data``.
+
+Its ``data`` is an object containing the following pair:
+
+ - ``pass`` - A boolean indicating whether or not the limit will pass
+   or fail.
+
+
+For example::
+
+    {
+        "name": "never",
+        "description": "Fail to pass",
+        "type": "pass-fail",
+        "data": {
+            "pass": false
+        }
+    }
+
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``run-daterange`` - Check Run Times Against a Range
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``run-daterange`` limit tests to see whether the time range for a
+run falls within a specified range.
+
+Its ``data`` is an object containing the following pairs:
+
+ - ``start`` - An ISO 8601 timestamp specifying the start of the range.
+ - ``end`` - An ISO 8601 timestamp specifying the end of the range.
+ - ``overlap`` - A boolean which, if ``true``, will let the limit pass
+   if the run's time range overlaps the specified range but does not
+   fall completely within it.
+
+For example::
+
+    {
+        "name": "summer-2017",
+        "description": "The summer of 2017",
+        "type": "run-daterange",
+        "data": {
+            "start": "2017-06-21T00:00:00",
+            "end": "2017-09-22T23:59:59"
+        }
+    }
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``run-schedule`` - Check Attributes of the Run Time
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``run-daterange`` limit tests to see whether attributes the time
+range for a run matches those specified.
+
+Its ``data`` is an object containing the following pairs.  The format
+of the pairs is described below.
+
+ - ``year`` - The years in which the run will happen.
+ - ``month`` - The months in which the run will happen, numbered from ``1`` to ``12``.
+ - ``day`` - The days of the month in which the run will happen, numbered from ``1`` to ``31``.
+ - ``weekday`` - The days of the week in which the run will happen,
+   numbered from ``1`` (Monday) to ``7`` (Sunday) according to
+   ISO 8601.
+ - ``hour`` - The hours in which the run will happen, numbered from ``0`` to ``23``
+ - ``minute`` - The minutes in which the run will happen, numbered from ``0`` to ``59``.
+ - ``minute`` - The seconds in which the run will happen, numbered from ``0`` to ``59``.
+
+All pairs are optional.
+
+Each pair consists of a key (e.g., ``month``) and an array of
+individual numbers or ranges.  Each range is an object containing the
+following pairs:
+
+ - ``lower`` - An integer specifying the lower end of the range.
+ - ``upper`` - An integer specifying the upper end of the range.
+
+For example::
+
+    {
+        "name": "not-in-maint-window",
+        "description": "Outside weekly maintenance windows (Wed & Sun, 2 and 4-8 a.m.)",
+        "type": "run-schedule",
+        "data": {
+            "weekday": [ 3, 7 ],
+            "hour": [ 2, { "lower": 4, "upper": 7 } ],
+            "overlap": true
+            "invert": true
+        }
+    }
+
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``test`` - Check Test Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``test`` limit compares the parameters of a proposed test against
+a template containing acceptable values.
+
+Its ``data`` is an object containing the following pairs:
+
+ - ``test`` - A string specifying the test type.  Proposed tests not
+   of this type will fail this limit.
+ - ``limit`` - A JSON object consisting of pairs for each test
+   parameter.  The key used for each pair will match one of the test's
+   parameters.  The value and the value is a limit of the appropriate
+   type for that parameter.  See *Limit Types* for further details.
+
+For example::
+
+    {
+        "name": "throughput-udp",
+        "description": "Limits for UDP throughput tests",
+        "type": "test",
+        "data": {
+        "test": "throughput",
+        "limit": {
+            "duration": { "range": { "lower": "PT5S", "upper": "PT60S" } },
+            "bandwidth": { "range": { "lower": "1", "upper": "50M" } },
+            "udp": { "match": true }
+        }
+    }
+
+
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``test-type`` - Check Test Type
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``test-type`` limit compares the type of the proposed test to a
+list of test types.
+
+Its ``data`` is an object containing the following pair:
+
+ - ``types`` - An array of strings to be compared in deciding whether
+   or not the limit passes.
+
+For example::
+
+    {
+        "name": "inoccuous-tests",
+        "description": "Tests that are harmless",
+        "type": "test-type",
+        "data": {
+            "types": [ "idle", "latency", "rtt", "trace" ]
+        }
+    }
+
+
+
 
 
 ************
@@ -477,6 +725,8 @@ Details on command-line switches and sample invocations can be
 obtained by running the command ``pscheduler validate-limits --help``.
 
 
+
+
 ********************************
 Installing a Limit Configuration
 ********************************
@@ -509,3 +759,17 @@ This section describes standard JSON objects used in the limit configuration.
 Content in this section is forthcoming.
 
 .. TODO: StringMatch
+
+
+
+***********
+Limit Types
+***********
+
+This section describes standard types used objects used by the
+``test`` limit.
+
+Content in this section is forthcoming.
+
+.. TODO: Write this.  See jsonval.py.
+
