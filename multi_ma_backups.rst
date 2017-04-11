@@ -127,6 +127,10 @@ You may create a snapshot of your database with the following command::
 
     pg_dump -F t -f esmond.tar -U esmond 
 
+On a Debian system you can use::
+
+    sudo -u postgres pg_dump -F t -f esmond.tar esmond
+
 This will create a tarball file in the current directory named esmond.tar. Note that this is a new file and though compressed, will consume additional disk space.
 
 .. note:: If you are prompted for a password, see the *sql_db_password* property in */etc/esmond/esmond.conf*
@@ -146,6 +150,10 @@ Restoring the Snapshot
 You may restore the snapshot with the following command::
 
     pg_restore -c -U esmond -d esmond esmond.tar 
+
+On a Debian system you can use::
+
+    sudo -u postgres pg_restore -c -d esmond esmond.tar
 
 .. note:: If you are prompted for a password, see the *sql_db_password* property in */etc/esmond/esmond.conf*
 
@@ -190,6 +198,11 @@ By default, packaged installs of PostgreSQL keep all data in */var/lib/pgsql*. I
     service pgsql stop
     scp -r /var/lib/pgsql user@newhost:pgsql
 
+On a Debian system you can use::
+
+    service postgresql stop
+    scp -r /var/lib/postgresql user@newhost:pgsql
+
 You can then restore the data as follows::
     
     service pgsql stop
@@ -197,6 +210,14 @@ You can then restore the data as follows::
     mv pgsql/* /var/lib/pgsql/
     chown -R postgres:postgres /var/lib/pgsql/*
     service pgsql start
+
+On a Debian system you can use::
+
+    service postgresql stop
+    rm -rf /var/lib/postgresql/*
+    mv pgsql/* /var/lib/postgresql/
+    chown -R postgres:postgres /var/lib/postgresql/*
+    service postgresql start
 
 .. _multi_ma_backups-delete:
 
@@ -334,6 +355,13 @@ If you would like to run the tool, you will need to first run the following if y
 You can then run the tool as follows (replacing -c with your policy file)::
 
     python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
+
+On a Debian system you can use::
+
+    . /etc/default/esmond
+    export ESMOND_ROOT ESMOND_CONF
+    export DJANGO_SETTINGS_MODULE=esmond.settings
+    python /usr/share/esmond/util/ps_remove_data.py -c /usr/share/esmond/util/ps_remove_data.conf
 
 You may consider adding the commands above to a shell script called by cron to regularly clean out the old data.
 
