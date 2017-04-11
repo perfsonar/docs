@@ -115,7 +115,7 @@ If you are upgrading to a new version of MCA, MCA services should automatically 
 Debian
 ============
 
-At the moment Debian package for MCA is not available.
+Debian packages for MCA are not available yet.  Debian users that wish to try the MCA should do it from a CentOS host or from withing a Docker container (see above for details).
 
 Post Installation Configuration
 ###################################
