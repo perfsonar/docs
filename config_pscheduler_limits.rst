@@ -1,6 +1,6 @@
-*****************************
+=============================
 Configuring pScheduler Limits
-*****************************
+=============================
 
 ************
 Introduction
@@ -38,9 +38,9 @@ containing a single object with the four pairs shown here::
 
 Each pair is described in the sections below.
 
-========
+--------
 Comments
-========
+--------
 
 All JSON read by pScheduler supports in-line commenting by ignoring
 any pair whose key begins with a pound sign (``#``)::
