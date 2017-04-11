@@ -64,7 +64,7 @@ Now, Let's assume we have a two node cluster we wish to initialize. Our nodes ha
     rm -rf /var/lib/cassandra/data/system/*
 #. Restart cassandra on each node::
     
-    /sbin/service cassandra restart
+    service cassandra restart
     
 #. Our two node cluster should be running. We can verify this with the ``nodetool status`` command on either host::
 

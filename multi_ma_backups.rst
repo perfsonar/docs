@@ -43,7 +43,7 @@ Cassandra comes with a command called *nodetool* that is capable of performing a
 
 #. Restart cassandra::
 
-    /sbin/service cassandra restart
+    service cassandra restart
 
 
 Creating the Snapshot
@@ -82,7 +82,7 @@ You may restore you files, either on a new or existing host, with the following 
 
 #. Shutdown cassandra::
 
-    /sbin/service cassandra stop
+    service cassandra stop
 #. Clear the commit logs::
 
     rm -f /var/lib/cassandra/commitlog/*.log
@@ -100,7 +100,7 @@ You may restore you files, either on a new or existing host, with the following 
     cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* /var/lib/cassandra/data/esmond/stat_aggregations/
 #. Start cassandra::
 
-    /sbin/service cassandra start
+    service cassandra start
 
 #. Run a repair::
 
@@ -165,16 +165,16 @@ Migrating Cassandra Data
 
 By default, packaged installs of cassandra keep all data in */var/lib/cassandra*. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your cassandra server and copying the directory to the new host. For example::
 
-    /sbin/service cassandra stop
+    service cassandra stop
     scp -r /var/lib/cassandra user@newhost:cassandra
     
 You can then restore the data as follows::
 
-    /sbin/service cassandra stop
+    service cassandra stop
     rm -rf /var/lib/cassandra/*
     mv cassandra/* /var/lib/cassandra/
     chown -R cassandra:cassandra /var/lib/cassandra/*
-    /sbin/service cassandra start
+    service cassandra start
 
 .. note:: If you are running on a cluster you may also need to run *nodetool repair*
 
@@ -187,16 +187,16 @@ Migrating PostgreSQL Data
 
 By default, packaged installs of PostgreSQL keep all data in */var/lib/pgsql*. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your PostgreSQL server and copying the directory to the new host. For example::
     
-    /sbin/service pgsql stop
+    service pgsql stop
     scp -r /var/lib/pgsql user@newhost:pgsql
 
 You can then restore the data as follows::
     
-    /sbin/service pgsql stop
+    service pgsql stop
     rm -rf /var/lib/pgsql/*
     mv pgsql/* /var/lib/pgsql/
     chown -R postgres:postgres /var/lib/pgsql/*
-    /sbin/service pgsql start
+    service pgsql start
 
 .. _multi_ma_backups-delete:
 
