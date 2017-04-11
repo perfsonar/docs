@@ -256,7 +256,7 @@ Configuring Central Management
 If your node is part of a measurement mesh and you installed perfsonar-centralmanagement bundle refer to the documentation here: :doc:`/multi_overview`
 
 Configuring perfSONAR through the web interface
---------------------------------------
+------------------------------------------------
 If you installed the perfsonar-toolkit or perfsonar-centralmanagement bundle on an existing CentOS host, 
 you'll probably need to disable SELinux to gain access to the web interface. This is done with the following commands:
 ::
