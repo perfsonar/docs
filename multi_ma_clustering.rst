@@ -48,7 +48,7 @@ Now, Let's assume we have a two node cluster we wish to initialize. Our nodes ha
     * You will also want **TCP port 7199** open **FOR LOCALHOST ONLY** so that you may run the ``nodetool`` command to get the status of and perform various administrator tasks on the cluster.
     
     .. seealso:: See the `Datastax Firewall Documentation <http://docs.datastax.com/en/cassandra/2.0/cassandra/security/secureFireWall_r.html>`_ for more details.
-#. Next we need to name our cluster. In this example we will name it "Esmond Cluster". On each node open */etc/cassandra/conf/cassandra.yaml* and change ``cluster_name`` to this value::
+#. Next we need to name our cluster. In this example we will name it "Esmond Cluster". On each node open */etc/cassandra/conf/cassandra.yaml* (or */etc/cassandra/cassandra.yaml* on Debian) and change ``cluster_name`` to this value::
 
     cluster_name: 'Esmond Cluster'
 #. Next we need to choose a seed node. This node is only used the first time a node comes up to bootstrap itself into the ring. If it goes down it will not affect the nodes that have already been bootstrapped, however you will not be able to add new nodes to a cluster. If you are frequently adding new nodes, you may want to specify multiple seed nodes to prevent this. For our simple two node cluster, one seed node will suffice so we'll choose 10.0.1.35. We set this on both hosts in */etc/cassandra/conf/cassandra.yaml* under the seed_provider property as shown below::
