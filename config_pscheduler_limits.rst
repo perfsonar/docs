@@ -1,6 +1,6 @@
-=============================
+#############################
 Configuring pScheduler Limits
-=============================
+#############################
 
 ************
 Introduction
@@ -38,9 +38,9 @@ containing a single object with the four pairs shown here::
 
 Each pair is described in the sections below.
 
---------
+========
 Comments
---------
+========
 
 All JSON read by pScheduler supports in-line commenting by ignoring
 any pair whose key begins with a pound sign (``#``)::
@@ -58,7 +58,7 @@ Note that this behavior is not part of ECMA 404, the JSON standard.
 Identifiers:  *Who's Asking?*
 *****************************
 
-The first phase of vetting a task request is *indetification*, where
+The first phase of vetting a task request is *idenification*, where
 attributes of the arriving request are used to create a list of narrow
 categories into which the requester fits.
 
@@ -375,13 +375,54 @@ For example::
 
 
 
-***********
-Classifiers
-***********
+************************************************
+Classifiers:  *How Do We Group the Identifiers?*
+************************************************
 
-.. TODO: Write this.
+Once a list of identifiers is determined, the second phase is grouping
+them into broader categories called *classifiers*.  Classifiers are
+simple groups containing a list of one or more identifiers.
 
-This section is forthcoming.
+The ``classifiers`` section of the limit configuration contains an
+array of *classifier objects*, each containing the following pairs:
+
+ - ``name`` - A string which gives the identifier a name which must be
+   unique among all classifiers.  To avoid confusion, it is
+   recommended, but not required, that classifier names and identifier
+   names do not overlap.
+ - ``description`` - A human-readable string describing the classifier.
+ - ``identifiers`` - An array of strings indicating what identifiers
+   should be part of the classifier.
+
+For example::
+
+    {
+        ...
+        "classifiers": [
+            {
+                "name": "friendlies",
+                "description": "Requesters we like",
+                "identifiers": [ "local", "partners", "r-and-e" ]
+            },
+            {
+                "name": "hostiles",
+                "description": "Requesters we don't want using the system",
+                "identifiers": [ "bogons", "example-dot-org" ]
+            },
+            {
+                "name": "neutrals",
+                "description": "Requesters we neither like nor dislike",
+                "identifiers": [ "everybody" ]
+            },
+        ...
+    }
+
+
+Note that the ``neutrals`` classification will include all requesters,
+which makes it overlap with ``friendlies`` and ``hostiles``.  As will
+be illustrated later, the narrower classifications can be used to
+allow or deny tasks before the wider ones.
+
 
 
 ******
@@ -463,6 +504,8 @@ installed.**
 Standard Objects
 ****************
 
-This section describes standard JSON objects used int he limit configuration.
+This section describes standard JSON objects used in the limit configuration.
 
-TODO: StringMatch
+Content in this section is forthcoming.
+
+.. TODO: StringMatch
