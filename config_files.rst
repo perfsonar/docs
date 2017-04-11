@@ -182,8 +182,7 @@ Agent Tasks File
 :Debian: ``/etc/perfsonar/meshconfig-agent-tasks.conf``
 :Documentation: :doc:`config_mesh_agent_tasks`
 
-.. _config_files-meshconfig-conf-gui_agent:
-
+.. _config_files-meshconfig-conf-guiagent:
 
 GUI Agent Configuration File
 #############################
@@ -214,6 +213,15 @@ MeshConfig Agent Start-up Script
 :RedHat 7: ``systemctl perfsonar-meshconfig-agent start|stop|restart``
 :Debian: ``service perfsonar-meshconfig-agent start|stop|restart``
 
+.. _config_files-meshconfig-scripts-guiagent:
+
+MeshConfig GUI Agent Start-up Script
+#################################
+:Description: The script used to start/stop/restart a MeshConfig GUI Agent. This daemon builds `MaDDash configuration file <http://software.es.net/maddash/config_server.html>`_ from a downloaded central configuration file.
+:RedHat 6: ``/etc/init.d/perfsonar-meshconfig-guiagent start|stop|restart``
+:RedHat 7: ``systemctl perfsonar-meshconfig-guiagent start|stop|restart``
+:Debian: ``service perfsonar-meshconfig-guiagent start|stop|restart``
+
 .. _config_files-meshconfig-scripts-json:
 
 JSON Builder
@@ -222,14 +230,6 @@ JSON Builder
 :RedHat: ``/usr/lib/perfsonar/bin/build_json``
 :Debian: ``/usr/lib/perfsonar/bin/build_json``
 
-.. _config_files-meshconfig-scripts-generate_gui_configuration:
-
-GUI/Dashboard Configuration Generator
-#####################################
-:Description: The script used to generate a `MaDDash configuration file <http://software.es.net/maddash/config_server.html>`_ from a downloaded central configuration file
-:RedHat: ``/usr/lib/perfsonar/bin/generate_gui_configuration``
-:Debian: ``/usr/lib/perfsonar/bin/generate_gui_configuration``
-
 .. _config_files-meshconfig-scripts-lookup_hosts:
 
 Dynamic Host List Generator
@@ -237,17 +237,6 @@ Dynamic Host List Generator
 :Description: The script used to contact the lookup service and build a set of hosts to be used in the mesh
 :RedHat: ``/usr/lib/perfsonar/bin/lookup_hosts``
 :Debian: ``/usr/lib/perfsonar/bin/lookup_hosts``
-
-Installed Cron Jobs
--------------------
-
-.. _config_files-meshconfig-cron-generate_gui_configuration:
-
-GUI/Dashboard Configuration Generator Cron
-###########################################
-:Description: Runs the :ref:`GUI configuration generator <config_files-meshconfig-scripts-generate_gui_configuration>` every night at 2AM
-:RedHat: ``/etc/cron.d/perfsonar-meshconfig-guiagent``
-:Debian: ``/etc/cron.d/perfsonar-meshconfig-guiagent``
 
 Log Files
 ---------
@@ -262,9 +251,9 @@ MeshConfig Agent Log
 
 .. _config_files-meshconfig-logs-generate_gui_configuration:
 
-GUI/Dashboard Configuration Generator Log
+GUI/Dashboard Configuration Agent Log
 ############################################
-:Description: The log file written when the :ref:`GUI generator <config_files-meshconfig-scripts-generate_gui_configuration>` is run from :ref:`cron <config_files-meshconfig-cron-generate_gui_configuration>`.
+:Description: The log file written when the :ref:`MeshConfig GUI agent <config_files-meshconfig-scripts-guiagent>` is run.
 :RedHat: ``/var/log/perfsonar/meshconfig-guiagent.log``
 :Debian: ``/var/log/perfsonar/meshconfig-guiagent.log``
 
