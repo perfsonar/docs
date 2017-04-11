@@ -27,25 +27,25 @@ For installation of Ubuntu from a standard ISO, there is also a script to help a
 Where possible server-class gear is still the best option for network measurement and monitoring. Below are example builds through SuperMicro. This should not be construed as a brand-specific endorsement/recommendation, and are merely spec guidelines for use with any vendor.
 
 Dual 1GE Spec - Cost estimate: $800.00 US
-#. MOTHERBOARD: MB SM X10SLL-F 1x Socket H3 (LGA 1150), 4x 240-pin DDR3 DIMM sockets, Intel C222 Express PCH, Su... 
-#. CPU: Intel Core i3-4330 4-Core 3.5GHz 5GT/s DMI 54W Desktop Intel HD Graphics 4600 LGA 1150 
-#. FAN: SM 1U SNK-P0046P Passive Heatsink Mounting Bracket (BKT-0028L Included) LGA 1155/1156 
-#. MEMORY: 8GB (2) DDR3-1600 1.35V 2Rx8 ECC Un-Buffer LP PB-Free
-#. HARD DRIVE: Crucial 1100 Series 256GB 2.5" SSD
-#. CHASSIS: CASE SM 1U Chassis CSE-510-203B
-#. KIT: SM MCP-220-00044-0N Retention Bracket for up to 2x 2.5" HDD RISER RISER SM RSC-RR1U-E16 1U Left 1 x PCI-E x16
-#. SERVICE: 3 Year Cross-Ship Service & Warranty
+  * MOTHERBOARD: MB SM X10SLL-F 1x Socket H3 (LGA 1150), 4x 240-pin DDR3 DIMM sockets, Intel C222 Express PCH, Su... 
+  * CPU: Intel Core i3-4330 4-Core 3.5GHz 5GT/s DMI 54W Desktop Intel HD Graphics 4600 LGA 1150 
+  * FAN: SM 1U SNK-P0046P Passive Heatsink Mounting Bracket (BKT-0028L Included) LGA 1155/1156 
+  * MEMORY: 8GB (2) DDR3-1600 1.35V 2Rx8 ECC Un-Buffer LP PB-Free
+  * HARD DRIVE: Crucial 1100 Series 256GB 2.5" SSD
+  * CHASSIS: CASE SM 1U Chassis CSE-510-203B
+  * KIT: SM MCP-220-00044-0N Retention Bracket for up to 2x 2.5" HDD RISER RISER SM RSC-RR1U-E16 1U Left 1 x PCI-E x16
+  * SERVICE: 3 Year Cross-Ship Service & Warranty
 
 Dual 10G SFP+ Spec - Cost estimate: $1,100.00 US 
-#. MOTHERBOARD: MB SM X10SLL-F 1x Socket H3 (LGA 1150), 4x 240-pin DDR3 DIMM sockets, Intel C222 Express PCH, Su... 
-#. CPU: Intel Core i3-4330 4-Core 3.5GHz 5GT/s DMI 54W Desktop Intel HD Graphics 4600 LGA 1150 
-#. FAN: SM 1U SNK-P0046P Passive Heatsink Mounting Bracket (BKT-0028L Included) LGA 1155/1156 
-#. MEMORY: (2) 8GB DDR3-1600 1.35V 2Rx8 ECC Un-Buffer LP PB-Free
-#. NETWORK: SM AOC-STGN-i2S 2-port 10GB SFP+ PCI-Express 2.0 x8 LP
-#. HARD DRIVE: HD Crucial 1100 Series 256GB 2.5" SSD
-#. CHASSIS: CASE SM 1U Chassis CSE-510-203B
-#. KIT: SM MCP-220-00044-0N Retention Bracket for up to 2x 2.5" HDD RISER RISER SM RSC-RR1U-E16 1U Left 1 x PCI-E x16
-#. SERVICE: 3 Year Cross-Ship Service & Warranty
+  * MOTHERBOARD: MB SM X10SLL-F 1x Socket H3 (LGA 1150), 4x 240-pin DDR3 DIMM sockets, Intel C222 Express PCH, Su... 
+  * CPU: Intel Core i3-4330 4-Core 3.5GHz 5GT/s DMI 54W Desktop Intel HD Graphics 4600 LGA 1150 
+  * FAN: SM 1U SNK-P0046P Passive Heatsink Mounting Bracket (BKT-0028L Included) LGA 1155/1156 
+  * MEMORY: (2) 8GB DDR3-1600 1.35V 2Rx8 ECC Un-Buffer LP PB-Free
+  * NETWORK: SM AOC-STGN-i2S 2-port 10GB SFP+ PCI-Express 2.0 x8 LP
+  * HARD DRIVE: HD Crucial 1100 Series 256GB 2.5" SSD
+  * CHASSIS: CASE SM 1U Chassis CSE-510-203B
+  * KIT: SM MCP-220-00044-0N Retention Bracket for up to 2x 2.5" HDD RISER RISER SM RSC-RR1U-E16 1U Left 1 x PCI-E x16
+  * SERVICE: 3 Year Cross-Ship Service & Warranty
 
 
 *******************
