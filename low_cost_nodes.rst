@@ -1,14 +1,19 @@
-***************************
-perfSONAR on Low Cost Nodes
-***************************
+************************************
+perfSONAR on pi-class Low Cost Nodes
+************************************
 
-A number of folks in the perfSONAR community have been experimenting with running perfSONAR on low cost (less than $200) hardware such as the Raspberry Pi, the cubox, and the Liva. In general this works well, with some caveats. 
+A number of folks in the perfSONAR community have been experimenting with running perfSONAR on low cost (less than $200) hardware such as the Raspberry Pi, the cubox, and the Liva. In general this can work, with some caveats. 
 
 #. Time sync issues: Some low end hardware have issues with clock drift, which impacts latency measurements. 
 #. CPU performance issues: current ARM processors are not able to push TCP much more than about 300Mbps. Celeron processors do better, and get around 930Mbps. 
 #. None of these devices are powerful enough to run the full perfSONAR toolkit which install a measurement archive.
+#. pSchdeuler may not be suitable for use on pi-class/ARM devices.
 
-More stable are the small nodes closer in cost to $200, such as the Intel NUC series, Zotac Zbox ci320/ci323, and many other examples available on the market as barebones small PC solutions.
+**************************************
+perfSONAR on $200-class Low Cost Nodes
+**************************************
+
+More stable are the small nodes closer in cost to $200, such as the Intel NUC series, Zotac Zbox ci320/ci323, and various other examples available on the market as barebones small PC solutions.
 
 The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.
 
@@ -21,8 +26,8 @@ Pi-class devices seem to work best running Ubuntu, but the slightly larger, $200
 
   * 32-bit (i386)
   * 64-bit (amd64)
-  * ARMv4t and up (armel)
-  * ARMv7 and up (armhf)
+  * ARMv4t and up (armel) - not recommended
+  * ARMv7 and up (armhf) - not recommended
 
 $200-class devices should have at least 2GB of RAM and 16MB of disk. Processor should be quad-core with a 2.1GHz speed preferred. Many devices will fit these requirements and more depending on your desire and ability to experiment or tinker. Several brands and models of nodes have been tested running the newest perfSONAR releases. Each of these is capable of near 1Gbps and work with a number of OS releases. 
 
