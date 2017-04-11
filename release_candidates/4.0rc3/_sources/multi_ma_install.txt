@@ -59,6 +59,11 @@ As an archive administrator you may create a username, generate an API key, and 
 #. After running the commands above you should see the generated API key in the output (if not, re-run the commands above and they will re-show you the generated API key without affecting the user you just created). An example of the output line showing the API key (*9130962c6b38722c0b9968e6903e1927e94e16fd* in this example) is below::
 
     Key: 9130962c6b38722c0b9968e6903e1927e94e16fd for example_user
+
+On a Debian system you can use::
+
+    /usr/share/esmond/util/esmond_manage add_ps_metadata_post_user example_user
+    /usr/share/esmond/util/esmond_manage add_timeseries_post_user example_user
     
 At this point provide the administrator of the measurement host wishing to register data with the username and API key. 
 
@@ -88,6 +93,10 @@ As an archive administrator you may create an account that authenticates based o
 #. Run the commands below to create the account. You must provide a username as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of *X.X.X.X* or *X.X.X.X/Y* where *X* is each octet and *Y* is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host 10.0.1.1 or any host in the 10.0.2.0/24 subnet to register data to esmond::
 
     python esmond/manage.py add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
+
+On a Debian system you can use::
+
+    /usr/share/esmond/util/esmond_manage add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
 
 Configuring Measurement Hosts
 ==============================

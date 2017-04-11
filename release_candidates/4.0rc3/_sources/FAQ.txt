@@ -55,7 +55,7 @@ Q: How do I disable global registration?
     
     - CentOS 6/Debian 7::
     
-        /sbin/service perfsonar-lsregistrationdaemon stop
+        service perfsonar-lsregistrationdaemon stop
         chkconfig perfsonar-lsregistrationdaemon off 
 
     - CentOS 7/Debian 8::
@@ -407,7 +407,7 @@ Q: I have a measurement archive machine with esmond running, and there is a sepa
 =========================================================================================================================================================================================================================================================================================================================================
 **A:** Change the directory where cassandra and postgres store data. This is controlled through the respective tools configuration files and not esmond directly.
 
-For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandr**A:** /sbin/service cassandra restart
+For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandr**A:** service cassandra restart
 
 For postgres, in /var/lib/pgsql/data/postgresql.conf change the data_directory to the new location. Restart postgres: /etc/init.d postgresql restart. 
 

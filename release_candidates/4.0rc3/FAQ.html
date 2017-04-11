@@ -124,7 +124,7 @@
 <blockquote>
 <div><ul>
 <li><p class="first">CentOS 6/Debian 7:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/sbin/service perfsonar-lsregistrationdaemon stop
+<div class="highlight-python"><div class="highlight"><pre><span></span>service perfsonar-lsregistrationdaemon stop
 chkconfig perfsonar-lsregistrationdaemon off
 </pre></div>
 </div>
@@ -442,7 +442,7 @@ sudo modprobe ixgbe allow_unsupported_sfp=0</p>
 <div class="section" id="q-i-have-a-measurement-archive-machine-with-esmond-running-and-there-is-a-separate-disk-partition-mounted-on-the-machine-where-i-want-to-store-all-the-incoming-measurement-data-from-measurement-points-what-is-the-proper-way-to-change-the-default-directory-location-for-storing-the-measurement-archive-data">
 <h3>Q: I have a measurement archive machine with esmond running, and there is a separate disk partition mounted on the machine where I want to store all the incoming measurement data from measurement points. What is the proper way to change the default directory location for storing the measurement archive data?<a class="headerlink" href="#q-i-have-a-measurement-archive-machine-with-esmond-running-and-there-is-a-separate-disk-partition-mounted-on-the-machine-where-i-want-to-store-all-the-incoming-measurement-data-from-measurement-points-what-is-the-proper-way-to-change-the-default-directory-location-for-storing-the-measurement-archive-data" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> Change the directory where cassandra and postgres store data. This is controlled through the respective tools configuration files and not esmond directly.</p>
-<p>For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandr**A:** /sbin/service cassandra restart</p>
+<p>For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandr**A:** service cassandra restart</p>
 <p>For postgres, in /var/lib/pgsql/data/postgresql.conf change the data_directory to the new location. Restart postgres: /etc/init.d postgresql restart.</p>
 <p>You will need to rebuild the esmond tables after this change is made. To do so, follow the instructions here: <a class="reference external" href="http://software.es.net/esmond/rpm_install.html#configuration">http://software.es.net/esmond/rpm_install.html#configuration</a></p>
 <p>An alternative way to do what you want is to stop both postgres and cassandra, move /var/lib/cassandra and /var/lib/pgsql to the new partition and then create symlinks to the new location in /var/lib/cassandra and /var/lib/pgsql. That saves the need to rebuild postgres and preserves any existing data.</p>
