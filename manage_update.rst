@@ -4,13 +4,18 @@ Updating perfSONAR
 
 Just like any other host on your network, it is critical to stay up-to-date with the latest packages on your perfSONAR Toolkit. You will want to make sure you have the latest security fixes as well as the ability to take advantage of the great new features constantly being added to the tools. In general you will keep your host up-to-date with the operating system's package manager (e.g. yum), but in some special cases things may be more involved. Be sure to watch release notes and this page when such cases arise.
 
-Manually Updating with Yum
-==========================
+Manually Updating
+=================
 Anytime you want to manually update your host, simply run the following::
     
     yum update
     
 The *yum* package manager is used by RedHat-based operating systems like CentOS to update packages. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.
+
+On Debian systems use the following commands::
+
+    apt-get update
+    apt-get upgrade
 
 .. _manage_update-auto:
 
@@ -57,6 +62,16 @@ Likewise, you may disable auto-updates from the command-line by running the foll
 
 These commands will automatically update **all packages** on the system. Also note that the main configuration file for auto-updates lives at */etc/yum*. See the yum-cron man page or the page `here <http://fedoraproject.org/wiki/AutoUpdates>`_ for more information on using auto-updates and advanced options like excluding packages from update. Also see :ref:`manage_update-auto-disable`. 
 
+On Debian systems you can enable automatic updates by installing ``unattended-upgrades`` package and creating a file ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar`` with the following contents::
+
+    APT::Periodic::Update-Package-Lists "1";
+    APT::Periodic::Unattended-Upgrade "1";
+    APT::Periodic::AutocleanInterval "31";
+    Unattended-Upgrade::Origins-Pattern:: "origin=perfSONAR";
+
+This configuration enables automatic updates for Debian security updates and perfSONAR packages.
+
+To disable automatic updates remove the ``unattended-upgrades`` package and ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar`` configuration file.
 
 .. _manage_update-auto-gui:
 
@@ -85,6 +100,7 @@ The commands in the previous sections control updates for the entire system. If 
 
 .. note:: If you are running against one of our testing repositories you may also need to update the files **/etc/yum.repos.d/Internet2-staging.repo** and **/etc/yum.repos.d/Internet2-nightly.repo**.
 
+To disable the automatic updating of perfSONAR packages on Debian delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
 
 Special Upgrade Notes
 =====================
