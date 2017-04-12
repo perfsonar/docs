@@ -58,7 +58,7 @@ Note that this behavior is not part of ECMA 404, the JSON standard.
 Identifiers:  *Who's Asking?*
 *****************************
 
-The first phase of vetting a task request is *idenification*, where
+The first phase of vetting a task or run is *idenification*, where
 attributes of the arriving request are used to create a list of narrow
 categories into which the requester fits.
 
@@ -563,6 +563,10 @@ Its ``data`` is an object containing the following pairs:
    if the run's time range overlaps the specified range but does not
    fall completely within it.
 
+Note that this limits of this type are not evaluated and will be
+considered to have passed when determining whether a task will be
+allowed on the system.
+
 For example::
 
     {
@@ -605,6 +609,10 @@ following pairs:
  - ``lower`` - An integer specifying the lower end of the range.
  - ``upper`` - An integer specifying the upper end of the range.
 
+Note that this limits of this type are not evaluated and will be
+considered to have passed when determining whether a task will be
+allowed on the system.
+
 For example::
 
     {
@@ -634,8 +642,12 @@ Its ``data`` is an object containing the following pairs:
    of this type will fail this limit.
  - ``limit`` - A JSON object consisting of pairs for each test
    parameter.  The key used for each pair will match one of the test's
-   parameters.  The value and the value is a limit of the appropriate
-   type for that parameter.  See *Limit Types* for further details.
+   parameters, which match the names of the command-line interface's
+   long-form option switches.  (A list for a given test can be
+   retrieved by running ``pscheduler task TEST-NAME --help``, where
+   ``TEST-NAME`` is the name of the test.)  The value and the value is
+   a limit of the appropriate type for that parameter.  See *Limit
+   Types* for further details.
 
 For example::
 
@@ -682,13 +694,106 @@ For example::
 
 
 
-************
-Applications
-************
+***********************************************
+Applications: *To Whom do We Apply the Limits?*
+***********************************************
 
-.. TODO: Write this.
+The final phase of vetting a task or run is determining whether or not
+its parameters make it permissible.  This is accomplished by
+evaluating a series of *limit applications*, each of which ties a
+classifier to a series of conditions which must be met before approval
+can happen.
 
-This section is forthcoming.
+Each limit application is a JSON object consisting of the following:
+
+ - ``description`` - A human-readable string describing what the application does.
+ - ``classifier`` - A string naming a classifier to which the
+   application should be applied.
+ - ``apply`` - An array of *limit requirements* (described in detail
+   in *Applying Limit Requirements*, below), all of which must be
+   satisfied for the application to have passed.
+ - ``invert`` - A boolean indicating that the application's result
+   should be inverted (i.e., an application that passes should be
+   treated as if it failed and one that fails should be treated as if
+   it passed).
+ - ``stop-on-failure`` - A boolean indicating that if an application
+   does not pass, the task or run should be denied without evaluating
+   any further applications in the list.  This us useful for
+   short-circuiting the process of denying requests you do not wish to
+   service.
+
+The system will evaluate each application in sequence.  (This process
+is described in detail in *Applying Limit Requirements*, below.)  If
+an application *passes* (i.e., its conditions will allow the task or
+run to happen), the task or run is permitted.  If it *fails* and
+``stop-on-failure`` is ``true``, it is denied.  If if fails and
+``stop-on-failure`` is ``false``, the next application in the list is
+evaluated.  If the end of the list is reached with no application
+having passed, the task or run is denied.
+
+For example::
+
+    {
+        ...
+        "applications": [
+            {
+                "description": "Allow users on the local system to do anything",
+                "classifier": "local-requester",
+                "apply": [
+                    {
+                        "require": "all",
+                        "limits": [ "always" ]
+                    }
+                ]
+            },
+            {
+                "description": "What we allow guests to do",
+                "classifier": "guests",
+                "apply": [
+                    {
+                        "require": "any",
+                        "limits": [
+                            "innocuous-tests",
+                            "guest-throughput",
+                            "guest-rtt"
+                        ]
+                    }
+                ],
+                "stop-on-failure": true
+            }
+        ]
+    }
+
+The first application allows any requester in the ``local-requester``
+classification to run anything because it applies the ``always``
+limit, which always passes.  The second application alows requesters
+in the ``guests`` classifier be runing any of the harmless tests or a
+throughput or round-trip time test that meets predefined limits for
+guests.  Failing both of those will result in denial because the
+policy is to deny unless explicitly allowed.
+
+
+---------------------------
+Applying Limit Requirements
+---------------------------
+
+Each limit requirement is a JSON object containing the following:
+
+ - ``limits`` - An array of strings naming one or more limits to be
+   considered when deciding if this limit requirement passes.
+ - ``require`` - A string specifying how many of the requirement's
+   limits must pass for the requirement to be considered met.  Valid
+   values are:
+
+  - ``none`` - Consider the requirement met if none of the limits
+    passes.
+  - ``one`` - Consider the requirement met if exactly one of the
+    limits passes.
+  - ``any`` - Consider the requirement met if at least one of the
+    limits passes.
+  - ``all`` - Consider the requirement met only if all of the limits
+    pass.
+
 
 
 
