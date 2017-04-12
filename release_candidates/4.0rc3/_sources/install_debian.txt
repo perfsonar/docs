@@ -2,7 +2,7 @@
 Installation on Debian
 **********************
 
-perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
+perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for five different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
 * Debian 7 Wheezy
 * Debian 8 Jessie
@@ -92,12 +92,12 @@ Step 3: Verify NTP and Tuning Parameters
 
 * **NTP**
 
-  After installing the ``perfsonar-toolkit-ntp`` package, you can run the following script to have perfSONAR choose the closest NTP servers for you: ::
+  The installation of the ``perfsonar-toolkit-ntp`` package should choose the closest NTP servers and add those to the ``/etc/ntp.conf`` file.  After that, you should restart manually the NTP daemon for the changes to take effect.  If you need, you can re-run the script manually with: ::
 
     /usr/lib/perfsonar/scripts/configure_ntpd new
     service ntp restart
 
-  You can also configure your own set of NTP servers manually.
+  You can also configure your own set of NTP servers if you want.
 
   The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL will not even run unless NTP is configured. You can verify NTP is running with the following command::
 
@@ -118,9 +118,7 @@ If you have installed the `perfsonar-toolkit-security` package, then your iptabl
 
 If you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. 
-ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and cofigure pScheduler and
-bwctl to use it are described on the page :doc:`manage_limits`.
+Additionally, pscheduler allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called ``/etc/pscheduler/limits.conf``  ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page :doc:`manage_limits`.
 
 .. _install_debian_step5:
 

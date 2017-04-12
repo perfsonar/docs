@@ -66,35 +66,86 @@
             
   <div class="section" id="detailed-information-and-recommendations-for-perfsonar-on-low-cost-hardware">
 <h1>Detailed Information and Recommendations for perfSONAR on Low-cost Hardware<a class="headerlink" href="#detailed-information-and-recommendations-for-perfsonar-on-low-cost-hardware" title="Permalink to this headline">¶</a></h1>
-<p>A number of folks in the perfSONAR community have been experimenting with running perfSONAR on low cost (less than $150) hardware such as the Raspberry Pi, the cubox, and the Liva. Other works experimented with a bit more expensive (about 200 Euros) hardware like GIGABYTE BRIX. In general this works well, with some caveats.</p>
+<div class="section" id="pi-class-devices">
+<h2>pi-class Devices<a class="headerlink" href="#pi-class-devices" title="Permalink to this headline">¶</a></h2>
+<p>A number of folks in the perfSONAR community have been experimenting with running perfSONAR on low cost (less than $200) hardware such as the Raspberry Pi, the cubox, and the Liva. In general this can work, with some caveats.</p>
 <ol class="arabic simple">
 <li>Time sync issues: Some low end hardware have issues with clock drift, which impacts latency measurements.</li>
 <li>CPU performance issues: current ARM processors are not able to push TCP much more than about 300Mbps. Celeron processors do better, and get around 930Mbps.</li>
 <li>None of these devices are powerful enough to run the full perfSONAR toolkit which install a measurement archive.</li>
+<li>pSchdeuler may not be suitable for use on pi-class/ARM devices.</li>
 </ol>
 <p>Instead of running an entire perfSONAR Toolkit with a local MA and a web UI and all that, these nodes are best to be run as testpoints and report their results back to a centrally configured measurement archive. The <a class="reference internal" href="install_options.html"><em>perfsonar-testpoint</em></a> bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.</p>
+</div>
+<div class="section" id="class-devices">
+<h2>$200-class devices<a class="headerlink" href="#class-devices" title="Permalink to this headline">¶</a></h2>
+<p>More stable are the small nodes closer in cost to $200, such as the Intel NUC series, Zotac Zbox ci320 (2.1GHz CPU)/ci323 (dual NIC), and various other examples available on the market as barebones small PC solutions.</p>
 <p>For installation of Ubuntu from a standard ISO, there is also a script to help autoconfigure the perfsonar repositories and get the required software setup. See the <a class="reference internal" href="low_cost_nodes_configuration.html"><em>low cost nodes configuration</em></a> section for more information.</p>
+</div>
+<div class="section" id="ru-half-depth-devices">
+<h2>1RU half-depth devices<a class="headerlink" href="#ru-half-depth-devices" title="Permalink to this headline">¶</a></h2>
+<p>Where possible server-class gear is still the best option for network measurement and monitoring. Below are example builds through SuperMicro. This should not be construed as a brand-specific endorsement/recommendation, and are merely spec guidelines for use with any vendor.</p>
+<dl class="docutils">
+<dt>Dual 1GE Spec - Cost estimate: $800.00 US</dt>
+<dd><ul class="first last simple">
+<li>MOTHERBOARD: MB SM X10SLL-F 1x Socket H3 (LGA 1150), 4x 240-pin DDR3 DIMM sockets, Intel C222 Express PCH, Su...</li>
+<li>CPU: Intel Core i3-4330 4-Core 3.5GHz 5GT/s DMI 54W Desktop Intel HD Graphics 4600 LGA 1150</li>
+<li>FAN: SM 1U SNK-P0046P Passive Heatsink Mounting Bracket (BKT-0028L Included) LGA 1155/1156</li>
+<li>MEMORY: 8GB (2) DDR3-1600 1.35V 2Rx8 ECC Un-Buffer LP PB-Free</li>
+<li>HARD DRIVE: Crucial 1100 Series 256GB 2.5&#8221; SSD</li>
+<li>CHASSIS: CASE SM 1U Chassis CSE-510-203B</li>
+<li>KIT: SM MCP-220-00044-0N Retention Bracket for up to 2x 2.5&#8221; HDD RISER RISER SM RSC-RR1U-E16 1U Left 1 x PCI-E x16</li>
+<li>SERVICE: 3 Year Cross-Ship Service &amp; Warranty</li>
+</ul>
+</dd>
+<dt>Dual 10G SFP+ Spec - Cost estimate: $1,100.00 US</dt>
+<dd><ul class="first last simple">
+<li>MOTHERBOARD: MB SM X10SLL-F 1x Socket H3 (LGA 1150), 4x 240-pin DDR3 DIMM sockets, Intel C222 Express PCH, Su...</li>
+<li>CPU: Intel Core i3-4330 4-Core 3.5GHz 5GT/s DMI 54W Desktop Intel HD Graphics 4600 LGA 1150</li>
+<li>FAN: SM 1U SNK-P0046P Passive Heatsink Mounting Bracket (BKT-0028L Included) LGA 1155/1156</li>
+<li>MEMORY: (2) 8GB DDR3-1600 1.35V 2Rx8 ECC Un-Buffer LP PB-Free</li>
+<li>NETWORK: SM AOC-STGN-i2S 2-port 10GB SFP+ PCI-Express 2.0 x8 LP</li>
+<li>HARD DRIVE: HD Crucial 1100 Series 256GB 2.5&#8221; SSD</li>
+<li>CHASSIS: CASE SM 1U Chassis CSE-510-203B</li>
+<li>KIT: SM MCP-220-00044-0N Retention Bracket for up to 2x 2.5&#8221; HDD RISER RISER SM RSC-RR1U-E16 1U Left 1 x PCI-E x16</li>
+<li>SERVICE: 3 Year Cross-Ship Service &amp; Warranty</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
 <div class="section" id="system-requirements">
-<span id="install-low-cost-nodes-sysreq"></span><h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
-<p>Most of these low cost devices seem to work best running Ubuntu. The perfsonar-testpoint bundle works on Ubuntu 14. We provide compatible Debian packages for 4 different hardware architectures:</p>
+<h1>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h1>
+<p>Pi-class devices seem to work best running Ubuntu, but the slightly larger, $200-class nodes will perform using Cnetos or Ubuntu. The perfsonar-testpoint bundle works on Centos 6 and 7, and Ubuntu 12 and 14 - Debian &#8220;Wheezy&#8221; and &#8220;Jessie&#8221;. We provide compatible Debian packages for 4 different hardware architectures:</p>
 <blockquote>
 <div><ul class="simple">
 <li>32-bit (i386)</li>
 <li>64-bit (amd64)</li>
-<li>ARMv4t and up (armel)</li>
-<li>ARMv7 and up (armhf)</li>
+<li>ARMv4t and up (armel) - not recommended</li>
+<li>ARMv7 and up (armhf) - not recommended</li>
 </ul>
 </div></blockquote>
-<p>We recommend a device with at least 1GB of RAM and 16MB of disk. Many devices will fit these requirements and more depending on your desire and ability to experiment or tinker.</p>
-<p>At this point in time, the most extensively tested platform in this category is the <a class="reference external" href="http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA_SPEC.aspx?DetailID=1560&amp;LanID=0">$100 Liva</a> and its second generation the <a class="reference external" href="http://www.ecs.com.tw/ECSWebSite/Product/Product_LIVA.aspx?DetailID=1593&amp;LanID=0">$150 Liva X</a>. Each of these is capable of full 1Gbps and work with a standard Ubuntu Desktop ISO installation.</p>
-<p>The Liva X being the second generation hardware seems to be more robust and comes pre-assembled, though a bit more expensive. Both are available for purchase on common sites such as Newegg or Amazon.</p>
+<p>$200-class devices should have at least 2GB of RAM and 16MB of disk. Processor should be quad-core with a 2.1GHz speed preferred. Many devices will fit these requirements and more depending on your desire and ability to experiment or tinker. Several brands and models of nodes have been tested running the newest perfSONAR releases. Each of these is capable of near 1Gbps and work with a number of OS releases.</p>
+<p>Raspbian and Bananian may be options for</p>
 <p>Please note that the perfSONAR team is not formally endorsing this particular product - just providing it as an example of a possible turnkey solution for users interested in that sort of thing.</p>
-</div>
 <div class="section" id="installation-instructions">
-<span id="install-low-cost-nodes-instructions"></span><h2>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
-<p>See instructions for installing the perfsonar-testpoint bundle for Debian:
+<h2>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
+<p>See instructions for installing the perfsonar-testpoint bundle:
+<a class="reference internal" href="install_centos.html"><em>Installation on CentOS</em></a>
 <a class="reference internal" href="install_debian.html"><em>Installation on Debian</em></a></p>
 <p>For installation of Ubuntu from a standard ISO, there is also a script to help autoconfigure the perfsonar repositories and get the required software setup. See the <a class="reference internal" href="low_cost_nodes_configuration.html"><em>low cost nodes configuration</em></a> section for more information.</p>
+<p>The <a class="reference internal" href="install_options.html"><em>perfsonar-testpoint</em></a> bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.</p>
+<dl class="docutils">
+<dt>Certain devices, like the Liva, with EMMC drives require use of Debian/Ubuntu desktop builds to ensure the necessary driver is in place. If the standard server ISO installations do not recognize the onboard memory, it may be worth attempting installation using the desktop ISO versions:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://releases.ubuntu.com/12.04/ubuntu-12.04.5-desktop-amd64.iso">Ubuntu 12.04.05</a> Desktop ISO installation.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="support">
+<h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
+<p>Support for low cost node installations is provided by the perfSONAR community through the usual communication channels.</p>
 </div>
 <div class="section" id="additional-information">
 <span id="install-low-cost-nodes-more-info"></span><h2>Additional information<a class="headerlink" href="#additional-information" title="Permalink to this headline">¶</a></h2>
@@ -116,8 +167,14 @@
                 
                 <ul>
 <li><a class="reference internal" href="#">Detailed Information and Recommendations for perfSONAR on Low-cost Hardware</a><ul>
-<li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li><a class="reference internal" href="#pi-class-devices">pi-class Devices</a></li>
+<li><a class="reference internal" href="#class-devices">$200-class devices</a></li>
+<li><a class="reference internal" href="#ru-half-depth-devices">1RU half-depth devices</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#system-requirements">System Requirements</a><ul>
 <li><a class="reference internal" href="#installation-instructions">Installation Instructions</a></li>
+<li><a class="reference internal" href="#support">Support</a></li>
 <li><a class="reference internal" href="#additional-information">Additional information</a></li>
 </ul>
 </li>

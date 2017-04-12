@@ -2,8 +2,8 @@
 Hardware Requirements
 *************************************
 
-The main requirements for perfSONAR are a minimum of 2 cores and 4GB of RAM.
-The clock speed of your cores depends on how fast your network is, but we recommend
+The requirements for the perfsonar-core, perfsonar-toolkit, and perfsonar-centralmanagement bundles are a minimum of 2 cores and 4GB of RAM. The perfsonar-testpoint bundle will work with 2 cores and 2GB of RAM. 
+The clock speed requirements depends on how fast your network is, but we recommend
 at least 2GHz cores in general, and 2.8GHz or higher if you want to test 10G paths.
 
 For more information see :doc:`install_hardware_details`.
@@ -27,8 +27,24 @@ Low-Cost Nodes
 ==============
 
 perfSONAR can also be run on very small cheap hardware with varying level of success.
-We do not recommend running perfSONAR on ARM-based systems such as the Raspberry Pi,
-but perfSONAR seems to work fine on Intel Celeron-based systems such as the GigaByte BRIX.
+There are a variety of perfSONAR use cases where low-end hardware may make sense. These include:
+
+- owamp receiver: the ability to respond to owamp packet loss testing only. Low end hardware such as a Raspberry Pi has been shown to work fine for this use case.
+ 
+  - note that the clock on a Raspberry Pi is not accurate for good latency/jitter measurements, but loss works fine.
+
+- portable 1G test node for ad-hoc testing (perfsonar-tools bundle): Requires two 2GHz cores and 1GB RAM
+
+  - sample hardware includes XXX
+
+- 1G Tester with perfsonar-testpoint bundle installed: Requires two 2GHz cores and 2GB RAM
+
+  - sample hardware includes XXX
+
+- perfSONAR Toolkit with a small test mesh: Requires two 2GHz cores and 4GB RAM
+
+  - sample hardware includes XXX
+
 
 For more information see :doc:`install_small_node_details`.
 

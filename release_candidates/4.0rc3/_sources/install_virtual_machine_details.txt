@@ -4,6 +4,14 @@
 Detailed Information on perfSONAR on Virtual Machines 
 ******************************************************
 
+VM Tuning
+----------
+
+See: https://fasterdata.es.net/host-tuning/virtual-machines/
+
+VM Considerations
+-----------------
+
 The paradigm of virtualized hosting environments is attractive in modern networks. However, virtualization can call into question the accuracy and stability of measurements, particularly those that are sensitive to environmental considerations on a host or operating system. perfSONAR was designed to "level the playing field" when it comes to network measurements, by removing host performance from the equation as much as possible.  The use of virtualized environments can introduce unforeseen complications into the act of measurement, which may call into question the accuracy of results. 
 
 Note that any measurement tool (e.g. OWAMP, iperf3, etc.) would need to pass through an additional two layers of control (Hypervisor and Virtual Hardware) before touching the physical network in this example. These additional layers impart several challenges:

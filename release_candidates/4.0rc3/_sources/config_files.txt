@@ -216,7 +216,7 @@ MeshConfig Agent Start-up Script
 .. _config_files-meshconfig-scripts-guiagent:
 
 MeshConfig GUI Agent Start-up Script
-#################################
+#####################################
 :Description: The script used to start/stop/restart a MeshConfig GUI Agent. This daemon builds `MaDDash configuration file <http://software.es.net/maddash/config_server.html>`_ from a downloaded central configuration file.
 :RedHat 6: ``/etc/init.d/perfsonar-meshconfig-guiagent start|stop|restart``
 :RedHat 7: ``systemctl perfsonar-meshconfig-guiagent start|stop|restart``
