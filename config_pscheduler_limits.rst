@@ -10,19 +10,18 @@ pScheduler offers the ability to control what tasks may be run, by
 whom and with what parameters.  This is achieved by writing and
 installing a *limit configuration file*.
 
-.. TODO: Write more.
 
-Commented samples may be found in
+A number of commented samples may be found in
 ``/usr/share/doc/pscheduler/limit-examples`` on systems with the
-pScheduler bundle installed.
+pScheduler bundle installed.  The limit configuration that ships with
+the perfSONAR toolkit may be found `in the toolkit sources
+<https://github.com/perfsonar/toolkit/blob/master/etc/default_service_configs/pscheduler_limits.conf>`_.
 
 
 
 ****************************
 The Limit Configuration File
 ****************************
-
-The limit configuration is stored in ``/etc/pscheduler/limits.conf``.
 
 The file is `JavaScript Object Notation <http://www.json.org>`_ (JSON)
 containing a single object with the four pairs shown here::
@@ -65,20 +64,20 @@ categories into which the requester fits.
 The ``identifiers`` section of the limit configuration contains an
 array of *identifier objects*, each containing the following pairs:
 
- - ``name`` - A string which gives the identifier a name which must be
-   unique among all identifiers.
- - ``description`` - A human-readable string describing the identifier.
- - ``type`` - A string indicating what the method to be used in
-   determining whether or not the requester should be identified in
-   this category.  (See *Identifier Types*.)
- - ``data`` - A JSON object containing ``type``-specific data used in
-   determining whether the requester should be identified in this
-   category.  (See *Identifier Types*.)
- - ``invert`` - An optional boolean value indicating whether or not
-   the identification should be inverted after evaluation (i.e.,
-   ``true`` would make a requester identify in this category when it
-   otherwise would not have done so and ``false`` would do the
-   opposite).
+- ``name`` - A string which gives the identifier a name which must be
+  unique among all identifiers.
+- ``description`` - A human-readable string describing the identifier.
+- ``type`` - A string indicating what the method to be used in
+  determining whether or not the requester should be identified in
+  this category.  (See *Identifier Types*.)
+- ``data`` - A JSON object containing ``type``-specific data used in
+  determining whether the requester should be identified in this
+  category.  (See *Identifier Types*.)
+- ``invert`` - An optional boolean value indicating whether or not
+  the identification should be inverted after evaluation (i.e.,
+  ``true`` would make a requester identify in this category when it
+  otherwise would not have done so and ``false`` would do the
+  opposite).
 
 For example::
 
@@ -155,12 +154,12 @@ make identifications.
 
 Its ``data`` is an object containing the following pairs:
 
- - ``hint`` - The name of the hint to be checked.  Valid hints are
-     ``requester``, a string containing the IP address of the host
-     making the request, and ``server``, a string containing the IP
-     address of the interface on the local system where the request
-     arrived.
- - ``match`` - A ``StringMatch`` object.  (See *Standard Objects*.)
+- ``hint`` - The name of the hint to be checked.  Valid hints are
+    ``requester``, a string containing the IP address of the host
+    making the request, and ``server``, a string containing the IP
+    address of the interface on the local system where the request
+    arrived.
+- ``match`` - A ``StringMatch`` object.  (See *Standard Objects*.)
 
 For example::
 
@@ -189,7 +188,7 @@ address of the host making a request falls into any of a list of
 
 Its ``data`` is an object containing the following pairs:
 
- - ``cidrs`` - A list of IPv4 or IPv6 CIDR blocks.
+- ``cidrs`` - A list of IPv4 or IPv6 CIDR blocks.
 
 For example::
 
@@ -220,20 +219,20 @@ periodically updates it.
 
 Its ``data`` is an object containing the following pairs:
 
- - ``source`` - A string containing a URL from which the list should
-   be downloaded.  The format of the downloaded data is a plain text
-   list of individual IPs or CIDRs separated by newlines.  Empty lines
-   or those beginning with a pound sign (``#``) are treated as
-   comments and ignored.
- - ``update`` - An ISO 8601 duration indicating how often the limit
-   processor should attempt to retrieve a new copy of the list from
-   the ``source``.
- - ``retry`` - An ISO 8601 duration indicating how often the limit
-   processor should attempt to retrieve a new copy of the list should
-   the initial download or an update result in a failure.
- - ``fail-state`` - A boolean value indicating whether or not the
-   identifer should identify all requesters when the CIDR list is not
-   been successfully retrieved.
+- ``source`` - A string containing a URL from which the list should
+  be downloaded.  The format of the downloaded data is a plain text
+  list of individual IPs or CIDRs separated by newlines.  Empty lines
+  or those beginning with a pound sign (``#``) are treated as
+  comments and ignored.
+- ``update`` - An ISO 8601 duration indicating how often the limit
+  processor should attempt to retrieve a new copy of the list from
+  the ``source``.
+- ``retry`` - An ISO 8601 duration indicating how often the limit
+  processor should attempt to retrieve a new copy of the list should
+  the initial download or an update result in a failure.
+- ``fail-state`` - A boolean value indicating whether or not the
+  identifer should identify all requesters when the CIDR list is not
+  been successfully retrieved.
 
 Note that this identifier will continue to use the list it last
 successfully downloaded until an update can be successfully retrieved.
@@ -271,13 +270,13 @@ requester's address is in Team Cymru's `Bogon Refernce List
 
 Its ``data`` is an object containing the following pairs:
 
- - ``exclude`` - A list of IP addresses and CIDR blocks that should
-   not be treated as bogons even if they are on Team Cymru's list.
- - ``timeout`` - An ISO 8601 duration indicating how long the
-   identifier should try to get an answer before giving up.
- - ``fail-result`` - A boolean value indicating whether or not the
-   identifer should identify all requesters as bogons when a
-   definitive answer cannot be found.
+- ``exclude`` - A list of IP addresses and CIDR blocks that should
+  not be treated as bogons even if they are on Team Cymru's list.
+- ``timeout`` - An ISO 8601 duration indicating how long the
+  identifier should try to get an answer before giving up.
+- ``fail-result`` - A boolean value indicating whether or not the
+  identifer should identify all requesters as bogons when a
+  definitive answer cannot be found.
 
 
 Note that this identifier uses the `Domain Name Service
@@ -320,9 +319,9 @@ it against a pattern.
 
 Its ``data`` is an object containing the following pairs:
 
- - ``match`` - A ``StringMatch`` object.  (See *Standard Objects*.)
- - ``timeout`` - An ISO 8601 duration indicating how long the
-   identifier should try to get an answer before giving up.
+- ``match`` - A ``StringMatch`` object.  (See *Standard Objects*.)
+- ``timeout`` - An ISO 8601 duration indicating how long the
+  identifier should try to get an answer before giving up.
 
 As a security measure, the fully-qualified domain name found during
 reverse resolution will be forward-resolved to an IP which must match
@@ -386,13 +385,13 @@ simple groups containing a list of one or more identifiers.
 The ``classifiers`` section of the limit configuration contains an
 array of *classifier objects*, each containing the following pairs:
 
- - ``name`` - A string which gives the identifier a name which must be
-   unique among all classifiers.  To avoid confusion, it is
-   recommended, but not required, that classifier names and identifier
-   names do not overlap.
- - ``description`` - A human-readable string describing the classifier.
- - ``identifiers`` - An array of strings indicating what identifiers
-   should be part of the classifier.
+- ``name`` - A string which gives the identifier a name which must be
+  unique among all classifiers.  To avoid confusion, it is
+  recommended, but not required, that classifier names and identifier
+  names do not overlap.
+- ``description`` - A human-readable string describing the classifier.
+- ``identifiers`` - An array of strings indicating what identifiers
+  should be part of the classifier.
 
 For example::
 
@@ -437,21 +436,21 @@ restrictions) or *fails* (i.e., it did not).
 The ``limits`` section of the limit configuration is nearly identical
 to the ``identifiers`` section and contains the following pairs:
 
- - ``name`` - A string which gives the limit a name which must be
-   unique among all limits.
- - ``description`` - A human-readable string describing the limit.
- - ``clone`` - A string naming another limit that should be used as a
-   starting point for this one.
- - ``type`` - If the limit was not cloned from another, a string
-   indicating what the type of limit to be checked.  (See *Limit
-   Types*.)
- - ``data`` - A JSON object containing ``type``-specific data used in
-   determining whether the task meets this limit.  (See *Limit
-   Types*.)
- - ``invert`` - An optional boolean value indicating whether or not
-   the result should be inverted after evaluation (i.e., ``true``
-   would pass a limit that would otherwise have failed and ``false``
-   would do the opposite).
+- ``name`` - A string which gives the limit a name which must be
+  unique among all limits.
+- ``description`` - A human-readable string describing the limit.
+- ``clone`` - A string naming another limit that should be used as a
+  starting point for this one.
+- ``type`` - If the limit was not cloned from another, a string
+  indicating what the type of limit to be checked.  (See *Limit
+  Parameter Types*.)
+- ``data`` - A JSON object containing ``type``-specific data used in
+  determining whether the task meets this limit.  (See *Limit
+  Parameter Types*.)
+- ``invert`` - An optional boolean value indicating whether or not
+  the result should be inverted after evaluation (i.e., ``true``
+  would pass a limit that would otherwise have failed and ``false``
+  would do the opposite).
 
 For example::
 
@@ -531,8 +530,8 @@ in its ``data``.
 
 Its ``data`` is an object containing the following pair:
 
- - ``pass`` - A boolean indicating whether or not the limit will pass
-   or fail.
+- ``pass`` - A boolean indicating whether or not the limit will pass
+  or fail.
 
 
 For example::
@@ -557,11 +556,11 @@ run falls within a specified range.
 
 Its ``data`` is an object containing the following pairs:
 
- - ``start`` - An ISO 8601 timestamp specifying the start of the range.
- - ``end`` - An ISO 8601 timestamp specifying the end of the range.
- - ``overlap`` - A boolean which, if ``true``, will let the limit pass
-   if the run's time range overlaps the specified range but does not
-   fall completely within it.
+- ``start`` - An ISO 8601 timestamp specifying the start of the range.
+- ``end`` - An ISO 8601 timestamp specifying the end of the range.
+- ``overlap`` - A boolean which, if ``true``, will let the limit pass
+  if the run's time range overlaps the specified range but does not
+  fall completely within it.
 
 Note that this limits of this type are not evaluated and will be
 considered to have passed when determining whether a task will be
@@ -590,15 +589,15 @@ range for a run matches those specified.
 Its ``data`` is an object containing the following pairs.  The format
 of the pairs is described below.
 
- - ``year`` - The years in which the run will happen.
- - ``month`` - The months in which the run will happen, numbered from ``1`` to ``12``.
- - ``day`` - The days of the month in which the run will happen, numbered from ``1`` to ``31``.
- - ``weekday`` - The days of the week in which the run will happen,
-   numbered from ``1`` (Monday) to ``7`` (Sunday) according to
-   ISO 8601.
- - ``hour`` - The hours in which the run will happen, numbered from ``0`` to ``23``
- - ``minute`` - The minutes in which the run will happen, numbered from ``0`` to ``59``.
- - ``minute`` - The seconds in which the run will happen, numbered from ``0`` to ``59``.
+- ``year`` - The years in which the run will happen.
+- ``month`` - The months in which the run will happen, numbered from ``1`` to ``12``.
+- ``day`` - The days of the month in which the run will happen, numbered from ``1`` to ``31``.
+- ``weekday`` - The days of the week in which the run will happen,
+  numbered from ``1`` (Monday) to ``7`` (Sunday) according to
+  ISO 8601.
+- ``hour`` - The hours in which the run will happen, numbered from ``0`` to ``23``
+- ``minute`` - The minutes in which the run will happen, numbered from ``0`` to ``59``.
+- ``minute`` - The seconds in which the run will happen, numbered from ``0`` to ``59``.
 
 All pairs are optional.
 
@@ -606,8 +605,8 @@ Each pair consists of a key (e.g., ``month``) and an array of
 individual numbers or ranges.  Each range is an object containing the
 following pairs:
 
- - ``lower`` - An integer specifying the lower end of the range.
- - ``upper`` - An integer specifying the upper end of the range.
+- ``lower`` - An integer specifying the lower end of the range.
+- ``upper`` - An integer specifying the upper end of the range.
 
 Note that this limits of this type are not evaluated and will be
 considered to have passed when determining whether a task will be
@@ -638,16 +637,16 @@ a template containing acceptable values.
 
 Its ``data`` is an object containing the following pairs:
 
- - ``test`` - A string specifying the test type.  Proposed tests not
-   of this type will fail this limit.
- - ``limit`` - A JSON object consisting of pairs for each test
-   parameter.  The key used for each pair will match one of the test's
-   parameters, which match the names of the command-line interface's
-   long-form option switches.  (A list for a given test can be
-   retrieved by running ``pscheduler task TEST-NAME --help``, where
-   ``TEST-NAME`` is the name of the test.)  The value and the value is
-   a limit of the appropriate type for that parameter.  See *Limit
-   Types* for further details.
+- ``test`` - A string specifying the test type.  Proposed tests not
+  of this type will fail this limit.
+- ``limit`` - A JSON object consisting of pairs for each test
+  parameter.  The key used for each pair will match one of the test's
+  parameters, which match the names of the command-line interface's
+  long-form option switches.  (A list for a given test can be
+  retrieved by running ``pscheduler task TEST-NAME --help``, where
+  ``TEST-NAME`` is the name of the test.)  The value and the value is
+  a limit of the appropriate type for that parameter.  See *Limit
+  Types* for further details.
 
 For example::
 
@@ -676,8 +675,8 @@ list of test types.
 
 Its ``data`` is an object containing the following pair:
 
- - ``types`` - An array of strings to be compared in deciding whether
-   or not the limit passes.
+- ``types`` - An array of strings to be compared in deciding whether
+  or not the limit passes.
 
 For example::
 
@@ -706,21 +705,21 @@ can happen.
 
 Each limit application is a JSON object consisting of the following:
 
- - ``description`` - A human-readable string describing what the application does.
- - ``classifier`` - A string naming a classifier to which the
-   application should be applied.
- - ``apply`` - An array of *limit requirements* (described in detail
-   in *Applying Limit Requirements*, below), all of which must be
-   satisfied for the application to have passed.
- - ``invert`` - A boolean indicating that the application's result
-   should be inverted (i.e., an application that passes should be
-   treated as if it failed and one that fails should be treated as if
-   it passed).
- - ``stop-on-failure`` - A boolean indicating that if an application
-   does not pass, the task or run should be denied without evaluating
-   any further applications in the list.  This us useful for
-   short-circuiting the process of denying requests you do not wish to
-   service.
+- ``description`` - A human-readable string describing what the application does.
+- ``classifier`` - A string naming a classifier to which the
+  application should be applied.
+- ``apply`` - An array of *limit requirements* (described in detail
+  in *Applying Limit Requirements*, below), all of which must be
+  satisfied for the application to have passed.
+- ``invert`` - A boolean indicating that the application's result
+  should be inverted (i.e., an application that passes should be
+  treated as if it failed and one that fails should be treated as if
+  it passed).
+- ``stop-on-failure`` - A boolean indicating that if an application
+  does not pass, the task or run should be denied without evaluating
+  any further applications in the list.  This us useful for
+  short-circuiting the process of denying requests you do not wish to
+  service.
 
 The system will evaluate each application in sequence.  (This process
 is described in detail in *Applying Limit Requirements*, below.)  If
@@ -779,20 +778,20 @@ Applying Limit Requirements
 
 Each limit requirement is a JSON object containing the following:
 
- - ``limits`` - An array of strings naming one or more limits to be
-   considered when deciding if this limit requirement passes.
- - ``require`` - A string specifying how many of the requirement's
-   limits must pass for the requirement to be considered met.  Valid
-   values are:
+- ``limits`` - An array of strings naming one or more limits to be
+  considered when deciding if this limit requirement passes.
+- ``require`` - A string specifying how many of the requirement's
+  limits must pass for the requirement to be considered met.  Valid
+  values are:
 
-  - ``none`` - Consider the requirement met if none of the limits
-    passes.
-  - ``one`` - Consider the requirement met if exactly one of the
-    limits passes.
-  - ``any`` - Consider the requirement met if at least one of the
-    limits passes.
-  - ``all`` - Consider the requirement met only if all of the limits
-    pass.
+ - ``none`` - Consider the requirement met if none of the limits
+   passes.
+ - ``one`` - Consider the requirement met if exactly one of the
+   limits passes.
+ - ``any`` - Consider the requirement met if at least one of the
+   limits passes.
+ - ``all`` - Consider the requirement met only if all of the limits
+   pass.
 
 
 
@@ -841,7 +840,7 @@ and must be readable by the ``pscheduler`` user.  The recommended file
 attributes are owner ``root``, group ``pscheduler`` and permissions
 `0644`.
 
-The pScheduler server will automatically detect changes to the limit
+pScheduler server automatically detect changes to the limit
 configuration and put them into effect upon the arrival of the first
 request that requires checking limits or 15 seconds, whichever is
 longer.  Changes to the limit file are noted in the pScheduler log
@@ -863,18 +862,222 @@ This section describes standard JSON objects used in the limit configuration.
 
 Content in this section is forthcoming.
 
-.. TODO: StringMatch
+-----------------------------------------------
+``StringMatch`` - String Matching Specification
+-----------------------------------------------
+
+``StringMatch`` is a JSON object containing the following pairs:
+
+
+- ``style`` - A string specifying what type of matching should be
+  done with the ``match`` string (see below).  Valid values are:
+
+ - ``exact`` - The compared string must be exactly equal to ``match``.
+ - ``contains`` - The ``match`` string must be contained somewhere
+   within the compared string.
+ - ``regex`` - The compared string must match the `Python 2 regular
+   expression
+   <https://docs.python.org/2/library/re.html#regular-expression-syntax>`_
+   specified in ``match``.
+
+- ``match`` - The string to be matched, subject to the specified ``style``.
+
+For example, this ``StringMatch`` looks for an empty string or one
+containing a vowel::
+
+    {
+        "style": "regex",
+        "match": "(^$|[aeiou])"
+    }
 
 
 
-***********
-Limit Types
-***********
 
-This section describes standard types used objects used by the
-``test`` limit.
 
-Content in this section is forthcoming.
+*********************
+Limit Parameter Types
+*********************
 
-.. TODO: Write this.  See jsonval.py.
+This section describes standard types of objects used by the ``test``
+limit.
 
+.. TODO: These need to be alphabetized.
+
+
+-------------------------------------
+``Boolean`` - Compares Boolean Values
+-------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``match`` - A boolean value (``true`` or ``false``) to be matched
+
+For example::
+
+    {
+        "match": false
+    }
+
+
+------------------------------------------
+``Cardinal`` - Compares One-Based Integers
+------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``range`` - A range of ``Cardinal`` values to be matched.
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "range": { "lower": 5, "upper": 8 }
+    }
+
+--------------------------------------------------------
+``CardinalList`` - Compares a List of One-Based Integers
+--------------------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``match`` - A list of ``Cardinal`` values to be matched.
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "match": [ 2, 4, 6, 8 ]
+    }
+
+
+-----------------------------------------------
+``CardinalZero`` - Compares Zero-Based Integers
+-----------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``range`` - A range of ``CardinalZero`` values to be matched.
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "range": { "lower": 0, "upper": 19 }
+    }
+
+-------------------------------------------------------------
+``CardinalZeroList`` - Compares a List of Zero-Based Integers
+-------------------------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``match`` - A list of ``CardinalZero`` values to be matched.
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "match": [ 0, 2, 4, 6, 8 ]
+    }
+
+
+------------------------------------------
+``Duration`` - Compares ISO 8601 Durations
+------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``range`` - A range of ``Duration`` values to be matched.
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "range": { "lower": "PT15S", "upper": "PT1M" }
+    }
+
+
+--------------------------------------------------------
+``SINumber`` - Compares Ranges of Integers with SI Units
+--------------------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``range`` - A range of ``SINumber`` values to be matched.
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "range": { "lower": "600K", "upper": "5G" }
+    }
+
+
+---------------------------------------------------
+``IPVersion`` - Compares Internet Protocol Versions
+---------------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``match`` - An IP version to be matched
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "match": 6
+    }
+
+
+-----------------------------------------------------------
+``IPVersionList`` - Compares a List of IP Protocol Versions
+-----------------------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``enumeration`` - A list of ``IPVersion`` values to be matched.
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "enumeration": [ 4, 6 ]
+    }
+
+
+----------------------------------------------------------
+``Probability`` - Compares Ranges of Decimal Probabilities
+----------------------------------------------------------
+
+- ``description`` - An optional human-readable description.
+- ``range`` - A range of ``Probability`` values to be matched.
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "range": { "lower": 0.25, "upper": 1.0 }
+    }
+
+
+-----------------------------
+``String`` - Compares Strings
+-----------------------------
+
+- ``description`` - An optional human-readable description.
+- ``match`` - A ``StringMatch`` object.  (See *Standard Objects*, above.)
+- ``invert`` - An optional Boolean indicating that the result should
+  be negated.
+
+For example::
+
+    {
+        "match": {
+            style": "regex",
+            "match": "platypus",
+            "invert": true
+        }
+    }
+
+Note that it is possible to have ``invert`` in both the limit and the
+``match`` ``StringMatch`` object.
