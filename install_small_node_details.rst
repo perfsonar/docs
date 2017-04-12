@@ -75,8 +75,6 @@ See instructions for installing the perfsonar-testpoint bundle:
 :doc:`install_centos`
 :doc:`install_debian`
 
-For installation of Ubuntu from a standard ISO, there is also a script to help autoconfigure the perfsonar repositories and get the required software setup. See the :doc:`low cost nodes configuration <low_cost_nodes_configuration>` section for more information.
-
 The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.
 
 Certain devices, like the Liva, with EMMC drives require use of Debian/Ubuntu desktop builds to ensure the necessary driver is in place. If the standard server ISO installations do not recognize the onboard memory, it may be worth attempting installation using the desktop ISO versions:
