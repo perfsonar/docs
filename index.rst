@@ -13,6 +13,18 @@ Getting Started
     
    intro_about
 
+.. _index-planning:
+
+Planning for Installation
+-------------------------
+.. toctree::
+   :maxdepth: 1
+   
+   install_hardware
+   install_small_node_details
+   install_options
+   
+   
 .. _index-installation:
 
 Installation
@@ -20,8 +32,6 @@ Installation
 .. toctree::
    :maxdepth: 1
    
-   install_hardware
-   install_options
    install_toolkit
    install_centos
    install_debian
