@@ -110,5 +110,8 @@ Test parameters may be changed on the fly by adding them to the command line aft
 Pausing Tasks
 ------------------
 
+Resuming Tasks
+------------------
+
 Canceling Tasks
 ------------------

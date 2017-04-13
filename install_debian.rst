@@ -1,6 +1,6 @@
-**********************
-Installation on Debian
-**********************
+***********************************
+Bundle Installation on Debian
+***********************************
 
 perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for five different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
