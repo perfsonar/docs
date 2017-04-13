@@ -18,9 +18,7 @@ subdirectory.
 This directory holds files containing additional command-line switches
 to be provided to the four pScheduler daemons at startup.
 
-**There should be no need to alter these files under most
- circumstances.  Please consult the development team before doing
- so.**
+**There should be no need to alter these files under most circumstances.  Please consult the development team before doing  so.**
 
 
 
@@ -33,8 +31,7 @@ for the PostgreSQL database used by the daemons to store persistent
 data.  These are generated randomly when the pScheduler server is
 installed and during upgrades.
 
-**There should be no need to alter these files, and doing so will
- cause pScheduler to malfunction.**
+**There should be no need to alter these files, and doing so will cause pScheduler to malfunction.**
 
 
 
@@ -77,5 +74,4 @@ The content of the files will vary on a per-tool basis, and each will
 contain commentary explaining the purpose and format of each
 configurable item.
 
-**There should be no need to alter these files under most
- circumstances.**
+**There should be no need to alter these files under most circumstances.**
