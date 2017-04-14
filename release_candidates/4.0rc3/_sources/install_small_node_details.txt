@@ -1,8 +1,8 @@
 :orphan:
 
-****************************************************************************
-Detailed Information and Recommendations for perfSONAR on Low-cost Hardware 
-****************************************************************************
+*********************************
+perfSONAR on Low-cost Hardware 
+*********************************
 
 pi-class Devices
 ================
@@ -48,9 +48,8 @@ Dual 10G SFP+ Spec - Cost estimate: $1,100.00 US
   * SERVICE: 3 Year Cross-Ship Service & Warranty
 
 
-*******************
 System Requirements
-*******************
+===================
 
 Pi-class devices seem to work best running Ubuntu, but the slightly larger, $200-class nodes will perform using Centos or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on Centos 6 and 7, and Ubuntu 12 and 14 - Debian "Wheezy" and "Jessie". We provide compatible Debian packages for 4 different hardware architectures:
 
