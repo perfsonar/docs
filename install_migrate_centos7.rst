@@ -18,7 +18,7 @@ Migration Process
 
         /usr/lib/perfsonar/scripts/ps-migrate-backup.sh ~/ps-backup.tgz
 
-    * *Option 2:* Alternatively, if you also wish to migrate the measurement archive databases add the `--data` paremeter. Please note, **this may take several minutes to several hours depending on the amount of data in your measurement archive**::
+    * *Option 2:* Alternatively, if you also wish to migrate the measurement archive databases add the `--data` parameter. Please note, **this may take several minutes to several hours depending on the amount of data in your measurement archive**::
 
         /usr/lib/perfsonar/scripts/ps-migrate-backup.sh --data ~/ps-backup.tgz
 
@@ -58,5 +58,5 @@ If for your own purposes you need/desire to use a new address on a host you shou
     - The most likely configuration file where you will see your local address is in */etc/perfsonar/meshconfig-agent-tasks.conf*. In particular the following two cases:
     
         #. If it is running tests defined by a remote mesh configuration. In this case the perfsonar-meshconfig-agent will overwrite the definitions when it runs (defaults to every hour or on service restart) so you are not strictly required to manually update it. 
-        #. It may also contain the address or interface name if you explicitly selected it through the Tookit GUI or manually defined tests. If this is the case, the manual definitions will need to be updated manually by replacing the old address with the new.
+        #. It may also contain the address or interface name if you explicitly selected it through the Toolkit GUI or manually defined tests. If this is the case, the manual definitions will need to be updated manually by replacing the old address with the new.
     - By default, perfSONAR does not insert the local address in any files, but there are a number of advanced options that may contain it if manually set. If you are unsure, it may be a good idea to run `grep -r OLDADDRESS /etc/perfsonar` where `OLDADDRESS` is the previous IP address, hostname or interface you are looking to replace. Generally you should be safe to manually update any references you find. 

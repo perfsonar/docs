@@ -11,7 +11,7 @@ For more information see :doc:`install_hardware_details`.
 Virtual Machines
 ================
 
-In general we do not recommend running perfSONAR on a VM unless you have a way to guarantee a certian amount of NIC bandwidth 
+In general we do not recommend running perfSONAR on a VM unless you have a way to guarantee a certain amount of NIC bandwidth 
 for the perfSONAR VM. Otherwise its very hard to interpret the results. But if a VM is your only option, perfSONAR can still 
 be quite helpful for troubleshooting.
 

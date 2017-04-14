@@ -16,7 +16,7 @@ The `pscheduler task` command is the primary way from the command-line to create
 The Basics
 ----------
 
-The simplest task that can be run is a one-shot test with no special options, such as this one which conducts a round-trip time (*rtt*) test betwen the local host and *www.perfsonar.net*, then displays the results::
+The simplest task that can be run is a one-shot test with no special options, such as this one which conducts a round-trip time (*rtt*) test between the local host and *www.perfsonar.net*, then displays the results::
 
     pscheduler task rtt --dest www.perfsonar.net
 

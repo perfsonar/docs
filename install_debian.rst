@@ -27,7 +27,7 @@ System Requirements
 
 * See the general :ref:`install_options_sysreq` for hardware requirements and more.
 
-.. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generaly come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
+.. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
 
 .. _install_debian_installation:
 
@@ -166,7 +166,7 @@ If you would like to configure the rules manually, then please review the `docum
     The `perfsonar-toolkit-security` package uses `firewalld` to manage the firewall rules.
 
 Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files ``bwctl-server.limits`` and ``pscheduler/limits.conf``. 
-ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and cofigure pScheduler and
+ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and
 bwctl to use it are described on the page :doc:`manage_limits`.
 
 Note that the `perfsonar-toolkit-security` package is automatically included in the `perfsonar-toolkit` bundle.
