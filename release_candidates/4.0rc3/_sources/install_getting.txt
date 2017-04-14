@@ -1,6 +1,9 @@
 ****************************
-Getting the Toolkit Software
+Getting the Software
 ****************************
+
+Toolkit
+---------
 
 .. _GettingChooseInstall:
 
@@ -39,6 +42,6 @@ Downloads
 
 .. |centos_fullinstall_when|  replace:: Use this in cases where the installation host has limited to no network connectivity to the CentOS and perfSONAR download servers. Be aware that this installation type may result in outdated packages initially and updates may be impossible if external network connectivity is not available even after the initial install. 
 
-Alternative installation methods
-================================
+Bundles
+--------------------
 We now also provide some alternative installation methods based on bundles where only a subset of the perfSONAR toolkit is installed.  These bundles offer more flexibility in your installation options and are also supported on a wider OS selection.  See :doc:`install_options` for details.

@@ -2,15 +2,25 @@
 Updating perfSONAR
 ********************
 
-Just like any other host on your network, it is critical to stay up-to-date with the latest packages on your perfSONAR Toolkit. You will want to make sure you have the latest security fixes as well as the ability to take advantage of the great new features constantly being added to the tools. In general you will keep your host up-to-date with the operating system's package manager (e.g. yum), but in some special cases things may be more involved. Be sure to watch release notes and this page when such cases arise.
+Just like any other host on your network, it is critical to stay up-to-date with the latest packages on your perfSONAR Toolkit. You will want to make sure you have the latest security fixes as well as the ability to take advantage of the great new features constantly being added to the tools. In general you will keep your host up-to-date with the operating system's package manager (e.g. yum or apt), but in some special cases things may be more involved. Be sure to watch release notes and this page when such cases arise.
 
-Manually Updating with Yum
-==========================
-Anytime you want to manually update your host, simply run the following::
+Manually Updating with Yum or APT
+=================================
+Anytime you want to manually update your host, simply run the following
     
+*CentOS*::
     yum update
     
-The *yum* package manager is used by RedHat-based operating systems like CentOS to update packages. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.
+*Debian*::
+    apt-get update
+    apt-get upgrade
+    
+The *yum* package manager is used by RedHat-based operating systems like CentOS to update packages, *apt* is used by Debian-based OS. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.
+
+On Debian systems use the following commands::
+
+    apt-get update
+    apt-get upgrade
 
 .. _manage_update-auto:
 
@@ -42,6 +52,11 @@ You may enable auto updates from the command-line by enabling/disabling the yum-
   
     systemctl enable yum-cron
     systemctl start yum-cron
+
+*Debian/Ubuntu*::
+
+    apt-get install unattended-upgrades
+    /usr/lib/perfsonar/scripts/system_environment/enable_auto_updates new
     
 Likewise, you may disable auto-updates from the command-line by running the following:
 
@@ -55,8 +70,18 @@ Likewise, you may disable auto-updates from the command-line by running the foll
     systemctl stop yum-cron
     systemctl disable yum-cron
 
+*Debian/Ubuntu*::
+
+    apt-get purge unattended-upgrades
+    rm -f /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
+
+*CentOS*:
+
 These commands will automatically update **all packages** on the system. Also note that the main configuration file for auto-updates lives at */etc/yum*. See the yum-cron man page or the page `here <http://fedoraproject.org/wiki/AutoUpdates>`_ for more information on using auto-updates and advanced options like excluding packages from update. Also see :ref:`manage_update-auto-disable`. 
 
+*Debian/Ubuntu*:
+
+This configuration enables automatic updates for `Debian security updates <https://www.debian.org/security/>`_ and perfSONAR packages.
 
 .. _manage_update-auto-gui:
 
@@ -83,9 +108,12 @@ Disabling Automatic Updates for perfSONAR Packages
 --------------------------------------------------
 The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file **/etc/yum.repos.d/Internet2.repo** with the option **enabled** set to **0**. 
 
+For Debian/Ubuntu systems, please refer to :ref:`manage_update-auto-cli`.
+
 .. note:: If you are running against one of our testing repositories you may also need to update the files **/etc/yum.repos.d/Internet2-staging.repo** and **/etc/yum.repos.d/Internet2-nightly.repo**.
 
+To disable the automatic updating of perfSONAR packages on Debian delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
 
 Special Upgrade Notes
 =====================
-* perfSONAR 4.0 can run on both CentOS 6 and CentOS 7. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`.
+* perfSONAR 4.0 can run on both CentOS 6 and CentOS 7 (and Ubuntu). If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`.

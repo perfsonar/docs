@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="perfSONAR Toolkit 4.0rc3 documentation" href="index.html" />
     <link rel="next" title="OWAMP Server Configuration File" href="config_owamp.html" />
-    <link rel="prev" title="pScheduler Configuration Files" href="config_pscheduler.html" /> 
+    <link rel="prev" title="Configuring pScheduler" href="config_pscheduler.html" /> 
   </head>
   <body role="document">
     <header>
@@ -58,7 +58,7 @@
           <a href="config_owamp.html" title="OWAMP Server Configuration File"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="config_pscheduler.html" title="pScheduler Configuration Files"
+          <a href="config_pscheduler.html" title="Configuring pScheduler"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
       </ul>
@@ -79,22 +79,22 @@
 <p>pScheduler offers the ability to control what tasks may be run, by
 whom and with what parameters.  This is achieved by writing and
 installing a <em>limit configuration file</em>.</p>
-<p>Commented samples may be found in
+<p>A number of commented samples may be found in
 <code class="docutils literal"><span class="pre">/usr/share/doc/pscheduler/limit-examples</span></code> on systems with the
-pScheduler bundle installed.</p>
+pScheduler bundle installed.  The limit configuration that ships with
+the perfSONAR toolkit may be found <a class="reference external" href="https://github.com/perfsonar/toolkit/blob/master/etc/default_service_configs/pscheduler_limits.conf">in the toolkit sources</a>.</p>
 </div>
 <div class="section" id="the-limit-configuration-file">
 <h2>The Limit Configuration File<a class="headerlink" href="#the-limit-configuration-file" title="Permalink to this headline">¶</a></h2>
-<p>The limit configuration is stored in <code class="docutils literal"><span class="pre">/etc/pscheduler/limits.conf</span></code>.</p>
 <p>The file is <a class="reference external" href="http://www.json.org">JavaScript Object Notation</a> (JSON)
 containing a single object with the four pairs shown here:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;#&quot;</span><span class="p">:</span> <span class="s2">&quot;Skeletal pScheduler limit configuration&quot;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;#&quot;</span><span class="p">:</span> <span class="s">&quot;Skeletal pScheduler limit configuration&quot;</span><span class="p">,</span>
 
-    <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
-    <span class="s2">&quot;classifications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
-    <span class="s2">&quot;limits&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
-    <span class="s2">&quot;applications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
+    <span class="s">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s">&quot;classifications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s">&quot;limits&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s">&quot;applications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -103,10 +103,10 @@ containing a single object with the four pairs shown here:</p>
 <h3>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h3>
 <p>All JSON read by pScheduler supports in-line commenting by ignoring
 any pair whose key begins with a pound sign (<code class="docutils literal"><span class="pre">#</span></code>):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;#&quot;</span><span class="p">:</span> <span class="s2">&quot;This is a comment.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;#This&quot;</span><span class="p">:</span> <span class="s2">&quot;is also a comment.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;This&quot;</span><span class="p">:</span> <span class="s2">&quot;#is not a comment.&quot;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;#&quot;</span><span class="p">:</span> <span class="s">&quot;This is a comment.&quot;</span><span class="p">,</span>
+    <span class="s">&quot;#This&quot;</span><span class="p">:</span> <span class="s">&quot;is also a comment.&quot;</span><span class="p">,</span>
+    <span class="s">&quot;This&quot;</span><span class="p">:</span> <span class="s">&quot;#is not a comment.&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -115,13 +115,12 @@ any pair whose key begins with a pound sign (<code class="docutils literal"><spa
 </div>
 <div class="section" id="identifiers-who-s-asking">
 <h2>Identifiers:  <em>Who&#8217;s Asking?</em><a class="headerlink" href="#identifiers-who-s-asking" title="Permalink to this headline">¶</a></h2>
-<p>The first phase of vetting a task request is <em>idenification</em>, where
+<p>The first phase of vetting a task or run is <em>idenification</em>, where
 attributes of the arriving request are used to create a list of narrow
 categories into which the requester fits.</p>
 <p>The <code class="docutils literal"><span class="pre">identifiers</span></code> section of the limit configuration contains an
 array of <em>identifier objects</em>, each containing the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">name</span></code> - A string which gives the identifier a name which must be
 unique among all identifiers.</li>
 <li><code class="docutils literal"><span class="pre">description</span></code> - A human-readable string describing the identifier.</li>
@@ -137,9 +136,8 @@ the identification should be inverted after evaluation (i.e.,
 otherwise would not have done so and <code class="docutils literal"><span class="pre">false</span></code> would do the
 opposite).</li>
 </ul>
-</div></blockquote>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>{
+<div class="highlight-python"><div class="highlight"><pre>{
     &quot;identifiers&quot;: [
         {
             &quot;name&quot;: &quot;partners-bio&quot;,
@@ -174,25 +172,25 @@ opposite).</li>
 <p>The <code class="docutils literal"><span class="pre">always</span></code> identifier unconditionally identifies every requester,
 useful in catch-alls.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an empty object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>There are exactly two useful configurations of this identifier:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;everybody&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An identifier that identifies every requester&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;everybody&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;An identifier that identifies every requester&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;always&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;nobody&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An identifier that identifies no requesters&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">},</span>
-    <span class="s2">&quot;invert&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;nobody&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;An identifier that identifies no requesters&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;always&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">},</span>
+    <span class="s">&quot;invert&quot;</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -202,8 +200,7 @@ useful in catch-alls.</p>
 <p>The <code class="docutils literal"><span class="pre">hint</span></code> identifier matches information about the requester to
 make identifications.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pairs:</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">hint</span></code> - The name of the hint to be checked.  Valid hints are</dt>
 <dd><p class="first last"><code class="docutils literal"><span class="pre">requester</span></code>, a string containing the IP address of the host
@@ -216,16 +213,15 @@ arrived.</p>
 <li><p class="first"><code class="docutils literal"><span class="pre">match</span></code> - A <code class="docutils literal"><span class="pre">StringMatch</span></code> object.  (See <em>Standard Objects</em>.)</p>
 </li>
 </ul>
-</div></blockquote>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;internal&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving on our internal-facing interface&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;hint&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;exact&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="s2">&quot;198.51.100.23&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;internal&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests arriving on our internal-facing interface&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;hint&quot;</span><span class="p">:</span> <span class="s">&quot;server&quot;</span><span class="p">,</span>
+        <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;style&quot;</span><span class="p">:</span> <span class="s">&quot;exact&quot;</span><span class="p">,</span>
+            <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="s">&quot;198.51.100.23&quot;</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -240,24 +236,22 @@ address of the host making a request falls into any of a list of
 &lt;https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&gt;`_</cite>
 (CIDR) blocks.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">cidrs</span></code> - A list of IPv4 or IPv6 CIDR blocks.</li>
 </ul>
-</div></blockquote>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;partners&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Networks used by research partners&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cidr-list&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;cidrs&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">&quot;203.0.113.62&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;192.168.19.0/24&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;192.168.84.0/24&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;2001:db8::1234&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;fc00:1bad:cafe::/48&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;fc00:dead:beef::/48&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;partners&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Networks used by research partners&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;ip-cidr-list&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;cidrs&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">&quot;203.0.113.62&quot;</span><span class="p">,</span>
+            <span class="s">&quot;192.168.19.0/24&quot;</span><span class="p">,</span>
+            <span class="s">&quot;192.168.84.0/24&quot;</span><span class="p">,</span>
+            <span class="s">&quot;2001:db8::1234&quot;</span><span class="p">,</span>
+            <span class="s">&quot;fc00:1bad:cafe::/48&quot;</span><span class="p">,</span>
+            <span class="s">&quot;fc00:dead:beef::/48&quot;</span>
             <span class="p">]</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -270,8 +264,7 @@ address of the host making a request falls into any of a list of
 <code class="docutils literal"><span class="pre">ip-cidr-list</span></code> but downloads the list of CIDRs from a URL and
 periodically updates it.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">source</span></code> - A string containing a URL from which the list should
 be downloaded.  The format of the downloaded data is a plain text
 list of individual IPs or CIDRs separated by newlines.  Empty lines
@@ -287,27 +280,26 @@ the initial download or an update result in a failure.</li>
 identifer should identify all requesters when the CIDR list is not
 been successfully retrieved.</li>
 </ul>
-</div></blockquote>
 <p>Note that this identifier will continue to use the list it last
 successfully downloaded until an update can be successfully retrieved.</p>
 <p>For example, this identifier downloads ESNet&#8217;s list of CIDRs for
 research and education networks, updates it daily with four-hour
 retries on failure and excludes the private networks defined by RFC
 1918:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;r-and-e&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests from research and education networks&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cidr-list-url&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;http://stats.es.net/sample_configs/pscheduler/ren&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="s2">&quot;P1D&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;retry&quot;</span><span class="p">:</span> <span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">&quot;10.0.0.0/8&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;172.16.0.0/12&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;192.168.0.0/16&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;r-and-e&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests from research and education networks&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;ip-cidr-list-url&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;source&quot;</span><span class="p">:</span> <span class="s">&quot;http://stats.es.net/sample_configs/pscheduler/ren&quot;</span><span class="p">,</span>
+        <span class="s">&quot;update&quot;</span><span class="p">:</span> <span class="s">&quot;P1D&quot;</span><span class="p">,</span>
+        <span class="s">&quot;retry&quot;</span><span class="p">:</span> <span class="s">&quot;PT4H&quot;</span><span class="p">,</span>
+        <span class="s">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">&quot;10.0.0.0/8&quot;</span><span class="p">,</span>
+            <span class="s">&quot;172.16.0.0/12&quot;</span><span class="p">,</span>
+            <span class="s">&quot;192.168.0.0/16&quot;</span>
         <span class="p">],</span>
-        <span class="s2">&quot;fail-state&quot;</span><span class="p">:</span> <span class="n">false</span>
+        <span class="s">&quot;fail-state&quot;</span><span class="p">:</span> <span class="n">false</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -318,8 +310,7 @@ retries on failure and excludes the private networks defined by RFC
 <p>The <code class="docutils literal"><span class="pre">ip-cymru-bogon</span></code> identifier determines whether or not the
 requester&#8217;s address is in Team Cymru&#8217;s <a class="reference external" href="http://www.team-cymru.org/bogon-reference.html">Bogon Refernce List</a>.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">exclude</span></code> - A list of IP addresses and CIDR blocks that should
 not be treated as bogons even if they are on Team Cymru&#8217;s list.</li>
 <li><code class="docutils literal"><span class="pre">timeout</span></code> - An ISO 8601 duration indicating how long the
@@ -328,7 +319,6 @@ identifier should try to get an answer before giving up.</li>
 identifer should identify all requesters as bogons when a
 definitive answer cannot be found.</li>
 </ul>
-</div></blockquote>
 <p>Note that this identifier uses the <a class="reference external" href="http://www.team-cymru.org/bogon-reference-dns.html">Domain Name Service</a> to check
 whether or not an address is in the list, and therefore its use
 requires that the host be able to resolve hosts on the public
@@ -338,18 +328,18 @@ access to the internet is not required.</p>
 excludes three of the RFC1918 blocks, gives up after one second and
 does not identify the requester as a bogon if a definitive answer
 cannot be found:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bogons&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving from bogon/martian addresses&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cymru-bogon&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">&quot;10.10.0.0/16&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;192.168.86.0/24&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;192.168.99.0/24&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;bogons&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests arriving from bogon/martian addresses&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;ip-cymru-bogon&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">&quot;10.10.0.0/16&quot;</span><span class="p">,</span>
+            <span class="s">&quot;192.168.86.0/24&quot;</span><span class="p">,</span>
+            <span class="s">&quot;192.168.99.0/24&quot;</span>
         <span class="p">],</span>
-        <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1S&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;fail-result&quot;</span><span class="p">:</span> <span class="n">false</span>
+        <span class="s">&quot;timeout&quot;</span><span class="p">:</span> <span class="s">&quot;PT1S&quot;</span><span class="p">,</span>
+        <span class="s">&quot;fail-result&quot;</span><span class="p">:</span> <span class="n">false</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -361,29 +351,27 @@ cannot be found:</p>
 requester&#8217;s IP address to a fully-qualified domain name and matches
 it against a pattern.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">match</span></code> - A <code class="docutils literal"><span class="pre">StringMatch</span></code> object.  (See <em>Standard Objects</em>.)</li>
 <li><code class="docutils literal"><span class="pre">timeout</span></code> - An ISO 8601 duration indicating how long the
 identifier should try to get an answer before giving up.</li>
 </ul>
-</div></blockquote>
 <p>As a security measure, the fully-qualified domain name found during
 reverse resolution will be forward-resolved to an IP which must match
 that of the requester.</p>
 <p>For example, this identifier determines whether or not the incoming
 requester&#8217;s fully-qualified domain name falls within <code class="docutils literal"><span class="pre">example.org</span></code>,
 giving up after two seconds:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;example-dot-org&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving from example.org IPs&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-reverse-dns&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;regex&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">.example</span><span class="se">\\</span><span class="s2">.org$&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;example-dot-org&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests arriving from example.org IPs&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;ip-reverse-dns&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;style&quot;</span><span class="p">:</span> <span class="s">&quot;regex&quot;</span><span class="p">,</span>
+            <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="s">&quot;</span><span class="se">\\</span><span class="s">.example</span><span class="se">\\</span><span class="s">.org$&quot;</span>
         <span class="p">},</span>
-        <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="s2">&quot;PT2S&quot;</span>
+        <span class="s">&quot;timeout&quot;</span><span class="p">:</span> <span class="s">&quot;PT2S&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -394,17 +382,17 @@ giving up after two seconds:</p>
 <p>The <code class="docutils literal"><span class="pre">localif</span></code> identifier determines whether or not the requester&#8217;s
 IP address is bound to an interface on the local system.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an empty object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;local-requester&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving from local interfaces&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;localif&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;local-requester&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests arriving from local interfaces&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;localif&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -418,8 +406,7 @@ them into broader categories called <em>classifiers</em>.  Classifiers are
 simple groups containing a list of one or more identifiers.</p>
 <p>The <code class="docutils literal"><span class="pre">classifiers</span></code> section of the limit configuration contains an
 array of <em>classifier objects</em>, each containing the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">name</span></code> - A string which gives the identifier a name which must be
 unique among all classifiers.  To avoid confusion, it is
 recommended, but not required, that classifier names and identifier
@@ -428,9 +415,8 @@ names do not overlap.</li>
 <li><code class="docutils literal"><span class="pre">identifiers</span></code> - An array of strings indicating what identifiers
 should be part of the classifier.</li>
 </ul>
-</div></blockquote>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>{
+<div class="highlight-python"><div class="highlight"><pre>{
     ...
     &quot;classifiers&quot;: [
         {
@@ -465,8 +451,7 @@ either <em>passes</em> (i.e., the task parameters fell within the limit&#8217;s
 restrictions) or <em>fails</em> (i.e., it did not).</p>
 <p>The <code class="docutils literal"><span class="pre">limits</span></code> section of the limit configuration is nearly identical
 to the <code class="docutils literal"><span class="pre">identifiers</span></code> section and contains the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">name</span></code> - A string which gives the limit a name which must be
 unique among all limits.</li>
 <li><code class="docutils literal"><span class="pre">description</span></code> - A human-readable string describing the limit.</li>
@@ -474,18 +459,17 @@ unique among all limits.</li>
 starting point for this one.</li>
 <li><code class="docutils literal"><span class="pre">type</span></code> - If the limit was not cloned from another, a string
 indicating what the type of limit to be checked.  (See <em>Limit
-Types</em>.)</li>
+Parameter Types</em>.)</li>
 <li><code class="docutils literal"><span class="pre">data</span></code> - A JSON object containing <code class="docutils literal"><span class="pre">type</span></code>-specific data used in
 determining whether the task meets this limit.  (See <em>Limit
-Types</em>.)</li>
+Parameter Types</em>.)</li>
 <li><code class="docutils literal"><span class="pre">invert</span></code> - An optional boolean value indicating whether or not
 the result should be inverted after evaluation (i.e., <code class="docutils literal"><span class="pre">true</span></code>
 would pass a limit that would otherwise have failed and <code class="docutils literal"><span class="pre">false</span></code>
 would do the opposite).</li>
 </ul>
-</div></blockquote>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>{
+<div class="highlight-python"><div class="highlight"><pre>{
     ...
     &quot;limits&quot;: [
         {
@@ -554,19 +538,17 @@ would do the opposite).</li>
 <p>The <code class="docutils literal"><span class="pre">pass-fail</span></code> limit will either pass or fail depending on a value
 in its <code class="docutils literal"><span class="pre">data</span></code>.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pair:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">pass</span></code> - A boolean indicating whether or not the limit will pass
 or fail.</li>
 </ul>
-</div></blockquote>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;never&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Fail to pass&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;pass-fail&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;pass&quot;</span><span class="p">:</span> <span class="n">false</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;never&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Fail to pass&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;pass-fail&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;pass&quot;</span><span class="p">:</span> <span class="n">false</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -577,23 +559,24 @@ or fail.</li>
 <p>The <code class="docutils literal"><span class="pre">run-daterange</span></code> limit tests to see whether the time range for a
 run falls within a specified range.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">start</span></code> - An ISO 8601 timestamp specifying the start of the range.</li>
 <li><code class="docutils literal"><span class="pre">end</span></code> - An ISO 8601 timestamp specifying the end of the range.</li>
 <li><code class="docutils literal"><span class="pre">overlap</span></code> - A boolean which, if <code class="docutils literal"><span class="pre">true</span></code>, will let the limit pass
 if the run&#8217;s time range overlaps the specified range but does not
 fall completely within it.</li>
 </ul>
-</div></blockquote>
+<p>Note that this limits of this type are not evaluated and will be
+considered to have passed when determining whether a task will be
+allowed on the system.</p>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;summer-2017&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The summer of 2017&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;run-daterange&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-06-21T00:00:00&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-09-22T23:59:59&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;summer-2017&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;The summer of 2017&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;run-daterange&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;start&quot;</span><span class="p">:</span> <span class="s">&quot;2017-06-21T00:00:00&quot;</span><span class="p">,</span>
+        <span class="s">&quot;end&quot;</span><span class="p">:</span> <span class="s">&quot;2017-09-22T23:59:59&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -605,8 +588,7 @@ fall completely within it.</li>
 range for a run matches those specified.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pairs.  The format
 of the pairs is described below.</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">year</span></code> - The years in which the run will happen.</li>
 <li><code class="docutils literal"><span class="pre">month</span></code> - The months in which the run will happen, numbered from <code class="docutils literal"><span class="pre">1</span></code> to <code class="docutils literal"><span class="pre">12</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">day</span></code> - The days of the month in which the run will happen, numbered from <code class="docutils literal"><span class="pre">1</span></code> to <code class="docutils literal"><span class="pre">31</span></code>.</li>
@@ -617,19 +599,19 @@ ISO 8601.</li>
 <li><code class="docutils literal"><span class="pre">minute</span></code> - The minutes in which the run will happen, numbered from <code class="docutils literal"><span class="pre">0</span></code> to <code class="docutils literal"><span class="pre">59</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">minute</span></code> - The seconds in which the run will happen, numbered from <code class="docutils literal"><span class="pre">0</span></code> to <code class="docutils literal"><span class="pre">59</span></code>.</li>
 </ul>
-</div></blockquote>
 <p>All pairs are optional.</p>
 <p>Each pair consists of a key (e.g., <code class="docutils literal"><span class="pre">month</span></code>) and an array of
 individual numbers or ranges.  Each range is an object containing the
 following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">lower</span></code> - An integer specifying the lower end of the range.</li>
 <li><code class="docutils literal"><span class="pre">upper</span></code> - An integer specifying the upper end of the range.</li>
 </ul>
-</div></blockquote>
+<p>Note that this limits of this type are not evaluated and will be
+considered to have passed when determining whether a task will be
+allowed on the system.</p>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>{
+<div class="highlight-python"><div class="highlight"><pre>{
     &quot;name&quot;: &quot;not-in-maint-window&quot;,
     &quot;description&quot;: &quot;Outside weekly maintenance windows (Wed &amp; Sun, 2 and 4-8 a.m.)&quot;,
     &quot;type&quot;: &quot;run-schedule&quot;,
@@ -648,18 +630,20 @@ following pairs:</p>
 <p>The <code class="docutils literal"><span class="pre">test</span></code> limit compares the parameters of a proposed test against
 a template containing acceptable values.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pairs:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">test</span></code> - A string specifying the test type.  Proposed tests not
 of this type will fail this limit.</li>
 <li><code class="docutils literal"><span class="pre">limit</span></code> - A JSON object consisting of pairs for each test
 parameter.  The key used for each pair will match one of the test&#8217;s
-parameters.  The value and the value is a limit of the appropriate
-type for that parameter.  See <em>Limit Types</em> for further details.</li>
+parameters, which match the names of the command-line interface&#8217;s
+long-form option switches.  (A list for a given test can be
+retrieved by running <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span> <span class="pre">TEST-NAME</span> <span class="pre">--help</span></code>, where
+<code class="docutils literal"><span class="pre">TEST-NAME</span></code> is the name of the test.)  The value and the value is
+a limit of the appropriate type for that parameter.  See <em>Limit
+Types</em> for further details.</li>
 </ul>
-</div></blockquote>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>{
+<div class="highlight-python"><div class="highlight"><pre>{
     &quot;name&quot;: &quot;throughput-udp&quot;,
     &quot;description&quot;: &quot;Limits for UDP throughput tests&quot;,
     &quot;type&quot;: &quot;test&quot;,
@@ -679,19 +663,17 @@ type for that parameter.  See <em>Limit Types</em> for further details.</li>
 <p>The <code class="docutils literal"><span class="pre">test-type</span></code> limit compares the type of the proposed test to a
 list of test types.</p>
 <p>Its <code class="docutils literal"><span class="pre">data</span></code> is an object containing the following pair:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><code class="docutils literal"><span class="pre">types</span></code> - An array of strings to be compared in deciding whether
 or not the limit passes.</li>
 </ul>
-</div></blockquote>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;inoccuous-tests&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Tests that are harmless&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;test-type&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;types&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span> <span class="s2">&quot;latency&quot;</span><span class="p">,</span> <span class="s2">&quot;rtt&quot;</span><span class="p">,</span> <span class="s2">&quot;trace&quot;</span> <span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;inoccuous-tests&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Tests that are harmless&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;test-type&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;types&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s">&quot;idle&quot;</span><span class="p">,</span> <span class="s">&quot;latency&quot;</span><span class="p">,</span> <span class="s">&quot;rtt&quot;</span><span class="p">,</span> <span class="s">&quot;trace&quot;</span> <span class="p">]</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -699,9 +681,102 @@ or not the limit passes.</li>
 </div>
 </div>
 </div>
-<div class="section" id="applications">
-<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
-<p>This section is forthcoming.</p>
+<div class="section" id="applications-to-whom-do-we-apply-the-limits">
+<h2>Applications: <em>To Whom do We Apply the Limits?</em><a class="headerlink" href="#applications-to-whom-do-we-apply-the-limits" title="Permalink to this headline">¶</a></h2>
+<p>The final phase of vetting a task or run is determining whether or not
+its parameters make it permissible.  This is accomplished by
+evaluating a series of <em>limit applications</em>, each of which ties a
+classifier to a series of conditions which must be met before approval
+can happen.</p>
+<p>Each limit application is a JSON object consisting of the following:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - A human-readable string describing what the application does.</li>
+<li><code class="docutils literal"><span class="pre">classifier</span></code> - A string naming a classifier to which the
+application should be applied.</li>
+<li><code class="docutils literal"><span class="pre">apply</span></code> - An array of <em>limit requirements</em> (described in detail
+in <em>Applying Limit Requirements</em>, below), all of which must be
+satisfied for the application to have passed.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - A boolean indicating that the application&#8217;s result
+should be inverted (i.e., an application that passes should be
+treated as if it failed and one that fails should be treated as if
+it passed).</li>
+<li><code class="docutils literal"><span class="pre">stop-on-failure</span></code> - A boolean indicating that if an application
+does not pass, the task or run should be denied without evaluating
+any further applications in the list.  This us useful for
+short-circuiting the process of denying requests you do not wish to
+service.</li>
+</ul>
+<p>The system will evaluate each application in sequence.  (This process
+is described in detail in <em>Applying Limit Requirements</em>, below.)  If
+an application <em>passes</em> (i.e., its conditions will allow the task or
+run to happen), the task or run is permitted.  If it <em>fails</em> and
+<code class="docutils literal"><span class="pre">stop-on-failure</span></code> is <code class="docutils literal"><span class="pre">true</span></code>, it is denied.  If if fails and
+<code class="docutils literal"><span class="pre">stop-on-failure</span></code> is <code class="docutils literal"><span class="pre">false</span></code>, the next application in the list is
+evaluated.  If the end of the list is reached with no application
+having passed, the task or run is denied.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    ...
+    &quot;applications&quot;: [
+        {
+            &quot;description&quot;: &quot;Allow users on the local system to do anything&quot;,
+            &quot;classifier&quot;: &quot;local-requester&quot;,
+            &quot;apply&quot;: [
+                {
+                    &quot;require&quot;: &quot;all&quot;,
+                    &quot;limits&quot;: [ &quot;always&quot; ]
+                }
+            ]
+        },
+        {
+            &quot;description&quot;: &quot;What we allow guests to do&quot;,
+            &quot;classifier&quot;: &quot;guests&quot;,
+            &quot;apply&quot;: [
+                {
+                    &quot;require&quot;: &quot;any&quot;,
+                    &quot;limits&quot;: [
+                        &quot;innocuous-tests&quot;,
+                        &quot;guest-throughput&quot;,
+                        &quot;guest-rtt&quot;
+                    ]
+                }
+            ],
+            &quot;stop-on-failure&quot;: true
+        }
+    ]
+}
+</pre></div>
+</div>
+<p>The first application allows any requester in the <code class="docutils literal"><span class="pre">local-requester</span></code>
+classification to run anything because it applies the <code class="docutils literal"><span class="pre">always</span></code>
+limit, which always passes.  The second application alows requesters
+in the <code class="docutils literal"><span class="pre">guests</span></code> classifier be runing any of the harmless tests or a
+throughput or round-trip time test that meets predefined limits for
+guests.  Failing both of those will result in denial because the
+policy is to deny unless explicitly allowed.</p>
+<div class="section" id="applying-limit-requirements">
+<h3>Applying Limit Requirements<a class="headerlink" href="#applying-limit-requirements" title="Permalink to this headline">¶</a></h3>
+<p>Each limit requirement is a JSON object containing the following:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">limits</span></code> - An array of strings naming one or more limits to be
+considered when deciding if this limit requirement passes.</li>
+<li><code class="docutils literal"><span class="pre">require</span></code> - A string specifying how many of the requirement&#8217;s
+limits must pass for the requirement to be considered met.  Valid
+values are:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">none</span></code> - Consider the requirement met if none of the limits
+passes.</li>
+<li><code class="docutils literal"><span class="pre">one</span></code> - Consider the requirement met if exactly one of the
+limits passes.</li>
+<li><code class="docutils literal"><span class="pre">any</span></code> - Consider the requirement met if at least one of the
+limits passes.</li>
+<li><code class="docutils literal"><span class="pre">all</span></code> - Consider the requirement met only if all of the limits
+pass.</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="checking-limit-configuration-files-for-validity">
 <h2>Checking Limit Configuration Files for Validity<a class="headerlink" href="#checking-limit-configuration-files-for-validity" title="Permalink to this headline">¶</a></h2>
@@ -709,7 +784,7 @@ or not the limit passes.</li>
 verify that a limit configuration is valid during development and
 prior to installation on the system.</p>
 <p>To validate limits in a file:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>% pscheduler validate-limits valid-limits.conf
+<div class="highlight-python"><div class="highlight"><pre>% pscheduler validate-limits valid-limits.conf
 Limit configuration is valid.
 
 % pscheduler validate-limits invalid-limits.conf
@@ -717,7 +792,7 @@ Invalid limit file: At /: Additional properties are not allowed (u&#39;notvalid&
 </pre></div>
 </div>
 <p>To validate the installed configuration, become <code class="docutils literal"><span class="pre">root</span></code> and execute:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span># pscheduler validate-limits
+<div class="highlight-python"><div class="highlight"><pre># pscheduler validate-limits
 Limit configuration is valid.
 </pre></div>
 </div>
@@ -735,7 +810,7 @@ obtained by running the command <code class="docutils literal"><span class="pre"
 and must be readable by the <code class="docutils literal"><span class="pre">pscheduler</span></code> user.  The recommended file
 attributes are owner <code class="docutils literal"><span class="pre">root</span></code>, group <code class="docutils literal"><span class="pre">pscheduler</span></code> and permissions
 <cite>0644</cite>.</p>
-<p>The pScheduler server will automatically detect changes to the limit
+<p>pScheduler server automatically detect changes to the limit
 configuration and put them into effect upon the arrival of the first
 request that requires checking limits or 15 seconds, whichever is
 longer.  Changes to the limit file are noted in the pScheduler log
@@ -751,12 +826,209 @@ installed.</strong></p>
 <h2>Standard Objects<a class="headerlink" href="#standard-objects" title="Permalink to this headline">¶</a></h2>
 <p>This section describes standard JSON objects used in the limit configuration.</p>
 <p>Content in this section is forthcoming.</p>
+<div class="section" id="stringmatch-string-matching-specification">
+<h3><code class="docutils literal"><span class="pre">StringMatch</span></code> - String Matching Specification<a class="headerlink" href="#stringmatch-string-matching-specification" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">StringMatch</span></code> is a JSON object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">style</span></code> - A string specifying what type of matching should be
+done with the <code class="docutils literal"><span class="pre">match</span></code> string (see below).  Valid values are:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">exact</span></code> - The compared string must be exactly equal to <code class="docutils literal"><span class="pre">match</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">contains</span></code> - The <code class="docutils literal"><span class="pre">match</span></code> string must be contained somewhere
+within the compared string.</li>
+<li><code class="docutils literal"><span class="pre">regex</span></code> - The compared string must match the <a class="reference external" href="https://docs.python.org/2/library/re.html#regular-expression-syntax">Python 2 regular
+expression</a>
+specified in <code class="docutils literal"><span class="pre">match</span></code>.</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">match</span></code> - The string to be matched, subject to the specified <code class="docutils literal"><span class="pre">style</span></code>.</li>
+</ul>
+<p>For example, this <code class="docutils literal"><span class="pre">StringMatch</span></code> looks for an empty string or one
+containing a vowel:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;style&quot;</span><span class="p">:</span> <span class="s">&quot;regex&quot;</span><span class="p">,</span>
+    <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="s">&quot;(^$|[aeiou])&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
-<div class="section" id="id1">
-<h2>Limit Types<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>This section describes standard types used objects used by the
-<code class="docutils literal"><span class="pre">test</span></code> limit.</p>
-<p>Content in this section is forthcoming.</p>
+</div>
+</div>
+<div class="section" id="limit-parameter-types">
+<h2>Limit Parameter Types<a class="headerlink" href="#limit-parameter-types" title="Permalink to this headline">¶</a></h2>
+<p>This section describes standard types of objects used by the <code class="docutils literal"><span class="pre">test</span></code>
+limit.</p>
+<div class="section" id="boolean-compares-boolean-values">
+<h3><code class="docutils literal"><span class="pre">Boolean</span></code> - Compares Boolean Values<a class="headerlink" href="#boolean-compares-boolean-values" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">match</span></code> - A boolean value (<code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>) to be matched</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cardinal-compares-one-based-integers">
+<h3><code class="docutils literal"><span class="pre">Cardinal</span></code> - Compares One-Based Integers<a class="headerlink" href="#cardinal-compares-one-based-integers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">range</span></code> - A range of <code class="docutils literal"><span class="pre">Cardinal</span></code> values to be matched.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s">&quot;lower&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&quot;upper&quot;</span><span class="p">:</span> <span class="mi">8</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cardinallist-compares-a-list-of-one-based-integers">
+<h3><code class="docutils literal"><span class="pre">CardinalList</span></code> - Compares a List of One-Based Integers<a class="headerlink" href="#cardinallist-compares-a-list-of-one-based-integers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">match</span></code> - A list of <code class="docutils literal"><span class="pre">Cardinal</span></code> values to be matched.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span> <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cardinalzero-compares-zero-based-integers">
+<h3><code class="docutils literal"><span class="pre">CardinalZero</span></code> - Compares Zero-Based Integers<a class="headerlink" href="#cardinalzero-compares-zero-based-integers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">range</span></code> - A range of <code class="docutils literal"><span class="pre">CardinalZero</span></code> values to be matched.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s">&quot;lower&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;upper&quot;</span><span class="p">:</span> <span class="mi">19</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cardinalzerolist-compares-a-list-of-zero-based-integers">
+<h3><code class="docutils literal"><span class="pre">CardinalZeroList</span></code> - Compares a List of Zero-Based Integers<a class="headerlink" href="#cardinalzerolist-compares-a-list-of-zero-based-integers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">match</span></code> - A list of <code class="docutils literal"><span class="pre">CardinalZero</span></code> values to be matched.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span> <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="duration-compares-iso-8601-durations">
+<h3><code class="docutils literal"><span class="pre">Duration</span></code> - Compares ISO 8601 Durations<a class="headerlink" href="#duration-compares-iso-8601-durations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">range</span></code> - A range of <code class="docutils literal"><span class="pre">Duration</span></code> values to be matched.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s">&quot;lower&quot;</span><span class="p">:</span> <span class="s">&quot;PT15S&quot;</span><span class="p">,</span> <span class="s">&quot;upper&quot;</span><span class="p">:</span> <span class="s">&quot;PT1M&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sinumber-compares-ranges-of-integers-with-si-units">
+<h3><code class="docutils literal"><span class="pre">SINumber</span></code> - Compares Ranges of Integers with SI Units<a class="headerlink" href="#sinumber-compares-ranges-of-integers-with-si-units" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">range</span></code> - A range of <code class="docutils literal"><span class="pre">SINumber</span></code> values to be matched.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s">&quot;lower&quot;</span><span class="p">:</span> <span class="s">&quot;600K&quot;</span><span class="p">,</span> <span class="s">&quot;upper&quot;</span><span class="p">:</span> <span class="s">&quot;5G&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ipversion-compares-internet-protocol-versions">
+<h3><code class="docutils literal"><span class="pre">IPVersion</span></code> - Compares Internet Protocol Versions<a class="headerlink" href="#ipversion-compares-internet-protocol-versions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">match</span></code> - An IP version to be matched</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="mi">6</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ipversionlist-compares-a-list-of-ip-protocol-versions">
+<h3><code class="docutils literal"><span class="pre">IPVersionList</span></code> - Compares a List of IP Protocol Versions<a class="headerlink" href="#ipversionlist-compares-a-list-of-ip-protocol-versions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">enumeration</span></code> - A list of <code class="docutils literal"><span class="pre">IPVersion</span></code> values to be matched.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;enumeration&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span> <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="probability-compares-ranges-of-decimal-probabilities">
+<h3><code class="docutils literal"><span class="pre">Probability</span></code> - Compares Ranges of Decimal Probabilities<a class="headerlink" href="#probability-compares-ranges-of-decimal-probabilities" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">range</span></code> - A range of <code class="docutils literal"><span class="pre">Probability</span></code> values to be matched.</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s">&quot;lower&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="s">&quot;upper&quot;</span><span class="p">:</span> <span class="mf">1.0</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="string-compares-strings">
+<h3><code class="docutils literal"><span class="pre">String</span></code> - Compares Strings<a class="headerlink" href="#string-compares-strings" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal"><span class="pre">match</span></code> - A <code class="docutils literal"><span class="pre">StringMatch</span></code> object.  (See <em>Standard Objects</em>, above.)</li>
+<li><code class="docutils literal"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;match&quot;: {
+        style&quot;: &quot;regex&quot;,
+        &quot;match&quot;: &quot;platypus&quot;,
+        &quot;invert&quot;: true
+    }
+}
+</pre></div>
+</div>
+<p>Note that it is possible to have <code class="docutils literal"><span class="pre">invert</span></code> in both the limit and the
+<code class="docutils literal"><span class="pre">match</span></code> <code class="docutils literal"><span class="pre">StringMatch</span></code> object.</p>
+</div>
 </div>
 </div>
 
@@ -800,11 +1072,30 @@ installed.</strong></p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#applications">Applications</a></li>
+<li><a class="reference internal" href="#applications-to-whom-do-we-apply-the-limits">Applications: <em>To Whom do We Apply the Limits?</em></a><ul>
+<li><a class="reference internal" href="#applying-limit-requirements">Applying Limit Requirements</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#checking-limit-configuration-files-for-validity">Checking Limit Configuration Files for Validity</a></li>
 <li><a class="reference internal" href="#installing-a-limit-configuration">Installing a Limit Configuration</a></li>
-<li><a class="reference internal" href="#standard-objects">Standard Objects</a></li>
-<li><a class="reference internal" href="#id1">Limit Types</a></li>
+<li><a class="reference internal" href="#standard-objects">Standard Objects</a><ul>
+<li><a class="reference internal" href="#stringmatch-string-matching-specification"><code class="docutils literal"><span class="pre">StringMatch</span></code> - String Matching Specification</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#limit-parameter-types">Limit Parameter Types</a><ul>
+<li><a class="reference internal" href="#boolean-compares-boolean-values"><code class="docutils literal"><span class="pre">Boolean</span></code> - Compares Boolean Values</a></li>
+<li><a class="reference internal" href="#cardinal-compares-one-based-integers"><code class="docutils literal"><span class="pre">Cardinal</span></code> - Compares One-Based Integers</a></li>
+<li><a class="reference internal" href="#cardinallist-compares-a-list-of-one-based-integers"><code class="docutils literal"><span class="pre">CardinalList</span></code> - Compares a List of One-Based Integers</a></li>
+<li><a class="reference internal" href="#cardinalzero-compares-zero-based-integers"><code class="docutils literal"><span class="pre">CardinalZero</span></code> - Compares Zero-Based Integers</a></li>
+<li><a class="reference internal" href="#cardinalzerolist-compares-a-list-of-zero-based-integers"><code class="docutils literal"><span class="pre">CardinalZeroList</span></code> - Compares a List of Zero-Based Integers</a></li>
+<li><a class="reference internal" href="#duration-compares-iso-8601-durations"><code class="docutils literal"><span class="pre">Duration</span></code> - Compares ISO 8601 Durations</a></li>
+<li><a class="reference internal" href="#sinumber-compares-ranges-of-integers-with-si-units"><code class="docutils literal"><span class="pre">SINumber</span></code> - Compares Ranges of Integers with SI Units</a></li>
+<li><a class="reference internal" href="#ipversion-compares-internet-protocol-versions"><code class="docutils literal"><span class="pre">IPVersion</span></code> - Compares Internet Protocol Versions</a></li>
+<li><a class="reference internal" href="#ipversionlist-compares-a-list-of-ip-protocol-versions"><code class="docutils literal"><span class="pre">IPVersionList</span></code> - Compares a List of IP Protocol Versions</a></li>
+<li><a class="reference internal" href="#probability-compares-ranges-of-decimal-probabilities"><code class="docutils literal"><span class="pre">Probability</span></code> - Compares Ranges of Decimal Probabilities</a></li>
+<li><a class="reference internal" href="#string-compares-strings"><code class="docutils literal"><span class="pre">String</span></code> - Compares Strings</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -812,7 +1103,7 @@ installed.</strong></p>
                 <ul>
                   <li>
                   <a href="config_pscheduler.html">Previous topic</a>
-                  <ul><li><a href="config_pscheduler.html" title="previous chapter">pScheduler Configuration Files</a></li></ul>
+                  <ul><li><a href="config_pscheduler.html" title="previous chapter">Configuring pScheduler</a></li></ul>
                   </li>
                 </ul>
                   <ul>
@@ -838,7 +1129,7 @@ installed.</strong></p>
           <a href="config_owamp.html" title="OWAMP Server Configuration File"
              >next</a> |</li>
         <li class="right" >
-          <a href="config_pscheduler.html" title="pScheduler Configuration Files"
+          <a href="config_pscheduler.html" title="Configuring pScheduler"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
       </ul>
@@ -880,7 +1171,7 @@ installed.</strong></p>
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

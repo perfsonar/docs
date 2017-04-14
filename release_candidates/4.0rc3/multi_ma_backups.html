@@ -95,7 +95,7 @@
 <p>Cassandra comes with a command called <em>nodetool</em> that is capable of performing a number of administrative operations. One such operation is creating and restoring snapshots of the data. In order to make sure your cassandra server can use nodetool, login to your cassandra host(s) and do the following:</p>
 <ol class="arabic">
 <li><p class="first">Uncomment or add the following at the bottom of <em>/etc/cassandra/conf/cassandra-env.sh</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>LOCAL_JMX=yes
+<div class="highlight-python"><div class="highlight"><pre>LOCAL_JMX=yes
 
 if [ &quot;$LOCAL_JMX&quot; = &quot;yes&quot; ]; then
   JVM_OPTS=&quot;$JVM_OPTS -Dcassandra.jmx.local.port=$JMX_PORT -XX:+DisableExplicitGC&quot;
@@ -110,7 +110,7 @@ fi
 </div>
 </li>
 <li><p class="first">Restart cassandra:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service cassandra restart
+<div class="highlight-python"><div class="highlight"><pre>service cassandra restart
 </pre></div>
 </div>
 </li>
@@ -119,7 +119,7 @@ fi
 <div class="section" id="creating-the-snapshot">
 <h4>Creating the Snapshot<a class="headerlink" href="#creating-the-snapshot" title="Permalink to this headline">¶</a></h4>
 <p>You can create a snapshot of the esmond data with the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>nodetool snapshot esmond -t esmond_snapshot
+<div class="highlight-python"><div class="highlight"><pre>nodetool snapshot esmond -t esmond_snapshot
 </pre></div>
 </div>
 <p>You may use a different value for -t, it is just a label for the snapshot. If -t is not specified a Unix timestamp of the current time will be used. Assuming you use esmond_snapshot as your value for -t the command will create the following directories:</p>
@@ -136,7 +136,7 @@ fi
 <p>You may optionally want to move your back-ups to a remote server. The steps to do so are as follows:</p>
 <ol class="arabic">
 <li><p class="first">Create a tarball of the snapshot files:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>tar -czf esmond-snapshot-base_rates.tgz /var/lib/cassandra/data/esmond/base_rates/snapshots/esmond_snapshot
+<div class="highlight-python"><div class="highlight"><pre>tar -czf esmond-snapshot-base_rates.tgz /var/lib/cassandra/data/esmond/base_rates/snapshots/esmond_snapshot
 tar -czf esmond-snapshot-rate_aggregations.tgz /var/lib/cassandra/data/esmond/rate_aggregations/snapshots/esmond_snapshot
 tar -czf esmond-snapshot-raw_data.tgz /var/lib/cassandra/data/esmond/raw_data/snapshots/esmond_snapshot
 tar -czf esmond-snapshot-stat_aggregations.tgz /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot
@@ -144,7 +144,7 @@ tar -czf esmond-snapshot-stat_aggregations.tgz /var/lib/cassandra/data/esmond/st
 </div>
 </li>
 <li><p class="first">Remotely copy the files to the new server using a tool such as scp:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>scp esmond-snapshot-*.tgz user@newhost:
+<div class="highlight-python"><div class="highlight"><pre>scp esmond-snapshot-*.tgz user@newhost:
 </pre></div>
 </div>
 </li>
@@ -155,17 +155,17 @@ tar -czf esmond-snapshot-stat_aggregations.tgz /var/lib/cassandra/data/esmond/st
 <p>You may restore you files, either on a new or existing host, with the following steps:</p>
 <ol class="arabic">
 <li><p class="first">Shutdown cassandra:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service cassandra stop
+<div class="highlight-python"><div class="highlight"><pre>service cassandra stop
 </pre></div>
 </div>
 </li>
 <li><p class="first">Clear the commit logs:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>rm -f /var/lib/cassandra/commitlog/*.log
+<div class="highlight-python"><div class="highlight"><pre>rm -f /var/lib/cassandra/commitlog/*.log
 </pre></div>
 </div>
 </li>
 <li><p class="first">Delete all the the old data files:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>rm -f  /var/lib/cassandra/data/esmond/base_rates/*.db
+<div class="highlight-python"><div class="highlight"><pre>rm -f  /var/lib/cassandra/data/esmond/base_rates/*.db
 rm -f  /var/lib/cassandra/data/esmond/rate_aggregations/*.db
 rm -f  /var/lib/cassandra/data/esmond/raw_data/*.db
 rm -f  /var/lib/cassandra/data/esmond/stat_aggregations/*.db
@@ -173,7 +173,7 @@ rm -f  /var/lib/cassandra/data/esmond/stat_aggregations/*.db
 </div>
 </li>
 <li><p class="first">Copy the contents of the snapshot into the data directories (<em>NOTE: The location of the snapshot may vary if it was migrated from another host or a label other than esmond_snapshot was used</em>):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>cp /var/lib/cassandra/data/esmond/base_rates/snapshots/esmond_snapshot/* /var/lib/cassandra/data/esmond/base_rates/
+<div class="highlight-python"><div class="highlight"><pre>cp /var/lib/cassandra/data/esmond/base_rates/snapshots/esmond_snapshot/* /var/lib/cassandra/data/esmond/base_rates/
 cp /var/lib/cassandra/data/esmond/rate_aggregations/snapshots/esmond_snapshot/* /var/lib/cassandra/data/esmond/rate_aggregations/
 cp /var/lib/cassandra/data/esmond/raw_data/snapshots/esmond_snapshot/* /var/lib/cassandra/data/esmond/raw_data/
 cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* /var/lib/cassandra/data/esmond/stat_aggregations/
@@ -181,12 +181,12 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 </div>
 </li>
 <li><p class="first">Start cassandra:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service cassandra start
+<div class="highlight-python"><div class="highlight"><pre>service cassandra start
 </pre></div>
 </div>
 </li>
 <li><p class="first">Run a repair:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>nodetool repair
+<div class="highlight-python"><div class="highlight"><pre>nodetool repair
 </pre></div>
 </div>
 </li>
@@ -195,11 +195,11 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <div class="section" id="clearing-snapshots">
 <h4>Clearing snapshots<a class="headerlink" href="#clearing-snapshots" title="Permalink to this headline">¶</a></h4>
 <p>You may want to clear a snapshot because it&#8217;s too old to be useful, you&#8217;d like to delete data to which it is linked or you mistakenly created a snapshot testing the commands in the previous section. Rather than removing all the files by hand you can use a nodetool command to do so. Below is an example of how to remove the snapshot labelled esmond_snapshot in the esmond keyspace:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>nodetool clearsnapshot -t esmond_snapshot -- esmond
+<div class="highlight-python"><div class="highlight"><pre>nodetool clearsnapshot -t esmond_snapshot -- esmond
 </pre></div>
 </div>
 <p>If you want to clear all snapshots in the esmond keyspace run:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>nodetool clearsnapshot -- esmond
+<div class="highlight-python"><div class="highlight"><pre>nodetool clearsnapshot -- esmond
 </pre></div>
 </div>
 </div>
@@ -209,11 +209,11 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <div class="section" id="id1">
 <h4>Creating the Snapshot<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>You may create a snapshot of your database with the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pg_dump -F t -f esmond.tar -U esmond
+<div class="highlight-python"><div class="highlight"><pre>pg_dump -F t -f esmond.tar -U esmond
 </pre></div>
 </div>
 <p>On a Debian system you can use:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>sudo -u postgres pg_dump -F t -f esmond.tar esmond
+<div class="highlight-python"><div class="highlight"><pre>sudo -u postgres pg_dump -F t -f esmond.tar esmond
 </pre></div>
 </div>
 <p>This will create a tarball file in the current directory named esmond.tar. Note that this is a new file and though compressed, will consume additional disk space.</p>
@@ -225,18 +225,18 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <div class="section" id="moving-the-snapshot-to-a-remote-server">
 <h4>Moving the Snapshot to a Remote Server<a class="headerlink" href="#moving-the-snapshot-to-a-remote-server" title="Permalink to this headline">¶</a></h4>
 <p>Moving the snapshot to a different server is as simple using your favorite remote copy tool to move the tarball to another server. For example, using <em>scp</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>scp esmond.tar user@remote-host:
+<div class="highlight-python"><div class="highlight"><pre>scp esmond.tar user@remote-host:
 </pre></div>
 </div>
 </div>
 <div class="section" id="restoring-the-snapshot">
 <h4>Restoring the Snapshot<a class="headerlink" href="#restoring-the-snapshot" title="Permalink to this headline">¶</a></h4>
 <p>You may restore the snapshot with the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pg_restore -c -U esmond -d esmond esmond.tar
+<div class="highlight-python"><div class="highlight"><pre>pg_restore -c -U esmond -d esmond esmond.tar
 </pre></div>
 </div>
 <p>On a Debian system you can use:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>sudo -u postgres pg_restore -c -d esmond esmond.tar
+<div class="highlight-python"><div class="highlight"><pre>sudo -u postgres pg_restore -c -d esmond esmond.tar
 </pre></div>
 </div>
 <div class="admonition note">
@@ -257,12 +257,12 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <p class="last">If migrating to a server with a different architecture or operating system it is recommended you instead follow the steps in <a class="reference internal" href="#multi-ma-backups-snapshots-cassandra"><span>Cassandra Snapshots with nodetool</span></a> for creating, migrating and restoring snapshots.</p>
 </div>
 <p>By default, packaged installs of cassandra keep all data in <em>/var/lib/cassandra</em>. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your cassandra server and copying the directory to the new host. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service cassandra stop
+<div class="highlight-python"><div class="highlight"><pre>service cassandra stop
 scp -r /var/lib/cassandra user@newhost:cassandra
 </pre></div>
 </div>
 <p>You can then restore the data as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service cassandra stop
+<div class="highlight-python"><div class="highlight"><pre>service cassandra stop
 rm -rf /var/lib/cassandra/*
 mv cassandra/* /var/lib/cassandra/
 chown -R cassandra:cassandra /var/lib/cassandra/*
@@ -281,17 +281,17 @@ service cassandra start
 <p class="last">If migrating to a server with a different architecture or operating system it is recommended you instead follow the steps in <a class="reference internal" href="#multi-ma-backups-snapshots-postgresql"><span>PostgreSQL Snapshots with pg_dump and pg_restore</span></a> for creating, migrating and restoring data.</p>
 </div>
 <p>By default, packaged installs of PostgreSQL keep all data in <em>/var/lib/pgsql</em>. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your PostgreSQL server and copying the directory to the new host. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service pgsql stop
+<div class="highlight-python"><div class="highlight"><pre>service pgsql stop
 scp -r /var/lib/pgsql user@newhost:pgsql
 </pre></div>
 </div>
 <p>On a Debian system you can use:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service postgresql stop
+<div class="highlight-python"><div class="highlight"><pre>service postgresql stop
 scp -r /var/lib/postgresql user@newhost:pgsql
 </pre></div>
 </div>
 <p>You can then restore the data as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service pgsql stop
+<div class="highlight-python"><div class="highlight"><pre>service pgsql stop
 rm -rf /var/lib/pgsql/*
 mv pgsql/* /var/lib/pgsql/
 chown -R postgres:postgres /var/lib/pgsql/*
@@ -299,7 +299,7 @@ service pgsql start
 </pre></div>
 </div>
 <p>On a Debian system you can use:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>service postgresql stop
+<div class="highlight-python"><div class="highlight"><pre>service postgresql stop
 rm -rf /var/lib/postgresql/*
 mv pgsql/* /var/lib/postgresql/
 chown -R postgres:postgres /var/lib/postgresql/*
@@ -343,84 +343,84 @@ order of event_type, summary_type and then summary_window. For example, assume a
 </ol>
 <p>In this example it will choose the first policy where it matches the specific (i.e. not <code class="docutils literal"><span class="pre">*</span></code>) event type based on the preference order of the fields.</p>
 <p>A full example of a configuration file can be found below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="s2">&quot;policies&quot;</span><span class="p">:</span> <span class="p">[</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+<span class="s">&quot;policies&quot;</span><span class="p">:</span> <span class="p">[</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;365&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;365&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;86400&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;1825&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;86400&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;1825&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;histogram-owdelay&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;histogram-owdelay&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;histogram-rtt&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;histogram-rtt&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;histogram-ttl&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;histogram-ttl&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-loss-rate&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;packet-loss-rate&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-count-sent&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;packet-count-sent&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-count-lost&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;packet-count-lost&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-duplicates&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;packet-duplicates&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-reorders&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;packet-reorders&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">},</span>
 
 <span class="p">{</span>
-<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;time-error-estimates&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="s">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s">&quot;time-error-estimates&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s">&quot;*&quot;</span><span class="p">,</span>
+<span class="s">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="s">&quot;expire&quot;</span><span class="p">:</span>          <span class="s">&quot;180&quot;</span>
 <span class="p">}</span>
 
 <span class="p">]</span>
@@ -433,18 +433,18 @@ order of event_type, summary_type and then summary_window. For example, assume a
 </div>
 <p>The example contains several policies. The order of the policies is NOT significant. The first policy is a catch-all that removes anything older than 365 days if it does not match any other policies. This policy has a <code class="docutils literal"><span class="pre">*</span></code> for every value and is the least specific of a match possible. That means if any part of the other policies match, they will override the expiration of this policy. The second policy, matches all 24 hour (86400 seconds) summaries and keeps them for 5 years. Notice that it extends the life of these types of data from the default policy. The remaining policies match a specific event type and a summary window of 0 (which means unsummarized data) and expires it after 180 days (roughly 6 months). The event types all match that registered by the OWAMP tool, which writes new data every minute. Given the amount of data, this policy deletes it sooner that it would other (presumably less frequently written) data.</p>
 <p>If you would like to run the tool, you will need to first run the following if you are on CentOS/RedHat 6 to initialize Python 2.7:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>cd /usr/lib/esmond
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/lib/esmond
 source /opt/rh/python27/enable
 /opt/rh/python27/root/usr/bin/virtualenv --prompt=&quot;(esmond)&quot; .
 . bin/activate
 </pre></div>
 </div>
 <p>You can then run the tool as follows (replacing -c with your policy file):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
+<div class="highlight-python"><div class="highlight"><pre>python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
 </pre></div>
 </div>
 <p>On a Debian system you can use:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>. /etc/default/esmond
+<div class="highlight-python"><div class="highlight"><pre>. /etc/default/esmond
 export ESMOND_ROOT ESMOND_CONF
 export DJANGO_SETTINGS_MODULE=esmond.settings
 python /usr/share/esmond/util/ps_remove_data.py -c /usr/share/esmond/util/ps_remove_data.conf
@@ -576,7 +576,7 @@ python /usr/share/esmond/util/ps_remove_data.py -c /usr/share/esmond/util/ps_rem
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

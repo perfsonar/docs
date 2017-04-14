@@ -1,5 +1,5 @@
 ******************************
-Installation on CentOS 
+Bundle Installation on CentOS 
 ******************************
 
 perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit ISO (as detailed at :doc:`install_getting`) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you'd like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
@@ -61,7 +61,7 @@ Choose one of the following bundles and see :doc:`install_options` page for more
 
     yum install perfsonar-testpoint  
 
-  Additionally, you may also install the Toolkit service-watcher, ntp, security(firewall rules and sysctl packages.
+  Additionally, you may also install the Toolkit service-watcher, ntp, security (firewall rules) and sysctl packages.
 
   *Optional Packages*
 
@@ -69,14 +69,14 @@ Choose one of the following bundles and see :doc:`install_options` page for more
 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
 
-    Or, you can manually install them by running:  
+    Or, you can manually install them to your liking by running:
 
      * ``yum install perfsonar-toolkit-servicewatcher``
      * ``yum install perfsonar-toolkit-ntp``
      * ``yum install perfsonar-toolkit-security``
      * ``yum install perfsonar-toolkit-sysctl``
 
-In particular, you should install perfsonar-toolkit-ntp if you are not managing your ntp.conf file in some other manner.
+  In particular, you should install perfsonar-toolkit-ntp if you are not managing your ``ntp.conf`` file in some other manner.
 
 * **perfSONAR Core**::
 
@@ -91,7 +91,7 @@ In particular, you should install perfsonar-toolkit-ntp if you are not managing 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
 
 
-    Or, you can manually install them by running:
+    Or, you can manually install them to your liking by running:
 
        * ``yum install perfsonar-toolkit-servicewatcher``
        * ``yum install perfsonar-toolkit-ntp``
@@ -115,7 +115,7 @@ In particular, you should install perfsonar-toolkit-ntp if you are not managing 
 
 Step 3: Verify NTP and Tuning Parameters 
 ----------------------------------------- 
-*Both changes can be ignored for perfsonar-toolkit package*
+*Step 3 can be ignored for perfsonar-toolkit package installation as its instructions are included and run automatically*
 
 * **NTP Tuning**
 
@@ -133,7 +133,7 @@ Step 3: Verify NTP and Tuning Parameters
         
         systemctl restart ntpd
 
-    You can verify if NTP is running with the following command::
+  You can verify if NTP is running with the following command::
 
     /usr/sbin/ntpq -p  
 
@@ -156,7 +156,7 @@ Step 3: Verify NTP and Tuning Parameters
 .. _install_centos_step4:
 
 Step 4: Firewall and Security Considerations 
---------------------------------------------- 
+-------------------------------------------- 
 **Package Install**
 
 If you have installed the perfsonar-toolkit-security package, then you can configure the firewalld / IPTable entries by running::
@@ -168,24 +168,26 @@ The package also installs fail2ban.
 
 Or, if you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files bwctl-server.limits and pscheduler/limits.conf. 
+Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files ``bwctl-server.limits`` and ``pscheduler/limits.conf``. 
 ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and cofigure pScheduler and
 bwctl to use it are described on the page :doc:`manage_limits`.
 
 Note that the perfsonar-toolkit-security package is automatically included in the perfsonar-toolkit bundle.
 
-Step 5: Install Auto updates
-----------------------------
+.. _install_centos_step5:
+
+Step 5: Auto updates
+--------------------
 
 You can also enable yum ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this follow the steps in :ref:`manage_update-auto-cli`.
 
 .. note:: Automatic updates are enabled by default in the perfSONAR Toolkit.
 
-.. _install_centos_step5:
+.. _install_centos_step6:
 
 Step 6: Service Watcher
 ------------------------
-The perfsonar-toolkit-servicewatcher installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
+The ``perfsonar-toolkit-servicewatcher`` installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
 
 The install automatically configures cron to run the service_watcher regularly.
 
@@ -193,7 +195,7 @@ To run the script manually, run::
 
   /usr/lib/perfsonar/scripts/service_watcher
 
-.. _install_centos_step6:
+.. _install_centos_step7:
 
 Step 7: Register your services 
 ------------------------------- 
@@ -215,7 +217,7 @@ and the other entries (administrator_email, site_name, city, country, latitude, 
 
 In the example above remove the leading ``#`` before external_address and external_address_if_name respectively. Also replace *myhost.mydomain.example* and *eth0* with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the RPM install. 
 
-.. _install_centos_step7:
+.. _install_centos_step8:
 
 Step 8: Starting your services 
 ------------------------------- 
