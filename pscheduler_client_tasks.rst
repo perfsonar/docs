@@ -2,12 +2,16 @@
 Creating and Managing Tasks
 ***************************************
 
+.. _pscheduler_client_tasks-taskcmd:
+
 The `task` command
 -------------------
 
 The `pscheduler task` command is the primary way from the command-line to create new pScheduler :term:`tasks<task>`. It takes the following form::
 
     pscheduler task [ TASK_OPTIONS ] TEST_TYPE TEST_OPTIONS
+
+.. _pscheduler_client_tasks-basics:
 
 The Basics
 ----------
@@ -23,6 +27,8 @@ The ``task`` command has a set of its own options that go before the test type. 
     pscheduler task --quiet rtt --dest www.perfsonar.net
 
 .. note:: You can get a full listing of supported task options by running ``pscheduler task --help``. Likewise you can get a full listing of test-specific options by running ``pscheduler task TEST_TYPE --help`` where ``TEST_TYPE`` is replaced with the type of test you want to run.
+
+.. _pscheduler_client_tasks-otherhosts:
 
 Running Tests from Other Hosts
 ------------------------------
@@ -42,6 +48,8 @@ By default, the ``pscheduler`` command will assume there is a pScheduler server 
 The assist server could just as easily be ``host2`` or ``host3`` if they are also running pScheduler servers. It does not matter where the assist server is as long as it a) has a pScheduler server and b) has the test plugin installed for the type of test you want to run. 
 
 
+.. _pscheduler_client_tasks-tools:
+
 Selecting Tool(s) for Tasks
 ---------------------------
 
@@ -60,6 +68,8 @@ This will specify that the ``tracepath`` tool should be used for running the tes
     pscheduler task --tool tracepath --tool paris-traceroute trace --dest www.perfsonar.net
 
 Whether or not tools are specified, a task where no available tool is capable of making the measurement will be rejected.
+
+.. _pscheduler_client_tasks-repeating:
 
 Repeating Tasks
 ------------------
@@ -83,9 +93,26 @@ It is strongly recommended that repeating tasks apply as much slip as is tolerab
 
 Repeating tasks can be stopped using the ``cancel`` command.
 
+.. _pscheduler_client_tasks-archiving:
+
 Archiving Tasks
 ------------------
+You can tell the ``pscheduler`` command to send results to an :term:`archiver` using the ``--archive`` switch. The definition you give the archiver can take two forms:
 
+    #. A filename starting with the @ symbol that points at a file containing a JSON archiver specification.
+    #. A string literal of the JSON archiver specification
+
+For example, the *perfsonar-core* and *perfsonar-toolkit* bundles install a special file at */usr/share/pscheduler/psc-archiver-esmond.json* with an archiver specification for writing to the locally running esmond instance. You could then use that file to publish a *trace* test (or any other test) to the local MA instance with the following command::
+
+    pscheduler task --archive @/usr/share/pscheduler/psc-archiver-esmond.json trace --dest www.perfsonar.net
+    
+Alternatively, you could use a JSON string to accomplish the same as follows (replacing ``abc123`` with the API key used for your esmond instance) ::
+
+    pscheduler task --archive '{"archiver": "esmond","data":{"url":"http://localhost/esmond/perfsonar/archive/","_auth-token": "abc123"}}' trace --dest www.perfsonar.net
+ 
+For more information on different archivers and their specifications, see :doc:`pscheduler_ref_archivers`.
+ 
+.. _pscheduler_client_tasks-exporting:
 
 Exporting tasks to JSON
 ------------------------
@@ -95,6 +122,8 @@ The JSON version of a task specification can be sent to the standard output with
     pscheduler task --export throughput --dest wherever --udp --ip-version 6 > mytask.json
 
 **NOTE:**  Tasks are not validated until submitted for scheduling, so it is possible to export invalid tasks.
+
+.. _pscheduler_client_tasks-importing:
 
 Importing tasks from JSON
 --------------------------
@@ -107,11 +136,41 @@ Test parameters may be changed on the fly by adding them to the command line aft
 
     pscheduler task --import mytask.json throughput --dest somewhere.else
 
+.. _pscheduler_client_tasks-pausing:
+
 Pausing Tasks
 ------------------
+You can pause a pscheduler task so that any scheduled runs will not be executed until the task is :ref:`resumed<pscheduler_client_tasks-resuming>`. It takes the following form::
+    
+    pscheduler pause TASK_URL
+
+The ``TASK_URL`` is the full URL of the task to be paused and should have been output by the ``pscheduler task`` command when a task was submitted. Any runs that would have occurred while in the paused state will be marked as missed. A full example is shown below::
+
+    pscheduler pause https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
+
+.. _pscheduler_client_tasks-resuming:
 
 Resuming Tasks
 ------------------
+You can resume a previously :ref:`paused<pscheduler_client_tasks-pausing>` pscheduler task so that its runs will again be executed. It takes the following form::
+    
+    pscheduler resume TASK_URL
 
+The ``TASK_URL`` is the full URL of the task to be resumed and should have been output by the ``pscheduler task`` command when a task was submitted. Future runs will be carried-out normally after being resumed. A full example is shown below::
+
+    pscheduler resume https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
+
+.. _pscheduler_client_tasks-canceling:
+ 
 Canceling Tasks
 ------------------
+You may cancel a task with the ``pscheduler cancel`` command which takes the following form::
+    
+    pscheduler cancel TASK_URL
+    
+The ``TASK_URL`` is the full URL of the task to be canceled and should have been output by the ``pscheduler task`` command when a task was submitted. This command cancels any future runs of the task specified. Any run of the task which is underway will continue to completion. The task will still be in the database but will be marked as disabled. This means you will still be able to query results of runs completed prior to cancellation but no new results will be generated. A full example of the command is shown below::
+
+    pscheduler cancel https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
+    
+
+

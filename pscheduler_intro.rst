@@ -9,14 +9,6 @@ pScheduler is responsible for managing the execution of network measurements, or
 
 Terminology
 ===========
-
-Other terms needed:
-
-    - assists server
-    - lead participant
-    - schedule horizon
-    - limits
-    
 .. glossary::
     :sorted:
 
@@ -41,6 +33,19 @@ Other terms needed:
     Archiver
         Software that transfers :term:`results<result>` to long-term storage or elsewhere for further processing.
     
+    Limits
+        Rules that define who is allowed to run what type of tests
+    
+    Schedule Horizon
+        The amount ahead of time that pScheduler puts a run on the schedule.
+    
+    Assist Server
+        A pScheduler server that accepts a test specification and can return the :term:`lead participant`. The assist server may or may not be involved in the test specified, it's role is simply to tell you the lead where the task should be submitted. By default the assist server is always the local host.
+    
+    Lead Participant
+        The pScheduler server where a task should be submitted. It will become responsible for contacting other participants, making scheduling decisions based on gathered information and archiving results. 
+    
+    
 
 Benefits
 ============
@@ -55,29 +60,26 @@ In addition to these foundational features, perhaps pScheduler greatest asset is
     
 The remainder of this document provides some basic information on pScheduler and pointers to more detailed information where applicable. 
 
-How It Works
-=============
-*These are just notes for andy, want to fill this out and add some diagrams*
-
-Creating a task:
-    * Client send task to assist server to determine lead participant
-    * Client sends request to lead participant
-    * Lead participant determines other participants
-    * Lead submits tasks to other participants, they check against limits and find common tool
-    * Task created
-
-Scheduling runs:
-    * After a task is created , run is scheduled. lead takes charge
-    * Lead determine run needs to be scheduled. Done by looking at task interval and comparing what's already scheduled to time horizon.
-    * Lead gathers schedule during time window (determined by slip option) and finds common time. Will choose earliest common time or randomly choose one if randslip is set
-    * Submits to participants for final approval
-    * Run created
-    
-Executing Run:
-    * When time comes up pscheduler runs given tool
-    * Result reported and stored in pscheduler
-    * Client may poll result at this point
-    * May also be pushed to archiver where it can be sent somewhere else
+..    NOTE: This is a section i would like to add but not sure there will be time. needs diagrams and fleshing of outline below/
+..    How It Works
+..    =============
+..    Creating a task:
+..        * Client send task to assist server to determine lead participant
+..        * Client sends request to lead participant
+..        * Lead participant determines other participants
+..        * Lead submits tasks to other participants, they check against limits and find common tool
+..        * Task created
+..    Scheduling runs:
+..        * After a task is created , run is scheduled. lead takes charge
+..        * Lead determine run needs to be scheduled. Done by looking at task interval and comparing what's already scheduled to time horizon.
+..        * Lead gathers schedule during time window (determined by slip option) and finds common time. Will choose earliest common time or randomly choose one if randslip is set
+..        * Submits to participants for final approval
+..        * Run created  
+..    Executing Run:
+..        * When time comes up pscheduler runs given tool
+..        * Result reported and stored in pscheduler
+..        * Client may poll result at this point
+..        * May also be pushed to archiver where it can be sent somewhere else
 
 Basic Command-Line Client Usage
 ================================
