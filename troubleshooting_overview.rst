@@ -1,89 +1,155 @@
-******************************
-Troubleshooting perfSONAR 
-******************************
+=========================
+Troubleshooting perfSONAR
+=========================
 
-(page under construction!)
-
+(Page under construction.)
 
 This page contains some hints on how to troubleshoot perfSONAR 4.0 and later.
 
-1.  Confirm that pScheduler on the local system is functioning:
-::
+******
+System
+******
 
-   pscheduler ping localhost
+-------
+SELinux
+-------
+
+Check that SELinux is disabled or in permissive mode::
+
+    getenforce
+
+If SELinux is in Enforcing mode, change it to permissive and make the
+change permanent::
+
+    setenforce Permissive
+    sed -i -e 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+
+
+
+
+**********
+pScheduler
+**********
+
+------------------------
+pScheduler on Local Host
+------------------------
+
+Confirm that pScheduler on the local system is functioning::
+
+    pscheduler ping localhost
+
+Check that pScheduler on the local system isn't reporting problems::
+
+    fgrep ' ERROR ' /var/log/pscheduler/pscheduler.log
+
+Run basic tests on the local system::
+
    pscheduler task idle --duration PT2S
    pscheduler task rtt --dest 127.0.0.1
 
-2.  Make sure SElinux is set to ``permissive`` or ``disabled``: 
 
-    To disable SElinux, run::
 
-        echo 0 >/selinux/enforce
+--------------------------
+pScheduler on Remote Hosts
+--------------------------
 
-    To make it permanently in the ``permissive`` mode, run::
+Confirm that pScheduler on the other host (``REMOTE-HOST``) is
+reachable and working::
 
-        sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+    pscheduler ping REMOTE-HOST
 
-3.  Confirm firewall settings are correct by running some tests from the command line.
-::
+Run basic tests to the other host (the first test requires that TCP
+ports 5890-5899 be open on that system)::
 
-   pscheduler task throughput --dest receive_host -source send_host   
-   pscheduler task rtt --source send_host --dest receive_host
-   pscheduler task trace --source send_host --dest receive_host
+    pscheduler task trace --dest REMOTE-HOST
+    pscheduler task rtt --dest REMOTE-HOST
+    pscheduler task simplestream --dest REMOTE-HOST
+    pscheduler task throughput --bandwidth 1M --dest REMOTE-HOST
 
-Also try reversing source/dest for all of these.
+Run the same tests in the opposite direction (from ``REMOTE-HOST`` to ``LOCAL-HOST``)::
 
-4. Make sure pscheduler is behaving properly by looking for ERRORs in ``/var/log/pscheduler.log``
+    pscheduler task trace --source REMOTE-HOST --dest LOCAL-HOST
+    pscheduler task rtt --source REMOTE-HOST --dest LOCAL-HOST
+    pscheduler task simplestream --source REMOTE-HOST --dest LOCAL-HOST
+    pscheduler task throughput --bandwidth 1M --source REMOTE-HOST --dest LOCAL-HOST
 
-To enable additional logging, run (as the pscheduler or root user):
-::
 
-   pscheduler debug on  
-   or
-   pscheduler debug on runner scheduler  
 
-To enable debug mode for these components only
+---------------------
+Checking the Schedule
+---------------------
 
-If you are missing results, it can be helpful to look closer into what the scheduler is doing.
-Some useful commands include:
+If results are missing, looking at the pScheduler's timeline of runs
+(the *schedule*) can be useful.
 
-Look at the schedule in real time:
-::
+Note that ``--host HOST-NAME`` can be added to the switches to
+retrieve the schedule from other hosts.
+
+
+Retrieve the schedule for a specified range of times::
+
+    pscheduler schedule 2017-05-02T12:00:00 2017-05-02T12:10:00
+
+
+Retrieve the schedule for a specified range of times relative to right
+now::
+
+    pscheduler schedule -PT10M +PT5M
+
+
+Watch at the schedule in real time::
 
    pscheduler monitor --refresh=5
 
-Look at a plot of the schedule (past and future)
-::
 
-   pscheduler plot-schedule --host hostname -PT30M +PT30M > plot.png
+Look for tests that failed to start in the past 2 hours::
+
+   pscheduler schedule -PT2H | grep -2 Non-Starter
 
 
-Look for tests that failed to start in the past 2 hours:
-::
+Look at schedule details for throughput tests in the last hour
+involving the host ``TEST-HOST``::
 
-   pscheduler schedule --host hostname -PT2H | grep -2 Non-Starter
+   pscheduler schedule --filter-test=throughput -PT1H | grep -2 TEST-HOST | grep -2 iperf3
 
-Look at schedule details for the past hour for throughput tests:
-::
 
-   pscheduler schedule --filter-test=throughput -PT1H | grep -2 myTestHost | grep -2 iperf3
+Same as above, but for a specific tool and test::
 
-For a specific host/tool:
-::
+   pscheduler schedule --filter-test=throughput -PT1H | egrep -2  "(nuttcp|iperf3)" | grep -2 TEST-HOST
 
-   pscheduler schedule --filter-test=throughput -PT1H | grep -2 myTestHost | grep -2 iperf3
-   or
-   pscheduler schedule --filter-test=throughput -PT1H | egrep -2  "(nuttcp|iperf3)" | grep -2 myTestHost
 
-Note that these commands work to remote hosts too by adding ‘--host=hostname`
-::
+To retrieve results and diagnostics for a single run using a run URL
+shown by the ``schedule`` command::
 
-   pscheduler schedule --filter-test=throughput --host hostname -PT1H
+   pscheduler result --diags --archivings RUN-URL
 
-To Look at results for a particular run:
-::
 
-   pscheduler result https://hostname/pscheduler/tasks/ccdad633-db0e-460d-9a63-0064b00c1f32/runs/83948ec5-3bb4-4627-b30c-4199b335c7b8
+Generate a plot of the schedule that shows congestion::
+
+    pscheduler plot-schedule -PT30M +PT30M > plot.png
 
 
 
+
+------------------------
+Additional Debug Logging
+------------------------
+
+The programs that manage pScheduler's activities can produce
+additional debugging information useful to the development team in
+finding problems.
+
+To enable logging of debug output from pScheduler's components, run
+(as ``root``)::
+
+   pscheduler debug on PROGRAMS
+
+Where ``PROGRAMS`` is a list of any of ``scheduler``, ``runner``,
+``archiver``, ``ticker`` or ``api``.  Turning on debug for anything
+other than ``scheduler`` and ``runner`` rarely be necessary.  If no
+list is provided, debug will be enabled for all pScheduler programs.
+
+Logging can be disabled by running::
+
+    pscheduler debug off PROGRAMS
