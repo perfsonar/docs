@@ -74,74 +74,126 @@
             
   <div class="section" id="troubleshooting-perfsonar">
 <h1>Troubleshooting perfSONAR<a class="headerlink" href="#troubleshooting-perfsonar" title="Permalink to this headline">¶</a></h1>
-<p>(page under construction!)</p>
+<p>(Page under construction.)</p>
 <p>This page contains some hints on how to troubleshoot perfSONAR 4.0 and later.</p>
-<p>1.  Confirm that pScheduler on the local system is functioning:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler ping localhost
-pscheduler task idle --duration PT2S
+<div class="section" id="system">
+<h2>System<a class="headerlink" href="#system" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="selinux">
+<h3>SELinux<a class="headerlink" href="#selinux" title="Permalink to this headline">¶</a></h3>
+<p>Check that SELinux is disabled or in permissive mode:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">getenforce</span>
+</pre></div>
+</div>
+<p>If SELinux is in Enforcing mode, change it to permissive and make the
+change permanent:</p>
+<div class="highlight-python"><div class="highlight"><pre>setenforce Permissive
+sed -i -e &#39;s/^SELINUX=enforcing/SELINUX=permissive/&#39; /etc/selinux/config
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pscheduler">
+<h2>pScheduler<a class="headerlink" href="#pscheduler" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pscheduler-on-local-host">
+<h3>pScheduler on Local Host<a class="headerlink" href="#pscheduler-on-local-host" title="Permalink to this headline">¶</a></h3>
+<p>Confirm that pScheduler on the local system is functioning:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler ping localhost
+</pre></div>
+</div>
+<p>Check that pScheduler on the local system isn&#8217;t reporting problems:</p>
+<div class="highlight-python"><div class="highlight"><pre>fgrep &#39; ERROR &#39; /var/log/pscheduler/pscheduler.log
+</pre></div>
+</div>
+<p>Run basic tests on the local system:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler task idle --duration PT2S
 pscheduler task rtt --dest 127.0.0.1
 </pre></div>
 </div>
-<ol class="arabic" start="2">
-<li><p class="first">Make sure SElinux is set to <code class="docutils literal"><span class="pre">permissive</span></code> or <code class="docutils literal"><span class="pre">disabled</span></code>:</p>
-<p>To disable SElinux, run:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>echo 0 &gt;/selinux/enforce
+</div>
+<div class="section" id="pscheduler-on-remote-hosts">
+<h3>pScheduler on Remote Hosts<a class="headerlink" href="#pscheduler-on-remote-hosts" title="Permalink to this headline">¶</a></h3>
+<p>Confirm that pScheduler on the other host (<code class="docutils literal"><span class="pre">REMOTE-HOST</span></code>) is
+reachable and working:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler ping REMOTE-HOST
 </pre></div>
 </div>
-<p>To make it permanently in the <code class="docutils literal"><span class="pre">permissive</span></code> mode, run:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>sed -i &#39;s/^SELINUX=enforcing/SELINUX=permissive/&#39; /etc/selinux/config
+<p>Run basic tests to the other host (the first test requires that TCP
+ports 5890-5899 be open on that system):</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler task trace --dest REMOTE-HOST
+pscheduler task rtt --dest REMOTE-HOST
+pscheduler task simplestream --dest REMOTE-HOST
+pscheduler task throughput --bandwidth 1M --dest REMOTE-HOST
 </pre></div>
 </div>
-</li>
-</ol>
-<p>3.  Confirm firewall settings are correct by running some tests from the command line.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task throughput --dest receive_host -source send_host
-pscheduler task rtt --source send_host --dest receive_host
-pscheduler task trace --source send_host --dest receive_host
+<p>Run the same tests in the opposite direction (from <code class="docutils literal"><span class="pre">REMOTE-HOST</span></code> to <code class="docutils literal"><span class="pre">LOCAL-HOST</span></code>):</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler task trace --source REMOTE-HOST --dest LOCAL-HOST
+pscheduler task rtt --source REMOTE-HOST --dest LOCAL-HOST
+pscheduler task simplestream --source REMOTE-HOST --dest LOCAL-HOST
+pscheduler task throughput --bandwidth 1M --source REMOTE-HOST --dest LOCAL-HOST
 </pre></div>
 </div>
-<p>Also try reversing source/dest for all of these.</p>
-<ol class="arabic simple" start="4">
-<li>Make sure pscheduler is behaving properly by looking for ERRORs in <code class="docutils literal"><span class="pre">/var/log/pscheduler.log</span></code></li>
-</ol>
-<p>To enable additional logging, run (as the pscheduler or root user):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler debug on
-or
-pscheduler debug on runner scheduler
+</div>
+<div class="section" id="checking-the-schedule">
+<h3>Checking the Schedule<a class="headerlink" href="#checking-the-schedule" title="Permalink to this headline">¶</a></h3>
+<p>If results are missing, looking at the pScheduler&#8217;s timeline of runs
+(the <em>schedule</em>) can be useful.</p>
+<p>Note that <code class="docutils literal"><span class="pre">--host</span> <span class="pre">HOST-NAME</span></code> can be added to the switches to
+retrieve the schedule from other hosts.</p>
+<p>Retrieve the schedule for a specified range of times:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule 2017-05-02T12:00:00 2017-05-02T12:10:00
 </pre></div>
 </div>
-<p>To enable debug mode for these components only</p>
-<p>If you are missing results, it can be helpful to look closer into what the scheduler is doing.
-Some useful commands include:</p>
-<p>Look at the schedule in real time:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler monitor --refresh=5
+<p>Retrieve the schedule for a specified range of times relative to right
+now:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule -PT10M +PT5M
 </pre></div>
 </div>
-<p>Look at a plot of the schedule (past and future)</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler plot-schedule --host hostname -PT30M +PT30M &gt; plot.png
+<p>Watch at the schedule in real time:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler monitor --refresh=5
 </pre></div>
 </div>
 <p>Look for tests that failed to start in the past 2 hours:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler schedule --host hostname -PT2H | grep -2 Non-Starter
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule -PT2H | grep -2 Non-Starter
 </pre></div>
 </div>
-<p>Look at schedule details for the past hour for throughput tests:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler schedule --filter-test=throughput -PT1H | grep -2 myTestHost | grep -2 iperf3
+<p>Look at schedule details for throughput tests in the last hour
+involving the host <code class="docutils literal"><span class="pre">TEST-HOST</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test=throughput -PT1H | grep -2 TEST-HOST | grep -2 iperf3
 </pre></div>
 </div>
-<p>For a specific host/tool:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler schedule --filter-test=throughput -PT1H | grep -2 myTestHost | grep -2 iperf3
-or
-pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|iperf3)&quot; | grep -2 myTestHost
+<p>Same as above, but for a specific tool and test:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|iperf3)&quot; | grep -2 TEST-HOST
 </pre></div>
 </div>
-<p>Note that these commands work to remote hosts too by adding ‘&#8211;host=hostname`</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler schedule --filter-test=throughput --host hostname -PT1H
+<p>To retrieve results and diagnostics for a single run using a run URL
+shown by the <code class="docutils literal"><span class="pre">schedule</span></code> command:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler result --diags --archivings RUN-URL
 </pre></div>
 </div>
-<p>To Look at results for a particular run:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler result https://hostname/pscheduler/tasks/ccdad633-db0e-460d-9a63-0064b00c1f32/runs/83948ec5-3bb4-4627-b30c-4199b335c7b8
+<p>Generate a plot of the schedule that shows congestion:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler plot-schedule -PT30M +PT30M &gt; plot.png
 </pre></div>
+</div>
+</div>
+<div class="section" id="additional-debug-logging">
+<h3>Additional Debug Logging<a class="headerlink" href="#additional-debug-logging" title="Permalink to this headline">¶</a></h3>
+<p>The programs that manage pScheduler&#8217;s activities can produce
+additional debugging information useful to the development team in
+finding problems.</p>
+<p>To enable logging of debug output from pScheduler&#8217;s components, run
+(as <code class="docutils literal"><span class="pre">root</span></code>):</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler debug on PROGRAMS
+</pre></div>
+</div>
+<p>Where <code class="docutils literal"><span class="pre">PROGRAMS</span></code> is a list of any of <code class="docutils literal"><span class="pre">scheduler</span></code>, <code class="docutils literal"><span class="pre">runner</span></code>,
+<code class="docutils literal"><span class="pre">archiver</span></code>, <code class="docutils literal"><span class="pre">ticker</span></code> or <code class="docutils literal"><span class="pre">api</span></code>.  Turning on debug for anything
+other than <code class="docutils literal"><span class="pre">scheduler</span></code> and <code class="docutils literal"><span class="pre">runner</span></code> rarely be necessary.  If no
+list is provided, debug will be enabled for all pScheduler programs.</p>
+<p>Logging can be disabled by running:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler debug off PROGRAMS
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -154,7 +206,20 @@ pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|ipe
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">Troubleshooting perfSONAR</a></li>
+<li><a class="reference internal" href="#">Troubleshooting perfSONAR</a><ul>
+<li><a class="reference internal" href="#system">System</a><ul>
+<li><a class="reference internal" href="#selinux">SELinux</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pscheduler">pScheduler</a><ul>
+<li><a class="reference internal" href="#pscheduler-on-local-host">pScheduler on Local Host</a></li>
+<li><a class="reference internal" href="#pscheduler-on-remote-hosts">pScheduler on Remote Hosts</a></li>
+<li><a class="reference internal" href="#checking-the-schedule">Checking the Schedule</a></li>
+<li><a class="reference internal" href="#additional-debug-logging">Additional Debug Logging</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
                 <ul>
@@ -228,7 +293,7 @@ pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|ipe
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
