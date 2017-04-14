@@ -118,7 +118,6 @@ More Information
 ================
 For useful reference material about different pSchedule options, plug-ins and more see the following:
 
-    * :doc:`pscheduler_ref_tests`
-    * :doc:`pscheduler_ref_tools`
+    * :doc:`pscheduler_ref_tests_tools`
     * :doc:`pscheduler_ref_archivers`
 

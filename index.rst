@@ -110,8 +110,7 @@ pScheduler References and Guides
 .. toctree::
    :maxdepth: 1
    
-   pscheduler_ref_tests
-   pscheduler_ref_tools
+   pscheduler_ref_tests_tools
    pscheduler_ref_archivers
    pscheduler_ref_bwctl
 
