@@ -29,8 +29,9 @@ Low-Cost Nodes
 perfSONAR can also be run on very small cheap hardware with varying level of success.
 There are a variety of perfSONAR use cases where low-end hardware may make sense. These include:
 
-- owamp receiver: the ability to respond to owamp packet loss testing only. Low end hardware such as a Raspberry Pi has been shown to work fine for this use case.
- 
+- owamp receiver: the ability to respond to owamp packet loss testing only. 
+
+  - Low end hardware such as a Raspberry Pi has been shown to work fine for this use case.
   - note that the clock on a Raspberry Pi is not accurate for good latency/jitter measurements, but loss works fine.
 
 - portable 1G test node for ad-hoc testing (perfsonar-tools bundle)
