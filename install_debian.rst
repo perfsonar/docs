@@ -23,9 +23,11 @@ System Requirements
   * ARMv7 and up (armhf)
   * ARM64 (arm64) (only for Debian 8)
 
-* **Operating System:**  Any system running a Debian 7, Debian 8, or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 14 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 7, Debian 8, or Ubuntu 14 server OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 14 might work too but are not officially supported.
 
 * See the general :ref:`install_options_sysreq` for hardware requirements and more.
+
+.. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generaly come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
 
 .. _install_debian_installation:
 

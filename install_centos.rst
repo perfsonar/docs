@@ -16,6 +16,8 @@ System Requirements
 
 * See the general :ref:`install_options_sysreq` for hardware requirements and more.
 
+.. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generaly come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
+
 .. _install_centos_installation:
 
 Installation 
