@@ -46,9 +46,6 @@ Installation
 
 perfSONAR Toolkit
 ------------------
-   
-Managing the perfSONAR Toolkit
-==============================
 .. toctree::
    :maxdepth: 1
    
@@ -66,12 +63,6 @@ Managing the perfSONAR Toolkit
    manage_limits
    manage_extra_tools
    manage_daemons
-   
-Using the perfSONAR Toolkit
-============================
-.. toctree::
-   :maxdepth: 1
-   
    using_graphs
    using_ext_tools
 
@@ -80,36 +71,14 @@ Using the perfSONAR Toolkit
 
 Running Measurements with pScheduler
 -------------------------------------
-
-Getting Started
-====================
-.. toctree::
-   :maxdepth: 1
-
-   pscheduler_intro
-
-pScheduler Client Commands
-==============================
-.. toctree::
-   :maxdepth: 1
-
-   pscheduler_client_tasks
-   pscheduler_client_schedule
-   pscheduler_client_utils
-
-pScheduler Server
-=================
-.. toctree::
-   :maxdepth: 1
-    
-   pscheduler_server_running
-   pscheduler_server_limits
-
-pScheduler References and Guides
-=================================
 .. toctree::
    :maxdepth: 1
    
+   pscheduler_intro
+   pscheduler_client_tasks
+   pscheduler_client_schedule
+   pscheduler_client_utils
+   pscheduler_server_running
    pscheduler_ref_tests_tools
    pscheduler_ref_archivers
    pscheduler_ref_bwctl
@@ -118,45 +87,18 @@ pScheduler References and Guides
 
 Managing Multiple perfSONAR Hosts
 ----------------------------------
-
-Introduction to Central Management
-==================================
 .. toctree::
    :maxdepth: 1
    
    multi_overview
-
-Central Test Configuration
-===========================
-.. toctree::
-   :maxdepth: 1
-   
    multi_mesh_server_config
    multi_mesh_agent_config
    multi_mesh_autoconfig
    mca
-   
-Central Measurement Archive
-===========================
-.. toctree::
-   :maxdepth: 1
-   
    multi_ma_install
    multi_ma_clustering
    multi_ma_backups
-
-Central Logging
-===============
-.. toctree::
-   :maxdepth: 1
-   
    multi_logging
-   
-Managing Nodes with Puppet
-==========================
-.. toctree::
-   :maxdepth: 1
-   
    multi_puppet_overview
    multi_puppet_install
    multi_puppet_using_server
