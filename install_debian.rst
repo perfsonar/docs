@@ -279,7 +279,7 @@ To upgrade your perfsonar-testpoint installation, you just need to run::
 
     apt-get dist-upgrade
 
-During the installation process, you'll be asked to choose a password for the pscheduler database.
+During the installation process, you'll be asked to choose a password for the pscheduler database.  After the upgrade, the perfsonar-regulartesting daemon and the OPPD will be stoped as they are no longer required.
 
 The measurements and the measurement archives that you already have defined in your 3.5.1 installation will be migrated to the 4.0 tools automatically.
 
@@ -287,3 +287,6 @@ Upgrade to another bundle
 -------------------------
 If you want to move from the `perfsonar-testpoint` bundle to another bundle that we now provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
 
+Upgrade from Ubuntu 12 to Ubuntu 14
+-----------------------------------
+If you have a testpoint host running Ubuntu 12 and you want to upgrade it to Ubuntu 14, we recommend you to follow the `instructions provided by the Ubuntu Community <https://wiki.ubuntu.com/TrustyTahr/ReleaseNotes#Upgrading_from_Ubuntu_12.04_LTS_or_Ubuntu_13.10>`_ first and then upgrade to perfSONAR 4.0 once the Ubuntu upgrade is completed.
