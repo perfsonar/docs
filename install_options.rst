@@ -35,24 +35,6 @@ This flowchart was created to help pick the correct option:
 
 .. _install_options_sysreq:
 
-System Requirements 
-===================
-
-* **Operating System:**
-
-  * Any system running **CentOS 7**. perfSONAR toolkit ISOs are only available as CentOS 7. CentOS 7 drops support for i386/i686 architectures and as a result there are only x86_64 versions of the CentOS 7 perfSONAR packages available.
-  * We still offer packages support for any system running either a 32-bit or 64-bit **CentOS 6**.  Existing CentOS 6 users will be able to auto-update.
-  * Other RedHat-based operating systems may work, but are not officially supported at this time.
-  * Any system running either a 32-bit, 64-bit or ARM **Debian 8**, or **Ubuntu 14** is currently supported for the **perfsonar-testpoint** bundle.  Other Debian flavors derived from Debian 8 such as Ubuntu 14 should work too but are not officially supported.
-
-* **Hardware:** 
-
-  * Most modern systems should be adequate to run the perfsonar-tools, perfsonar-testpoint and perfsonar-core bundles. We recommend at least 2GB of RAM and 20GB of disk space. 
-  * For running a measurement archive, you should have at least 4GB of RAM, and 50GB of disk. 
-  * You may want a 10Gbps network interface card depending on the throughput testing you wish to perform. 
-  * See the `fasterdata.es.net hardware page <http://fasterdata.es.net/performance-testing/perfsonar/ps-howto/hardware/>`_ for suggested configurations.
-
-.. seealso:: See the install instructions of each specific option for any further system requirements.
  
 
 CentOS Toolkit ISO Installation 
