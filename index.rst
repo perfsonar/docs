@@ -20,9 +20,9 @@ Planning for Installation
 .. toctree::
    :maxdepth: 1
    
+   install_options
    install_hardware
    install_small_node_details
-   install_options
    
    
 .. _index-installation:
@@ -79,6 +79,7 @@ Running Measurements with pScheduler
    pscheduler_client_schedule
    pscheduler_client_utils
    pscheduler_server_running
+   pscheduler_server_limits
    pscheduler_ref_tests_tools
    pscheduler_ref_archivers
    pscheduler_ref_bwctl
