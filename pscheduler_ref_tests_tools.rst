@@ -2,15 +2,80 @@
 Test and Tool Reference
 ******************************
 
-Page should contain at least the following:
+.. Notes for stuff we should make sure thus pages has
+.. Page should contain at least the following:
+..     * For each test type:
+..     
+..         * Description of test
+..         * Type (background vs backgroundmulti vs normal vs exclusive). Define these in this doc as well.
+..         * Command-line switches
+..         * Common tools and preference order (with note we do not control every tool so could change if install third-party thing)
+..         * Number of participants
+..        * Any other special notes about test
+..    * For each tool type:
+..    
+..         * Description of tool
+..         * Supported/Unsupported options
+..         * Any special notes
 
-    * For each tool type:
+Introduction
+=============
+Everything in pScheduler begins with requesting a :term:`test` which in turn will be carried-out by a :term:`tool`. When you run the ``pscheduler task`` command the first required argument is the test type and all arguments that follow are dependent on the type of test. The document aims to give you a list of tests and their corresponding tools provided by a default pScheduler installation on perfSONAR. It also tries to give an idea of the options available in each and other important details. 
+
+.. note:: This document highlights the list of test types and tools installed by default when installing pScheduler with perfSONAR. It is possible for others to write their own test and tool plug-ins so this list may not be exhaustive of all tests and tools available.
+
+Test Types
+===========
+
+clock
+############
+:Description: Measure the clock difference between hosts
+:Tools: psclock
+
+dns
+############
+:Description: Measure DNS transaction time
+:Tools: dnspy
+
+latency
+############
+:Description: Measure one-way latency and associated statistics between hosts
+:Tools: owping
+
+latencybg
+############
+:Description: Continuously measure one-way latency and associated statistics between hosts and report back results periodically
+:Tools: powstream
+
+rtt
+############
+:Description: Measure the round trip time and related statistics between hosts 
+:Tools: ping
+
+simplestream
+############
+:Description: Used primarily for testing, sends a simple "HELLO" message between two hosts using TCP
+:Tools: simplestreamer
+
+throughput
+############
+:Description: A test to measure the observed speed of a data transfer and associated statistics between two endpoints
+:Tools: iperf3, iperf2, nuttcp, bwctliperf3, bwctliperf2
+
+trace
+############
+:Description: Trace the path between IP hosts
+:Tools: traceroute, tracepath, paris-traceroute
+
+Test Classifications
+======================
+Each test classified in one of three categories thatd etermines what other tests can be run in parallel:
+
+    #. **Exclusive** - These are tests that cannot run at the same time as any other exclusive or normal test. An example is a *throughput* test. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.
+    #. **Normal** - These are tests that can run at the same time as other normal and background tests, but cannot run at the same time as exclusive tests. Currently there are no examples of these in the default test set, but the classification is available for those writing new tools.
+    #. **Background** - These are tests that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include *latency*, *latencybg*, *rtt* and *trace*. It is not uncommon to have this column look almost entirely solid if you have *latencybg* tests since they run continuously. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.
     
-        * Description of tool
-        * Supported/Unsupported options
-        * Any special notes
-
-Throughput Tools
+throughput Tests
 ================
 
 Throughput tests support the following arguments::
@@ -73,12 +138,9 @@ Other pScheduler options are supported by all tools.
 +-------------+-----------+-----------+----------+ 
 |--zero-copy  |           |   X       |          |
 +-------------+-----------+-----------+----------+ 
-|--fq-rate    |           |   X       |          |
-|(coming soon)|           |           |          |
-+-------------+-----------+-----------+----------+ 
 
 
-Latency Tools
+latency Tests
 ==============
 
 Latency tests support the following arguments::
@@ -126,7 +188,7 @@ Latency tests support the following arguments::
                         substantially increase the size of a successful
                         result.
 
-Round Trip Time Tools
+rtt Tests
 =====================
 
 RTT tests support the following arguments::
