@@ -10,7 +10,6 @@ perfSONAR combines various sets of measurement tools and services. For perfSONAR
 
 Debian meta packages are available to install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
-.. _install_debian_sysreq:
 
 System Requirements
 ===================
@@ -25,7 +24,7 @@ System Requirements
 
 * **Operating System:**  Any system running a Debian 7, Debian 8, or Ubuntu 14 server OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 14 might work too but are not officially supported.
 
-* See the general :ref:`install_options_sysreq` for hardware requirements and more.
+* See :doc:`install_hardware` for hardware requirements and more.
 
 .. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
 

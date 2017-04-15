@@ -33,8 +33,6 @@ This flowchart was created to help pick the correct option:
 
 .. image:: images/bundle_flowchart.png
 
-.. _install_options_sysreq:
-
  
 
 CentOS Toolkit ISO Installation 
