@@ -1,49 +1,77 @@
+:orphan:
+
 *********************************
 perfSONAR on Low-cost Hardware 
 *********************************
 
-ARM Devices
-============
-
-A number of folks in the perfSONAR community have been experimenting with running perfSONAR on low cost (less than $130) hardware such as the Raspberry Pi, the cubox, and the Liva. In general this can work, with some caveats. 
-
-#. Time sync issues: Some low end hardware have issues with clock drift, which impacts latency measurements. 
-#. CPU performance issues: current ARM processors are not able to push TCP much more than about 300Mbps. 
-
-Only the *perfsonar-tools* or *perfsonar-testpoint* bundles should be considered on this class of device.
-
-
-Celeron Devices
+pi-class Devices
 ================
 
-perfSONAR tools and services will work better on devices that cost around $200 such as the Intel NUC series, Zotac Zbox ci320 (2.1GHz CPU)/ci323 (dual NIC), GIGABYTE BRIX and various other examples available on the market as barebones small PC solutions. A number of these fulfill perfSONAR general requirements of 4GB RAM and four 2.1GHz cores, and thus should work well. Try to find a device with a fan and dual NICs if possible. These devices are capable of 1Gbps TCP.
+A number of folks in the perfSONAR community have been experimenting with running perfSONAR on low cost (less than $200) hardware such as the Raspberry Pi, the cubox, and the Liva. In general this can work, with some caveats. 
 
-Please note that the perfSONAR team is not formally endorsing any particular product. These are just an example of possible solutions.
+#. Time sync issues: Some low end hardware have issues with clock drift, which impacts latency measurements. 
+#. CPU performance issues: current ARM processors are not able to push TCP much more than about 300Mbps. Celeron processors do better, and get around 930Mbps. 
+#. None of these devices are powerful enough to run the full perfSONAR toolkit which installs a measurement archive.
+#. pScheduler may not be suitable for use on pi-class/ARM devices.
+
+Instead of running an entire perfSONAR Toolkit with a local MA and a web UI and all that, these nodes are best to be run as testpoints and report their results back to a centrally configured measurement archive. The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive.
+
+$200-class devices
+==================
+
+More stable are the small nodes closer in cost to $200, such as the Intel NUC series, Zotac Zbox ci320 (2.1GHz CPU)/ci323 (dual NIC), GIGABYTE BRIX and various other examples available on the market as barebones small PC solutions. They may be capable of running perfSONAR Toolkit with a small test mesh.
+
+1RU half-depth devices
+======================
+
+Where possible server-class gear is still the best option for network measurement and monitoring. Below are example builds through SuperMicro. This should not be construed as a brand-specific endorsement/recommendation, and are merely spec guidelines for use with any vendor.
+
+Dual 1GE Spec - Cost estimate: $800.00 US
+  * MOTHERBOARD: MB SM X10SLL-F 1x Socket H3 (LGA 1150), 4x 240-pin DDR3 DIMM sockets, Intel C222 Express PCH, Su... 
+  * CPU: Intel Core i3-4330 4-Core 3.5GHz 5GT/s DMI 54W Desktop Intel HD Graphics 4600 LGA 1150 
+  * FAN: SM 1U SNK-P0046P Passive Heatsink Mounting Bracket (BKT-0028L Included) LGA 1155/1156 
+  * MEMORY: 8GB (2) DDR3-1600 1.35V 2Rx8 ECC Un-Buffer LP PB-Free
+  * HARD DRIVE: Crucial 1100 Series 256GB 2.5" SSD
+  * CHASSIS: CASE SM 1U Chassis CSE-510-203B
+  * KIT: SM MCP-220-00044-0N Retention Bracket for up to 2x 2.5" HDD RISER RISER SM RSC-RR1U-E16 1U Left 1 x PCI-E x16
+  * SERVICE: 3 Year Cross-Ship Service & Warranty
+
+Dual 10G SFP+ Spec - Cost estimate: $1,100.00 US 
+  * MOTHERBOARD: MB SM X10SLL-F 1x Socket H3 (LGA 1150), 4x 240-pin DDR3 DIMM sockets, Intel C222 Express PCH, Su... 
+  * CPU: Intel Core i3-4330 4-Core 3.5GHz 5GT/s DMI 54W Desktop Intel HD Graphics 4600 LGA 1150 
+  * FAN: SM 1U SNK-P0046P Passive Heatsink Mounting Bracket (BKT-0028L Included) LGA 1155/1156 
+  * MEMORY: (2) 8GB DDR3-1600 1.35V 2Rx8 ECC Un-Buffer LP PB-Free
+  * NETWORK: SM AOC-STGN-i2S 2-port 10GB SFP+ PCI-Express 2.0 x8 LP
+  * HARD DRIVE: HD Crucial 1100 Series 256GB 2.5" SSD
+  * CHASSIS: CASE SM 1U Chassis CSE-510-203B
+  * KIT: SM MCP-220-00044-0N Retention Bracket for up to 2x 2.5" HDD RISER RISER SM RSC-RR1U-E16 1U Left 1 x PCI-E x16
+  * SERVICE: 3 Year Cross-Ship Service & Warranty
 
 
 System Requirements
 ===================
 
-ARM-based devices seem to work best running Ubuntu, while the slightly larger, $200-class nodes will usually work with CentOS, Debian or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on CentOS 6 and 7, and Ubuntu 14, 
-and Debian "Wheezy" and "Jessie". We provide compatible Debian packages for 4 different hardware architectures:
+Pi-class devices seem to work best running Ubuntu, but the slightly larger, $200-class nodes will perform using Centos or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on Centos 6 and 7, and Ubuntu 12 and 14 - Debian "Wheezy" and "Jessie". We provide compatible Debian packages for 4 different hardware architectures:
 
   * 32-bit (i386)
   * 64-bit (amd64)
-  * ARMv4t and up (armel) - not recommended for the full testpoint bundle
-  * ARMv7 and up (armhf) - not recommended for the full testpoint bundle
+  * ARMv4t and up (armel) - not recommended
+  * ARMv7 and up (armhf) - not recommended
 
+$200-class devices should have at least 2GB of RAM and 16MB of disk. Processor should be quad-core with a 2.1GHz speed preferred. Many devices will fit these requirements and more depending on your desire and ability to experiment or tinker. Several brands and models of nodes have been tested running the newest perfSONAR releases. Each of these is capable of near 1Gbps and work with a number of OS releases. 
+
+Please note that the perfSONAR team is not formally endorsing this particular product - just providing it as an example of a possible turnkey solution for users interested in that sort of thing.
 
 
 Installation Instructions
 =========================
 
-The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive. See: 
+The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive. See instructions for installing the :doc:`perfsonar-testpoint <install_options>` bundle: 
+:doc:`install_centos`,
+:doc:`install_debian`
 
-- :doc:`install_centos`
-- :doc:`install_debian`
-
-Certain devices like the Liva use an EMMC drive that is only supported in the *deskop* version of Ubuntu. 
-If the standard server ISO installation doe not recognize the drive, it may be worth attempting installation using the desktop ISO such as `Ubuntu 14.04.05 Desktop <http://releases.ubuntu.com/trusty/ubuntu-14.04.5-desktop-amd64.iso>`_.
+Certain devices, like the Liva, with EMMC drives require use of Debian/Ubuntu desktop builds to ensure the necessary driver is in place. If the standard server ISO installations do not recognize the onboard memory, it may be worth attempting installation using the desktop ISO versions:
+  * `Ubuntu 12.04.05 <http://releases.ubuntu.com/12.04/ubuntu-12.04.5-desktop-amd64.iso>`_ Desktop ISO installation.
 
 Support
 =======
@@ -59,5 +87,5 @@ Additional information
 Many details on small nodes issues are described in this paper:
   http://www.es.net/assets/pubs_presos/20160701-Chevalier-perfSONAR.pdf
   
-See also the :doc:`deployment examples <deployment_examples>` section for additional information about low cost nodes deployment.
+See also :doc:`deployment examples <deployment_examples>` section for additional information about low cost nodes deployment examples.
 
