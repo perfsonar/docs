@@ -66,6 +66,8 @@ Choose one of the following bundles and see :doc:`install_options` page for more
 
     apt-get install perfsonar-testpoint  
 
+  During the installation process, you'll be asked to choose a password for the pscheduler database.
+
   Additionally, you may also install the toolkit service-watcher, ntp, security (firewall rules) and sysctl packages.
 
   *Optional Packages*
@@ -87,6 +89,8 @@ Choose one of the following bundles and see :doc:`install_options` page for more
 
     apt-get install perfsonar-core
 
+  During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
+
   Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.
 
   *Optional Packages*
@@ -95,15 +99,12 @@ Choose one of the following bundles and see :doc:`install_options` page for more
 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
 
-
     Or, you can manually install them to your liking by running:
 
        * ``apt-get install perfsonar-toolkit-servicewatcher``
        * ``apt-get install perfsonar-toolkit-ntp``
        * ``apt-get install perfsonar-toolkit-security``
        * ``apt-get install perfsonar-toolkit-sysctl``
-
-
 
 * **perfSONAR Central Management**::
 
@@ -115,6 +116,7 @@ Choose one of the following bundles and see :doc:`install_options` page for more
 
     apt-get install perfsonar-toolkit
 
+  During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
 
 .. _install_debian_step3:
 
@@ -249,4 +251,39 @@ If your node is part of a measurement mesh and you installed perfsonar-centralma
 Configuring perfSONAR through the web interface
 ------------------------------------------------
 After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
+
+Upgrading from 3.5.1
+====================
+If you had installed perfSONAR 3.5.1 testpoint bundle and you now want to upgrade to perfSONAR 4.0, you'll have to follow the instructions here below.
+
+Add the 4.0 APT sources
+-----------------------
+
+  *Debian 7 / Ubuntu 14*::
+
+    cd /etc/apt/sources.list.d/
+    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
+
+  *Debian 8*::
+
+    cd /etc/apt/sources.list.d/
+    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
+   
+Then refresh the packages list so APT knows about the perfSONAR packages::
+
+   apt-get update
+
+Upgrade the perfSONAR installation
+----------------------------------
+To upgrade your perfsonar-testpoint installation, you just need to run::
+
+    apt-get dist-upgrade
+
+During the installation process, you'll be asked to choose a password for the pscheduler database.
+
+The measurements and the measurement archives that you already have defined in your 3.5.1 installation will be migrated to the 4.0 tools automatically.
+
+Upgrade to another bundle
+-------------------------
+If you want to move from the `perfsonar-testpoint` bundle to another bundle that we now provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
 
