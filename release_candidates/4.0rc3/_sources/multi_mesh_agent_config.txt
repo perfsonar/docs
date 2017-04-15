@@ -1,6 +1,6 @@
-************************************
-Reading a Central Configuration File
-************************************
+**************************************************************
+Reading a Central Configuration File with MeshConfig
+**************************************************************
 
 Participating in a centrally configured mesh  is a matter of the following:
 

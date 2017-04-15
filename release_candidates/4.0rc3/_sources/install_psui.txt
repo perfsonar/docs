@@ -237,7 +237,7 @@ To modify the global list perform the following procedure:
 
 #. Restart Tomcat.
 
-Customising the perfsonarUI logos
+Customizing the perfsonarUI logos
 ---------------------------------
 
 There are 3 logos on the main page of perfsonarUI and can be replaced by your own logos. Left side navigation panel holds two logos: at the top and bottom of the panel. There is also a bigger main logo on the welcome screen. The location of the logos and corresponding names are depicted:

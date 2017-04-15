@@ -24,7 +24,7 @@ Note that any measurement tool (e.g. OWAMP, iperf3, etc.) would need to pass thr
 
 The perfSONAR Toolkit development team has analyzed several VM architectures (VM Ware, KVM, QEMU) and has found that the basic problems listed above exist to a certain degree in all implementations. It is possible that small improvements will be made in all implementations over time, and tuning of individual systems may produce gains for some use cases.  The development team has found several use cases that can work in a virtualized environment, provided that the user has applied certain configurations to mitigate the known risks:
 
-- **Measurement Storage**: A virtual machine makes a good centrailized home for data collected from multiple bare metal beacon hosts.  Note that this VM should be provisioned with several cores and adaquate RAM and storage to function in this role. 
+- **Measurement Storage**: A virtual machine makes a good centralized home for data collected from multiple bare metal beacon hosts.  Note that this VM should be provisioned with several cores and adequate RAM and storage to function in this role. 
 
 - **Throughput Measurement**: Ideally the virtual machine that is performing throughput tests have direct control over a network card.  Failure to do so will result in unpredictable results when compared against actual hardware tests. 
 

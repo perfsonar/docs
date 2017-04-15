@@ -57,7 +57,7 @@ Note that this behavior is not part of ECMA 404, the JSON standard.
 Identifiers:  *Who's Asking?*
 *****************************
 
-The first phase of vetting a task or run is *idenification*, where
+The first phase of vetting a task or run is *identification*, where
 attributes of the arriving request are used to create a list of narrow
 categories into which the requester fits.
 
@@ -312,7 +312,7 @@ cannot be found::
 ``ip-reverse-dns`` - Identify Requesters By Host Name
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``ip-reverse-dns`` identifier attmpts to reverse-resolve the
+The ``ip-reverse-dns`` identifier attempts to reverse-resolve the
 requester's IP address to a fully-qualified domain name and matches
 it against a pattern.
 
@@ -835,7 +835,7 @@ obtained by running the command ``pscheduler validate-limits --help``.
 Installing a Limit Configuration
 ********************************
 
-The limit configration is installed in ``/etc/pscheduler/limits.conf``
+The limit configuration is installed in ``/etc/pscheduler/limits.conf``
 and must be readable by the ``pscheduler`` user.  The recommended file
 attributes are owner ``root``, group ``pscheduler`` and permissions
 `0644`.

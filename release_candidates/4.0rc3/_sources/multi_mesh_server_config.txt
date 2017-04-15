@@ -1,6 +1,6 @@
-***************************************
-Publishing a Central Configuration File
-***************************************
+*********************************************************
+Publishing a Central Configuration File  with MeshConfig
+*********************************************************
 
 This page details how to create and publish a central configuration that can be consumed by multiple perfSONAR hosts to build their regular testing configuration. The steps to do so can be broken down as follows and are covered in the remainder of this document:
 

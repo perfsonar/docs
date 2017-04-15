@@ -40,7 +40,7 @@ installed and during upgrades.
 ****************************************************
 
 This directory contains archive specifications, one per file, that are
-applied to every measurement led by this system.  These archivings are
+applied to every measurement led by this system.  These archives are
 performed in addition to any specified in a task.
 
 See the pScheduler `Archivers page

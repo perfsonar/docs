@@ -23,11 +23,11 @@ The perfSONAR Toolkit is designed and tested for both the x86 and x86_64 archite
 
 A system containing a single CPU with multiple cores is sufficient for perfSONAR Toolkit operation. Multi-CPU setups will still function, but may introduce variability into the measurement process unless proper care is taken to bind applications to a given CPU/Core. There are three intense operations that occur on a perfSONAR Toolkit:
 
-- **Measurement**: The act of performing any measurement (particularlly something intense like a throughput test) will require almost complete access to a processor or core
+- **Measurement**: The act of performing any measurement (particularly something intense like a throughput test) will require almost complete access to a processor or core
 
 - **Storage**: The perfSONAR Toolkit Measurement Archive (a combination of a NoSQL and SQL database) stores the result of each regular test, and also responds to queries from local and remote services for data retrieval
 
-- **Graphical Front End**: Powering the web server, and fetching data for remote rendoring of data, is the responsibility of the server
+- **Graphical Front End**: Powering the web server, and fetching data for remote rendering of data, is the responsibility of the server
 
 User's that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much hardware support. 
  
@@ -46,7 +46,7 @@ RAM
 
 The development team recommends a minimum of 4GB of volatile memory on all systems running the full installation of the perfSONAR Toolkit.  There are three intense operations that occur on a perfSONAR Toolkit that require the support of memory:
 
-User's that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much memory support. The recomended amount of memory for the toolkit (4GB) will ensure proper concurrent operation of all measurement tools, web services, and supporting products such as databases. 
+User's that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much memory support. The recommended amount of memory for the toolkit (4GB) will ensure proper concurrent operation of all measurement tools, web services, and supporting products such as databases. 
 
 Nodes that will not run all functions of the perfSONAR toolkit might function with as little as 1GB of memory, although the project recommends at least 2GB to ensure proper operation. 
  

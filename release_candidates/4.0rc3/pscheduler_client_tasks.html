@@ -75,21 +75,21 @@
   <div class="section" id="creating-and-managing-tasks">
 <h1>Creating and Managing Tasks<a class="headerlink" href="#creating-and-managing-tasks" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="the-task-command">
-<h2>The <cite>task</cite> command<a class="headerlink" href="#the-task-command" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-taskcmd"></span><h2>The <cite>task</cite> command<a class="headerlink" href="#the-task-command" title="Permalink to this headline">¶</a></h2>
 <p>The <cite>pscheduler task</cite> command is the primary way from the command-line to create new pScheduler <a class="reference internal" href="pscheduler_intro.html#term-task"><span class="xref std std-term">tasks</span></a>. It takes the following form:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task [ TASK_OPTIONS ] TEST_TYPE TEST_OPTIONS
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task [ TASK_OPTIONS ] TEST_TYPE TEST_OPTIONS
 </pre></div>
 </div>
 </div>
 <div class="section" id="the-basics">
-<h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h2>
-<p>The simplest task that can be run is a one-shot test with no special options, such as this one which conducts a round-trip time (<em>rtt</em>) test betwen the local host and <em>www.perfsonar.net</em>, then displays the results:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task rtt --dest www.perfsonar.net
+<span id="pscheduler-client-tasks-basics"></span><h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h2>
+<p>The simplest task that can be run is a one-shot test with no special options, such as this one which conducts a round-trip time (<em>rtt</em>) test between the local host and <em>www.perfsonar.net</em>, then displays the results:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task rtt --dest www.perfsonar.net
 </pre></div>
 </div>
 <p>Note that the <code class="docutils literal"><span class="pre">--dest</span></code> option following <code class="docutils literal"><span class="pre">rtt</span></code> is a <a class="reference internal" href="pscheduler_intro.html#term-test"><span class="xref std std-term">test</span></a> option specific to the test type being requested.  Each test has its own set of options, so what follows the test type will vary.  Most tests that have an option in common that serves the same purpose have consistent names between them.  For example, many tests that involve sending data to another host (<em>rtt</em>, <em>trace</em>, <em>throughput</em>, <em>latency</em>) will specify the other hosts using the <code class="docutils literal"><span class="pre">--dest</span></code> option.</p>
 <p>The <code class="docutils literal"><span class="pre">task</span></code> command has a set of its own options that go before the test type.  These options are related to how the task is run rather than what test is being conducted.  For example, the <code class="docutils literal"><span class="pre">--quiet</span></code> switch suppresses the diagnostic information that is usually produced:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --quiet rtt --dest www.perfsonar.net
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --quiet rtt --dest www.perfsonar.net
 </pre></div>
 </div>
 <div class="admonition note">
@@ -98,21 +98,21 @@
 </div>
 </div>
 <div class="section" id="running-tests-from-other-hosts">
-<h2>Running Tests from Other Hosts<a class="headerlink" href="#running-tests-from-other-hosts" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler determines where to submits a task based on the test parameters. Where a task needs to be submitted is called the <span class="xref std std-term">lead participant</span>. For many tests run by perfSONAR, a <code class="docutils literal"><span class="pre">--source</span></code> switch which specifies where the test should originate and is also the <em>lead participant</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task throughput --source host2 --dest host3
+<span id="pscheduler-client-tasks-otherhosts"></span><h2>Running Tests from Other Hosts<a class="headerlink" href="#running-tests-from-other-hosts" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler determines where to submits a task based on the test parameters. Where a task needs to be submitted is called the <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><span class="xref std std-term">lead participant</span></a>. For many tests run by perfSONAR, a <code class="docutils literal"><span class="pre">--source</span></code> switch which specifies where the test should originate and is also the <em>lead participant</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task throughput --source host2 --dest host3
 </pre></div>
 </div>
 <p>If the example command above is run on <em>host1</em>, then the client will submit the task to <em>host2</em> and the test will be run between <em>host2</em> and <em>host3</em>.</p>
-<p>Not all tests use the source to calculate the lead participant and determining it can get complicated when dealing with things like BWCTL backward compatibility, etc. Luckily, each test plug-in installed on a pScheduler server has the logic required to calculate the lead in the face of this complexity. This does mean though, that the <code class="docutils literal"><span class="pre">pscheduler</span></code> command needs to be able to ask a pScheduler server, called the <span class="xref std std-term">assist server</span>, where a task needs to be submitted.</p>
+<p>Not all tests use the source to calculate the lead participant and determining it can get complicated when dealing with things like BWCTL backward compatibility, etc. Luckily, each test plug-in installed on a pScheduler server has the logic required to calculate the lead in the face of this complexity. This does mean though, that the <code class="docutils literal"><span class="pre">pscheduler</span></code> command needs to be able to ask a pScheduler server, called the <a class="reference internal" href="pscheduler_intro.html#term-assist-server"><span class="xref std std-term">assist server</span></a>, where a task needs to be submitted.</p>
 <p>By default, the <code class="docutils literal"><span class="pre">pscheduler</span></code> command will assume there is a pScheduler server running on the local host and try to contact that as the default assist server. If there is NOT a pScheduler server on the local host, then you need to use the <code class="docutils literal"><span class="pre">--assist</span></code> flag. For example, say we run the following on <em>host4</em> and it does not have a pScheduler server but we know that <em>host1</em> does. Our command could be as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --assist host1 throughput --source host2 --dest host3
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --assist host1 throughput --source host2 --dest host3
 </pre></div>
 </div>
 <p>The assist server could just as easily be <code class="docutils literal"><span class="pre">host2</span></code> or <code class="docutils literal"><span class="pre">host3</span></code> if they are also running pScheduler servers. It does not matter where the assist server is as long as it a) has a pScheduler server and b) has the test plugin installed for the type of test you want to run.</p>
 </div>
 <div class="section" id="selecting-tool-s-for-tasks">
-<h2>Selecting Tool(s) for Tasks<a class="headerlink" href="#selecting-tool-s-for-tasks" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-tools"></span><h2>Selecting Tool(s) for Tasks<a class="headerlink" href="#selecting-tool-s-for-tasks" title="Permalink to this headline">¶</a></h2>
 <p>By default, pScheduler will automatically select a tool for a task based on three factors:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -122,17 +122,17 @@
 </ol>
 </div></blockquote>
 <p>Using the <code class="docutils literal"><span class="pre">--tool</span></code> switch, the user can control what tool(s) pScheduler selects for a task:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --tool tracepath trace --dest www.perfsonar.net
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --tool tracepath trace --dest www.perfsonar.net
 </pre></div>
 </div>
 <p>This will specify that the <code class="docutils literal"><span class="pre">tracepath</span></code> tool should be used for running the test.  Similarly, repeating the switch forms a list of acceptable tools with those specified earlier being preferred over those specified later.  For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --tool tracepath --tool paris-traceroute trace --dest www.perfsonar.net
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --tool tracepath --tool paris-traceroute trace --dest www.perfsonar.net
 </pre></div>
 </div>
 <p>Whether or not tools are specified, a task where no available tool is capable of making the measurement will be rejected.</p>
 </div>
 <div class="section" id="repeating-tasks">
-<h2>Repeating Tasks<a class="headerlink" href="#repeating-tasks" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-repeating"></span><h2>Repeating Tasks<a class="headerlink" href="#repeating-tasks" title="Permalink to this headline">¶</a></h2>
 <p>Any pScheduler task can be configured to run repeatedly by adding options to the <code class="docutils literal"><span class="pre">task</span></code> command:</p>
 <blockquote>
 <div><ul class="simple">
@@ -145,45 +145,85 @@
 </ul>
 </div></blockquote>
 <p>For example, to measure round-trip time 50 times once per hour:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --repeat PT1H --max-runs 50 rtt --dest www.perfsonar.net
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --repeat PT1H --max-runs 50 rtt --dest www.perfsonar.net
 </pre></div>
 </div>
 <p>It is strongly recommended that repeating tasks apply as much slip as is tolerable to allow pScheduler to work around scheduling conflicts.  Larger slip values will will give tasks a better chance of executing.  For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --repeat PT1H --slip PT30M rtt --dest www.perfsonar.net
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --repeat PT1H --slip PT30M rtt --dest www.perfsonar.net
 </pre></div>
 </div>
 <p>Repeating tasks can be stopped using the <code class="docutils literal"><span class="pre">cancel</span></code> command.</p>
 </div>
 <div class="section" id="archiving-tasks">
-<h2>Archiving Tasks<a class="headerlink" href="#archiving-tasks" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-archiving"></span><h2>Archiving Tasks<a class="headerlink" href="#archiving-tasks" title="Permalink to this headline">¶</a></h2>
+<p>You can tell the <code class="docutils literal"><span class="pre">pscheduler</span></code> command to send results to an <a class="reference internal" href="pscheduler_intro.html#term-archiver"><span class="xref std std-term">archiver</span></a> using the <code class="docutils literal"><span class="pre">--archive</span></code> switch. The definition you give the archiver can take two forms:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>A filename starting with the &#64; symbol that points at a file containing a JSON archiver specification.</li>
+<li>A string literal of the JSON archiver specification</li>
+</ol>
+</div></blockquote>
+<p>For example, the <em>perfsonar-core</em> and <em>perfsonar-toolkit</em> bundles install a special file at <em>/usr/share/pscheduler/psc-archiver-esmond.json</em> with an archiver specification for writing to the locally running esmond instance. You could then use that file to publish a <em>trace</em> test (or any other test) to the local MA instance with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --archive @/usr/share/pscheduler/psc-archiver-esmond.json trace --dest www.perfsonar.net
+</pre></div>
+</div>
+<p>Alternatively, you could use a JSON string to accomplish the same as follows (replacing <code class="docutils literal"><span class="pre">abc123</span></code> with the API key used for your esmond instance)</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --archive &#39;{&quot;archiver&quot;: &quot;esmond&quot;,&quot;data&quot;:{&quot;url&quot;:&quot;http://localhost/esmond/perfsonar/archive/&quot;,&quot;_auth-token&quot;: &quot;abc123&quot;}}&#39; trace --dest www.perfsonar.net
+</pre></div>
+</div>
+<p>For more information on different archivers and their specifications, see <a class="reference internal" href="pscheduler_ref_archivers.html"><em>pScheduler Archivers</em></a>.</p>
 </div>
 <div class="section" id="exporting-tasks-to-json">
-<h2>Exporting tasks to JSON<a class="headerlink" href="#exporting-tasks-to-json" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-exporting"></span><h2>Exporting tasks to JSON<a class="headerlink" href="#exporting-tasks-to-json" title="Permalink to this headline">¶</a></h2>
 <p>The JSON version of a task specification can be sent to the standard output without scheduling using the <code class="docutils literal"><span class="pre">--export</span></code> switch:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --export throughput --dest wherever --udp --ip-version 6 &gt; mytask.json
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --export throughput --dest wherever --udp --ip-version 6 &gt; mytask.json
 </pre></div>
 </div>
 <p><strong>NOTE:</strong>  Tasks are not validated until submitted for scheduling, so it is possible to export invalid tasks.</p>
 </div>
 <div class="section" id="importing-tasks-from-json">
-<h2>Importing tasks from JSON<a class="headerlink" href="#importing-tasks-from-json" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-importing"></span><h2>Importing tasks from JSON<a class="headerlink" href="#importing-tasks-from-json" title="Permalink to this headline">¶</a></h2>
 <p>A JSON file that was previously exported or generated elsewhere can be imported using the <code class="docutils literal"><span class="pre">--import</span></code> switch:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --import mytask.json throughput
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --import mytask.json throughput
 </pre></div>
 </div>
 <p>Test parameters may be changed on the fly by adding them to the command line after the test type:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --import mytask.json throughput --dest somewhere.else
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task --import mytask.json throughput --dest somewhere.else
 </pre></div>
 </div>
 </div>
 <div class="section" id="pausing-tasks">
-<h2>Pausing Tasks<a class="headerlink" href="#pausing-tasks" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-pausing"></span><h2>Pausing Tasks<a class="headerlink" href="#pausing-tasks" title="Permalink to this headline">¶</a></h2>
+<p>You can pause a pscheduler task so that any scheduled runs will not be executed until the task is <a class="reference internal" href="#pscheduler-client-tasks-resuming"><span>resumed</span></a>. It takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler pause TASK_URL
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">TASK_URL</span></code> is the full URL of the task to be paused and should have been output by the <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span></code> command when a task was submitted. Any runs that would have occurred while in the paused state will be marked as missed. A full example is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler pause https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
+</pre></div>
+</div>
 </div>
 <div class="section" id="resuming-tasks">
-<h2>Resuming Tasks<a class="headerlink" href="#resuming-tasks" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-resuming"></span><h2>Resuming Tasks<a class="headerlink" href="#resuming-tasks" title="Permalink to this headline">¶</a></h2>
+<p>You can resume a previously <a class="reference internal" href="#pscheduler-client-tasks-pausing"><span>paused</span></a> pscheduler task so that its runs will again be executed. It takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler resume TASK_URL
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">TASK_URL</span></code> is the full URL of the task to be resumed and should have been output by the <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span></code> command when a task was submitted. Future runs will be carried-out normally after being resumed. A full example is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler resume https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
+</pre></div>
+</div>
 </div>
 <div class="section" id="canceling-tasks">
-<h2>Canceling Tasks<a class="headerlink" href="#canceling-tasks" title="Permalink to this headline">¶</a></h2>
+<span id="pscheduler-client-tasks-canceling"></span><h2>Canceling Tasks<a class="headerlink" href="#canceling-tasks" title="Permalink to this headline">¶</a></h2>
+<p>You may cancel a task with the <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">cancel</span></code> command which takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler cancel TASK_URL
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">TASK_URL</span></code> is the full URL of the task to be canceled and should have been output by the <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span></code> command when a task was submitted. This command cancels any future runs of the task specified. Any run of the task which is underway will continue to completion. The task will still be in the database but will be marked as disabled. This means you will still be able to query results of runs completed prior to cancellation but no new results will be generated. A full example of the command is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler cancel https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -283,7 +323,7 @@
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

@@ -80,24 +80,23 @@
 </div>
 <div class="section" id="terminology">
 <h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
-<p>Other terms needed:</p>
-<blockquote>
-<div><ul class="simple">
-<li>assists server</li>
-<li>lead participant</li>
-<li>schedule horizon</li>
-<li>limits</li>
-</ul>
-</div></blockquote>
 <dl class="glossary docutils">
 <dt id="term-archiver">Archiver</dt>
 <dd>Software that transfers <a class="reference internal" href="#term-result"><span class="xref std std-term">results</span></a> to long-term storage or elsewhere for further processing.</dd>
+<dt id="term-assist-server">Assist Server</dt>
+<dd>A pScheduler server that accepts a test specification and can return the <a class="reference internal" href="#term-lead-participant"><span class="xref std std-term">lead participant</span></a>. The assist server may or may not be involved in the test specified, it&#8217;s role is simply to tell you the lead where the task should be submitted. By default the assist server is always the local host.</dd>
+<dt id="term-lead-participant">Lead Participant</dt>
+<dd>The pScheduler server where a task should be submitted. It will become responsible for contacting other participants, making scheduling decisions based on gathered information and archiving results.</dd>
+<dt id="term-limits">Limits</dt>
+<dd>Rules that define who is allowed to run what type of tests</dd>
 <dt id="term-participant">Participant</dt>
 <dd>A node that runs pScheduler and handles some facet of conducting a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>.</dd>
 <dt id="term-result">Result</dt>
 <dd>The observation produced by a <a class="reference internal" href="#term-tool"><span class="xref std std-term">tool</span></a> conducting a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>. For example, after conducting a throughput test, the iperf3 tool might generate a result that says &#8220;throughput from A to B was 3.4 Gb/s.&#8221;</dd>
 <dt id="term-run">Run</dt>
 <dd>The act of conducting a <a class="reference internal" href="#term-task"><span class="xref std std-term">task</span></a> one time and producing a <a class="reference internal" href="#term-result"><span class="xref std std-term">result</span></a>.</dd>
+<dt id="term-schedule-horizon">Schedule Horizon</dt>
+<dd>The amount ahead of time that pScheduler puts a run on the schedule.</dd>
 <dt id="term-task">Task</dt>
 <dd>A job for pScheduler to do, consisting of a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a> to be carried out, scheduling information and other options.</dd>
 <dt id="term-test">Test</dt>
@@ -120,42 +119,10 @@
 <p>In addition to these foundational features, perhaps pScheduler greatest asset is it&#8217;s extensibility. It allows allows plug-ins for new tests, tools and archivers to be written. This means that pScheduler is not limited by what it can do today, and it&#8217;s possible to extend it to perform new type of measurements or other functions as well as to have their results sent to new types of storage and/or analysis tools.</p>
 <p>The remainder of this document provides some basic information on pScheduler and pointers to more detailed information where applicable.</p>
 </div>
-<div class="section" id="how-it-works">
-<h2>How It Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
-<p><em>These are just notes for andy, want to fill this out and add some diagrams</em></p>
-<dl class="docutils">
-<dt>Creating a task:</dt>
-<dd><ul class="first last simple">
-<li>Client send task to assist server to determine lead participant</li>
-<li>Client sends request to lead participant</li>
-<li>Lead participant determines other participants</li>
-<li>Lead submits tasks to other participants, they check against limits and find common tool</li>
-<li>Task created</li>
-</ul>
-</dd>
-<dt>Scheduling runs:</dt>
-<dd><ul class="first last simple">
-<li>After a task is created , run is scheduled. lead takes charge</li>
-<li>Lead determine run needs to be scheduled. Done by looking at task interval and comparing what&#8217;s already scheduled to time horizon.</li>
-<li>Lead gathers schedule during time window (determined by slip option) and finds common time. Will choose earliest common time or randomly choose one if randslip is set</li>
-<li>Submits to participants for final approval</li>
-<li>Run created</li>
-</ul>
-</dd>
-<dt>Executing Run:</dt>
-<dd><ul class="first last simple">
-<li>When time comes up pscheduler runs given tool</li>
-<li>Result reported and stored in pscheduler</li>
-<li>Client may poll result at this point</li>
-<li>May also be pushed to archiver where it can be sent somewhere else</li>
-</ul>
-</dd>
-</dl>
-</div>
 <div class="section" id="basic-command-line-client-usage">
 <h2>Basic Command-Line Client Usage<a class="headerlink" href="#basic-command-line-client-usage" title="Permalink to this headline">¶</a></h2>
 <p>Everything in the pScheduler command-line interface (CLI) begins by running the <cite>pscheduler</cite> program and specifying a <em>command</em> and, optionally, <em>arguments</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler COMMAND [ ARGUMENTS ]
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler COMMAND [ ARGUMENTS ]
 </pre></div>
 </div>
 <p>At all points along the command line, using the <cite>&#8211;help</cite> switch will cause pScheduler to display a synopsis of the command so far, available options and, where appropriate, examples.</p>
@@ -195,9 +162,8 @@
 <p>For useful reference material about different pSchedule options, plug-ins and more see the following:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference internal" href="pscheduler_ref_tests.html"><em>Test Reference</em></a></li>
-<li><a class="reference internal" href="pscheduler_ref_tools.html"><em>Tool Reference</em></a></li>
-<li><a class="reference internal" href="pscheduler_ref_archivers.html"><em>Archiver Reference</em></a></li>
+<li><a class="reference internal" href="pscheduler_ref_tests_tools.html"><em>Test and Tool Reference</em></a></li>
+<li><a class="reference internal" href="pscheduler_ref_archivers.html"><em>pScheduler Archivers</em></a></li>
 </ul>
 </div></blockquote>
 </div>
@@ -216,7 +182,6 @@
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#terminology">Terminology</a></li>
 <li><a class="reference internal" href="#benefits">Benefits</a></li>
-<li><a class="reference internal" href="#how-it-works">How It Works</a></li>
 <li><a class="reference internal" href="#basic-command-line-client-usage">Basic Command-Line Client Usage</a></li>
 <li><a class="reference internal" href="#running-a-pscheduler-server">Running A pScheduler Server</a></li>
 <li><a class="reference internal" href="#bwctl-backward-compatibility">BWCTL Backward Compatibility</a></li>
@@ -296,7 +261,7 @@
     
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>
