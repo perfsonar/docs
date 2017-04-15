@@ -2,13 +2,17 @@
 Viewing the Schedule
 ***************************************
 
+.. _pscheduler_client_schedule-intro:
+
 Introduction
 -------------
 It is often desirable to view the pScheduler schedule to plan new tests, debug a problem or just see how busy a host is at a particular time. The ``pscheduler`` command-line client includes the following commands to provide this visibility:
 
     * ``pscheduler schedule`` - This command outputs the schedule in the requested timeframe as text. See :ref:`pscheduler_client_schedule-schedule`.
     * ``pscheduler plot-schedule`` - This command creates a PNG image file that provides a box plot of the schedule. See :ref:`pscheduler_client_schedule-plot_schedule`.
-    * ``pscheduler monitor`` - This command provides top-like output showing real-time state of runs in the database. See :ref:`pscheduler_client_schedule-monitor`.
+    * ``pscheduler monitor`` - This command provides top-like output showing near real-time state of runs in the database. See :ref:`pscheduler_client_schedule-monitor`.
+
+.. _pscheduler_client_schedule-basics:
 
 The Basics
 -----------
@@ -99,6 +103,10 @@ You may also ask for all tests that are NOT a certain type by using the ``--inve
     
     pscheduler schedule --filter-test latencybg --invert
     
+Any of the commands above can also be run to a remote pScheduler server using the ``--host HOST`` option, where ``HOST`` is the address of the pScheduler server with the schedule you'd like to see. For example, to see the schedule for the last hour of the pScheduler server on *host2* you would run::
+
+    pscheduler schedule --host host2 -PT1H
+    
 If you are curious about any additional options or details, you can also run ``pscheduler schedule --help`` to get more information about this command. 
 
 
@@ -106,10 +114,76 @@ If you are curious about any additional options or details, you can also run ``p
 
 Visualizing the Schedule with ``pscheduler plot-schedule``
 ------------------------------------------------------------
+The ``pscheduler plot-schedule`` command asks pScheduler to fetch scheduled task runs from the past, present or future and display them as box plot in a PNG image file. It takes the following form where OPTIONS is command-line options and IMAGE_FILE is the location where you want the generated image saved::
 
+    pscheduler plot-schedule [ OPTIONS ] [ delta | start end ] > IMAGE_FILE
+
+You always redirect the output to a file and the program will return an error before execution if you do not. Example output is shown below:
+
+.. image:: images/pscheduler_client_schedule-plot.png
+
+The vertical axis is the time that the test ran or is scheduled to run. The green boxes are :term:`runs<run>` of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of four classifications listed at the top:
+
+    #. **Exclusive** - These are tasks that cannot run at the same time as any other exclusive or normal task. An example is a *throughput* task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.
+    #. **Normal** - These are tasks that can run at the same time as other normal and background tasks, but cannot run at the same time as exclusive tasks. Currently there are no examples of these in the default tool set, but the classification is available for those writing new tools.
+    #. **Background** - These are tasks that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include *latency*, *latencybg*, *rtt* and *trace*. It is not uncommon to have this column look almost entirely solid if you have *latencybg* tasks since they run continuously. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.
+    #. **Non-Start** - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a :term:`schedule horizon` so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.
+    
+The primary options for manipulating what is in the image are the time arguments that take the same form as ``pscheduler schedule``. If no arguments are given, all runs for the next hour will be displayed:: 
+
+    pscheduler plot-schedule
+
+With one (delta) argument, the schedule between now and some point in the past or future will be shown. Deltas are ISO 8601 durations, with -PT1H meaning one hour in the past and P1D meaning one day in the future. Examples:
+    
+    * One hour in the past::
+    
+        pscheduler plot-schedule -PT1H
+    
+    * One day in the future::
+    
+        pscheduler plot-schedule PT1D
+        
+With two (start and end) arguments, the schedule within a range of times will be shown. Either argument can be a delta as described above (e.g. -P2D) or a ISO 8601 timestamp (e.g., 2016-09-04T12:34:56+0400). Examples:
+
+    * One hour in the past to two hours in the future::
+        
+        pscheduler plot-schedule -PT1H PT2H
+    
+    * One hour timeframe between two specific times::
+        
+        pscheduler plot-schedule 2016-09-04T12:34:56+0400 2016-09-04T13:34:56+0400
+
+Any of the commands above can also be run to a remote pScheduler server using the ``--host HOST`` option, where ``HOST`` is the address of the pScheduler server with the schedule you'd like to see. For example, to see the schedule for the last hour of the pScheduler server on *host2* you would run::
+
+    pscheduler plot-schedule --host host2 -PT1H
+
+If you are curious about any additional options or details, you can also run ``pscheduler plot-schedule --help`` to get more information about this command. 
 
 .. _pscheduler_client_schedule-monitor:
 
-Monitoring the Schedule in Real-Time with ``pscheduler monitor``
+Monitoring the Schedule in Real Time with ``pscheduler monitor``
 ------------------------------------------------------------------
+The ``pscheduler monitor`` command provides top-like output of what the schedule is doing in near real time. It takes the following form::
+
+    pscheduler monitor [ OPTIONS ]
+    
+The output displayed looks like the following:
+
+.. image:: images/pscheduler_client_schedule-monitor.png
+
+Each row in the table shows a run. The runs are grouped by status and show the following in the columns from left to right:
+
+    * The time that the task started
+    * The :ref:`status<pscheduler_client_schedule-basics>` of the run. If it's in the *Running* state it will be highlighted as well. 
+    * The command-line parameters one could give to ``pscheduler task`` to create the run
+    
+The most common method for invoking the command is to give it no options and it will fill the screen with as many tasks as it can fit::
+
+    pscheduler monitor
+
+If you would like to monitor a pScheduler server on remote host you can add the ``--host`` switch as follows::
+
+     pscheduler monitor --host host2
+
+If you are curious about any additional options or details, you can also run ``pscheduler monitor --help`` to get more information about this command. 
 
