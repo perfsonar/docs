@@ -1,7 +1,5 @@
-******************************
-Archiver Reference
-******************************
+**********************
+pScheduler Archivers 
+**********************
 
-Page should contain at least the following:
-
-    * Everything from https://github.com/perfsonar/pscheduler/wiki/Archivers
+See https://github.com/perfsonar/pscheduler/wiki/Archivers
