@@ -117,7 +117,7 @@ Note that iPXE needs to be on a bootable medium, and it’s operationally better
 Q: I am trying to run perfSONAR on low-cost hardware (e.g. raspberry pi, etc.). Where should I start?
 ========================================================================================================================================================================================
 **A:** There are numerous hardware platforms that have emerged that are an attractive option for use in network performance measurement. The perfSONAR collaboration does not recommend, nor support, the use of perfSONAR on low-end, ARM-based hardware such as the Raspberry PI. It has been shown that it is difficult to distinguish network issues, from host issues, on these devices. In particular, we do not recommend these devices for testing throughput. Use of latency based tools (Ping, OWAMP) is possible provided that an accurate clock source is available.
-For more information, see :doc:`install_low_cost_nodes`.
+For more information, see :doc:`install_small_node_details`.
 
 
 Q: I am running a small node, and seeing a lot of IO. What is going on?
