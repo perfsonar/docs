@@ -8,18 +8,17 @@ Adding a User
 When adding users to the toolkit, in particular those that you want to access the web interface or SSH into the host, it is recommended you use the provided script |nptoolkit_script|. To add users with that script run the following:
 
 #. Login to the system as a root user
-#. Run |nptoolkit_script|
-#. At the prompt, select option *3. Manage Users*::
+#. Run ** |nptoolkit_script| **
+#. At the prompt, select option **2. Manage Users**::
 
     perfSONAR Toolkit customization script
     
-    1. Configure Networking
-    2. Change Timezone
-    3. Manage Users
+    1. Change Timezone
+    2. Manage Users
     0. exit
 
-    Make a selection: 3   
-#. Select option *1. Add a new user*::
+    Make a selection: 2
+#. Select option **1. Add a new user**::
 
     Welcome to the perfSONAR Toolkit user administration program.
     This program will help you administer users.
@@ -29,7 +28,7 @@ When adding users to the toolkit, in particular those that you want to access th
         3. Change a user's password
         0. exit
     Make a selection:  1
-#. Enter the name of the user you would like to add and hit *Enter*:
+#. Enter the name of the user you would like to add and hit **Enter**:
    
     ::
 
@@ -37,10 +36,10 @@ When adding users to the toolkit, in particular those that you want to access th
 
     .. warning:: You may not create a user with name *psadmin* as it will conflict with an existing group.
 
-#. At the next prompt enter *yes* or *no* if you want the user to be able to login via SSH. Alternatively leave the input blank and it will default to *yes*.::
+#. At the next prompt enter **yes** or enter *no* if you want the user to be able to login via SSH. Alternatively leave the input blank and it will default to **yes**.::
 
     Should this user be able to login via SSH? [yes]
-#. At the next prompt enter *yes* or *no* if you want the user to be able to manage the host through the web interface. Alternatively leave the input blank and it will default to *yes*.:
+#. At the next prompt enter **yes** or *no* if you want the user to be able to manage the host through the web interface. Alternatively leave the input blank and it will default to **yes**.:
 
     ::
 
@@ -56,26 +55,25 @@ When adding users to the toolkit, in particular those that you want to access th
     passwd: all authentication tokens updated successfully.
 #. The new user is added. You may enter **0** to exit the program or perform other operations with the tool. 
 
-.. note:: The perfSONAR Toolkit does not provide any special utilities to create superusers. You will need to use built-in utilities like *visudo* to create privileged users. This is a change as of 3.4 of the perfSONAR Toolkit. Note that any users in the wheel group will NOT be allowed access to the web interface.  The **psadmin** group is provided as a special group for web administrators.
+.. note:: The perfSONAR Toolkit does not provide any special utilities to create superusers. You will need to use built-in utilities like *visudo* to create privileged users. Note that any users in the wheel group will NOT be allowed access to the web interface. The **psadmin** group is provided as a special group for web administrators.
 
 
 Deleting a User
 ==========================
 You may delete a user with the |nptoolkit_script|:
 
-#. Login to the system as a root user
-#. Run |nptoolkit_script|
-#. At the prompt, select option *3. Manage Users*::
+#. Login to the system as a root user.
+#. Run **|nptoolkit_script|**
+#. At the prompt, select option **2. Manage Users**::
 
     perfSONAR Toolkit customization script
     
-    1. Configure Networking
-    2. Change Timezone
-    3. Manage Users
+    1. Change Timezone
+    2. Manage Users
     0. exit
 
-    Make a selection: 3   
-#. Select option *2. Delete a user*::
+    Make a selection: 2
+#. Select option **2. Delete a user**::
 
     Welcome to the perfSONAR Toolkit user administration program.
     This program will help you administer users.
@@ -88,28 +86,27 @@ You may delete a user with the |nptoolkit_script|:
 #. Type the name of the user you would like to delete::
 
     Enter the user whose account you'd like to remove. Just hit enter to exit: myuser
-#. at the next prompt, enter *yes* or *no* if you would like to delete the user's home directory (default is *yes*)::
+#. At the next prompt, enter **yes** or *no* if you would like to delete the user's home directory (default is **yes**)::
     
-    Would you like to delete test3's home directory? [yes]
+    Would you like to delete myuser's home directory? [yes]
 #. The new user is deleted. You may enter **0** to exit the program or perform other operations with the tool. 
 
 Changing a User's Password
 ==========================
 You may change a user's password with the |nptoolkit_script|:
 
-#. Login to the system as a root user
-#. Run |nptoolkit_script|
-#. At the prompt, select option *3. Manage Users*::
+#. Login to the system as a root user.
+#. Run **|nptoolkit_script|**
+#. At the prompt, select option **2. Manage Users**::
 
     perfSONAR Toolkit customization script
     
-    1. Configure Networking
-    2. Change Timezone
-    3. Manage Users
+    1. Change Timezone
+    2. Manage Users
     0. exit
 
-    Make a selection: 3   
-#. Select option *3. Change a user's password*::
+    Make a selection: 2 
+#. Select option **3. Change a user's password**::
 
     Welcome to the perfSONAR Toolkit user administration program.
     This program will help you administer users.

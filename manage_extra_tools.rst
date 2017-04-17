@@ -18,9 +18,10 @@ The :doc:`install_psui` describes the deployment of the psUI for RPM or Debian b
 
 Source Code
 -----------
-The perfSONAR UI source code can be browsed via `Fisheye interface <https://svn.geant.net/fisheye/browse/SA2T3-ps-visualisation-tools>`_ or retreived with subversion: 
+The perfSONAR UI source code can be browsed via `Fisheye interface <https://svn.geant.net/fisheye/browse/SA2T3-ps-visualisation-tools>`_ or retrieved with subversion: 
 
-::  
+::
+
     svn co http://svn.geant.net/GEANT/SA2/ps-visualisation-tools/perfsonar-ui-web/
 
 Usage
@@ -44,9 +45,15 @@ The Monitoring and Debugging Dashboard (MaDDash) is software for concisely displ
 
 Installation
 ------------
-You may install MaDDash via yum with the following::
+You may install MaDDash with the following commands:
     
+*CentOS*::
+
     yum install maddash
+
+*Debian, Ubuntu*::
+
+    apt-get install maddash
 
 Usage
 -----

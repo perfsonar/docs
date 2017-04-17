@@ -16,7 +16,7 @@ Click "Add New" button to open a test spec editor, or can click on a small penci
 * Name: Name of the hostgroup
 * Service Type: Service type that this parameter set applies. This field is preselected when you click on "Add New" button.
 * Admins: List of users who are admin of this test spec. Only admins can edit the hosts.
-* Depenending on the service type, you will see different set of test specs that you can enter. Please read comments on the UI for details about each parameter.
+* Depending on the service type, you will see different set of test specs that you can enter. Please read comments on the UI for details about each parameter.
 
 Please see :doc:`mca_userguide_config` next.
 

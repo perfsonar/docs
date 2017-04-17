@@ -4,21 +4,23 @@ Configuring Regular Tests
 
 A core function of the perfSONAR Toolkit is to run regularly scheduled network measurements. You can define the tests you want run through the toolkit's web interface. This section describes using the interface to manage the set of tests run by tour toolkit node.
 
-.. seealso::  See :doc:`Mesh Configuration Quick Start <multi_overview>` for information on an alternative way to configure tests when your host is participating in a large community or you manage multiple hosts. 
+.. seealso::  :doc:`Mesh Configuration Quick Start <multi_overview>` for information on an alternative way to configure tests when your host is participating in a large community or you manage multiple hosts. 
+
+.. seealso::  :doc:`manage_locating_hosts` for information on finding remote hosts to run tests to.
 
 .. _manage_reg_tests_access:
 
 Accessing the Configuration interface
 =====================================
-#. Open **http://<hostname>** in your browser where **<hostname>** is the name of your toolkit host
-#. Click on *Configure Tests* in near the middle of the page that loads
+#. Open **http://<hostname>** in your browser where **<hostname>** is the name of your toolkit host.
+#. Click on **Configure Tests** in section **Test Results** of the page that loads.
 
-    .. image:: images/install_quick_start-configtests1.png
+    .. image:: images/manage_regular_tests-main-page.png
 #. Login using the web administrator username and password.
-    .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account
-#. The page that loads can be used to manage regular tests. See the remainder of this document for details on :ref:`adding <manage_reg_tests_add>`, :ref:`modifying <manage_reg_tests_modify>`, :ref:`disabling <manage_reg_tests_disable>` and :ref:`deleting <manage_reg_tests_delete>` tests as well as :ref:`adding <manage_reg_tests_add_host>`, :ref:`modifying <manage_reg_tests_modify_host>` and :ref:`deleting <manage_reg_tests_delete_host>` test hosts. 
+    .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account.
+#. The page that loads can be used to manage regular tests. See the remainder of this document for details on :ref:`modifying <manage_reg_tests_modify>` tests and test hosts. 
 
-    .. image:: images/manage_regular_tests-configtests2.png
+    .. image:: images/manage_regular_tests-tests-overview.png
 
 .. _manage_reg_tests_types:
 
@@ -29,16 +31,16 @@ As a first step test definition must be added. Multiple types of tests can be co
 .. glossary::
 
     Throughput
-        This type of test measures the amount of data that can be transferred over a period of time. It is implemented using a tool called BWCTL that make sures the throughput tests do not conflict with each other. BWCTL executes another tool called iperf to actually transfer the data and measure the results. By default it prefers the newest version of iperf, `iperf3 <http://software.es.net/iperf/>`_, but will fallback to an older version automatically if the remote endpoint does not support it. 
+        This type of test measures the amount of data that can be transferred over a period of time. It is implemented using a tool called pScheduler or BWCTL that makes sure the throughput tests do not conflict with each other. perfSONAR 4.0 and later uses a new scheduling infrastructure called pScheduler. pScheduler is a complete replacement for BWCTL. All perfSONAR 4.0 hosts will be also running a BWCTL server for the sole purpose of interacting with old clients. pScheduler can detect if another pScheduler server is on the other end, and if not, fallback to a BWCTL test if needed. By default pScheduler/BWCTL executes `iperf3 <http://software.es.net/iperf/>`_ to actually measure throughput, but iperf2 and nuttcp can also be used. For a description of the pros and cons of each tool, see `fasterdata.es.net <https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/>`_.
 
     Ping
-        This type of test measures the round-trip-time of packet and other statistics such as loss. The BWCTL tool is used to manage the schedule and it spawns a ping command to perform the actual measurement. Ping collects similar statistics to the one-way latency test (such as packet loss) but does so at a much less granular level and without regard for whether the measured value occurred on the forward or reverse path. The advantage of ping tests is that many sites accept ping tests without the need for firewall modifications or special daemon's running on the target host.
+        This type of test measures the round-trip-time of packet and other statistics such as loss. The pScheduler/BWCTL tool is used to manage the schedule and it spawns a ping command to perform the actual measurement. Ping collects similar statistics to the one-way latency test (such as packet loss) but does so at a much less granular level and without regard for whether the measured value occurred on the forward or reverse path. The advantage of ping tests is that many sites accept ping tests without the need for firewall modifications or special daemon's running on the target host.
         
-    One-way Delay
+    One-way latency
         This type of test measures delay and loss separately for each direction of a path (as opposed to combining the values of each direction as ping tests). The underling tool run is an OWAMP client. This type of test runs constantly sending several packets each seconds. This allows it to find very small amounts of loss if present that may be missed by other tools. If also running throughput tests, you may see anomalies such as a sudden burst of loss when throughput tests run. For this reason it is often recommended you run this type of test on a separate interface or host than the throughput tests. See :doc:`manage_dual_xface` for more information on running tests on separate interfaces.
 
     Traceroute
-        Traceroute tests periodically measure the path between the source and destination. By default this type of test will automatically be added every time you add any of the other types of tests. This type of test is crucial in determining how a packet traverses a network and can be helpful in identifying events such as path changes that affect other test types. The underlying tool is BWCTL to manage scheduling the test and the tracepath command to actual perform the measurement. The tool will fallback to traceroute if tracepath is not installed on the source host for some reason (all Toolkit hosts come with tracepath by default).
+        Traceroute tests periodically measure the path between the source and destination. By default this type of test will automatically be added every time you add any of the other types of tests. This type of test is crucial in determining how a packet traverses a network and can be helpful in identifying events such as path changes that affect other test types. The underlying tool is pScheduler/BWCTL to manage scheduling the test and the tracepath command to actual perform the measurement. The tool will fallback to traceroute if tracepath is not installed on the source host for some reason (all Toolkit hosts come with tracepath by default). It is also possible to choose *paris-traceroute* as in underlying tool.
         
         
 .. _manage_reg_tests_add:
@@ -47,114 +49,147 @@ Adding Regular Tests
 ====================
 #. On the main page of the tests configuration interface click on the **+Add Test** button too choose and add the test type you would like.
 
-    .. image:: images/manage_regular_tests-configtests-addtest1.png
+    .. image:: images/manage_regular_tests-tests-add-test.png
 #. A drop-down list shows to choose the :ref:`test type<manage_reg_tests_types>`. Click on a selected test type you would like to add.
 
-    .. image:: images/manage_regular_tests-configtests-addtest2.png
-#. A new window will appear prompting you for the parameters of the test. Each test contains a *Test name/description* field you are required to define. The *Test name/description* is a human-readable string and will only be used on this interface to identify the test. The remaining parameters are detailed in the tables below:
+    .. image:: images/manage_regular_tests-tests-add-test-type.png
+#. A new window will appear prompting you for the parameters of the test. Each test contains a **Test name/description** field you are required to define. The **Test name/description** is a human-readable string and will only be used on this interface to identify the test. In order to access additional test parameters click **+Advanced Parameters**. The tables below describe remaining parameters including *Advanced Parameters*:
 
     .. _manage_reg_tests_add_params:
 
-    **Throughput**
-
-    +-----------------------+------------+-------------------------------------+
-    | Field                 | Default    | Description                         |
-    +=======================+============+=====================================+    
-    | Type                  | Thoughput  | Indicates the current test type     |
-    +-----------------------+------------+-------------------------------------+
-    | Test name/description |            | A string to identify this test      |
-    +-----------------------+------------+-------------------------------------+
-    | Test Status           | Enabled    | Indicates if the test is enabled    |
-    +-----------------------+------------+-------------------------------------+
-    | Interface             | Default    | |add_params_iface|                  |
-    +-----------------------+------------+-------------------------------------+
-    | Time Between Tests    | 6 hours    | |add_params_throughput_interval|    |
-    +-----------------------+------------+-------------------------------------+
-    | Test Duration         | 20 seconds | |add_params_throughput_duration|    |
-    +-----------------------+------------+-------------------------------------+
-    | Protocol              | TCP        | |add_params_throughput_protocol|    |
-    +-----------------------+------------+-------------------------------------+
-    |    UDP Bandwidth      | Not set    | |add_params_throughput_udp_bwidth|  |
-    +-----------------------+------------+-------------------------------------+
-    | Use Autotuning        | Enabled    | |add_params_throughput_autotune|    |
-    +-----------------------+------------+-------------------------------------+
-    |    Window Size        | Not Set    | |add_params_throughput_window_size| |
-    +-----------------------+------------+-------------------------------------+
-    | TOS bits              | 0          | |add_params_throughput_tos|         |
-    +-----------------------+------------+-------------------------------------+
+    .. container:: topic
     
-    **Ping**
+        **Throughput**
 
-    +-----------------------+------------+-------------------------------------+
-    | Field                 | Default    | Description                         |
-    +=======================+============+=====================================+ 
-    | Type                  | Ping       | Indicates the current test type     |
-    +-----------------------+------------+-------------------------------------+
-    | Test name/description |            | A string to identify this test      |
-    +-----------------------+------------+-------------------------------------+
-    | Test Status           | Enabled    | Indicates if the test is enabled    |
-    +-----------------------+------------+-------------------------------------+
-    | Interface             | Default    | |add_params_iface|                  |
-    +-----------------------+------------+-------------------------------------+
-    | Time Between Tests    | 5 minutes  | |add_params_ping_interval|          |
-    +-----------------------+------------+-------------------------------------+
-    | Packets Sent Per Test | 10         | |add_params_ping_packets|           |
-    +-----------------------+------------+-------------------------------------+
-    | Time Between Packets  | 1 second   | |add_params_ping_packet_interval|   |
-    +-----------------------+------------+-------------------------------------+
-    | Packet Size (bytes)   | 1000       | |add_params_ping_size|              |
-    +-----------------------+------------+-------------------------------------+
-    
-    **One-way delay**
+        .. image:: images/manage_regular_tests-tests-add-test-bw-params.png
+        
+        +----------------------------+------------------+-------------------------------------+
+        | Field                      | Default          | Description                         |
+        +============================+==================+=====================================+    
+        | Type                       | Thoughput        | Indicates the current test type     |
+        +----------------------------+------------------+-------------------------------------+
+        | Test name/description      |                  | A string to identify this test      |
+        +----------------------------+------------------+-------------------------------------+
+        | Test Status                | Enabled          | Indicates if the test is enabled    |
+        +----------------------------+------------------+-------------------------------------+
+        | Interface                  | Default          | |add_params_iface|                  |
+        +----------------------------+------------------+-------------------------------------+
+        | Time between tests         | 6 hours          | |add_params_throughput_interval|    |
+        +----------------------------+------------------+-------------------------------------+
+        | Units                      | Hours            | Indicates units of time             |
+        +----------------------------+------------------+-------------------------------------+
+        | Test duration              | 20 seconds       | |add_params_throughput_duration|    |
+        +----------------------------+------------------+-------------------------------------+
+        | Protocol                   | TCP              | |add_params_throughput_protocol|    |
+        +----------------------------+------------------+-------------------------------------+
+        |    UDP Bandwidth (MB)      | Not set          | |add_params_throughput_udp_bwidth|  |
+        +----------------------------+------------------+-------------------------------------+
+        | Tool(s)                    | iperf3, iperf    | |add_params_throughput_tools|       |
+        +----------------------------+------------------+-------------------------------------+
+        | Direction                  | Send and Receive | |add_params_throughput_direction|   |
+        +----------------------------+------------------+-------------------------------------+
+        | Use Autotuning             | Enabled          | |add_params_throughput_autotune|    |
+        +----------------------------+------------------+-------------------------------------+
+        |    Window Size (MB)        | Not Set          | |add_params_throughput_window_size| |
+        +----------------------------+------------------+-------------------------------------+
+        | Number of Parallel Streams | 1                | |add_params_throughput_streams|     |
+        +----------------------------+------------------+-------------------------------------+
+        | Omit Interval (sec)        | 0                | |add_params_throughput_omit|        |
+        +----------------------------+------------------+-------------------------------------+
+        | Use Zero Copy              | Disabled         | |add_params_throughput_zero_copy|   |
+        +----------------------------+------------------+-------------------------------------+
+        | TOS bits                   | 0                | |add_params_throughput_tos|         |
+        +----------------------------+------------------+-------------------------------------+
 
-    +-----------------------+-----------------------+-------------------------------------+
-    | Field                 | Default               | Description                         |
-    +=======================+=======================+=====================================+  
-    | Type                  | One-way latency       | Indicates the current test type     |
-    +-----------------------+-----------------------+-------------------------------------+
-    | Test name/description |                       | A string to identify this test      |
-    +-----------------------+-----------------------+-------------------------------------+
-    | Test Status           | Enabled               | Indicates if the test is enabled    |
-    +-----------------------+-----------------------+-------------------------------------+ 
-    | Interface             | Default               | |add_params_iface|                  |
-    +-----------------------+-----------------------+-------------------------------------+
-    | Packet Rate           | 10 packets per second | |add_params_owdelay_packet_rate|    |
-    +-----------------------+-----------------------+-------------------------------------+
-    | Packet Size (bytes)   | 20                    | |add_params_owdelay_packet_size|    |
-    +-----------------------+-----------------------+-------------------------------------+
-    
-    **Traceroute**
+    .. container:: topic
 
-    +-----------------------+------------+-------------------------------------+
-    | Field                 | Default    | Description                         |
-    +=======================+============+=====================================+ 
-    | Type                  | Traceroute | Indicates the current test type     |
-    +-----------------------+------------+-------------------------------------+
-    | Test name/description |            | A string to identify this test      |
-    +-----------------------+------------+-------------------------------------+
-    | Test Status           | Enabled    | Indicates if the test is enabled    |
-    +-----------------------+------------+-------------------------------------+        
-    | Interface             | Default    | |add_params_iface|                  |
-    +-----------------------+------------+-------------------------------------+
-    | Tool                  | Default    | |add_params_traceroute_tool|        |
-    +-----------------------+------------+-------------------------------------+
-    | Time Between Tests    | 10 minutes | |add_params_traceroute_interval|    |
-    +-----------------------+------------+-------------------------------------+
-    | Packets Size          | 40 bytes   | |add_params_traceroute_packet_size| |
-    +-----------------------+------------+-------------------------------------+
-    | First Hop to Report   |            | |add_params_traceroute_first_hop|   |
-    +-----------------------+------------+-------------------------------------+
-    | Maximum Number of Hops|            | |add_params_traceroute_max_hops|    |
-    +-----------------------+------------+-------------------------------------+
+        **Ping**
+
+        .. image:: images/manage_regular_tests-tests-add-test-ping-params.png
+        
+        +-----------------------+------------+-------------------------------------+
+        | Field                 | Default    | Description                         |
+        +=======================+============+=====================================+ 
+        | Type                  | Ping       | Indicates the current test type     |
+        +-----------------------+------------+-------------------------------------+
+        | Test name/description |            | A string to identify this test      |
+        +-----------------------+------------+-------------------------------------+
+        | Test Status           | Enabled    | Indicates if the test is enabled    |
+        +-----------------------+------------+-------------------------------------+
+        | Interface             | Default    | |add_params_iface|                  |
+        +-----------------------+------------+-------------------------------------+
+        | Time between tests    | 5 minutes  | |add_params_ping_interval|          |
+        +-----------------------+------------+-------------------------------------+
+        | Units                 | Minutes    | Indicates units of time             |
+        +-----------------------+------------+-------------------------------------+
+        | Packets per test      | 10         | |add_params_ping_packets|           |
+        +-----------------------+------------+-------------------------------------+
+        | Time between packets  | 1 second   | |add_params_ping_packet_interval|   |
+        +-----------------------+------------+-------------------------------------+
+        | Packet Size (bytes)   | 1000       | |add_params_ping_size|              |
+        +-----------------------+------------+-------------------------------------+
     
-#. On the same window you will be able to add hosts to which you want to test. You may also :ref:`add hosts separately <manage_reg_tests_add_host_seperate>` later:
+    .. container:: topic
+
+        **One-way delay**
+
+        .. image:: images/manage_regular_tests-tests-add-test-owamp-params.png
+        
+        +-----------------------+-----------------------+-------------------------------------+
+        | Field                 | Default               | Description                         |
+        +=======================+=======================+=====================================+  
+        | Type                  | One-way latency       | Indicates the current test type     |
+        +-----------------------+-----------------------+-------------------------------------+
+        | Test name/description |                       | A string to identify this test      |
+        +-----------------------+-----------------------+-------------------------------------+
+        | Test Status           | Enabled               | Indicates if the test is enabled    |
+        +-----------------------+-----------------------+-------------------------------------+ 
+        | Interface             | Default               | |add_params_iface|                  |
+        +-----------------------+-----------------------+-------------------------------------+
+        | Packet Rate           | 10 packets per second | |add_params_owdelay_packet_rate|    |
+        +-----------------------+-----------------------+-------------------------------------+
+        | Packet Size (bytes)   | 20                    | |add_params_owdelay_packet_size|    |
+        +-----------------------+-----------------------+-------------------------------------+
+    
+    .. container:: topic
+
+        **Traceroute**
+
+        .. image:: images/manage_regular_tests-tests-add-test-tracert-params.png
+        
+        +-----------------------+------------+-------------------------------------+
+        | Field                 | Default    | Description                         |
+        +=======================+============+=====================================+ 
+        | Type                  | Traceroute | Indicates the current test type     |
+        +-----------------------+------------+-------------------------------------+
+        | Test name/description |            | A string to identify this test      |
+        +-----------------------+------------+-------------------------------------+
+        | Test Status           | Enabled    | Indicates if the test is enabled    |
+        +-----------------------+------------+-------------------------------------+        
+        | Interface             | Default    | |add_params_iface|                  |
+        +-----------------------+------------+-------------------------------------+
+        | Time between tests    | 10         | |add_params_traceroute_interval|    |
+        +-----------------------+------------+-------------------------------------+
+        | Units                 | Minutes    | Indicates units of time             |
+        +-----------------------+------------+-------------------------------------+
+        | Packets Size(bytes)   | 40         | |add_params_traceroute_packet_size| |
+        +-----------------------+------------+-------------------------------------+
+        | First hop to report   |            | |add_params_traceroute_first_hop|   |
+        +-----------------------+------------+-------------------------------------+
+        | Maximum number of hops|            | |add_params_traceroute_max_hops|    |
+        +-----------------------+------------+-------------------------------------+
+        | Tool(s)               | Default    | |add_params_traceroute_tool|        |
+        +-----------------------+------------+-------------------------------------+
+
+    
+#. On the same window you will be able to add hosts to which you want to test. You may also add hosts separately later.
 
     .. _manage_reg_tests_add_host_in_test:
     
 #. Go to the bottom of the page and edit **Test members** section.
     
-    .. image:: images/manage_regular_tests-configtests_addhost_intest1.png
-#. Enter the address or host name of the test member you wish to add in the *Host name* field. You can also add a human-readable description to the *Host description* field that will only be used by this interface when displaying the host. If necessary select additional protocol type.
+    .. image:: images/manage_regular_tests-tests-add-test-members.png
+#. Enter the address or host name of the test member you wish to add in the **Host name** field. You can also add a human-readable description to the **Host description** field that will only be used by this interface when displaying the host. If necessary select additional protocol type.
     
     .. _manage_reg_tests_add_ip_type:
 
@@ -166,29 +201,27 @@ Adding Regular Tests
         * If the local interface has only an IPv4 address or the remote host is an IPv4 address (or a hostname with only an IPv4 entry), then only an IPv4 test will be setup.
         * If the local interface has only an IPv6 address or the remote host is an IPv6 address (or a hostname with only an IPv6 entry), then only an IPv6 test will be setup.
         
-    .. image:: images/manage_regular_tests-configtests_addhost_intest2.png
 #. When you are done click **Add host**.
 
-    .. image:: images/manage_regular_tests-configtests_addhost_intest3.png
+    .. image:: images/manage_regular_tests-tests-add-test-members-add-host.png
 #. The new test member for the test defined is now shown in the section **Test members**.
 
-    .. image:: images/manage_regular_tests-configtests_addhost_intest4.png
 #. Repeat the above step clicking **+Add Test Member(s)** if you would like to add more hosts to the test.
     
-    .. image:: images/manage_regular_tests-configtests_addhost_intest5.png
-#. If you are content with this setup then there is nothing to do. If you would like to remove these tests click *Delete*. See :ref:`manage_reg_tests_modify_delmember` and :ref:`manage_reg_tests_delete` for more details on removing these tests if you so desire. 
+    .. image:: images/manage_regular_tests-tests-add-test-members-add-host-more.png
+#. If you are content with this setup then there is nothing to do. If you would like to remove these tests click trash icon. See :ref:`manage_reg_tests_modify_delmember` and :ref:`manage_reg_tests_delete` for more details on removing these tests if you so desire. 
 
 #. Click **OK** to save test definition. If you would like to add more tests click **+Add Test** button again and repeat above steps to add new test.
 
 #. Click the **Save** button at the bottom of the screen to apply your changes. 
     
-    .. image:: images/manage_regular_tests-configtests_addhost_intest6.png
-#. Wait while the configuration is applied and services are restarted. Your tests should now be running and you should see the message below on the top of the screen. 
+    .. image:: images/manage_regular_tests-tests-add-test-save.png
+#. Wait while the configuration is applied and services are restarted. Your tests should now be running and you should see the green message as shwon below. 
 
-    .. image:: images/manage_regular_tests-configtests_addhost_intest7.png
+    .. image:: images/manage_regular_tests-tests-add-test-saved.png
 #. Take note that a traceroute test is automatically added when you add a non-traceroute test. 
     
-    .. image:: images/manage_regular_tests-configtests_addhost_intest8.png
+    .. image:: images/manage_regular_tests-tests-tracert.png
 #. It may take several hours for throughput data to appear and several minutes (depending on the time between tests) for the other test types. If the tests are working you should be able to data in the graphs.
 
     .. seealso:: See :doc:`using_graphs` for details on reading graphs
@@ -202,9 +235,9 @@ Editing Regular Tests
 
 Changing Test Parameters
 ------------------------
-#. You may modify settings of a test after adding it. Access the regular testing interface under **Tests** tab and in the list of tests click the configuration icon under *ACTIONS* next to any test you wish to change:
+#. You may modify settings of a test after adding it. Access the regular testing interface under **Tests** tab and in the list of tests click the configuration icon under **ACTIONS** next to any test you wish to change:
 
-    .. image:: images/manage_regular_tests-configtests-edit.png
+    .. image:: images/manage_regular_tests-tests-change-params.png
 #. From the page that loads you can make a number of changes. See the sections that follow for details on how to make some specific changes. See the tables :ref:`here<manage_reg_tests_add_params>` for complete listing of parameters and their meanings. Click **OK** to leave the test configuration window and keep your changes.
 
 #. If you are done with making necessary tests modification click the **Save** button at the bottom of the screen to apply all your changes.
@@ -213,22 +246,19 @@ Changing Test Parameters
 
 Deleting Test Members
 ---------------------
-#. In the *Configure Test* configuration page, uder *Test members* section find the test member you wish to remove and click the trash bin symbol next to it.
+#. In the **Configure Test** configuration page, uder **Test members** section find the test member you wish to remove and click the trash bin symbol next to it.
 
-    .. image:: images/manage_regular_tests-configtests-edit-delmember1.png
-#. You will be presented with a warning message to confirm you want to delete this host.
+    .. image:: images/manage_regular_tests-tests-delete-member-icon.png
+#. You should no longer see the host in the list of **Test members**.
 
-    .. image:: images/manage_regular_tests-configtests-edit-delmember2.png
-#. After confirmation you should no longer see the host in the list of *Test members*
-
-    .. image:: images/manage_regular_tests-configtests-edit-delmember3.png
+    .. image:: images/manage_regular_tests-tests-delete-member-deleted.png
 #. If you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system.
 
 .. _manage_reg_tests_modify_addmember:
 
 Adding Test Members
 ---------------------
-From the configuration interface, the process for adding more test members is the same as that detailed in the section :ref:`_manage_reg_tests_add_host_in_test:`.
+From the configuration interface, the process for adding more test members is the same as that detailed in the section :ref:`here<manage_reg_tests_add_host_in_test>`.
 
 .. _manage_reg_tests_modify_ip:
 
@@ -236,9 +266,9 @@ Changing Test Member IP Address Settings
 -----------------------------------------
 When you add a new test member, the configuration automatically determines if you should the test should run using IPv4, IPv6 or both. See the :ref:`discussion <manage_reg_tests_add_ip_type>` on IP type when adding a new test for more details on the default behavior. If you would like to override the default behavior or update the host address do the following:
 
-#. In the *Configure Test* configuration page, uder *Test members* section find the test member you would like to update and select the desired protocol type.
+#. In the **Configure Test** configuration page, under **Test members** section find the test member you would like to update and select the desired protocol type.
     
-    .. image:: images/manage_regular_tests-configtests-edit-ip1.png
+    .. image:: images/manage_regular_tests-tests-change-member-ip.png
 
     .. warning:: Checking the IPv4 and IPv6 or text boxes will create a test that forces that address family. If the local interface or remote host does not support that address type your test will be unable to run. For example, if the remote host is an IPv4 address but only the IPv6 checkbox is selected then it will be impossible to run a test. There is also a warning in the web interface in these cases.
     
@@ -249,57 +279,38 @@ When you add a new test member, the configuration automatically determines if yo
 Disabling/Enabling Regular Tests
 ================================
 
-.. _manage_reg_tests_disable_disable:
-
-Disabling a Regular Test
-------------------------
-In some cases it may be desirable to stop running tests for a period of time, but not to delete them entirely. This allows them to be enabled again at a later time without recreating the entire test set. To disable an existing test set do the following:
-
-#. Under *Tests* tab open the *Configure Test* configuration page selecting appropriate symbol from *ACTIONS* next to a test you want to disable.
-
-    .. image:: images/manage_regular_tests-configtests-edit.png
-#. Click **Test Status** switch to change test status from *Enabled* to *Disabled*.
-
-    .. image:: images/manage_regular_tests-configtests-disable1.png
-#. This should change the switch to gray indicating disabled test as shown below
-
-    .. image:: images/manage_regular_tests-configtests-disable2.png
-#. When you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system. Scheduled test list will indicate the current status of this option.
-
 .. _manage_reg_tests_disable_enable:
 
-Enabling a Regular Test
------------------------
+In some cases it may be desirable to stop running tests for a period of time, but not to delete them entirely. This allows them to be enabled again at a later time without recreating the entire test set. To disable or enable an existing test set do the following:
 
-If you have previously :ref:`disabled a test <manage_reg_tests_disable_disable>` and wish to enable it again do the following:
+#. Under **Tests** tab open the **Configure Test** configuration page selecting appropriate symbol from **ACTIONS** next to a test you want to disable.
 
-#. Under *Tests* tab open the *Configure Test* configuration page selecting appropriate symbol from *ACTIONS* next to a test you want to disable. 
+    .. image:: images/manage_regular_tests-tests-change-params.png
+#. Click **Test Status** switch to change test status from **Enabled** to **Disabled** or vice versa.
 
-    .. image:: images/manage_regular_tests-configtests-edit.png
-#. Click **Test Status** switch to change test status from *Disabled* to *Enabled*.
+    .. image:: images/manage_regular_tests-tests-disable-icon.png
+#. This should change the switch to gray indicating disabled test as shown below
 
-    .. image:: images/manage_regular_tests-configtests-enable1.png
-#. The text should change the switch to green indicating enabled test
-
-    .. image:: images/manage_regular_tests-configtests-enable2.png
+    .. image:: images/manage_regular_tests-tests-disable-disabled.png
 #. When you are done making changes click **OK** to accept test configuration change and then **Save** to apply your changes to the system. Scheduled test list will indicate the current status of this option.
 
 .. _manage_reg_tests_delete:
 
 Deleting Regular Tests
 ======================
+
 The interface allows you to completely delete a test set. This will stop all tests in the set from running and completely remove them from the configuration interface. If after deleting a test set, you would like to re-add the tests, you will have to completely recreate the test set.
 
 .. note::  Deleting a test set will NOT delete the historical results stored on the host. You will be able to view the historical data on the graphs after deleting the test set.
 
 You may delete a test with the following steps:
 
-#. Go to the *Tests* tab to see the current list of tests. Uder list of tests find the test you wish to remove and click the trash bin symbol next to it. 
+#. Go to the **Tests** tab to see the current list of tests. Uder list of tests find the test you wish to remove and click the trash bin symbol next to it. 
 
-    .. image:: images/manage_regular_tests-configtests-delete1.png
+    .. image:: images/manage_regular_tests-tests-delete-test-icon.png
 #. You will be presented with a warning message to confirm you want to delete this test. When confirmed you should no longer see the test in the list of tests.
 
-    .. image:: images/manage_regular_tests-configtests-delete2.png
+    .. image:: images/manage_regular_tests-tests-delete-test-confirm.png
 #. When you are done making changes click the **Save** button.
     
 
@@ -312,6 +323,11 @@ You may delete a test with the following steps:
 .. |add_params_throughput_autotune|     replace:: Allows the TCP window size to be automatically calculated.
 .. |add_params_throughput_window_size|  replace:: If **Use Autotuning** is not checked then this field appears. Manually sets the value of the TCP window size.
 .. |add_params_throughput_tos|          replace::  A value between 0 and 255 that will be set in the TOS field of the IP header, and will only have impact on networks that support QoS specifications. If you are unsure about this field, leave the default.
+.. |add_params_throughput_tools|        replace:: The underlying tool to perform throughput tests. By default it prefers the newest version of iperf3, but will fallback to an older iperf version automatically if the remote endpoint does not support it.
+.. |add_params_throughput_direction|    replace:: The direction of the tests to be run from/to this host. Use this field to indicate send only, receive only or both directions.
+.. |add_params_throughput_streams|      replace:: Number of concurrent streams for the test to run.
+.. |add_params_throughput_omit|         replace:: Initial period of data to omit from the final statistics. This is so that you can skip past initial conditions such as TCP slow start. Currently only implemented by the iperf3 tool.
+.. |add_params_throughput_zero_copy|    replace:: Allows to set using a "zero copy" method of sending data, such as *sendfile()* system call. This uses much less CPU to put the data. Currently only implemented by the iperf3 tool.
 
 .. |add_params_ping_interval|           replace:: The amount of time in between tests. Ping tests are low bandwidth and generally run every few minutes.
 .. |add_params_ping_packets|            replace:: The number of packets to send per test. Multiplying by the **Time between packets** yields the duration of the test in seconds. 

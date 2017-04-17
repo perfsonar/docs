@@ -12,7 +12,7 @@ By default the perfSONAR Toolkit is both measurement host AND archive host. It c
 As an alternative, you may decide to separate your measurement hosts and archive host(s). This allows a single "centralized" archive host to store results from multiple measurement hosts. A few use cases where this may be desirable are as follows:
 
 * Your measurement hosts are on less powerful (and likely lower cost) hardware that you don't want having the overhead of running the measurement archive. The measurement archive has higher hardware requirements than the measurement tools, so removing it can result in considerable resource savings.
-* Your site has the experience and the infrastructure to manage large databases that you would like to leverage for storing measurment results on a dedicated archive host.
+* Your site has the experience and the infrastructure to manage large databases that you would like to leverage for storing measurement results on a dedicated archive host.
 * You want to store results in multiple places. For example, you may store your results locally but also store them in a central archive where complex analysis tools operate on all the data from multiple hosts in one location.
 
 Those are just a few examples. If you think a central measurement archive is right for your measurement strategy, then read the remainder of this document for instructions on how to configure both your archive host and measurement hosts.
@@ -59,6 +59,11 @@ As an archive administrator you may create a username, generate an API key, and 
 #. After running the commands above you should see the generated API key in the output (if not, re-run the commands above and they will re-show you the generated API key without affecting the user you just created). An example of the output line showing the API key (*9130962c6b38722c0b9968e6903e1927e94e16fd* in this example) is below::
 
     Key: 9130962c6b38722c0b9968e6903e1927e94e16fd for example_user
+
+On a Debian system you can use::
+
+    /usr/share/esmond/util/esmond_manage add_ps_metadata_post_user example_user
+    /usr/share/esmond/util/esmond_manage add_timeseries_post_user example_user
     
 At this point provide the administrator of the measurement host wishing to register data with the username and API key. 
 
@@ -69,23 +74,33 @@ At this point provide the administrator of the measurement host wishing to regis
 Authenticating by IP Address
 ----------------------------
 
-As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a username and password (API key) to be defined for each host in their regular testing file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows: 
+As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a username and password (API key) to be defined for each host in their tasks file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows: 
 
 #. Change to the esmond install directory::
 
     cd /usr/lib/esmond
-#. **RedHat/CentOS users only**: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a **bash** shell, you can enable Python 2.7 for your current shell with the following commands::
+#. **RedHat/CentOS users only**: The esmond commands require Python 2.7, which is installed when installing esmond, and it creates a `python virtual environment <https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html>`_. To switch into the python virtual environment for esmond run the following:
 
-    source /opt/rh/python27/enable
-    /opt/rh/python27/root/usr/bin/virtualenv --prompt="(esmond)" .
-    . bin/activate
+    **RedHat/CentOS 6 users only**::
+
+        source /opt/rh/python27/enable
+        /opt/rh/python27/root/usr/bin/virtualenv --prompt="(esmond)" .
+        . bin/activate
+    
+    **RedHat/CentOS 7/Debian**::
+    
+        . bin/activate
 #. Run the commands below to create the account. You must provide a username as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of *X.X.X.X* or *X.X.X.X/Y* where *X* is each octet and *Y* is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host 10.0.1.1 or any host in the 10.0.2.0/24 subnet to register data to esmond::
 
     python esmond/manage.py add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
 
+On a Debian system you can use::
+
+    /usr/share/esmond/util/esmond_manage add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
+
 Configuring Measurement Hosts
 ==============================
-Each measurement host must be configured to register its data to the central archive. You do this by adding a ``measurement_archive`` block to the :ref:`regular testing configuration file <config_files-regtesting-conf-main>` for each type of data to be registered in the central measurement archive. Valid test types are:
+Each measurement host must be configured to register its data to the central archive. You do this by adding a ``measurement_archive`` block to the :ref:`MeshConfig agent tasks file <config_files-meshconfig-conf-agent-tasks>` for each type of data to be registered in the central measurement archive. Valid test types are:
 
 * esmond/latency
 * esmond/throughput
@@ -98,7 +113,7 @@ If you want all of the test types registered in the central archive then you wil
 #. **password** - The API key used to authenticate to the archive.  This can be excluded if you plan to authenticate based on IP. Example: 9130962c6b38722c0b9968e6903e1927e94e16fd
 #. **ca_certificate_path** - For https, this is the path to a directory where CA certificates are kept that can be used to verify the presented SSL certificate from the server running the archive. Example: /etc/ssl/certs
 
-In addition, a ``measurement_archive`` block contains a number of ``summary`` blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see :doc:`config_regular_testing`.
+In addition, a ``measurement_archive`` block contains a number of ``summary`` blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see :doc:`config_mesh_agent_tasks`.
 
 Given all the information above, lets look at an example where we want to register all types of data to a measurement archive running at *https://acme.local/esmond/perfsonar/archive/*. The username and API key assigned to us by the archive administrator are *example_user* and *9130962c6b38722c0b9968e6903e1927e94e16fd* respectively. Also, since the server uses https we have installed the CA certificate in */etc/ssl/certs*. Applying these details yields the following configuration::
 
@@ -206,15 +221,13 @@ Given all the information above, lets look at an example where we want to regist
         ca_certificate_path /etc/ssl/certs
     </measurement_archive>
 
-After adding the above to you configuration you will need to restart your regular testing:
+After adding the above to you configuration you DO NOT need to restart any daemons, the change will automatically be detected by the meshconfig-agent daemon.
 
-    /etc/init.d/perfsonar-regulartesting restart
-
-.. note:: If you central measurement archive goes down for any reason, the regular_testing daemon will queue results on the local disk under the :ref:`test results directory <config_regular_testing-test_result_directory>` as specified in your :ref:`regulartesting.conf <config_files-regtesting-conf-main>` file. It will try to register any results on disk when your measurement archive returns. Since accumulating too many files can cause trouble for disk space and/or the regular_testing daemon's ability to keep up with registering data, these files are cleaned nightly on toolkit installations. 
+.. note:: If your central measurement archive goes down for any reason, pScheduler will store the results in the database and try to re-register them when there server returns. By default it will  try for one day after the failure occurs before abandoning the result.
 
 Registering to Multiple Measurement Archives
 --------------------------------------------
-You may register to multiple measurement archives by adding multiple ``measurement_archive`` blocks to the :ref:`regular testing configuration file <config_files-regtesting-conf-main>` of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following::
+You may register to multiple measurement archives by adding multiple ``measurement_archive`` blocks to the :ref:`MeshConfig Agent tasks file <config_files-meshconfig-conf-agent-tasks>` of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following::
 
     <measurement_archive>
         type                esmond/traceroute
@@ -230,4 +243,4 @@ You may register to multiple measurement archives by adding multiple ``measureme
         password            5bd139bdb77a85cfe65847e44556a2883a857942
     </measurement_archive>
 
-.. note:: If one or more of your measurement archives goes down, data will continue to be registered to the running archive(s). Data for the down archives will be queued on disk and it will attempt to re-register the data when it returns (as described in the note at the bottom of the previous section). 
+.. note:: If one or more of your measurement archives goes down, data will continue to be registered to the running archive(s). Data for the down archives will be kept in the pScheduler database and it will attempt to re-register the data when it returns (as described in the note at the bottom of the previous section). 
