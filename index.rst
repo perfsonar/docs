@@ -78,7 +78,6 @@ Running Measurements with pScheduler
    pscheduler_client_tasks
    pscheduler_client_schedule
    pscheduler_server_running
-   pscheduler_server_limits
    pscheduler_ref_tests_tools
    pscheduler_ref_archivers
    pscheduler_ref_bwctl
