@@ -153,3 +153,8 @@ list is provided, debug will be enabled for all pScheduler programs.
 Logging can be disabled by running::
 
     pscheduler debug off PROGRAMS
+
+More information on the pscheduler error messages you might find in the logs is available at: 
+
+- https://github.com/perfsonar/pscheduler/wiki/Error-Messages
+
