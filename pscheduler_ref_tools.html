@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tool Reference &mdash; perfSONAR Toolkit 4.0rc3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0rc3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0rc3 documentation" href="index.html" />
+    <link rel="next" title="Archiver Reference" href="pscheduler_ref_archivers.html" />
+    <link rel="prev" title="Test Reference" href="pscheduler_ref_tests.html" /> 
+  </head>
+  <body role="document">
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pscheduler_ref_archivers.html" title="Archiver Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_ref_tests.html" title="Test Reference"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="tool-reference">
+<h1>Tool Reference<a class="headerlink" href="#tool-reference" title="Permalink to this headline">¶</a></h1>
+<p>Page should contain at least the following:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">For each tool type:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Description of tool</li>
+<li>Supported/Unsupported options</li>
+<li>Any special notes</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<div class="section" id="throughput-tools">
+<h2>Throughput Tools<a class="headerlink" href="#throughput-tools" title="Permalink to this headline">¶</a></h2>
+<p>Throughput tests suport the following arguements:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task throughput --help
+Usage: task [task-options] throughput [test-options]
+ -h, --help            show this help message and exit
+ -s SOURCE, --source=SOURCE
+                       Sending host
+ --source-node=SOURCE_NODE
+                       pScheduler node on sending host, if different
+ -d DESTINATION, --dest=DESTINATION, --destination=DESTINATION
+                       Receiving host
+ --dest-node=DEST_NODE
+                       pScheduler node on receiving host, if different
+ -t DURATION, --duration=DURATION
+                       Total runtime of test
+ -i INTERVAL, --interval=INTERVAL
+                       How often to report results (internally, results still reported in aggregate at end)
+ -P PARALLEL, --parallel=PARALLEL
+                       How many parallel streams to run during the test
+ -u, --udp             Use UDP instead of TCP testing
+ -b BANDWIDTH, --bandwidth=BANDWIDTH
+                       Bandwidth to rate limit the test to, supports SI
+                       notation such as 1G
+ -w WINDOW_SIZE, --window-size=WINDOW_SIZE
+                       TCP window size to use for the test, supports SI notation such as 64M
+ -m MSS, --mss=MSS     TCP maximum segment size
+ -l BUFFER_LENGTH, --buffer-length=BUFFER_LENGTH
+                       length of the buffer to read/write from
+ --ip-tos=IP_TOS       IP type-of-service octet (integer)
+ --ip-version=IP_VERSION
+                       Specificy which IP version to use, 4 or 6
+ -B LOCAL_ADDRESS, --local-address=LOCAL_ADDRESS
+                       Use this as a local address for control and tests
+ -O OMIT, --omit=OMIT  Number of seconds to omit from the start of the test
+ --no-delay            Set TCP no-delay flag, disables Nagle&#39;s algorithm
+ --congestion=CONGESTION
+                       Set TCP congestion control algorithm
+ --zero-copy           Use a &#39;zero copy&#39; method of sending data
+ --flow-label=FLOW_LABEL
+                       Set the IPv6 flow label, implies --ip-version 6
+ --client-cpu-affinity=CLIENT_CPU_AFFINITY
+                       Set&#39;s the sending side&#39;s CPU affinity
+ --server-cpu-affinity=SERVER_CPU_AFFINITY
+                       Set&#39;s the receiving&#39;s side&#39;s CPU affinity
+ --reverse             Reverses the direction of the test.
+</pre></div>
+</div>
+<p>The currently supported throughput tools are <em>iperf2</em>, <em>iperf3</em>, and <em>nuttcp</em>. <em>iperf3</em> is the default.
+Note that not every tool supports every option. The following table summarizes tool specific option.
+Other pScheduler options are supported by all tools.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="24%" />
+<col width="24%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">option</th>
+<th class="head">iperf2</th>
+<th class="head">iperf3</th>
+<th class="head">nuttcp</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8211;omit</td>
+<td>&nbsp;</td>
+<td>X</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>&#8211;congestion</td>
+<td>X</td>
+<td>X</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>&#8211;zero-copy</td>
+<td>&nbsp;</td>
+<td>X</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>&#8211;fq-rate
+(coming soon)</td>
+<td>&nbsp;</td>
+<td>X</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="latency-tools">
+<h2>Latency Tools<a class="headerlink" href="#latency-tools" title="Permalink to this headline">¶</a></h2>
+<p>Latency tests suport the following arguements:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task latency --help
+Usage: task [task-options] latency [test-options]
+ -h, --help            show this help message and exit
+ -s SOURCE, --source=SOURCE
+                       The address of the entity sending packets in this test
+ --source-node=SOURCE_NODE
+                       The address of the source pScheduler node, if different
+ -d DEST, --dest=DEST  The address of the entity receiving packets in this test
+ --dest-node=DEST_NODE
+                       The address of the destination pScheduler node, if different
+ -c PACKET_COUNT, --packet-count=PACKET_COUNT
+                       The number of packets to send
+ -i PACKET_INTERVAL, --packet-interval=PACKET_INTERVAL
+                       The number of seconds to delay between sending packets
+ -L PACKET_TIMEOUT, --packet-timeout=PACKET_TIMEOUT
+                       The number of seconds to wait before declaring a
+                       packet lost
+ -p PACKET_PADDING, --packet-padding=PACKET_PADDING
+                       The size of padding to add to the packet in bytes
+ -C CTRL_PORT, --ctrl-port=CTRL_PORT
+                       The port to use for making a control connection to the
+                       side acting as a server.
+ -P DATA_PORTS, --data-ports=DATA_PORTS
+                       The port range to use on the side of the test running
+                       the client. At least two ports required.
+ -T IP_TOS, --ip-tos=IP_TOS
+                       The port range to use on the side of the test running
+                       the client. At least two ports required.
+ --ip-version=IP_VERSION
+                       Force an IP version when performing the test. Useful
+                       when specifying hostnames as source or dest that may
+                       map to both IPv4 and IPv6 addresses.
+ -b BUCKET_WIDTH, --bucket-width=BUCKET_WIDTH
+                       The bin size to use for histogram calculations. This
+                       value is divided into the result as reported in
+                       seconds and truncated to the nearest 2 decimal places.
+ -f, --flip            In multi-participant mode, have the dest start the
+                       client and request a reverse test. Useful in some
+                       firewall and NAT environments.
+ -R, --output-raw      Output individual packet statistics. This will
+                       substantially increase the size of a successful
+                       result.
+</pre></div>
+</div>
+</div>
+<div class="section" id="round-trip-time-tools">
+<h2>Round Trip Time Tools<a class="headerlink" href="#round-trip-time-tools" title="Permalink to this headline">¶</a></h2>
+<p>RTT tests suport the following arguements:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pscheduler task rtt --help
+Usage: task [task-options] rtt [test-options]
+ -h, --help            show this help message and exit
+ --count=COUNT         Test count
+ --dest=DEST           Destination host
+ --flow-label=FLOW_LABEL
+                       Flow label
+ --hostnames           Look up hostnames from IPs
+ --no-hostnames        Don&#39;t look up hostnames from IPs
+ --interval=INTERVAL   Time to wait between packets sent
+ --ip-version=IP_VERSION
+                       IP version to use
+ --source=SOURCE       Source address or interface
+ --source-node=SOURCE_NODE
+                       Source pScheduler node, if different
+ --suppress-loopback   Suppress multicast loopback
+ --no-suppress-loopback
+                       Don&#39;t suppress multicast loopback
+ --ip-tos=IP_TOS       IP type-of-service octet (integer)
+ --length=LENGTH       Packet length
+ --ttl=TTL             Time to live
+ --deadline=DEADLINE   Deadline for all measurements to complete
+ --timeout=TIMEOUT     Timeout for each round trip
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Tool Reference</a><ul>
+<li><a class="reference internal" href="#throughput-tools">Throughput Tools</a></li>
+<li><a class="reference internal" href="#latency-tools">Latency Tools</a></li>
+<li><a class="reference internal" href="#round-trip-time-tools">Round Trip Time Tools</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pscheduler_ref_tests.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_ref_tests.html" title="previous chapter">Test Reference</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pscheduler_ref_archivers.html">Next topic</a>
+                      <ul><li><a href="pscheduler_ref_archivers.html" title="next chapter">Archiver Reference</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pscheduler_ref_archivers.html" title="Archiver Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_ref_tests.html" title="Test Reference"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0rc3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

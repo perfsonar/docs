@@ -8,7 +8,7 @@
     
     <title>Installation &mdash; perfSONAR Toolkit 4.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -30,7 +30,7 @@
     <link rel="next" title="Configuration" href="mca_configure.html" />
     <link rel="prev" title="MeshConfig Administrative GUI" href="mca.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -49,7 +49,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -61,8 +61,8 @@
         <li class="right" >
           <a href="mca.html" title="MeshConfig Administrative GUI"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li>
-          <li><a href="mca.html" accesskey="U">MeshConfig Administrative GUI</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="mca.html" accesskey="U">MeshConfig Administrative GUI</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -72,20 +72,20 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
 <p>Start a postgreSQL container for MCA.</p>
-<div class="highlight-python"><div class="highlight"><pre>docker run --name mca-postgres \
+<div class="highlight-python"><div class="highlight"><pre><span></span>docker run --name mca-postgres \
     --restart=always \
     -d postgres
 </pre></div>
 </div>
 <p>After postgreSQL container starts up, start the MCA container with default configuration / self-signed ssl cert.</p>
-<div class="highlight-python"><div class="highlight"><pre>docker run --name mca \
+<div class="highlight-python"><div class="highlight"><pre><span></span>docker run --name mca \
     --restart=always \
     --link mca-postgres:postgres \
     -p 80:80 \
@@ -99,16 +99,16 @@
 <div class="section" id="rhel6-centos6-x86">
 <h2>RHEL6 / CentOS6 (x86)<a class="headerlink" href="#rhel6-centos6-x86" title="Permalink to this headline">¶</a></h2>
 <p>MCA requires postgreSQL &gt;9.2 provided by CentOS SCL, and nodejs from epel.</p>
-<div class="highlight-python"><div class="highlight"><pre>yum install epel-release
+<div class="highlight-python"><div class="highlight"><pre><span></span>yum install epel-release
 yum install centos-release-scl
 </pre></div>
 </div>
 <p>Then, download the latest MCA RHEL6 RPM from <a class="reference external" href="https://github.com/soichih/meshconfig-admin/releases">GitRepo</a></p>
-<div class="highlight-python"><div class="highlight"><pre>yum install mca-2.0-X.el6.x86_64.rpm
+<div class="highlight-python"><div class="highlight"><pre><span></span>yum install mca-2.0-X.el6.x86_64.rpm
 </pre></div>
 </div>
 <p>If this is the first time you have installed MCA, you can run following to initialize DB, generate access token, etc..</p>
-<div class="highlight-python"><div class="highlight"><pre>service mca setup
+<div class="highlight-python"><div class="highlight"><pre><span></span>service mca setup
 </pre></div>
 </div>
 <div class="section" id="stacking-mca-on-existing-toolkit-instance-on-rhel6">
@@ -129,13 +129,13 @@ yum install centos-release-scl
 echo &#8220;export PGPORT=5433&#8221; &gt; /opt/rh/postgresql92/root/etc/sysconfig/pgsql/postgresql92-postgresql</dd>
 </dl>
 <p>Then start postgresql92..</p>
-<div class="highlight-python"><div class="highlight"><pre>service start postgresql92-postgresql
+<div class="highlight-python"><div class="highlight"><pre><span></span>service start postgresql92-postgresql
 </pre></div>
 </div>
 <ul class="simple">
 <li>Step 2 - create mca user and mcadmin database</li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre>su - postgres
+<div class="highlight-python"><div class="highlight"><pre><span></span>su - postgres
 scl enable postgresql92
 psql -p 5433 -c &quot;CREATE ROLE mca PASSWORD &#39;newpassword&#39; CREATEDB INHERIT LOGIN;&quot;
 psql -p 5433 -c &quot;CREATE DATABASE mcadmin OWNER mca;&quot;
@@ -145,7 +145,7 @@ psql -p 5433 -c &quot;CREATE DATABASE mcadmin OWNER mca;&quot;
 <li>Step 3 - update mca db config</li>
 </ul>
 <p>Edit /opt/mca/mca/api/config/db.js</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="s">&#39;postgres://mca:hogehoge@localhost:5433/mcadmin&#39;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="s1">&#39;postgres://mca:hogehoge@localhost:5433/mcadmin&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -153,16 +153,16 @@ psql -p 5433 -c &quot;CREATE DATABASE mcadmin OWNER mca;&quot;
 <div class="section" id="rhel7-centos7-x86">
 <h2>RHEL7 / CentOS7 (x86)<a class="headerlink" href="#rhel7-centos7-x86" title="Permalink to this headline">¶</a></h2>
 <p>Download the latest MCA RHEL7 RPM from <a class="reference external" href="https://github.com/soichih/meshconfig-admin/releases">GitRepo</a>.</p>
-<div class="highlight-python"><div class="highlight"><pre>yum install epel-release
+<div class="highlight-python"><div class="highlight"><pre><span></span>yum install epel-release
 yum install mca-2.0-X.el7.x86_64.rpm
 </pre></div>
 </div>
 <p>If this is the first time you have installed MCA, you can run following to initialize postgres DB, generate access token, start apache, MCA, etc..</p>
-<div class="highlight-python"><div class="highlight"><pre>/opt/mca/mca/deploy/rhel7/setup.sh
+<div class="highlight-python"><div class="highlight"><pre><span></span>/opt/mca/mca/deploy/rhel7/setup.sh
 </pre></div>
 </div>
 <p>If you are upgrading to a new version of MCA, MCA services should automatically restart. If you want to force restarting it anyway, you can run following.</p>
-<div class="highlight-python"><div class="highlight"><pre>pm2 restart all
+<div class="highlight-python"><div class="highlight"><pre><span></span>pm2 restart all
 </pre></div>
 </div>
 </div>
@@ -177,13 +177,13 @@ yum install mca-2.0-X.el7.x86_64.rpm
 <h2>HTTPS Certificate<a class="headerlink" href="#https-certificate" title="Permalink to this headline">¶</a></h2>
 <p>You will need to request and install a new HTTP/SSL certificate. By default, MCA comes with a self-signed certificate installed on /opt/mca/mca/deploy/conf/ssl/server/self.cert.pem. How to request the HTTP/SSL certificate is out of scope for this document. Please contact an administrator from your campus / institution to find out more.</p>
 <p>Once you have obtained your HTTP/SSL certificate, you can install it on /etc/grid-security/http, and you will need to adjust the apache configuration (/etc/httpd/conf.d/apache-mca.conf) to point to your new certificate (for both port 443 and 9443 - if you are using X509 authentication)</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;VirtualHost _default:443&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;VirtualHost _default:443&gt;
     SSLCertificateFile /etc/grid-security/http/cert.pem
     SSLCertificateKeyFile /etc/grid-security/http/key.pem
     SSLCertificateChainFile /etc/grid-security/http/chain.pem
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre>&lt;VirtualHost _default:9443&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;VirtualHost _default:9443&gt;
     SSLCertificateFile /etc/grid-security/http/cert.pem
     SSLCertificateKeyFile /etc/grid-security/http/key.pem
     SSLCertificateChainFile /etc/grid-security/http/chain.pem
@@ -200,7 +200,7 @@ yum install mca-2.0-X.el7.x86_64.rpm
 </ul>
 <div class="section" id="for-systemd">
 <h3>For systemd<a class="headerlink" href="#for-systemd" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">http</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">http</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span>
 <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">http</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span> <span class="o">--</span><span class="n">permanent</span>
 <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">https</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span>
 <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">https</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span> <span class="o">--</span><span class="n">permanent</span>
@@ -262,7 +262,7 @@ yum install mca-2.0-X.el7.x86_64.rpm
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -274,8 +274,8 @@ yum install mca-2.0-X.el7.x86_64.rpm
         <li class="right" >
           <a href="mca.html" title="MeshConfig Administrative GUI"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li>
-          <li><a href="mca.html" >MeshConfig Administrative GUI</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="mca.html" >MeshConfig Administrative GUI</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -313,9 +313,9 @@ yum install mca-2.0-X.el7.x86_64.rpm
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

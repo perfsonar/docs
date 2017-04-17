@@ -1,0 +1,54 @@
+**************
+perfSONAR FAQ
+**************
+
+
+*Q: I want to operate a "Dynamic" Maddash Mesh with hosts from a lookup service. Where do I start?*
+
+A: There is information on this method of mesh configuration available at the following link:
+
+- :doc:`multi_mesh_autoconfig`
+
+The server and agent each have needs regarding the definition of tests, information on each can be found via these links:
+
+- :doc:`multi_mesh_server_config`
+- :doc:`multi_mesh_agent_config`
+
+*Q: How to get rid of "There isn't a perfSONAR sudo user defined" message?*
+
+**TODO: Changes this to /etc/profile.d, check if its config(noreplace)**
+
+A: Either add a non-root user to the pssudo group or remove the line /etc/perfsonar/toolkit/scripts/add_pssudo_user —auto from /root/.bashrc. Note that future updates could revert the /root/.bashrc file.
+
+
+
+*Q: I am seeing a "Can't locate object method 'ssl_opts' via package 'LWP::UserAgent'" error when trying to use a Central Measurement Archive. What should I do?*
+
+A: This is due to a pretty old version of perl-libwww-perl is included with CentOS 6. If you remove “ca_certificate_path” from the configuration file things will work.
+
+*Q: If you have made manual changes to regular_testing.conf to point to a different MA (or multiple MAs), and you subsequently change test configurations through the GUI, does this leave your MA customizations alone?*
+
+A: Yes. The GUI leaves all measurement_archive blocks alone.
+
+
+*Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?*
+
+A: The network interface card on a host is designed to send at line rate as long as there is data being made available via the kernel. This means that a 1G card will send at either 1G, or 0G (it does not pace itself at a rate in between). In situations where a larger capacity machine is testing to a smaller capacity machine, it is inevitable that the 10Gbps stream of data will need to be buffered somewhere in the path: either one of the last hop switches or the device itself. If there is not enough buffering available, the data will be dropped and TCP will be forced to reduce sending rates.
+
+The 'choppy' behavior can be seen on this page: http://www.perfsonar.net/deploy/hardware-selection/hardware-advice/, and is challenging to mitigate unless there is a significant amount of buffer available. For these reasons, it is recommended that when designing testing scenarios, only 'like' to 'like' capacities be explored.
+
+*Q: My perfSONAR results show consistent line-rate performance, but a researcher at my site is reporting really poor performance, what gives?*
+
+A: perfSONAR is designed to give a "best case scenario" test result for end to end testing:
+perfSONAR is typically installed on well-provisioned server-class hardware that contains adequate CPU, memory, and NIC support
+By default, tuning are applied to the TCP stack: https://fasterdata.es.net/host-tuning/linux/
+BWCTL invokes "memory to memory" test tools, e.g. the host does not pull data off of, or write to, storage during testing
+perfSONAR typically runs short single streamed TCP tests.
+The user of a network may not have a machine that is as tuned as a perfSONAR node, could be using an application that is incorrect for the job of data movement, and may have a bottleneck due to storage. Consider all of these factors when working with them to identify performance issues. It is often the case that the 'network' may be working fine, but the host and software infrastructure need additional attention.
+
+*Q: How do I change the default tool used in a test mesh?* 
+
+A: The file resides at: /etc/perfsonar/regulartesting.conf
+
+
+
