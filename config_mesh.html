@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Mesh Configuration (.conf) file &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
+    <title>Mesh Configuration (.conf) file &mdash; perfSONAR Toolkit 4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5.1',
+        VERSION:     '4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
     <link rel="next" title="MeshConfig Agent Configuration File" href="config_mesh_agent.html" />
     <link rel="prev" title="Lookup Service Registration Daemon Configuration File" href="config_ls_registration.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="config_ls_registration.html" title="Lookup Service Registration Daemon Configuration File"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -334,9 +334,9 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 <p>This specifies the type of data to be stored. The supported values refer to an older version of the perfSONAR software where different data types were stored in different archives. Even if the data ultimately ends up in the same archive you need to define multiple &lt;measurement_archive&gt; directives for each type of data you plan to store. The types have the following meanings:</p>
 <ul class="simple">
-<li><strong>perfsonarbuoy/bwctl</strong> - Throughput tests such as those initated by BWCTL running iperf or iperf3</li>
+<li><strong>perfsonarbuoy/bwctl</strong> - Throughput tests such as those initiated by BWCTL running iperf or iperf3</li>
 <li><strong>perfsonarbuoy/owamp</strong> - OWAMP tests initiated by the powstream tool</li>
-<li><strong>pinger</strong> - Ping tests initiated by bwping or OWAMP tests initiated by bwping running OWAMP</li>
+<li><strong>pinger</strong> - Ping tests initiated by ping, bwping or OWAMP tests initiated by bwping running OWAMP</li>
 <li><strong>traceroute</strong> - Any type of test initiated by bwtraceroute</li>
 </ul>
 </div>
@@ -423,9 +423,9 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 <p>The types have the following meanings:</p>
 <ul class="simple">
-<li><strong>perfsonarbuoy/bwctl</strong> - Throughput tests such as those initated by BWCTL running iperf or iperf3. See <a class="reference internal" href="#config-mesh-test-spec-throughput"><em>Defining Throughput Test Parameters</em></a> for directives specific to this type of test.</li>
+<li><strong>perfsonarbuoy/bwctl</strong> - Throughput tests such as those initiated by BWCTL running iperf or iperf3. See <a class="reference internal" href="#config-mesh-test-spec-throughput"><em>Defining Throughput Test Parameters</em></a> for directives specific to this type of test.</li>
 <li><strong>perfsonarbuoy/owamp</strong> - OWAMP tests initiated by the powstream tool. See <a class="reference internal" href="#config-mesh-test-spec-owamp"><em>Defining Streaming One-way Delay Test Parameters</em></a> for directives specific to this type of test.</li>
-<li><strong>pinger</strong> - Ping tests initiated by bwping or OWAMP tests initiated by bwping running OWAMP. See <a class="reference internal" href="#config-mesh-test-spec-ping"><em>Defining Ping Test Parameters</em></a> for directives specific to this type of test.</li>
+<li><strong>pinger</strong> - Ping tests initiated by ping, bwping or OWAMP tests initiated by bwping running OWAMP. See <a class="reference internal" href="#config-mesh-test-spec-ping"><em>Defining Ping Test Parameters</em></a> for directives specific to this type of test.</li>
 <li><strong>traceroute</strong> - Any type of test initiated by bwtraceroute. See <a class="reference internal" href="#config-mesh-test-spec-traceroute"><em>Defining Traceroute Parameters</em></a> for directives specific to this type of test.</li>
 </ul>
 </div>
@@ -438,9 +438,9 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tool to use in performing the throughput test</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The tool to use in performing the throughput test.  For a description of the pros and cons of each tool, see <a class="reference external" href="https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/">fasterdata.es.net</a>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">iperf|iperf3</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool</span> <span class="pre">iperf|iperf3|nuttcp</span></tt></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
 </tr>
@@ -457,7 +457,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The length to run each throughput test in seconds</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The length to run each throughput test in seconds, or in ISO8601 format (e.g.: &#8220;PT10S&#8221;)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">duration</span> <span class="pre">SECONDS</span></tt></td>
 </tr>
@@ -476,7 +476,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time in between throughput tests in seconds</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The time in between throughput tests in seconds, or in ISO8601 format (e.g.: &#8220;PT10S&#8221;)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">interval</span> <span class="pre">SECONDS</span></tt></td>
 </tr>
@@ -604,7 +604,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">omit_interval</span> <span class="pre">SECONDS</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protcol is <em>tcp</em> and tool is <em>iperf3</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protocol is <em>tcp</em> and tool is <em>iperf3</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -705,7 +705,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of service to set in the IP header of outgoing packets</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of service to set in the IP header of outgoing packets as an integer from 0-255.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tos_bits</span> <span class="pre">NUMBER</span></tt></td>
 </tr>
@@ -716,6 +716,48 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="dscp-directive">
+<h3>dscp Directive<a class="headerlink" href="#dscp-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The DSCP value to set in the IP header of outgoing packets</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">dscp</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and tool is <em>nuttcp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tcp-bandwidth-directive">
+<h3>tcp_bandwidth Directive<a class="headerlink" href="#tcp-bandwidth-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The rate at which the tool will attempt to send TCP packets. Can specify as bits per second or with suffix K, M, or G to indicated Kbps, Mbps or Gbps respectively.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tcp_bandwidth</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
 </tr>
 </tbody>
 </table>
@@ -747,17 +789,143 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">TCP window size (bytes) 0 indicates system defaults</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">TCP window size (in bytes). Can use K or M to indicate Kilo or Mega bytes.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">window_size</span> <span class="pre">NUMBYTES</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protcol is <em>tcp</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protocol is <em>tcp</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0 (i.e. use endpoint host default)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="mss-directive">
+<h3>mss Directive<a class="headerlink" href="#mss-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Tell the tool to use a MSS of N bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">mss</span> <span class="pre">BYTES</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and tool is <em>nuttcp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="congestion-directive">
+<h3>congestion Directive<a class="headerlink" href="#congestion-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Use this TCP congestion control algorithm (cubic, htcp, bbr, etc)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">congestion</span> <span class="pre">VALUE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protocol is <em>tcp</em> and tool is <em>iperf3</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set, will use system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="no-delay-directive">
+<h3>no_delay Directive<a class="headerlink" href="#no-delay-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Set TCP_NODELAY option for the tests</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">no_delay</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and protocol is <em>tcp</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="client-cpu-affinity-directive">
+<h3>client_cpu_affinity Directive<a class="headerlink" href="#client-cpu-affinity-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">which cores to use for the client tool (useful for 40/100G NUMA hosts)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">client_cpu_affinity</span> <span class="pre">NUMBER</span></tt> CPU socket ID, used to start tool with &#8216;numactl -N ID&#8217;</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="server-cpu-affinity-directive">
+<h3>server_cpu_affinity Directive<a class="headerlink" href="#server-cpu-affinity-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">which cores to use for the server tool (useful for 40/100G NUMA hosts)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">server_cpu_affinity</span> <span class="pre">NUMBER</span></tt> CPU socket ID, used to start tool with &#8216;numactl -N ID&#8217;</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="flow-label-directive">
+<h3>flow_label Directive<a class="headerlink" href="#flow-label-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">set the IPv6 flow label (iperf3 -L) integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">flow_label</span> <span class="pre">INT</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/bwctl</em> and tool is <em>iperf3</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
 </tr>
 </tbody>
 </table>
@@ -906,40 +1074,44 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="loss-threshold-directive">
-<h3>loss_threshold Directive<a class="headerlink" href="#loss-threshold-directive" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="output-raw-directive">
+<h3>output_raw Directive<a class="headerlink" href="#output-raw-directive" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body"><strong>DEPRECATED IN 3.4</strong> This option will not cause an error but will be ignored in MeshConfig software later than 3.4.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">This will store the raw owamp results as JSON in the measurement archive.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">loss_threshold</span> <span class="pre">SECONDS</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">output_raw</span> <span class="pre">0|1</span></tt></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">Deprecated in 3.4.</td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="session-count-directive">
-<h3>session_count Directive<a class="headerlink" href="#session-count-directive" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>tos_bits Directive<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body"><strong>DEPRECATED IN 3.4</strong> This option will not cause an error but will be ignored in MeshConfig software later than 3.4.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of service to set in the IP header of outgoing packets as an integer from 0-255.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">session_count</span> <span class="pre">NUMBER</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tos_bits</span> <span class="pre">NUMBER</span></tt></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>perfsonarbuoy/owamp</em></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">Deprecated in 3.4.</td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
 </tr>
 </tbody>
 </table>
@@ -966,8 +1138,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id6">
-<h3>force_bidirectional Directive<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>force_bidirectional Directive<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -987,13 +1159,13 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id7">
-<h3>ipv4_only Directive<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3>ipv4_only Directive<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint (-4)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv4_only</span> <span class="pre">0|1</span></tt></td>
 </tr>
@@ -1008,13 +1180,13 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id8">
-<h3>ipv6_only Directive<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h3>ipv6_only Directive<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint (-6)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ipv6_only</span> <span class="pre">0|1</span></tt></td>
 </tr>
@@ -1050,13 +1222,13 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id9">
-<h3>packet_interval Directive<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h3>packet_interval Directive<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The average time between packets. A decimal value less than one means to send multiple packets per second (e.g. .1 means 10 packets per second). This multiplied by packet_count is the duration of the test.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The average time between packets. A decimal value less than one means to send multiple packets per second (e.g. .1 means 10 packets per second). This multiplied by packet_count is the duration of the test. (-i)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_interval</span> <span class="pre">SECONDS</span></tt></td>
 </tr>
@@ -1077,11 +1249,11 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size of packets in bytes.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The size of packets in bytes. (ping -s)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_size</span> <span class="pre">BYTES</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em> and tool is <em>ping</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1098,11 +1270,11 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The TTL to set in the IP header of outgoing packets</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The TTL to set in the IP header of outgoing packets (ping -t)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_ttl</span> <span class="pre">TTL</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em> and tool is <em>ping</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1113,8 +1285,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id10">
-<h3>random_start_percentage Directive<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h3>random_start_percentage Directive<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1134,11 +1306,137 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
+<div class="section" id="id12">
+<h3>flow_label Directive<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Set the flow label on echo request packets as an integer. (ping6 -F)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">flow_label</span> <span class="pre">INT</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em> and test is running over IPv6</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">System default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="suppress-loopback-directive">
+<h3>suppress_loopback Directive<a class="headerlink" href="#suppress-loopback-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Suppress loopback of multicast packets (ping -L)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">suppress_loopback</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em> and tool is <em>ping</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">System default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="deadline-directive">
+<h3>deadline Directive<a class="headerlink" href="#deadline-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Specify a timeout, in seconds, before ping exits regardless of how many packets have been sent  (ping -w)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">deadline</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em> and tool is <em>ping</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">System default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="timeout-directive">
+<h3>timeout Directive<a class="headerlink" href="#timeout-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Time to wait for a response (ping -W)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">timeout</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em> and tool is <em>ping</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">System default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="hostnames-directive">
+<h3>hostnames Directive<a class="headerlink" href="#hostnames-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Do not try to map IP addresses to host names when displaying them. (ping -n)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">hostnames</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id13">
+<h3>tos_bits Directive<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of service to set in the IP header of outgoing packets as an integer from 0-255.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tos_bits</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>pinger</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section" id="defining-traceroute-parameters">
 <span id="config-mesh-test-spec-traceroute"></span><h2>Defining Traceroute Parameters<a class="headerlink" href="#defining-traceroute-parameters" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id11">
-<h3>test_interval Directive<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h3>test_interval Directive<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1177,8 +1475,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id12">
-<h3>force_bidirectional Directive<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id15">
+<h3>force_bidirectional Directive<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1198,8 +1496,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id13">
-<h3>ipv4_only Directive<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id16">
+<h3>ipv4_only Directive<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1219,8 +1517,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id14">
-<h3>ipv6_only Directive<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id17">
+<h3>ipv6_only Directive<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1240,8 +1538,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id15">
-<h3>packet_size Directive<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id18">
+<h3>packet_size Directive<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1250,7 +1548,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">packet_size</span> <span class="pre">BYTES</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em> and tool is <em>tarceroute</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em> and tool is <em>traceroute</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -1261,8 +1559,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="timeout-directive">
-<h3>timeout Directive<a class="headerlink" href="#timeout-directive" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id19">
+<h3>timeout Directive<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1282,8 +1580,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id16">
-<h3>tool Directive<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id20">
+<h3>tool Directive<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1309,6 +1607,27 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <li><strong>paris-traceroute</strong> - This is another approach to running traceroute that tries to identify load balanced routes and similar. It requires the client to grant the paris-traceroute command the CAP_NET_RAW privilege on the system in order to run as a non-root user.</li>
 </ul>
 </div>
+<div class="section" id="id21">
+<h3>tos_bits Directive<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of service to set in the IP header of outgoing packets as an integer from 0-255.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tos_bits</span> <span class="pre">NUMBER</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">not set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="max-ttl-directive">
 <h3>max_ttl Directive<a class="headerlink" href="#max-ttl-directive" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1330,8 +1649,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id17">
-<h3>protocol Directive<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id22">
+<h3>protocol Directive<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1351,8 +1670,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id18">
-<h3>random_start_percentage Directive<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id23">
+<h3>random_start_percentage Directive<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1372,44 +1691,170 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="pause-directive">
-<h3>pause Directive<a class="headerlink" href="#pause-directive" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="fragment-directive">
+<h3>fragment Directive<a class="headerlink" href="#fragment-directive" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body"><strong>DEPRECATED IN 3.4</strong> This option will not cause an error but will be ignored in MeshConfig software later than 3.4</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Set the &#8216;do not fragment&#8217; bit (traceroute -F)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">pause</span> <span class="pre">SECONDS</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">fragment</span> <span class="pre">0|1</span></tt></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Underlying tool default</td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default (1)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">Deprecated in 3.4.</td>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="waittime-directive">
-<h3>waittime Directive<a class="headerlink" href="#waittime-directive" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="probe-type-directive">
+<h3>probe_type Directive<a class="headerlink" href="#probe-type-directive" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body"><strong>DEPRECATED IN 3.4</strong> This option will not cause an error but will be ignored in MeshConfig software later than 3.4</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Sets the Probe type to UDP or ICMP or TCP SYN</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">waittime</span> <span class="pre">SECONDS</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">probe_type</span> <span class="pre">icmp|udp|tcp</span></tt></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Underlying tool default</td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">Deprecated in 3.4.</td>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="sendwait-directive">
+<h3>sendwait Directive<a class="headerlink" href="#sendwait-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Minimal time interval between probes (traceroute -z)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">sendwait</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="queries-directive">
+<h3>queries Directive<a class="headerlink" href="#queries-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Sets the number of probe packets per hop (traceroute -q)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">queries</span> <span class="pre">NUM</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="wait-directive">
+<h3>wait Directive<a class="headerlink" href="#wait-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Set the time (in seconds) to wait for a response to a probe (traceroute -w)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">wait</span> <span class="pre">SECONDS</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="as-directive">
+<h3>as Directive<a class="headerlink" href="#as-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Perform AS path lookups in routing registries and print results directly after the corresponding addresses. (traceroute -A)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">as</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id24">
+<h3>hostnames Directive<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Do not try to map IP addresses to host names when displaying them. (traceroute -n)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">hostnames</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="algorithm-directive">
+<h3>algorithm Directive<a class="headerlink" href="#algorithm-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Sets the algorithm used by paris-traceroute (paris-traceroute -a)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">algorithm</span> <span class="pre">hopbyhop|packetbypacket|concurrent|scout|exhaustive</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-mesh-test-spec"><em>test_spec</em></a> where type is <em>traceroute</em> and tool is <em>paris-traceroute</em></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">system default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.0 or later</td>
 </tr>
 </tbody>
 </table>
@@ -1448,7 +1893,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <p>For more on the different types of groups, see the <a class="reference internal" href="#config-mesh-group-type"><em>group</em></a> type section.</p>
 </div>
 <div class="section" id="config-mesh-group-type">
-<span id="id19"></span><h3>type Directive<a class="headerlink" href="#config-mesh-group-type" title="Permalink to this headline">¶</a></h3>
+<span id="id25"></span><h3>type Directive<a class="headerlink" href="#config-mesh-group-type" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1600,7 +2045,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 </div>
 <div class="section" id="config-mesh-group-no-agent">
-<span id="id20"></span><h3>no_agent Directive<a class="headerlink" href="#config-mesh-group-no-agent" title="Permalink to this headline">¶</a></h3>
+<span id="id26"></span><h3>no_agent Directive<a class="headerlink" href="#config-mesh-group-no-agent" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1650,7 +2095,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </div>
 </div>
 <div class="section" id="config-mesh-test-test-spec">
-<span id="id21"></span><h3>group Directive<a class="headerlink" href="#config-mesh-test-test-spec" title="Permalink to this headline">¶</a></h3>
+<span id="id27"></span><h3>group Directive<a class="headerlink" href="#config-mesh-test-test-spec" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1668,8 +2113,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </tbody>
 </table>
 </div>
-<div class="section" id="id22">
-<h3>test_spec Directive<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id28">
+<h3>test_spec Directive<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1875,7 +2320,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <div class="section" id="dynamic-mesh-data-sources">
 <span id="config-mesh-dynamic-sources"></span><h2>Dynamic Mesh Data Sources<a class="headerlink" href="#dynamic-mesh-data-sources" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="config-mesh-dynamic-sources-type">
-<span id="id23"></span><h3>type Directive<a class="headerlink" href="#config-mesh-dynamic-sources-type" title="Permalink to this headline">¶</a></h3>
+<span id="id29"></span><h3>type Directive<a class="headerlink" href="#config-mesh-dynamic-sources-type" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1902,7 +2347,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <div class="section" id="dynamic-mesh-filters">
 <span id="config-mesh-dynamic-filters"></span><h2>Dynamic Mesh Filters<a class="headerlink" href="#dynamic-mesh-filters" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="config-mesh-dynamic-filters-type">
-<span id="id24"></span><h3>type Directive<a class="headerlink" href="#config-mesh-dynamic-filters-type" title="Permalink to this headline">¶</a></h3>
+<span id="id30"></span><h3>type Directive<a class="headerlink" href="#config-mesh-dynamic-filters-type" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1971,7 +2416,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 </div>
 <div class="section" id="config-mesh-dynamic-filters-description">
-<span id="id25"></span><h3>description Directive<a class="headerlink" href="#config-mesh-dynamic-filters-description" title="Permalink to this headline">¶</a></h3>
+<span id="id31"></span><h3>description Directive<a class="headerlink" href="#config-mesh-dynamic-filters-description" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2024,7 +2469,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 </div>
 <div class="section" id="config-mesh-dynamic-filters-tag">
-<span id="id26"></span><h3>tag Directive<a class="headerlink" href="#config-mesh-dynamic-filters-tag" title="Permalink to this headline">¶</a></h3>
+<span id="id32"></span><h3>tag Directive<a class="headerlink" href="#config-mesh-dynamic-filters-tag" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2063,8 +2508,8 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </table>
 <p>This element is primarily used for informational purposes. If defined at the top-level, it is assumed it is the contact information of the person managing this mesh. It is not strictly required in any of it&#8217;s parent elements but may be useful in keeping track of the various administrators of meshes, organization, hosts and/or sites.</p>
 </div>
-<div class="section" id="id27">
-<h3>name Directive<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id33">
+<h3>name Directive<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2312,8 +2757,16 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <li><a class="reference internal" href="#report-interval-directive">report_interval Directive</a></li>
 <li><a class="reference internal" href="#streams-directive">streams Directive</a></li>
 <li><a class="reference internal" href="#tos-bits-directive">tos_bits Directive</a></li>
+<li><a class="reference internal" href="#dscp-directive">dscp Directive</a></li>
+<li><a class="reference internal" href="#tcp-bandwidth-directive">tcp_bandwidth Directive</a></li>
 <li><a class="reference internal" href="#udp-bandwidth-directive">udp_bandwidth Directive</a></li>
 <li><a class="reference internal" href="#window-size-directive">window_size Directive</a></li>
+<li><a class="reference internal" href="#mss-directive">mss Directive</a></li>
+<li><a class="reference internal" href="#congestion-directive">congestion Directive</a></li>
+<li><a class="reference internal" href="#no-delay-directive">no_delay Directive</a></li>
+<li><a class="reference internal" href="#client-cpu-affinity-directive">client_cpu_affinity Directive</a></li>
+<li><a class="reference internal" href="#server-cpu-affinity-directive">server_cpu_affinity Directive</a></li>
+<li><a class="reference internal" href="#flow-label-directive">flow_label Directive</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#defining-streaming-one-way-delay-test-parameters">Defining Streaming One-way Delay Test Parameters</a><ul>
@@ -2324,36 +2777,49 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <li><a class="reference internal" href="#id4">ipv4_only Directive</a></li>
 <li><a class="reference internal" href="#id5">ipv6_only Directive</a></li>
 <li><a class="reference internal" href="#packet-padding-directive">packet_padding Directive</a></li>
-<li><a class="reference internal" href="#loss-threshold-directive">loss_threshold Directive</a></li>
-<li><a class="reference internal" href="#session-count-directive">session_count Directive</a></li>
+<li><a class="reference internal" href="#output-raw-directive">output_raw Directive</a></li>
+<li><a class="reference internal" href="#id6">tos_bits Directive</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#defining-ping-test-parameters">Defining Ping Test Parameters</a><ul>
 <li><a class="reference internal" href="#test-interval-directive">test_interval Directive</a></li>
-<li><a class="reference internal" href="#id6">force_bidirectional Directive</a></li>
-<li><a class="reference internal" href="#id7">ipv4_only Directive</a></li>
-<li><a class="reference internal" href="#id8">ipv6_only Directive</a></li>
+<li><a class="reference internal" href="#id7">force_bidirectional Directive</a></li>
+<li><a class="reference internal" href="#id8">ipv4_only Directive</a></li>
+<li><a class="reference internal" href="#id9">ipv6_only Directive</a></li>
 <li><a class="reference internal" href="#packet-count-directive">packet_count Directive</a></li>
-<li><a class="reference internal" href="#id9">packet_interval Directive</a></li>
+<li><a class="reference internal" href="#id10">packet_interval Directive</a></li>
 <li><a class="reference internal" href="#packet-size-directive">packet_size Directive</a></li>
 <li><a class="reference internal" href="#packet-ttl-directive">packet_ttl Directive</a></li>
-<li><a class="reference internal" href="#id10">random_start_percentage Directive</a></li>
+<li><a class="reference internal" href="#id11">random_start_percentage Directive</a></li>
+<li><a class="reference internal" href="#id12">flow_label Directive</a></li>
+<li><a class="reference internal" href="#suppress-loopback-directive">suppress_loopback Directive</a></li>
+<li><a class="reference internal" href="#deadline-directive">deadline Directive</a></li>
+<li><a class="reference internal" href="#timeout-directive">timeout Directive</a></li>
+<li><a class="reference internal" href="#hostnames-directive">hostnames Directive</a></li>
+<li><a class="reference internal" href="#id13">tos_bits Directive</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#defining-traceroute-parameters">Defining Traceroute Parameters</a><ul>
-<li><a class="reference internal" href="#id11">test_interval Directive</a></li>
+<li><a class="reference internal" href="#id14">test_interval Directive</a></li>
 <li><a class="reference internal" href="#first-ttl-directive">first_ttl Directive</a></li>
-<li><a class="reference internal" href="#id12">force_bidirectional Directive</a></li>
-<li><a class="reference internal" href="#id13">ipv4_only Directive</a></li>
-<li><a class="reference internal" href="#id14">ipv6_only Directive</a></li>
-<li><a class="reference internal" href="#id15">packet_size Directive</a></li>
-<li><a class="reference internal" href="#timeout-directive">timeout Directive</a></li>
-<li><a class="reference internal" href="#id16">tool Directive</a></li>
+<li><a class="reference internal" href="#id15">force_bidirectional Directive</a></li>
+<li><a class="reference internal" href="#id16">ipv4_only Directive</a></li>
+<li><a class="reference internal" href="#id17">ipv6_only Directive</a></li>
+<li><a class="reference internal" href="#id18">packet_size Directive</a></li>
+<li><a class="reference internal" href="#id19">timeout Directive</a></li>
+<li><a class="reference internal" href="#id20">tool Directive</a></li>
+<li><a class="reference internal" href="#id21">tos_bits Directive</a></li>
 <li><a class="reference internal" href="#max-ttl-directive">max_ttl Directive</a></li>
-<li><a class="reference internal" href="#id17">protocol Directive</a></li>
-<li><a class="reference internal" href="#id18">random_start_percentage Directive</a></li>
-<li><a class="reference internal" href="#pause-directive">pause Directive</a></li>
-<li><a class="reference internal" href="#waittime-directive">waittime Directive</a></li>
+<li><a class="reference internal" href="#id22">protocol Directive</a></li>
+<li><a class="reference internal" href="#id23">random_start_percentage Directive</a></li>
+<li><a class="reference internal" href="#fragment-directive">fragment Directive</a></li>
+<li><a class="reference internal" href="#probe-type-directive">probe_type Directive</a></li>
+<li><a class="reference internal" href="#sendwait-directive">sendwait Directive</a></li>
+<li><a class="reference internal" href="#queries-directive">queries Directive</a></li>
+<li><a class="reference internal" href="#wait-directive">wait Directive</a></li>
+<li><a class="reference internal" href="#as-directive">as Directive</a></li>
+<li><a class="reference internal" href="#id24">hostnames Directive</a></li>
+<li><a class="reference internal" href="#algorithm-directive">algorithm Directive</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#defining-test-topology">Defining Test Topology</a><ul>
@@ -2369,7 +2835,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 <li><a class="reference internal" href="#defining-tests">Defining Tests</a><ul>
 <li><a class="reference internal" href="#test-directive">&lt;test&gt; Directive</a></li>
 <li><a class="reference internal" href="#config-mesh-test-test-spec">group Directive</a></li>
-<li><a class="reference internal" href="#id22">test_spec Directive</a></li>
+<li><a class="reference internal" href="#id28">test_spec Directive</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#dynamic-mesh-generation">Dynamic Mesh Generation</a><ul>
@@ -2399,7 +2865,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
 </li>
 <li><a class="reference internal" href="#optional-descriptive-fields">Optional Descriptive Fields</a><ul>
 <li><a class="reference internal" href="#administrator-directive">&lt;administrator&gt; Directive</a></li>
-<li><a class="reference internal" href="#id27">name Directive</a></li>
+<li><a class="reference internal" href="#id33">name Directive</a></li>
 <li><a class="reference internal" href="#email-directive">email Directive</a></li>
 <li><a class="reference internal" href="#location-directive">&lt;location&gt; Directive</a></li>
 <li><a class="reference internal" href="#street-address-directive">street_address Directive</a></li>
@@ -2446,7 +2912,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
         <li class="right" >
           <a href="config_ls_registration.html" title="Lookup Service Registration Daemon Configuration File"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -2486,7 +2952,7 @@ GUIs for display purposes. For example, MaDDash configurations uses this field a
     
     <div class="footer">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

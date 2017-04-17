@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Automatic Test Configuration &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
+    <title>Automatic Test Configuration with MeshConfig &mdash; perfSONAR Toolkit 4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5.1',
+        VERSION:     '4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,9 +25,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
-    <link rel="next" title="Deploying a Central Measurement Archive" href="multi_ma_install.html" />
-    <link rel="prev" title="Reading a Central Configuration File" href="multi_mesh_agent_config.html" /> 
+    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
+    <link rel="next" title="MeshConfig Administrative GUI" href="mca.html" />
+    <link rel="prev" title="Reading a Central Configuration File with MeshConfig" href="multi_mesh_agent_config.html" /> 
   </head>
   <body>
     <header>
@@ -55,12 +55,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
+          <a href="mca.html" title="MeshConfig Administrative GUI"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="multi_mesh_agent_config.html" title="Reading a Central Configuration File"
+          <a href="multi_mesh_agent_config.html" title="Reading a Central Configuration File with MeshConfig"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -72,8 +72,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="automatic-test-configuration">
-<h1>Automatic Test Configuration<a class="headerlink" href="#automatic-test-configuration" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="automatic-test-configuration-with-meshconfig">
+<h1>Automatic Test Configuration with MeshConfig<a class="headerlink" href="#automatic-test-configuration-with-meshconfig" title="Permalink to this headline">¶</a></h1>
 <p>If you have a very large mesh or a mesh that frequently is adding and removing test members, then it may become cumbersome to manually update your tests. For this reason the perfSONAR MeshConfig software has the concept of <em>automatic test configuration</em>.</p>
 <p>Automatic test configuration&#8217;s goal is NOT zero configuration, instead the idea is that there will be some initial configuration steps performed on a server hosting the MeshConfig that describes the tests in a general sense as opposed to explicitly naming each host that will be involved in a test. The MeshConfig provides constructs in the form of <em>host classes</em> and <em>tags</em> in support of this idea. See <a class="reference internal" href="#multi-mesh-autoconfig-classes"><em>Introducing Host Classes and Tags</em></a> for more information on these constructs.</p>
 <p>Once this initial configuration has taken place, each new host can simply point at this central file and know the tests to run <em>without the administrator of the central mesh configuration file having to update the mesh every time a new host is added</em> (this last part is what distinguishes it from a traditional MeshConfig setup). The configuration on the end host should also be minimized (though again it will be greater than zero). The configuration primarily consists of pointing at the URL where the central mesh lives (and perhaps optionally pointing at a private lookup service).</p>
@@ -82,7 +82,7 @@
 <p>You may also go even further and build a dynamic list of hosts from the perfSONAR Lookup Service. In this configuration, new nodes are discovered by other nodes in the mesh and the endpoint to which they test are changed accordingly. For information on this configuration, see <a class="reference internal" href="#multi-mesh-autoconfig-dynamic"><em>Testing to a Dynamic Set of Target Hosts</em></a>.</p>
 <div class="section" id="introducing-host-classes-and-tags">
 <span id="multi-mesh-autoconfig-classes"></span><h2>Introducing Host Classes and Tags<a class="headerlink" href="#introducing-host-classes-and-tags" title="Permalink to this headline">¶</a></h2>
-<p>There are two main constructs that go into generating dynamic meshes: <em>host classes</em> and <em>tags</em>. Host classes allow you to describe criteria for a host and its addresses that you want in a test configuration. This is in constrast to the traditional case where you explicitly define the host. You then reference a class instead of a host address in your test groups allowing for any new hosts that match the defined criteria to automatically be included. Let&#8217;s take a look at a simple example that matches all IP addresses of hosts in the current mesh file with the subnet 10.0.1.0/24:</p>
+<p>There are two main constructs that go into generating dynamic meshes: <em>host classes</em> and <em>tags</em>. Host classes allow you to describe criteria for a host and its addresses that you want in a test configuration. This is in contrast to the traditional case where you explicitly define the host. You then reference a class instead of a host address in your test groups allowing for any new hosts that match the defined criteria to automatically be included. Let&#8217;s take a look at a simple example that matches all IP addresses of hosts in the current mesh file with the subnet 10.0.1.0/24:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
     name      my_subnet_class
 
@@ -308,7 +308,7 @@
 &lt;/test&gt;
 </pre></div>
 </div>
-<p>We can then use the <em>build_json</em> script as described in <a class="reference internal" href="multi_mesh_server_config.html"><em>Publishing a Central Configuration File</em></a> to publish our file to a web server where clients may download it.</p>
+<p>We can then use the <em>build_json</em> script as described in <a class="reference internal" href="multi_mesh_server_config.html"><em>Publishing a Central Configuration File  with MeshConfig</em></a> to publish our file to a web server where clients may download it.</p>
 </div>
 <div class="section" id="meshconfig-client-configuration">
 <span id="multi-mesh-autoconfig-fixed-client"></span><h3>MeshConfig Client Configuration<a class="headerlink" href="#meshconfig-client-configuration" title="Permalink to this headline">¶</a></h3>
@@ -330,9 +330,7 @@
 <div class="highlight-python"><div class="highlight"><pre>use_toolkit 0
 </pre></div>
 </div>
-<p>Finally, you&#8217;ll want to make sure your <a class="reference internal" href="config_files.html#config-files-regtesting-conf-main"><em>regular testing configuration file</em></a> only has the following lines uncommented:</p>
-<blockquote>
-<div>test_result_directory   /var/lib/perfsonar/regulartesting</div></blockquote>
+<p>Finally, you&#8217;ll want to make sure your <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-agent-tasks"><em>MeshConfig Agent tasks file</em></a> has no extra measurement archives uncommented. In general having no uncommented lines is just fine.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you have additional <em>measurement_archive</em> directives in the file then your tests will be stored there IN ADDITION to those automatically configured by the mesh. This may or may not be desirable depending on your case.</p>
@@ -439,7 +437,7 @@
 <div class="highlight-python"><div class="highlight"><pre>service_type owamp
 </pre></div>
 </div>
-<p>In our example we want <em>owamp</em> services. It may also be something like <em>bwctl</em> or <em>traceroute</em>. Next we may optionally define a list of filters:</p>
+<p>In our example we want <em>owamp</em> services. It may also be something like <em>pscheduler</em> or <em>traceroute</em>. Next we may optionally define a list of filters:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;filter&gt;
     filter_key group-communities
     filter_value example
@@ -540,7 +538,7 @@ include http://mesh.example/dynamic_host_list.json
 </div>
 <div class="section" id="multi-mesh-autoconfig-dynamic-client">
 <span id="id2"></span><h3>MeshConfig Client Configuration<a class="headerlink" href="#multi-mesh-autoconfig-dynamic-client" title="Permalink to this headline">¶</a></h3>
-<p>The configuration of the client in terms of the MeshConfig agent is largely the same as what is described in <a class="reference internal" href="multi_mesh_agent_config.html"><em>Reading a Central Configuration File</em></a> and <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><em>MeshConfig Client Configuration</em></a>. There is not anything further to add on that file, but there is extra configuration to be done of the service that registers your clients in the lookup service. Specifically you need to do the following:</p>
+<p>The configuration of the client in terms of the MeshConfig agent is largely the same as what is described in <a class="reference internal" href="multi_mesh_agent_config.html"><em>Reading a Central Configuration File with MeshConfig</em></a> and <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><em>MeshConfig Client Configuration</em></a>. There is not anything further to add on that file, but there is extra configuration to be done of the service that registers your clients in the lookup service. Specifically you need to do the following:</p>
 <ul class="simple">
 <li>Add a pointer to your private lookup service</li>
 <li>Configure any fields you use as a filter in <a class="reference internal" href="config_files.html#config-files-meshconfig-conf-lookup-hosts"><em>lookup hosts configuration file</em></a> if they are not automatically generated (for example, fields like <em>group-communities</em>).</li>
@@ -743,7 +741,7 @@ site_project example #site_project is group-communities in the lookup service
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">Automatic Test Configuration</a><ul>
+<li><a class="reference internal" href="#">Automatic Test Configuration with MeshConfig</a><ul>
 <li><a class="reference internal" href="#introducing-host-classes-and-tags">Introducing Host Classes and Tags</a></li>
 <li><a class="reference internal" href="#testing-to-a-fixed-set-of-target-hosts">Testing to a Fixed Set of Target Hosts</a><ul>
 <li><a class="reference internal" href="#meshconfig-server-configuration">MeshConfig Server Configuration</a></li>
@@ -771,13 +769,13 @@ site_project example #site_project is group-communities in the lookup service
                 <ul>
                   <li>
                   <a href="multi_mesh_agent_config.html">Previous topic</a>
-                  <ul><li><a href="multi_mesh_agent_config.html" title="previous chapter">Reading a Central Configuration File</a></li></ul>
+                  <ul><li><a href="multi_mesh_agent_config.html" title="previous chapter">Reading a Central Configuration File with MeshConfig</a></li></ul>
                   </li>
                 </ul>
                   <ul>
                       <li>
-                      <a href="multi_ma_install.html">Next topic</a>
-                      <ul><li><a href="multi_ma_install.html" title="next chapter">Deploying a Central Measurement Archive</a></li></ul>
+                      <a href="mca.html">Next topic</a>
+                      <ul><li><a href="mca.html" title="next chapter">MeshConfig Administrative GUI</a></li></ul>
                       </li>
                   </ul>
                 
@@ -794,12 +792,12 @@ site_project example #site_project is group-communities in the lookup service
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
+          <a href="mca.html" title="MeshConfig Administrative GUI"
              >next</a> |</li>
         <li class="right" >
-          <a href="multi_mesh_agent_config.html" title="Reading a Central Configuration File"
+          <a href="multi_mesh_agent_config.html" title="Reading a Central Configuration File with MeshConfig"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -839,7 +837,7 @@ site_project example #site_project is group-communities in the lookup service
     
     <div class="footer">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

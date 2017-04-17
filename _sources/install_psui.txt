@@ -37,7 +37,7 @@ For the perfsonarUI to be able to work properly, you need to provide the followi
 Debian and RHEL package systems are able to automatically satisfy perfsonarUI's dependency to Tomcat or Tomcat could be installed beforehand through default repositories.
 
 
-Installing on Linux using repositotry
+Installing on Linux using repository
 =====================================
 
 Recommended way of installation of perfsonarUI is by adding the perfSONAR repositories and installing the package using native packaging system.
@@ -237,7 +237,7 @@ To modify the global list perform the following procedure:
 
 #. Restart Tomcat.
 
-Customising the perfsonarUI logos
+Customizing the perfsonarUI logos
 ---------------------------------
 
 There are 3 logos on the main page of perfsonarUI and can be replaced by your own logos. Left side navigation panel holds two logos: at the top and bottom of the panel. There is also a bigger main logo on the welcome screen. The location of the logos and corresponding names are depicted:

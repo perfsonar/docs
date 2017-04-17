@@ -29,18 +29,33 @@ Once downloaded you may follow the instructions at :doc:`install_centos_fullinst
 
 Testing CentOS Bundles Installation
 ====================================
-You can test CentOS bundle installation by first pointing your existing CentOS installation at the perfSONAR staging yum repository. This is where test versions of the software are kept. You may set this up with the following command::
+
+.. note:: These instructions will work on both CentOS 6 and CentOS 7
+
+You can test CentOS bundle installation by first pointing your existing CentOS installation at the perfSONAR main yum repository (if not already):
+
+*CentOS 6*::
+
+    rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+
+*CentOS 7*::
+
+    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
+    
+Next, install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
 
     yum install Internet2-repo-staging
 
 Once you are pointing at the staging repository you may follow the steps at :doc:`install_centos` to choose and configure your bundle.
     
-.. note:: If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours
+.. note:: If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours.
 
 .. _install_rcs-upgrade-centos:
 
 Testing Upgrades of an Existing Toolkit or CentOS Bundle Installation
 =====================================================================
+.. note:: These instructions will work on both CentOS 6 and CentOS 7
+
 You can test upgrades of any existing CentOS-based perfSONAR installation by first pointing your existing CentOS installation at the perfSONAR staging yum repository and then running yum update::
 
         yum install Internet2-repo-staging
@@ -52,26 +67,29 @@ You can test upgrades of any existing CentOS-based perfSONAR installation by fir
 
 Testing Debian Installation
 ============================
+
 The release candidate packages for Debian can be found in the source lists below for their respective Debian versions:
 
-* **Debian 7 (Wheezy):** http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
-* **Debian 8 (Jessie):** http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
+* **Debian 7 (Wheezy):** http://downloads.perfsonar.net/debian/perfsonar-wheezy-4.0.list
+* **Debian 8 (Jessie):** http://downloads.perfsonar.net/debian/perfsonar-jessie-4.0.list
 
 You may install the appropriate source list as follows for **Debian 7 (Wheezy)**::
     
     cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-wheezy-snapshot.gpg.key | apt-key add -
+    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-4.0.list
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+
+These Debian packages should also work on Ubuntu 14.
     
 Likewise for **Debian 8 (Jessie)**::
 
     cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-jessie-snapshot.gpg.key | apt-key add -
+    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-4.0.list
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 
 Once installed you may proceed to follow the steps in :doc:`install_debian` to complete the installation.
 
-.. note:: If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours
+.. note:: If you have auto-updates enabled, once you point your host at this repository, you will automatically get any new test packages that are added within 24 hours
 
 
 .. _install_rcs-upgrades-debian:

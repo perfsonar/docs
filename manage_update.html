@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Updating the Toolkit &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
+    <title>Updating perfSONAR &mdash; perfSONAR Toolkit 4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5.1',
+        VERSION:     '4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
     <link rel="next" title="Managing Users" href="manage_users.html" />
     <link rel="prev" title="Reading Log Files" href="manage_logs.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="manage_logs.html" title="Reading Log Files"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -72,82 +72,114 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="updating-the-toolkit">
-<h1>Updating the Toolkit<a class="headerlink" href="#updating-the-toolkit" title="Permalink to this headline">¶</a></h1>
-<p>Just like any other host on your network, it is critical to stay up-to-date with the latest packages on your perfSONAR Toolkit. You will want to make sure you have the latest security fixes as well as the ability to take advantage of the great new features constantly being added to the tools. In general you will keep your host up-to-date with the operating system&#8217;s package manager (e.g. yum), but in some special cases things may be more involved. Be sure to watch release notes and this page when such cases arise.</p>
-<div class="section" id="manually-updating-with-yum">
-<h2>Manually Updating with Yum<a class="headerlink" href="#manually-updating-with-yum" title="Permalink to this headline">¶</a></h2>
-<p>Anytime you want to manually update your host, simply run the following:</p>
-<div class="highlight-python"><div class="highlight"><pre>yum update
+  <div class="section" id="updating-perfsonar">
+<h1>Updating perfSONAR<a class="headerlink" href="#updating-perfsonar" title="Permalink to this headline">¶</a></h1>
+<p>Just like any other host on your network, it is critical to stay up-to-date with the latest packages on your perfSONAR Toolkit. You will want to make sure you have the latest security fixes as well as the ability to take advantage of the great new features constantly being added to the tools. In general you will keep your host up-to-date with the operating system&#8217;s package manager (e.g. yum or apt), but in some special cases things may be more involved. Be sure to watch release notes and this page when such cases arise.</p>
+<div class="section" id="manually-updating-with-yum-or-apt">
+<h2>Manually Updating with Yum or APT<a class="headerlink" href="#manually-updating-with-yum-or-apt" title="Permalink to this headline">¶</a></h2>
+<p>Anytime you want to manually update your host, simply run the following</p>
+<dl class="docutils">
+<dt><em>CentOS</em>::</dt>
+<dd>yum update</dd>
+<dt><em>Debian</em>::</dt>
+<dd>apt-get update
+apt-get upgrade</dd>
+</dl>
+<p>The <em>yum</em> package manager is used by RedHat-based operating systems like CentOS to update packages, <em>apt</em> is used by Debian-based OS. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.</p>
+<p>On Debian systems use the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get update
+apt-get upgrade
 </pre></div>
-</div>
-<p>The <em>yum</em> package manager is used by RedHat-based operating systems like CentOS to update packages. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The Toolkit runs a <a class="reference external" href="http://www.web100.org">Web100</a> patched version of the kernel. In some cases CentOS may release a new kernel before the perfSONAR development team has had a chance to create and test a patched version. This will cause an unpatched version to be downloaded, thus disabling the tools NDT and NPAD that rely on the patch. For some users that do not leverage these tools this may not be a concern. Please see our <a class="reference external" href="http://www.perfsonar.net/about/faq/#Q25">FAQ</a> for more details.</p>
 </div>
 </div>
 <div class="section" id="automatic-updates">
 <span id="manage-update-auto"></span><h2>Automatic Updates<a class="headerlink" href="#automatic-updates" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Automatic updates are enabled by default starting in version 3.4 of the perfSONAR Toolkit.</p>
+<p class="last">Automatic updates are enabled by default in the perfSONAR Toolkit.</p>
 </div>
-<p>You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. Specifically, kernel updates may break NDT and NPAD if a non-web100 version is applied. See this <a class="reference external" href="http://www.perfsonar.net/about/faq/#Q25">FAQ</a> for more information. The following rule of thumb from <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">Fedora</a> may be useful when considering whether to enable this feature:</p>
+<p>You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. The following rule of thumb from <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">Fedora</a> may be useful when considering whether to enable this feature:</p>
 <blockquote class="epigraph">
 <div>If the machine is a critical server, for which unplanned downtime of a service on the machine can not be tolerated, then you should not use automatic updates. Otherwise, you <strong>may</strong> choose to use them.</div></blockquote>
 <p>It is also important to note that automatic updates do not perform all required system reboots or service restarts. Also, auto-updates happen nightly so there may be a period of up to 24 hours where you do not receive a patch. Enabling this feature still requires close monitoring of the host to make sure all updates are applied completely and properly.</p>
-<p>You may enable/disable automatic updates from the web interface as follows:</p>
+<div class="section" id="managing-automatic-updates-from-the-command-line">
+<span id="manage-update-auto-cli"></span><h3>Managing Automatic Updates from the Command-Line<a class="headerlink" href="#managing-automatic-updates-from-the-command-line" title="Permalink to this headline">¶</a></h3>
+<p>You may enable auto updates from the command-line by enabling/disabling the yum-cron service on CentOS. Run the following commands (must be run as a root user) to <strong>enable</strong> automatic updates:</p>
+<p><em>CentOS 6</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>chkconfig on yum-cron
+service yum-cron start
+</pre></div>
+</div>
+<p><em>CentOS 7</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>systemctl enable yum-cron
+systemctl start yum-cron
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get install unattended-upgrades
+/usr/lib/perfsonar/scripts/system_environment/enable_auto_updates new
+</pre></div>
+</div>
+<p>Likewise, you may disable auto-updates from the command-line by running the following:</p>
+<p><em>CentOS 6</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>chkconfig off yum-cron
+service yum-cron stop
+</pre></div>
+</div>
+<p><em>CentOS 7</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>systemctl stop yum-cron
+systemctl disable yum-cron
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get purge unattended-upgrades
+rm -f /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
+</pre></div>
+</div>
+<p><em>CentOS</em>:</p>
+<p>These commands will automatically update <strong>all packages</strong> on the system. Also note that the main configuration file for auto-updates lives at <em>/etc/yum</em>. See the yum-cron man page or the page <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">here</a> for more information on using auto-updates and advanced options like excluding packages from update. Also see <a class="reference internal" href="#manage-update-auto-disable"><em>Disabling Automatic Updates for perfSONAR Packages</em></a>.</p>
+<p><em>Debian/Ubuntu</em>:</p>
+<p>This configuration enables automatic updates for <a class="reference external" href="https://www.debian.org/security/">Debian security updates</a> and perfSONAR packages.</p>
+</div>
+<div class="section" id="managing-automatic-updates-from-the-toolkit-web-interface">
+<span id="manage-update-auto-gui"></span><h3>Managing Automatic Updates from the Toolkit Web Interface<a class="headerlink" href="#managing-automatic-updates-from-the-toolkit-web-interface" title="Permalink to this headline">¶</a></h3>
+<p>If you are running the perfSONAR Toolkit, you may enable/disable automatic updates for <strong>all packages</strong> (not just perfSONAR) on the system from the web interface as follows:</p>
 <ol class="arabic">
-<li><p class="first">Open your toolkit web interface in a browser</p>
+<li><p class="first">Open your toolkit web interface in a browser.</p>
 </li>
-<li><p class="first">Click on <strong>Configuration</strong> in the upper right-hand menu</p>
+<li><p class="first">Click on <strong>Edit</strong> (A) in the host information section of the main page or <strong>Configuration</strong> (B) button in the right-upper corner and login as the web administrator user created during installation.</p>
 <blockquote>
-<div><img alt="_images/manage_updates-config.png" src="_images/manage_updates-config.png" />
-</div></blockquote>
-</li>
-<li><p class="first">Login using the web administrator username and password.</p>
-<blockquote>
-<div><div class="admonition seealso">
+<div><img alt="_images/manage_update-configure-icon.png" src="_images/manage_update-configure-icon.png" />
+<div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account</p>
+<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account.</p>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">Click he <strong>Host</strong> tab on the page that loads</p>
+<li><p class="first">On the <strong>Host</strong> tab click the button under the <strong>Auto Updates</strong> heading to enable or disable auto-updates as indicated by the color and status text of the button.</p>
 <blockquote>
-<div><img alt="_images/manage_update-host_tab.png" src="_images/manage_update-host_tab.png" />
+<div><img alt="_images/manage_update-enable.png" src="_images/manage_update-enable.png" />
 </div></blockquote>
 </li>
-<li><p class="first">On the page that loads click the button under the <em>Auto Updates</em> heading to enable or disable auto-updates as indicated by the color and status text of the button.</p>
-<blockquote>
-<div><img alt="_images/manage_update-auto.png" src="_images/manage_update-auto.png" />
-</div></blockquote>
-</li>
-<li><p class="first">Click <strong>Save</strong> to apply your changes</p>
-</li>
-<li><p class="first">After a loading screen you should see a message at the bottom indicating your changes have been saved.</p>
+<li><p class="first">Click <strong>Save</strong> to apply your changes. After a loading screen you should see a green message at the bottom indicating your changes have been saved.</p>
 </li>
 </ol>
-<p>Alternatively, you may enable them from the command-line with the following commands (must be run as a root user):</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/chkconfig --add yum-cron
-/sbin/chkconfig yum-cron on
-/sbin/service yum-cron start
-</pre></div>
 </div>
-<p>Likewise, you may disable auto-updates from the command-line by running:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service yum-cron stop
-/sbin/chkconfig yum-cron off
-</pre></div>
+<div class="section" id="disabling-automatic-updates-for-perfsonar-packages">
+<span id="manage-update-auto-disable"></span><h3>Disabling Automatic Updates for perfSONAR Packages<a class="headerlink" href="#disabling-automatic-updates-for-perfsonar-packages" title="Permalink to this headline">¶</a></h3>
+<p>The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file <strong>/etc/yum.repos.d/Internet2.repo</strong> with the option <strong>enabled</strong> set to <strong>0</strong>.</p>
+<p>For Debian/Ubuntu systems, please refer to <a class="reference internal" href="#manage-update-auto-cli"><em>Managing Automatic Updates from the Command-Line</em></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are running against one of our testing repositories you may also need to update the files <strong>/etc/yum.repos.d/Internet2-staging.repo</strong> and <strong>/etc/yum.repos.d/Internet2-nightly.repo</strong>.</p>
 </div>
-<p>Also note that the main configuration file for auto-updates lives at <em>/etc/sysconfig/yum-cron</em>. See the yum-cron man page or the page <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">here</a> for more information on using auto-updates and advanced options like excluding packages from updates.</p>
+<p>To disable the automatic updating of perfSONAR packages on Debian delete the line with <tt class="docutils literal"><span class="pre">origin=perfSONAR</span></tt> pattern from <tt class="docutils literal"><span class="pre">/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar</span></tt>.  After that only the Debian security updates will be installed automatically.</p>
+</div>
 </div>
 <div class="section" id="special-upgrade-notes">
 <h2>Special Upgrade Notes<a class="headerlink" href="#special-upgrade-notes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Note that updates from versions older than 3.4 are not currently supported. You will need to do a <a class="reference internal" href="install_getting.html#gettingchooseinstall"><em>clean installation</em></a> if you wish to move to a newer version.</li>
-<li>When you upgrade from a version of the software older than 3.5, you will be asked to create a sudo user if you have not already and disable root SSH by default. It is recommended you answer yes to this question and follow the prompts to create a sudo user.</li>
-<li>Version 3.5 of the Toolkit introduces a new web interface. If you wish to use the old web interface, it is still installed and can be reached by visiting <em>http://yourhost/toolkit-old</em> in your web browser. You may see the <a class="reference external" href="previous_releases/3.4.2">previous version</a> of the documentation for details on using the interface.</li>
+<li>perfSONAR 4.0 can run on both CentOS 6 and CentOS 7 (and Ubuntu). If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at <a class="reference internal" href="install_migrate_centos7.html"><em>Migrating from CentOS 6 to CentOS 7</em></a>.</li>
 </ul>
 </div>
 </div>
@@ -161,9 +193,14 @@
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">Updating the Toolkit</a><ul>
-<li><a class="reference internal" href="#manually-updating-with-yum">Manually Updating with Yum</a></li>
-<li><a class="reference internal" href="#automatic-updates">Automatic Updates</a></li>
+<li><a class="reference internal" href="#">Updating perfSONAR</a><ul>
+<li><a class="reference internal" href="#manually-updating-with-yum-or-apt">Manually Updating with Yum or APT</a></li>
+<li><a class="reference internal" href="#automatic-updates">Automatic Updates</a><ul>
+<li><a class="reference internal" href="#managing-automatic-updates-from-the-command-line">Managing Automatic Updates from the Command-Line</a></li>
+<li><a class="reference internal" href="#managing-automatic-updates-from-the-toolkit-web-interface">Managing Automatic Updates from the Toolkit Web Interface</a></li>
+<li><a class="reference internal" href="#disabling-automatic-updates-for-perfsonar-packages">Disabling Automatic Updates for perfSONAR Packages</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#special-upgrade-notes">Special Upgrade Notes</a></li>
 </ul>
 </li>
@@ -200,7 +237,7 @@
         <li class="right" >
           <a href="manage_logs.html" title="Reading Log Files"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -240,7 +277,7 @@
     
     <div class="footer">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

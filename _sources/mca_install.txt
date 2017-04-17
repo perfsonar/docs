@@ -61,6 +61,7 @@ Since MCA requires postgreSQL>9.2, and RHEL/CentOS6 provides postgreSQL8 which i
 * Step 1 - Start postgresql92 on port 5433
 
 Create /opt/rh/postgresql92/root/etc/sysconfig/pgsql/postgresql92-postgresql
+
 ::
     mkdir /opt/rh/postgresql92/root/etc/sysconfig/pgsql
     echo "export PGPORT=5433" > /opt/rh/postgresql92/root/etc/sysconfig/pgsql/postgresql92-postgresql
@@ -114,7 +115,7 @@ If you are upgrading to a new version of MCA, MCA services should automatically 
 Debian
 ============
 
-TODO.
+Debian packages for MCA are not available yet.  Debian users that wish to try the MCA should do it from a CentOS host or from withing a Docker container (see above for details).
 
 Post Installation Configuration
 ###################################
@@ -150,7 +151,7 @@ Open following ports on your firewall
 * 9443: Used by SCA authentication service to allow X509 based login
 
 For systemd
---------------------
+********************
 
 ::
 

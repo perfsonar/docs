@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
+    <title>Installation &mdash; perfSONAR Toolkit 4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5.1',
+        VERSION:     '4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,10 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" /> 
+    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
+    <link rel="up" title="MeshConfig Administrative GUI" href="mca.html" />
+    <link rel="next" title="Configuration" href="mca_configure.html" />
+    <link rel="prev" title="MeshConfig Administrative GUI" href="mca.html" /> 
   </head>
   <body>
     <header>
@@ -52,7 +55,14 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="mca_configure.html" title="Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mca.html" title="MeshConfig Administrative GUI"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li>
+          <li><a href="mca.html" accesskey="U">MeshConfig Administrative GUI</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -113,10 +123,11 @@ yum install centos-release-scl
 <li>Step 1 - Start postgresql92 on port 5433</li>
 </ul>
 <p>Create /opt/rh/postgresql92/root/etc/sysconfig/pgsql/postgresql92-postgresql</p>
-<div class="highlight-python"><div class="highlight"><pre>mkdir /opt/rh/postgresql92/root/etc/sysconfig/pgsql
-echo &quot;export PGPORT=5433&quot; &gt; /opt/rh/postgresql92/root/etc/sysconfig/pgsql/postgresql92-postgresql
-</pre></div>
-</div>
+<dl class="docutils">
+<dt>::</dt>
+<dd>mkdir /opt/rh/postgresql92/root/etc/sysconfig/pgsql
+echo &#8220;export PGPORT=5433&#8221; &gt; /opt/rh/postgresql92/root/etc/sysconfig/pgsql/postgresql92-postgresql</dd>
+</dl>
 <p>Then start postgresql92..</p>
 <div class="highlight-python"><div class="highlight"><pre>service start postgresql92-postgresql
 </pre></div>
@@ -157,7 +168,7 @@ yum install mca-2.0-X.el7.x86_64.rpm
 </div>
 <div class="section" id="debian">
 <h2>Debian<a class="headerlink" href="#debian" title="Permalink to this headline">¶</a></h2>
-<p>TODO.</p>
+<p>Debian packages for MCA are not available yet.  Debian users that wish to try the MCA should do it from a CentOS host or from withing a Docker container (see above for details).</p>
 </div>
 </div>
 <div class="section" id="post-installation-configuration">
@@ -187,6 +198,8 @@ yum install mca-2.0-X.el7.x86_64.rpm
 <li>443: Used for admin UI</li>
 <li>9443: Used by SCA authentication service to allow X509 based login</li>
 </ul>
+<div class="section" id="for-systemd">
+<h3>For systemd<a class="headerlink" href="#for-systemd" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">http</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span>
 <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">http</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span> <span class="o">--</span><span class="n">permanent</span>
 <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">https</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span>
@@ -197,6 +210,7 @@ yum install mca-2.0-X.el7.x86_64.rpm
 </div>
 <p>MCA should now be running with the default configuration at <a class="reference external" href="https:/">https:/</a>/&lt;yourhostname&gt;/meshconfig</p>
 <p>Please see <a class="reference internal" href="mca_configure.html"><em>Configuration</em></a> next.</p>
+</div>
 </div>
 </div>
 
@@ -221,11 +235,26 @@ yum install mca-2.0-X.el7.x86_64.rpm
 </li>
 <li><a class="reference internal" href="#post-installation-configuration">Post Installation Configuration</a><ul>
 <li><a class="reference internal" href="#https-certificate">HTTPS Certificate</a></li>
-<li><a class="reference internal" href="#firewall">Firewall</a></li>
+<li><a class="reference internal" href="#firewall">Firewall</a><ul>
+<li><a class="reference internal" href="#for-systemd">For systemd</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
+                <ul>
+                  <li>
+                  <a href="mca.html">Previous topic</a>
+                  <ul><li><a href="mca.html" title="previous chapter">MeshConfig Administrative GUI</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="mca_configure.html">Next topic</a>
+                      <ul><li><a href="mca_configure.html" title="next chapter">Configuration</a></li></ul>
+                      </li>
+                  </ul>
                 
                 
             </nav>
@@ -239,7 +268,14 @@ yum install mca-2.0-X.el7.x86_64.rpm
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="mca_configure.html" title="Configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mca.html" title="MeshConfig Administrative GUI"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li>
+          <li><a href="mca.html" >MeshConfig Administrative GUI</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -279,7 +315,7 @@ yum install mca-2.0-X.el7.x86_64.rpm
     
     <div class="footer">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

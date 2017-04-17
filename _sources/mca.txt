@@ -1,10 +1,10 @@
 *************************************
-MeshConfig Administartor / Publisher
+MeshConfig Administrative GUI
 *************************************
 
 .. note:: BETA
 
-MeshConfig Administrator (MCA) is a web UI for toolkit adminitrators to publish MeshConfig which automates tests executed by tookit agent, and provides topology information to various services such as MadDash, OSG/WLCG datastore, and others.
+MeshConfig Administrator (MCA) is a web UI for toolkit administrators to publish MeshConfig which automates tests executed by toolkit agent, and provides topology information to various services such as MadDash, OSG/WLCG datastore, and others.
 
 .. image:: images/mca/index.png
     :width: 450px
@@ -17,7 +17,7 @@ MeshConfig Publisher allows users to download defined meshconfig in JSON format.
 MCA relies on ESNET `Simple Loookup Service <https://github.com/esnet/simple-lookup-service/wiki>`_ to provide a list of hosts that administrator
 can select in MCA's host group editor. MCA can also load hosts from the Global lookup service if you want to load hosts from the global registry.
 
-Contents
+Guide
 -------------------------
 
 .. toctree::

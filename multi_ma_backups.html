@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Managing Measurement Archive Data &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
+    <title>Managing Measurement Archive Data &mdash; perfSONAR Toolkit 4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5.1',
+        VERSION:     '4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
     <link rel="next" title="Central Logging Configuration" href="multi_logging.html" />
     <link rel="prev" title="Clustering a Measurement Archive" href="multi_ma_clustering.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="multi_ma_clustering.html" title="Clustering a Measurement Archive"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -110,7 +110,7 @@ fi
 </div>
 </li>
 <li><p class="first">Restart cassandra:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service cassandra restart
+<div class="highlight-python"><div class="highlight"><pre>service cassandra restart
 </pre></div>
 </div>
 </li>
@@ -155,7 +155,7 @@ tar -czf esmond-snapshot-stat_aggregations.tgz /var/lib/cassandra/data/esmond/st
 <p>You may restore you files, either on a new or existing host, with the following steps:</p>
 <ol class="arabic">
 <li><p class="first">Shutdown cassandra:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service cassandra stop
+<div class="highlight-python"><div class="highlight"><pre>service cassandra stop
 </pre></div>
 </div>
 </li>
@@ -181,7 +181,7 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 </div>
 </li>
 <li><p class="first">Start cassandra:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service cassandra start
+<div class="highlight-python"><div class="highlight"><pre>service cassandra start
 </pre></div>
 </div>
 </li>
@@ -212,6 +212,10 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <div class="highlight-python"><div class="highlight"><pre>pg_dump -F t -f esmond.tar -U esmond
 </pre></div>
 </div>
+<p>On a Debian system you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo -u postgres pg_dump -F t -f esmond.tar esmond
+</pre></div>
+</div>
 <p>This will create a tarball file in the current directory named esmond.tar. Note that this is a new file and though compressed, will consume additional disk space.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -229,6 +233,10 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <h4>Restoring the Snapshot<a class="headerlink" href="#restoring-the-snapshot" title="Permalink to this headline">¶</a></h4>
 <p>You may restore the snapshot with the following command:</p>
 <div class="highlight-python"><div class="highlight"><pre>pg_restore -c -U esmond -d esmond esmond.tar
+</pre></div>
+</div>
+<p>On a Debian system you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo -u postgres pg_restore -c -d esmond esmond.tar
 </pre></div>
 </div>
 <div class="admonition note">
@@ -249,16 +257,16 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <p class="last">If migrating to a server with a different architecture or operating system it is recommended you instead follow the steps in <a class="reference internal" href="#multi-ma-backups-snapshots-cassandra"><em>Cassandra Snapshots with nodetool</em></a> for creating, migrating and restoring snapshots.</p>
 </div>
 <p>By default, packaged installs of cassandra keep all data in <em>/var/lib/cassandra</em>. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your cassandra server and copying the directory to the new host. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service cassandra stop
+<div class="highlight-python"><div class="highlight"><pre>service cassandra stop
 scp -r /var/lib/cassandra user@newhost:cassandra
 </pre></div>
 </div>
 <p>You can then restore the data as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service cassandra stop
+<div class="highlight-python"><div class="highlight"><pre>service cassandra stop
 rm -rf /var/lib/cassandra/*
 mv cassandra/* /var/lib/cassandra/
 chown -R cassandra:cassandra /var/lib/cassandra/*
-/sbin/service cassandra start
+service cassandra start
 </pre></div>
 </div>
 <div class="admonition note">
@@ -273,16 +281,29 @@ chown -R cassandra:cassandra /var/lib/cassandra/*
 <p class="last">If migrating to a server with a different architecture or operating system it is recommended you instead follow the steps in <a class="reference internal" href="#multi-ma-backups-snapshots-postgresql"><em>PostgreSQL Snapshots with pg_dump and pg_restore</em></a> for creating, migrating and restoring data.</p>
 </div>
 <p>By default, packaged installs of PostgreSQL keep all data in <em>/var/lib/pgsql</em>. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your PostgreSQL server and copying the directory to the new host. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service pgsql stop
+<div class="highlight-python"><div class="highlight"><pre>service pgsql stop
 scp -r /var/lib/pgsql user@newhost:pgsql
 </pre></div>
 </div>
+<p>On a Debian system you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre>service postgresql stop
+scp -r /var/lib/postgresql user@newhost:pgsql
+</pre></div>
+</div>
 <p>You can then restore the data as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>/sbin/service pgsql stop
+<div class="highlight-python"><div class="highlight"><pre>service pgsql stop
 rm -rf /var/lib/pgsql/*
 mv pgsql/* /var/lib/pgsql/
 chown -R postgres:postgres /var/lib/pgsql/*
-/sbin/service pgsql start
+service pgsql start
+</pre></div>
+</div>
+<p>On a Debian system you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre>service postgresql stop
+rm -rf /var/lib/postgresql/*
+mv pgsql/* /var/lib/postgresql/
+chown -R postgres:postgres /var/lib/postgresql/*
+service postgresql start
 </pre></div>
 </div>
 </div>
@@ -422,6 +443,13 @@ source /opt/rh/python27/enable
 <div class="highlight-python"><div class="highlight"><pre>python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
 </pre></div>
 </div>
+<p>On a Debian system you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre>. /etc/default/esmond
+export ESMOND_ROOT ESMOND_CONF
+export DJANGO_SETTINGS_MODULE=esmond.settings
+python /usr/share/esmond/util/ps_remove_data.py -c /usr/share/esmond/util/ps_remove_data.conf
+</pre></div>
+</div>
 <p>You may consider adding the commands above to a shell script called by cron to regularly clean out the old data.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -508,7 +536,7 @@ source /opt/rh/python27/enable
         <li class="right" >
           <a href="multi_ma_clustering.html" title="Clustering a Measurement Archive"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -548,7 +576,7 @@ source /opt/rh/python27/enable
     
     <div class="footer">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

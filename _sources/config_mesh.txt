@@ -180,9 +180,9 @@ type Directive
 
 This specifies the type of data to be stored. The supported values refer to an older version of the perfSONAR software where different data types were stored in different archives. Even if the data ultimately ends up in the same archive you need to define multiple <measurement_archive> directives for each type of data you plan to store. The types have the following meanings:
 
-* **perfsonarbuoy/bwctl** - Throughput tests such as those initated by BWCTL running iperf or iperf3
+* **perfsonarbuoy/bwctl** - Throughput tests such as those initiated by BWCTL running iperf or iperf3
 * **perfsonarbuoy/owamp** - OWAMP tests initiated by the powstream tool
-* **pinger** - Ping tests initiated by bwping or OWAMP tests initiated by bwping running OWAMP
+* **pinger** - Ping tests initiated by ping, bwping or OWAMP tests initiated by bwping running OWAMP
 * **traceroute** - Any type of test initiated by bwtraceroute
 
 read_url Directive
@@ -231,9 +231,9 @@ type Directive
 
 The types have the following meanings:
 
-* **perfsonarbuoy/bwctl** - Throughput tests such as those initated by BWCTL running iperf or iperf3. See :ref:`config_mesh-test_spec-throughput` for directives specific to this type of test.
+* **perfsonarbuoy/bwctl** - Throughput tests such as those initiated by BWCTL running iperf or iperf3. See :ref:`config_mesh-test_spec-throughput` for directives specific to this type of test.
 * **perfsonarbuoy/owamp** - OWAMP tests initiated by the powstream tool. See :ref:`config_mesh-test_spec-owamp` for directives specific to this type of test.
-* **pinger** - Ping tests initiated by bwping or OWAMP tests initiated by bwping running OWAMP. See :ref:`config_mesh-test_spec-ping` for directives specific to this type of test.
+* **pinger** - Ping tests initiated by ping, bwping or OWAMP tests initiated by bwping running OWAMP. See :ref:`config_mesh-test_spec-ping` for directives specific to this type of test.
 * **traceroute** - Any type of test initiated by bwtraceroute. See :ref:`config_mesh-test_spec-traceroute` for directives specific to this type of test.
 
 .. _config_mesh-test_spec-throughput:
@@ -243,15 +243,15 @@ Defining Throughput Test Parameters
 
 tool Directive
 --------------
-:Description: The tool to use in performing the throughput test
-:Syntax: ``tool iperf|iperf3``
+:Description: The tool to use in performing the throughput test.  For a description of the pros and cons of each tool, see `fasterdata.es.net <https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/>`_.
+:Syntax: ``tool iperf|iperf3|nuttcp``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Exactly one
 :Compatibility: 3.3 or later
 
 duration Directive
 -------------------
-:Description: The length to run each throughput test in seconds
+:Description: The length to run each throughput test in seconds, or in ISO8601 format (e.g.: "PT10S")
 :Syntax: ``duration SECONDS``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Exactly one
@@ -259,7 +259,7 @@ duration Directive
 
 interval Directive
 -------------------
-:Description: The time in between throughput tests in seconds
+:Description: The time in between throughput tests in seconds, or in ISO8601 format (e.g.: "PT10S")
 :Syntax: ``interval SECONDS``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Exactly one
@@ -314,7 +314,7 @@ omit_interval Directive
 -------------------------
 :Description: The time to ignore results at the beginning of a test in seconds. Useful for excluding TCP ramp-up time. Note that this is added to the duration (e.g. omit_interval of 5 and duration 30 leads to a 35 second test).
 :Syntax: ``omit_interval SECONDS``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp* and tool is *iperf3*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp* and tool is *iperf3*
 :Occurrences:  Zero or one
 :Default: 0
 :Compatibility: 3.3 or later
@@ -357,15 +357,33 @@ streams Directive
 
 tos_bits Directive
 ------------------
-:Description: The type of service to set in the IP header of outgoing packets
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
 :Syntax: ``tos_bits NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
 :Occurrences:  Zero or one
 :Default: not set
 :Compatibility: 3.3 or later
 
+dscp Directive
+--------------
+:Description: The DSCP value to set in the IP header of outgoing packets
+:Syntax: ``dscp NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and tool is *nuttcp*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+tcp_bandwidth Directive
+-----------------------
+:Description: The rate at which the tool will attempt to send TCP packets. Can specify as bits per second or with suffix K, M, or G to indicated Kbps, Mbps or Gbps respectively.
+:Syntax: ``tcp_bandwidth NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
 udp_bandwidth Directive
--------------------------
+-----------------------
 :Description: The rate at which the tool will attempt to send UDP packets in bits per second.  
 :Syntax: ``udp_bandwidth NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *udp*
@@ -374,13 +392,68 @@ udp_bandwidth Directive
 :Compatibility: 3.3 or later
 
 window_size Directive
--------------------------
-:Description: TCP window size (bytes) 0 indicates system defaults
+---------------------
+:Description: TCP window size (in bytes). Can use K or M to indicate Kilo or Mega bytes. 
 :Syntax: ``window_size NUMBYTES``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protcol is *tcp*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp*
 :Occurrences:  Zero or one
 :Default: 0 (i.e. use endpoint host default)
 :Compatibility: 3.3 or later
+
+mss Directive
+-------------
+:Description: Tell the tool to use a MSS of N bytes
+:Syntax: ``mss BYTES``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and tool is *nuttcp*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+congestion Directive
+--------------------
+:Description: Use this TCP congestion control algorithm (cubic, htcp, bbr, etc)
+:Syntax: ``congestion VALUE``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp* and tool is *iperf3*
+:Occurrences:  Zero or one
+:Default: not set, will use system default
+:Compatibility: 4.0 or later
+
+no_delay Directive
+------------------
+:Description: Set TCP_NODELAY option for the tests
+:Syntax: ``no_delay 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and protocol is *tcp*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+client_cpu_affinity Directive
+-----------------------------
+:Description: which cores to use for the client tool (useful for 40/100G NUMA hosts)
+:Syntax: ``client_cpu_affinity NUMBER`` CPU socket ID, used to start tool with 'numactl -N ID'
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+server_cpu_affinity Directive
+-----------------------------
+:Description: which cores to use for the server tool (useful for 40/100G NUMA hosts)
+:Syntax: ``server_cpu_affinity NUMBER`` CPU socket ID, used to start tool with 'numactl -N ID'
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
+flow_label Directive
+---------------------
+:Description: set the IPv6 flow label (iperf3 -L) integer
+:Syntax: ``flow_label INT`` 
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/bwctl* and tool is *iperf3*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
+
 
 .. _config_mesh-test_spec-owamp:
 
@@ -447,22 +520,23 @@ packet_padding Directive
 :Default: 0
 :Compatibility: 3.3 or later
 
-loss_threshold Directive
-------------------------
-:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4.
-:Syntax: ``loss_threshold SECONDS``
+output_raw Directive
+--------------------
+:Description: This will store the raw owamp results as JSON in the measurement archive. 
+:Syntax: ``output_raw 0|1``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
 :Occurrences:  Exactly one
-:Compatibility: Deprecated in 3.4.
+:Default: 0
+:Compatibility: 4.0 or later
 
-session_count Directive
------------------------
-:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4.
-:Syntax: ``session_count NUMBER``
+tos_bits Directive
+------------------
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
+:Syntax: ``tos_bits NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *perfsonarbuoy/owamp*
-:Occurrences:  Exactly one
-:Compatibility: Deprecated in 3.4.
-
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
 
 .. _config_mesh-test_spec-ping:
 
@@ -471,7 +545,7 @@ Defining Ping Test Parameters
 
 test_interval Directive
 ------------------------
-:Description: The time in between ping tests in seconds
+:Description: The time in between ping tests in seconds 
 :Syntax: ``test_interval SECONDS``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Exactly one
@@ -488,7 +562,7 @@ force_bidirectional Directive
 
 ipv4_only Directive
 -------------------
-:Description: Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint
+:Description: Forces each side to use IPv4. Test will fail if no IPv4 address can be determined for either endpoint (-4)
 :Syntax: ``ipv4_only 0|1``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or one
@@ -497,7 +571,7 @@ ipv4_only Directive
 
 ipv6_only Directive
 -------------------
-:Description: Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint
+:Description: Forces each side to use IPv6. Test will fail if no IPv6 address can be determined for either endpoint (-6)
 :Syntax: ``ipv6_only 0|1``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or one
@@ -506,7 +580,7 @@ ipv6_only Directive
 
 packet_count Directive
 ----------------------
-:Description: The number of packets to send per test. This multiplied by packet_interval is the duration of the test.
+:Description: The number of packets to send per test. This multiplied by packet_interval is the duration of the test. 
 :Syntax: ``packet_count NUMBER``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or One
@@ -515,7 +589,7 @@ packet_count Directive
 
 packet_interval Directive
 -------------------------
-:Description: The average time between packets. A decimal value less than one means to send multiple packets per second (e.g. .1 means 10 packets per second). This multiplied by packet_count is the duration of the test.
+:Description: The average time between packets. A decimal value less than one means to send multiple packets per second (e.g. .1 means 10 packets per second). This multiplied by packet_count is the duration of the test. (-i)
 :Syntax: ``packet_interval SECONDS``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
 :Occurrences:  Zero or One
@@ -524,18 +598,18 @@ packet_interval Directive
 
 packet_size Directive
 ----------------------
-:Description: The size of packets in bytes.
+:Description: The size of packets in bytes. (ping -s)
 :Syntax: ``packet_size BYTES``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
 :Occurrences:  Zero or One
 :Default: Tool default
 :Compatibility: 3.3 or later
 
 packet_ttl Directive
 ----------------------
-:Description: The TTL to set in the IP header of outgoing packets
+:Description: The TTL to set in the IP header of outgoing packets (ping -t)
 :Syntax: ``packet_ttl TTL``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
 :Occurrences:  Zero or One
 :Default: System default
 :Compatibility: 3.3 or later
@@ -548,6 +622,60 @@ random_start_percentage Directive
 :Occurrences:  Zero or one
 :Default: 10
 :Compatibility: 3.3 or later
+
+flow_label Directive
+--------------------
+:Description: Set the flow label on echo request packets as an integer. (ping6 -F) 
+:Syntax: ``flow_label INT``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and test is running over IPv6
+:Occurrences:  Zero or One
+:Default: System default
+:Compatibility: 4.0 or later
+
+suppress_loopback Directive
+---------------------------
+:Description: Suppress loopback of multicast packets (ping -L)
+:Syntax: ``suppress_loopback 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
+:Occurrences:  Zero or One
+:Default: System default
+:Compatibility: 4.0 or later
+
+deadline Directive
+------------------
+:Description: Specify a timeout, in seconds, before ping exits regardless of how many packets have been sent  (ping -w)
+:Syntax: ``deadline SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
+:Occurrences:  Zero or One
+:Default: System default
+:Compatibility: 4.0 or later
+
+timeout Directive
+-----------------
+:Description: Time to wait for a response (ping -W)
+:Syntax: ``timeout SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger* and tool is *ping*
+:Occurrences:  Zero or One
+:Default: System default
+:Compatibility: 4.0 or later
+
+hostnames Directive
+-------------------
+:Description: Do not try to map IP addresses to host names when displaying them. (ping -n)
+:Syntax: ``hostnames 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+tos_bits Directive
+------------------
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
+:Syntax: ``tos_bits NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *pinger*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
 
 .. _config_mesh-test_spec-traceroute:
 
@@ -602,7 +730,7 @@ packet_size Directive
 ------------------------
 :Description: The size of packets to send in bytes when performing the traceroute. **Not supported by tracepath or paris-traceroute**
 :Syntax: ``packet_size BYTES``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *tarceroute*
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *traceroute*
 :Occurrences:  Zero or one
 :Default: Tool default
 :Compatibility: 3.3 or later
@@ -631,6 +759,14 @@ You can specify on of the following tools for a traceroute test:
 * **tracepath** - The main advantage of this tool is it reports MTU by default. It has  fewer options than standard traceroute for setting TTLs and binding to local interfaces. It also is UDP-only and may be blocked by firewalls. It's also been reported to have a harder time with MTU mismatches on the destination host. 
 * **paris-traceroute** - This is another approach to running traceroute that tries to identify load balanced routes and similar. It requires the client to grant the paris-traceroute command the CAP_NET_RAW privilege on the system in order to run as a non-root user. 
 
+tos_bits Directive
+------------------
+:Description: The type of service to set in the IP header of outgoing packets as an integer from 0-255.
+:Syntax: ``tos_bits NUMBER``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: not set
+:Compatibility: 4.0 or later
 
 max_ttl Directive
 -----------------
@@ -659,23 +795,78 @@ random_start_percentage Directive
 :Default: 10
 :Compatibility: 3.3 or later
 
-pause Directive
----------------------------------
-:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4
-:Syntax: ``pause SECONDS``
+fragment Directive
+------------------
+:Description: Set the 'do not fragment' bit (traceroute -F)
+:Syntax: ``fragment 0|1``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
 :Occurrences:  Zero or one
-:Default: Underlying tool default
-:Compatibility: Deprecated in 3.4.
+:Default: system default (1)
+:Compatibility: 4.0 or later
 
-waittime Directive
----------------------------------
-:Description: **DEPRECATED IN 3.4** This option will not cause an error but will be ignored in MeshConfig software later than 3.4
-:Syntax: ``waittime SECONDS``
+probe_type Directive
+--------------------
+:Description: Sets the Probe type to UDP or ICMP or TCP SYN
+:Syntax: ``probe_type icmp|udp|tcp``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
 :Occurrences:  Zero or one
-:Default: Underlying tool default
-:Compatibility: Deprecated in 3.4.
+:Default: system default 
+:Compatibility: 4.0 or later
+
+sendwait Directive
+-------------------
+:Description: Minimal time interval between probes (traceroute -z) 
+:Syntax: ``sendwait SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+queries Directive
+------------------
+:Description: Sets the number of probe packets per hop (traceroute -q)
+:Syntax: ``queries NUM``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+wait Directive
+---------------
+:Description: Set the time (in seconds) to wait for a response to a probe (traceroute -w)
+:Syntax: ``wait SECONDS``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+as Directive
+--------------
+:Description: Perform AS path lookups in routing registries and print results directly after the corresponding addresses. (traceroute -A)
+:Syntax: ``as 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+hostnames Directive
+-------------------
+:Description: Do not try to map IP addresses to host names when displaying them. (traceroute -n)
+:Syntax: ``hostnames 0|1``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
+algorithm Directive
+-------------------
+:Description: Sets the algorithm used by paris-traceroute (paris-traceroute -a)
+:Syntax: ``algorithm hopbyhop|packetbypacket|concurrent|scout|exhaustive``
+:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *paris-traceroute*
+:Occurrences:  Zero or one
+:Default: system default 
+:Compatibility: 4.0 or later
+
 
 Defining Test Topology
 ======================

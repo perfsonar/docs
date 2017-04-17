@@ -1,6 +1,6 @@
-**************************************
-Automatic Test Configuration
-**************************************
+********************************************
+Automatic Test Configuration with MeshConfig
+********************************************
 
 If you have a very large mesh or a mesh that frequently is adding and removing test members, then it may become cumbersome to manually update your tests. For this reason the perfSONAR MeshConfig software has the concept of *automatic test configuration*. 
 
@@ -19,7 +19,7 @@ You may also go even further and build a dynamic list of hosts from the perfSONA
 
 Introducing Host Classes and Tags
 =================================
-There are two main constructs that go into generating dynamic meshes: *host classes* and *tags*. Host classes allow you to describe criteria for a host and its addresses that you want in a test configuration. This is in constrast to the traditional case where you explicitly define the host. You then reference a class instead of a host address in your test groups allowing for any new hosts that match the defined criteria to automatically be included. Let's take a look at a simple example that matches all IP addresses of hosts in the current mesh file with the subnet 10.0.1.0/24::
+There are two main constructs that go into generating dynamic meshes: *host classes* and *tags*. Host classes allow you to describe criteria for a host and its addresses that you want in a test configuration. This is in contrast to the traditional case where you explicitly define the host. You then reference a class instead of a host address in your test groups allowing for any new hosts that match the defined criteria to automatically be included. Let's take a look at a simple example that matches all IP addresses of hosts in the current mesh file with the subnet 10.0.1.0/24::
 
     <host_class>
         name      my_subnet_class
@@ -277,9 +277,7 @@ You'll also want to set the following if you are NOT using a Toolkit deployment:
 
     use_toolkit 0
     
-Finally, you'll want to make sure your :ref:`regular testing configuration file <config_files-regtesting-conf-main>` only has the following lines uncommented:
-
-    test_result_directory   /var/lib/perfsonar/regulartesting
+Finally, you'll want to make sure your :ref:`MeshConfig Agent tasks file <config_files-meshconfig-conf-agent-tasks>` has no extra measurement archives uncommented. In general having no uncommented lines is just fine.
     
 .. note:: If you have additional *measurement_archive* directives in the file then your tests will be stored there IN ADDITION to those automatically configured by the mesh. This may or may not be desirable depending on your case.
 
@@ -392,7 +390,7 @@ We may have one or more of these blocks in the file. This is where a bulk of the
 
     service_type owamp
     
-In our example we want *owamp* services. It may also be something like *bwctl* or *traceroute*. Next we may optionally define a list of filters::
+In our example we want *owamp* services. It may also be something like *pscheduler* or *traceroute*. Next we may optionally define a list of filters::
 
     <filter>
         filter_key group-communities

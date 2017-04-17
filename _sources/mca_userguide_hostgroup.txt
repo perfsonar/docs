@@ -74,10 +74,10 @@ You can also access host object which is sparsely populated (not all attributes 
     {
         "info": {
             "hardware_processorcore": "1",
-            "os_kernel": "Linux 2.6.32-573.8.1.el6.web100.x86_64",
+            "os_kernel": "2.6.32-642.13.1.el6.x86_64",
             "os_name": "Scientific Linux",
             "hardware_processorspeed": "2500.000 MHz",
-            "os_version": "6.7 (Carbon)",
+            "os_version": "6.8",
             "bundle": "perfsonar-toolkit",
             "net_tcp_maxbuffer_recv": "124928 bytes",
             "net_tcp_autotunemaxbuffer_send": "4194304 bytes",
@@ -98,7 +98,7 @@ You can also access host object which is sparsely populated (not all attributes 
         "ip": "134.76.97.128"
     }
 
-Sample Criterias
+Sample Criteria
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Select all hosts from ALGT2 site**

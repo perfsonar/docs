@@ -1,6 +1,9 @@
 ****************************
-Getting the Toolkit Software
+Getting the Software
 ****************************
+
+Toolkit
+---------
 
 .. _GettingChooseInstall:
 
@@ -20,17 +23,14 @@ The perfSONAR Toolkit is currently made available as an ISO image that can be mo
 
 Downloads
 =========
+.. note:: As of perfSONAR Toolkit 4.0 only CentOS 7 ISOs are supported. CentOS 7 only supports x86_64 architectures so i386 is dropped as well.
 
 +----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
 | Installation Type          | Architecture | Downloads                                                                     | Step-by-Step Install Guide        |
 +============================+==============+===============================================================================+===================================+
-| |CentOS| NetInstall        | i386         | :centos_netinstall_iso:`iso <i386>` :centos_netinstall_md5:`md5 <i386>`       | :doc:`install_centos_netinstall`  |
+| |CentOS| NetInstall        | x86_64       | :centos_netinstall_iso:`iso <x86_64>` :centos_netinstall_md5:`md5 <x86_64>`   | :doc:`install_centos_netinstall`  |
 +----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
-|                            | x86_64       | :centos_netinstall_iso:`iso <x86_64>` :centos_netinstall_md5:`md5 <x86_64>`   |                                   +
-+----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
-| |CentOS| Full Install      | i386         | :centos_fullinstall_iso:`iso <i386>` :centos_fullinstall_md5:`md5 <i386>`     | :doc:`install_centos_fullinstall` |
-+----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
-|                            | x86_64       | :centos_fullinstall_iso:`iso <x86_64>` :centos_fullinstall_md5:`md5 <x86_64>` |                                   +
+| |CentOS| Full Install      | x86_64       | :centos_fullinstall_iso:`iso <x86_64>` :centos_fullinstall_md5:`md5 <x86_64>` | :doc:`install_centos_fullinstall` |
 +----------------------------+--------------+-------------------------------------------------------------------------------+-----------------------------------+
 
 
@@ -42,6 +42,6 @@ Downloads
 
 .. |centos_fullinstall_when|  replace:: Use this in cases where the installation host has limited to no network connectivity to the CentOS and perfSONAR download servers. Be aware that this installation type may result in outdated packages initially and updates may be impossible if external network connectivity is not available even after the initial install. 
 
-Alternative installation methods
-================================
-We now also provide some alternative installation methods based on bundles where only a subset of the perfSONAR toolkit is installed.  These bundles offer more flexibility in your installation options and are also supported on a wider OS selection.  See :doc:`install_options` for details.
+Bundles
+--------------------
+We also provide alternative installation methods based on bundles where only a subset of the perfSONAR toolkit is installed.  These bundles offer more flexibility in your installation options and are also supported on a wider OS selection.  See :doc:`install_options` for details.

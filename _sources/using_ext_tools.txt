@@ -8,5 +8,5 @@ The perfSONAR Toolkit includes some tools from SLAC that can be accessed by clic
   * reverse ping: runs a ping from the toolkit host to your desktop host
   * reverse traceroute: runs a traceroute from the toolkit host to your desktop host
   * reverse tracepath: runs a tracepath from the toolkit host to your desktop host
-  * Visual Traceroute (VTrace): Show hop-by-hop information overlayed on google maps
+  * Visual Traceroute (VTrace): Show hop-by-hop information overlaid on google maps
 

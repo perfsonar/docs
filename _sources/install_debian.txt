@@ -1,123 +1,151 @@
-**********************
-Installation on Debian
-**********************
+***********************************
+Bundle Installation on Debian
+***********************************
 
-For perfSONAR 3.5.1 we provide part of the perfSONAR toolkit as Debian packages for four different architectures.  This should enable you to deploy a perfSONAR measurement point on one of the following distributions:
+perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for five different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
-* Debian 7 Wheezy (supports pS 3.5 and 4.0)
-* Debian 8 Jessie (supports pS 3.5 and 4.0)
-* Ubuntu 12 Precise (supports pS 3.5 only; End of Life date: April 28, 2017)
-* Ubuntu 14 Trusty (supports pS 3.5 and 4.0)
+* Debian 7 Wheezy
+* Debian 8 Jessie
+* Ubuntu 14 Trusty
 
-Here are some instructions to get you started with the perfSONAR toolkit on Debian hosts.
+Debian meta packages are available to install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
+
 
 System Requirements
 ===================
 
-* **Hardware:** We provide Debian packages for 4 different architectures:
+* **Architecture:** We provide Debian packages for 5 different architectures:
 
   * 32-bit (i386)
   * 64-bit (amd64)
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
+  * ARM64 (arm64) (only for Debian 8)
 
-* **Operating System:**  Any system running a Debian 7, Debian 8, Ubuntu 12 or Ubuntu 14 OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 12 or 14 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 7, Debian 8, or Ubuntu 14 server OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 14 might work too but are not officially supported.
 
-Installation Instructions
-=========================
+* See :doc:`install_hardware` for hardware requirements and more.
+
+.. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
+
+.. _install_debian_installation:
+
+Installation 
+============
 
 .. _install_debian_step1:
 
 Step 1: Configure APT
 ---------------------
+All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. **You will need to follow the steps below as privileged user**:
 
-All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine.  This can be done with the following commands for Debian 7, Ubuntu 12 or Ubuntu 14:
-::
+    *Debian 7 / Ubuntu 14*::
 
-   cd /etc/apt/sources.list.d/
-   wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-3.5.list
-   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+       cd /etc/apt/sources.list.d/
+       wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
+       wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 
-And with the following commands for Debian 8:
-::
+    *Debian 8*::
 
-   cd /etc/apt/sources.list.d/
-   wget http://downloads.perfsonar.net/debian/perfsonar-jessie-3.5.list
-   wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+       cd /etc/apt/sources.list.d/
+       wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
+       wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
    
-Then refresh the packages list:
-::
+Then refresh the packages list so APT knows about the perfSONAR packages::
 
    apt-get update
 
+
 .. _install_debian_step2:
 
-Step 2: Install the packages
-----------------------------
+Step 2: Install a Bundle 
+------------------------ 
+Choose one of the following bundles and see :doc:`install_options` page for more information about what these bundles are.
 
-The two :doc:`bundles <install_options>` we currently provide for Debian contains the following packages:
+* **perfSONAR Test Point**::
 
-* **perfsonar-toolkit** contains the full toolkit build of perfSONAR, including all packages and options detailed below in more minimal builds, and the web-based graphs and administrative GUI.
+    apt-get install perfsonar-testpoint  
 
-* **perfsonar-tools** contains all the tools you need to make measurements from the CLI:
+  During the installation process, you'll be asked to choose a password for the pscheduler database.
 
-  * iperf and iperf3
-  * owamp client and server
-  * bwctl client and server
-  * paris traceroute
-  * ndt client
+  Additionally, you may also install the toolkit service-watcher, ntp, security (firewall rules) and sysctl packages.
 
-* **perfsonar-testpoint** contains the perfsonar-tools and the perfSONAR software you need to get your perfSONAR measurement point part of the global perfSONAR measurement infrastructure:
+  *Optional Packages*
 
-  * ls-registration daemon
-  * regular-testing daemon
-  * oppd
-  * meshconfig-agent to participate in a test mesh, see :doc:`multi_mesh_agent_config` for more details
+    To install additional packages, run::
 
-Choose the bundle you want to install and call ``apt-get install`` with it:
-::
+    /usr/lib/perfsonar/scripts/install-optional-packages.py
 
-   apt-get install perfsonar-testpoint
+    Or, you can manually install them to your liking by running:
 
-*Optional Packages*
+     * ``apt-get install perfsonar-toolkit-servicewatcher``
+     * ``apt-get install perfsonar-toolkit-ntp``
+     * ``apt-get install perfsonar-toolkit-security``
+     * ``apt-get install perfsonar-toolkit-sysctl``
 
-Additionally, you may also install the toolkit security, sysctl and ntp configuration packages manually:
+  In particular, you should install perfsonar-toolkit-ntp if you are not managing your ``ntp.conf`` file in some other manner.
 
-  * **perfsonar-toolkit-security** containing iptables rules and fail2ban to protect your node, see :doc:`manage_security` for more details.
-  * **perfsonar-toolkit-sysctl** fine tuning your host for better performance measurements, see :doc:`manage_tuning` for more details.
-  * **perfsonar-toolkit-ntp** provides you with a list of known NTP servers and a script to choose the closest ones.
-  * **perfsonar-toolkit-systemenv** suggested support for auto-update configuration and other system environment options. (under revision)
+* **perfSONAR Core**::
 
-The installation of these packages can be done with each of the commands:
-::
+    apt-get install perfsonar-core
 
-   apt-get install perfsonar-toolkit-security
-   apt-get install perfsonar-toolkit-sysctl
-   apt-get install perfsonar-toolkit-ntp
+  During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
 
-During the installation of the ``perfsonar-toolkit-security`` package you'll be asked if you want to keep your current set of iptables rules, both for IPV4 and for IPv6. This is part of the usual installation process of the ``iptables-persistent`` package that we use to setup the firewall protecting your perfSONAR node.  Whatever you answer to the question, your current rules will be saved as part of the ``perfsonar-toolkit-security`` package installation.
+  Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.
+
+  *Optional Packages*
+
+    To install additional packages, run::
+
+    /usr/lib/perfsonar/scripts/install-optional-packages.py
+
+    Or, you can manually install them to your liking by running:
+
+       * ``apt-get install perfsonar-toolkit-servicewatcher``
+       * ``apt-get install perfsonar-toolkit-ntp``
+       * ``apt-get install perfsonar-toolkit-security``
+       * ``apt-get install perfsonar-toolkit-sysctl``
+
+* **perfSONAR Central Management**::
+
+    apt-get install perfsonar-centralmanagement
+
+  The Central Management bundle might be installed alongside another bundle.
+  
+* **perfSONAR Toolkit**::
+
+    apt-get install perfsonar-toolkit
+
+  During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
 
 .. _install_debian_step3:
 
 Step 3: Verify NTP and Tuning Parameters 
 ----------------------------------------- 
+*Step 3 can be ignored for perfsonar-toolkit package installation as its instructions are included and run automatically*
 
-* **NTP**
+* **NTP Tuning**
 
-  After installing the ``perfsonar-toolkit-ntp`` package, you can run the following script to have perfSONAR choose the closest NTP servers for you: ::
+  - **Auto-select NTP servers based on proximity**
+    
+    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If the optional package `perfsonar-toolkit-ntp` was installed this has already been done for you, but if you want to rerun manually::
 
-    /usr/lib/perfsonar/scripts/configure_ntpd new
-    service ntp restart
+        /usr/lib/perfsonar/scripts/configure_ntpd new
+        service ntp restart
 
-  You can also configure your own set of NTP servers manually.
+  You can also configure your own set of NTP servers if you want.
 
-  The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL will not even run unless NTP is configured. You can verify NTP is running with the following command::
+  You can verify if NTP is running with the following command::
 
-    ntpq -p
+        /usr/sbin/ntpq -p  
 
 * **System Tuning**
   
-  It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that cubic, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  If you have installed the ``perfsonar-toolkit-sysctl`` package, all should be ready for you.
+  It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  
+
+  If you have installed the `perfsonar-toolkit-sysctl` package, all should be ready for you, but if you want to rerun manually::
+
+    /usr/lib/perfsonar/scripts/configure_sysctl
 
   Please refer to `linux host tuning <http://fasterdata.es.net/host-tuning/linux/>`_ for more information.
 
@@ -130,91 +158,135 @@ If you have installed the `perfsonar-toolkit-security` package, then your iptabl
 
 If you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through a file called bwctl-server.limits. You may read the bwctl-server.limits man page or look at the example file provided under /etc/bwctl-server/bwctl-server.limits file. ESnet uses a bwctl-server.limits file that some sites may find useful. This file is based on the routing table and is updated regularly. It implements the following general policies:
+*Debian 7 / Ubuntu 14*:
 
-* Allow unrestricted UDP tests from ESnet test system prefixes.
-* Allow up to 200Mbps UDP tests from ESnet sites.
-* Deny UDP tests from any other locations.
-* Allow TCP tests from IPV4 and IPv6 addresses in the global Research and Education community routing table.
-* Deny TCP tests from everywhere else.
+    During the installation of the `perfsonar-toolkit-security` package you'll be asked if you want to keep your current set of iptables rules, both for IPV4 and for IPv6. This is part of the usual installation process of the `iptables-persistent` package that we use to setup the firewall protecting your perfSONAR node.  Whatever you answer to the question, your current rules will be saved as part of the `perfsonar-toolkit-security` package installation.
 
-To use the ESnet bwctl-server.limits file, get this file from ESnet as follows:
-::
+*Debian 8*:
 
-    cd /etc/bwctl-server
-    mv bwctl-server.limits bwctl-server.limits.dist
-    wget --no-check-certificate http://stats.es.net/sample_configs/bwctld.limits
-    mv bwctld.limits bwctl-server.limits
+    The `perfsonar-toolkit-security` package uses `firewalld` to manage the firewall rules.
 
-ESnet provides a shell script that will download and install the latest bwctl-server.limits file. The bwctl-server.limits file is generated once per day between 20:00 and 21:00 Pacific Time. You can run the shell script from cron to keep your bwctl-server.limits file up to date (it is recommended that you do this outside the time window when the new file is being generated). To download the shell script from the ESnet server do the following:
-::
+Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files ``bwctl-server.limits`` and ``pscheduler/limits.conf``. 
+ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and
+bwctl to use it are described on the page :doc:`manage_limits`.
 
-    cd /etc/bwctl
-    wget --no-check-certificate http://stats.es.net/sample_configs/update_limits.sh
-    chmod +x update_limits.sh
+Note that the `perfsonar-toolkit-security` package is automatically included in the `perfsonar-toolkit` bundle.
 
 .. _install_debian_step5:
 
 Step 5: Auto updates
 --------------------
-To ensure you always have the most current and hopefully most secure packages you can install and configure ``cron-apt`` to be run every night.  You’ll need to configure it to actually install the available updates and not just download the newly available packages (which is the default configuration).  This can be done with the following commands:
+To ensure you always have the most current and hopefully most secure packages you can install ``unattended-upgrades``. You’ll need to configure it to actually install the available updates with the following commands:
 ::
 
-Ubuntu Wheezy-specific cron configuration:
-    apt-get install cron-apt
-    echo 'upgrade -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::SourceList=/etc/apt/sources.list.d/perfsonar-wheezy-release.list -o Dir::Etc::SourceParts="/dev/null"' >> /etc/cron-apt/action.d/5-install
+    apt-get install unattended-upgrades
+    echo 'APT::Periodic::Update-Package-Lists "1";' > /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
+    echo 'APT::Periodic::Unattended-Upgrade "1";' >> /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
+    echo 'APT::Periodic::AutocleanInterval "31";' >> /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
+    echo 'Unattended-Upgrade::Origins-Pattern:: "origin=perfSONAR";' >> /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
 
-A cronjob will automatically install new packages present in the perfsonar-wheezy-release repository every night (check ``/etc/cron.d/cron-apt``). You may want to do the same with the security updates provided by Debian/Ubuntu.
+A cronjob will automatically install security updates from Debian/Ubuntu and new packages present in the perfsonar release repository every night. A trace of all updates applied will be stored in ``/var/log/unattended-upgrades/unattended-upgrades.log``.
 
-A trace of all updates applied will be stored in ``/var/log/cron-apt/log``
+Full perfSONAR toolkit upgrades (i.e. upgrade to new major versions) might still need a manual intervention to properly conclude, but we will then announce that through our usual communication channels.
 
-Full perfSONAR toolkit upgrades might still need a manual intervention to properly conclude, but we will then announce that through our usual communication channels.
+.. note:: Automatic updates are enabled by default in the perfSONAR Toolkit.
 
 .. _install_debian_step6:
 
-Step 6: Register your services 
-------------------------------- 
+Step 6: Service Watcher
+------------------------
+The `perfsonar-toolkit-servicewatcher` installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
 
-In order to publish the existence of your measurement services there is a single file with some details about your host. You may edit this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. However in most cases, the defaults of this file will be suitable and you should not need to make any changes. The auto-discovery directives indicate whether the system automatically determines the value of any property not manually set in this file. The properties you may additionaly set are administrative data like for example administrator's name, email, site_name, city, country, latitude, longitude, etc. None of them are required but it is highly recommended you set them since it will make finding your services easier for others. More information on the available fields can be found in :doc:`config_ls_registration`. 
+The install automatically configures cron to run the service_watcher regularly.
 
-After configuring the registration daemon you need to start it using the following command:
-::
+To run the script manually, run::
 
-	/etc/init.d/perfsonar-registrationdaemon start
+  /usr/lib/perfsonar/scripts/service_watcher
 
 .. _install_debian_step7:
 
-Step 7: Starting your services 
+Step 7: Register your services 
 ------------------------------- 
-You can start all the services by rebooting the host since all are configured to run by default. Otherwise you may start them with the following commands as a root user:
+Note: this step can be done through the web interface if the perfsonar-toolkit bundle was installed. See :doc:`manage_admin_info`.
+
+In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
+
 ::
 
-    /etc/init.d/bwctl-server start
-    /etc/init.d/owamp-server start
-    /etc/init.d/perfsonar-lsregistrationdaemon start
-    /etc/init.d/perfsonar-regulartesting start
-    /etc/init.d/perfsonar-oppd-server start
+    ##Hostname or IP address others can use to access your service
+    #external_address   myhost.mydomain.example
+    
+    ##Primary interface on host
+    #external_address_if_name eth0
 
-Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
+and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are **highly recommended**.
 
+In the example above remove the leading ``#`` before external_address and external_address_if_name respectively. Also replace *myhost.mydomain.example* and *eth0* with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the install or at :doc:`config_ls_registration`. 
 
-Configuring Central Management
-------------------------------
+.. _install_debian_step8:
 
-Refer to the documentation here: :doc:`/multi_overview`
+Step 8: Starting your services 
+------------------------------- 
+You can start all the services by rebooting the host since all are configured to run by default. In order to check services status issue the following commands::
+    
+    service pscheduler-scheduler status
+    service owamp-server status
+    service perfsonar-lsregistrationdaemon status
 
-Support
-=======
+If they are not running you may start them with appropriate service commands as a root user. For example::
 
-Support for Debian installations is provided by the perfSONAR community through the usual communication channels.
+    service pscheduler-scheduler start
+    service owamp-server start
+    service perfsonar-lsregistrationdaemon start
 
-Beta packages
+Note that you may have to wait a few hours for NTP to synchronize your clock before (re)starting owamp-server.
+
+Configuration
 =============
 
-Additionaly to the above listed packages, we also provide beta level Debian/Ubuntu packages of the following perfSONAR components:
+Configuring Central Management
+-------------------------------
+If your node is part of a measurement mesh and you installed perfsonar-centralmanagement bundle refer to the documentation here: :doc:`/multi_overview`
 
-* **perfsonar-core** contains the perfsonar-testpoint and the measurement archive (esmond)
-* **perfsonar-centralmanagement** contains the cental mesh config, MaDDash and the autoconfig tools.
+Configuring perfSONAR through the web interface
+------------------------------------------------
+After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
 
-At the moment, these packages have not undergone a thourough testing, reason why we release them as beta level packages.  Your feedback about their usability and report about any bug you find in them are welcome on the perfsonar-user mailing list.
+Upgrading from 3.5.1
+====================
+If you had installed perfSONAR 3.5.1 testpoint bundle and you now want to upgrade to perfSONAR 4.0, you'll have to follow the instructions here below.
 
+Add the 4.0 APT sources
+-----------------------
+
+  *Debian 7 / Ubuntu 14*::
+
+    cd /etc/apt/sources.list.d/
+    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
+
+  *Debian 8*::
+
+    cd /etc/apt/sources.list.d/
+    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
+   
+Then refresh the packages list so APT knows about the perfSONAR packages::
+
+   apt-get update
+
+Upgrade the perfSONAR installation
+----------------------------------
+To upgrade your perfsonar-testpoint installation, you just need to run::
+
+    apt-get dist-upgrade
+
+During the installation process, you'll be asked to choose a password for the pscheduler database.  After the upgrade, the perfsonar-regulartesting daemon and the OPPD will be stoped as they are no longer required.
+
+The measurements and the measurement archives that you already have defined in your 3.5.1 installation will be migrated to the 4.0 tools automatically.
+
+Upgrade to another bundle
+-------------------------
+If you want to move from the `perfsonar-testpoint` bundle to another bundle that we now provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
+
+Upgrade from Ubuntu 12 to Ubuntu 14
+-----------------------------------
+If you have a testpoint host running Ubuntu 12 and you want to upgrade it to Ubuntu 14, we recommend you to follow the `instructions provided by the Ubuntu Community <https://wiki.ubuntu.com/TrustyTahr/ReleaseNotes#Upgrading_from_Ubuntu_12.04_LTS_or_Ubuntu_13.10>`_ first and then upgrade to perfSONAR 4.0 once the Ubuntu upgrade is completed.

@@ -43,7 +43,7 @@ Cassandra comes with a command called *nodetool* that is capable of performing a
 
 #. Restart cassandra::
 
-    /sbin/service cassandra restart
+    service cassandra restart
 
 
 Creating the Snapshot
@@ -82,7 +82,7 @@ You may restore you files, either on a new or existing host, with the following 
 
 #. Shutdown cassandra::
 
-    /sbin/service cassandra stop
+    service cassandra stop
 #. Clear the commit logs::
 
     rm -f /var/lib/cassandra/commitlog/*.log
@@ -100,7 +100,7 @@ You may restore you files, either on a new or existing host, with the following 
     cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* /var/lib/cassandra/data/esmond/stat_aggregations/
 #. Start cassandra::
 
-    /sbin/service cassandra start
+    service cassandra start
 
 #. Run a repair::
 
@@ -127,6 +127,10 @@ You may create a snapshot of your database with the following command::
 
     pg_dump -F t -f esmond.tar -U esmond 
 
+On a Debian system you can use::
+
+    sudo -u postgres pg_dump -F t -f esmond.tar esmond
+
 This will create a tarball file in the current directory named esmond.tar. Note that this is a new file and though compressed, will consume additional disk space.
 
 .. note:: If you are prompted for a password, see the *sql_db_password* property in */etc/esmond/esmond.conf*
@@ -147,6 +151,10 @@ You may restore the snapshot with the following command::
 
     pg_restore -c -U esmond -d esmond esmond.tar 
 
+On a Debian system you can use::
+
+    sudo -u postgres pg_restore -c -d esmond esmond.tar
+
 .. note:: If you are prompted for a password, see the *sql_db_password* property in */etc/esmond/esmond.conf*
 
 This will delete any existing data and replace it with the backup. See the pg_restore documentation for more details.
@@ -165,16 +173,16 @@ Migrating Cassandra Data
 
 By default, packaged installs of cassandra keep all data in */var/lib/cassandra*. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your cassandra server and copying the directory to the new host. For example::
 
-    /sbin/service cassandra stop
+    service cassandra stop
     scp -r /var/lib/cassandra user@newhost:cassandra
     
 You can then restore the data as follows::
 
-    /sbin/service cassandra stop
+    service cassandra stop
     rm -rf /var/lib/cassandra/*
     mv cassandra/* /var/lib/cassandra/
     chown -R cassandra:cassandra /var/lib/cassandra/*
-    /sbin/service cassandra start
+    service cassandra start
 
 .. note:: If you are running on a cluster you may also need to run *nodetool repair*
 
@@ -187,16 +195,29 @@ Migrating PostgreSQL Data
 
 By default, packaged installs of PostgreSQL keep all data in */var/lib/pgsql*. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your PostgreSQL server and copying the directory to the new host. For example::
     
-    /sbin/service pgsql stop
+    service pgsql stop
     scp -r /var/lib/pgsql user@newhost:pgsql
+
+On a Debian system you can use::
+
+    service postgresql stop
+    scp -r /var/lib/postgresql user@newhost:pgsql
 
 You can then restore the data as follows::
     
-    /sbin/service pgsql stop
+    service pgsql stop
     rm -rf /var/lib/pgsql/*
     mv pgsql/* /var/lib/pgsql/
     chown -R postgres:postgres /var/lib/pgsql/*
-    /sbin/service pgsql start
+    service pgsql start
+
+On a Debian system you can use::
+
+    service postgresql stop
+    rm -rf /var/lib/postgresql/*
+    mv pgsql/* /var/lib/postgresql/
+    chown -R postgres:postgres /var/lib/postgresql/*
+    service postgresql start
 
 .. _multi_ma_backups-delete:
 
@@ -334,6 +355,13 @@ If you would like to run the tool, you will need to first run the following if y
 You can then run the tool as follows (replacing -c with your policy file)::
 
     python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
+
+On a Debian system you can use::
+
+    . /etc/default/esmond
+    export ESMOND_ROOT ESMOND_CONF
+    export DJANGO_SETTINGS_MODULE=esmond.settings
+    python /usr/share/esmond/util/ps_remove_data.py -c /usr/share/esmond/util/ps_remove_data.conf
 
 You may consider adding the commands above to a shell script called by cron to regularly clean out the old data.
 

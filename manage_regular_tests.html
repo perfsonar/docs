@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuring Regular Tests &mdash; perfSONAR Toolkit 3.5.1 documentation</title>
+    <title>Configuring Regular Tests &mdash; perfSONAR Toolkit 4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.5.1',
+        VERSION:     '4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 3.5.1 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
     <link rel="next" title="Updating Administrative Information" href="manage_admin_info.html" />
     <link rel="prev" title="Choosing a Management Method" href="manage_choose.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="manage_choose.html" title="Choosing a Management Method"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -77,30 +77,34 @@
 <p>A core function of the perfSONAR Toolkit is to run regularly scheduled network measurements. You can define the tests you want run through the toolkit&#8217;s web interface. This section describes using the interface to manage the set of tests run by tour toolkit node.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">See <a class="reference internal" href="multi_overview.html"><em>Mesh Configuration Quick Start</em></a> for information on an alternative way to configure tests when your host is participating in a large community or you manage multiple hosts.</p>
+<p class="last"><a class="reference internal" href="multi_overview.html"><em>Mesh Configuration Quick Start</em></a> for information on an alternative way to configure tests when your host is participating in a large community or you manage multiple hosts.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="manage_locating_hosts.html"><em>Locating Remote perfSONAR testpoints</em></a> for information on finding remote hosts to run tests to.</p>
 </div>
 <div class="section" id="accessing-the-configuration-interface">
 <span id="manage-reg-tests-access"></span><h2>Accessing the Configuration interface<a class="headerlink" href="#accessing-the-configuration-interface" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p class="first">Open <strong>http://&lt;hostname&gt;</strong> in your browser where <strong>&lt;hostname&gt;</strong> is the name of your toolkit host</p>
+<li><p class="first">Open <strong>http://&lt;hostname&gt;</strong> in your browser where <strong>&lt;hostname&gt;</strong> is the name of your toolkit host.</p>
 </li>
-<li><p class="first">Click on <em>Configure Tests</em> in near the middle of the page that loads</p>
+<li><p class="first">Click on <strong>Configure Tests</strong> in section <strong>Test Results</strong> of the page that loads.</p>
 <blockquote>
-<div><img alt="_images/install_quick_start-configtests1.png" src="_images/install_quick_start-configtests1.png" />
+<div><img alt="_images/manage_regular_tests-main-page.png" src="_images/manage_regular_tests-main-page.png" />
 </div></blockquote>
 </li>
 <li><dl class="first docutils">
 <dt>Login using the web administrator username and password.</dt>
 <dd><div class="first last admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account</p>
+<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account.</p>
 </div>
 </dd>
 </dl>
 </li>
-<li><p class="first">The page that loads can be used to manage regular tests. See the remainder of this document for details on <a class="reference internal" href="#manage-reg-tests-add"><em>adding</em></a>, <a class="reference internal" href="#manage-reg-tests-modify"><em>modifying</em></a>, <a class="reference internal" href="#manage-reg-tests-disable"><em>disabling</em></a> and <a class="reference internal" href="#manage-reg-tests-delete"><em>deleting</em></a> tests as well as <em class="xref std std-ref">adding</em>, <em class="xref std std-ref">modifying</em> and <em class="xref std std-ref">deleting</em> test hosts.</p>
+<li><p class="first">The page that loads can be used to manage regular tests. See the remainder of this document for details on <a class="reference internal" href="#manage-reg-tests-modify"><em>modifying</em></a> tests and test hosts.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests2.png" src="_images/manage_regular_tests-configtests2.png" />
+<div><img alt="_images/manage_regular_tests-tests-overview.png" src="_images/manage_regular_tests-tests-overview.png" />
 </div></blockquote>
 </li>
 </ol>
@@ -110,13 +114,13 @@
 <p>As a first step test definition must be added. Multiple types of tests can be configured through the web interface. They are described below:</p>
 <dl class="glossary docutils">
 <dt id="term-throughput">Throughput</dt>
-<dd>This type of test measures the amount of data that can be transferred over a period of time. It is implemented using a tool called BWCTL that make sures the throughput tests do not conflict with each other. BWCTL executes another tool called iperf to actually transfer the data and measure the results. By default it prefers the newest version of iperf, <a class="reference external" href="http://software.es.net/iperf/">iperf3</a>, but will fallback to an older version automatically if the remote endpoint does not support it.</dd>
+<dd>This type of test measures the amount of data that can be transferred over a period of time. It is implemented using a tool called pScheduler or BWCTL that makes sure the throughput tests do not conflict with each other. perfSONAR 4.0 and later uses a new scheduling infrastructure called pScheduler. pScheduler is a complete replacement for BWCTL. All perfSONAR 4.0 hosts will be also running a BWCTL server for the sole purpose of interacting with old clients. pScheduler can detect if another pScheduler server is on the other end, and if not, fallback to a BWCTL test if needed. By default pScheduler/BWCTL executes <a class="reference external" href="http://software.es.net/iperf/">iperf3</a> to actually measure throughput, but iperf2 and nuttcp can also be used. For a description of the pros and cons of each tool, see <a class="reference external" href="https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/">fasterdata.es.net</a>.</dd>
 <dt id="term-ping">Ping</dt>
-<dd>This type of test measures the round-trip-time of packet and other statistics such as loss. The BWCTL tool is used to manage the schedule and it spawns a ping command to perform the actual measurement. Ping collects similar statistics to the one-way latency test (such as packet loss) but does so at a much less granular level and without regard for whether the measured value occurred on the forward or reverse path. The advantage of ping tests is that many sites accept ping tests without the need for firewall modifications or special daemon&#8217;s running on the target host.</dd>
-<dt id="term-one-way-delay">One-way Delay</dt>
+<dd>This type of test measures the round-trip-time of packet and other statistics such as loss. The pScheduler/BWCTL tool is used to manage the schedule and it spawns a ping command to perform the actual measurement. Ping collects similar statistics to the one-way latency test (such as packet loss) but does so at a much less granular level and without regard for whether the measured value occurred on the forward or reverse path. The advantage of ping tests is that many sites accept ping tests without the need for firewall modifications or special daemon&#8217;s running on the target host.</dd>
+<dt id="term-one-way-latency">One-way latency</dt>
 <dd>This type of test measures delay and loss separately for each direction of a path (as opposed to combining the values of each direction as ping tests). The underling tool run is an OWAMP client. This type of test runs constantly sending several packets each seconds. This allows it to find very small amounts of loss if present that may be missed by other tools. If also running throughput tests, you may see anomalies such as a sudden burst of loss when throughput tests run. For this reason it is often recommended you run this type of test on a separate interface or host than the throughput tests. See <a class="reference internal" href="manage_dual_xface.html"><em>Configuring a Host with Multiple Interfaces</em></a> for more information on running tests on separate interfaces.</dd>
 <dt id="term-traceroute">Traceroute</dt>
-<dd>Traceroute tests periodically measure the path between the source and destination. By default this type of test will automatically be added every time you add any of the other types of tests. This type of test is crucial in determining how a packet traverses a network and can be helpful in identifying events such as path changes that affect other test types. The underlying tool is BWCTL to manage scheduling the test and the tracepath command to actual perform the measurement. The tool will fallback to traceroute if tracepath is not installed on the source host for some reason (all Toolkit hosts come with tracepath by default).</dd>
+<dd>Traceroute tests periodically measure the path between the source and destination. By default this type of test will automatically be added every time you add any of the other types of tests. This type of test is crucial in determining how a packet traverses a network and can be helpful in identifying events such as path changes that affect other test types. The underlying tool is pScheduler/BWCTL to manage scheduling the test and the tracepath command to actual perform the measurement. The tool will fallback to traceroute if tracepath is not installed on the source host for some reason (all Toolkit hosts come with tracepath by default). It is also possible to choose <em>paris-traceroute</em> as in underlying tool.</dd>
 </dl>
 </div>
 <div class="section" id="adding-regular-tests">
@@ -124,22 +128,24 @@
 <ol class="arabic">
 <li><p class="first">On the main page of the tests configuration interface click on the <strong>+Add Test</strong> button too choose and add the test type you would like.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-addtest1.png" src="_images/manage_regular_tests-configtests-addtest1.png" />
+<div><img alt="_images/manage_regular_tests-tests-add-test.png" src="_images/manage_regular_tests-tests-add-test.png" />
 </div></blockquote>
 </li>
 <li><p class="first">A drop-down list shows to choose the <a class="reference internal" href="#manage-reg-tests-types"><em>test type</em></a>. Click on a selected test type you would like to add.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-addtest2.png" src="_images/manage_regular_tests-configtests-addtest2.png" />
+<div><img alt="_images/manage_regular_tests-tests-add-test-type.png" src="_images/manage_regular_tests-tests-add-test-type.png" />
 </div></blockquote>
 </li>
-<li><p class="first">A new window will appear prompting you for the parameters of the test. Each test contains a <em>Test name/description</em> field you are required to define. The <em>Test name/description</em> is a human-readable string and will only be used on this interface to identify the test. The remaining parameters are detailed in the tables below:</p>
+<li><p class="first">A new window will appear prompting you for the parameters of the test. Each test contains a <strong>Test name/description</strong> field you are required to define. The <strong>Test name/description</strong> is a human-readable string and will only be used on this interface to identify the test. In order to access additional test parameters click <strong>+Advanced Parameters</strong>. The tables below describe remaining parameters including <em>Advanced Parameters</em>:</p>
 <blockquote>
-<div><p id="manage-reg-tests-add-params"><strong>Throughput</strong></p>
+<div><div class="topic container" id="manage-reg-tests-add-params">
+<p><strong>Throughput</strong></p>
+<img alt="_images/manage_regular_tests-tests-add-test-bw-params.png" src="_images/manage_regular_tests-tests-add-test-bw-params.png" />
 <table border="1" class="docutils">
 <colgroup>
-<col width="32%" />
-<col width="17%" />
-<col width="51%" />
+<col width="34%" />
+<col width="22%" />
+<col width="45%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Field</th>
@@ -164,29 +170,53 @@
 <td>Default</td>
 <td>The network interface on which to run the test. The default is the default interface of the host. Use this field if you have multiple interfaces and want to specify the interface where this test runs.</td>
 </tr>
-<tr class="row-even"><td>Time Between Tests</td>
+<tr class="row-even"><td>Time between tests</td>
 <td>6 hours</td>
 <td>The amount of time in between tests. Throughput tests consume bandwidth so usually only run a few times a day. The default is every 6 hours. Note that the tests will not run exactly every 6 hours as some randomization occurs to prevent tests from running  in sequence at the beginning of the interval.</td>
 </tr>
-<tr class="row-odd"><td>Test Duration</td>
+<tr class="row-odd"><td>Units</td>
+<td>Hours</td>
+<td>Indicates units of time</td>
+</tr>
+<tr class="row-even"><td>Test duration</td>
 <td>20 seconds</td>
 <td>The length of the tests to be run.  TCP requires time to <em>ramp up</em>, especially as the latency increases.  Consider using a larger value if the test subjects are further away.</td>
 </tr>
-<tr class="row-even"><td>Protocol</td>
+<tr class="row-odd"><td>Protocol</td>
 <td>TCP</td>
 <td>The transport protocol to be used. It can be TCP or UDP.</td>
 </tr>
-<tr class="row-odd"><td>UDP Bandwidth</td>
+<tr class="row-even"><td>UDP Bandwidth (MB)</td>
 <td>Not set</td>
 <td>Field only appears if <strong>Protocol</strong> is set to <strong>UDP</strong>. For UDP this sets the target bandwidth in Mbps. Note that you should be careful with high values since UDP is not a &#8220;fair&#8221; protocol (in contrast to TCP) and will not back-off on bandwidth if it encounters other traffic.  Also note that many BWCTL instances disable UDP by default, setting this option may require coordination with remote testers to allow the test to complete.</td>
 </tr>
-<tr class="row-even"><td>Use Autotuning</td>
+<tr class="row-odd"><td>Tool(s)</td>
+<td>iperf3, iperf</td>
+<td>The underlying tool to perform throughput tests. By default it prefers the newest version of iperf3, but will fallback to an older iperf version automatically if the remote endpoint does not support it.</td>
+</tr>
+<tr class="row-even"><td>Direction</td>
+<td>Send and Receive</td>
+<td>The direction of the tests to be run from/to this host. Use this field to indicate send only, receive only or both directions.</td>
+</tr>
+<tr class="row-odd"><td>Use Autotuning</td>
 <td>Enabled</td>
 <td>Allows the TCP window size to be automatically calculated.</td>
 </tr>
-<tr class="row-odd"><td>Window Size</td>
+<tr class="row-even"><td>Window Size (MB)</td>
 <td>Not Set</td>
 <td>If <strong>Use Autotuning</strong> is not checked then this field appears. Manually sets the value of the TCP window size.</td>
+</tr>
+<tr class="row-odd"><td>Number of Parallel Streams</td>
+<td>1</td>
+<td>Number of concurrent streams for the test to run.</td>
+</tr>
+<tr class="row-even"><td>Omit Interval (sec)</td>
+<td>0</td>
+<td>Initial period of data to omit from the final statistics. This is so that you can skip past initial conditions such as TCP slow start. Currently only implemented by the iperf3 tool.</td>
+</tr>
+<tr class="row-odd"><td>Use Zero Copy</td>
+<td>Disabled</td>
+<td>Allows to set using a &#8220;zero copy&#8221; method of sending data, such as <em>sendfile()</em> system call. This uses much less CPU to put the data. Currently only implemented by the iperf3 tool.</td>
 </tr>
 <tr class="row-even"><td>TOS bits</td>
 <td>0</td>
@@ -194,7 +224,10 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="topic container">
 <p><strong>Ping</strong></p>
+<img alt="_images/manage_regular_tests-tests-add-test-ping-params.png" src="_images/manage_regular_tests-tests-add-test-ping-params.png" />
 <table border="1" class="docutils">
 <colgroup>
 <col width="32%" />
@@ -224,25 +257,32 @@
 <td>Default</td>
 <td>The network interface on which to run the test. The default is the default interface of the host. Use this field if you have multiple interfaces and want to specify the interface where this test runs.</td>
 </tr>
-<tr class="row-even"><td>Time Between Tests</td>
+<tr class="row-even"><td>Time between tests</td>
 <td>5 minutes</td>
 <td>The amount of time in between tests. Ping tests are low bandwidth and generally run every few minutes.</td>
 </tr>
-<tr class="row-odd"><td>Packets Sent Per Test</td>
+<tr class="row-odd"><td>Units</td>
+<td>Minutes</td>
+<td>Indicates units of time</td>
+</tr>
+<tr class="row-even"><td>Packets per test</td>
 <td>10</td>
 <td>The number of packets to send per test. Multiplying by the <strong>Time between packets</strong> yields the duration of the test in seconds.</td>
 </tr>
-<tr class="row-even"><td>Time Between Packets</td>
+<tr class="row-odd"><td>Time between packets</td>
 <td>1 second</td>
 <td>The time to wait in between sending packets. Multiplying by the <strong>Packets sent per test</strong> yields the duration of the test in seconds.</td>
 </tr>
-<tr class="row-odd"><td>Packet Size (bytes)</td>
+<tr class="row-even"><td>Packet Size (bytes)</td>
 <td>1000</td>
 <td>The size of the packets sent</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="topic container">
 <p><strong>One-way delay</strong></p>
+<img alt="_images/manage_regular_tests-tests-add-test-owamp-params.png" src="_images/manage_regular_tests-tests-add-test-owamp-params.png" />
 <table border="1" class="docutils">
 <colgroup>
 <col width="28%" />
@@ -282,7 +322,10 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="topic container">
 <p><strong>Traceroute</strong></p>
+<img alt="_images/manage_regular_tests-tests-add-test-tracert-params.png" src="_images/manage_regular_tests-tests-add-test-tracert-params.png" />
 <table border="1" class="docutils">
 <colgroup>
 <col width="32%" />
@@ -312,40 +355,45 @@
 <td>Default</td>
 <td>The network interface on which to run the test. The default is the default interface of the host. Use this field if you have multiple interfaces and want to specify the interface where this test runs.</td>
 </tr>
-<tr class="row-even"><td>Tool</td>
-<td>Default</td>
-<td>The command-line utility used to perform the traceroute. If <strong>Default</strong> is selected then it will run the <strong>tracepath</strong> command and fall back to <strong>traceroute</strong> if both endpoints do not support the tool. Alternatively you can select amongst one of <strong>tracepath</strong>, <strong>traceroute</strong> or <strong>paris-traceroute</strong>.</td>
-</tr>
-<tr class="row-odd"><td>Time Between Tests</td>
-<td>10 minutes</td>
+<tr class="row-even"><td>Time between tests</td>
+<td>10</td>
 <td>The amount of time in between tests. Traceroute tests are low bandwidth and may run every few minutes.</td>
 </tr>
-<tr class="row-even"><td>Packets Size</td>
-<td>40 bytes</td>
+<tr class="row-odd"><td>Units</td>
+<td>Minutes</td>
+<td>Indicates units of time</td>
+</tr>
+<tr class="row-even"><td>Packets Size(bytes)</td>
+<td>40</td>
 <td>The size of the packets sent</td>
 </tr>
-<tr class="row-odd"><td>First Hop to Report</td>
+<tr class="row-odd"><td>First hop to report</td>
 <td>&nbsp;</td>
 <td>The first hop to report starting at 1. The default is to report all hops. If you would like to hide the first few hops, set this to a value greater than 1.</td>
 </tr>
-<tr class="row-even"><td>Maximum Number of Hops</td>
+<tr class="row-even"><td>Maximum number of hops</td>
 <td>&nbsp;</td>
 <td>The maximum number of hops to traverse before the traceroute is abandoned.</td>
 </tr>
+<tr class="row-odd"><td>Tool(s)</td>
+<td>Default</td>
+<td>The command-line utility used to perform the traceroute. If <strong>Default</strong> is selected then it will run the <strong>tracepath</strong> command and fall back to <strong>traceroute</strong> if both endpoints do not support the tool. Alternatively you can select amongst one of <strong>tracepath</strong>, <strong>traceroute</strong> or <strong>paris-traceroute</strong>.</td>
+</tr>
 </tbody>
 </table>
+</div>
 </div></blockquote>
 </li>
-<li><p class="first">On the same window you will be able to add hosts to which you want to test. You may also <em class="xref std std-ref">add hosts separately</em> later:</p>
+<li><p class="first">On the same window you will be able to add hosts to which you want to test. You may also add hosts separately later.</p>
 <blockquote>
 <div></div></blockquote>
 </li>
 <li id="manage-reg-tests-add-host-in-test"><p class="first">Go to the bottom of the page and edit <strong>Test members</strong> section.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests_addhost_intest1.png" src="_images/manage_regular_tests-configtests_addhost_intest1.png" />
+<div><img alt="_images/manage_regular_tests-tests-add-test-members.png" src="_images/manage_regular_tests-tests-add-test-members.png" />
 </div></blockquote>
 </li>
-<li><p class="first">Enter the address or host name of the test member you wish to add in the <em>Host name</em> field. You can also add a human-readable description to the <em>Host description</em> field that will only be used by this interface when displaying the host. If necessary select additional protocol type.</p>
+<li><p class="first">Enter the address or host name of the test member you wish to add in the <strong>Host name</strong> field. You can also add a human-readable description to the <strong>Host description</strong> field that will only be used by this interface when displaying the host. If necessary select additional protocol type.</p>
 <blockquote>
 <div><dl class="docutils" id="manage-reg-tests-add-ip-type">
 <dt>Valid values are:</dt>
@@ -362,48 +410,44 @@
 </ul>
 </dd>
 </dl>
-<img alt="_images/manage_regular_tests-configtests_addhost_intest2.png" src="_images/manage_regular_tests-configtests_addhost_intest2.png" />
 </div></blockquote>
 </li>
 <li><p class="first">When you are done click <strong>Add host</strong>.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests_addhost_intest3.png" src="_images/manage_regular_tests-configtests_addhost_intest3.png" />
+<div><img alt="_images/manage_regular_tests-tests-add-test-members-add-host.png" src="_images/manage_regular_tests-tests-add-test-members-add-host.png" />
 </div></blockquote>
 </li>
 <li><p class="first">The new test member for the test defined is now shown in the section <strong>Test members</strong>.</p>
-<blockquote>
-<div><img alt="_images/manage_regular_tests-configtests_addhost_intest4.png" src="_images/manage_regular_tests-configtests_addhost_intest4.png" />
-</div></blockquote>
 </li>
 <li><p class="first">Repeat the above step clicking <strong>+Add Test Member(s)</strong> if you would like to add more hosts to the test.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests_addhost_intest5.png" src="_images/manage_regular_tests-configtests_addhost_intest5.png" />
+<div><img alt="_images/manage_regular_tests-tests-add-test-members-add-host-more.png" src="_images/manage_regular_tests-tests-add-test-members-add-host-more.png" />
 </div></blockquote>
 </li>
-<li><p class="first">If you are content with this setup then there is nothing to do. If you would like to remove these tests click <em>Delete</em>. See <a class="reference internal" href="#manage-reg-tests-modify-delmember"><em>Deleting Test Members</em></a> and <a class="reference internal" href="#manage-reg-tests-delete"><em>Deleting Regular Tests</em></a> for more details on removing these tests if you so desire.</p>
+<li><p class="first">If you are content with this setup then there is nothing to do. If you would like to remove these tests click trash icon. See <a class="reference internal" href="#manage-reg-tests-modify-delmember"><em>Deleting Test Members</em></a> and <a class="reference internal" href="#manage-reg-tests-delete"><em>Deleting Regular Tests</em></a> for more details on removing these tests if you so desire.</p>
 </li>
 <li><p class="first">Click <strong>OK</strong> to save test definition. If you would like to add more tests click <strong>+Add Test</strong> button again and repeat above steps to add new test.</p>
 </li>
 <li><p class="first">Click the <strong>Save</strong> button at the bottom of the screen to apply your changes.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests_addhost_intest6.png" src="_images/manage_regular_tests-configtests_addhost_intest6.png" />
+<div><img alt="_images/manage_regular_tests-tests-add-test-save.png" src="_images/manage_regular_tests-tests-add-test-save.png" />
 </div></blockquote>
 </li>
-<li><p class="first">Wait while the configuration is applied and services are restarted. Your tests should now be running and you should see the message below on the top of the screen.</p>
+<li><p class="first">Wait while the configuration is applied and services are restarted. Your tests should now be running and you should see the green message as shwon below.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests_addhost_intest7.png" src="_images/manage_regular_tests-configtests_addhost_intest7.png" />
+<div><img alt="_images/manage_regular_tests-tests-add-test-saved.png" src="_images/manage_regular_tests-tests-add-test-saved.png" />
 </div></blockquote>
 </li>
 <li><p class="first">Take note that a traceroute test is automatically added when you add a non-traceroute test.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests_addhost_intest8.png" src="_images/manage_regular_tests-configtests_addhost_intest8.png" />
+<div><img alt="_images/manage_regular_tests-tests-tracert.png" src="_images/manage_regular_tests-tests-tracert.png" />
 </div></blockquote>
 </li>
 <li><p class="first">It may take several hours for throughput data to appear and several minutes (depending on the time between tests) for the other test types. If the tests are working you should be able to data in the graphs.</p>
 <blockquote>
 <div><div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">See <a class="reference internal" href="using_graphs.html"><em>Regular Testing Graphs</em></a> for details on reading graphs</p>
+<p class="last">See <a class="reference internal" href="using_graphs.html"><em>Test Results Graphs</em></a> for details on reading graphs</p>
 </div>
 </div></blockquote>
 </li>
@@ -414,9 +458,9 @@
 <div class="section" id="changing-test-parameters">
 <span id="manage-reg-tests-modify-params"></span><h3>Changing Test Parameters<a class="headerlink" href="#changing-test-parameters" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">You may modify settings of a test after adding it. Access the regular testing interface under <strong>Tests</strong> tab and in the list of tests click the configuration icon under <em>ACTIONS</em> next to any test you wish to change:</p>
+<li><p class="first">You may modify settings of a test after adding it. Access the regular testing interface under <strong>Tests</strong> tab and in the list of tests click the configuration icon under <strong>ACTIONS</strong> next to any test you wish to change:</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-edit.png" src="_images/manage_regular_tests-configtests-edit.png" />
+<div><img alt="_images/manage_regular_tests-tests-change-params.png" src="_images/manage_regular_tests-tests-change-params.png" />
 </div></blockquote>
 </li>
 <li><p class="first">From the page that loads you can make a number of changes. See the sections that follow for details on how to make some specific changes. See the tables <a class="reference internal" href="#manage-reg-tests-add-params"><em>here</em></a> for complete listing of parameters and their meanings. Click <strong>OK</strong> to leave the test configuration window and keep your changes.</p>
@@ -428,19 +472,14 @@
 <div class="section" id="deleting-test-members">
 <span id="manage-reg-tests-modify-delmember"></span><h3>Deleting Test Members<a class="headerlink" href="#deleting-test-members" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">In the <em>Configure Test</em> configuration page, uder <em>Test members</em> section find the test member you wish to remove and click the trash bin symbol next to it.</p>
+<li><p class="first">In the <strong>Configure Test</strong> configuration page, uder <strong>Test members</strong> section find the test member you wish to remove and click the trash bin symbol next to it.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-edit-delmember1.png" src="_images/manage_regular_tests-configtests-edit-delmember1.png" />
+<div><img alt="_images/manage_regular_tests-tests-delete-member-icon.png" src="_images/manage_regular_tests-tests-delete-member-icon.png" />
 </div></blockquote>
 </li>
-<li><p class="first">You will be presented with a warning message to confirm you want to delete this host.</p>
+<li><p class="first">You should no longer see the host in the list of <strong>Test members</strong>.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-edit-delmember2.png" src="_images/manage_regular_tests-configtests-edit-delmember2.png" />
-</div></blockquote>
-</li>
-<li><p class="first">After confirmation you should no longer see the host in the list of <em>Test members</em></p>
-<blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-edit-delmember3.png" src="_images/manage_regular_tests-configtests-edit-delmember3.png" />
+<div><img alt="_images/manage_regular_tests-tests-delete-member-deleted.png" src="_images/manage_regular_tests-tests-delete-member-deleted.png" />
 </div></blockquote>
 </li>
 <li><p class="first">If you are done making changes click <strong>OK</strong> to accept test configuration change and then <strong>Save</strong> to apply your changes to the system.</p>
@@ -449,15 +488,15 @@
 </div>
 <div class="section" id="adding-test-members">
 <span id="manage-reg-tests-modify-addmember"></span><h3>Adding Test Members<a class="headerlink" href="#adding-test-members" title="Permalink to this headline">¶</a></h3>
-<p>From the configuration interface, the process for adding more test members is the same as that detailed in the section <em class="xref std std-ref">_manage_reg_tests_add_host_in_test:</em>.</p>
+<p>From the configuration interface, the process for adding more test members is the same as that detailed in the section <a class="reference internal" href="#manage-reg-tests-add-host-in-test"><em>here</em></a>.</p>
 </div>
 <div class="section" id="changing-test-member-ip-address-settings">
 <span id="manage-reg-tests-modify-ip"></span><h3>Changing Test Member IP Address Settings<a class="headerlink" href="#changing-test-member-ip-address-settings" title="Permalink to this headline">¶</a></h3>
 <p>When you add a new test member, the configuration automatically determines if you should the test should run using IPv4, IPv6 or both. See the <a class="reference internal" href="#manage-reg-tests-add-ip-type"><em>discussion</em></a> on IP type when adding a new test for more details on the default behavior. If you would like to override the default behavior or update the host address do the following:</p>
 <ol class="arabic">
-<li><p class="first">In the <em>Configure Test</em> configuration page, uder <em>Test members</em> section find the test member you would like to update and select the desired protocol type.</p>
+<li><p class="first">In the <strong>Configure Test</strong> configuration page, under <strong>Test members</strong> section find the test member you would like to update and select the desired protocol type.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-edit-ip1.png" src="_images/manage_regular_tests-configtests-edit-ip1.png" />
+<div><img alt="_images/manage_regular_tests-tests-change-member-ip.png" src="_images/manage_regular_tests-tests-change-member-ip.png" />
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Checking the IPv4 and IPv6 or text boxes will create a test that forces that address family. If the local interface or remote host does not support that address type your test will be unable to run. For example, if the remote host is an IPv4 address but only the IPv6 checkbox is selected then it will be impossible to run a test. There is also a warning in the web interface in these cases.</p>
@@ -471,52 +510,26 @@
 </div>
 <div class="section" id="disabling-enabling-regular-tests">
 <span id="manage-reg-tests-disable"></span><h2>Disabling/Enabling Regular Tests<a class="headerlink" href="#disabling-enabling-regular-tests" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="disabling-a-regular-test">
-<span id="manage-reg-tests-disable-disable"></span><h3>Disabling a Regular Test<a class="headerlink" href="#disabling-a-regular-test" title="Permalink to this headline">¶</a></h3>
-<p>In some cases it may be desirable to stop running tests for a period of time, but not to delete them entirely. This allows them to be enabled again at a later time without recreating the entire test set. To disable an existing test set do the following:</p>
+<p id="manage-reg-tests-disable-enable">In some cases it may be desirable to stop running tests for a period of time, but not to delete them entirely. This allows them to be enabled again at a later time without recreating the entire test set. To disable or enable an existing test set do the following:</p>
 <ol class="arabic">
-<li><p class="first">Under <em>Tests</em> tab open the <em>Configure Test</em> configuration page selecting appropriate symbol from <em>ACTIONS</em> next to a test you want to disable.</p>
+<li><p class="first">Under <strong>Tests</strong> tab open the <strong>Configure Test</strong> configuration page selecting appropriate symbol from <strong>ACTIONS</strong> next to a test you want to disable.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-edit.png" src="_images/manage_regular_tests-configtests-edit.png" />
+<div><img alt="_images/manage_regular_tests-tests-change-params.png" src="_images/manage_regular_tests-tests-change-params.png" />
 </div></blockquote>
 </li>
-<li><p class="first">Click <strong>Test Status</strong> switch to change test status from <em>Enabled</em> to <em>Disabled</em>.</p>
+<li><p class="first">Click <strong>Test Status</strong> switch to change test status from <strong>Enabled</strong> to <strong>Disabled</strong> or vice versa.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-disable1.png" src="_images/manage_regular_tests-configtests-disable1.png" />
+<div><img alt="_images/manage_regular_tests-tests-disable-icon.png" src="_images/manage_regular_tests-tests-disable-icon.png" />
 </div></blockquote>
 </li>
 <li><p class="first">This should change the switch to gray indicating disabled test as shown below</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-disable2.png" src="_images/manage_regular_tests-configtests-disable2.png" />
+<div><img alt="_images/manage_regular_tests-tests-disable-disabled.png" src="_images/manage_regular_tests-tests-disable-disabled.png" />
 </div></blockquote>
 </li>
 <li><p class="first">When you are done making changes click <strong>OK</strong> to accept test configuration change and then <strong>Save</strong> to apply your changes to the system. Scheduled test list will indicate the current status of this option.</p>
 </li>
 </ol>
-</div>
-<div class="section" id="enabling-a-regular-test">
-<span id="manage-reg-tests-disable-enable"></span><h3>Enabling a Regular Test<a class="headerlink" href="#enabling-a-regular-test" title="Permalink to this headline">¶</a></h3>
-<p>If you have previously <a class="reference internal" href="#manage-reg-tests-disable-disable"><em>disabled a test</em></a> and wish to enable it again do the following:</p>
-<ol class="arabic">
-<li><p class="first">Under <em>Tests</em> tab open the <em>Configure Test</em> configuration page selecting appropriate symbol from <em>ACTIONS</em> next to a test you want to disable.</p>
-<blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-edit.png" src="_images/manage_regular_tests-configtests-edit.png" />
-</div></blockquote>
-</li>
-<li><p class="first">Click <strong>Test Status</strong> switch to change test status from <em>Disabled</em> to <em>Enabled</em>.</p>
-<blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-enable1.png" src="_images/manage_regular_tests-configtests-enable1.png" />
-</div></blockquote>
-</li>
-<li><p class="first">The text should change the switch to green indicating enabled test</p>
-<blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-enable2.png" src="_images/manage_regular_tests-configtests-enable2.png" />
-</div></blockquote>
-</li>
-<li><p class="first">When you are done making changes click <strong>OK</strong> to accept test configuration change and then <strong>Save</strong> to apply your changes to the system. Scheduled test list will indicate the current status of this option.</p>
-</li>
-</ol>
-</div>
 </div>
 <div class="section" id="deleting-regular-tests">
 <span id="manage-reg-tests-delete"></span><h2>Deleting Regular Tests<a class="headerlink" href="#deleting-regular-tests" title="Permalink to this headline">¶</a></h2>
@@ -527,14 +540,14 @@
 </div>
 <p>You may delete a test with the following steps:</p>
 <ol class="arabic">
-<li><p class="first">Go to the <em>Tests</em> tab to see the current list of tests. Uder list of tests find the test you wish to remove and click the trash bin symbol next to it.</p>
+<li><p class="first">Go to the <strong>Tests</strong> tab to see the current list of tests. Uder list of tests find the test you wish to remove and click the trash bin symbol next to it.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-delete1.png" src="_images/manage_regular_tests-configtests-delete1.png" />
+<div><img alt="_images/manage_regular_tests-tests-delete-test-icon.png" src="_images/manage_regular_tests-tests-delete-test-icon.png" />
 </div></blockquote>
 </li>
 <li><p class="first">You will be presented with a warning message to confirm you want to delete this test. When confirmed you should no longer see the test in the list of tests.</p>
 <blockquote>
-<div><img alt="_images/manage_regular_tests-configtests-delete2.png" src="_images/manage_regular_tests-configtests-delete2.png" />
+<div><img alt="_images/manage_regular_tests-tests-delete-test-confirm.png" src="_images/manage_regular_tests-tests-delete-test-confirm.png" />
 </div></blockquote>
 </li>
 <li><p class="first">When you are done making changes click the <strong>Save</strong> button.</p>
@@ -563,11 +576,7 @@
 <li><a class="reference internal" href="#changing-test-member-ip-address-settings">Changing Test Member IP Address Settings</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#disabling-enabling-regular-tests">Disabling/Enabling Regular Tests</a><ul>
-<li><a class="reference internal" href="#disabling-a-regular-test">Disabling a Regular Test</a></li>
-<li><a class="reference internal" href="#enabling-a-regular-test">Enabling a Regular Test</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#disabling-enabling-regular-tests">Disabling/Enabling Regular Tests</a></li>
 <li><a class="reference internal" href="#deleting-regular-tests">Deleting Regular Tests</a></li>
 </ul>
 </li>
@@ -604,7 +613,7 @@
         <li class="right" >
           <a href="manage_choose.html" title="Choosing a Management Method"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 3.5.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -644,7 +653,7 @@
     
     <div class="footer">
         &copy; Copyright 2016, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
