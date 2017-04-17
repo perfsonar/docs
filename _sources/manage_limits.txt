@@ -16,7 +16,7 @@ Additional information on the ESnet generated filter lists is available at:
 
 Note that perfSONAR 4.0 hosts running bwctl for backward compatibility will need to follow the instructions on fasterdata.es.net to add limits to bwctl as well. 
 
-More information on how to use the pScheduler limits system can be found at: :doc:`pscheduler_server_limits`.
+More information on how to use the pScheduler limits system can be found at: :doc:`config_pscheduler_limits`.
 
 
 
