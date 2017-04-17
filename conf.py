@@ -283,8 +283,7 @@ texinfo_documents = [
 ###perfSONAR Specific settings
 
 #URL to download server
-#ps_download_url = 'http://downloads.perfsonar.net/toolkit'
-ps_download_url = 'http://downloads.perfsonar.net/toolkit/release_candidates'
+ps_download_url = 'http://downloads.perfsonar.net/toolkit'
 #CentOS version
 centos_version = '7'
 
