@@ -209,13 +209,16 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <div class="section" id="id1">
 <h4>Creating the Snapshot<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>You may create a snapshot of your database with the following command:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>pg_dump -F t -f esmond.tar -U esmond
 </pre></div>
 </div>
-<p>On a Debian system you can use:</p>
+<p><em>Debian/Ubuntu:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>sudo -u postgres pg_dump -F t -f esmond.tar esmond
 </pre></div>
 </div>
+</div></blockquote>
 <p>This will create a tarball file in the current directory named esmond.tar. Note that this is a new file and though compressed, will consume additional disk space.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -232,13 +235,16 @@ cp /var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot/* 
 <div class="section" id="restoring-the-snapshot">
 <h4>Restoring the Snapshot<a class="headerlink" href="#restoring-the-snapshot" title="Permalink to this headline">¶</a></h4>
 <p>You may restore the snapshot with the following command:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>pg_restore -c -U esmond -d esmond esmond.tar
 </pre></div>
 </div>
-<p>On a Debian system you can use:</p>
+<p><em>Debian/Ubuntu:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>sudo -u postgres pg_restore -c -d esmond esmond.tar
 </pre></div>
 </div>
+</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/etc/esmond/esmond.conf</em></p>
@@ -281,16 +287,21 @@ service cassandra start
 <p class="last">If migrating to a server with a different architecture or operating system it is recommended you instead follow the steps in <a class="reference internal" href="#multi-ma-backups-snapshots-postgresql"><em>PostgreSQL Snapshots with pg_dump and pg_restore</em></a> for creating, migrating and restoring data.</p>
 </div>
 <p>By default, packaged installs of PostgreSQL keep all data in <em>/var/lib/pgsql</em>. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your PostgreSQL server and copying the directory to the new host. For example:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>service pgsql stop
 scp -r /var/lib/pgsql user@newhost:pgsql
 </pre></div>
 </div>
-<p>On a Debian system you can use:</p>
+<p><em>Debian/Ubuntu:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>service postgresql stop
 scp -r /var/lib/postgresql user@newhost:pgsql
 </pre></div>
 </div>
+</div></blockquote>
 <p>You can then restore the data as follows:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>service pgsql stop
 rm -rf /var/lib/pgsql/*
 mv pgsql/* /var/lib/pgsql/
@@ -298,7 +309,7 @@ chown -R postgres:postgres /var/lib/pgsql/*
 service pgsql start
 </pre></div>
 </div>
-<p>On a Debian system you can use:</p>
+<p><em>Debian/Ubuntu:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>service postgresql stop
 rm -rf /var/lib/postgresql/*
 mv pgsql/* /var/lib/postgresql/
@@ -306,6 +317,7 @@ chown -R postgres:postgres /var/lib/postgresql/*
 service postgresql start
 </pre></div>
 </div>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="deleting-old-data">
@@ -432,24 +444,27 @@ order of event_type, summary_type and then summary_window. For example, assume a
 <p class="last">The example above  can also be found in <em>/usr/lib/esmond/util/ps_remove_data.conf</em> of the system where esmond is installed</p>
 </div>
 <p>The example contains several policies. The order of the policies is NOT significant. The first policy is a catch-all that removes anything older than 365 days if it does not match any other policies. This policy has a <tt class="docutils literal"><span class="pre">*</span></tt> for every value and is the least specific of a match possible. That means if any part of the other policies match, they will override the expiration of this policy. The second policy, matches all 24 hour (86400 seconds) summaries and keeps them for 5 years. Notice that it extends the life of these types of data from the default policy. The remaining policies match a specific event type and a summary window of 0 (which means unsummarized data) and expires it after 180 days (roughly 6 months). The event types all match that registered by the OWAMP tool, which writes new data every minute. Given the amount of data, this policy deletes it sooner that it would other (presumably less frequently written) data.</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
 <p>If you would like to run the tool, you will need to first run the following if you are on CentOS/RedHat 6 to initialize Python 2.7:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /usr/lib/esmond
 source /opt/rh/python27/enable
 /opt/rh/python27/root/usr/bin/virtualenv --prompt=&quot;(esmond)&quot; .
-. bin/activate
 </pre></div>
 </div>
 <p>You can then run the tool as follows (replacing -c with your policy file):</p>
-<div class="highlight-python"><div class="highlight"><pre>python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
+<div class="highlight-python"><div class="highlight"><pre>. bin/activate
+python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
 </pre></div>
 </div>
-<p>On a Debian system you can use:</p>
+<p><em>Debian/Ubuntu:</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>. /etc/default/esmond
 export ESMOND_ROOT ESMOND_CONF
 export DJANGO_SETTINGS_MODULE=esmond.settings
 python /usr/share/esmond/util/ps_remove_data.py -c /usr/share/esmond/util/ps_remove_data.conf
 </pre></div>
 </div>
+</div></blockquote>
 <p>You may consider adding the commands above to a shell script called by cron to regularly clean out the old data.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
