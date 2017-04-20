@@ -562,7 +562,7 @@ Its ``data`` is an object containing the following pairs:
   if the run's time range overlaps the specified range but does not
   fall completely within it.
 
-Note that this limits of this type are not evaluated and will be
+Note that limits of this type are not evaluated and will be
 considered to have passed when determining whether a task will be
 allowed on the system.
 
