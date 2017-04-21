@@ -126,60 +126,30 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 </div>
 <div class="section" id="step-2-install-a-bundle">
 <span id="install-debian-step2"></span><h3>Step 2: Install a Bundle<a class="headerlink" href="#step-2-install-a-bundle" title="Permalink to this headline">¶</a></h3>
-<p>Choose one of the following bundles and see <a class="reference internal" href="install_options.html"><em>perfSONAR Installation Options</em></a> page for more information about what these bundles are.</p>
+<p><strong>Choose one</strong> of the following bundles and see <a class="reference internal" href="install_options.html"><em>perfSONAR Installation Options</em></a> page for more information about what these bundles are.</p>
 <ul>
+<li><p class="first"><strong>perfSONAR Tools</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-tools
+</pre></div>
+</div>
+</li>
 <li><p class="first"><strong>perfSONAR Test Point</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-testpoint
 </pre></div>
 </div>
 <p>During the installation process, you&#8217;ll be asked to choose a password for the pscheduler database.</p>
-<p>Additionally, you may also install the toolkit service-watcher, ntp, security (firewall rules) and sysctl packages.</p>
-<p><em>Optional Packages</em></p>
-<blockquote>
-<div><p>To install additional packages, run:</p>
-<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/install-optional-packages.py
-</pre></div>
-</div>
-<p>Or, you can manually install them to your liking by running:</p>
-<blockquote>
-<div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-servicewatcher</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-sysctl</span></tt></li>
-</ul>
-</div></blockquote>
-</div></blockquote>
-<p>In particular, you should install perfsonar-toolkit-ntp if you are not managing your <tt class="docutils literal"><span class="pre">ntp.conf</span></tt> file in some other manner.</p>
 </li>
 <li><p class="first"><strong>perfSONAR Core</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-core
 </pre></div>
 </div>
 <p>During the installation process, you&#8217;ll be asked to choose a password for the pscheduler and the esmond databases.</p>
-<p>Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.</p>
-<p><em>Optional Packages</em></p>
-<blockquote>
-<div><p>To install additional packages, run:</p>
-<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/install-optional-packages.py
-</pre></div>
-</div>
-<p>Or, you can manually install them to your liking by running:</p>
-<blockquote>
-<div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-servicewatcher</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-sysctl</span></tt></li>
-</ul>
-</div></blockquote>
-</div></blockquote>
 </li>
 <li><p class="first"><strong>perfSONAR Central Management</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-centralmanagement
 </pre></div>
 </div>
-<p>The Central Management bundle might be installed alongside another bundle.</p>
+<p>During the installation process, you&#8217;ll be asked to choose a password for the esmond database.</p>
 </li>
 <li><p class="first"><strong>perfSONAR Toolkit</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get install perfsonar-toolkit
@@ -188,6 +158,22 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 <p>During the installation process, you&#8217;ll be asked to choose a password for the pscheduler and the esmond databases.</p>
 </li>
 </ul>
+<div class="section" id="optional-packages">
+<h4>Optional Packages<a class="headerlink" href="#optional-packages" title="Permalink to this headline">¶</a></h4>
+<p>In addition to any of the bundles above you may also <strong>optionnally</strong> choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-servicewatcher</span></tt> - Automatically detects closest NTP servers and sets them in ntp.conf</li>
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></tt> - Adds default firewall rules and installs fail2ban</li>
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></tt> - Adds a cron job that checks if services are still running</li>
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-sysctl</span></tt> - Adds default sysctl tuning settings</li>
+</ul>
+</div></blockquote>
+<p>You may also run the command below to get everything listed above on <strong>perfsonar-testpoint</strong> and <strong>perfsonar-core</strong> bundles:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/install-optional-packages.py
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="step-3-verify-ntp-and-tuning-parameters">
 <span id="install-debian-step3"></span><h3>Step 3: Verify NTP and Tuning Parameters<a class="headerlink" href="#step-3-verify-ntp-and-tuning-parameters" title="Permalink to this headline">¶</a></h3>
@@ -263,28 +249,27 @@ echo &#39;Unattended-Upgrade::Origins-Pattern:: &quot;origin=perfSONAR&quot;;&#3
 <div class="section" id="step-7-register-your-services">
 <span id="install-debian-step7"></span><h3>Step 7: Register your services<a class="headerlink" href="#step-7-register-your-services" title="Permalink to this headline">¶</a></h3>
 <p>Note: this step can be done through the web interface if the perfsonar-toolkit bundle was installed. See <a class="reference internal" href="manage_admin_info.html"><em>Updating Administrative Information</em></a>.</p>
-<p>In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening <strong>/etc/perfsonar/lsregistrationdaemon.conf</strong>. You will see numerous properties you may populate. They are commented out meaning you need to remove the <tt class="docutils literal"><span class="pre">#</span></tt> at the beginning of the line for them to take effect. The properties you are <strong>required</strong> to set are as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">##Hostname or IP address others can use to access your service</span>
-<span class="c">#external_address   myhost.mydomain.example</span>
-
-<span class="c">##Primary interface on host</span>
-<span class="c">#external_address_if_name eth0</span>
-</pre></div>
-</div>
-<p>and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are <strong>highly recommended</strong>.</p>
-<p>In the example above remove the leading <tt class="docutils literal"><span class="pre">#</span></tt> before external_address and external_address_if_name respectively. Also replace <em>myhost.mydomain.example</em> and <em>eth0</em> with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the install or at <a class="reference internal" href="config_ls_registration.html"><em>Lookup Service Registration Daemon Configuration File</em></a>.</p>
+<p>No actual configuration is required but filling fields such as administrator_email, site_name, city, country, latitude, longitude, etc. are <strong>highly recommended</strong>. You can add these by removing the leading <cite>#</cite> of any property and filling it out with a proper value for your host. Changes will be picked-up automatically without need for any restarts.</p>
 </div>
 <div class="section" id="step-8-starting-your-services">
 <span id="install-debian-step8"></span><h3>Step 8: Starting your services<a class="headerlink" href="#step-8-starting-your-services" title="Permalink to this headline">¶</a></h3>
 <p>You can start all the services by rebooting the host since all are configured to run by default. In order to check services status issue the following commands:</p>
 <div class="highlight-python"><div class="highlight"><pre>service pscheduler-scheduler status
+service pscheduler-runner status
+service pscheduler-archiver status
+service pscheduler-ticker status
 service owamp-server status
+service bwctl-server status
 service perfsonar-lsregistrationdaemon status
 </pre></div>
 </div>
 <p>If they are not running you may start them with appropriate service commands as a root user. For example:</p>
 <div class="highlight-python"><div class="highlight"><pre>service pscheduler-scheduler start
+service pscheduler-runner start
+service pscheduler-archiver start
+service pscheduler-ticker start
 service owamp-server start
+service bwctl-server start
 service perfsonar-lsregistrationdaemon start
 </pre></div>
 </div>
@@ -357,7 +342,10 @@ wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
 <li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
 <li><a class="reference internal" href="#installation">Installation</a><ul>
 <li><a class="reference internal" href="#step-1-configure-apt">Step 1: Configure APT</a></li>
-<li><a class="reference internal" href="#step-2-install-a-bundle">Step 2: Install a Bundle</a></li>
+<li><a class="reference internal" href="#step-2-install-a-bundle">Step 2: Install a Bundle</a><ul>
+<li><a class="reference internal" href="#optional-packages">Optional Packages</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#step-3-verify-ntp-and-tuning-parameters">Step 3: Verify NTP and Tuning Parameters</a></li>
 <li><a class="reference internal" href="#step-4-firewall-and-security-considerations">Step 4: Firewall and Security Considerations</a></li>
 <li><a class="reference internal" href="#step-5-auto-updates">Step 5: Auto updates</a></li>

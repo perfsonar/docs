@@ -76,7 +76,7 @@ Step 2: Install a Bundle
 
 Optional Packages
 ++++++++++++++++++
-In addition to any of the bundles above you may also OPTIONALLY choose to install one or more of our add-on packages:
+In addition to any of the bundles above you may also **optionnally** choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):
 
      * ``yum install perfsonar-toolkit-ntp`` - Automatically detects closest NTP servers and sets them in ntp.conf
      * ``yum install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
