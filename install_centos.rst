@@ -27,21 +27,21 @@ The process configures yum to point at the necessary repositories to get package
 #. Install the EPEL RPM:
     *CentOS 6*::
 
-        rpm -hUv https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+        yum install epel-release
 
     *CentOS 7*::
 
-        rpm -hUv https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        yum install epel-release
 
 #. Install the Internet2-repo RPM:
 
     *CentOS 6*::
 
-        rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+        yum install http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
 
     *CentOS 7*::
 
-        rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
+        yum install http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
 
 #. Refresh yum's cache so it detects the new RPMS::
 

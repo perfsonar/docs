@@ -164,7 +164,7 @@ Q: How can I set limits to prevent others from overusing my test host? What is t
 ================================================================================================================
 
 **A:** The pscheduler limits system allows you to limit the influence that outside users have on your system. 
-For example, to prevent your machine/network from being saturated with throughput tests, limit the duration and maximum bandwidth available. For more information see :doc:`pscheduler_server_limits`.
+For example, to prevent your machine/network from being saturated with throughput tests, limit the duration and maximum bandwidth available. For more information see :doc:`config_pscheduler_limits`.
 
 
 Q: Can I run both throughput and latency/loss tests on the same interface without interference due to the way pscheduler scheduling works?
