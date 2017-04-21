@@ -100,7 +100,7 @@ Running A pScheduler Server
 If you want tp be able to schedule tasks on your host you will need to run a pScheduler server. For more information on running a pScheduler server and to configure it with limits that meet your needs, see the following documents:
 
     * :doc:`pscheduler_server_running`
-    * :doc:`pscheduler_server_limits`
+    * :doc:`config_pscheduler_limits`
     
 
 BWCTL Backward Compatibility
