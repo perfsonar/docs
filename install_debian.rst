@@ -60,7 +60,11 @@ Then refresh the packages list so APT knows about the perfSONAR packages::
 
 Step 2: Install a Bundle 
 ------------------------ 
-Choose one of the following bundles and see :doc:`install_options` page for more information about what these bundles are.
+**Choose one** of the following bundles and see :doc:`install_options` page for more information about what these bundles are.
+
+* **perfSONAR Tools**::
+
+    apt-get install perfsonar-tools
 
 * **perfSONAR Test Point**::
 
@@ -68,55 +72,38 @@ Choose one of the following bundles and see :doc:`install_options` page for more
 
   During the installation process, you'll be asked to choose a password for the pscheduler database.
 
-  Additionally, you may also install the toolkit service-watcher, ntp, security (firewall rules) and sysctl packages.
-
-  *Optional Packages*
-
-    To install additional packages, run::
-
-    /usr/lib/perfsonar/scripts/install-optional-packages.py
-
-    Or, you can manually install them to your liking by running:
-
-     * ``apt-get install perfsonar-toolkit-servicewatcher``
-     * ``apt-get install perfsonar-toolkit-ntp``
-     * ``apt-get install perfsonar-toolkit-security``
-     * ``apt-get install perfsonar-toolkit-sysctl``
-
-  In particular, you should install perfsonar-toolkit-ntp if you are not managing your ``ntp.conf`` file in some other manner.
-
 * **perfSONAR Core**::
 
     apt-get install perfsonar-core
 
   During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
 
-  Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.
-
-  *Optional Packages*
-
-    To install additional packages, run::
-
-    /usr/lib/perfsonar/scripts/install-optional-packages.py
-
-    Or, you can manually install them to your liking by running:
-
-       * ``apt-get install perfsonar-toolkit-servicewatcher``
-       * ``apt-get install perfsonar-toolkit-ntp``
-       * ``apt-get install perfsonar-toolkit-security``
-       * ``apt-get install perfsonar-toolkit-sysctl``
-
 * **perfSONAR Central Management**::
 
     apt-get install perfsonar-centralmanagement
 
-  The Central Management bundle might be installed alongside another bundle.
-  
+  During the installation process, you'll be asked to choose a password for the esmond database.
+
 * **perfSONAR Toolkit**::
 
     apt-get install perfsonar-toolkit
 
   During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
+
+Optional Packages
+++++++++++++++++++
+In addition to any of the bundles above you may also **optionnally** choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):
+
+     * ``apt-get install perfsonar-toolkit-servicewatcher`` - Automatically detects closest NTP servers and sets them in ntp.conf
+     * ``apt-get install perfsonar-toolkit-ntp`` - Adds default firewall rules and installs fail2ban
+     * ``apt-get install perfsonar-toolkit-security`` - Adds a cron job that checks if services are still running
+     * ``apt-get install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
+
+You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
+
+    /usr/lib/perfsonar/scripts/install-optional-packages.py
+
+
 
 .. _install_debian_step3:
 
@@ -209,19 +196,7 @@ Step 7: Register your services
 ------------------------------- 
 Note: this step can be done through the web interface if the perfsonar-toolkit bundle was installed. See :doc:`manage_admin_info`.
 
-In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
-
-::
-
-    ##Hostname or IP address others can use to access your service
-    #external_address   myhost.mydomain.example
-    
-    ##Primary interface on host
-    #external_address_if_name eth0
-
-and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are **highly recommended**.
-
-In the example above remove the leading ``#`` before external_address and external_address_if_name respectively. Also replace *myhost.mydomain.example* and *eth0* with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the install or at :doc:`config_ls_registration`. 
+No actual configuration is required but filling fields such as administrator_email, site_name, city, country, latitude, longitude, etc. are **highly recommended**. You can add these by removing the leading `#` of any property and filling it out with a proper value for your host. Changes will be picked-up automatically without need for any restarts.
 
 .. _install_debian_step8:
 
@@ -230,13 +205,21 @@ Step 8: Starting your services
 You can start all the services by rebooting the host since all are configured to run by default. In order to check services status issue the following commands::
     
     service pscheduler-scheduler status
+    service pscheduler-runner status
+    service pscheduler-archiver status
+    service pscheduler-ticker status
     service owamp-server status
+    service bwctl-server status
     service perfsonar-lsregistrationdaemon status
 
 If they are not running you may start them with appropriate service commands as a root user. For example::
 
     service pscheduler-scheduler start
+    service pscheduler-runner start
+    service pscheduler-archiver start
+    service pscheduler-ticker start
     service owamp-server start
+    service bwctl-server start
     service perfsonar-lsregistrationdaemon start
 
 Note that you may have to wait a few hours for NTP to synchronize your clock before (re)starting owamp-server.
