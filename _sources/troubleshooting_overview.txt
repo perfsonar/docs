@@ -2,9 +2,7 @@
 Troubleshooting perfSONAR
 =========================
 
-(Page under construction.)
-
-This page contains some hints on how to troubleshoot perfSONAR 4.0 and later.
+This page contains some hints on how to troubleshoot perfSONAR 4.0 and later. You may also find some helpful notes in :doc:`FAQ`.
 
 ******
 System
@@ -13,13 +11,11 @@ System
 -------
 SELinux
 -------
-
-Check that SELinux is disabled or in permissive mode::
+If you are unable to open perfSONAR Toolkit Web interface make sure if SELinux is disabled. In order to check if SELinux is disabled or in permissive mode issue the following command::
 
     getenforce
 
-If SELinux is in Enforcing mode, change it to permissive and make the
-change permanent::
+If SELinux is in Enforcing mode, change it to permissive and make the change permanent::
 
     setenforce Permissive
     sed -i -e 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
@@ -35,7 +31,8 @@ pScheduler
 pScheduler on Local Host
 ------------------------
 
-Confirm that pScheduler on the local system is functioning::
+These steps will allow you to verify the basic health of pScheduler in a local host.
+Confirm that pScheduler on the local system is functioning running a command which will ping the localhost using pScheduler::
 
     pscheduler ping localhost
 
@@ -54,8 +51,8 @@ Run basic tests on the local system::
 pScheduler on Remote Hosts
 --------------------------
 
-Confirm that pScheduler on the other host (``REMOTE-HOST``) is
-reachable and working::
+These steps will allow you to verify the basic health of pScheduler in a remote host.
+Confirm that pScheduler on the other host (``REMOTE-HOST``) is reachable and working running a command which will ping the remote host using pScheduler::
 
     pscheduler ping REMOTE-HOST
 
@@ -80,8 +77,7 @@ Run the same tests in the opposite direction (from ``REMOTE-HOST`` to ``LOCAL-HO
 Checking the Schedule
 ---------------------
 
-If results are missing, looking at the pScheduler's timeline of runs
-(the *schedule*) can be useful.
+If results are missing, looking at the pScheduler's timeline of runs (the *schedule*) can be useful.
 
 Note that ``--host HOST-NAME`` can be added to the switches to
 retrieve the schedule from other hosts.
@@ -119,8 +115,7 @@ Same as above, but for a specific tool and test::
    pscheduler schedule --filter-test=throughput -PT1H | egrep -2  "(nuttcp|iperf3)" | grep -2 TEST-HOST
 
 
-To retrieve results and diagnostics for a single run using a run URL
-shown by the ``schedule`` command::
+To retrieve results and diagnostics for a single run using a RUN-URL shown by the ``schedule`` command::
 
    pscheduler result --diags --archivings RUN-URL
 
