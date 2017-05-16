@@ -777,15 +777,6 @@ max_ttl Directive
 :Default: traceroute default (usually 30)
 :Compatibility: 3.3 or later
 
-protocol Directive
-------------------
-:Description: Indicates whether to use ICMP or UDP for the traceroute. **Not supported by tracepath or paris-traceroute**
-:Syntax: ``protocol icmp|udp``
-:Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute* and tool is *traceroute*
-:Occurrences:  Zero or more
-:Default: icmp
-:Compatibility: 3.3 or later
-
 random_start_percentage Directive
 ---------------------------------
 :Description: The percentage to randomize the start time of test. Valid values are between 0 and 50 (inclusive). Example: interval of 7200 (2 hours) and random_start_percentage 50 means that a test can start anywhere between 1 hour and 3 hours after the previous test completes.
@@ -806,7 +797,7 @@ fragment Directive
 
 probe_type Directive
 --------------------
-:Description: Sets the Probe type to UDP or ICMP or TCP SYN
+:Description: Sets the Probe type to UDP, ICMP, or TCP SYN
 :Syntax: ``probe_type icmp|udp|tcp``
 :Contexts: :ref:`test_spec <config_mesh-test_spec>` where type is *traceroute*
 :Occurrences:  Zero or one
