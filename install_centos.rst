@@ -8,11 +8,8 @@ System Requirements
 ==================== 
 * **Operating System:**
 
-  * Any system running **CentOS 7**. perfSONAR 4.X toolkit ISOs are only available as CentOS 7. CentOS 7 drops support for i386/i686 architectures, so there are only x86_64 versions of the CentOS 7 perfSONAR packages available.
-  * We still offer packages support for any system running either a 32-bit or 64-bit **CentOS 6**.  Existing CentOS 6 users will be able to auto-update.
-  * Other RedHat-based operating systems may work, but are not officially supported at this time.
-
-* See :doc:`install_hardware` for hardware requirements and more.
+  * **CentOS 7** and **CentOS 6** x86_64 installations are supported. Other RedHat-based operating systems may work, but are not officially supported at this time.
+  * See :doc:`install_hardware` for hardware requirements and more.
 
 .. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
 
@@ -30,21 +27,21 @@ The process configures yum to point at the necessary repositories to get package
 #. Install the EPEL RPM:
     *CentOS 6*::
 
-        rpm -hUv https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+        yum install epel-release
 
     *CentOS 7*::
 
-        rpm -hUv https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        yum install epel-release
 
 #. Install the Internet2-repo RPM:
 
     *CentOS 6*::
 
-        rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+        yum install http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
 
     *CentOS 7*::
 
-        rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
+        yum install http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
 
 #. Refresh yum's cache so it detects the new RPMS::
 
@@ -55,61 +52,40 @@ The process configures yum to point at the necessary repositories to get package
 
 Step 2: Install a Bundle 
 -------------------------------- 
-Choose one of the following bundles and see :doc:`install_options` page for more information about what these bundles are.
+**CHOOSE ONE** of the following bundles and see :doc:`install_options` page for more information about what these bundles are.
 
+* **perfSONAR Tools**::
+
+    yum install perfsonar-tools  
+  
 * **perfSONAR Test Point**::
 
     yum install perfsonar-testpoint  
-
-  Additionally, you may also install the Toolkit service-watcher, ntp, security (firewall rules) and sysctl packages.
-
-  *Optional Packages*
-
-    To install additional packages, run::
-
-    /usr/lib/perfsonar/scripts/install-optional-packages.py
-
-    Or, you can manually install them to your liking by running:
-
-     * ``yum install perfsonar-toolkit-servicewatcher``
-     * ``yum install perfsonar-toolkit-ntp``
-     * ``yum install perfsonar-toolkit-security``
-     * ``yum install perfsonar-toolkit-sysctl``
-
-  In particular, you should install perfsonar-toolkit-ntp if you are not managing your ``ntp.conf`` file in some other manner.
 
 * **perfSONAR Core**::
 
     yum install perfsonar-core
 
-  Just as in TestPoint Bundle, optional packages are available and can be installed via a script or manually.
-
-  *Optional Packages*
-
-    To install additional packages, run::
-
-    /usr/lib/perfsonar/scripts/install-optional-packages.py
-
-
-    Or, you can manually install them to your liking by running:
-
-       * ``yum install perfsonar-toolkit-servicewatcher``
-       * ``yum install perfsonar-toolkit-ntp``
-       * ``yum install perfsonar-toolkit-security``
-       * ``yum install perfsonar-toolkit-sysctl``
-
-
-
 * **perfSONAR Central Management**::
 
     yum install perfsonar-centralmanagement
 
-  The Central Management bundle might be installed alongside another bundle.
-  
 * **perfSONAR Toolkit**::
 
     yum install perfsonar-toolkit
 
+Optional Packages
+++++++++++++++++++
+In addition to any of the bundles above you may also **optionnally** choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):
+
+     * ``yum install perfsonar-toolkit-ntp`` - Automatically detects closest NTP servers and sets them in ntp.conf
+     * ``yum install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
+     * ``yum install perfsonar-toolkit-servicewatcher``- Adds a cron job that checks if services are still running.
+     * ``yum install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
+
+You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
+
+    /usr/lib/perfsonar/scripts/install-optional-packages.py
 
 .. _install_centos_step3:
 
@@ -161,7 +137,7 @@ Step 4: Firewall and Security Considerations
 
 If you have installed the perfsonar-toolkit-security package, then you can configure the firewalld / IPTable entries by running::
 
-    /usr/lib/perfsonar/scripts/configure_firewall
+    /usr/lib/perfsonar/scripts/configure_firewall install
 
 The package also installs fail2ban.
 
@@ -203,19 +179,7 @@ Step 7: Register your services
 Note: this step can be done through the web interface if the perfsonar-toolkit bundle (or the ISO) was installed. 
 See :doc:`manage_admin_info`.
 
-In order to publish the existence of your measurement services there is a single file you need to edit with some details about your host. You may populate this information by opening **/etc/perfsonar/lsregistrationdaemon.conf**. You will see numerous properties you may populate. They are commented out meaning you need to remove the ``#`` at the beginning of the line for them to take effect. The properties you are **required** to set are as follows:
-
-::
-
-    ##Hostname or IP address others can use to access your service
-    #external_address   myhost.mydomain.example
-    
-    ##Primary interface on host
-    #external_address_if_name eth0
-
-and the other entries (administrator_email, site_name, city, country, latitude, longitude, etc.) are **highly recommended**.
-
-In the example above remove the leading ``#`` before external_address and external_address_if_name respectively. Also replace *myhost.mydomain.example* and *eth0* with the values relevant to your host. There are additional fields available for you to set. None of them are required but it is highly recommended you set as many as possible since it will make finding your services easier for others. More information on the available fields can be found in the configuration file provided by the RPM install. 
+No actual configuration is required but filling fields such as administrator_email, site_name, city, country, latitude, longitude, etc. are **highly recommended**. You can add these by removing the leading `#` of any property and filling it out with a proper value for your host. Changes will be picked-up automatically without need for any restarts.
 
 .. _install_centos_step8:
 
@@ -226,30 +190,44 @@ You can start all the services by rebooting the host since all are configured to
     For CentOS6::
 
         service pscheduler-scheduler status
+        service pscheduler-runner status
+        service pscheduler-archiver status
+        service pscheduler-ticker status
         service owamp-server status
         service bwctl-server status
         service perfsonar-lsregistrationdaemon status
 
     For CentOS7::
 
-        systemctl status pscheduler-scheduler.service 
-        systemctl status owamp-server.service 
+        systemctl status pscheduler-scheduler
+        systemctl status pscheduler-runner
+        systemctl status pscheduler-archiver
+        systemctl status pscheduler-ticker
+        systemctl status owamp-server
         systemctl status bwctl-server  
-        systemctl status perfsonar-lsregistrationdaemon.service
+        systemctl status perfsonar-lsregistrationdaemon
 
 If they are not running you may start them with appropriate init commands as a root user. For example:
 
     For CentOS6::
 
-        /etc/init.d/owamp-server start
-        /etc/init.d/bwctl-server start
+        service pscheduler-scheduler start
+        service pscheduler-runner start
+        service pscheduler-archiver start
+        service pscheduler-ticker start
+        service owamp-server start
+        service bwctl-server start
         service perfsonar-lsregistrationdaemon start
 
     For CentOS7::
 
-        /etc/init.d/owamp-server start
-        /etc/init.d/bwctl-server start
+        systemctl start pscheduler-scheduler
+        systemctl start pscheduler-runner
+        systemctl start pscheduler-archiver
+        systemctl start pscheduler-ticker
         systemctl start perfsonar-lsregistrationdaemon
+        systemctl start bwctl-server
+        systemctl start owamp-server
 
 Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
 

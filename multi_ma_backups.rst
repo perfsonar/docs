@@ -123,11 +123,13 @@ PostgreSQL Snapshots with `pg_dump` and `pg_restore`
 
 Creating the Snapshot
 ##################### 
-You may create a snapshot of your database with the following command::
+You may create a snapshot of your database with the following command:
+
+  *CentOS/RedHat:*::
 
     pg_dump -F t -f esmond.tar -U esmond 
 
-On a Debian system you can use::
+  *Debian/Ubuntu:*::
 
     sudo -u postgres pg_dump -F t -f esmond.tar esmond
 
@@ -147,11 +149,13 @@ Moving the snapshot to a different server is as simple using your favorite remot
 Restoring the Snapshot
 ######################
 
-You may restore the snapshot with the following command::
+You may restore the snapshot with the following command:
+
+  *CentOS/RedHat:*::
 
     pg_restore -c -U esmond -d esmond esmond.tar 
 
-On a Debian system you can use::
+  *Debian/Ubuntu:*::
 
     sudo -u postgres pg_restore -c -d esmond esmond.tar
 
@@ -193,25 +197,29 @@ Migrating PostgreSQL Data
 
 .. note:: If migrating to a server with a different architecture or operating system it is recommended you instead follow the steps in :ref:`multi_ma_backups-snapshots-postgresql` for creating, migrating and restoring data.
 
-By default, packaged installs of PostgreSQL keep all data in */var/lib/pgsql*. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your PostgreSQL server and copying the directory to the new host. For example::
+By default, packaged installs of PostgreSQL keep all data in */var/lib/pgsql*. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your PostgreSQL server and copying the directory to the new host. For example:
     
+  *CentOS/RedHat:*::
+
     service pgsql stop
     scp -r /var/lib/pgsql user@newhost:pgsql
 
-On a Debian system you can use::
+  *Debian/Ubuntu:*::
 
     service postgresql stop
     scp -r /var/lib/postgresql user@newhost:pgsql
 
-You can then restore the data as follows::
+You can then restore the data as follows:
     
+  *CentOS/RedHat:*::
+
     service pgsql stop
     rm -rf /var/lib/pgsql/*
     mv pgsql/* /var/lib/pgsql/
     chown -R postgres:postgres /var/lib/pgsql/*
     service pgsql start
 
-On a Debian system you can use::
+  *Debian/Ubuntu:*::
 
     service postgresql stop
     rm -rf /var/lib/postgresql/*
@@ -345,18 +353,20 @@ A full example of a configuration file can be found below::
 
 The example contains several policies. The order of the policies is NOT significant. The first policy is a catch-all that removes anything older than 365 days if it does not match any other policies. This policy has a ``*`` for every value and is the least specific of a match possible. That means if any part of the other policies match, they will override the expiration of this policy. The second policy, matches all 24 hour (86400 seconds) summaries and keeps them for 5 years. Notice that it extends the life of these types of data from the default policy. The remaining policies match a specific event type and a summary window of 0 (which means unsummarized data) and expires it after 180 days (roughly 6 months). The event types all match that registered by the OWAMP tool, which writes new data every minute. Given the amount of data, this policy deletes it sooner that it would other (presumably less frequently written) data. 
 
-If you would like to run the tool, you will need to first run the following if you are on CentOS/RedHat 6 to initialize Python 2.7::
+  *CentOS/RedHat:*:
+
+  If you would like to run the tool, you will need to first run the following if you are on CentOS/RedHat 6 to initialize Python 2.7::
 
     cd /usr/lib/esmond
     source /opt/rh/python27/enable
     /opt/rh/python27/root/usr/bin/virtualenv --prompt="(esmond)" .
+
+  You can then run the tool as follows (replacing -c with your policy file)::
+
     . bin/activate
-
-You can then run the tool as follows (replacing -c with your policy file)::
-
     python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
 
-On a Debian system you can use::
+  *Debian/Ubuntu:*::
 
     . /etc/default/esmond
     export ESMOND_ROOT ESMOND_CONF

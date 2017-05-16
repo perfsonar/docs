@@ -52,7 +52,16 @@ ls_instance Directive
 :Occurrences:  Exactly one
 :Default: Chooses closest server in terms of round-trip time from the `bootstrap file <http://ps-west.es.net/lookup/activehosts.json>`_
 
-.. _config_ls_registration-server_flap_threshold:
+.. _config_ls_registration-ls_instance_latency_threshold:
+
+ls_instance_latency_threshold Directive
+-----------------------------------------
+:Description: The percentage difference in round-trip-time as a decimal (e.g. .1 = 10% ) that a new lookup service server must be in order for the client to considering switching to that service. For example, if the threshold is set as .1 (10%) and a lookup services is 100ms away, a new lookup service must be at most 90ms away for the client to consider switching.
+:Syntax: ``ls_instance_latency_threshold NUMBER``
+:Contexts: top level
+:Occurrences:  Exactly one
+:Default: .1
+:Compatibility: 4.0 and later
 
 server_flap_threshold Directive
 --------------------------------
@@ -1205,6 +1214,17 @@ tool_name Directive
 
 Misc. Daemon Settings
 =====================
+
+.. _config_ls_registration-check_config_interval:
+
+check_config_interval Directive
+-----------------------------------
+:Description: The frequency in seconds to check the lsregistrationdaemon.conf file for changes. 
+:Syntax: ``check_config_interval SECONDS``
+:Contexts: top level
+:Occurrences:  Zero or One
+:Default: 60
+:Compatibility: 4.0 and later
 
 .. _config_ls_registration-client_uuid_file:
 
