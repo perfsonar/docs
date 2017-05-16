@@ -746,7 +746,7 @@ mac_address Directive
 :Contexts: top level, :ref:`site <config_ls_registration-site>`, :ref:`host <config_ls_registration-host>`, :ref:`interface <config_ls_registration-interface>`
 :Occurrences:  Zero or One
 :Default: N/A
-:Default (Autodiscover): The MAC address as reported by the *Net::Interface* perl module
+:Default (Autodiscover): The MAC address as reported by the *IO::Interface::Simple* perl module
 :Compatibility: 3.3 and later
 
 .. _config_ls_registration-mtu:
@@ -758,7 +758,7 @@ mtu Directive
 :Contexts: top level, :ref:`site <config_ls_registration-site>`, :ref:`host <config_ls_registration-host>`, :ref:`interface <config_ls_registration-interface>`
 :Occurrences:  Zero or One
 :Default: N/A
-:Default (Autodiscover): The MTU as reported by the *Net::Interface* perl module
+:Default (Autodiscover): The MTU as reported by the *IO::Interface::Simple* perl module
 :Compatibility: 3.3 and later
 
 .. _config_ls_registration-subnet:
