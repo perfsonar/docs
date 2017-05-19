@@ -351,7 +351,7 @@ Q: How can I configure yum to automatically update the system?
 
 Q: My host was impacted by Linux security issue (Shellshock/Heartbleed/etc.). What should I do?
 ========================================================================================================================================================================================
-**A:** Please check the `vulnerability archive <https://access.redhat.com/security/vulnerabilities>`_ for updates, and upgrade your system as soon as the update is available.
+**A:** Please check the `RedHat vulnerability archive <https://access.redhat.com/security/vulnerabilities>`_ or the `Debian security list <https://www.debian.org/security/>`_ for updates, and upgrade your system as soon as the update is available.
 
 
 Q: How to get rid of "There isn't a perfSONAR sudo user defined" message?

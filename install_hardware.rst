@@ -22,7 +22,7 @@ Containers
 ==========
 
 While not yet fully supported, perfSONAR tools seem to work well in a Linux container such as Docker.
-See: `DockerHub <https://hub.docker.com/r/bltierney/perfsonar-testpoint-docker/>`_
+See: `DockerHub <https://hub.docker.com/r/perfsonar/testpoint/>`_
 
 Low-Cost Nodes
 ==============
