@@ -40,6 +40,7 @@ Installation
    install_centos
    install_debian
    install_migrate_centos7
+   install_osx
 
 
 .. _index-toolkit:
