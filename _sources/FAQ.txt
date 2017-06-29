@@ -94,7 +94,7 @@ Note that during a fresh network installation, Anaconda does install updates imm
  
 Q: Which repository addresses will be used to get updates to the perfSONAR software?
 ========================================================================================================================================================================================
-**A:** By default, the Internet2 repo points at a mirror list hosted by software.internet2.edu. In this mirror list is linux.mirrors.es.net. In order to use the default configuration you will need to allow access to software.internet2.edu so you can grab the mirrorlist. After that, the packages can be downloaded from any of the sites listed which includes linux.mirrors.es.net, software.internet2.edu, and a few other places. You should be able to get away with just opening up access to software.internet2.edu (so it can get the mirror list) and linux.mirrors.es.net (so you can get the packages). 
+**A:** By default, the perfSONAR repo points at a mirror list hosted by software.internet2.edu. In this mirror list is linux.mirrors.es.net. In order to use the default configuration you will need to allow access to software.internet2.edu so you can grab the mirrorlist. After that, the packages can be downloaded from any of the sites listed which includes linux.mirrors.es.net, software.internet2.edu, and a few other places. You should be able to get away with just opening up access to software.internet2.edu (so it can get the mirror list) and linux.mirrors.es.net (so you can get the packages). 
 Those should be the only places you need as linux.mirrors.es.net also has a mirror for all the base CentOS packages.
 
 Q: Is there a way to re-image perfSONAR resources remotely?
