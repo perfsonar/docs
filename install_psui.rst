@@ -82,11 +82,11 @@ You should see the perfsonarUI web package listed.
 Adding the perfSONAR repository on a Red Hat Enterprise Linux system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is necessary to add the Internet2-repo RPM with the following command (as root):
+It is necessary to add the perfSONAR-repo RPM with the following command (as root):
 
         .. code-block:: console 
 
-                # rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+                # rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
 
 To check if the repository is correctly added run the following command
 

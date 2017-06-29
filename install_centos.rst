@@ -33,15 +33,15 @@ The process configures yum to point at the necessary repositories to get package
 
         yum install epel-release
 
-#. Install the Internet2-repo RPM:
+#. Install the perfSONAR-repo RPM:
 
     *CentOS 6*::
 
-        yum install http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+        yum install http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
 
     *CentOS 7*::
 
-        yum install http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
+        yum install http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
 
 #. Refresh yum's cache so it detects the new RPMS::
 

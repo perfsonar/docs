@@ -15,7 +15,7 @@ Installing the Required Software
 ================================
 If you are building the configuration file on a perfSONAR Toolkit host you may skip this step as your host has everything it needs. Otherwise, you will need to install the tool used to convert the configuration you build to its final format. You can install this tool via *yum*. 
 
-.. note:: You will need to point your system at the Internet2 yum repository as detailed at their `software site <http://software.internet2.edu>`_.
+.. note:: You will need to point your system at the perfSONAR yum repository as detailed at their `software site <http://software.internet2.edu>`_.
 
 You may install the package with the following commands:
 

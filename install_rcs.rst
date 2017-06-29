@@ -36,15 +36,15 @@ You can test CentOS bundle installation by first pointing your existing CentOS i
 
 *CentOS 6*::
 
-    rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/Internet2-repo-0.6-1.noarch.rpm
+    rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
 
 *CentOS 7*::
 
-    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/Internet2-repo-0.7-1.noarch.rpm
+    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
     
 Next, install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
 
-    yum install Internet2-repo-staging
+    yum install perfSONAR-repo-staging
 
 Once you are pointing at the staging repository you may follow the steps at :doc:`install_centos` to choose and configure your bundle.
     
@@ -58,7 +58,7 @@ Testing Upgrades of an Existing Toolkit or CentOS Bundle Installation
 
 You can test upgrades of any existing CentOS-based perfSONAR installation by first pointing your existing CentOS installation at the perfSONAR staging yum repository and then running yum update::
 
-        yum install Internet2-repo-staging
+        yum install perfSONAR-repo-staging
         yum update
 
 .. note:: If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours

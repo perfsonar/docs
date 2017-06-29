@@ -106,11 +106,11 @@ If you are running the perfSONAR Toolkit, you may enable/disable automatic updat
 
 Disabling Automatic Updates for perfSONAR Packages
 --------------------------------------------------
-The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file **/etc/yum.repos.d/Internet2.repo** with the option **enabled** set to **0**. 
+The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file **/etc/yum.repos.d/perfSONAR.repo** with the option **enabled** set to **0**. 
 
 For Debian/Ubuntu systems, please refer to :ref:`manage_update-auto-cli`.
 
-.. note:: If you are running against one of our testing repositories you may also need to update the files **/etc/yum.repos.d/Internet2-staging.repo** and **/etc/yum.repos.d/Internet2-nightly.repo**.
+.. note:: If you are running against one of our testing repositories you may also need to update the files **/etc/yum.repos.d/perfSONAR-staging.repo** and **/etc/yum.repos.d/perfSONAR-nightly.repo**.
 
 To disable the automatic updating of perfSONAR packages on Debian delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
 
