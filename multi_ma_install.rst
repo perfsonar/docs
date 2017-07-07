@@ -64,7 +64,7 @@ As an archive administrator you may create a username, generate an API key, and 
 
 *Debian/Ubuntu:*
 
-  On a **Debian/:Ubuntu** system you can use::
+  On a **Debian/Ubuntu** system you can use::
 
     /usr/share/esmond/util/esmond_manage add_ps_metadata_post_user example_user
     /usr/share/esmond/util/esmond_manage add_timeseries_post_user example_user
@@ -96,7 +96,7 @@ As an archive administrator you may create an account that authenticates based o
 
 *Debian/Ubuntu:*
 
-  On a **Debian/:Ubuntu** system you can use::
+  On a **Debian/Ubuntu** system you can use::
 
     /usr/share/esmond/util/esmond_manage add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
 
