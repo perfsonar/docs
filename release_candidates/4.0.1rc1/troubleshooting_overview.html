@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Troubleshooting perfSONAR &mdash; perfSONAR Toolkit 4.0.1rc1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0.1rc1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0.1rc1 documentation" href="index.html" />
+    <link rel="next" title="perfSONAR FAQ" href="FAQ.html" />
+    <link rel="prev" title="OPPD" href="config_oppd.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="FAQ.html" title="perfSONAR FAQ"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="config_oppd.html" title="OPPD"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0.1rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="troubleshooting-perfsonar">
+<h1>Troubleshooting perfSONAR<a class="headerlink" href="#troubleshooting-perfsonar" title="Permalink to this headline">¶</a></h1>
+<p>This page contains some hints on how to troubleshoot perfSONAR 4.0 and later. You may also find some helpful notes in <a class="reference internal" href="FAQ.html"><em>perfSONAR FAQ</em></a>.</p>
+<div class="section" id="system">
+<h2>System<a class="headerlink" href="#system" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="selinux">
+<h3>SELinux<a class="headerlink" href="#selinux" title="Permalink to this headline">¶</a></h3>
+<p>If you are unable to open perfSONAR Toolkit Web interface make sure if SELinux is disabled. In order to check if SELinux is disabled or in permissive mode issue the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">getenforce</span>
+</pre></div>
+</div>
+<p>If SELinux is in Enforcing mode, change it to permissive and make the change permanent:</p>
+<div class="highlight-python"><div class="highlight"><pre>setenforce Permissive
+sed -i -e &#39;s/^SELINUX=enforcing/SELINUX=permissive/&#39; /etc/selinux/config
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pscheduler">
+<h2>pScheduler<a class="headerlink" href="#pscheduler" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pscheduler-on-local-host">
+<h3>pScheduler on Local Host<a class="headerlink" href="#pscheduler-on-local-host" title="Permalink to this headline">¶</a></h3>
+<p>These steps will allow you to verify the basic health of pScheduler in a local host.
+Confirm that pScheduler on the local system is functioning running a command which will ping the localhost using pScheduler:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler ping localhost
+</pre></div>
+</div>
+<p>Check that pScheduler on the local system isn&#8217;t reporting problems:</p>
+<div class="highlight-python"><div class="highlight"><pre>fgrep &#39; ERROR &#39; /var/log/pscheduler/pscheduler.log
+</pre></div>
+</div>
+<p>Run basic tests on the local system:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler task idle --duration PT2S
+pscheduler task rtt --dest 127.0.0.1
+</pre></div>
+</div>
+</div>
+<div class="section" id="pscheduler-on-remote-hosts">
+<h3>pScheduler on Remote Hosts<a class="headerlink" href="#pscheduler-on-remote-hosts" title="Permalink to this headline">¶</a></h3>
+<p>These steps will allow you to verify the basic health of pScheduler in a remote host.
+Confirm that pScheduler on the other host (<tt class="docutils literal"><span class="pre">REMOTE-HOST</span></tt>) is reachable and working running a command which will ping the remote host using pScheduler:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler ping REMOTE-HOST
+</pre></div>
+</div>
+<p>Run basic tests to the other host (the first test requires that TCP
+ports 5890-5899 be open on that system):</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler task trace --dest REMOTE-HOST
+pscheduler task rtt --dest REMOTE-HOST
+pscheduler task simplestream --dest REMOTE-HOST
+pscheduler task throughput --bandwidth 1M --dest REMOTE-HOST
+</pre></div>
+</div>
+<p>Run the same tests in the opposite direction (from <tt class="docutils literal"><span class="pre">REMOTE-HOST</span></tt> to <tt class="docutils literal"><span class="pre">LOCAL-HOST</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler task trace --source REMOTE-HOST --dest LOCAL-HOST
+pscheduler task rtt --source REMOTE-HOST --dest LOCAL-HOST
+pscheduler task simplestream --source REMOTE-HOST --dest LOCAL-HOST
+pscheduler task throughput --bandwidth 1M --source REMOTE-HOST --dest LOCAL-HOST
+</pre></div>
+</div>
+</div>
+<div class="section" id="checking-the-schedule">
+<h3>Checking the Schedule<a class="headerlink" href="#checking-the-schedule" title="Permalink to this headline">¶</a></h3>
+<p>If results are missing, looking at the pScheduler&#8217;s timeline of runs (the <em>schedule</em>) can be useful.</p>
+<p>Note that <tt class="docutils literal"><span class="pre">--host</span> <span class="pre">HOST-NAME</span></tt> can be added to the switches to
+retrieve the schedule from other hosts.</p>
+<p>Retrieve the schedule for a specified range of times:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule 2017-05-02T12:00:00 2017-05-02T12:10:00
+</pre></div>
+</div>
+<p>Retrieve the schedule for a specified range of times relative to right
+now:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule -PT10M +PT5M
+</pre></div>
+</div>
+<p>Watch at the schedule in real time:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler monitor --refresh=5
+</pre></div>
+</div>
+<p>Look for tests that failed to start in the past 2 hours:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule -PT2H | grep -2 Non-Starter
+</pre></div>
+</div>
+<p>Look at schedule details for throughput tests in the last hour
+involving the host <tt class="docutils literal"><span class="pre">TEST-HOST</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test=throughput -PT1H | grep -2 TEST-HOST | grep -2 iperf3
+</pre></div>
+</div>
+<p>Same as above, but for a specific tool and test:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test=throughput -PT1H | egrep -2  &quot;(nuttcp|iperf3)&quot; | grep -2 TEST-HOST
+</pre></div>
+</div>
+<p>To retrieve results and diagnostics for a single run using a RUN-URL shown by the <tt class="docutils literal"><span class="pre">schedule</span></tt> command:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler result --diags --archivings RUN-URL
+</pre></div>
+</div>
+<p>Generate a plot of the schedule that shows congestion:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler plot-schedule -PT30M +PT30M &gt; plot.png
+</pre></div>
+</div>
+</div>
+<div class="section" id="additional-debug-logging">
+<h3>Additional Debug Logging<a class="headerlink" href="#additional-debug-logging" title="Permalink to this headline">¶</a></h3>
+<p>The programs that manage pScheduler&#8217;s activities can produce
+additional debugging information useful to the development team in
+finding problems.</p>
+<p>To enable logging of debug output from pScheduler&#8217;s components, run
+(as <tt class="docutils literal"><span class="pre">root</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler debug on PROGRAMS
+</pre></div>
+</div>
+<p>Where <tt class="docutils literal"><span class="pre">PROGRAMS</span></tt> is a list of any of <tt class="docutils literal"><span class="pre">scheduler</span></tt>, <tt class="docutils literal"><span class="pre">runner</span></tt>,
+<tt class="docutils literal"><span class="pre">archiver</span></tt>, <tt class="docutils literal"><span class="pre">ticker</span></tt> or <tt class="docutils literal"><span class="pre">api</span></tt>.  Turning on debug for anything
+other than <tt class="docutils literal"><span class="pre">scheduler</span></tt> and <tt class="docutils literal"><span class="pre">runner</span></tt> rarely be necessary.  If no
+list is provided, debug will be enabled for all pScheduler programs.</p>
+<p>Logging can be disabled by running:</p>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler debug off PROGRAMS
+</pre></div>
+</div>
+<p>More information on the pscheduler error messages you might find in the logs is available at:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/perfsonar/pscheduler/wiki/Error-Messages">https://github.com/perfsonar/pscheduler/wiki/Error-Messages</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Troubleshooting perfSONAR</a><ul>
+<li><a class="reference internal" href="#system">System</a><ul>
+<li><a class="reference internal" href="#selinux">SELinux</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pscheduler">pScheduler</a><ul>
+<li><a class="reference internal" href="#pscheduler-on-local-host">pScheduler on Local Host</a></li>
+<li><a class="reference internal" href="#pscheduler-on-remote-hosts">pScheduler on Remote Hosts</a></li>
+<li><a class="reference internal" href="#checking-the-schedule">Checking the Schedule</a></li>
+<li><a class="reference internal" href="#additional-debug-logging">Additional Debug Logging</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="config_oppd.html">Previous topic</a>
+                  <ul><li><a href="config_oppd.html" title="previous chapter">OPPD</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="FAQ.html">Next topic</a>
+                      <ul><li><a href="FAQ.html" title="next chapter">perfSONAR FAQ</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="FAQ.html" title="perfSONAR FAQ"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="config_oppd.html" title="OPPD"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0.1rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>perfSONAR on Low-cost Hardware &mdash; perfSONAR Toolkit 4.0.1rc1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0.1rc1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0.1rc1 documentation" href="index.html" />
+    <link rel="next" title="Getting the Software" href="install_getting.html" />
+    <link rel="prev" title="Hardware Requirements" href="install_hardware.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_getting.html" title="Getting the Software"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_hardware.html" title="Hardware Requirements"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0.1rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="perfsonar-on-low-cost-hardware">
+<h1>perfSONAR on Low-cost Hardware<a class="headerlink" href="#perfsonar-on-low-cost-hardware" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="arm-devices">
+<h2>ARM Devices<a class="headerlink" href="#arm-devices" title="Permalink to this headline">¶</a></h2>
+<p>A number of folks in the perfSONAR community have been experimenting with running perfSONAR on low cost (less than $130) hardware such as the Raspberry Pi, the cubox, and the Liva. In general this can work, with some caveats.</p>
+<ol class="arabic simple">
+<li>Time sync issues: Some low end hardware have issues with clock drift, which impacts latency measurements.</li>
+<li>CPU performance issues: current ARM processors are not able to push TCP much more than about 300Mbps.</li>
+</ol>
+<p>Only the <em>perfsonar-tools</em> or <em>perfsonar-testpoint</em> bundles should be considered on this class of device.</p>
+</div>
+<div class="section" id="celeron-devices">
+<h2>Celeron Devices<a class="headerlink" href="#celeron-devices" title="Permalink to this headline">¶</a></h2>
+<p>perfSONAR tools and services will work better on devices that cost around $200 such as the Intel NUC series, Zotac Zbox ci320 (2.1GHz CPU)/ci323 (dual NIC), GIGABYTE BRIX and various other examples available on the market as barebones small PC solutions. A number of these fulfill perfSONAR general requirements of 4GB RAM and four 2.1GHz cores, and thus should work well. Try to find a device with a fan and dual NICs if possible. These devices are capable of 1Gbps TCP.</p>
+<p>Please note that the perfSONAR team is not formally endorsing any particular product. These are just an example of possible solutions.</p>
+</div>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<p>ARM-based devices seem to work best running Ubuntu, while the slightly larger, $200-class nodes will usually work with CentOS, Debian or Ubuntu. The <a class="reference internal" href="install_options.html"><em>perfsonar-testpoint</em></a> bundle works on CentOS 6 and 7, and Ubuntu 14,
+and Debian &#8220;Wheezy&#8221; and &#8220;Jessie&#8221;. We provide compatible Debian packages for 4 different hardware architectures:</p>
+<blockquote>
+<div><ul class="simple">
+<li>32-bit (i386)</li>
+<li>64-bit (amd64)</li>
+<li>ARMv4t and up (armel) - not recommended for the full testpoint bundle</li>
+<li>ARMv7 and up (armhf) - not recommended for the full testpoint bundle</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="installation-instructions">
+<h2>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="install_options.html"><em>perfsonar-testpoint</em></a> bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive. See:</p>
+<ul class="simple">
+<li><a class="reference internal" href="install_centos.html"><em>Bundle Installation on CentOS</em></a></li>
+<li><a class="reference internal" href="install_debian.html"><em>Bundle Installation on Debian</em></a></li>
+</ul>
+<p>Certain devices like the Liva use an EMMC drive that is only supported in the <em>deskop</em> version of Ubuntu.
+If the standard server ISO installation doe not recognize the drive, it may be worth attempting installation using the desktop ISO such as <a class="reference external" href="http://releases.ubuntu.com/trusty/ubuntu-14.04.5-desktop-amd64.iso">Ubuntu 14.04.05 Desktop</a>.</p>
+</div>
+<div class="section" id="support">
+<h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
+<p>Support for low cost node installations is provided by the perfSONAR community through the usual communication channels.</p>
+</div>
+<div class="section" id="additional-information">
+<span id="install-low-cost-nodes-more-info"></span><h2>Additional information<a class="headerlink" href="#additional-information" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Many details on small nodes issues are described in this paper:</dt>
+<dd><a class="reference external" href="http://www.es.net/assets/pubs_presos/20160701-Chevalier-perfSONAR.pdf">http://www.es.net/assets/pubs_presos/20160701-Chevalier-perfSONAR.pdf</a></dd>
+</dl>
+<p>See also the <a class="reference internal" href="deployment_examples.html"><em>deployment examples</em></a> section for additional information about low cost nodes deployment.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">perfSONAR on Low-cost Hardware</a><ul>
+<li><a class="reference internal" href="#arm-devices">ARM Devices</a></li>
+<li><a class="reference internal" href="#celeron-devices">Celeron Devices</a></li>
+<li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li><a class="reference internal" href="#installation-instructions">Installation Instructions</a></li>
+<li><a class="reference internal" href="#support">Support</a></li>
+<li><a class="reference internal" href="#additional-information">Additional information</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_hardware.html">Previous topic</a>
+                  <ul><li><a href="install_hardware.html" title="previous chapter">Hardware Requirements</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="install_getting.html">Next topic</a>
+                      <ul><li><a href="install_getting.html" title="next chapter">Getting the Software</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_getting.html" title="Getting the Software"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_hardware.html" title="Hardware Requirements"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0.1rc1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
