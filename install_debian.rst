@@ -7,8 +7,8 @@ perfSONAR combines various sets of measurement tools and services. For perfSONAR
 * Debian 7 Wheezy
 * Debian 8 Jessie
 * Debian 9 Stretch
-* Ubuntu 14 Trusty
-* Ubuntu 16 Xenial
+* Ubuntu 14 Trusty Tahr
+* Ubuntu 16 Xenial Xerus
 
 Debian meta packages are available to install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
@@ -22,9 +22,9 @@ System Requirements
   * 64-bit (amd64)
   * ARMv4t and up (armel)
   * ARMv7 and up (armhf)
-  * ARM64 (arm64) (only for Debian 8)
+  * ARM64 (arm64) (only for Debian 8/9)
 
-* **Operating System:**  Any system running a Debian 7, Debian 8, or Ubuntu 14 server OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 14 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 7, Debian 8, Debian 9, Ubuntu 14 or Ubuntu 16 server OS is supported.  Other Debian flavours derived from Debian 7/8/9 or Ubuntu 14/16 might work too but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
@@ -100,7 +100,7 @@ In addition to any of the bundles above you may also **optionnally** choose to i
      * ``apt-get install perfsonar-toolkit-ntp`` - Adds default firewall rules and installs fail2ban
      * ``apt-get install perfsonar-toolkit-security`` - Adds a cron job that checks if services are still running
      * ``apt-get install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
-     * ``apt-get install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations.
+     * ``apt-get install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
 You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
 

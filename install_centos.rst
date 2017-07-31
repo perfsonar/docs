@@ -82,7 +82,7 @@ In addition to any of the bundles above you may also **optionnally** choose to i
      * ``yum install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
      * ``yum install perfsonar-toolkit-servicewatcher``- Adds a cron job that checks if services are still running.
      * ``yum install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
-     * ``yum install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations.
+     * ``yum install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
 You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
 
