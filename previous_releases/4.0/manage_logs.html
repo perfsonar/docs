@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Reading Log Files &mdash; perfSONAR Toolkit 4.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
+    <link rel="next" title="Updating perfSONAR" href="manage_update.html" />
+    <link rel="prev" title="Configuring NTP" href="manage_ntp.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_update.html" title="Updating perfSONAR"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_ntp.html" title="Configuring NTP"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="reading-log-files">
+<h1>Reading Log Files<a class="headerlink" href="#reading-log-files" title="Permalink to this headline">¶</a></h1>
+<p>The tools and services running on your host keep log files of major activity. This page describes the log files available and the additional tools provided for accessing them.</p>
+<div class="section" id="important-log-files">
+<h2>Important Log Files<a class="headerlink" href="#important-log-files" title="Permalink to this headline">¶</a></h2>
+<p>Most perfSONAR related services keep log files under the directory <strong>/var/log/perfsonar</strong>. Some external tools store them in other areas under <em>/var/log/</em> or elsewhere. There are many log files on the system but some of the most important ones (organized by the service that populates them) can be found below:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="34%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service</th>
+<th class="head">Log File(s)</th>
+<th class="head">When to Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>pScheduler</td>
+<td>/var/log/pscheduler/pscheduler.log</td>
+<td>Contains logs related to the scheduling, running, and storage of measurements. This is often a good starting point if you are trying to debug a missing or failed measurement.</td>
+</tr>
+<tr class="row-odd"><td>Esmond Measurement Archive</td>
+<td>/var/log/esmond/esmond.log
+/var/log/httpd/error_log
+/var/log/httpd24/error_log (CentOS 6 only)
+/var/log/apache2/error.log (Debian)
+/var/log/cassandra/cassandra.log
+/var/lib/pgsql/pgstartup.log
+/var/log/postgresql/postgresql-9.6-main.log)
+(Debian)</td>
+<td>If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. <em>esmond.log</em> has information from the archive itself (e.g. improperly formatted requests). The HTTPD error log has information such as if esmond was able to connect to it&#8217;s underlying databases. Speaking of databases, esmond connects to both Cassandra and PostgreSQL so it may be worth checking those logs as well.</td>
+</tr>
+<tr class="row-even"><td>perfSONAR Mesh Configuration Agent</td>
+<td>/var/log/perfsonar/meshconfig-agent.log</td>
+<td>In addition to the pScheduler logs, this is a good place to debug information regarding missing measurements. The MeshConfig agent handles the submission of tasks to pScheduler, so failure to do so is a common cause of missing tests.</td>
+</tr>
+<tr class="row-odd"><td>BWCTL and OWAMP</td>
+<td>/var/log/perfsonar/owamp_bwctl.log</td>
+<td>Every BWCTL and OWAMP test (both on the client and server side) is logged in this file. It should be used when a BWCTL or OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an <em>owamp-server</em> or <em>bwctl-server</em> process crashes unexpectedly. Please note that BWCTL is deprecated as of version 4.0, so you may be better served looking at the pScheduler logs.</td>
+</tr>
+<tr class="row-even"><td>perfSONAR Configuration Daemon</td>
+<td>/var/log/perfsonar/configdaemon.log</td>
+<td>If you are unable to save changes to the configuration made through the web interface, this is a good place to look.</td>
+</tr>
+<tr class="row-odd"><td>perfSONAR Lookup Service Cache Daemon</td>
+<td>/var/log/perfsonar/lscachedaemon.log</td>
+<td>If you get a message saying that your communities or lookup service cache are out of date, this log file may contain more information.</td>
+</tr>
+<tr class="row-even"><td>perfSONAR Lookup Service Registration Daemon</td>
+<td>/var/log/perfsonar/lsregistrationdaemon.log</td>
+<td>Look here if your toolkit web page says that your host is not registered with the lookup service or you cannot find your host in the global services directory.</td>
+</tr>
+<tr class="row-odd"><td>perfSONAR Service Watcher</td>
+<td>/var/log/perfsonar/servicewatcher.log
+/var/log/perfsonar/servicewatcher_error.log</td>
+<td>This log contains information about nightly restarts.</td>
+</tr>
+<tr class="row-even"><td>perfSONAR Web Interface</td>
+<td>/var/log/perfsonar/web_admin/web_admin.log
+/var/log/httpd/error_log
+/var/log/apache2/error.log (Debian)</td>
+<td>Use these logs when you encounter problems with the web interface.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The table above is not an exhaustive list of every log file on the system. It&#8217;s intended to point at some <em>important</em> log files that are commonly used to debug issues with perfSONAR tools. Depending on the exact issue you may need to view other log files on the system to diagnose a problem.</p>
+</div>
+</div>
+<div class="section" id="accessing-log-files-through-the-web-interface">
+<h2>Accessing Log Files Through the Web Interface<a class="headerlink" href="#accessing-log-files-through-the-web-interface" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Users with administrative rights may look at log files under <strong>/var/log/perfsonar/</strong> through the web interface. This obviously does not include all logs on the system, but does allow easy access for some of the major perfSONAR logs. To access this interface perform the following steps:</dt>
+<dd><ol class="first last arabic">
+<li><p class="first">From your toolkit main web interface, look at the right side of <strong>Services</strong> section, under <strong>SERVICE LOGS</strong>. This place provides links to web interface access to selected toolkit logs.</p>
+<blockquote>
+<div><img alt="_images/manage_logs-main.png" src="_images/manage_logs-main.png" />
+</div></blockquote>
+</li>
+<li><dl class="first docutils">
+<dt>Login using the web administrator username and password.</dt>
+<dd><div class="first last admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See <a class="reference internal" href="manage_users.html"><em>Managing Users</em></a> for more details on creating a web administrator account.</p>
+</div>
+</dd>
+</dl>
+</li>
+<li><p class="first">Selected log files should be listed on the page that loads.</p>
+<blockquote>
+<div><img alt="_images/manage_logs-list.png" src="_images/manage_logs-list.png" />
+</div></blockquote>
+</li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="determining-who-is-testing-to-your-host">
+<h2>Determining Who Is Testing to Your Host<a class="headerlink" href="#determining-who-is-testing-to-your-host" title="Permalink to this headline">¶</a></h2>
+<p>This could likely be derived from the a combination pScheduler and OWAMP logs, but the best place to collect is information is likely not from the logs at all. See <a class="reference internal" href="pscheduler_client_schedule.html"><em>Viewing the Schedule</em></a> for information on viewing tests initiated both by your host and others.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Reading Log Files</a><ul>
+<li><a class="reference internal" href="#important-log-files">Important Log Files</a></li>
+<li><a class="reference internal" href="#accessing-log-files-through-the-web-interface">Accessing Log Files Through the Web Interface</a></li>
+<li><a class="reference internal" href="#determining-who-is-testing-to-your-host">Determining Who Is Testing to Your Host</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="manage_ntp.html">Previous topic</a>
+                  <ul><li><a href="manage_ntp.html" title="previous chapter">Configuring NTP</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_update.html">Next topic</a>
+                      <ul><li><a href="manage_update.html" title="next chapter">Updating perfSONAR</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_update.html" title="Updating perfSONAR"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_ntp.html" title="Configuring NTP"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

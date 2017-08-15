@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Host Tuning &mdash; perfSONAR Toolkit 4.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
+    <link rel="next" title="Configuring a Host with Multiple Interfaces" href="manage_dual_xface.html" />
+    <link rel="prev" title="Managing Users" href="manage_users.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_dual_xface.html" title="Configuring a Host with Multiple Interfaces"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_users.html" title="Managing Users"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="host-tuning">
+<h1>Host Tuning<a class="headerlink" href="#host-tuning" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="default-tuning-settings">
+<h2>Default Tuning Settings<a class="headerlink" href="#default-tuning-settings" title="Permalink to this headline">¶</a></h2>
+<p>By default, the perfSONAR Toolkit installation follows the advice of ESnet&#8217;s &#8220;fasterdata&#8221; knowledge base for test and measurement hosts:</p>
+<p><a class="reference external" href="http://fasterdata.es.net/host-tuning/linux/test-measurement-host-tuning/">http://fasterdata.es.net/host-tuning/linux/test-measurement-host-tuning/</a></p>
+<p>These tuning settings should be fine for most uses of perfSONAR, but there are a couple of cases where you might want to adjust these.</p>
+<blockquote>
+<div><ul class="simple">
+<li>40G hosts (or even 2x10G bonded hosts)</li>
+<li>hosts where much of your testing is over paths with more than 100ms RTT</li>
+</ul>
+</div></blockquote>
+<p>For such cases, you may want to increase the max buffer settings in /etc/sysctl.conf, for example:</p>
+<blockquote>
+<div><div class="highlight-none"><div class="highlight"><pre>#allow hand tuning up to 256MB buffers
+net.core.rmem_max = 268435456
+net.core.wmem_max = 268435456
+# allow auto-tuning up to 128MB buffers
+net.ipv4.tcp_rmem = 4096 87380 134217728
+net.ipv4.tcp_wmem = 4096 65536 134217728
+</pre></div>
+</div>
+</div></blockquote>
+<p>Note that any time you upgrade the perfSONAR Toolkit, you should make sure your modified settings are still in place.</p>
+</div>
+<div class="section" id="manually-enabling-tuning-settings">
+<h2>Manually Enabling Tuning Settings<a class="headerlink" href="#manually-enabling-tuning-settings" title="Permalink to this headline">¶</a></h2>
+<p>In case you didn&#8217;t use toolkit installation an optional <em>perfsonar-toolkit-sysctl</em> package is available that configures the system with perfSONAR settings. For more information on optional script installation see <a class="reference internal" href="install_centos.html#install-centos-installation"><em>Installation</em></a>.</p>
+</div>
+<div class="section" id="packet-pacing">
+<h2>Packet Pacing<a class="headerlink" href="#packet-pacing" title="Permalink to this headline">¶</a></h2>
+<p>CentOS7 and Debian now support &#8220;Fair Queuing&#8221; and kernel-level packet pacing. Pacing can be done on a per socket basis, or you can set a global maximum rate for each NIC on the host.</p>
+<p>This can be very helpful for cases where you want to ensure that your perfSONAR host never uses all of your bandwidth.
+For example, to ensure your 10G host never exceeds 7Gbps, run this command:</p>
+<blockquote>
+<div><div class="highlight-none"><div class="highlight"><pre>tc qdisc add dev $ETH root fq maxrate 7gbit
+</pre></div>
+</div>
+</div></blockquote>
+<p>Where $ETH is the name of your host NIC. Add that command to /etc/rc.local to run at system boot time.</p>
+<p>You can also configure your test mesh to tell iperf3 to reduce it&#8217;s bandwidth as well. Details on how to do that
+are coming soon.</p>
+<p>More details on host pacing are available at:
+<a class="reference external" href="https://fasterdata.es.net/host-tuning/packet-pacing/">https://fasterdata.es.net/host-tuning/packet-pacing/</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Host Tuning</a><ul>
+<li><a class="reference internal" href="#default-tuning-settings">Default Tuning Settings</a></li>
+<li><a class="reference internal" href="#manually-enabling-tuning-settings">Manually Enabling Tuning Settings</a></li>
+<li><a class="reference internal" href="#packet-pacing">Packet Pacing</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="manage_users.html">Previous topic</a>
+                  <ul><li><a href="manage_users.html" title="previous chapter">Managing Users</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_dual_xface.html">Next topic</a>
+                      <ul><li><a href="manage_dual_xface.html" title="next chapter">Configuring a Host with Multiple Interfaces</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_dual_xface.html" title="Configuring a Host with Multiple Interfaces"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_users.html" title="Managing Users"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+    
+                </ul>
+
+             
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2016, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
