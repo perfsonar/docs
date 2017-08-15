@@ -70,22 +70,22 @@ Testing Debian Installation
 
 The release candidate packages for Debian can be found in the source lists below for their respective Debian versions:
 
-* **Debian 7 (Wheezy):** http://downloads.perfsonar.net/debian/perfsonar-wheezy-4.0.list
-* **Debian 8 (Jessie):** http://downloads.perfsonar.net/debian/perfsonar-jessie-4.0.list
+* **Debian 7 (Wheezy):** http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
+* **Debian 8 and 9 (Jessie - Stretch):** http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
 
 You may install the appropriate source list as follows for **Debian 7 (Wheezy)**::
     
     cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-4.0.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
 
 These Debian packages should also work on Ubuntu 14.
     
-Likewise for **Debian 8 (Jessie)**::
+Likewise for **Debian 8 and 9 (Jessie - Stretch)**::
 
     cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-4.0.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
 
 Once installed you may proceed to follow the steps in :doc:`install_debian` to complete the installation.
 
