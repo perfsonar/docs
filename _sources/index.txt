@@ -52,7 +52,6 @@ perfSONAR Toolkit
    manage_choose
    manage_regular_tests
    manage_admin_info
-   manage_services
    manage_ntp
    manage_logs
    manage_update
