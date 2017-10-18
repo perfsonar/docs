@@ -536,6 +536,37 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
 <li><a class="reference external" href="http://software.es.net/esmond/perfsonar_client_python.html">http://software.es.net/esmond/perfsonar_client_python.html</a></li>
 </ul>
 </div>
+<div class="section" id="q-how-can-i-get-cassandra-to-run-on-a-host-that-only-has-an-ipv6-address">
+<h3>Q: How can I get cassandra to run on a host that only has an IPv6 address?<a class="headerlink" href="#q-how-can-i-get-cassandra-to-run-on-a-host-that-only-has-an-ipv6-address" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> The default configuration of cassandra will not properly bind to the localhost interface if the host only has an IPv6 address. This is a bug in cassandra where it tries to open an IPv6 socket on 127.0.0.1, which is not possible since 127.0.0.1 is an IPv4 address. You may fix this problem with the following steps:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Open <em>/etc/cassandra/conf/cassandra-env.sh</em>, find and comment-out the line <cite>JVM_OPTS=&#8221;$JVM_OPTS -Djava.net.preferIPv4Stack=true&#8221;</cite> (by adding a <cite>#</cite> at the beginning of the line). Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#JVM_OPTS=&quot;$JVM_OPTS -Djava.net.preferIPv4Stack=true&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Open <em>/etc/cassandra/conf/cassandra.yaml</em>, find, and set the options <cite>listen_address</cite> and <cite>rpc_address</cite> to <cite>&#8221;::1&#8221;</cite> (NOTE: don&#8217;t forget the double quotes). Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>listen_address: &quot;::1&quot;
+...
+rpc_address: &quot;::1&quot;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Restart <em>htpd</em> and <em>cassandra</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>#CentOS 7, Debian
+systemctl restart cassandra
+systemctl restart httpd
+
+#CentOS 6
+/sbin/service cassandra restart
+/sbin/service httpd24-httpd restart
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="perfsonar-project-questions">
 <h2><a class="toc-backref" href="#id5">perfSONAR Project Questions</a><a class="headerlink" href="#perfsonar-project-questions" title="Permalink to this headline">¶</a></h2>
@@ -641,6 +672,7 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
 <li><a class="reference internal" href="#q-how-can-i-clean-up-the-data-in-my-esmond-instance">Q: How can I clean up the data in my esmond instance?</a></li>
 <li><a class="reference internal" href="#q-how-can-i-backup-the-data-in-my-esmond-instance">Q: How can I backup the data in my esmond instance?</a></li>
 <li><a class="reference internal" href="#q-where-can-i-find-documentation-on-interacting-with-perfsonar-archive-via-a-custom-client">Q: Where can I find documentation on interacting with perfSONAR archive via a custom client?</a></li>
+<li><a class="reference internal" href="#q-how-can-i-get-cassandra-to-run-on-a-host-that-only-has-an-ipv6-address">Q: How can I get cassandra to run on a host that only has an IPv6 address?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#perfsonar-project-questions">perfSONAR Project Questions</a><ul>

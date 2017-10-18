@@ -497,6 +497,29 @@ Q: Where can I find documentation on interacting with perfSONAR archive via a cu
 - http://software.es.net/esmond/perfsonar_client_perl.html 
 - http://software.es.net/esmond/perfsonar_client_python.html
 
+Q: How can I get cassandra to run on a host that only has an IPv6 address?
+=========================================================================================================================================================================================================================================================================================================================================
+**A:** The default configuration of cassandra will not properly bind to the localhost interface if the host only has an IPv6 address. This is a bug in cassandra where it tries to open an IPv6 socket on 127.0.0.1, which is not possible since 127.0.0.1 is an IPv4 address. You may fix this problem with the following steps:
+
+    #. Open */etc/cassandra/conf/cassandra-env.sh*, find and comment-out the line `JVM_OPTS="$JVM_OPTS -Djava.net.preferIPv4Stack=true"` (by adding a `#` at the beginning of the line). Example::
+        
+        #JVM_OPTS="$JVM_OPTS -Djava.net.preferIPv4Stack=true"
+    #. Open */etc/cassandra/conf/cassandra.yaml*, find, and set the options `listen_address` and `rpc_address` to `"::1"` (NOTE: don't forget the double quotes). Example::
+        
+        listen_address: "::1"
+        ...
+        rpc_address: "::1"
+    #. Restart *htpd* and *cassandra*::
+        
+         #CentOS 7, Debian
+         systemctl restart cassandra
+         systemctl restart httpd
+         
+         #CentOS 6
+         /sbin/service cassandra restart
+         /sbin/service httpd24-httpd restart
+         
+
 perfSONAR Project Questions
 ---------------------------
 
