@@ -96,9 +96,9 @@ Optional Packages
 ++++++++++++++++++
 In addition to any of the bundles above you may also **optionnally** choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):
 
-     * ``apt-get install perfsonar-toolkit-servicewatcher`` - Automatically detects closest NTP servers and sets them in ntp.conf
-     * ``apt-get install perfsonar-toolkit-ntp`` - Adds default firewall rules and installs fail2ban
-     * ``apt-get install perfsonar-toolkit-security`` - Adds a cron job that checks if services are still running
+     * ``apt-get install perfsonar-toolkit-ntp`` - Automatically detects closest NTP servers and sets them in ntp.conf
+     * ``apt-get install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
+     * ``apt-get install perfsonar-toolkit-servicewatcher`` - Adds a cron job that checks if services are still running
      * ``apt-get install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
      * ``apt-get install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
