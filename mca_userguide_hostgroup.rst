@@ -111,7 +111,7 @@ Sample Criteria
 
 .. code-block:: javascript
 
-    if(service.location.country == "US" || service.location.country == "CA") return true;
+    if(host.info["location-country"] == "US" || host.info["location-country"] == "CA") return true;
 
 **Select all hosts from wlcg datasource** 
 
