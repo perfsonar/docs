@@ -1,3 +1,3 @@
 ******************************
-pSConfig Quickstart
+pSConfig Quickstart Guide
 ******************************

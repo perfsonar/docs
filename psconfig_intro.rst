@@ -2,10 +2,29 @@
 What is pSConfig?
 ******************************
 
-If you manage more than one perfSONAR host for your organization or participate in a distributed community of perfSONAR measurement hosts, it can quickly become unwieldy to manually configure the tests you want to run for each host. perfSONAR provides some additional tools that make it easier to manage multiple toolkits and ensure each deployment gets the correct set of tests. It also provides ways to store and visualize the results from multiple hosts. See the sections that follow for important information on each of these topics. 
+Introduction
+============
 
-Defining Tests for Multiple Hosts
-=================================
+**pSConfig** is a *template* framework for describing and configuring a *topology* of *tasks*. If you manage more than one perfSONAR host (or participate in a distributed community of perfSONAR measurement hosts), it can quickly become unwieldy to manually configure the tests you want to run at each location. It can further become difficult to maintain and configure visualization components to display results of the measurements. pSConfig is the perfSONAR component that assists with the management of multiple nodes.
+ 
+Concepts and Terminology
+========================
+It is helpful to understand a few basic terms when discussing pSConfig. Starting at the most fundamental level, a **task** in the context of pSConfig is a job to do consisting of a test to be carried out, scheduling information and other options. In fact, a task in pSConfig means the same thing as a task in :doc:`pScheduler<pscheduler_intro>`. 
+
+Beyond individual tasks, pSConfig is also concerned with how the tasks are interrelated and arranged, known as the task **topology**. Many tasks have common parameters or are related in some way, so it's important to be able to look at the tasks as more than just a set of independent jobs. pSConfig cares about these relationships so it can be used as input to visualization components such as `MaDDash <http://software.es.net/maddash/>`_ to relate the results in meaningful ways.
+
+A pSConfig **template** is a description of the task topology in a machine readable format. pSConfig templates are expressed in JSON files. The templates are designed to be highly expressive and extensible so that new capabilities can easily be supported. pSConfig templates by themselves are just files, and they only become useful when something reads them and is able to perform action based on their content. 
+
+An **agent** is software that reads one or more pSConfig templates and uses the information to perform a specific function. There are currently two agents in perfSONAR:
+
+    #. **pscheduler-agent** - An agent that parses one or more template(s) for measurements to be run and submits them to :doc:`pScheduler<pscheduler_intro>`
+    #. **maddash-agent** - An agent that reads one or more template(s) and creates a `MaDDash <http://software.es.net/maddash/>`_ dashboard to display the results
+
+With the fundamentals out of the way, we can now bring them together to demonstrate the basic workflow of how pSConfig can be used to configure a perfSONAR deployment.
+
+
+The pSConfig Workflow
+======================
 
 One of the most important parts about managing multiple hosts is maintaining the proper set of regular tests. It can be a challenge to not only accurately setup the tests for the first time, but to update these tests as members come and go or test parameters change. In order to make this easier, perfSONAR has the concept of the **Mesh Configuration (MeshConfig)** software. The basic idea is that an administrator defines the desired tests in a central file, publishes this file to the web and the individual hosts download the file and use it to build their test configuration. A diagram of this process is shown below:
 
@@ -16,10 +35,3 @@ You can find information on each of the steps outlined by the diagram in the fol
     * **Step 1** of defining the configuration file and **step 2** of publishing the configuration to the web are covered in :doc:`multi_mesh_server_config`. This will be beneficial to administrators planning to run a central configuration file. It is not required reading if you only plan to consume a central configuration file. 
     * **Step 3** of downloading the configuration file is covered in :doc:`multi_mesh_agent_config`. This describes what needs to be done to a perfSONAR host to participate in a mesh configuration and will be beneficial if you have one or more hosts that need to consume one or more central configuration files.
 
-Storing Your Measurements
-=========================
-Measurement results are stored in a component called the measurement archive (MA). If you are running the perfSONAR Toolkit, then your results will be stored in an MA on your local Toolkit node by default. It is possible to configure multiple perfSONAR hosts to write to the same remote MA. This may be especially desirable if your hosts that are performing measurements do not have powerful hardware and do not want to waste resources hosting a measurement archive. For more information on running a central MA see :doc:`multi_ma_install`.
-
-Visualizing the Results
-=======================
-Visualizing the measurement results for multiple hosts is another desirable aspect of central configuration and management. Currently there is an :doc:`additional tool <manage_extra_tools>` called `MaDDash <http://software.es.net/maddash/>`_ developed in conjunction with the perfSONAR project that organizes tests from multiple hosts into grids. It is even capable of `integrating with the perfSONAR mesh configuration tools <http://software.es.net/maddash/mesh_config.html>`_ to generate a display based on your central configuration file. The full set of MaDDash options and features is beyond the scope of this guide, but see the `MaDDash documentation <http://software.es.net/maddash/>`_ for more details. 
