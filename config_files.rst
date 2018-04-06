@@ -13,7 +13,7 @@ Configuration Files
 Main Configuration File
 #######################
 :Description: The main configuration file for esmond
-:RedHat: ``/etc/esmond/esmond.conf``
+:CentOS: ``/etc/esmond/esmond.conf``
 :Debian: ``/etc/esmond/esmond.conf``
 :Documentation: *N/A*
 
@@ -25,8 +25,7 @@ Important Scripts
 Start-up Script
 ##########################
 :Description: Esmond is started/stopped/restarted when HTTPD is started/stopped/restarted
-:RedHat 6: ``/etc/init.d/httpd24-httpd start|stop|restart``
-:RedHat 7: ``systemctl httpd start|stop|restart``
+:CentOS: ``systemctl start|stop|restart httpd``
 :Debian: ``service apache2 restart``
 
 .. _config_files-esmond-scripts-ps_remove_data:
@@ -34,7 +33,7 @@ Start-up Script
 Data Cleaner
 ##########################
 :Description: Cleans out old esmond data given a policy file.
-:RedHat: ``/usr/lib/esmond/utils/ps_remove_data.py``
+:CentOS: ``/usr/lib/esmond/utils/ps_remove_data.py``
 :Debian: ``/usr/share/esmond/util/ps_remove_data.py``
 :Documentation: :ref:`multi_ma_backups-delete`
 
@@ -46,7 +45,7 @@ Log Files
 esmond Log
 ##########################
 :Description: Primary error log for esmond software.
-:RedHat: ``/var/log/esmond/esmond.log``
+:CentOS: ``/var/log/esmond/esmond.log``
 :Debian: ``/var/log/esmond/esmond.log``
 
 .. _config_files-esmond-logs-django:
@@ -54,7 +53,7 @@ esmond Log
 Django Log
 ##########################
 :Description: Error log related to Django framework such as processing JSON messages and database interactions
-:RedHat: ``/var/log/esmond/django.log``
+:CentOS: ``/var/log/esmond/django.log``
 :Debian: ``/var/log/esmond/django.log``
 
 LS Registration Daemon
@@ -68,7 +67,7 @@ Configuration Files
 Main Configuration File
 #############################
 :Description: The main configuration file for the LS Registration Daemon that describes what you want registered in the Lookup Service.
-:RedHat: ``/etc/perfsonar/lsregistrationdaemon.conf``
+:CentOS: ``/etc/perfsonar/lsregistrationdaemon.conf``
 :Debian: ``/etc/perfsonar/lsregistrationdaemon.conf``
 :Documentation: :doc:`config_ls_registration`
 
@@ -77,7 +76,7 @@ Main Configuration File
 Logging Configuration File
 #############################
 :Description: Configuration file for setting log location, level of detail and various other log-related settings.
-:RedHat: ``/etc/perfsonar/lsregistrationdaemon-logger.conf``
+:CentOS: ``/etc/perfsonar/lsregistrationdaemon-logger.conf``
 :Debian: ``/etc/perfsonar/lsregistrationdaemon-logger.conf``
 :Documentation: `Log4perl Reference <http://search.cpan.org/~mschilli/Log-Log4perl-1.46/lib/Log/Log4perl.pm>`_
 
@@ -89,8 +88,7 @@ Important Scripts
 Start-up Script
 ##########################
 :Description: The script used to start/stop/restart a LS Registration Daemon server
-:RedHat 6: ``/etc/init.d/perfsonar-lsregistrationdaemon``
-:RedHat 7: ``systemctl perfsonar-lsregistrationdaemon start|stop|restart``
+:CentOS: ``systemctl start|stop|restart perfsonar-lsregistrationdaemon``
 :Debian: ``service perfsonar-lsregistrationdaemon start|stop|restart``
 
 
@@ -102,7 +100,7 @@ Log Files
 Primary Log file
 ##########################
 :Description: The log file to which the LS Registration daemon writes to as configured in the default :ref:`logging configuration file <config_files-lsreg-conf-logging>`
-:RedHat: ``/var/log/perfsonar/lsregistrationdaemon.log``
+:CentOS: ``/var/log/perfsonar/lsregistrationdaemon.log``
 :Debian: ``/var/log/perfsonar/lsregistrationdaemon.log``
 
 OWAMP
@@ -117,7 +115,7 @@ Main Configuration File
 ##########################
 
 :Description: The main configuration file for an OWAMP server
-:RedHat: ``/etc/owamp-server/owamp-server.conf``
+:CentOS: ``/etc/owamp-server/owamp-server.conf``
 :Debian: ``/etc/owamp-server/owamp-server.conf``
 :Documentation: :doc:`config_owamp`
 
@@ -127,7 +125,7 @@ Limits File
 ##########################
 
 :Description: The OWAMP limits file that defines authentication and authorization parameters for testing
-:RedHat: ``/etc/owamp-server/owamp-server.limits``
+:CentOS: ``/etc/owamp-server/owamp-server.limits``
 :Debian: ``/etc/owamp-server/owamp-server.limits``
 :Documentation: :doc:`config_owamp_limits`
 
@@ -141,8 +139,7 @@ Start-up Script
 ##########################
 
 :Description: The script used to start/stop/restart an OWAMP server
-:RedHat 6: ``/etc/init.d/owamp-server start|stop|restart``
-:RedHat 7: ``systemctl owamp-server start|stop|restart``
+:CentOS: ``systemctl start|stop|restart owamp-server``
 :Debian: ``service owamp-server start|stop|restart``
 
 Log Files
@@ -153,7 +150,7 @@ Log Files
 Primary Log file
 ##########################
 :Description: OWAMP servers and clients can each write to log files. The location of the log file is dependent on your syslog configuration. The entries in this table assume a default configuration.
-:RedHat: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp_bwctl.log``
+:CentOS: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp_bwctl.log``
 :Debian: ``/var/log/perfsonar/owamp_bwctl.log``
 
 pScheduler
@@ -168,7 +165,7 @@ Limits File
 ##########################
 
 :Description: The pScheduler limits file that defines authentication and authorization parameters for testing.
-:RedHat: ``/etc/pscheduler/limits.conf``
+:CentOS: ``/etc/pscheduler/limits.conf``
 :Debian: ``/etc/pscheduler/limits.conf``
 :Documentation: :doc:`config_pscheduler_limits`
 
@@ -178,7 +175,7 @@ Archives Configuration Files
 ############################
 
 :Description: The configuration files for pScheduler's archives. Contains individual archive specifications applied to every measurement the system runs.
-:RedHat: ``/etc/pscheduler/default-archives/*``
+:CentOS: ``/etc/pscheduler/default-archives/*``
 :Debian: ``/etc/pscheduler/default-archives/*``
 :Documentation:
 
@@ -188,7 +185,7 @@ Database Configuration Files
 ############################
 
 :Description: The configuration files for pScheduler's database. Contains files maintained by the system and should not be altered at the risk of breaking pScheduler’s ability to use its database.
-:RedHat: ``/etc/pscheduler/database/*``
+:CentOS: ``/etc/pscheduler/database/*``
 :Debian: ``/etc/pscheduler/database/*``
 :Documentation:
 
@@ -201,9 +198,128 @@ Log Files
 Primary Log file
 ##########################
 :Description: The log file written when the pScheduler daemon is run.
-:RedHat: ``/var/log/pscheduler/pscheduler.log``
+:CentOS: ``/var/log/pscheduler/pscheduler.log``
 :Debian: ``/var/log/pscheduler/pscheduler.log``
 
+pSConfig
+========
+
+Configuration Files
+--------------------
+
+.. _config_files-psconfig-conf-pscheduler:
+
+pSConfig pScheduler Agent Configuration File
+##############################################
+:Description: The pSConfig pScheduler Agent configuration file
+:CentOS: ``/etc/perfsonar/psconfig/pscheduler-agent.conf``
+:Debian: ``/etc/perfsonar/psconfig/pscheduler-agent.conf``
+:Documentation: *N/A*
+
+.. _config_files-psconfig-conf-maddash:
+
+pSConfig MaDDash Agent Configuration File
+##############################################
+:Description: The pSConfig MaDDash Agent configuration file
+:CentOS: ``/etc/perfsonar/psconfig/maddash-agent.conf``
+:Debian: ``/etc/perfsonar/psconfig/maddash-agent.conf``
+:Documentation: *N/A*
+
+.. _config_files-psconfig-conf-pscheduler-d:
+
+pSConfig pScheduler Agent Include Directory
+##############################################
+:Description: Directory for pSConfig templates that automatically get loaded by pScheduler agent
+:CentOS: ``/etc/perfsonar/psconfig/pscheduler.d``
+:Debian: ``/etc/perfsonar/psconfig/pscheduler.d``
+:Documentation: *N/A*
+
+.. _config_files-psconfig-conf-maddash-d:
+
+pSConfig MaDDash Agent Include Directory
+##############################################
+:Description: Directory for pSConfig templates that automatically get loaded by MaDDash agent
+:CentOS: ``/etc/perfsonar/psconfig/maddash.d``
+:Debian: ``/etc/perfsonar/psconfig/maddash.d``
+:Documentation: *N/A*
+
+.. _config_files-psconfig-conf-archive-d:
+
+pSConfig Archive Include Directory
+##############################################
+:Description: Directory for archive definitions that automatically get loaded by agent(s)
+:CentOS: ``/etc/perfsonar/psconfig/archives.d``
+:Debian: ``/etc/perfsonar/psconfig/archives.d``
+:Documentation: *N/A*
+
+.. _config_files-psconfig-conf-transform-d:
+
+pSConfig Transform Include Directory
+##############################################
+:Description: Directory for JQ transformations that automatically get applied to all templates downloaded by agent(s)
+:CentOS: ``/etc/perfsonar/psconfig/transforms.d``
+:Debian: ``/etc/perfsonar/psconfig/transforms.d``
+:Documentation: *N/A*
+
+Important Scripts
+-----------------
+
+.. _config_files-psconfig-scripts-pscheduler-startup:
+
+pSConfig pScheduler Agent Start-up Script
+############################################
+:Description: Scripts used to start|stop|restart the pSConfig pScheduler Agent
+:CentOS: ``systemctl start|stop|restart psconfig-pscheduler-agent``
+:Debian: ``systemctl start|stop|restart psconfig-pscheduler-agent``
+
+.. _config_files-psconfig-scripts-pscheduler-startup:
+
+pSConfig MaDDash Agent Start-up Script
+############################################
+:Description: Scripts used to start|stop|restart the pSConfig MaDDash Agent
+:CentOS: ``systemctl start|stop|restart psconfig-maddash-agent``
+:Debian: ``systemctl start|stop|restart psconfig-maddash-agent``
+
+.. _config_files-psconfig-scripts-ps_remove_data:
+
+`psconfig` command
+############################################
+:Description: Command used to perform numerous tasks related to pSConfig
+:CentOS: ``psconfig COMMAND [OPTIONS]``
+:Debian: ``psconfig COMMAND [OPTIONS]``
+
+Log Files
+---------
+
+.. _config_files-psconfig-logs-pscheduler-agent:
+
+pSConfig pScheduler Agent Log
+##############################
+:Description: Primary log for pSConfig pScheduler Agent
+:CentOS: ``/var/log/perfsonar/psconfig-pscheduler-agent.log``
+:Debian: ``/var/log/perfsonar/psconfig-pscheduler-agent.log``
+
+.. _config_files-psconfig-logs-pscheduler-agent-trans:
+
+pSConfig pScheduler Agent Tasks Log
+##########################################
+:Description: Log of all the pScheduler tasks managed by the agent
+:CentOS: ``/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log``
+:Debian: ``/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log``
+
+pSConfig pScheduler Agent Transactions Log
+##########################################
+:Description: Log of each interaction by agent with pScheduler server(s)
+:CentOS: ``/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log``
+:Debian: ``/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log``
+
+.. _config_files-psconfig-logs-maddash-agent:
+
+pSConfig MaDDash Agent Log
+##########################
+:Description: Primary log for pSConfig MaDDash Agent
+:CentOS: ``/var/log/perfsonar/psconfig-maddash-agent.log``
+:Debian: ``/var/log/perfsonar/psconfig-maddash-agent.log``
 
 Toolkit
 ========
@@ -218,7 +334,7 @@ Configuration Files
 Measurement Archive Data Retention Policy
 #########################################
 :Description: The configuration file used by the :ref:`esmond data cleaner <config_files-esmond-scripts-ps_remove_data>` script when running in the :ref:`cron <config_files-toolkit-cron-clean_esmond_db>` installed by the Toolkit.
-:RedHat: ``/etc/perfsonar/toolkit/clean_esmond_db.conf``
+:CentOS: ``/etc/perfsonar/toolkit/clean_esmond_db.conf``
 :Debian: ``/etc/perfsonar/toolkit/clean_esmond_db.conf``
 :Documentation: :ref:`multi_ma_backups-delete`
 
@@ -231,7 +347,7 @@ Important Scripts
 Toolkit Configuration Script
 ###########################################
 :Description: A script to help configure users and other basic features of the Toolkit.
-:RedHat: ``/usr/lib/perfsonar/scripts/nptoolkit-configure.py``
+:CentOS: ``/usr/lib/perfsonar/scripts/nptoolkit-configure.py``
 :Debian: ``/usr/lib/perfsonar/scripts/nptoolkit-configure.py``
 :Documentation: :doc:`manage_users`
 
@@ -240,8 +356,7 @@ Toolkit Configuration Script
 Configuration Daemon Start-up Script
 #######################################
 :Description: The script used to start/stop/restart the service used by the administrative web interface to configure the host
-:RedHat 6: ``/etc/init.d/perfsonar-configdaemon start|stop|restart``
-:RedHat 7: ``systemctl perfsonar-configdaemon start|stop|restart``
+:CentOS: ``systemctl start|stop|restart perfsonar-configdaemon``
 :Debian: ``service perfsonar-toolkit-config-daemon start|stop|restart``
 
 .. _config_files-toolkit-scripts-configure_nic_parameters:
@@ -249,8 +364,7 @@ Configuration Daemon Start-up Script
 Network Interface Card Configuration Script
 ###########################################
 :Description: The script detects if the NIC is misconfigured, and makes necessary configuration changes to NIC if they are.
-:RedHat 6: ``/etc/init.d/perfsonar-configure_nic_parameters start|stop|restart``
-:RedHat 7: ``systemctl perfsonar-configure_nic_parameters start|stop|restart``
+:CentOS: ``systemctl start|stop|restart perfsonar-configure_nic_parameters``
 :Debian: ``service perfsonar-configure_nic_parameters start|stop|restart``
 
 .. _config_files-toolkit-scripts-generate_motd:
@@ -258,8 +372,7 @@ Network Interface Card Configuration Script
 'Message of the Day' Script
 ###########################################
 :Description: Generates the login message on start-up that appears to command-line users
-:RedHat 6: ``/etc/init.d/perfsonar-generate_motd start|stop|restart``
-:RedHat 7: ``systemctl perfsonar-generate_motd start|stop|restart``
+:CentOS: ``systemctl start|stop|restart perfsonar-generate_motd``
 :Debian: ``service perfsonar-generate_motd start|stop|restart``
 
 .. _config_files-toolkit-scripts-mod_interface_route:
@@ -267,7 +380,7 @@ Network Interface Card Configuration Script
 Multi-Interface Routing Setup Script
 ###########################################
 :Description: A script to help with the configuration of routing for hosts running tests on multiple interfaces.
-:RedHat: ``/usr/lib/perfsonar/scripts/mod_interface_route``
+:CentOS: ``/usr/lib/perfsonar/scripts/mod_interface_route``
 :Debian: ``/usr/lib/perfsonar/scripts/mod_interface_route``
 :Documentation: :doc:`manage_dual_xface`
 
@@ -280,7 +393,7 @@ Installed Cron Jobs
 Measurement Archive Data Cleaner
 #####################################
 :Description: Cleans out data in the measurement archive according to retention policy in :ref:`config_files-toolkit-conf-clean_esmond_db`. Runs at 2:30AM every morning.
-:RedHat: ``/etc/cron.d/cron-clean_esmond_db``
+:CentOS: ``/etc/cron.d/cron-clean_esmond_db``
 :Debian: ``/etc/cron.d/cron-clean_esmond_db``
 
 .. _config_files-toolkit-cron-service_watcher:
@@ -288,7 +401,7 @@ Measurement Archive Data Cleaner
 Regular Service Restarts and Maintenance
 ###########################################
 :Description: Verifies expected processes are running every hour and performs a regular restart of services that require it every moring at 1:05AM. It also cleans out stale files from OWAMP and Regular Testing at this time.
-:RedHat: ``/etc/cron.d/cron-service_watcher``
+:CentOS: ``/etc/cron.d/cron-service_watcher``
 :Debian: ``/etc/cron.d/perfsonar-toolkit-servicewatcher``
 
 Log Files
@@ -299,7 +412,7 @@ Log Files
 Configuration Daemon Log
 ##########################
 :Description: The log file for the :ref:`configuration daemon <config_files-toolkit-scripts-config_daemon>`
-:RedHat: ``/var/log/perfsonar/configdaemon.log``
+:CentOS: ``/var/log/perfsonar/configdaemon.log``
 :Debian: ``/var/log/perfsonar/configdaemon.log``
 
 .. _config_files-toolkit-logs-service_watcher:
@@ -307,12 +420,12 @@ Configuration Daemon Log
 Service Watcher Log
 ################################
 :Description: Logs generated by the :ref:`cron <config_files-toolkit-cron-service_watcher>` that verifies services are running and performs regular restarts/maintenance.
-:RedHat: ``/var/log/perfsonar/servicewatcher.log`` and ``/var/log/perfsonar/servicewatcher_error.log``
+:CentOS: ``/var/log/perfsonar/servicewatcher.log`` and ``/var/log/perfsonar/servicewatcher_error.log``
 :Debian: ``/var/log/perfsonar/servicewatcher.log`` and ``/var/log/perfsonar/servicewatcher_error.log``
 :Debian: *N/A*
 
 Web Interface Logs
 ################################
 :Description: Log files for the web interface.
-:RedHat: ``/var/log/perfsonar/web_admin/web_admin.log``
+:CentOS: ``/var/log/perfsonar/web_admin/web_admin.log``
 :Debian: ``/var/log/perfsonar/web_admin/web_admin.log``
