@@ -87,11 +87,14 @@ Managing Multiple Hosts with pSConfig
 .. toctree::
    :maxdepth: 1
    
-   multi_overview
-   multi_mesh_server_config
-   multi_mesh_agent_config
-   multi_mesh_autoconfig
+   psconfig_intro
+   psconfig_quickstart
+   psconfig_templates_intro
    mca
+   psconfig_pscheduler_agent
+   psconfig_maddash_agent
+   psconfig_autoconfig
+   psconfig_meshconfig_migrate
    
 .. _index-multiple:
 

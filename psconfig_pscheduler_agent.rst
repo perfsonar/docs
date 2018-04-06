@@ -1,5 +1,5 @@
 **************************************************************
-Reading a Central Configuration File with MeshConfig
+Running the pSConfig pScheduler Agent
 **************************************************************
 
 Participating in a centrally configured mesh  is a matter of the following:

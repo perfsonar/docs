@@ -1,5 +1,5 @@
 ******************************
-Central Configuration Overview
+What is pSConfig?
 ******************************
 
 If you manage more than one perfSONAR host for your organization or participate in a distributed community of perfSONAR measurement hosts, it can quickly become unwieldy to manually configure the tests you want to run for each host. perfSONAR provides some additional tools that make it easier to manage multiple toolkits and ensure each deployment gets the correct set of tests. It also provides ways to store and visualize the results from multiple hosts. See the sections that follow for important information on each of these topics. 
