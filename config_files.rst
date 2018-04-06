@@ -2,58 +2,6 @@
 Listing of Important perfSONAR Files
 ***************************************
 
-BWCTL
-======
-
-Configuration Files
---------------------
-
-.. _config_files-bwctl-conf-main:
-
-Main Configuration File
-##########################
-
-:Description: The main configuration file for a BWCTL server
-:RedHat: ``/etc/bwctl-server/bwctl-server.conf``
-:Debian: ``/etc/bwctl-server/bwctl-server.conf``
-:Documentation: :doc:`config_bwctl`
-
-.. _config_files-bwctl-conf-limits:
-
-Limits File
-##########################
-
-:Description: The BWCTL limits file that defines authentication and authorization parameters for testing
-:RedHat: ``/etc/bwctl-server/bwctl-server.limits``
-:Debian: ``/etc/bwctl-server/bwctl-server.limits``
-:Documentation: :doc:`config_bwctl_limits`
-
-
-Important Scripts
------------------
-
-.. _config_files-bwctl-scripts-startup:
-
-Start-up Script
-##########################
-
-:Description: The script used to start/stop/restart a BWCTL server
-:RedHat 6: ``/etc/init.d/bwctl-server start|stop|restart``
-:RedHat 7: ``systemctl start|stop|restart bwctl-server``
-:Debian: ``service bwctl-server start|stop|restart``
-
-Log Files
----------
-
-.. _config_files-bwctl-logs-primary:
-
-Primary Log file
-##########################
-:Description: BWCTL servers and clients can each write to log files. The location of the log file is dependent on your syslog configuration. The entries in this table assume a default configuration.
-:RedHat: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp_bwctl.log``
-:Debian: ``/var/log/perfsonar/owamp_bwctl.log``
-
-
 esmond
 ======
 
@@ -156,106 +104,6 @@ Primary Log file
 :Description: The log file to which the LS Registration daemon writes to as configured in the default :ref:`logging configuration file <config_files-lsreg-conf-logging>`
 :RedHat: ``/var/log/perfsonar/lsregistrationdaemon.log``
 :Debian: ``/var/log/perfsonar/lsregistrationdaemon.log``
-
-
-MeshConfig
-==========
-
-Configuration Files
---------------------
-
-.. _config_files-meshconfig-conf-agent:
-
-Agent Configuration File
-#############################
-:Description: The configuration file used by clients to download a mesh and build a local test configuration
-:RedHat: ``/etc/perfsonar/meshconfig-agent.conf``
-:Debian: ``/etc/perfsonar/meshconfig-agent.conf``
-:Documentation: :doc:`config_mesh_agent`
-
-.. _config_files-meshconfig-conf-agent-tasks:
-
-Agent Tasks File
-#############################
-:Description: This file contains the tasks to be run by the host as defined manually, via the toolkit web interface and/or any remote mesh configuration files. They are submitted to pScheduler. This file is the successor to the former regulartesting.conf file.
-:RedHat: ``/etc/perfsonar/meshconfig-agent-tasks.conf``
-:Debian: ``/etc/perfsonar/meshconfig-agent-tasks.conf``
-:Documentation: :doc:`config_mesh_agent_tasks`
-
-.. _config_files-meshconfig-conf-guiagent:
-
-GUI Agent Configuration File
-#############################
-:Description: The configuration file used to download a mesh and build a `MaDDash <http://software.es.net/maddash>`_ configuration
-:RedHat: ``/etc/perfsonar/meshconfig-guiagent.conf``
-:Debian: ``/etc/perfsonar/meshconfig-guiagent.conf``
-
-:Documentation: :doc:`config_mesh_gui`
-
-.. _config_files-meshconfig-conf-lookup_hosts:
-
-Dynamic Host Lookup Configuration File
-#######################################
-:Description: The configuration file used to contact the lookup service and build a set of hosts to be used in the mesh
-:RedHat: ``/etc/perfsonar/meshconfig-lookuphosts.conf``
-:Debian: ``/etc/perfsonar/meshconfig-lookuphosts.conf``
-:Documentation: :doc:`config_mesh_lookup_hosts`
-
-
-Important Scripts
------------------
-.. _config_files-meshconfig-scripts-agent:
-
-MeshConfig Agent Start-up Script
-#################################
-:Description: The script used to start/stop/restart a MeshConfig Agent. This daemon builds :ref:`meshconfig-agent-tasks.conf<config_files-meshconfig-conf-agent-tasks>` from remote meshes and picks up any manual changes and submits the tasks to pScheduler.
-:RedHat 6: ``/etc/init.d/perfsonar-meshconfig-agent start|stop|restart``
-:RedHat 7: ``systemctl perfsonar-meshconfig-agent start|stop|restart``
-:Debian: ``service perfsonar-meshconfig-agent start|stop|restart``
-
-.. _config_files-meshconfig-scripts-guiagent:
-
-MeshConfig GUI Agent Start-up Script
-#####################################
-:Description: The script used to start/stop/restart a MeshConfig GUI Agent. This daemon builds `MaDDash configuration file <http://software.es.net/maddash/config_server.html>`_ from a downloaded central configuration file.
-:RedHat 6: ``/etc/init.d/perfsonar-meshconfig-guiagent start|stop|restart``
-:RedHat 7: ``systemctl perfsonar-meshconfig-guiagent start|stop|restart``
-:Debian: ``service perfsonar-meshconfig-guiagent start|stop|restart``
-
-.. _config_files-meshconfig-scripts-json:
-
-JSON Builder
-############
-:Description: The script used to convert a central configuration file to JSON consumable by agents
-:RedHat: ``/usr/lib/perfsonar/bin/build_json``
-:Debian: ``/usr/lib/perfsonar/bin/build_json``
-
-.. _config_files-meshconfig-scripts-lookup_hosts:
-
-Dynamic Host List Generator
-###########################
-:Description: The script used to contact the lookup service and build a set of hosts to be used in the mesh
-:RedHat: ``/usr/lib/perfsonar/bin/lookup_hosts``
-:Debian: ``/usr/lib/perfsonar/bin/lookup_hosts``
-
-Log Files
----------
-
-.. _config_files-meshconfig-logs-generate_configuration:
-
-MeshConfig Agent Log
-################################
-:Description: The log file written when the :ref:`MeshConfig agent <config_files-meshconfig-scripts-agent>` is run.
-:RedHat: ``/var/log/perfsonar/meshconfig-agent.log``
-:Debian: ``/var/log/perfsonar/meshconfig-agent.log``
-
-.. _config_files-meshconfig-logs-generate_gui_configuration:
-
-GUI/Dashboard Configuration Agent Log
-############################################
-:Description: The log file written when the :ref:`MeshConfig GUI agent <config_files-meshconfig-scripts-guiagent>` is run.
-:RedHat: ``/var/log/perfsonar/meshconfig-guiagent.log``
-:Debian: ``/var/log/perfsonar/meshconfig-guiagent.log``
 
 OWAMP
 ======
@@ -414,14 +262,6 @@ Network Interface Card Configuration Script
 :RedHat 7: ``systemctl perfsonar-generate_motd start|stop|restart``
 :Debian: ``service perfsonar-generate_motd start|stop|restart``
 
-.. _config_files-toolkit-scripts-psb_to_esmond:
-
-Measurement Archive Upgrade Script
-###########################################
-:Description: Upgrades data from a pre-3.4 Toolkit to the current version. If there is no data to upgrade then it exits.
-:RedHat: ``/etc/init.d/perfsonar-psb_to_esmond start|stop|restart``
-:Debian: ``service perfsonar-psb_to_esmond start|stop|restart``
-
 .. _config_files-toolkit-scripts-mod_interface_route:
 
 Multi-Interface Routing Setup Script
@@ -461,14 +301,6 @@ Configuration Daemon Log
 :Description: The log file for the :ref:`configuration daemon <config_files-toolkit-scripts-config_daemon>`
 :RedHat: ``/var/log/perfsonar/configdaemon.log``
 :Debian: ``/var/log/perfsonar/configdaemon.log``
-
-.. _config_files-toolkit-logs-psb_to_esmond:
-
-Measurement Archive Upgrade Log
-################################
-:Description: The log file for the measurement archive :ref:`upgrade script <config_files-toolkit-scripts-psb_to_esmond>`
-:RedHat: ``/var/log/perfsonar/psb_to_esmond.log``
-:Debian: ``/var/log/perfsonar/psb_to_esmond.log``
 
 .. _config_files-toolkit-logs-service_watcher:
 
