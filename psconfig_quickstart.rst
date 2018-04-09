@@ -1,3 +1,53 @@
 ******************************
 pSConfig Quickstart Guide
 ******************************
+
+.. note:: This page contains a quick set of commands for publishing a pSConfig template and configuring the pScheduler and MaDDash agents to use them. As the *Quickstart* in the title implies, this is not intended to be a comprehensive guid, for that see the rest of the :doc:`pSConfig documentation<psconfig_intro>`.
+
+
+On the host where the template is to be published...
+==========================================================
+#. Make sure the ``perfsonar-psconfig-publisher`` package is installed:
+
+    *CentOS*::
+    
+        yum install perfsonar-psconfig-publisher
+
+    *Debian/Ubuntu*::
+    
+        apt-get install perfsonar-psconfig-publisher
+#. Create a pSConfig template.
+#. Publish the template::
+
+    psconfig publish template.json
+    
+    
+On each host running measurements...
+==========================================================
+#. Make sure the ``perfsonar-psconfig-pscheduler`` package is installed:
+
+    *CentOS*::
+    
+        yum install perfsonar-psconfig-pscheduler
+
+    *Debian/Ubuntu*::
+    
+        apt-get install perfsonar-psconfig-pscheduler
+#. Run the following command to point the agent at the template::
+
+    psconfig remote add https://MYHOST/psconfig/template.json
+    
+On your MaDDash host...
+==========================================================
+#. Make sure the ``perfsonar-psconfig-maddash`` package is installed:
+
+    *CentOS*::
+    
+        yum install perfsonar-psconfig-maddash
+
+    *Debian/Ubuntu*::
+    
+        apt-get install perfsonar-psconfig-maddash
+#. Run the following command to point the agent at the template::
+
+    psconfig remote add https://MYHOST/psconfig/template.json
