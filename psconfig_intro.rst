@@ -5,7 +5,12 @@ What is pSConfig?
 Introduction
 ============
 
-**pSConfig** is a *template* framework for describing and configuring a *topology* of *tasks*. If you manage more than one perfSONAR host (or participate in a distributed community of perfSONAR measurement hosts), it can quickly become unwieldy to manually configure the tests you want to run at each location. It can further become difficult to maintain and configure visualization components to display results of the measurements. pSConfig is the perfSONAR component that assists with the management of multiple nodes.
+**pSConfig** is a *template* framework for describing and configuring a *topology* of *tasks*. If you manage more than one perfSONAR host (or participate in a distributed community of perfSONAR measurement hosts), the following configuration tasks can quickly become unwieldy:
+
+    #. **Scheduling the tasks** you want to run at each location. 
+    #. **Maintaining visualization components** to display results of the measurements from multiple hosts
+
+pSConfig assists with these challenges by providing tools to automate each of the configuration tasks listed above.
  
 Concepts and Terminology
 ========================
@@ -26,12 +31,14 @@ With the fundamentals out of the way, we can now bring them together to demonstr
 The pSConfig Workflow
 ======================
 
-One of the most important parts about managing multiple hosts is maintaining the proper set of regular tests. It can be a challenge to not only accurately setup the tests for the first time, but to update these tests as members come and go or test parameters change. In order to make this easier, perfSONAR has the concept of the **Mesh Configuration (MeshConfig)** software. The basic idea is that an administrator defines the desired tests in a central file, publishes this file to the web and the individual hosts download the file and use it to build their test configuration. A diagram of this process is shown below:
+The basic workflow of pSConfig is outlined in the diagram below:
 
-.. image:: images/multi-overview.png
+.. image:: images/psconfig_intro-workflow.png
 
-You can find information on each of the steps outlined by the diagram in the following sections:
+If you think you're ready to jump right into this workflow you can see :doc:`psconfig_quickstart`. Otherwise, you can find more detailed information on the steps outlined by the diagram in the following sections:
 
-    * **Step 1** of defining the configuration file and **step 2** of publishing the configuration to the web are covered in :doc:`multi_mesh_server_config`. This will be beneficial to administrators planning to run a central configuration file. It is not required reading if you only plan to consume a central configuration file. 
-    * **Step 3** of downloading the configuration file is covered in :doc:`multi_mesh_agent_config`. This describes what needs to be done to a perfSONAR host to participate in a mesh configuration and will be beneficial if you have one or more hosts that need to consume one or more central configuration files.
+    * **Step 1** consists of building a JSON template. A primer on this topic can be found in :doc:`psconfig_templates_intro`
+    * **Step 2** is the process of taking the generated template and publishing it to the web. This process is detailed in :doc:`psconfig_publish`
+    * **Step 3**  involves configuring agents to read your published templates. perfSONAR currently provides two agents: information on the pScheduler agent used to create tasks can be found in :doc:`psconfig_pscheduler_agent` and information on using the MaDDash agent to configure dashboards can be found in :doc:`psconfig_maddash_agent`.
+    
 
