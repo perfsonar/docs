@@ -1,5 +1,5 @@
 *************************************
-MeshConfig Administrative GUI
+pSConfig Administrative GUI
 *************************************
 
 .. note:: BETA
