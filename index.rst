@@ -93,8 +93,11 @@ Managing Multiple Hosts with pSConfig
    psconfig_publish
    psconfig_pscheduler_agent
    psconfig_maddash_agent
-   psconfig_autoconfig
    mca
+   psconfig_templates_vars
+   psconfig_templates_groups
+   psconfig_autoconfig
+   psconfig_templates_examples
    psconfig_meshconfig_migrate
    
 .. _index-multiple:

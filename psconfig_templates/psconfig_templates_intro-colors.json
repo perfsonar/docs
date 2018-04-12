@@ -1,0 +1,77 @@
+{
+
+    "addresses": {
+        "circle1": {
+            "address": "circle1.perfsonar.net",
+            "_meta": {
+                "shape": "circle",
+                "color": "blue"
+            }
+        },
+        "circle2": {
+            "address": "circle2.perfsonar.net",
+            "_meta": {
+                "shape": "circle",
+                "color": "red"
+            }
+        },
+        "circle3": {
+            "address": "circle3.perfsonar.net",
+            "_meta": {
+                "shape": "circle",
+                "color": "green"
+            }
+        }
+    },
+    
+    "groups": {
+        "colors_mesh": {
+            "type": "mesh",
+            "addresses": [
+                 {"name": "circle1"},
+                 {"name": "circle2"},
+                 {"name": "circle3"}
+             ]  
+        } 
+    },
+    
+    "tests": {
+        "colors_test": {
+            "type": "colors",
+            "spec": {
+                "color1": "{% jq addresses[0]._meta.color %}",
+                "color2": "{% jq addresses[1]._meta.color %}"
+            }
+        }
+    },
+    
+    "schedules": {
+        "colors_schedule": {
+            "repeat": "PT1H",
+            "slip": "PT1H",
+            "sliprand": true
+        }
+    },
+    
+    "archives": {
+        "colors_archive": {
+            "archiver": "syslog",
+            "data": {
+                "facility": "local6",
+                "priority": "info"
+            }
+        }
+    },
+    
+    "tasks": {
+        "colors_task": {
+            "group": "colors_group",
+            "test": "colors_test",
+            "schedule": "colors_schedule",
+            "archives": [
+                 "colors_archive"
+             ]
+        }
+    }
+
+}
