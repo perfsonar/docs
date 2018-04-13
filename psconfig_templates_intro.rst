@@ -123,7 +123,7 @@ pSConfig templates are formatted as `JSON <https://www.json.org>`_. The abstract
 pSConfig templates represent the :ref:`concept of addresses <psconfig_templates_intro-concepts-addresses>` as JSON objects. Each address *object* has a single required ``address`` property as shown below::
 
     {
-        “address”: “circle1.perfsonar.net”
+        "address": "circle1.perfsonar.net"
     }
 
 In that example the ``address`` property is set to ``circle1.perfsonar.net``. The ``address`` property MUST be in the format of an IP address or hostname. This is done primarily for the benefit of agents trying to determine the addresses for which they are responsible (for example, see :doc:`psconfig_pscheduler_agent`). Keep in mind, there is no strict requirement the ``address`` property be used in the generated task at all, so think of it more an an identifier that happens to look like an IP or hostname.
@@ -131,10 +131,10 @@ In that example the ``address`` property is set to ``circle1.perfsonar.net``. Th
 The true power of addresses is revealed through the use of the ``_meta`` property. The ``_meta`` property is an optional arbitrary JSON object that can contain custom properties. Continuing with the :ref:`circle example <psconfig_templates_intro-concepts-addresses>` we can describe the shape and color in JSON as follows::
 
     {
-        “address”: “circle1.perfsonar.net”,
-        “_meta”: {
-            “shape”: “circle”,
-            “color”: “blue”
+        "address": "circle1.perfsonar.net",
+        "_meta": {
+            "shape": "circle",
+            "color": "blue"
         }
     }
 
@@ -142,37 +142,37 @@ Note that almost all objects in pSConfig have a ``_meta`` property that can be u
 
 Address objects live in the ``addresses`` section at the top-level of a pSConfig template. Each address object has a name that is used to references this object in other sections of the template. This name is just a string and can contain letters, numbers, colons (:), periods (.), underscores (_) or hyphens(-). In the example below, we take our current object and add it to the ``addresses`` section with the name *circle1*::
 
-    “addresses”: {
-        “circle1”: {
-            “address”: “circle1.perfsonar.net”,
-            “_meta”: {
-                “shape”: “circle”,
-                “color”: “blue”
+    "addresses": {
+        "circle1": {
+            "address": "circle1.perfsonar.net",
+            "_meta": {
+                "shape": "circle",
+                "color": "blue"
             }
     }
 
 Finally to round out the example, we can add the JSON representation of the other two circles from our :ref:`earlier example <psconfig_templates_intro-concepts-addresses>`, noting that the ``color`` property changes in each ``_meta`` object::
 
-    “addresses”: {
-        “circle1”: {
-            “address”: “circle1.perfsonar.net”,
-            “_meta”: {
-                “shape”: “circle”,
-                “color”: “blue”
+    "addresses": {
+        "circle1": {
+            "address": "circle1.perfsonar.net",
+            "_meta": {
+                "shape": "circle",
+                "color": "blue"
             }
         },
-        “circle2”: {
-            “address”: “circle2.perfsonar.net”,
-            “_meta”: {
-                “shape”: “circle”,
-                “color”: “red”
+        "circle2": {
+            "address": "circle2.perfsonar.net",
+            "_meta": {
+                "shape": "circle",
+                "color": "red"
             }
         },
-        “circle3”: {
-            “address”: “circle3.perfsonar.net”,
-            “_meta”: {
-                “shape”: “circle”,
-                “color”: “green”
+        "circle3": {
+            "address": "circle3.perfsonar.net",
+            "_meta": {
+                "shape": "circle",
+                "color": "green"
             }
         }
     }
@@ -186,11 +186,11 @@ pSConfig templates represent the :ref:`concept of groups <psconfig_templates_int
 Groups of type *mesh* have one required property: ``addresses``. An example is below::
 
     {
-        “type”: “mesh”,
-        “addresses”: [
-             {“name”: “circle1”},
-             {“name”: “circle2”},
-             {“name”: “circle3”}
+        "type": "mesh",
+        "addresses": [
+             {"name": "circle1"},
+             {"name": "circle2"},
+             {"name": "circle3"}
          ]  
     }
 
@@ -201,13 +201,13 @@ The ``addresses`` property is an array of *address selector* objects. These sele
 Groups of type *disjoint* have two required properties: ``a-addresses`` and ``b-addresses``. An example is below::
 
     {
-        “type”: “disjoint”,
-        “a-addresses”: [
-             {“name”: “circle1”}
+        "type": "disjoint",
+        "a-addresses": [
+             {"name": "circle1"}
          ],
-         “b-addresses”: [
-             {“name”: “circle2”},
-             {“name”: “circle3”}
+         "b-addresses": [
+             {"name": "circle2"},
+             {"name": "circle3"}
          ]     
     }
 
@@ -216,11 +216,11 @@ Again, each is a list of *address selector* objects and this example selects by 
 Finally, we could also define a group of type *list*, and it only requires an ``addresses`` property be set which is (not-surprisingly) a list of address selectors::
     
     {
-        “type”: “list”,
-        “addresses”: [
-             {“name”: “circle1”},
-             {“name”: “circle2”},
-             {“name”: “circle3”}
+        "type": "list",
+        "addresses": [
+             {"name": "circle1"},
+             {"name": "circle2"},
+             {"name": "circle3"}
          ]  
     }
 
@@ -228,13 +228,13 @@ The above example would generate a one-dimensional list containing each selected
 
 All of the *group* objects live in the ``groups`` section of a template. Each object is given a name just like in the ``addresses`` section. The name is used to references this object in other sections of the template and is a string that can contain letters, numbers, colons (:), periods (.), underscores (_) or hyphens(-). For our example, we are only going to use the mesh group, so it looks as follows with one group named *colors_mesh*::
 
-    “groups”: {
-        “colors_mesh”: {
-            “type”: “mesh”,
-            “addresses”: [
-                 {“name”: “circle1”},
-                 {“name”: “circle2”},
-                 {“name”: “circle3”}
+    "groups": {
+        "colors_mesh": {
+            "type": "mesh",
+            "addresses": [
+                 {"name": "circle1"},
+                 {"name": "circle2"},
+                 {"name": "circle3"}
              ]   
         } 
     }
@@ -300,11 +300,11 @@ There are many other template variables and listing them all is beyond the scope
 
 Below is an example of an ``archivers`` section we define that uses an *esmond* archiver:: 
 
-   “archives”: {
-        “colors_archive”: {
-             “archiver”: “esmond”,
-             “data”: {
-                 “url”: “https://{% scheduled_by_address %}/esmond/perfsonar/archive/”,
+   "archives": {
+        "colors_archive": {
+             "archiver": "esmond",
+             "data": {
+                 "url": "https://{% scheduled_by_address %}/esmond/perfsonar/archive/",
                  "measurement-agent": "{% scheduled_by_address %}"
              }
         }
@@ -362,41 +362,185 @@ You can download a full example of the JSON file described in this section :down
 
 Real-World Example
 ===================
+With the basic concepts behind us, we will now move away from the abstract and into an example with foundations closer to reality. The basic setup of the example is described by the diagram below:
+
+.. figure:: images/psconfig_templates_intro-example-network.png
+    :align: center
+    
+    *Example set of hosts we want to run tests between each other and publish to a central archive*
+    
+In the diagram, hosts are represented by the images of blade servers. We have four hosts that we want to run latency and/or throughput tasks and a fifth host that does not schedule any tasks but instead stores the results of the others in a central archive. Under each server image is one or more hostnames of network interfaces attached to that host. The diagram color-codes the interface hostnames, but working counter-clockwise around the diagram each host has interfaces with the following role:
+
+* The host at the top with the *esmond.archive.perfsonar.net* interface will not perform any tests and will be running an :doc:`esmond <multi_ma_install>` archive.
+* The host with a single interface addressed *lat1.perfsonar.net* will only run latency tests.
+* The host with a single interface addressed *thr1.perfsonar.net* will only run throughput tests.
+* The host with a single interface addressed *thrlat1.perfsonar.net* will run both latency and throughput tests on the same interface.
+* The host furthest to the right has two interfaces. The interface addressed *lat2.perfsonar.net* will run latency tests and the interface addressed *thr2.perfsonar.net* will run throughput tests.
+
+For our example, we want every latency interface to test to every other interface capable of running latency tests. Likewise we want every interface capable to running a throughput test to run to all the others that support throughput tests. Given this desired task topology, let's walkthrough how we construct the JSON of a pSConfig template.
+
+.. note:: The approach shown in this section is not the only way to express a template for the task topology described, it is simply one way. pSConfig is highly flexible and expressive so there is no one correct answer when building a template as long as the resulting task topology meets your goals.
 
 .. _psconfig_templates_intro-example-addresses:
 
 ``addresses``
 --------------
+First we need to build our ``addresses`` section. Our *address* objects will correspond to the interfaces of the hosts in our diagram as shown below::
+
+    "addresses": {
+        "lat1": {
+            "address": "lat1.perfsonar.net"
+        },
+        "thr1": {
+            "address": "thr1.perfsonar.net"
+        },
+       "thrlat1": {
+            "address": "thrlat1.perfsonar.net"
+        },
+        "lat2": {
+            "address": "lat2.perfsonar.net"
+        },
+        "thr2": {
+            "address": "thr2.perfsonar.net"
+        }
+    }
+
+Notice that each has a name by which to reference it within the template and the required ``address`` property. It does not have any further fields such as ``_meta`` because we do not need them for the tests we are trying to build. Often these are the only fields you need, so it is not necessary to set any further information.
+
+.. note:: The addresses labelled ``lat2`` and ``thr2`` are separate *address* objects even though they are on the same physical host. From the perspective of the tasks we want to create, it doesn't really matter that they are on the same host. If it did matter, pSConfig does provide a :ref:`host object <psconfig_templates_intro-json_advanced-hosts>` that groups addresses. For the sake of keeping things concise though, we did not use it in this example since it is extraneous information for our desired task topology. 
 
 .. _psconfig_templates_intro-example-groups:
 
 ``groups``
 -----------
+We combine the addresses into two groups of type *mesh*: one for latency tests and one for throughput tests::
 
-.. _psconfig_templates_intro-example-archives:
+ "groups": {
+        "latency_group": {
+            "type": "mesh",
+            "addresses": [
+                 {"name": "lat1"},
+                 {"name": "thrlat1"},
+                 {"name": "lat2"}
+             ]  
+        },
+        "throughput_group": {
+            "type": "mesh",
+            "addresses": [
+                 {"name": "thr1"},
+                 {"name": "thrlat1"},
+                 {"name": "thr2"}
+             ]  
+        }
+    }
 
-``archives``
---------------
-
-.. _psconfig_templates_intro-example-schedules:
-
-``schedules``
--------------
+Each group selects only those address objects that are marked in our diagram for latency tests and throughput tests, respectively. The only common member of each is the address with name ``thrlat1`` since it runs both types of tests. Since we are using the type *mesh*, every member address will run a test to every other member within the group. This matches our stated task topology.
 
 .. _psconfig_templates_intro-example-tests:
 
 ``tests``
 ------------------
+We can now define the parameters of the two types of tests we want run in the ``tests`` section::
+
+    "tests": {
+        "latency_test": {
+            "type": "latencybg",
+            "spec": {
+                "source": "{% address[0] %}",
+                "dest": "{% address[1] %}",
+                "packet-interval": 0.1,
+                "packet-count": 600
+            }
+        },
+        "throughput_test": {
+            "type": "throughput",
+            "spec": {
+                "source": "{% address[0] %}",
+                "dest": "{% address[1] %}",
+                "duration": "PT30S"
+            }
+        }
+    }
+
+Our first test, named ``latency_test``, defines a test of type ``latencybg``. The type must always correspond to a pScheduler plug-in since pSConfig has no knowledge of how to interpret tests. The ``latencybg`` type creates a test that continuously runs latency measurements. We have given it the following parameters in the ``spec``:
+
+* ``source`` is a hostname or IP indicating the *sender* of data in the test. We set it to the special template variable ``{% address[0] %}``. This variable means take the ``address`` property of the *first address* object in the pair generated by the parent task's group. Since the ``address`` property must be a hostname or IP by definition, using this template variable also meets the requirements of ``source``.
+* ``dest`` is a hostname or IP indicating the *receiver* of data in the test. We set it to the special template variable ``{% address[1] %}``. This variable means take the ``address`` property of the *second address* object in the pair generated by the parent task's group. Since the ``address`` property must be a hostname or IP by definition, using this template variable also meets the requirements of ``dest``.
+* The ``packet-interval`` is the time in seconds in between sending individual packets. A value of ``0.1`` indicates to send 10 packets per second.
+* The ``packet-count`` is the number of packets to send before reporting a result. A value of ``600`` indicates to send 600 packets before generating a summary and reporting a result. Combined with our ``packet-interval`` and the fact that this type of test runs continuously, there will be a result reported every 60 seconds.
+
+The second test, named `throughput_test`, defines a test of type ``throughput``. This creates a test that periodically runs a measurement of network throughput. Our ``spec`` defines the following:
+
+* ``source`` is a hostname or IP indicating the *sender* of data in the test. Just as in our ``latencybg`` test we set the value to the template variable ``{% address[0] %}``.
+* ``dest`` is a hostname or IP indicating the *receiver* of data in the test. Again, just as in our ``latencybg`` test we set the value to the template variable ``{% address[1] %}``.
+* ``duration`` indicates the length of time to run the test as an ISO8601 duration. In our example the test will run for 30 seconds. 
+
+.. _psconfig_templates_intro-example-archives:
+
+``archives``
+--------------
+We have a single host dedicated to archiving the results from all the others. It is defined in the following ``archives`` section::
+
+    "archives": { 
+       "esmond_archive": {
+            "archiver": "esmond",
+            "data": {
+                "url": "https://esmond.archive.perfsonar.net/esmond/perfsonar/archive",
+                "measurement-agent": "{% scheduled_by_address %}"
+            }
+        }
+    }
+    
+As stated before, it is running esmond, so we use the ``archiver`` of type ``esmond``. For the ``data`` section we have two fields:
+
+* The ``url`` is a fixed URL pointing at *esmond.archive.perfsonar.net* as listed in our diagram. Since all the measurements will get registered to the same place, no template variables are needed for the ``url``.
+* The ``measurement-agent`` is a field esmond uses to keep track of the host that requested the original measurement. Here we can use the ``{% scheduled_by_address %}`` template variable to have the agent automatically fill-in the value since it will depend on where the agent is running that creates the task.
+
+.. _psconfig_templates_intro-example-schedules:
+
+``schedules``
+-------------
+Our throughput test will need a schedule so we create one below that will randomly run the test every 4-8 hours::
+
+    "schedules": { 
+       "every_4_hours": {
+            "repeat": "PT4H",
+            "slip": "PT4H",
+            "sliprand": true
+        }
+    }
+
+.. note:: ``latencybg`` tests run continuously, so they do not need an explicit schedule.
 
 .. _psconfig_templates_intro-example-tasks:
 
 ``tasks``
 -----------
+Now that all our components have been created, we can finally create our task definitions::
+
+    "tasks": {
+        "latency_task": {
+            "group": "latency_group",
+            "test": "latency_test",
+            "archives": ["esmond_archive"]
+        },
+        "throughput_task": {
+            "group": "throughput_group",
+            "test": "throughput_test",
+            "archives": ["esmond_archive"],
+            "schedule": "every_4_hours"
+        }
+    }
+    
+As expected there are two tasks: one for latency measurements and another for throughput measurements. Notice that ``latency_task`` does not reference a schedule whereas ``throughput_task`` does. This is because ``latency_task`` runs continuously whereas ``throughput_task`` is on a periodic schedule. Beyond that, the task references the other components by name. With this final piece in place, we now have a complete template that describes our originally stated task topology.
+
 
 .. _psconfig_templates_intro-conclusion:
 
 Putting it all together
 -----------------------
+
+You can download a full example of the JSON file described in this section :download:`here <psconfig_templates/psconfig_templates_intro-network.json>`.
 
 .. _psconfig_templates_intro-json_advanced:
 
