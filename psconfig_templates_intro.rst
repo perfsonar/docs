@@ -196,7 +196,7 @@ Groups of type *mesh* have one required property: ``addresses``. An example is b
 
 The ``addresses`` property is an array of *address selector* objects. These selectors describe which *address* objects to use from the ``addresses`` section of the template. The most common way to select is by name, as is done in the example above. This group will combine all of the addresses selected into pairs with all the other selected addresses.
 
-.. note:: Other types of address selectors are outside of the scope of this document but are detailed in :doc:`psconfig_templates_groups` and :doc:`psconfig_autoconfig`.
+.. note:: Other types of address selectors are outside of the scope of this document but are detailed in :ref:`psconfig_templates_advanced-addresses-labels` and :doc:`psconfig_autoconfig`.
 
 Groups of type *disjoint* have two required properties: ``a-addresses`` and ``b-addresses``. An example is below::
 
@@ -407,7 +407,7 @@ First we need to build our ``addresses`` section. Our *address* objects will cor
 
 Notice that each has a name by which to reference it within the template and the required ``address`` property. It does not have any further fields such as ``_meta`` because we do not need them for the tests we are trying to build. Often these are the only fields you need, so it is not necessary to set any further information.
 
-.. note:: The addresses labelled ``lat2`` and ``thr2`` are separate *address* objects even though they are on the same physical host. From the perspective of the tasks we want to create, it doesn't really matter that they are on the same host. If it did matter, pSConfig does provide a :ref:`host object <psconfig_templates_intro-json_advanced-hosts>` that groups addresses. For the sake of keeping things concise though, we did not use it in this example since it is extraneous information for our desired task topology. 
+.. note:: The addresses labelled ``lat2`` and ``thr2`` are separate *address* objects even though they are on the same physical host. From the perspective of the tasks we want to create, it doesn't really matter that they are on the same host. If it did matter, pSConfig does provide a :ref:`host object <psconfig_templates_advanced-hosts>` that groups addresses. For the sake of keeping things concise though, we did not use it in this example since it is extraneous information for our desired task topology. 
 
 .. _psconfig_templates_intro-example-groups:
 
@@ -542,37 +542,10 @@ Putting it all together
 
 You can download a full example of the JSON file described in this section :download:`here <psconfig_templates/psconfig_templates_intro-network.json>`.
 
-.. _psconfig_templates_intro-json_advanced:
-
-Advanced JSON
-==============
-
-.. _psconfig_templates_intro-json_advanced-hosts:
-
-``hosts``
---------------
-
-.. _psconfig_templates_intro-json_advanced-includes:
-
-``includes``
---------------
-
-.. _psconfig_templates_intro-json_advanced-contexts:
-
-``contexts``
---------------
-
-.. _psconfig_templates_intro-json_advanced-classes:
-
-``address-classes``
---------------------
-
-.. _psconfig_templates_intro-further_reading:
-
 Further Reading
 ================
 * `pSConfig Template JSON Schema <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_
 * :doc:`psconfig_templates_examples`
 * :doc:`psconfig_templates_vars`
-* :doc:`psconfig_templates_groups`
+* :doc:`psconfig_templates_advanced`
 * :doc:`psconfig_autoconfig`

@@ -95,7 +95,7 @@ Managing Multiple Hosts with pSConfig
    psconfig_maddash_agent
    mca
    psconfig_templates_vars
-   psconfig_templates_groups
+   psconfig_templates_advanced
    psconfig_autoconfig
    psconfig_templates_examples
    psconfig_meshconfig_migrate
