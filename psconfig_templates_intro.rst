@@ -266,7 +266,7 @@ We'll notice this fictitious plug-in supports a ``spec`` with two parameters cal
 Template Variables
 ------------------
 
-Template variables are how we access properties of task components to connect them to other components. They can be embedded in strings and take the form of::
+Template variables are how we access properties of task components to connect them to other components. They can be included in strings of certain JSON objects and take the form of::
 
     {% VARIABLE %} 
     
@@ -348,7 +348,7 @@ After building all of the components, we are finally ready to build our task. Th
         }
     }
 
-Note that when building a task the only strictly required fields are ``group`` and ``test``. Others like ``schedule`` and ``archives`` are not strictly required, but are commonly used since one generally needs to run a test more than once and store the results. There are additional fields that control the tool used, set the task priority and more but they are beyond the scope of this document. See :doc:`psconfig_templates_examples` for more examples of different types of tasks. 
+Note that when building a task the only strictly required fields are ``group`` and ``test``. Others like ``schedule`` and ``archives`` are not strictly required, but are commonly used since one generally needs to run a test more than once and store the results. There are additional fields that control the tool used, set the task priority and more but they are beyond the scope of this document. 
 
 .. _psconfig_templates_intro-json_basics-conclusion:
 
@@ -545,7 +545,6 @@ You can download a full example of the JSON file described in this section :down
 Further Reading
 ================
 * `pSConfig Template JSON Schema <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_
-* :doc:`psconfig_templates_examples`
 * :doc:`psconfig_templates_vars`
 * :doc:`psconfig_templates_advanced`
 * :doc:`psconfig_autoconfig`

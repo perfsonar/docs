@@ -97,7 +97,6 @@ Managing Multiple Hosts with pSConfig
    psconfig_templates_vars
    psconfig_templates_advanced
    psconfig_autoconfig
-   psconfig_templates_examples
    psconfig_meshconfig_migrate
    
 .. _index-multiple:

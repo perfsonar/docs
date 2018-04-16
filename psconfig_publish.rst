@@ -7,7 +7,7 @@ Introduction
 After you have :doc:`created a template<psconfig_templates_intro>` you will need to publish your template so that it can be downloaded by agents. You have a number of options for doing so including choosing one of the following:
 
 * **Option 1: Using the pSConfig publisher command-line tools.** This is a set of simple command line tools provided by pSConfig that validate the JSON and save a version of it in a standard location under an Apache web server. More details on this method can be found below in the section :ref:`psconfig_publish-cli`.
-* **Option 2: Use the pSConfig Web Editor.** This tool has its own method for publishing templates, see that tool's :doc:`documentation<mca>` for more details.
+* **Option 2: Use pSConfig WebAdmin.** This tool has its own method for publishing templates, see that tool's :doc:`documentation<mca>` for more details.
 * **Option 3: Manually copy the template file to a web server.** If you don't want to use the above tools you may also manually copy the file to a web server on your own. The exact steps for doing this will depend on your web server's setup, but at the end of the day pSConfig templates can be published just like any other file.
 * **Option 4: Put the template on the local filesystem of the agent.** You may either point at it directly or use an agent's template include directory. See the :doc:`psconfig_pscheduler_agent` and :doc:`psconfig_maddash_agent` documents for information on how to do so for individual agents. 
 
