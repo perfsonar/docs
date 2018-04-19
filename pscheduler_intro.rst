@@ -33,6 +33,9 @@ Terminology
     Archiver
         Software that transfers :term:`results<result>` to long-term storage or elsewhere for further processing.
     
+    Context
+        A construct that allows certain user-specified changes to the execution environment prior to the execution of a :term:`tool` running a :term:`test`.
+        
     Limits
         Rules that define who is allowed to run what type of tests
     

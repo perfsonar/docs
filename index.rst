@@ -80,6 +80,7 @@ Running Measurements with pScheduler
    config_pscheduler_limits
    pscheduler_ref_tests_tools
    pscheduler_ref_archivers
+   pscheduler_ref_contexts
    pscheduler_ref_bwctl
 
 Managing Multiple Hosts with pSConfig

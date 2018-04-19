@@ -78,7 +78,7 @@ Generally, many test specifications have a ``source-node`` and/or ``dest-node`` 
 
 .. _psconfig_templates_advanced-addresses-lead_bind_address:
 
-Controlling pScheduler Binding Options
+Controlling pScheduler Server Binding
 --------------------------------------
 For pScheduler servers running on a host with an advanced routing configuration, you may need to tell pScheduler to bind to a particular address when sending control traffic to another pScheduler server. pSConfig allows you to set this value with the ``lead-bind-address`` property of an *address* object. This property must be an IP or hostname. An example is below::
 
@@ -415,26 +415,293 @@ Sharing Address Properties with ``hosts``
 
 Introduction to ``hosts``
 -------------------------
+Often times, multiple *address* objects have a shared set of properties. For example, if you have two *address* objects representing network interfaces on the same physical system, and that system is not running an agent, then you want to set the :ref:`no-agent <psconfig_templates_advanced-addresses-noagent>` property. You could define it twice (once in each *address* object) or you could define a *host* object. 
+
+In pSConfig, a **host** is an object containing properties shared between one or more addresses. A *host* object is defined in the ``hosts`` section of a template. For our ``no-agent`` use case, an example *host* object could be represented in the ``hosts`` section as follows::
+
+    "hosts": {
+        "thrlat2": {
+            "no-agent": true
+        }
+    }
+
+An *address* object can indicate it belongs to a particular *host* object using the ``host`` property. Below is an example ``addresses`` section using the *host* above::
+
+    "addresses": {
+        "thr2": {
+            "address": "thr2.perfsonar.net",
+            "host": "thrlat2"
+        },
+        "lat2": {
+            "address": "lat2.perfsonar.net",
+            "host": "thrlat2"
+        }
+    }
+    
+Each address can only belong to one *host* object. Also a *host* object has no required properties (i.e. an empty object ``{}`` is a valid *host*). You can see the following sections for some uses of *host* objects and their properties:
+
+* For information on setting a archives to be used anytime an *address* object belonging to a *host* is the :ref:`scheduled_by_address <psconfig_templates_vars-scheduled_by_address>` see :ref:`psconfig_templates_advanced-hosts-archives`
+* For information on disabling all the addresses belonging to a host, see :ref:`psconfig_templates_advanced-hosts-disabled`
+* For information on using tags and other properties of hosts to dynamically build groups see :doc:`psconfig_autoconfig`
+
+
+.. note:: See the `pSConfig Template JSON Schema <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_ for a full list of options supported by the *host* object.
 
 .. _psconfig_templates_advanced-hosts-archives:
 
 Setting Host Archives
 -------------------------
+A *host* object supports setting one or more archives to be used anytime an address belonging to that *host* is is the :ref:`scheduled_by_address <psconfig_templates_vars-scheduled_by_address>` of an individual task. It does this through the ``archives`` property which accepts a list of *archive* object names. 
+
+For example, you can set a an archive that publishes results to an esmond instance running on ``thrlat2-archive.perfsonar.net`` anytime either ``thr2.perfsonar.net`` or ``lat2.perfsonar.net`` is responsible for scheduling a task::
+
+    {
+        "archives": { 
+           "local_archive": {
+                "archiver": "esmond",
+                "data": {
+                    "url": "https://thrlat2-archive.perfsonar.net/esmond/perfsonar/archive",
+                    "measurement-agent": "{% scheduled_by_address %}"
+                }
+            }
+        },
+    
+        "addresses": {
+            "thr2": {
+                "address": "thr2.perfsonar.net",
+                "host": "thrlat2"
+            },
+            "lat2": {
+                "address": "lat2.perfsonar.net",
+                "host": "thrlat2"
+            }
+        },
+    
+        "hosts": {
+            "thrlat2": {
+                "archives": ["local_archive"]
+            }
+        }
+    }
+
+Archives defined in this way will only be used when the *address* objects belonging to a host are the :ref:`scheduled_by_address <psconfig_templates_vars-scheduled_by_address>`. This means that the archive will not be used for a host pair where they are not involved or where another address is responsible for scheduling.
+
+Also, if the *task* ``archives`` property is defined and the *host* ``archives`` property applies, then the two lists will be merged. If a task ``archives`` property and a host ``archives`` property both point at the same *archive* object, that object will only be used once (i.e. results will not get published twice to the same archive).
 
 .. _psconfig_templates_advanced-hosts-disabled:
 
 Disabling a Host
 ----------------
+If you want to temporarily suspend all tasks involving all addresses associated with a host, then you can use the *host* ``disabled`` property. This functions exactly the same as if you were to individually set the :ref:`address disabled property <psconfig_templates_advanced-addresses-disabled>` for each *address* belonging to a host. An example is below::
+
+    {
+        "hosts": {
+            "thrlat2": {
+                "disabled": true
+            }
+        },
+        
+        "addresses": {
+            "thr2": {
+                "address": "thr2.perfsonar.net",
+                "host": "thrlat2"
+            },
+            "lat2": {
+                "address": "lat2.perfsonar.net",
+                "host": "thrlat2"
+            }
+        }
+    }
 
 .. _psconfig_templates_advanced-includes:
 
-Including External Files with ``includes``
-===========================================
+Including External Files
+==========================
+pSConfig templates support including external files through the use of the ``includes`` property. The ``includes`` property goes at the top-level of the template and is an array of URLs to *include files*. It is important to keep the following in mind when using ``includes`` in your template:
+
+* Include files are processed in the order they are specified in the ``includes`` property
+* An include file MUST be reachable by the agent(s) reading the template. For remote agents this means the URL must be available via http or https. If your template is one that will only be read by an agent on the local file system, then it is possible to use URLs pointing at local files by either specifying the full file path or using the ``file://`` prefix in the URL.
+* A template with an ``includes`` section MUST validate against the `pSConfig Template JSON Schema <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_ both prior to including the file and after including the file. If, for example, all your ``addresses`` live in an include file, you still need to provide an empty object ``{}`` in the base template. 
+* An include file does NOT need to validate against the `pSConfig Template JSON Schema <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_. Instead it can be a partial template containing one or more of the following sections: `addresses`, `address-classes`, `archives`, `contexts`, `groups`, `hosts`, `schedules`, `tasks`, and/or `tests`. 
+* The sections from the include file will be merged into the corresponding section of the base template. If during a merge an object (e.g. an individual *address* object) has the same name as an object already in the template, the object from the include file will be ignored.
+
+
+To better illustrate the points above, let's look at an example using includes to recreate the JSON template from the :ref:`template introduction <psconfig_templates_intro-example>` that can be downloaded :download:`here <psconfig_templates/psconfig_templates_intro-network.json>`. Let's define two template files, one that defines the latency ``addresses`` and ``groups`` and another that defines the throughput ``addresses`` and ``groups``.
+
+The latency include file is below (we'll assume it lives at ``https://example.perfsonar.net/psconfig/includes/latency.json``)::
+
+    {
+        "addresses": {
+            "lat1": {
+                "address": "lat1.perfsonar.net"
+            },
+            "thrlat1": {
+                "address": "thrlat1.perfsonar.net"
+            },
+            "lat2": {
+                "address": "lat2.perfsonar.net"
+            }
+        },
+        "groups": {
+            "latency_group": {
+                "type": "mesh",
+                "addresses": [
+                     {"name": "lat1"},
+                     {"name": "thrlat1"},
+                     {"name": "lat2"}
+                 ]  
+            }
+        }
+    }
+
+The throughput include file is below (we'll assume it lives at ``https://example.perfsonar.net/psconfig/includes/throughput.json``)::
+
+    {
+        "addresses": {
+            "thr1": {
+                "address": "thr1.perfsonar.net"
+            },
+            "thrlat1": {
+                "address": "thrlat1.perfsonar.net"
+            },
+            "thr2": {
+                "address": "thr2.perfsonar.net"
+            }
+        },
+        "groups": {
+            "throughput_group": {
+                "type": "mesh",
+                "addresses": [
+                     {"name": "thr1"},
+                     {"name": "thrlat1"},
+                     {"name": "thr2"}
+                 ]  
+            }
+        }
+    }
+
+Finally we build our base template that includes the files::
+
+    {
+        "includes": [
+            "https://example.perfsonar.net/psconfig/includes/latency.json",
+            "https://example.perfsonar.net/psconfig/includes/throughput.json"
+        ],
+        "addresses": {},
+        "groups": {},
+        "tests": {
+            "latency_test": {
+                "type": "latencybg",
+                "spec": {
+                    "source": "{% address[0] %}",
+                    "dest": "{% address[1] %}",
+                    "packet-interval": 0.1,
+                    "packet-count": 600
+                }
+            },
+            "throughput_test": {
+                "type": "throughput",
+                "spec": {
+                    "source": "{% address[0] %}",
+                    "dest": "{% address[1] %}",
+                    "duration": "PT30S"
+                }
+            }
+        },
+        "archives": { 
+           "esmond_archive": {
+                "archiver": "esmond",
+                "data": {
+                    "url": "https://esmond.archive.perfsonar.net/esmond/perfsonar/archive",
+                    "measurement-agent": "{% scheduled_by_address %}"
+                }
+            }
+        },
+        "schedules": { 
+           "every_4_hours": {
+                "repeat": "PT4H",
+                "slip": "PT4H",
+                "sliprand": true
+            }
+        },
+        "tasks": {
+            "latency_task": {
+                "group": "latency_group",
+                "test": "latency_test",
+                "archives": ["esmond_archive"]
+            },
+            "throughput_task": {
+                "group": "throughput_group",
+                "test": "throughput_test",
+                "archives": ["esmond_archive"],
+                "schedule": "every_4_hours"
+            }
+        }
+    }
+
+It is worth noting the following about the template above:
+
+* The ``includes`` section points at two URLs accessible by remote agents using https
+* The include files both contain only a ``groups`` and ``addresses`` section since there is no requirement they be a complete template
+* The base template MUST validate prior to merging the include files, so there are empty ``addresses`` and ``groups`` since those are required by the schema. 
+* Both include files contain an *address* object named ``thrlat1``. The address will only be included once. Since the latency include file is listed first in our ``includes`` section, that definition will be used.
+
+Include files like the above can be useful for organizing templates making them more readable. For further information on advanced use cases where include files can be used to make your templates more dynamic see :doc:`psconfig_autoconfig`.
 
 .. _psconfig_templates_advanced-contexts:
 
 Using ``contexts``
 ==================
+pSConfig allows for the use of a pScheduler supported construct called a context. Contexts are named as such because they allow certain user-specified changes to the execution context prior to execution of that tool running a test. Just like tests, tools and archives, contexts are defined by plug-ins of which pSConfig does not have detailed knowledge. As such, any context your pScheduler server can support, pSConfig can also support.
+
+pSConfig allows you to define *context* objects in the ``contexts`` section of a template. These *context* objects are named and can be referenced by an *address* object. When a pScheduler agent is building a task, it will check the list of addresses generated by a group for context definitions. If it finds any, then it will pass them to pScheduler. The schema of a *context* in pSConfig matches that of pScheduler (with additional support for an optional ``_meta`` field). Each *context* has a ``context`` property indicating the type and a ``data`` property with type-specific options. An example of a ``linuxnns`` context and how to associate its address objects is shown in the example below::
+
+    "contexts": {
+        "linuxnns_ou812": {
+            "context": "linuxnns",
+            "data": {
+                "namespace": "ou812"
+            }
+        }
+    },
+    
+    "addresses": {
+        "thr1": {
+            "address": "thr1.perfsonar.net",
+            "contexts": [ "linuxnns_ou812" ]
+        },
+        "thr2": {
+            "address": "thr2.perfsonar.net",
+            "contexts": [ "linuxnns_ou812" ]
+        }
+    }
+    
+In the current form of pSConfig's context usage, you need to be careful when using contexts not to unintentionally create invalid pScheduler tasks. In particular, since pSConfig does not know which tests are single participant tests vs. multi-participant in pScheduler terms, then it blindly creates context definitions for any *address* involved in a task. This can cause invalid pScheduler task specifications, particularly in single-participant tests. It also assumes the context of the first address in a pair is the first participant, that of the second is the second participant and so forth. If this is not how you arranged your test it can cause unexpected results. 
+
+You need to be very selective where you use contexts and may consider using a construct such as :ref:`address labels <psconfig_templates_advanced-addresses-labels>` to allow explicit selection of a version of an *address* object with or without contexts. An example that defines the default version of an address with no ``contexts`` and a label that does have ``contexts`` is shown below::
+
+    
+        "addresses": {
+            "thr1": {
+                "address": "thr1.perfsonar.net",
+                "labels": {
+                    "with_context": {
+                        "address": "thr1.perfsonar.net",
+                        "contexts": [ "linuxnns_ou812" ]
+                    }
+                }
+            },
+            "thr2": {
+                "address": "thr2.perfsonar.net",
+                "labels": {
+                    "with_context": {
+                        "address": "thr2.perfsonar.net",
+                        "contexts": [ "linuxnns_ou812" ]
+                    }
+                }
+            }
+        }
+
 
 .. _psconfig_templates_advanced-groups:
 

@@ -1,0 +1,191 @@
+**********************
+Contexts Reference
+**********************
+
+.. _pscheduler_ref_contexts-intro:
+
+Introduction
+===============
+
+pScheduler supports a construct called a :term:`context` which allows certain user-specified changes to the execution context prior to execution of that tool running a test.  One example of such changes (and the only one implemented at this time) is the selection of a non-root network namespace on a Linux system to allow alternate routing.
+
+This feature has limitations/requirements that must be understood, particularly when using it to change the behavior of the system's network stack:
+
+ 1. All pScheduler-to-pScheduler communication runs in the same network context as the rest of pScheduler.
+ 2. The node specifiers built into tests (e.g., ``source-node``, ``dest-node`` or ``host-node``) must be used to specify where pScheduler should connect.  pScheduler will not successfully divine and connect to the participating nodes otherwise.
+ 3. DNS may be affected when the context changes.
+ 4. Context changes are applied *only* to the the tool used to run the test.
+ 5. Archiving is done in the same context as the rest of pScheduler.
+
+.. _pscheduler_ref_contexts-syntax:
+
+Basic JSON Syntax
+====================
+
+Changing contexts is accomplished by providing a *context specification*.  The context specification is an array containing one or more sub-arrays, one for each participant in the test::
+
+    {
+        "schema": 1,
+        "contexts": [
+            [ ... Contexts for Participant 0 ... ],
+            [ ... Contexts for Participant 1 ... ],
+            ...
+            [ ... Contexts for Participant n ... ]
+        ]
+    }
+
+
+If no ``context`` is provided, there will be no context changes.  If one of the participants is not to change contexts, an empty sub-array must be present as a placeholder.
+
+Each sub-array contains zero or more objects, each containing these items:
+
+``context`` - The name of the context changer to use. See :ref:`pscheduler_ref_contexts-changers`.
+
+``data`` - A JSON object containing context-changer-specific data to be used in determining the context change's behavior.
+
+For example::
+
+    {
+        "context": "linuxnns",
+        "data": {
+            "namespace": "281-apple"
+        }
+    }
+
+
+.. _pscheduler_ref_contexts-cli:
+
+Changing Contexts from the Command Line
+========================================
+
+pScheduler can be directed to change contexts by using the ``--context`` switch followed by a context specification.  
+
+.. _pscheduler_ref_contexts-cli-changers:
+
+Specifying Context Changers
+-----------------------------
+
+.. _pscheduler_ref_contexts-cli-changers-string:
+
+Directly, as a String Literal
+++++++++++++++++++++++++++++++
+The context specification may be added directly to the command line as a string literal containing its JSON::
+
+    % pscheduler task --context '{ "schema": 1, "contexts": [ [ { "context": "linuxnns", "data": { "namespace": "ou812" } } ] ] }' trace --dest 198.51.100.86
+
+.. _pscheduler_ref_contexts-cli-changers-file:
+
+Indirectly, From a File
+++++++++++++++++++++++++++++++
+If the argument given to the ``--context`` switch begins with ``@``, the remainder of the argument will be treated as the path to a JSON file containing a context specification which will be opened, read and treated as if it had been typed in by hand.  (Note that the tilde (``~``) is not expanded to the user's home directory.  Use ``$HOME`` instead.)  For example::
+
+    % cat /home/fred/context-ou812.json
+    {
+        "schema": 1,
+        "contexts": [
+            [
+                {
+                    "context": "linuxnns",
+                    "data": {
+                        "namespace": "ou812"
+                    }
+                }
+            ]
+        ]
+    }
+
+
+    % pscheduler task --context @/home/fred/context-ou812.json trace --dest 198.51.100.86
+
+
+
+.. _pscheduler_ref_contexts-psconfig:
+
+Contexts in pSConfig Templates
+============================================
+
+:doc:`pSConfig <psconfig_intro>` allows for the use of context objects in the ``contexts`` section of pSConfig templates. They take the exact same format as described in this document. For more information on contexts in pSConfig see :ref:`psconfig_templates_advanced-contexts`.
+
+.. _pscheduler_ref_contexts-changers:
+
+Context Changers
+==================
+The context changers listed below are supplied as part of the standard distribution of pScheduler.
+
+.. _pscheduler_ref_contexts-changers-linuxnns:
+
+``linuxnns``
+-------------
+
+This context changer switches to a different Linux network namespace.
+
+.. _pscheduler_ref_contexts-changers-linuxnns-data:
+
+Context Changer Data
+++++++++++++++++++++++
+
+``namespace`` - The name of the namespace to be used during the run of the test.
+
+.. _pscheduler_ref_contexts-changers-linuxnns-example:
+
+Example
++++++++++
+::
+
+    {
+        "context": "linuxnns",
+        "data": {
+            "namespace": "ou812"
+        }
+    }
+
+.. _pscheduler_ref_contexts-changers-changenothing:
+
+``changenothing``
+--------------------
+
+This context changer makes no changes to the execution context and is intended for development and testing only.
+
+.. _pscheduler_ref_contexts-changers-changenothing-data:
+
+Context Changer Data
++++++++++++++++++++++++++++
+This context changer has no data.
+
+.. _pscheduler_ref_contexts-changers-changenothing-example:
+
+Example
+++++++++
+::
+
+    {
+        "context": "changenothing",
+        "data": { }
+    }
+
+.. _pscheduler_ref_contexts-changers-changefail:
+
+``changefail``
+---------------
+
+This context changer induces a falure and is intended for development and testing only.
+
+.. _pscheduler_ref_contexts-changers-changefail-data:
+
+Context Changer Data
++++++++++++++++++++++++++++
+
+This context changer has no data.
+
+.. _pscheduler_ref_contexts-changers-changefail-example:
+
+Example
++++++++++
+::
+
+    {
+        "context": "changefail",
+        "data": { }
+    }
+
+
