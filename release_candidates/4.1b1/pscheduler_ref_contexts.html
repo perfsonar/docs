@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Contexts Reference &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.1b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.1b1 documentation" href="index.html" />
+    <link rel="next" title="BWCTL to pScheduler Command Reference" href="pscheduler_ref_bwctl.html" />
+    <link rel="prev" title="Archiver Reference" href="pscheduler_ref_archivers.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pscheduler_ref_bwctl.html" title="BWCTL to pScheduler Command Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_ref_archivers.html" title="Archiver Reference"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="contexts-reference">
+<h1>Contexts Reference<a class="headerlink" href="#contexts-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="pscheduler-ref-contexts-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler supports a construct called a <a class="reference internal" href="pscheduler_intro.html#term-context"><em class="xref std std-term">context</em></a> which allows certain user-specified changes to the execution context prior to execution of that tool running a test.  One example of such changes (and the only one implemented at this time) is the selection of a non-root network namespace on a Linux system to allow alternate routing.</p>
+<p>This feature has limitations/requirements that must be understood, particularly when using it to change the behavior of the system&#8217;s network stack:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>All pScheduler-to-pScheduler communication runs in the same network context as the rest of pScheduler.</li>
+<li>The node specifiers built into tests (e.g., <tt class="docutils literal"><span class="pre">source-node</span></tt>, <tt class="docutils literal"><span class="pre">dest-node</span></tt> or <tt class="docutils literal"><span class="pre">host-node</span></tt>) must be used to specify where pScheduler should connect.  pScheduler will not successfully divine and connect to the participating nodes otherwise.</li>
+<li>DNS may be affected when the context changes.</li>
+<li>Context changes are applied <em>only</em> to the the tool used to run the test.</li>
+<li>Archiving is done in the same context as the rest of pScheduler.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="basic-json-syntax">
+<span id="pscheduler-ref-contexts-syntax"></span><h2>Basic JSON Syntax<a class="headerlink" href="#basic-json-syntax" title="Permalink to this headline">¶</a></h2>
+<p>Changing contexts is accomplished by providing a <em>context specification</em>.  The context specification is an array containing one or more sub-arrays, one for each participant in the test:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;schema&quot;: 1,
+    &quot;contexts&quot;: [
+        [ ... Contexts for Participant 0 ... ],
+        [ ... Contexts for Participant 1 ... ],
+        ...
+        [ ... Contexts for Participant n ... ]
+    ]
+}
+</pre></div>
+</div>
+<p>If no <tt class="docutils literal"><span class="pre">context</span></tt> is provided, there will be no context changes.  If one of the participants is not to change contexts, an empty sub-array must be present as a placeholder.</p>
+<p>Each sub-array contains zero or more objects, each containing these items:</p>
+<p><tt class="docutils literal"><span class="pre">context</span></tt> - The name of the context changer to use. See <a class="reference internal" href="#pscheduler-ref-contexts-changers"><em>Context Changers</em></a>.</p>
+<p><tt class="docutils literal"><span class="pre">data</span></tt> - A JSON object containing context-changer-specific data to be used in determining the context change&#8217;s behavior.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;context&quot;</span><span class="p">:</span> <span class="s">&quot;linuxnns&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;namespace&quot;</span><span class="p">:</span> <span class="s">&quot;281-apple&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="changing-contexts-from-the-command-line">
+<span id="pscheduler-ref-contexts-cli"></span><h2>Changing Contexts from the Command Line<a class="headerlink" href="#changing-contexts-from-the-command-line" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler can be directed to change contexts by using the <tt class="docutils literal"><span class="pre">--context</span></tt> switch followed by a context specification.</p>
+<div class="section" id="specifying-context-changers">
+<span id="pscheduler-ref-contexts-cli-changers"></span><h3>Specifying Context Changers<a class="headerlink" href="#specifying-context-changers" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="directly-as-a-string-literal">
+<span id="pscheduler-ref-contexts-cli-changers-string"></span><h4>Directly, as a String Literal<a class="headerlink" href="#directly-as-a-string-literal" title="Permalink to this headline">¶</a></h4>
+<p>The context specification may be added directly to the command line as a string literal containing its JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre>% pscheduler task --context &#39;{ &quot;schema&quot;: 1, &quot;contexts&quot;: [ [ { &quot;context&quot;: &quot;linuxnns&quot;, &quot;data&quot;: { &quot;namespace&quot;: &quot;ou812&quot; } } ] ] }&#39; trace --dest 198.51.100.86
+</pre></div>
+</div>
+</div>
+<div class="section" id="indirectly-from-a-file">
+<span id="pscheduler-ref-contexts-cli-changers-file"></span><h4>Indirectly, From a File<a class="headerlink" href="#indirectly-from-a-file" title="Permalink to this headline">¶</a></h4>
+<p>If the argument given to the <tt class="docutils literal"><span class="pre">--context</span></tt> switch begins with <tt class="docutils literal"><span class="pre">&#64;</span></tt>, the remainder of the argument will be treated as the path to a JSON file containing a context specification which will be opened, read and treated as if it had been typed in by hand.  (Note that the tilde (<tt class="docutils literal"><span class="pre">~</span></tt>) is not expanded to the user&#8217;s home directory.  Use <tt class="docutils literal"><span class="pre">$HOME</span></tt> instead.)  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>% cat /home/fred/context-ou812.json
+{
+    &quot;schema&quot;: 1,
+    &quot;contexts&quot;: [
+        [
+            {
+                &quot;context&quot;: &quot;linuxnns&quot;,
+                &quot;data&quot;: {
+                    &quot;namespace&quot;: &quot;ou812&quot;
+                }
+            }
+        ]
+    ]
+}
+
+
+% pscheduler task --context @/home/fred/context-ou812.json trace --dest 198.51.100.86
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="contexts-in-psconfig-templates">
+<span id="pscheduler-ref-contexts-psconfig"></span><h2>Contexts in pSConfig Templates<a class="headerlink" href="#contexts-in-psconfig-templates" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="psconfig_intro.html"><em>pSConfig</em></a> allows for the use of context objects in the <tt class="docutils literal"><span class="pre">contexts</span></tt> section of pSConfig templates. They take the exact same format as described in this document. For more information on contexts in pSConfig see <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-contexts"><em>Using contexts</em></a>.</p>
+</div>
+<div class="section" id="context-changers">
+<span id="pscheduler-ref-contexts-changers"></span><h2>Context Changers<a class="headerlink" href="#context-changers" title="Permalink to this headline">¶</a></h2>
+<p>The context changers listed below are supplied as part of the standard distribution of pScheduler.</p>
+<div class="section" id="linuxnns">
+<span id="pscheduler-ref-contexts-changers-linuxnns"></span><h3><tt class="docutils literal"><span class="pre">linuxnns</span></tt><a class="headerlink" href="#linuxnns" title="Permalink to this headline">¶</a></h3>
+<p>This context changer switches to a different Linux network namespace.</p>
+<div class="section" id="context-changer-data">
+<span id="pscheduler-ref-contexts-changers-linuxnns-data"></span><h4>Context Changer Data<a class="headerlink" href="#context-changer-data" title="Permalink to this headline">¶</a></h4>
+<p><tt class="docutils literal"><span class="pre">namespace</span></tt> - The name of the namespace to be used during the run of the test.</p>
+</div>
+<div class="section" id="example">
+<span id="pscheduler-ref-contexts-changers-linuxnns-example"></span><h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;context&quot;</span><span class="p">:</span> <span class="s">&quot;linuxnns&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;namespace&quot;</span><span class="p">:</span> <span class="s">&quot;ou812&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="changenothing">
+<span id="pscheduler-ref-contexts-changers-changenothing"></span><h3><tt class="docutils literal"><span class="pre">changenothing</span></tt><a class="headerlink" href="#changenothing" title="Permalink to this headline">¶</a></h3>
+<p>This context changer makes no changes to the execution context and is intended for development and testing only.</p>
+<div class="section" id="pscheduler-ref-contexts-changers-changenothing-data">
+<span id="id1"></span><h4>Context Changer Data<a class="headerlink" href="#pscheduler-ref-contexts-changers-changenothing-data" title="Permalink to this headline">¶</a></h4>
+<p>This context changer has no data.</p>
+</div>
+<div class="section" id="pscheduler-ref-contexts-changers-changenothing-example">
+<span id="id2"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-contexts-changers-changenothing-example" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;context&quot;</span><span class="p">:</span> <span class="s">&quot;changenothing&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="changefail">
+<span id="pscheduler-ref-contexts-changers-changefail"></span><h3><tt class="docutils literal"><span class="pre">changefail</span></tt><a class="headerlink" href="#changefail" title="Permalink to this headline">¶</a></h3>
+<p>This context changer induces a falure and is intended for development and testing only.</p>
+<div class="section" id="pscheduler-ref-contexts-changers-changefail-data">
+<span id="id3"></span><h4>Context Changer Data<a class="headerlink" href="#pscheduler-ref-contexts-changers-changefail-data" title="Permalink to this headline">¶</a></h4>
+<p>This context changer has no data.</p>
+</div>
+<div class="section" id="pscheduler-ref-contexts-changers-changefail-example">
+<span id="id4"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-contexts-changers-changefail-example" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;context&quot;</span><span class="p">:</span> <span class="s">&quot;changefail&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Contexts Reference</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#basic-json-syntax">Basic JSON Syntax</a></li>
+<li><a class="reference internal" href="#changing-contexts-from-the-command-line">Changing Contexts from the Command Line</a><ul>
+<li><a class="reference internal" href="#specifying-context-changers">Specifying Context Changers</a><ul>
+<li><a class="reference internal" href="#directly-as-a-string-literal">Directly, as a String Literal</a></li>
+<li><a class="reference internal" href="#indirectly-from-a-file">Indirectly, From a File</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contexts-in-psconfig-templates">Contexts in pSConfig Templates</a></li>
+<li><a class="reference internal" href="#context-changers">Context Changers</a><ul>
+<li><a class="reference internal" href="#linuxnns"><tt class="docutils literal"><span class="pre">linuxnns</span></tt></a><ul>
+<li><a class="reference internal" href="#context-changer-data">Context Changer Data</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#changenothing"><tt class="docutils literal"><span class="pre">changenothing</span></tt></a><ul>
+<li><a class="reference internal" href="#pscheduler-ref-contexts-changers-changenothing-data">Context Changer Data</a></li>
+<li><a class="reference internal" href="#pscheduler-ref-contexts-changers-changenothing-example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#changefail"><tt class="docutils literal"><span class="pre">changefail</span></tt></a><ul>
+<li><a class="reference internal" href="#pscheduler-ref-contexts-changers-changefail-data">Context Changer Data</a></li>
+<li><a class="reference internal" href="#pscheduler-ref-contexts-changers-changefail-example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pscheduler_ref_archivers.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_ref_archivers.html" title="previous chapter">Archiver Reference</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pscheduler_ref_bwctl.html">Next topic</a>
+                      <ul><li><a href="pscheduler_ref_bwctl.html" title="next chapter">BWCTL to pScheduler Command Reference</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pscheduler_ref_bwctl.html" title="BWCTL to pScheduler Command Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_ref_archivers.html" title="Archiver Reference"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2018, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

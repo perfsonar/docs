@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Managing Users &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.1b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.1b1 documentation" href="index.html" />
+    <link rel="next" title="Host Tuning" href="manage_tuning.html" />
+    <link rel="prev" title="Updating perfSONAR" href="manage_update.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_tuning.html" title="Host Tuning"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_update.html" title="Updating perfSONAR"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="managing-users">
+<h1>Managing Users<a class="headerlink" href="#managing-users" title="Permalink to this headline">¶</a></h1>
+<p>The perfSONAR Toolkit provides utilities for adding, deleting and modifying users. In particular it helps with the management of users that have permissions to access the web interface or login to the host via SSH. All of these tasks could be done through the standard *NIX command-line tools and the tools provided are mainly for convenience .</p>
+<div class="section" id="adding-a-user">
+<h2>Adding a User<a class="headerlink" href="#adding-a-user" title="Permalink to this headline">¶</a></h2>
+<p>When adding users to the toolkit, in particular those that you want to access the web interface or SSH into the host, it is recommended you use the provided script <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>. To add users with that script run the following:</p>
+<ol class="arabic">
+<li><p class="first">Login to the system as a root user</p>
+</li>
+<li><p class="first">Run ** <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em> **</p>
+</li>
+<li><p class="first">At the prompt, select option <strong>2. Manage Users</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
+
+1. Change Timezone
+2. Manage Users
+0. exit
+
+Make a selection: 2
+</pre></div>
+</div>
+</li>
+<li><p class="first">Select option <strong>1. Add a new user</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>Welcome to the perfSONAR Toolkit user administration program.
+This program will help you administer users.
+You may configure any of the options below with this program:
+    1. Add a new user
+    2. Delete a user
+    3. Change a user&#39;s password
+    0. exit
+Make a selection:  1
+</pre></div>
+</div>
+</li>
+<li><p class="first">Enter the name of the user you would like to add and hit <strong>Enter</strong>:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre>Enter the user whose account you&#39;d like to add. Just hit enter to exit: myuser
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You may not create a user with name <em>psadmin</em> as it will conflict with an existing group.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">At the next prompt enter <strong>yes</strong> or enter <em>no</em> if you want the user to be able to login via SSH. Alternatively leave the input blank and it will default to <strong>yes</strong>.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Should this user be able to login via SSH? [yes]
+</pre></div>
+</div>
+</li>
+<li><p class="first">At the next prompt enter <strong>yes</strong> or <em>no</em> if you want the user to be able to manage the host through the web interface. Alternatively leave the input blank and it will default to <strong>yes</strong>.:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre>Should this user be able to login to the web interface? [yes]
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Under the covers, this adds the user to the system group <em>psadmin</em>.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Next enter and confirm the password for the new user:</p>
+<div class="highlight-python"><div class="highlight"><pre>Please specify a password for the myuser account.
+Changing password for user myuser.
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully.
+</pre></div>
+</div>
+</li>
+<li><p class="first">The new user is added. You may enter <strong>0</strong> to exit the program or perform other operations with the tool.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The perfSONAR Toolkit does not provide any special utilities to create superusers. You will need to use built-in utilities like <em>visudo</em> to create privileged users. Note that any users in the wheel group will NOT be allowed access to the web interface. The <strong>psadmin</strong> group is provided as a special group for web administrators.</p>
+</div>
+</div>
+<div class="section" id="deleting-a-user">
+<h2>Deleting a User<a class="headerlink" href="#deleting-a-user" title="Permalink to this headline">¶</a></h2>
+<p>You may delete a user with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
+<ol class="arabic">
+<li><p class="first">Login to the system as a root user.</p>
+</li>
+<li><p class="first">Run <strong>|nptoolkit_script|</strong></p>
+</li>
+<li><p class="first">At the prompt, select option <strong>2. Manage Users</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
+
+1. Change Timezone
+2. Manage Users
+0. exit
+
+Make a selection: 2
+</pre></div>
+</div>
+</li>
+<li><p class="first">Select option <strong>2. Delete a user</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>Welcome to the perfSONAR Toolkit user administration program.
+This program will help you administer users.
+You may configure any of the options below with this program:
+    1. Add a new user
+    2. Delete a user
+    3. Change a user&#39;s password
+    0. exit
+Make a selection:  2
+</pre></div>
+</div>
+</li>
+<li><p class="first">Type the name of the user you would like to delete:</p>
+<div class="highlight-python"><div class="highlight"><pre>Enter the user whose account you&#39;d like to remove. Just hit enter to exit: myuser
+</pre></div>
+</div>
+</li>
+<li><p class="first">At the next prompt, enter <strong>yes</strong> or <em>no</em> if you would like to delete the user&#8217;s home directory (default is <strong>yes</strong>):</p>
+<div class="highlight-python"><div class="highlight"><pre>Would you like to delete myuser&#39;s home directory? [yes]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The new user is deleted. You may enter <strong>0</strong> to exit the program or perform other operations with the tool.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="changing-a-user-s-password">
+<h2>Changing a User&#8217;s Password<a class="headerlink" href="#changing-a-user-s-password" title="Permalink to this headline">¶</a></h2>
+<p>You may change a user&#8217;s password with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
+<ol class="arabic">
+<li><p class="first">Login to the system as a root user.</p>
+</li>
+<li><p class="first">Run <strong>|nptoolkit_script|</strong></p>
+</li>
+<li><p class="first">At the prompt, select option <strong>2. Manage Users</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
+
+1. Change Timezone
+2. Manage Users
+0. exit
+
+Make a selection: 2
+</pre></div>
+</div>
+</li>
+<li><p class="first">Select option <strong>3. Change a user&#8217;s password</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>Welcome to the perfSONAR Toolkit user administration program.
+This program will help you administer users.
+You may configure any of the options below with this program:
+    1. Add a new user
+    2. Delete a user
+    3. Change a user&#39;s password
+    0. exit
+Make a selection:  3
+</pre></div>
+</div>
+</li>
+<li><p class="first">Type the name of the user with the password you would like to change:</p>
+<div class="highlight-python"><div class="highlight"><pre>Enter the user whose password you&#39;d like to change. Just hit enter to exit: myuser
+</pre></div>
+</div>
+</li>
+<li><p class="first">Type and confirm the new password:</p>
+<div class="highlight-python"><div class="highlight"><pre>Please specify a password for the myuser account.
+Changing password for user myuser.
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully.
+</pre></div>
+</div>
+</li>
+<li><p class="first">Normal precautions should be taken to protect the password as it can be used to access the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.</p>
+</li>
+<li><p class="first">The new user&#8217;s password is now changed. You may enter <strong>0</strong> to exit the program or perform other operations with the tool.</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Managing Users</a><ul>
+<li><a class="reference internal" href="#adding-a-user">Adding a User</a></li>
+<li><a class="reference internal" href="#deleting-a-user">Deleting a User</a></li>
+<li><a class="reference internal" href="#changing-a-user-s-password">Changing a User&#8217;s Password</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="manage_update.html">Previous topic</a>
+                  <ul><li><a href="manage_update.html" title="previous chapter">Updating perfSONAR</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_tuning.html">Next topic</a>
+                      <ul><li><a href="manage_tuning.html" title="next chapter">Host Tuning</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_tuning.html" title="Host Tuning"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_update.html" title="Updating perfSONAR"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2018, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

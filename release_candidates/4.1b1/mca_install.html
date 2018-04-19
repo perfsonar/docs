@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.1b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.1b1 documentation" href="index.html" />
+    <link rel="up" title="pSConfig Administrative GUI" href="mca.html" />
+    <link rel="next" title="Configuration" href="mca_configure.html" />
+    <link rel="prev" title="pSConfig Administrative GUI" href="mca.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mca_configure.html" title="Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mca.html" title="pSConfig Administrative GUI"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li>
+          <li><a href="mca.html" accesskey="U">pSConfig Administrative GUI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="docker">
+<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<p>Start a postgreSQL container for MCA.</p>
+<div class="highlight-python"><div class="highlight"><pre>docker run --name mca-postgres \
+    --restart=always \
+    -d postgres
+</pre></div>
+</div>
+<p>After postgreSQL container starts up, start the MCA container with default configuration / self-signed ssl cert.</p>
+<div class="highlight-python"><div class="highlight"><pre>docker run --name mca \
+    --restart=always \
+    --link mca-postgres:postgres \
+    -p 80:80 \
+    -p 443:443 \
+    -p 9443:9443 \
+    -d soichih/mca
+</pre></div>
+</div>
+<p>You should now be able to access MCA UI at <a class="reference external" href="https:/">https:/</a>/&lt;yourhostname&gt;/meshconfig</p>
+</div>
+<div class="section" id="rhel6-centos6-x86">
+<h2>RHEL6 / CentOS6 (x86)<a class="headerlink" href="#rhel6-centos6-x86" title="Permalink to this headline">¶</a></h2>
+<p>MCA requires postgreSQL &gt;9.2 provided by CentOS SCL, and nodejs from epel.</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install epel-release
+yum install centos-release-scl
+</pre></div>
+</div>
+<p>Then, download the latest MCA RHEL6 RPM from <a class="reference external" href="https://github.com/soichih/meshconfig-admin/releases">GitRepo</a></p>
+<div class="highlight-python"><div class="highlight"><pre>yum install mca-2.0-X.el6.x86_64.rpm
+</pre></div>
+</div>
+<p>If this is the first time you have installed MCA, you can run following to initialize DB, generate access token, etc..</p>
+<div class="highlight-python"><div class="highlight"><pre>service mca setup
+</pre></div>
+</div>
+<div class="section" id="stacking-mca-on-existing-toolkit-instance-on-rhel6">
+<h3>Stacking MCA on existing toolkit instance on RHEL6<a class="headerlink" href="#stacking-mca-on-existing-toolkit-instance-on-rhel6" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This instruction is still incomplete.. I need to reconcile with esmond httpd conf</p>
+</div>
+<p>Since MCA requires postgreSQL&gt;9.2, and RHEL/CentOS6 provides postgreSQL8 which is used by toolkit(esmond), postgreSQL92 for MCA needs to be installed along side the postgreSQL8. To do this, you will need to adjust the port used by postgreSQL92 to something other than the default 5432 (5433 will do).</p>
+<p>&#8220;service mca setup&#8221; will fail to create mca user and mcadmin database since it tries to use the postgreSQL8 instance. Do following to setup the postgreSQL92 for MCA.</p>
+<ul class="simple">
+<li>Step 1 - Start postgresql92 on port 5433</li>
+</ul>
+<p>Create /opt/rh/postgresql92/root/etc/sysconfig/pgsql/postgresql92-postgresql</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd>mkdir /opt/rh/postgresql92/root/etc/sysconfig/pgsql
+echo &#8220;export PGPORT=5433&#8221; &gt; /opt/rh/postgresql92/root/etc/sysconfig/pgsql/postgresql92-postgresql</dd>
+</dl>
+<p>Then start postgresql92..</p>
+<div class="highlight-python"><div class="highlight"><pre>service start postgresql92-postgresql
+</pre></div>
+</div>
+<ul class="simple">
+<li>Step 2 - create mca user and mcadmin database</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>su - postgres
+scl enable postgresql92
+psql -p 5433 -c &quot;CREATE ROLE mca PASSWORD &#39;newpassword&#39; CREATEDB INHERIT LOGIN;&quot;
+psql -p 5433 -c &quot;CREATE DATABASE mcadmin OWNER mca;&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li>Step 3 - update mca db config</li>
+</ul>
+<p>Edit /opt/mca/mca/api/config/db.js</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="s">&#39;postgres://mca:hogehoge@localhost:5433/mcadmin&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="rhel7-centos7-x86">
+<h2>RHEL7 / CentOS7 (x86)<a class="headerlink" href="#rhel7-centos7-x86" title="Permalink to this headline">¶</a></h2>
+<p>Download the latest MCA RHEL7 RPM from <a class="reference external" href="https://github.com/soichih/meshconfig-admin/releases">GitRepo</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install epel-release
+yum install mca-2.0-X.el7.x86_64.rpm
+</pre></div>
+</div>
+<p>If this is the first time you have installed MCA, you can run following to initialize postgres DB, generate access token, start apache, MCA, etc..</p>
+<div class="highlight-python"><div class="highlight"><pre>/opt/mca/mca/deploy/rhel7/setup.sh
+</pre></div>
+</div>
+<p>If you are upgrading to a new version of MCA, MCA services should automatically restart. If you want to force restarting it anyway, you can run following.</p>
+<div class="highlight-python"><div class="highlight"><pre>pm2 restart all
+</pre></div>
+</div>
+</div>
+<div class="section" id="debian">
+<h2>Debian<a class="headerlink" href="#debian" title="Permalink to this headline">¶</a></h2>
+<p>Debian packages for MCA are not available yet.  Debian users that wish to try the MCA should do it from a CentOS host or from withing a Docker container (see above for details).</p>
+</div>
+</div>
+<div class="section" id="post-installation-configuration">
+<h1>Post Installation Configuration<a class="headerlink" href="#post-installation-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="https-certificate">
+<h2>HTTPS Certificate<a class="headerlink" href="#https-certificate" title="Permalink to this headline">¶</a></h2>
+<p>You will need to request and install a new HTTP/SSL certificate. By default, MCA comes with a self-signed certificate installed on /opt/mca/mca/deploy/conf/ssl/server/self.cert.pem. How to request the HTTP/SSL certificate is out of scope for this document. Please contact an administrator from your campus / institution to find out more.</p>
+<p>Once you have obtained your HTTP/SSL certificate, you can install it on /etc/grid-security/http, and you will need to adjust the apache configuration (/etc/httpd/conf.d/apache-mca.conf) to point to your new certificate (for both port 443 and 9443 - if you are using X509 authentication)</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;VirtualHost _default:443&gt;
+    SSLCertificateFile /etc/grid-security/http/cert.pem
+    SSLCertificateKeyFile /etc/grid-security/http/key.pem
+    SSLCertificateChainFile /etc/grid-security/http/chain.pem
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&lt;VirtualHost _default:9443&gt;
+    SSLCertificateFile /etc/grid-security/http/cert.pem
+    SSLCertificateKeyFile /etc/grid-security/http/key.pem
+    SSLCertificateChainFile /etc/grid-security/http/chain.pem
+</pre></div>
+</div>
+</div>
+<div class="section" id="firewall">
+<h2>Firewall<a class="headerlink" href="#firewall" title="Permalink to this headline">¶</a></h2>
+<p>Open following ports on your firewall</p>
+<ul class="simple">
+<li>80: Used to expose generated MeshConfig</li>
+<li>443: Used for admin UI</li>
+<li>9443: Used by SCA authentication service to allow X509 based login</li>
+</ul>
+<div class="section" id="for-systemd">
+<h3>For systemd<a class="headerlink" href="#for-systemd" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">http</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span>
+<span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">http</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span> <span class="o">--</span><span class="n">permanent</span>
+<span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">https</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span>
+<span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">service</span><span class="o">=</span><span class="n">https</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span> <span class="o">--</span><span class="n">permanent</span>
+<span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">port</span><span class="o">=</span><span class="mi">9443</span><span class="o">/</span><span class="n">tcp</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span>
+<span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">port</span><span class="o">=</span><span class="mi">9443</span><span class="o">/</span><span class="n">tcp</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">public</span> <span class="o">--</span><span class="n">permanent</span>
+</pre></div>
+</div>
+<p>MCA should now be running with the default configuration at <a class="reference external" href="https:/">https:/</a>/&lt;yourhostname&gt;/meshconfig</p>
+<p>Please see <a class="reference internal" href="mca_configure.html"><em>Configuration</em></a> next.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#docker">Docker</a></li>
+<li><a class="reference internal" href="#rhel6-centos6-x86">RHEL6 / CentOS6 (x86)</a><ul>
+<li><a class="reference internal" href="#stacking-mca-on-existing-toolkit-instance-on-rhel6">Stacking MCA on existing toolkit instance on RHEL6</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rhel7-centos7-x86">RHEL7 / CentOS7 (x86)</a></li>
+<li><a class="reference internal" href="#debian">Debian</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#post-installation-configuration">Post Installation Configuration</a><ul>
+<li><a class="reference internal" href="#https-certificate">HTTPS Certificate</a></li>
+<li><a class="reference internal" href="#firewall">Firewall</a><ul>
+<li><a class="reference internal" href="#for-systemd">For systemd</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="mca.html">Previous topic</a>
+                  <ul><li><a href="mca.html" title="previous chapter">pSConfig Administrative GUI</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="mca_configure.html">Next topic</a>
+                      <ul><li><a href="mca_configure.html" title="next chapter">Configuration</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mca_configure.html" title="Configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mca.html" title="pSConfig Administrative GUI"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li>
+          <li><a href="mca.html" >pSConfig Administrative GUI</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2018, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
