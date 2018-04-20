@@ -907,7 +907,7 @@ That's all there is to it. The information above should allow you to tailor the 
 
 Controlling the Agent That Schedules a Task
 ---------------------------------------------
-By default, the :doc:`pSConfig pScheduler agent <psconfig_pscheduler_agent>` running on a particular host will determine which tasks it is responsible for scheduling by looking at the generated *address* objects from a task's *group*. By default, the first address in the generated list where :ref:`no-agent <psconfig_templates_advanced-addresses-noagent>` is NOT enabled will be used. If you would like to change the behavior, the you can use the pSConfig *task* object's ``scheduled-by`` field. 
+The :doc:`pSConfig pScheduler agent <psconfig_pscheduler_agent>` running on a particular host will determine which tasks it is responsible for scheduling by looking at the generated *address* objects from a task's *group*. By default, the first address in the generated list where :ref:`no-agent <psconfig_templates_advanced-addresses-noagent>` is NOT enabled will be used. If you would like to change the behavior, then you can use the pSConfig *task* object's ``scheduled-by`` field. 
 
 The ``scheduled-by`` field is an integer representing the index (starting at 0) of the *address* object in a generated list to try first. By default, the value is ``0``. The following rules are used when interpreting ``scheduled-by`` and determining responsibility for scheduling a task:
 
