@@ -712,17 +712,113 @@ Advanced ``groups`` Options
 
 Excluding Address Pairs
 -----------------------
+As described in the :ref:`introduction to groups <psconfig_templates_intro-concepts-groups>`,
+both *mesh* and *disjoint* group types have a base set of address pairs they generate when building tasks. Both group types also allow you to modify this base set of address pairs using an optional ``excludes`` property. This property allows you to remove any address pair from the final list, giving you significant flexibility in defining your task topology. 
+
+And example of the ``excludes`` property in a group is shown below::
+    
+    "latency_group": {
+        "type": "mesh",
+        "addresses": [
+             {"name": "lat1"},
+             {"name": "thrlat1"},
+             {"name": "lat2"}
+         ],
+         "excludes": [
+            {
+                "local-address": { "name": "lat2" },
+                "target-addresses": [
+                    {"name": "lat1"}
+                ]
+            }
+        ]
+    }
+
+In the example, a pair will be excluded where the address named ``lat2`` is the first address in the pair (as indicated by the ``local-address`` property) and ``lat1`` is the second address in the pair (as indicated by the ``target-addresses`` property). Notice that both properties accept *address selector* objects. The order of the addresses matter, so in the example above the pair where ``lat1`` is the first address and ``lat2`` is the second address will stil be included in the final task list. In other words, for each object in ``excludes``, the ``local-address`` will always be compared against the first address in the pair and if it matches, the ``target-addresses`` will be compared sequentially against the second address until one matches or the end of list is reached. If a match is not found then the test will be included.
+
+Both *mesh* and *disjoint* support another exclusion property called ``excludes-self`` for use when a *group* includes two addresses from the same :ref:`host <psconfig_templates_advanced-hosts>` OR from different :ref:`labels <psconfig_templates_advanced-addresses-labels>` in the same *address* object. The ``excludes-self`` property is an enumerated string supporting the following values:
+
+* ``host`` excludes any address pair where both addresses are from the same *host* object and/or from different labels in the same *address* object. **This is the default behavior.**
+* ``address`` excludes any address pair where both addresses are from different labels in the same *address* object, but will include pairs where the addresses belong to the same *host*.
+* ``disabled`` includes all address pairs.
+
+An example showing the default behavior is below::
+
+    "latency_group": {
+        "type": "mesh",
+        "addresses": [
+             {"name": "lat1"},
+             {"name": "thrlat1"},
+             {"name": "lat2"}
+         ],
+         "excludes-self": "host"
+    }
+
 
 .. _psconfig_templates_advanced-groups-unidirectional:
 
 Unidirectional Disjoint Groups
 -------------------------------
+The *disjoint* group type generates a list of address pairs where each *address* in ``a-addresses`` is paired with each address in ``b-addresses``. By default, for each combination this list will include both the following:
+
+#. The pair where the object from ``a-addresses`` is listed first and the object from ``b-addresses`` is second
+#. The pair where the object from ``b-addresses`` is listed first and the object from ``a-addresses`` is second.
+
+If we only want the combination of addresses where the ``a-addresses`` object is first and the ``b-addresses`` is second (item #1 above) then we can use the boolean ``unidirectional`` property to indicate that fact. 
+
+An example of ``unidirectional`` is shown below::
+
+    "example-group": {
+        "type": "disjoint",
+        "unidirectional": true,
+        "a-addresses": [
+            { "name": "host1" }
+        ],
+        "b-addresses": [
+            { "name": "host2" },
+            { "name": "host3" },
+            { "name": "host4" }
+        ]
+    }
+
+The generated address pairs are as follows:
+
+* ``host1``, ``host2``
+* ``host1``, ``host3``
+* ``host1``, ``host4``
+
+Note that all pairs where ``host1`` would be the second address are excluded. 
+
+.. note:: The ``unidirectional`` property is actually just a short-form of an :ref:`excludes <psconfig_templates_advanced-groups-excludes>` property containing an object for each address in ``b-addresses`` where the ``local-address`` is the ``b-addressess`` entry and the ``target-addresses`` is the full list of ``a-addresses``.
 
 .. _psconfig_templates_advanced-groups-disabled:
 
 Disabling an Address Selector
 ------------------------------
+For all group types, if you would like to temporarily suspend use of a particular *address selector* object from that group without explicitly deleting it, you can use the ``disabled`` property.
 
+An example of the ``disabled`` property in an *address selector* is shown below::
+
+    "example-group": {
+        "type": "disjoint",
+        "a-addresses": [
+            { "name": "host1" }
+        ],
+        "b-addresses": [
+            { "name": "host2" },
+            { "name": "host3", "disabled": true },
+            { "name": "host4" }
+        ]
+    }
+
+The generated address pairs are as follows:
+
+* ``host1``, ``host2``
+* ``host1``, ``host4``
+* ``host2``, ``host1``
+* ``host4``, ``host1``
+
+You can think of this property as a way to "comment-out" an *address selector* object since JSON does not natively support comments. It is most useful when you don't want to entirely delete an *address selector* but need to remove it from a group's testing for some amount of time.
 
 Advanced ``tasks`` Options
 ============================
@@ -731,25 +827,161 @@ Advanced ``tasks`` Options
 
 Setting Tools For a Task
 ---------------------------------------------
+If you would like to specify a preference for a :term:`tool` to be used for a particular task, *task* objects support the ``tools`` property.
+
+An example of a ``tools`` property is shown below::
+
+    "tasks": {
+        "throughput_task": {
+            "tools": [
+                "iperf3",
+                "nuttcp"
+            ],
+            "group": "throughput_group",
+            "test": "throughput_test",
+            "archives": ["esmond_archive"],
+            "schedule": "every_4_hours"
+        }
+    }
+
+The example above states to ask pScheduler to use the ``iperf3`` tool if possible. If not possible, then check if the ``nuttcp`` tool is available. If neither is available, then the task will fail to be created. If ``tools`` is not specified then the tool selection will be determined by the default behavior of the pScheduler server.
+
 
 .. _psconfig_templates_advanced-tasks-priority:
 
 Setting Task Priority
 ---------------------------------------------
+If you would like to set the priority with which a task will be scheduled by pScheduler with respect to other tasks, then the pSConfig *task* object supports a ``priority`` field.
+
+An example of the ``priority`` field is shown in the following example::
+    
+    "tasks": {
+        "throughput_task": {
+            "priority": 10,
+            "group": "throughput_group",
+            "test": "throughput_test",
+            "archives": ["esmond_archive"],
+            "schedule": "every_4_hours"
+        }
+    }
+
+This will pass the priority directly to pScheduler. If not set, then no explicit priority will be given to pScheduler and the pScheduler server will follow it's default behavior for determining priority.
 
 .. _psconfig_templates_advanced-tasks-reference:
 
 Setting the pScheduler ``reference`` field
 ---------------------------------------------
+In pScheduler, tasks support a ``reference`` field that can be used to store extra information with a task. pScheduler nor its plugins make any use of the field, but it is there for clients querying the pScheduler schedule. It takes the form of an opaque JSON object that's structure is undefined.
+
+pSConfig allows you to define a reference object to be passed to pScheduler as shown in the following example::
+
+    "tasks": {
+        "throughput_task": {
+            "group": "throughput_group",
+            "test": "throughput_test",
+            "archives": ["esmond_archive"],
+            "schedule": "every_4_hours",
+            "reference": {
+                "production-measurement": true,
+                "source_ifspeed": "{% jq addresses[0]._meta.ifspeed %}",
+                "dest_ifspeed": "{% jq addresses[1]._meta.ifspeed %}"
+            }
+        }
+    }
+
+In the above example we define three custom properties. Properties can use :doc:`template variables <psconfig_templates_vars>` and take whatever form you need as long as:
+
+* The resulting ``reference`` object is valid JSON. This means that properties do not need to by primitive values, they can also be arrays or nested objects.
+* You don't include a property named ``psconfig`` in the top-level of your ``reference`` object. This is reserved for use by pSConfig agents and your definition will be overwritten.
+
+Let's take a closer look at our example:
+
+* The ``production-measurement`` property is a fixed boolean value of ``true``. Presumably a client could interpret this to indicate the measurement is production grade and problems with the results should be handled accordingly. 
+* The ``source_ifspeed`` and ``dest_ifspeed`` demonstrate the use of :ref:`jq template variables <psconfig_templates_vars-jq>` to grab a ``_meta`` property from the *address* objects involved in the tasks
+
+That's all there is to it. The information above should allow you to tailor the ``reference`` object to your needs.
+
+.. note:: The ``reference`` object is different from the ``_meta`` object in that the ``_meta`` object is NOT passed to pScheduler. If you want information from a ``_meta`` object in the ``reference`` object than you may use :ref:`jq template variables <psconfig_templates_vars-jq>`.
 
 .. _psconfig_templates_advanced-tasks-scheduled_by:
 
 Controlling the Agent That Schedules a Task
 ---------------------------------------------
+By default, the :doc:`pSConfig pScheduler agent <psconfig_pscheduler_agent>` running on a particular host will determine which tasks it is responsible for scheduling by looking at the generated *address* objects from a task's *group*. By default, the first address in the generated list where :ref:`no-agent <psconfig_templates_advanced-addresses-noagent>` is NOT enabled will be used. If you would like to change the behavior, the you can use the pSConfig *task* object's ``scheduled-by`` field. 
+
+The ``scheduled-by`` field is an integer representing the index (starting at 0) of the *address* object in a generated list to try first. By default, the value is ``0``. The following rules are used when interpreting ``scheduled-by`` and determining responsibility for scheduling a task:
+
+* If the address indicated by ``scheduled-by`` does NOT have ``no-agent`` enabled, then it is used and no further processing is required.
+* If the address has ``no-agent`` enabled, then it will look for the first member of the list after the ``scheduled-by`` value that does NOT have ``no-agent`` enabled. It will wrap around to the start of the list if it does not find one before it reaches the end. 
+* If all members are ``no-agent``, then the test will be skipped.
+
+Let's look at the following example with two tasks only differing in their ``scheduled-by`` property::
+
+    {
+        "addresses": {
+            "lat1": {
+                "address": "lat1.perfsonar.net"
+            },
+           "thrlat1": {
+                "address": "thrlat1.perfsonar.net"
+            },
+            "lat2": {
+                "address": "lat2.perfsonar.net"
+            }
+        },
+        "groups": {
+            "latency_group": {
+                "type": "mesh",
+                "addresses": [
+                     {"name": "lat1"},
+                     {"name": "thrlat1"},
+                     {"name": "lat2"}
+                 ]  
+            }
+        },
+        "tests": {
+            "latency_test": {
+                "type": "latencybg",
+                "spec": {
+                    "source": "{% address[0] %}",
+                    "dest": "{% address[1] %}",
+                    "flip": "{% flip %}",
+                    "packet-interval": 0.1,
+                    "packet-count": 600
+                }
+            }
+        },
+        "tasks": {
+            "latency_task_sched_by_source": {
+                "group": "latency_group",
+                "test": "latency_test"
+            },
+            "latency_task_sched_by_dest": {
+                "scheduled-by": 1,
+                "group": "latency_group",
+                "test": "latency_test"
+            }
+        }
+    }
+
+In the above examples, the first task ``latency_task_sched_by_source`` uses the default behavior which is the equivalent of ``scheduled-by`` being set to ``0``. Given the *test* object construction and the fact that all addresses run an agent, then the agent associated with the ``source`` will always be the one requesting the task. In the second example ``latency_task_sched_by_dest``, the ``scheduled-by`` property is explicitly set to ``1`` but otherwise the same as the first *task*. This mean the same task will be scheduled but the agent associated with the ``dest`` will be the one requesting the task's creation. This creates a duplicate task with the only difference being the agent that requested it.
+
+.. note:: If you are familiar with the *force_birdirectional* field available in legacy perfSONAR tools, using ``scheduled-by`` and defining two tasks above is the way to accomplish the same goal as that option. Generally doing so is not recommended unless you have a very specific reason as it can lead to over-testing with little benefit.
+
+.. note:: This value is closely linked to the :ref:`scheduled_by_address template variable <psconfig_templates_vars-scheduled_by_address>`. See the template variable :ref:`documentation <psconfig_templates_vars-scheduled_by_address>` for more details. 
+
 
 .. _psconfig_templates_advanced-tasks-disabled:
 
 Disabling a Task
 --------------------
+If you want to temporarily suspend usage of a *task* object by agents, then you can set the ``disabled`` property as shown in the example below::
 
+    "latency_task": {
+        "disabled": true,
+        "group": "latency_group",
+        "test": "latency_test"
+    }
+
+You can think of this property as a way to "comment-out" a *task* object since JSON does not natively support comments. It is most useful when you don't want to entirely delete a *task* but need to remove it from testing for some amount of time.
 
