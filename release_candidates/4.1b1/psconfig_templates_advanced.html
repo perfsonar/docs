@@ -825,30 +825,262 @@
 <span id="psconfig-templates-advanced-groups"></span><h2>Advanced <tt class="docutils literal"><span class="pre">groups</span></tt> Options<a class="headerlink" href="#advanced-groups-options" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="excluding-address-pairs">
 <span id="psconfig-templates-advanced-groups-excludes"></span><h3>Excluding Address Pairs<a class="headerlink" href="#excluding-address-pairs" title="Permalink to this headline">¶</a></h3>
+<p>As described in the <a class="reference internal" href="psconfig_templates_intro.html#psconfig-templates-intro-concepts-groups"><em>introduction to groups</em></a>,
+both <em>mesh</em> and <em>disjoint</em> group types have a base set of address pairs they generate when building tasks. Both group types also allow you to modify this base set of address pairs using an optional <tt class="docutils literal"><span class="pre">excludes</span></tt> property. This property allows you to remove any address pair from the final list, giving you significant flexibility in defining your task topology.</p>
+<p>And example of the <tt class="docutils literal"><span class="pre">excludes</span></tt> property in a group is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;latency_group&quot;: {
+    &quot;type&quot;: &quot;mesh&quot;,
+    &quot;addresses&quot;: [
+         {&quot;name&quot;: &quot;lat1&quot;},
+         {&quot;name&quot;: &quot;thrlat1&quot;},
+         {&quot;name&quot;: &quot;lat2&quot;}
+     ],
+     &quot;excludes&quot;: [
+        {
+            &quot;local-address&quot;: { &quot;name&quot;: &quot;lat2&quot; },
+            &quot;target-addresses&quot;: [
+                {&quot;name&quot;: &quot;lat1&quot;}
+            ]
+        }
+    ]
+}
+</pre></div>
+</div>
+<p>In the example, a pair will be excluded where the address named <tt class="docutils literal"><span class="pre">lat2</span></tt> is the first address in the pair (as indicated by the <tt class="docutils literal"><span class="pre">local-address</span></tt> property) and <tt class="docutils literal"><span class="pre">lat1</span></tt> is the second address in the pair (as indicated by the <tt class="docutils literal"><span class="pre">target-addresses</span></tt> property). Notice that both properties accept <em>address selector</em> objects. The order of the addresses matter, so in the example above the pair where <tt class="docutils literal"><span class="pre">lat1</span></tt> is the first address and <tt class="docutils literal"><span class="pre">lat2</span></tt> is the second address will stil be included in the final task list. In other words, for each object in <tt class="docutils literal"><span class="pre">excludes</span></tt>, the <tt class="docutils literal"><span class="pre">local-address</span></tt> will always be compared against the first address in the pair and if it matches, the <tt class="docutils literal"><span class="pre">target-addresses</span></tt> will be compared sequentially against the second address until one matches or the end of list is reached. If a match is not found then the test will be included.</p>
+<p>Both <em>mesh</em> and <em>disjoint</em> support another exclusion property called <tt class="docutils literal"><span class="pre">excludes-self</span></tt> for use when a <em>group</em> includes two addresses from the same <a class="reference internal" href="#psconfig-templates-advanced-hosts"><em>host</em></a> OR from different <a class="reference internal" href="#psconfig-templates-advanced-addresses-labels"><em>labels</em></a> in the same <em>address</em> object. The <tt class="docutils literal"><span class="pre">excludes-self</span></tt> property is an enumerated string supporting the following values:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">host</span></tt> excludes any address pair where both addresses are from the same <em>host</em> object and/or from different labels in the same <em>address</em> object. <strong>This is the default behavior.</strong></li>
+<li><tt class="docutils literal"><span class="pre">address</span></tt> excludes any address pair where both addresses are from different labels in the same <em>address</em> object, but will include pairs where the addresses belong to the same <em>host</em>.</li>
+<li><tt class="docutils literal"><span class="pre">disabled</span></tt> includes all address pairs.</li>
+</ul>
+<p>An example showing the default behavior is below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;latency_group&quot;: {
+    &quot;type&quot;: &quot;mesh&quot;,
+    &quot;addresses&quot;: [
+         {&quot;name&quot;: &quot;lat1&quot;},
+         {&quot;name&quot;: &quot;thrlat1&quot;},
+         {&quot;name&quot;: &quot;lat2&quot;}
+     ],
+     &quot;excludes-self&quot;: &quot;host&quot;
+}
+</pre></div>
+</div>
 </div>
 <div class="section" id="unidirectional-disjoint-groups">
 <span id="psconfig-templates-advanced-groups-unidirectional"></span><h3>Unidirectional Disjoint Groups<a class="headerlink" href="#unidirectional-disjoint-groups" title="Permalink to this headline">¶</a></h3>
+<p>The <em>disjoint</em> group type generates a list of address pairs where each <em>address</em> in <tt class="docutils literal"><span class="pre">a-addresses</span></tt> is paired with each address in <tt class="docutils literal"><span class="pre">b-addresses</span></tt>. By default, for each combination this list will include both the following:</p>
+<ol class="arabic simple">
+<li>The pair where the object from <tt class="docutils literal"><span class="pre">a-addresses</span></tt> is listed first and the object from <tt class="docutils literal"><span class="pre">b-addresses</span></tt> is second</li>
+<li>The pair where the object from <tt class="docutils literal"><span class="pre">b-addresses</span></tt> is listed first and the object from <tt class="docutils literal"><span class="pre">a-addresses</span></tt> is second.</li>
+</ol>
+<p>If we only want the combination of addresses where the <tt class="docutils literal"><span class="pre">a-addresses</span></tt> object is first and the <tt class="docutils literal"><span class="pre">b-addresses</span></tt> is second (item #1 above) then we can use the boolean <tt class="docutils literal"><span class="pre">unidirectional</span></tt> property to indicate that fact.</p>
+<p>An example of <tt class="docutils literal"><span class="pre">unidirectional</span></tt> is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;example-group&quot;: {
+    &quot;type&quot;: &quot;disjoint&quot;,
+    &quot;unidirectional&quot;: true,
+    &quot;a-addresses&quot;: [
+        { &quot;name&quot;: &quot;host1&quot; }
+    ],
+    &quot;b-addresses&quot;: [
+        { &quot;name&quot;: &quot;host2&quot; },
+        { &quot;name&quot;: &quot;host3&quot; },
+        { &quot;name&quot;: &quot;host4&quot; }
+    ]
+}
+</pre></div>
+</div>
+<p>The generated address pairs are as follows:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">host1</span></tt>, <tt class="docutils literal"><span class="pre">host2</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">host1</span></tt>, <tt class="docutils literal"><span class="pre">host3</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">host1</span></tt>, <tt class="docutils literal"><span class="pre">host4</span></tt></li>
+</ul>
+<p>Note that all pairs where <tt class="docutils literal"><span class="pre">host1</span></tt> would be the second address are excluded.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">unidirectional</span></tt> property is actually just a short-form of an <a class="reference internal" href="#psconfig-templates-advanced-groups-excludes"><em>excludes</em></a> property containing an object for each address in <tt class="docutils literal"><span class="pre">b-addresses</span></tt> where the <tt class="docutils literal"><span class="pre">local-address</span></tt> is the <tt class="docutils literal"><span class="pre">b-addressess</span></tt> entry and the <tt class="docutils literal"><span class="pre">target-addresses</span></tt> is the full list of <tt class="docutils literal"><span class="pre">a-addresses</span></tt>.</p>
+</div>
 </div>
 <div class="section" id="disabling-an-address-selector">
 <span id="psconfig-templates-advanced-groups-disabled"></span><h3>Disabling an Address Selector<a class="headerlink" href="#disabling-an-address-selector" title="Permalink to this headline">¶</a></h3>
+<p>For all group types, if you would like to temporarily suspend use of a particular <em>address selector</em> object from that group without explicitly deleting it, you can use the <tt class="docutils literal"><span class="pre">disabled</span></tt> property.</p>
+<p>An example of the <tt class="docutils literal"><span class="pre">disabled</span></tt> property in an <em>address selector</em> is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;example-group&quot;: {
+    &quot;type&quot;: &quot;disjoint&quot;,
+    &quot;a-addresses&quot;: [
+        { &quot;name&quot;: &quot;host1&quot; }
+    ],
+    &quot;b-addresses&quot;: [
+        { &quot;name&quot;: &quot;host2&quot; },
+        { &quot;name&quot;: &quot;host3&quot;, &quot;disabled&quot;: true },
+        { &quot;name&quot;: &quot;host4&quot; }
+    ]
+}
+</pre></div>
+</div>
+<p>The generated address pairs are as follows:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">host1</span></tt>, <tt class="docutils literal"><span class="pre">host2</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">host1</span></tt>, <tt class="docutils literal"><span class="pre">host4</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">host2</span></tt>, <tt class="docutils literal"><span class="pre">host1</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">host4</span></tt>, <tt class="docutils literal"><span class="pre">host1</span></tt></li>
+</ul>
+<p>You can think of this property as a way to &#8220;comment-out&#8221; an <em>address selector</em> object since JSON does not natively support comments. It is most useful when you don&#8217;t want to entirely delete an <em>address selector</em> but need to remove it from a group&#8217;s testing for some amount of time.</p>
 </div>
 </div>
 <div class="section" id="advanced-tasks-options">
 <h2>Advanced <tt class="docutils literal"><span class="pre">tasks</span></tt> Options<a class="headerlink" href="#advanced-tasks-options" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="setting-tools-for-a-task">
 <span id="psconfig-templates-advanced-tasks-tools"></span><h3>Setting Tools For a Task<a class="headerlink" href="#setting-tools-for-a-task" title="Permalink to this headline">¶</a></h3>
+<p>If you would like to specify a preference for a <a class="reference internal" href="pscheduler_intro.html#term-tool"><em class="xref std std-term">tool</em></a> to be used for a particular task, <em>task</em> objects support the <tt class="docutils literal"><span class="pre">tools</span></tt> property.</p>
+<p>An example of a <tt class="docutils literal"><span class="pre">tools</span></tt> property is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;tasks&quot;: {
+    &quot;throughput_task&quot;: {
+        &quot;tools&quot;: [
+            &quot;iperf3&quot;,
+            &quot;nuttcp&quot;
+        ],
+        &quot;group&quot;: &quot;throughput_group&quot;,
+        &quot;test&quot;: &quot;throughput_test&quot;,
+        &quot;archives&quot;: [&quot;esmond_archive&quot;],
+        &quot;schedule&quot;: &quot;every_4_hours&quot;
+    }
+}
+</pre></div>
+</div>
+<p>The example above states to ask pScheduler to use the <tt class="docutils literal"><span class="pre">iperf3</span></tt> tool if possible. If not possible, then check if the <tt class="docutils literal"><span class="pre">nuttcp</span></tt> tool is available. If neither is available, then the task will fail to be created. If <tt class="docutils literal"><span class="pre">tools</span></tt> is not specified then the tool selection will be determined by the default behavior of the pScheduler server.</p>
 </div>
 <div class="section" id="setting-task-priority">
 <span id="psconfig-templates-advanced-tasks-priority"></span><h3>Setting Task Priority<a class="headerlink" href="#setting-task-priority" title="Permalink to this headline">¶</a></h3>
+<p>If you would like to set the priority with which a task will be scheduled by pScheduler with respect to other tasks, then the pSConfig <em>task</em> object supports a <tt class="docutils literal"><span class="pre">priority</span></tt> field.</p>
+<p>An example of the <tt class="docutils literal"><span class="pre">priority</span></tt> field is shown in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;tasks&quot;: {
+    &quot;throughput_task&quot;: {
+        &quot;priority&quot;: 10,
+        &quot;group&quot;: &quot;throughput_group&quot;,
+        &quot;test&quot;: &quot;throughput_test&quot;,
+        &quot;archives&quot;: [&quot;esmond_archive&quot;],
+        &quot;schedule&quot;: &quot;every_4_hours&quot;
+    }
+}
+</pre></div>
+</div>
+<p>This will pass the priority directly to pScheduler. If not set, then no explicit priority will be given to pScheduler and the pScheduler server will follow it&#8217;s default behavior for determining priority.</p>
 </div>
 <div class="section" id="setting-the-pscheduler-reference-field">
 <span id="psconfig-templates-advanced-tasks-reference"></span><h3>Setting the pScheduler <tt class="docutils literal"><span class="pre">reference</span></tt> field<a class="headerlink" href="#setting-the-pscheduler-reference-field" title="Permalink to this headline">¶</a></h3>
+<p>In pScheduler, tasks support a <tt class="docutils literal"><span class="pre">reference</span></tt> field that can be used to store extra information with a task. pScheduler nor its plugins make any use of the field, but it is there for clients querying the pScheduler schedule. It takes the form of an opaque JSON object that&#8217;s structure is undefined.</p>
+<p>pSConfig allows you to define a reference object to be passed to pScheduler as shown in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;tasks&quot;: {
+    &quot;throughput_task&quot;: {
+        &quot;group&quot;: &quot;throughput_group&quot;,
+        &quot;test&quot;: &quot;throughput_test&quot;,
+        &quot;archives&quot;: [&quot;esmond_archive&quot;],
+        &quot;schedule&quot;: &quot;every_4_hours&quot;,
+        &quot;reference&quot;: {
+            &quot;production-measurement&quot;: true,
+            &quot;source_ifspeed&quot;: &quot;{% jq addresses[0]._meta.ifspeed %}&quot;,
+            &quot;dest_ifspeed&quot;: &quot;{% jq addresses[1]._meta.ifspeed %}&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>In the above example we define three custom properties. Properties can use <a class="reference internal" href="psconfig_templates_vars.html"><em>template variables</em></a> and take whatever form you need as long as:</p>
+<ul class="simple">
+<li>The resulting <tt class="docutils literal"><span class="pre">reference</span></tt> object is valid JSON. This means that properties do not need to by primitive values, they can also be arrays or nested objects.</li>
+<li>You don&#8217;t include a property named <tt class="docutils literal"><span class="pre">psconfig</span></tt> in the top-level of your <tt class="docutils literal"><span class="pre">reference</span></tt> object. This is reserved for use by pSConfig agents and your definition will be overwritten.</li>
+</ul>
+<p>Let&#8217;s take a closer look at our example:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">production-measurement</span></tt> property is a fixed boolean value of <tt class="docutils literal"><span class="pre">true</span></tt>. Presumably a client could interpret this to indicate the measurement is production grade and problems with the results should be handled accordingly.</li>
+<li>The <tt class="docutils literal"><span class="pre">source_ifspeed</span></tt> and <tt class="docutils literal"><span class="pre">dest_ifspeed</span></tt> demonstrate the use of <a class="reference internal" href="psconfig_templates_vars.html#psconfig-templates-vars-jq"><em>jq template variables</em></a> to grab a <tt class="docutils literal"><span class="pre">_meta</span></tt> property from the <em>address</em> objects involved in the tasks</li>
+</ul>
+<p>That&#8217;s all there is to it. The information above should allow you to tailor the <tt class="docutils literal"><span class="pre">reference</span></tt> object to your needs.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">reference</span></tt> object is different from the <tt class="docutils literal"><span class="pre">_meta</span></tt> object in that the <tt class="docutils literal"><span class="pre">_meta</span></tt> object is NOT passed to pScheduler. If you want information from a <tt class="docutils literal"><span class="pre">_meta</span></tt> object in the <tt class="docutils literal"><span class="pre">reference</span></tt> object than you may use <a class="reference internal" href="psconfig_templates_vars.html#psconfig-templates-vars-jq"><em>jq template variables</em></a>.</p>
+</div>
 </div>
 <div class="section" id="controlling-the-agent-that-schedules-a-task">
 <span id="psconfig-templates-advanced-tasks-scheduled-by"></span><h3>Controlling the Agent That Schedules a Task<a class="headerlink" href="#controlling-the-agent-that-schedules-a-task" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="psconfig_pscheduler_agent.html"><em>pSConfig pScheduler agent</em></a> running on a particular host will determine which tasks it is responsible for scheduling by looking at the generated <em>address</em> objects from a task&#8217;s <em>group</em>. By default, the first address in the generated list where <a class="reference internal" href="#psconfig-templates-advanced-addresses-noagent"><em>no-agent</em></a> is NOT enabled will be used. If you would like to change the behavior, then you can use the pSConfig <em>task</em> object&#8217;s <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> field.</p>
+<p>The <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> field is an integer representing the index (starting at 0) of the <em>address</em> object in a generated list to try first. By default, the value is <tt class="docutils literal"><span class="pre">0</span></tt>. The following rules are used when interpreting <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> and determining responsibility for scheduling a task:</p>
+<ul class="simple">
+<li>If the address indicated by <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> does NOT have <tt class="docutils literal"><span class="pre">no-agent</span></tt> enabled, then it is used and no further processing is required.</li>
+<li>If the address has <tt class="docutils literal"><span class="pre">no-agent</span></tt> enabled, then it will look for the first member of the list after the <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> value that does NOT have <tt class="docutils literal"><span class="pre">no-agent</span></tt> enabled. It will wrap around to the start of the list if it does not find one before it reaches the end.</li>
+<li>If all members are <tt class="docutils literal"><span class="pre">no-agent</span></tt>, then the test will be skipped.</li>
+</ul>
+<p>Let&#8217;s look at the following example with two tasks only differing in their <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> property:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;lat1&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;lat1.perfsonar.net&quot;</span>
+        <span class="p">},</span>
+       <span class="s">&quot;thrlat1&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;thrlat1.perfsonar.net&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;lat2&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;lat2.perfsonar.net&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;latency_group&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;mesh&quot;</span><span class="p">,</span>
+            <span class="s">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+                 <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;lat1&quot;</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;thrlat1&quot;</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;lat2&quot;</span><span class="p">}</span>
+             <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&quot;tests&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;latency_test&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;latencybg&quot;</span><span class="p">,</span>
+            <span class="s">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;source&quot;</span><span class="p">:</span> <span class="s">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
+                <span class="s">&quot;dest&quot;</span><span class="p">:</span> <span class="s">&quot;{% address[1] %}&quot;</span><span class="p">,</span>
+                <span class="s">&quot;flip&quot;</span><span class="p">:</span> <span class="s">&quot;{</span><span class="si">% f</span><span class="s">lip %}&quot;</span><span class="p">,</span>
+                <span class="s">&quot;packet-interval&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="s">&quot;packet-count&quot;</span><span class="p">:</span> <span class="mi">600</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;latency_task_sched_by_source&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;latency_group&quot;</span><span class="p">,</span>
+            <span class="s">&quot;test&quot;</span><span class="p">:</span> <span class="s">&quot;latency_test&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;latency_task_sched_by_dest&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;scheduled-by&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;latency_group&quot;</span><span class="p">,</span>
+            <span class="s">&quot;test&quot;</span><span class="p">:</span> <span class="s">&quot;latency_test&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the above examples, the first task <tt class="docutils literal"><span class="pre">latency_task_sched_by_source</span></tt> uses the default behavior which is the equivalent of <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> being set to <tt class="docutils literal"><span class="pre">0</span></tt>. Given the <em>test</em> object construction and the fact that all addresses run an agent, then the agent associated with the <tt class="docutils literal"><span class="pre">source</span></tt> will always be the one requesting the task. In the second example <tt class="docutils literal"><span class="pre">latency_task_sched_by_dest</span></tt>, the <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> property is explicitly set to <tt class="docutils literal"><span class="pre">1</span></tt> but otherwise the same as the first <em>task</em>. This mean the same task will be scheduled but the agent associated with the <tt class="docutils literal"><span class="pre">dest</span></tt> will be the one requesting the task&#8217;s creation. This creates a duplicate task with the only difference being the agent that requested it.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are familiar with the <em>force_birdirectional</em> field available in legacy perfSONAR tools, using <tt class="docutils literal"><span class="pre">scheduled-by</span></tt> and defining two tasks above is the way to accomplish the same goal as that option. Generally doing so is not recommended unless you have a very specific reason as it can lead to over-testing with little benefit.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This value is closely linked to the <a class="reference internal" href="psconfig_templates_vars.html#psconfig-templates-vars-scheduled-by-address"><em>scheduled_by_address template variable</em></a>. See the template variable <a class="reference internal" href="psconfig_templates_vars.html#psconfig-templates-vars-scheduled-by-address"><em>documentation</em></a> for more details.</p>
+</div>
 </div>
 <div class="section" id="disabling-a-task">
 <span id="psconfig-templates-advanced-tasks-disabled"></span><h3>Disabling a Task<a class="headerlink" href="#disabling-a-task" title="Permalink to this headline">¶</a></h3>
+<p>If you want to temporarily suspend usage of a <em>task</em> object by agents, then you can set the <tt class="docutils literal"><span class="pre">disabled</span></tt> property as shown in the example below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;latency_task&quot;: {
+    &quot;disabled&quot;: true,
+    &quot;group&quot;: &quot;latency_group&quot;,
+    &quot;test&quot;: &quot;latency_test&quot;
+}
+</pre></div>
+</div>
+<p>You can think of this property as a way to &#8220;comment-out&#8221; a <em>task</em> object since JSON does not natively support comments. It is most useful when you don&#8217;t want to entirely delete a <em>task</em> but need to remove it from testing for some amount of time.</p>
 </div>
 </div>
 </div>

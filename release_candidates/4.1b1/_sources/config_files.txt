@@ -201,8 +201,12 @@ Primary Log file
 :CentOS: ``/var/log/pscheduler/pscheduler.log``
 :Debian: ``/var/log/pscheduler/pscheduler.log``
 
+.. _config_files-psconfig:
+
 pSConfig
 ========
+
+.. _config_files-psconfig-conf:
 
 Configuration Files
 --------------------

@@ -2,6 +2,9 @@
 pSConfig Auto-Configuration
 ********************************************
 
+NOTE: THIS PAGE HAS NOT BEEN UPDATED FOR 4.1. STILL UNDER CONSTRUCTION.
+==========================================================================
+
 If you have a very large mesh or a mesh that frequently is adding and removing test members, then it may become cumbersome to manually update your tests. For this reason the perfSONAR MeshConfig software has the concept of *automatic test configuration*. 
 
 Automatic test configuration's goal is NOT zero configuration, instead the idea is that there will be some initial configuration steps performed on a server hosting the MeshConfig that describes the tests in a general sense as opposed to explicitly naming each host that will be involved in a test. The MeshConfig provides constructs in the form of *host classes* and *tags* in support of this idea. See :ref:`multi_mesh_autoconfig-classes` for more information on these constructs. 
