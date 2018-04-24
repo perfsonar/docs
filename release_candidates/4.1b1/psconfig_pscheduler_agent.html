@@ -107,7 +107,7 @@
 <p>After reading a template an agent is also capable of performing local modifications to that template. The types of modifications supported include:</p>
 <ul class="simple">
 <li>Inclusion of default archives for all tasks. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-archives"><em>Configuring Default Archives</em></a> for more detail.</li>
-<li>Direct transformations to the template JSON. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-one"><em>Transforming Individual Remote Templates</em></a> and :ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>psconfig_pscheduler_agent-modify-transform_all`for more detail.</li>
+<li>Direct transformations to the template JSON. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-one"><em>Transforming Individual Remote Templates</em></a> and <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-all"><em>Transforming All Remote Templates</em></a> for more detail.</li>
 </ul>
 </div>
 <div class="section" id="determining-the-pscheduler-tasks-to-create">
@@ -244,7 +244,7 @@
 </pre></div>
 </div>
 <p>Everything about the command works the same with a file path as it would with a http/https URL. See <a class="reference internal" href="#psconfig-pscheduler-agent-templates-remote"><em>Remote Templates</em></a> for more details on this command.</p>
-<p>A second way you can add a local template is to copy it into the <em>template include directory</em>. By default this is located at```/etc/perfsonar/psconfig/pscheduler.d/<a href="#id3"><span class="problematic" id="id4">``</span></a>. For example:</p>
+<p>A second way you can add a local template is to copy it into the <em>template include directory</em>. By default this is located at <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/pscheduler.d/</span></tt>. For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">cp</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
@@ -345,12 +345,149 @@
 <span id="psconfig-pscheduler-agent-troubleshoot"></span><h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="looking-at-the-last-run-with-psconfig-pscheduler-stats">
 <span id="psconfig-pscheduler-agent-troubleshoot-stats"></span><h3>Looking at the last run with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></tt><a class="headerlink" href="#looking-at-the-last-run-with-psconfig-pscheduler-stats" title="Permalink to this headline">¶</a></h3>
+<p>One of the first steps to perform when debugging the pSConfig pScheduler agent is to get information about the last time the agent ran. A run in this context describes an instance when pSConfig downloaded all the templates it is configured to use, made any local modifications and determined which tasks that need to be created and/or removed from the pScheduler servers with which it interacts. As described in <a class="reference internal" href="#psconfig-pscheduler-agent-intro-role"><em>pSConfig pScheduler Agent&#8217;s Role</em></a>, a run can be triggered by the passing of a set time interval (60 minutes by default) or a configuration file change.</p>
+<p>Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></tt> command. The command does not require any options and is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig pscheduler-stats
+</pre></div>
+</div>
+<p>Below is an example of the successful output:</p>
+<div class="highlight-python"><div class="highlight"><pre>Agent Last Run Start Time: 2018/04/24 19:29:54
+Agent Last Run End Time: 2018/04/24 19:30:04
+Agent Last Run Process ID (PID): 6026
+Agent Last Run Log GUID: DD85D234-47F5-11E8-B2F1-3613118410B6
+Total tasks managed by agent: 8
+From include files: 5
+    /etc/perfsonar/psconfig/pscheduler.d/template.json: 5
+From remote definitions: 3
+    https://10.0.0.1/example.json: 3
+</pre></div>
+</div>
+<p>The output fields can be described as follows:</p>
+<ul class="simple">
+<li><strong>Agent Last Run Start Time</strong> is the time when the agent began its last complete run.</li>
+<li><strong>Agent Last Run End Time</strong> is the time when the last complete run ended.</li>
+<li><strong>Agent Last Run Process ID (PID)</strong> is the process ID of the agent at the time of its last complete run. This should only change if the agent is restarted.</li>
+<li><strong>Agent Last Run Log GUID</strong> is a globally unique ID used to identify a run in the logs. You can grep the <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-logs"><em>log files</em></a> with this ID to get the information about a specific run.</li>
+<li><strong>Total tasks managed by agent</strong> is the number of tasks the agent is responsible for managing. This is not necessarily the total number that were created the last run, but it is the number of tasks it is monitoring and managing across all pScheduler servers.</li>
+<li><strong>From include files</strong> is a count of the number of tasks that come from templates in the template include directory. Directly underneath that is a breakdown of the task count by the file from which they originate.</li>
+<li><strong>From remote definitions</strong> is a count of the number of tasks that come from URLs added using the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command. Underneath is a breakdown of the task count by URL.</li>
+</ul>
+<p>This command is useful as a quick health check of the agent. It can answer questions like:</p>
+<ul class="simple">
+<li>When did my agent last run?</li>
+<li>What templates is it using?</li>
+<li>Is it managing the tasks I expect it to manage?</li>
+</ul>
+<p>Also, if it throws an error that can be useful information too. In particular the output below is a good sign that your agent has never ran since it has not created the necessary log file:</p>
+<div class="highlight-python"><div class="highlight"><pre>Unable to open /var/log/perfsonar/psconfig-pscheduler-agent.log: No such file or directory
+</pre></div>
+</div>
+<p>This script may not give all the answers, but will hopefully get things started when debugging unexpected behavior of the agent.</p>
 </div>
 <div class="section" id="viewing-managed-pscheduler-tasks-with-psconfig-pscheduler-tasks">
 <span id="psconfig-pscheduler-agent-troubleshoot-tasks"></span><h3>Viewing Managed pScheduler Tasks with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></tt><a class="headerlink" href="#viewing-managed-pscheduler-tasks-with-psconfig-pscheduler-tasks" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></tt> command provides a JSON list of pScheduler tasks managed by the pSConfig pScheduler agent. It parses the file <tt class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log</span></tt> for all the tasks found in the last run. It does not require any options and can be run as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig pscheduler-tasks
+</pre></div>
+</div>
+<p>Example output of an agent managing three tasks is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+   <span class="s">&quot;tasks&quot;</span> <span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+         <span class="s">&quot;archives&quot;</span> <span class="p">:</span> <span class="p">[],</span>
+         <span class="s">&quot;test&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;spec&quot;</span> <span class="p">:</span> <span class="p">{</span>
+               <span class="s">&quot;source&quot;</span> <span class="p">:</span> <span class="s">&quot;10.0.0.10&quot;</span><span class="p">,</span>
+               <span class="s">&quot;dest&quot;</span> <span class="p">:</span> <span class="s">&quot;10.0.0.11&quot;</span><span class="p">,</span>
+               <span class="s">&quot;duration&quot;</span> <span class="p">:</span> <span class="s">&quot;PT30S&quot;</span><span class="p">,</span>
+               <span class="s">&quot;schema&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+            <span class="p">},</span>
+            <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;throughput&quot;</span>
+         <span class="p">},</span>
+         <span class="s">&quot;reference&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;psconfig&quot;</span> <span class="p">:</span> <span class="p">{</span>
+               <span class="s">&quot;created-by&quot;</span> <span class="p">:</span> <span class="p">{</span>
+                  <span class="s">&quot;user-agent&quot;</span> <span class="p">:</span> <span class="s">&quot;psconfig-pscheduler-agent&quot;</span><span class="p">,</span>
+                  <span class="s">&quot;uuid&quot;</span> <span class="p">:</span> <span class="s">&quot;E0E9389A-1748-11E8-A7FE-65A6AE5B70B2&quot;</span>
+               <span class="p">}</span>
+            <span class="p">}</span>
+         <span class="p">},</span>
+         <span class="s">&quot;schema&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s">&quot;schedule&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;until&quot;</span> <span class="p">:</span> <span class="s">&quot;2018-04-25T19:29:54Z&quot;</span><span class="p">,</span>
+            <span class="s">&quot;sliprand&quot;</span> <span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+            <span class="s">&quot;repeat&quot;</span> <span class="p">:</span> <span class="s">&quot;PT4H&quot;</span><span class="p">,</span>
+            <span class="s">&quot;slip&quot;</span> <span class="p">:</span> <span class="s">&quot;PT4H&quot;</span>
+         <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s">&quot;archives&quot;</span> <span class="p">:</span> <span class="p">[],</span>
+         <span class="s">&quot;test&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;spec&quot;</span> <span class="p">:</span> <span class="p">{</span>
+               <span class="s">&quot;source&quot;</span> <span class="p">:</span> <span class="s">&quot;10.0.0.10&quot;</span><span class="p">,</span>
+               <span class="s">&quot;dest&quot;</span> <span class="p">:</span> <span class="s">&quot;10.0.0.11&quot;</span><span class="p">,</span>
+               <span class="s">&quot;schema&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+            <span class="p">},</span>
+            <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;trace&quot;</span>
+         <span class="p">},</span>
+         <span class="s">&quot;reference&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;psconfig&quot;</span> <span class="p">:</span> <span class="p">{</span>
+               <span class="s">&quot;created-by&quot;</span> <span class="p">:</span> <span class="p">{</span>
+                  <span class="s">&quot;user-agent&quot;</span> <span class="p">:</span> <span class="s">&quot;psconfig-pscheduler-agent&quot;</span><span class="p">,</span>
+                  <span class="s">&quot;uuid&quot;</span> <span class="p">:</span> <span class="s">&quot;E0E9389A-1748-11E8-A7FE-65A6AE5B70B2&quot;</span>
+               <span class="p">}</span>
+            <span class="p">}</span>
+         <span class="p">},</span>
+         <span class="s">&quot;schema&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s">&quot;schedule&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;sliprand&quot;</span> <span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+            <span class="s">&quot;repeat&quot;</span> <span class="p">:</span> <span class="s">&quot;PT10M&quot;</span><span class="p">,</span>
+            <span class="s">&quot;slip&quot;</span> <span class="p">:</span> <span class="s">&quot;PT10M&quot;</span>
+         <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s">&quot;archives&quot;</span> <span class="p">:</span> <span class="p">[],</span>
+         <span class="s">&quot;test&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;spec&quot;</span> <span class="p">:</span> <span class="p">{</span>
+               <span class="s">&quot;source&quot;</span> <span class="p">:</span> <span class="s">&quot;10.0.0.10&quot;</span><span class="p">,</span>
+               <span class="s">&quot;dest&quot;</span> <span class="p">:</span> <span class="s">&quot;10.0.0.11&quot;</span><span class="p">,</span>
+               <span class="s">&quot;schema&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+            <span class="p">},</span>
+            <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;latencybg&quot;</span>
+         <span class="p">},</span>
+         <span class="s">&quot;reference&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;psconfig&quot;</span> <span class="p">:</span> <span class="p">{</span>
+               <span class="s">&quot;created-by&quot;</span> <span class="p">:</span> <span class="p">{</span>
+                  <span class="s">&quot;user-agent&quot;</span> <span class="p">:</span> <span class="s">&quot;psconfig-pscheduler-agent&quot;</span><span class="p">,</span>
+                  <span class="s">&quot;uuid&quot;</span> <span class="p">:</span> <span class="s">&quot;E0E9389A-1748-11E8-A7FE-65A6AE5B70B2&quot;</span>
+               <span class="p">}</span>
+            <span class="p">}</span>
+         <span class="p">},</span>
+         <span class="s">&quot;schema&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s">&quot;schedule&quot;</span> <span class="p">:</span> <span class="p">{}</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This list includes all the tasks it manages, not necessarily the list created by the last run. It also does not guarantee that they were successfully scheduled in pScheduler. What it does provide though is the agent&#8217;s perspective on the tasks that it tries to create and maintain. Matching this list to what is actually in pScheduler is often crucial to debugging and this command provides a view into the agent&#8217;s side of that information.</p>
 </div>
 <div class="section" id="reading-the-logs">
 <span id="psconfig-pscheduler-agent-troubleshoot-logs"></span><h3>Reading the Logs<a class="headerlink" href="#reading-the-logs" title="Permalink to this headline">¶</a></h3>
+<p>If you need to debug beyond what the utilities above provide from the logs, then you can manually look at the log files.There are three important logs used by the agent:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The <strong>agent log</strong> lives at <tt class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent.log</span></tt> and tracks basic information about agent activity and any errors encountered. This is often the first log to review when debugging as it is not as verbose as the others and provides a quick summary of the agent&#8217;s actions.</li>
+<li>The <strong>task log</strong> lives at <tt class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log</span></tt> and tracks the pScheduler tasks the agent manages. This is where the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></tt> <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-tasks"><em>command</em></a> gets the information it displays. This log is useful if you need to look at how pSConfig is defining tasks it gives (or tries to give) to pScheduler.</li>
+<li>The <strong>transaction log</strong> lives at <tt class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log</span></tt> and logs each individual interaction with pScheduler. Every request to list, create and delete tasks is shown in this log. Each line provides context such as the action being performed, the pScheduler server URL and the raw JSON sent/received from the server. This log is intended to be verbose and useful when intricate debugging is needed.</li>
+</ul>
+</div></blockquote>
+<p>All of the logs are designed to by highly parsable with fields in the form of <tt class="docutils literal"><span class="pre">key=value</span></tt> separated by whitespace. Every line has a <tt class="docutils literal"><span class="pre">guid=</span></tt> field with an ID unique to the run of an agent. This ID is consistent between log files and is incredibly useful for linking events seen in separate logs.</p>
+<p>As an example, the GUID can be used for filtering log lines across files with <tt class="docutils literal"><span class="pre">grep</span></tt> or similar tools.  It is often easiest to run the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></tt> <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-stats"><em>command</em></a> to get the GUID of the last run as a launching point to parse the logs. For example, looking at the example output from <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-stats"><em>Looking at the last run with psconfig pscheduler-stats</em></a>, the run had a GUID of <tt class="docutils literal"><span class="pre">DD85D234-47F5-11E8-B2F1-3613118410B6</span></tt>. Knowing this GUID, all the log messages associated with that run can be queried using a command like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>grep &quot;guid=DD85D234-47F5-11E8-B2F1-3613118410B6&quot; /var/log/perfsonar/psconfig-pscheduler-*.log
+</pre></div>
+</div>
+<p>You can further filter that output if needed, and hopefully eventually find the information needed to solve any issues encountered.</p>
 </div>
 </div>
 <div class="section" id="advanced-configuration">

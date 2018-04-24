@@ -43,7 +43,7 @@ The agents first job is to read a set of :doc:`templates <psconfig_templates_int
 After reading a template an agent is also capable of performing local modifications to that template. The types of modifications supported include:
 
 * Inclusion of default archives for all tasks. See :ref:`psconfig_pscheduler_agent-modify-archives` for more detail.
-* Direct transformations to the template JSON. See :ref:`psconfig_pscheduler_agent-modify-transform_one` and :ref:`psconfig_pscheduler_agent-modify-transform_all`for more detail.
+* Direct transformations to the template JSON. See :ref:`psconfig_pscheduler_agent-modify-transform_one` and :ref:`psconfig_pscheduler_agent-modify-transform_all` for more detail.
 
 .. _psconfig_pscheduler_agent-intro-determine:
 
@@ -204,7 +204,7 @@ The agent can read templates from the local filesystem. One way to do this is by
 
 Everything about the command works the same with a file path as it would with a http/https URL. See :ref:`psconfig_pscheduler_agent-templates-remote` for more details on this command.
 
-A second way you can add a local template is to copy it into the *template include directory*. By default this is located at```/etc/perfsonar/psconfig/pscheduler.d/``. For example::
+A second way you can add a local template is to copy it into the *template include directory*. By default this is located at ``/etc/perfsonar/psconfig/pscheduler.d/``. For example::
 
     cp /path/to/template.json /etc/perfsonar/psconfig/pscheduler.d/template.json
     
@@ -316,16 +316,156 @@ Troubleshooting
 
 Looking at the last run with ``psconfig pscheduler-stats``
 -----------------------------------------------------------
+One of the first steps to perform when debugging the pSConfig pScheduler agent is to get information about the last time the agent ran. A run in this context describes an instance when pSConfig downloaded all the templates it is configured to use, made any local modifications and determined which tasks that need to be created and/or removed from the pScheduler servers with which it interacts. As described in :ref:`psconfig_pscheduler_agent-intro-role`, a run can be triggered by the passing of a set time interval (60 minutes by default) or a configuration file change.
+
+Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the ``psconfig pscheduler-stats`` command. The command does not require any options and is shown below::
+    
+     psconfig pscheduler-stats
+
+Below is an example of the successful output::
+
+    Agent Last Run Start Time: 2018/04/24 19:29:54
+    Agent Last Run End Time: 2018/04/24 19:30:04
+    Agent Last Run Process ID (PID): 6026
+    Agent Last Run Log GUID: DD85D234-47F5-11E8-B2F1-3613118410B6
+    Total tasks managed by agent: 8
+    From include files: 5
+        /etc/perfsonar/psconfig/pscheduler.d/template.json: 5
+    From remote definitions: 3
+        https://10.0.0.1/example.json: 3
+
+The output fields can be described as follows:
+
+* **Agent Last Run Start Time** is the time when the agent began its last complete run.
+* **Agent Last Run End Time** is the time when the last complete run ended.
+* **Agent Last Run Process ID (PID)** is the process ID of the agent at the time of its last complete run. This should only change if the agent is restarted.
+* **Agent Last Run Log GUID** is a globally unique ID used to identify a run in the logs. You can grep the :ref:`log files <psconfig_pscheduler_agent-troubleshoot-logs>` with this ID to get the information about a specific run. 
+* **Total tasks managed by agent** is the number of tasks the agent is responsible for managing. This is not necessarily the total number that were created the last run, but it is the number of tasks it is monitoring and managing across all pScheduler servers.
+* **From include files** is a count of the number of tasks that come from templates in the template include directory. Directly underneath that is a breakdown of the task count by the file from which they originate.
+* **From remote definitions** is a count of the number of tasks that come from URLs added using the ``psconfig remote`` command. Underneath is a breakdown of the task count by URL. 
+
+This command is useful as a quick health check of the agent. It can answer questions like:
+
+* When did my agent last run?
+* What templates is it using?
+* Is it managing the tasks I expect it to manage?
+
+Also, if it throws an error that can be useful information too. In particular the output below is a good sign that your agent has never ran since it has not created the necessary log file::
+
+    Unable to open /var/log/perfsonar/psconfig-pscheduler-agent.log: No such file or directory
+    
+This script may not give all the answers, but will hopefully get things started when debugging unexpected behavior of the agent.
 
 .. _psconfig_pscheduler_agent-troubleshoot-tasks:
 
 Viewing Managed pScheduler Tasks with ``psconfig pscheduler-tasks``
 --------------------------------------------------------------------
+The ``psconfig pscheduler-tasks`` command provides a JSON list of pScheduler tasks managed by the pSConfig pScheduler agent. It parses the file ``/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log`` for all the tasks found in the last run. It does not require any options and can be run as follows::
+    
+    psconfig pscheduler-tasks
+    
+Example output of an agent managing three tasks is shown below::
+
+    {
+       "tasks" : [
+          {
+             "archives" : [],
+             "test" : {
+                "spec" : {
+                   "source" : "10.0.0.10",
+                   "dest" : "10.0.0.11",
+                   "duration" : "PT30S",
+                   "schema" : 1
+                },
+                "type" : "throughput"
+             },
+             "reference" : {
+                "psconfig" : {
+                   "created-by" : {
+                      "user-agent" : "psconfig-pscheduler-agent",
+                      "uuid" : "E0E9389A-1748-11E8-A7FE-65A6AE5B70B2"
+                   }
+                }
+             },
+             "schema" : 1,
+             "schedule" : {
+                "until" : "2018-04-25T19:29:54Z",
+                "sliprand" : true,
+                "repeat" : "PT4H",
+                "slip" : "PT4H"
+             }
+          },
+          {
+             "archives" : [],
+             "test" : {
+                "spec" : {
+                   "source" : "10.0.0.10",
+                   "dest" : "10.0.0.11",
+                   "schema" : 1
+                },
+                "type" : "trace"
+             },
+             "reference" : {
+                "psconfig" : {
+                   "created-by" : {
+                      "user-agent" : "psconfig-pscheduler-agent",
+                      "uuid" : "E0E9389A-1748-11E8-A7FE-65A6AE5B70B2"
+                   }
+                }
+             },
+             "schema" : 1,
+             "schedule" : {
+                "sliprand" : true,
+                "repeat" : "PT10M",
+                "slip" : "PT10M"
+             }
+          },
+          {
+             "archives" : [],
+             "test" : {
+                "spec" : {
+                   "source" : "10.0.0.10",
+                   "dest" : "10.0.0.11",
+                   "schema" : 1
+                },
+                "type" : "latencybg"
+             },
+             "reference" : {
+                "psconfig" : {
+                   "created-by" : {
+                      "user-agent" : "psconfig-pscheduler-agent",
+                      "uuid" : "E0E9389A-1748-11E8-A7FE-65A6AE5B70B2"
+                   }
+                }
+             },
+             "schema" : 1,
+             "schedule" : {}
+          }
+        ]
+    }
+
+This list includes all the tasks it manages, not necessarily the list created by the last run. It also does not guarantee that they were successfully scheduled in pScheduler. What it does provide though is the agent's perspective on the tasks that it tries to create and maintain. Matching this list to what is actually in pScheduler is often crucial to debugging and this command provides a view into the agent's side of that information. 
+
+
 
 .. _psconfig_pscheduler_agent-troubleshoot-logs:
 
 Reading the Logs
 -----------------
+If you need to debug beyond what the utilities above provide from the logs, then you can manually look at the log files.There are three important logs used by the agent:
+
+    * The **agent log** lives at ``/var/log/perfsonar/psconfig-pscheduler-agent.log`` and tracks basic information about agent activity and any errors encountered. This is often the first log to review when debugging as it is not as verbose as the others and provides a quick summary of the agent's actions.
+    * The **task log** lives at ``/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log`` and tracks the pScheduler tasks the agent manages. This is where the ``psconfig pscheduler-tasks`` :ref:`command <psconfig_pscheduler_agent-troubleshoot-tasks>` gets the information it displays. This log is useful if you need to look at how pSConfig is defining tasks it gives (or tries to give) to pScheduler. 
+    * The **transaction log** lives at ``/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log`` and logs each individual interaction with pScheduler. Every request to list, create and delete tasks is shown in this log. Each line provides context such as the action being performed, the pScheduler server URL and the raw JSON sent/received from the server. This log is intended to be verbose and useful when intricate debugging is needed.
+
+All of the logs are designed to by highly parsable with fields in the form of ``key=value`` separated by whitespace. Every line has a ``guid=`` field with an ID unique to the run of an agent. This ID is consistent between log files and is incredibly useful for linking events seen in separate logs. 
+
+As an example, the GUID can be used for filtering log lines across files with ``grep`` or similar tools.  It is often easiest to run the ``psconfig pscheduler-stats`` :ref:`command <psconfig_pscheduler_agent-troubleshoot-stats>` to get the GUID of the last run as a launching point to parse the logs. For example, looking at the example output from :ref:`psconfig_pscheduler_agent-troubleshoot-stats`, the run had a GUID of ``DD85D234-47F5-11E8-B2F1-3613118410B6``. Knowing this GUID, all the log messages associated with that run can be queried using a command like the following::
+
+    grep "guid=DD85D234-47F5-11E8-B2F1-3613118410B6" /var/log/perfsonar/psconfig-pscheduler-*.log
+
+You can further filter that output if needed, and hopefully eventually find the information needed to solve any issues encountered.
+
 
 .. _psconfig_pscheduler_agent-advanced:
 
