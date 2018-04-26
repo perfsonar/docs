@@ -100,16 +100,21 @@ Those should be the only places you need as linux.mirrors.es.net also has a mirr
 Q: Is there a way to re-image perfSONAR resources remotely?
 ========================================================================================================================================================================================
 **A:** If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a DVD or USB would be mounted.
-As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance some services support "virtual media" if they contain a DRACs with the enterprise feature set enabled.
-For a more general solution, and going on the assumption that a remote console access is available to a servers, consider a package called iPXE. iPXE can do is attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are::
+As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance, some services support "virtual media" if they contain a DRACs with the enterprise feature set enabled.
+For a more general solution, and going on the assumption that remote console access is available to a servers, consider a package called iPXE. iPXE can attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are::
 
  set net0/ip 10.9.8.7
  set net0/netmask 255.255.255.0
  set net0/gateway 10.9.8.1
  set dns 10.9.8.2
- sanboot http://server.kinber.org/toolkit.iso
+ sanboot http://server.example.net/toolkit.iso
 
-If there is DHCP available, the four set commands can be removed and a single dhcp command put in their place. Any HTTP server used to serve the ISO must support range requests. The standard Apache on most systems will.
+If DHCP is available, the process is considerably simpler::
+
+ dhcp
+ sanboot http://server.example.net/toolkit.iso
+ 
+Any HTTP server used to serve the ISO must support range requests. The standard Apache on most systems will.
 Note that iPXE needs to be on a bootable medium, and it’s operationally better when separate from the disk in the machine. This means that remote locations will need to have something like a USB stick installed. Once in place, set the BIOS to ignore it and boot it explicitly when needed. Since it’s a regular USB device, it can be updated remotely while the main OS is running.
 
 
