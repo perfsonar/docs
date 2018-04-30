@@ -45,7 +45,7 @@ You may enable auto updates from the command-line by enabling/disabling the yum-
 
 *CentOS 6*::
 
-    chkconfig on yum-cron
+    chkconfig yum-cron on
     service yum-cron start
     
 *CentOS 7*::
@@ -62,7 +62,7 @@ Likewise, you may disable auto-updates from the command-line by running the foll
 
 *CentOS 6*::
 
-    chkconfig off yum-cron
+    chkconfig yum-cron off
     service yum-cron stop
 
 *CentOS 7*::
