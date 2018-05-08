@@ -20,11 +20,11 @@ The role of the *pSConfig pScheduler Agent* is to read :doc:`pSConfig templates 
     
 Performing this role is a multi-step process that includes the following:
 
-#. Read the templates and optionally perform local modifications to the template
+#. Read the configured templates and optionally apply local modifications
 #. Determine the pScheduler tasks to schedule
-#. Communicate with the appropriate pScheduler servers to ensure the tasks are created.
+#. Communicate with the appropriate pScheduler servers to ensure the tasks are created
 
-These steps are completed when the following events occur:
+These steps are completed anytime one of the following events occur:
 
 * The agent starts
 * Within a configurable amount of time of a change to a *local* configuration file (changes to remote files are not detected). By default the value is *1 minute*.
@@ -40,7 +40,7 @@ Reading and Modifying Templates
 ----------------------------------
 The agents first job is to read a set of :doc:`templates <psconfig_templates_intro>`. The templates to read are configured by the administrator of the agent. For information on how to configure templates see :ref:`psconfig_pscheduler_agent-templates`.
 
-After reading a template an agent is also capable of performing local modifications to that template. The types of modifications supported include:
+After reading a template, an agent is also capable of performing local modifications to that template. The types of modifications supported include:
 
 * Inclusion of default archives for all tasks. See :ref:`psconfig_pscheduler_agent-modify-archives` for more detail.
 * Direct transformations to the template JSON. See :ref:`psconfig_pscheduler_agent-modify-transform_one` and :ref:`psconfig_pscheduler_agent-modify-transform_all` for more detail.
@@ -190,7 +190,7 @@ Finally, to remove our example remote template we can run the ``psconfig remote 
 
     psconfig remote delete "https://10.0.0.1/example.json"
     
-The command accepts only a URL and will remove the agent's pointer to that template. Within 60 seconds of adding that command, the agent will run and begin canceling any tasks from the removed template that it was responsible for creating. 
+The command accepts only a URL and will remove the agent's pointer to that template. Within 60 seconds of executing that command, the agent will run and begin canceling any tasks from the removed template that it was responsible for creating. 
 
 .. note:: The ``psconfig remote`` command is also the command used by the :doc:`MaDDash agent <psconfig_maddash_agent>` to manage remote templates. If you have both agents installed on the same system, then any ``psconfig remote`` command will affect both agents by default. If you'd only like a command to apply to the pScheduler agent then add the ``--agent pscheduler`` option. Run ``psconfig remote --help`` for full details. 
 

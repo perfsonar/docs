@@ -85,11 +85,11 @@
 </div>
 <p>Performing this role is a multi-step process that includes the following:</p>
 <ol class="arabic simple">
-<li>Read the templates and optionally perform local modifications to the template</li>
+<li>Read the configured templates and optionally apply local modifications</li>
 <li>Determine the pScheduler tasks to schedule</li>
-<li>Communicate with the appropriate pScheduler servers to ensure the tasks are created.</li>
+<li>Communicate with the appropriate pScheduler servers to ensure the tasks are created</li>
 </ol>
-<p>These steps are completed when the following events occur:</p>
+<p>These steps are completed anytime one of the following events occur:</p>
 <ul class="simple">
 <li>The agent starts</li>
 <li>Within a configurable amount of time of a change to a <em>local</em> configuration file (changes to remote files are not detected). By default the value is <em>1 minute</em>.</li>
@@ -104,7 +104,7 @@
 <div class="section" id="reading-and-modifying-templates">
 <span id="psconfig-pscheduler-agent-intro-read"></span><h3>Reading and Modifying Templates<a class="headerlink" href="#reading-and-modifying-templates" title="Permalink to this headline">¶</a></h3>
 <p>The agents first job is to read a set of <a class="reference internal" href="psconfig_templates_intro.html"><em>templates</em></a>. The templates to read are configured by the administrator of the agent. For information on how to configure templates see <a class="reference internal" href="#psconfig-pscheduler-agent-templates"><em>Configuring Templates</em></a>.</p>
-<p>After reading a template an agent is also capable of performing local modifications to that template. The types of modifications supported include:</p>
+<p>After reading a template, an agent is also capable of performing local modifications to that template. The types of modifications supported include:</p>
 <ul class="simple">
 <li>Inclusion of default archives for all tasks. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-archives"><em>Configuring Default Archives</em></a> for more detail.</li>
 <li>Direct transformations to the template JSON. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-one"><em>Transforming Individual Remote Templates</em></a> and <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-all"><em>Transforming All Remote Templates</em></a> for more detail.</li>
@@ -231,7 +231,7 @@
 <div class="highlight-python"><div class="highlight"><pre>psconfig remote delete &quot;https://10.0.0.1/example.json&quot;
 </pre></div>
 </div>
-<p>The command accepts only a URL and will remove the agent&#8217;s pointer to that template. Within 60 seconds of adding that command, the agent will run and begin canceling any tasks from the removed template that it was responsible for creating.</p>
+<p>The command accepts only a URL and will remove the agent&#8217;s pointer to that template. Within 60 seconds of executing that command, the agent will run and begin canceling any tasks from the removed template that it was responsible for creating.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command is also the command used by the <a class="reference internal" href="psconfig_maddash_agent.html"><em>MaDDash agent</em></a> to manage remote templates. If you have both agents installed on the same system, then any <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command will affect both agents by default. If you&#8217;d only like a command to apply to the pScheduler agent then add the <tt class="docutils literal"><span class="pre">--agent</span> <span class="pre">pscheduler</span></tt> option. Run <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">--help</span></tt> for full details.</p>
