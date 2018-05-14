@@ -251,9 +251,9 @@
 <div class="section" id="what-is-a-grid">
 <span id="psconfig-maddash-agent-grids-intro"></span><h3>What is a grid?<a class="headerlink" href="#what-is-a-grid" title="Permalink to this headline">¶</a></h3>
 <p>After reading the templates, the agent needs to decide how to display the results produced by the task topology in MaDDash. Displaying the results requires specific instructions to be given to the agent with regards to which tasks to display and how to display them. By default the agent knows nothing about specific test types nor what to tell MaDDash to do with them. In order for it to translate a task to someting displayable it needs additional information.</p>
-<p>First of all it needs to associate a task from the template with a <strong>check</strong>. A <em>check</em> is an action to perform that generates a result for MaDDash to display. It consists of a command to run and additional information such as a URL to a graph. Usually this command takes the form of a nagios command since that is what MaDDash knows how to run. Building these commands manually is cumbersome so the pSConfig MaDDash agent ships with a number of <strong>check plug-ins</strong>. These plug-ins define the types of tasks they understand, the types of archives they know how to read  and ultimately use this information map the task parameters into a command-line template that can be stored in <tt class="docutils literal"><span class="pre">maddash.yaml</span></tt>. Note that the agent DOES NOT run this command, it simply builds the command tenplate string for MaDDash to run.</p>
-<p>The <em>check</em> also needs to be associated with a <strong>visualization</strong>. A <em>visualization</em> is a URL that points at more information about a task&#8217;s result. More specifically this is the graph displayed when a cell is clicked in the MaDDash web interface. This URL may also contain parameters needed to grab the results of the test. Similar to checks, the agent includes <strong>visualization-plugins</strong> that build the URL based on the contents of a task.</p>
-<p>Finally, these two concepts are brought together into a <strong>grid</strong>. A <em>grid</em> is the unit of configuration that instructs the agent how to convert pSConfig template tasks into something MaDDash can display. It consists of a check plugin, a visualization plug-in and any desired customizations allowed by each. Potential customizations include task selection criteria, check thresholds and many other parameters. The name grid stems from the fact that it ultimately translates a pSConfig <em>task</em> object into the grid representation fundamental to MaDDash.</p>
+<p>First of all it needs to associate a task from the template with a <strong>check</strong>. A <em>check</em> is an action to perform that generates a result for MaDDash to display. It consists of a command to run and additional information such as a URL to a graph. Usually this command takes the form of a nagios command since that is what MaDDash knows how to run. Building these commands manually is cumbersome so the pSConfig MaDDash agent ships with a number of <strong>check plugins</strong>. These plugins define the types of tasks they understand, the types of archives they know how to read  and ultimately use this information map the task parameters into a command-line template that can be stored in <tt class="docutils literal"><span class="pre">maddash.yaml</span></tt>. Note that the agent DOES NOT run this command, it simply builds the command template string for MaDDash to run.</p>
+<p>The <em>check</em> also needs to be associated with a <strong>visualization</strong>. A <em>visualization</em> is a URL that points at more information about a task&#8217;s result. More specifically this is the graph displayed when a cell is clicked in the MaDDash web interface. This URL may also contain parameters needed to grab the results of the test. Similar to checks, the agent includes <strong>visualization plugins</strong> that build the URL based on the contents of a task.</p>
+<p>Finally, these two concepts are brought together into a <strong>grid</strong>. A <em>grid</em> is the unit of configuration that instructs the agent how to convert pSConfig template tasks into something MaDDash can display. It consists of a check plugin, a visualization plugin and any desired customizations allowed by each. Potential customizations include task selection criteria, check thresholds and many other parameters. The name grid stems from the fact that it ultimately translates a pSConfig <em>task</em> object into the grid representation fundamental to MaDDash.</p>
 <p>This is a fair amount of terminology but the MaDDash agent provides configuration utilities that hopefully allows you to ignore or explore as much detail as you want. The remainder of this section is about how to configure grids with these utilities.</p>
 </div>
 <div class="section" id="introduction-to-the-psconfig-maddash-grid-command">
@@ -319,32 +319,258 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If these grids fit your needs, you may not need to do any further configuration.</p>
-<p>The command requires three parameters as shown in the example below:</p>
+<p>Each of these grids do the following:</p>
+<ul class="simple">
+<li><strong>default_ping_loss</strong> - Creates grids of all <em>rtt</em> tasks that alarm on the packet loss values using a default set of thresholds.</li>
+<li><strong>default_trace</strong> - Creates grids of all <em>trace</em> tasks that alarm on the number of unique paths seen using a default set of thresholds.</li>
+<li><strong>default_loss</strong> - Creates grids of all <em>latency</em> and <em>latencybg</em> tasks that alarm on the packet loss using a default set of thresholds.</li>
+<li><strong>default_throughput</strong> - Creates grids of all <em>throughput</em> tasks that alarm on the throughput values reported using a default set of thresholds.</li>
+</ul>
+<p>If these grids fit your needs, you may not need to do any further configuration. You can remove any of these grids with a the command <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">delete</span> <span class="pre">--name</span> <span class="pre">NAME</span></tt> where <tt class="docutils literal"><span class="pre">NAME</span></tt> is the name of the grid to delete. An example set of commands that delete all of the default grids is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-grid delete --name default_ping_loss
+psconfig maddash-grid delete --name default_trace
+psconfig maddash-grid delete --name default_loss
+psconfig maddash-grid delete --name default_throughput
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you leave these grids in place and then add your own grids using the same check plugin, make sure you set the <a class="reference internal" href="#psconfig-maddash-agent-grids-prios"><em>priority</em></a> otherwise you may end up with duplicate grids in MaDDash.</p>
+</div>
+<p>If you&#8217;d like to add your own grid(s) then you can use the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></tt> command. The command requires three parameters as shown in the example below:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig maddash-grid add --name example_loss --check-type ps-nagios-loss --visualization-type ps-graphs
 </pre></div>
 </div>
 <p>The meaning of each parameters is as follows:</p>
 <ul class="simple">
-<li>The <em>&#8211;name</em> is used to identify the check if later modifying the check. Only letters, numbers, hyphens(-), colons(:) and periods (.) are allows in the name. No whitespace or other specical characters. This value  will be used in the name displayed if the <tt class="docutils literal"><span class="pre">--display-name</span></tt> option is not provided. In the example the check will be referred to as <tt class="docutils literal"><span class="pre">example_loss</span></tt>.</li>
-<li>The <em>&#8211;check-type</em> indicates the check plug-in to use. The <tt class="docutils literal"><span class="pre">ps-nagios-loss</span></tt> plug-in is selected in the example. That is a check that by default queries an esmond server for loss data from tasks with test type <em>latency</em> or <em>latencybg</em>. If you specify an invalid plug-in the tool gives an error and lists the valid plug-ins. See <a class="reference internal" href="#psconfig-maddash-agent-grids-checks"><em>Determining Check Plug-ins Installed</em></a> for determining the list of plug-ins installed and how to get more info.</li>
-<li>The <em>&#8211;visualization-type</em> indicates the visualization plug-in to use. In the example <tt class="docutils literal"><span class="pre">ps-graphs</span></tt> is used which is the standard perfSONAR graphs that can query esmond for throughput, latency, and loss information. If you specify an invalid plug-in the tool gives an error and lists the valid plug-ins. See <a class="reference internal" href="#psconfig-maddash-agent-grids-viz"><em>Determining Visualization Plug-ins Installed</em></a> for determining the list of plug-ins installed and how to get more info.</li>
+<li>The <em>&#8211;name</em> is used to identify the check if later modifying it. Only letters, numbers, hyphens(-), colons(:) and periods (.) are allowed in the name (no whitespace or other specical characters). This value  will be used in the name displayed if the <tt class="docutils literal"><span class="pre">--display-name</span></tt> option is not provided. In the example the check will be referred to as <tt class="docutils literal"><span class="pre">example_loss</span></tt>.</li>
+<li>The <em>&#8211;check-type</em> indicates the check plugin to use. The <tt class="docutils literal"><span class="pre">ps-nagios-loss</span></tt> plugin is selected in the example. That is a check that by default queries an esmond server for loss data from tasks with test type <em>latency</em> or <em>latencybg</em>. If you specify an invalid plugin the tool gives an error and lists the valid plugins. See <a class="reference internal" href="#psconfig-maddash-agent-grids-checks"><em>Determining Check Plugins Installed</em></a> for determining the list of plugins installed and how to get more info.</li>
+<li>The <em>&#8211;visualization-type</em> indicates the visualization plugin to use. In the example <tt class="docutils literal"><span class="pre">ps-graphs</span></tt> is used which is the standard perfSONAR graphs that can query esmond for throughput, latency, and loss information. If you specify an invalid plugin the tool gives an error and lists the valid plugins. See <a class="reference internal" href="#psconfig-maddash-agent-grids-viz"><em>Determining Visualization Plugins Installed</em></a> for determining the list of plugins installed and how to get more info.</li>
 </ul>
+<p>The <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></tt> will not only add new grids but modify existing ones as well. Simply refer to the existing grid by name and provide the remainder of the options just like you&#8217;re adding it for the first time. The existing grid will be completely replaced with your new definition.</p>
+<p>This covers the basics of the <tt class="docutils literal"><span class="pre">maddash-grid</span></tt> command, see the remaining sections for more information on working with grids.</p>
 </div>
-<div class="section" id="determining-check-plug-ins-installed">
-<span id="psconfig-maddash-agent-grids-checks"></span><h3>Determining Check Plug-ins Installed<a class="headerlink" href="#determining-check-plug-ins-installed" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="determining-check-plugins-installed">
+<span id="psconfig-maddash-agent-grids-checks"></span><h3>Determining Check Plugins Installed<a class="headerlink" href="#determining-check-plugins-installed" title="Permalink to this headline">¶</a></h3>
+<p>You can list all the check plugins installed on your host with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-check-plugins
+</pre></div>
 </div>
-<div class="section" id="determining-visualization-plug-ins-installed">
-<span id="psconfig-maddash-agent-grids-viz"></span><h3>Determining Visualization Plug-ins Installed<a class="headerlink" href="#determining-visualization-plug-ins-installed" title="Permalink to this headline">¶</a></h3>
+<p>It will give a list of plugins that can be passed to the <tt class="docutils literal"><span class="pre">--check-type</span></tt> option of the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span></tt> command.</p>
+<p>If you would further like to know what the default values used for thresholds and check frequency you can give the above command the <tt class="docutils literal"><span class="pre">--defaults</span></tt> option:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-check-plugins --defaults
+</pre></div>
 </div>
-<div class="section" id="adjusting-grid-thresholds-and-other-parameters">
-<span id="psconfig-maddash-agent-grids-thresholds"></span><h3>Adjusting Grid Thresholds and Other Parameters<a class="headerlink" href="#adjusting-grid-thresholds-and-other-parameters" title="Permalink to this headline">¶</a></h3>
+<p>This will spit out the values for every single plugin as a JSON object. If you would like just the output of a single check you can run the following where TYPE is the name of the check plugin to view (e.g. <tt class="docutils literal"><span class="pre">ps-nagios-loss</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-check-plugins --defaults --type TYPE
+</pre></div>
 </div>
-<div class="section" id="understanding-grid-priorities">
-<span id="psconfig-maddash-agent-grids-prios"></span><h3>Understanding Grid Priorities<a class="headerlink" href="#understanding-grid-priorities" title="Permalink to this headline">¶</a></h3>
+<p>You will see some subset of the following values displayed in a JSON object for each check:</p>
+<ul class="simple">
+<li><em>critical-threshold</em> - The threshold at which a critical alarm is raised. The units are check specific.</li>
+<li><em>warning-threshold</em> - The threshold at which a warning alarm is raised. The units are check specific.</li>
+<li><em>check-interval</em> - The amount of time as an ISO8601 to wait in between runs of a check. For example, if you want the dashboard to check a value every 4 hours, this would get set to <tt class="docutils literal"><span class="pre">PT4H</span></tt>.</li>
+<li><em>retry-attempts</em> - When a state change is detected (e.g. a check that was previously OK crosses the critical threshold), the number of times to retry before changing that state in the dashboard.</li>
+<li><em>retry-interval</em> - The amount of time as an ISO8601 to wait in between retry attempts. If not specified, <em>check-interval</em> is used.</li>
+<li><em>timeout</em> - The amount of time as an ISO8601 to wait for a check to complete before labelling the result with an UNKNOWN state.</li>
+<li><em>params</em> - This is a check-specific object that contains parameters specific to the check in question that can be manipulated. An example might include the amount of data to query each time a check is run or additional filters for the result.</li>
+<li><em>report-yaml-file</em> - This property is only for advanced users. The path to  a YAML file defining that can be inserted into the maddash.yaml <tt class="docutils literal"><span class="pre">reports</span></tt> section that defines pattens that generate the reports seen above grids and used to generate email notifications.</li>
+</ul>
+<p>For information on manipulating these values see <a class="reference internal" href="#psconfig-maddash-agent-grids-thresholds"><em>Adjusting Thresholds and Other Parameters</em></a>.</p>
+<p>Finally, if you would like even more detail about a particular plugin such as the types of tests supported, default paths to commands run, etc then you can run the following where TYPE is the name of the check plugin to view (e.g. <tt class="docutils literal"><span class="pre">ps-nagios-loss</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-check-plugins --detail --type TYPE
+</pre></div>
 </div>
-<div class="section" id="controlling-the-display-name">
-<span id="psconfig-maddash-agent-grids-display"></span><h3>Controlling the Display Name<a class="headerlink" href="#controlling-the-display-name" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="determining-visualization-plugins-installed">
+<span id="psconfig-maddash-agent-grids-viz"></span><h3>Determining Visualization Plugins Installed<a class="headerlink" href="#determining-visualization-plugins-installed" title="Permalink to this headline">¶</a></h3>
+<p>You can list all the visualization plugins installed on your host with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-viz-plugins
+</pre></div>
+</div>
+<p>It will give a list of plugins that can be passed to the <tt class="docutils literal"><span class="pre">--visualization-type</span></tt> option of the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span></tt> command. If you would like further detail about a particular plugin you can run the following where TYPE is the name of the visualization plugin to view (e.g. <tt class="docutils literal"><span class="pre">ps-graphs</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-viz-plugins --type TYPE --detail
+</pre></div>
+</div>
+</div>
+<div class="section" id="adjusting-thresholds-and-other-parameters">
+<span id="psconfig-maddash-agent-grids-thresholds"></span><h3>Adjusting Thresholds and Other Parameters<a class="headerlink" href="#adjusting-thresholds-and-other-parameters" title="Permalink to this headline">¶</a></h3>
+<p>For many cases the default settings will be fine, but it is likely that at some point you may want to make adjustments. One of the most common changes to make is adjusting the thresholds used to alarm on values. You can adjust these by using the <tt class="docutils literal"><span class="pre">--check-critical-threshold</span></tt> and <tt class="docutils literal"><span class="pre">--check-warning-threshold</span></tt> of <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></tt> command respectively. The values accepted by these are check dependent.</p>
+<p>For example, the <tt class="docutils literal"><span class="pre">default_throughput</span></tt> grid defined in the file that ships with the agent defines a check of type <tt class="docutils literal"><span class="pre">ps-nagios-throughput</span></tt>. This check type accepts thresholds in gigabits per second (Gbps). If we run the following we see defaults of <tt class="docutils literal"><span class="pre">.5</span></tt> (.5 Gbps = ~500 Mbps) for the critical threshold and 1 (i.e. 1Gbps) for the warning:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-check-plugins --defaults --type ps-nagios-throughput
+</pre></div>
+</div>
+<p>Example Output:</p>
+<div class="highlight-python"><div class="highlight"><pre>ps-nagios-throughput:
+{
+   &quot;critical-threshold&quot; : &quot;.5&quot;,
+   ...
+   &quot;warning-threshold&quot; : &quot;1&quot;,
+   ...
+}
+</pre></div>
+</div>
+<p>If we&#8217;d like to increase these thresholds in our grid named <tt class="docutils literal"><span class="pre">default_throughput</span></tt> to 6Gbps and 8Gbps respectively then we can run the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-grid add --name default_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 1 --check-critical-threshold 6 --check-warning-threshold 8
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The extra optional properties of <tt class="docutils literal"><span class="pre">--display-name</span></tt>, <tt class="docutils literal"><span class="pre">--priority-group</span></tt> and <tt class="docutils literal"><span class="pre">--priority-level</span></tt> are included to match what is defined in the default definition. If those are not included, the default values will be overriden and they will not be set. For more information on these properties see <a class="reference internal" href="#psconfig-maddash-agent-grids-display"><em>Controlling the Display Properties</em></a> and <a class="reference internal" href="#psconfig-maddash-agent-grids-prios"><em>Adding Multiple Grids with the Same Check Type</em></a>.</p>
+</div>
+<p>Alternatively, let&#8217;s say we want to update the default to now look at data over a wider time range. There is a check-specific parameter called <tt class="docutils literal"><span class="pre">time-range</span></tt> supported by <tt class="docutils literal"><span class="pre">ps-nagios-throughput</span></tt> that allows us to set the amount of data looked at by a check. This option is specified in seconds and defaults to 86400 (i.e. 1 day). We can change this to 1 week (604800 seconds) with the following command that also maintains our custom thresholds from the previous example:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-grid add --name default_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 1 --check-critical-threshold 6 --check-warning-threshold 8 --check-params &#39;{&quot;time-range&quot;: 604800}&#39;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">time-range</span></tt> is not guaranteed to be supported by all checks since it is check specific and may not apply. Most of the checks beginning with the <tt class="docutils literal"><span class="pre">ps-</span></tt> prefix support it, but see <a class="reference internal" href="#psconfig-maddash-agent-grids-checks"><em>Determining Check Plugins Installed</em></a> for details on determining what values a check supports.</p>
+</div>
+<p>Note that we have to specify the check-specific value as a JSON string. There are numerous other options you can control, see <tt class="docutils literal"><span class="pre">psconfig-maddash-grid</span> <span class="pre">--help</span></tt> and the remaining sections for more details.</p>
+</div>
+<div class="section" id="adding-multiple-grids-with-the-same-check-type">
+<span id="psconfig-maddash-agent-grids-prios"></span><h3>Adding Multiple Grids with the Same Check Type<a class="headerlink" href="#adding-multiple-grids-with-the-same-check-type" title="Permalink to this headline">¶</a></h3>
+<p>It is often the case that you want to apply different thresholds and/or parameters to tasks of the same type. For example, consider the following <tt class="docutils literal"><span class="pre">tasks</span></tt> section of a template that describes three throughput tasks:</p>
+<div class="highlight-python"><div class="highlight"><pre>...
+&quot;tasks&quot;: {
+    &quot;task_low&quot;: {
+        &quot;group&quot;: &quot;group_low&quot;,
+        &quot;test&quot;: &quot;test_tput&quot;,
+        &quot;schedule&quot;: &quot;schedule_tput&quot;
+    },
+    &quot;task_medium&quot;: {
+        &quot;group&quot;: &quot;group_medium&quot;,
+        &quot;test&quot;: &quot;test_tput&quot;,
+        &quot;schedule&quot;: &quot;schedule_tput&quot;
+    },
+    &quot;task_high&quot;: {
+        &quot;group&quot;: &quot;group_high&quot;,
+        &quot;test&quot;: &quot;test_tput&quot;,
+        &quot;schedule&quot;: &quot;schedule_tput&quot;
+    }
+}
+...
+</pre></div>
+</div>
+<p>Now let&#8217;s assume as a starting point we have the default <em>ps-nagios-throughput</em> grid defined that ships with the agent. We can view just the <em>ps-nagios-throughput</em> grids with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-grid list --check-type ps-nagios-throughput
+</pre></div>
+</div>
+<p>Assuming we have the default, the output will look like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+   <span class="s">&quot;default_throughput&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">&quot;priority&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s">&quot;level&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s">&quot;group&quot;</span> <span class="p">:</span> <span class="s">&quot;throughput&quot;</span>
+      <span class="p">},</span>
+      <span class="s">&quot;check&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;ps-nagios-throughput&quot;</span>
+      <span class="p">},</span>
+      <span class="s">&quot;visualization&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;ps-graphs&quot;</span>
+      <span class="p">},</span>
+      <span class="s">&quot;display-name&quot;</span> <span class="p">:</span> <span class="s">&quot;Throughput&quot;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Let&#8217;s say that we want <tt class="docutils literal"><span class="pre">task_medium</span></tt> to use this grid, but we want to define different thresholds for <tt class="docutils literal"><span class="pre">task_low</span></tt> and <tt class="docutils literal"><span class="pre">task_high</span></tt>. We need to add two new grids that have the following properties:</p>
+<ol class="arabic simple">
+<li>A <strong>task selector</strong> defined that tells the grid to only select tasks with certain features, in this case a name.</li>
+<li><strong>Priorities</strong> defined that indicate that only one grid from a group of grids should be matched to each task so we don&#8217;t end-up with MaDDash drawing two grids of the same type for the same task.</li>
+</ol>
+<p>Let&#8217;s look at the commands we&#8217;ll use to add these grids then break them down:</p>
+<div class="highlight-python"><div class="highlight"><pre>psconfig maddash-grid add --name low_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 2 --check-critical-threshold .1 --check-warning-threshold .5 --selector-task-name task_low
+
+psconfig maddash-grid add --name high_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 2 --check-critical-threshold 6 --check-warning-threshold 8 --selector-task-name task_high
+</pre></div>
+</div>
+<p>Looking first at the selection criteria, the above examples add the <tt class="docutils literal"><span class="pre">--selector-task-name</span></tt> to the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></tt> command with the name of the task from the template we want to match. There are other selector options based on the archive type or a custom JQ script, see <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">--help</span></tt> for more details on those.</p>
+<p>The priorities are slightly more complicated and are handled with the <tt class="docutils literal"><span class="pre">--priority-group</span></tt> and <tt class="docutils literal"><span class="pre">--priority-level</span></tt> options. To better understand, let&#8217;s look at what would happen with no priorities:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">tasks_low</span></tt> is a test of type throughput, so it would match the <tt class="docutils literal"><span class="pre">default_throughput</span></tt> archive and MaDDash would create a grid for that. Since we also added a second grid called <tt class="docutils literal"><span class="pre">low_throughput</span></tt> which requires a test of type throughput and a task of name <tt class="docutils literal"><span class="pre">task_low</span></tt> which also matches, then a <em>second</em> grid would be drawn by MaDDash.</li>
+<li>The fate of <tt class="docutils literal"><span class="pre">tasks_high</span></tt> would be similar to <tt class="docutils literal"><span class="pre">tasks_low</span></tt>, except the second grid drawn would be the one defined by <tt class="docutils literal"><span class="pre">high_throughput</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">tasks_medium</span></tt> would only match <tt class="docutils literal"><span class="pre">default_throughput</span></tt>, so it would be displayed as desired</li>
+</ul>
+<p>In the case of <tt class="docutils literal"><span class="pre">tasks_low</span></tt> and <tt class="docutils literal"><span class="pre">tasks_high</span></tt> we get an extra grid drawn by MaDDash if we don&#8217;t specify the priority. Priorities have two values: the <em>group</em> and the <em>level</em>. The group is a custom name, and only <strong>one</strong> MaDDash grid will be drawn for a task per priority group. We named our group <em>throughput</em> in this example. Within the priority group, the grid selected is the one matches the selection criteria AND has the <strong>highest</strong> priority of those that match. The <tt class="docutils literal"><span class="pre">default_throughput</span></tt> has a priority of 1 in our example. We set the priority level at 2 for our new grids. With this set, that means the grid with the  <tt class="docutils literal"><span class="pre">--selector-task-name</span></tt> option set has the higher priority, so it will be favored if it matches. Note that in our example the <tt class="docutils literal"><span class="pre">--priority-level</span></tt> is the same for both <tt class="docutils literal"><span class="pre">low_throughput</span></tt> and <tt class="docutils literal"><span class="pre">high_throughput</span></tt>, which is fine since it is impossible for a task to match both. If this were a case where we were using a different selection criteria that made it possible for multiple grids with the same priority match, then the first grid encountered will be used. This is not very deterministic so it is generally advised you avoid situations where it is possible for two grids in the same priority group and with the same priority level match the same task.</p>
+<p>The examples above show just changing the thresholds, but we can set any parameters in the new grid, just make sure the selectors and priorities are defined as desired.</p>
+</div>
+<div class="section" id="controlling-the-display-properties">
+<span id="psconfig-maddash-agent-grids-display"></span><h3>Controlling the Display Properties<a class="headerlink" href="#controlling-the-display-properties" title="Permalink to this headline">¶</a></h3>
+<p>The agent gives control over how the names of rows, columns, grids and dashboards are displayed in MaDDash. The first name generated is that of the <em>dashboard</em>. This is the name that gets displayed in the <em>Dashboards</em> pulldown menu of MaDDash and at the top of the screen when you select that menu item.  It is defined by a <tt class="docutils literal"><span class="pre">_meta</span></tt> property in the template itself called <tt class="docutils literal"><span class="pre">display-name</span></tt>. This name in question comes from a <tt class="docutils literal"><span class="pre">_meta</span></tt> object in the top-level of a template. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;display-name&quot;</span><span class="p">:</span> <span class="s">&quot;Example Dashboard&quot;</span>
+    <span class="p">},</span>
+
+    <span class="s">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s">&quot;tests&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s">&quot;schedules&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If this property is not defined then an auto-generated value will be used that is much uglier.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember that you can use <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-all"><em>transform scripts</em></a> to have the agent modify the JSON including setting the <tt class="docutils literal"><span class="pre">display-name</span></tt> if one is not set in a remote template.</p>
+</div>
+<p>Similarly, the rows and columns use this same property, but defined in the <tt class="docutils literal"><span class="pre">addressses</span></tt> object of the template. If not specified the value of the <tt class="docutils literal"><span class="pre">address</span></tt> property will be used instead. The agent also supports the use of a <tt class="docutils literal"><span class="pre">display-url</span></tt> property that will be used to generate a hyperlink that can be visited by clicking on the hostname in a grid. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;addresses&quot;: {
+    &quot;10.0.0.1&quot;: {
+        &quot;address&quot;: &quot;10.0.0.1&quot;,
+        &quot;_meta&quot;: {
+            &quot;display-name&quot;: &quot;Endpoint 1&quot;,
+            &quot;display-url&quot;: &quot;https://10.0.0.1/toolkit&quot;
+        }
+    },
+    &quot;10.0.0.2&quot;: {
+        &quot;address&quot;: &quot;10.0.0.2&quot;,
+        &quot;_meta&quot;: {
+            &quot;display-name&quot;: &quot;Endpoint 2&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>Finally the name displayed directly above a MaDDash grid comes from three components all separated by a hyphen (-). The first part of the name is the dashboard name as described above. The second part of the name comes from the <em>task</em> objects <tt class="docutils literal"><span class="pre">display-name</span></tt> property if defined. If not defined, the key used to label the task in the <tt class="docutils literal"><span class="pre">tasks</span></tt> section of the template is used with some minor formatting. An example of the <tt class="docutils literal"><span class="pre">display-name</span></tt> property is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;tasks&quot;: {
+    &quot;task_low&quot;: {
+        &quot;group&quot;: &quot;group_low&quot;,
+        &quot;test&quot;: &quot;test_tput&quot;,
+        &quot;schedule&quot;: &quot;schedule_tput&quot;,
+        &quot;_meta&quot;: {
+            &quot;display-name&quot;: &quot;Slow Testers&quot;
+        }
+    },
+    &quot;task_medium&quot;: {
+        &quot;group&quot;: &quot;group_medium&quot;,
+        &quot;test&quot;: &quot;test_tput&quot;,
+        &quot;schedule&quot;: &quot;schedule_tput&quot;,
+        &quot;_meta&quot;: {
+            &quot;display-name&quot;: &quot;Average Testers&quot;
+        }
+    },
+    &quot;task_high&quot;: {
+        &quot;group&quot;: &quot;group_high&quot;,
+        &quot;test&quot;: &quot;test_tput&quot;,
+        &quot;schedule&quot;: &quot;schedule_tput&quot;,
+        &quot;_meta&quot;: {
+            &quot;display-name&quot;: &quot;Fast Testers&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>The final part of the grid name comes not from the template, but from the agent. It will either use the value given to the <tt class="docutils literal"><span class="pre">--display-name</span></tt> option when running <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></tt> or the <tt class="docutils literal"><span class="pre">--name</span></tt> option if the former was not specified. The command <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">list</span></tt> should show the current value of <tt class="docutils literal"><span class="pre">display-name</span></tt> for each grid.</p>
 </div>
 </div>
 <div class="section" id="troubleshooting">
@@ -461,11 +687,11 @@ From remote definitions: 3
 <li><a class="reference internal" href="#configuring-grids">Configuring Grids</a><ul>
 <li><a class="reference internal" href="#what-is-a-grid">What is a grid?</a></li>
 <li><a class="reference internal" href="#introduction-to-the-psconfig-maddash-grid-command">Introduction to the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span></tt> command</a></li>
-<li><a class="reference internal" href="#determining-check-plug-ins-installed">Determining Check Plug-ins Installed</a></li>
-<li><a class="reference internal" href="#determining-visualization-plug-ins-installed">Determining Visualization Plug-ins Installed</a></li>
-<li><a class="reference internal" href="#adjusting-grid-thresholds-and-other-parameters">Adjusting Grid Thresholds and Other Parameters</a></li>
-<li><a class="reference internal" href="#understanding-grid-priorities">Understanding Grid Priorities</a></li>
-<li><a class="reference internal" href="#controlling-the-display-name">Controlling the Display Name</a></li>
+<li><a class="reference internal" href="#determining-check-plugins-installed">Determining Check Plugins Installed</a></li>
+<li><a class="reference internal" href="#determining-visualization-plugins-installed">Determining Visualization Plugins Installed</a></li>
+<li><a class="reference internal" href="#adjusting-thresholds-and-other-parameters">Adjusting Thresholds and Other Parameters</a></li>
+<li><a class="reference internal" href="#adding-multiple-grids-with-the-same-check-type">Adding Multiple Grids with the Same Check Type</a></li>
+<li><a class="reference internal" href="#controlling-the-display-properties">Controlling the Display Properties</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>

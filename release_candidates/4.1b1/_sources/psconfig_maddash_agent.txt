@@ -216,11 +216,11 @@ What is a grid?
 ---------------
 After reading the templates, the agent needs to decide how to display the results produced by the task topology in MaDDash. Displaying the results requires specific instructions to be given to the agent with regards to which tasks to display and how to display them. By default the agent knows nothing about specific test types nor what to tell MaDDash to do with them. In order for it to translate a task to someting displayable it needs additional information.
 
-First of all it needs to associate a task from the template with a **check**. A *check* is an action to perform that generates a result for MaDDash to display. It consists of a command to run and additional information such as a URL to a graph. Usually this command takes the form of a nagios command since that is what MaDDash knows how to run. Building these commands manually is cumbersome so the pSConfig MaDDash agent ships with a number of **check plug-ins**. These plug-ins define the types of tasks they understand, the types of archives they know how to read  and ultimately use this information map the task parameters into a command-line template that can be stored in ``maddash.yaml``. Note that the agent DOES NOT run this command, it simply builds the command tenplate string for MaDDash to run.
+First of all it needs to associate a task from the template with a **check**. A *check* is an action to perform that generates a result for MaDDash to display. It consists of a command to run and additional information such as a URL to a graph. Usually this command takes the form of a nagios command since that is what MaDDash knows how to run. Building these commands manually is cumbersome so the pSConfig MaDDash agent ships with a number of **check plugins**. These plugins define the types of tasks they understand, the types of archives they know how to read  and ultimately use this information map the task parameters into a command-line template that can be stored in ``maddash.yaml``. Note that the agent DOES NOT run this command, it simply builds the command template string for MaDDash to run.
 
-The *check* also needs to be associated with a **visualization**. A *visualization* is a URL that points at more information about a task's result. More specifically this is the graph displayed when a cell is clicked in the MaDDash web interface. This URL may also contain parameters needed to grab the results of the test. Similar to checks, the agent includes **visualization-plugins** that build the URL based on the contents of a task. 
+The *check* also needs to be associated with a **visualization**. A *visualization* is a URL that points at more information about a task's result. More specifically this is the graph displayed when a cell is clicked in the MaDDash web interface. This URL may also contain parameters needed to grab the results of the test. Similar to checks, the agent includes **visualization plugins** that build the URL based on the contents of a task. 
 
-Finally, these two concepts are brought together into a **grid**. A *grid* is the unit of configuration that instructs the agent how to convert pSConfig template tasks into something MaDDash can display. It consists of a check plugin, a visualization plug-in and any desired customizations allowed by each. Potential customizations include task selection criteria, check thresholds and many other parameters. The name grid stems from the fact that it ultimately translates a pSConfig *task* object into the grid representation fundamental to MaDDash.
+Finally, these two concepts are brought together into a **grid**. A *grid* is the unit of configuration that instructs the agent how to convert pSConfig template tasks into something MaDDash can display. It consists of a check plugin, a visualization plugin and any desired customizations allowed by each. Potential customizations include task selection criteria, check thresholds and many other parameters. The name grid stems from the fact that it ultimately translates a pSConfig *task* object into the grid representation fundamental to MaDDash.
 
 This is a fair amount of terminology but the MaDDash agent provides configuration utilities that hopefully allows you to ignore or explore as much detail as you want. The remainder of this section is about how to configure grids with these utilities.
 
@@ -289,47 +289,265 @@ This should lead to the following output::
        }
     }
 
-If these grids fit your needs, you may not need to do any further configuration. 
+Each of these grids do the following:
 
-The command requires three parameters as shown in the example below::
+* **default_ping_loss** - Creates grids of all *rtt* tasks that alarm on the packet loss values using a default set of thresholds.
+* **default_trace** - Creates grids of all *trace* tasks that alarm on the number of unique paths seen using a default set of thresholds.
+* **default_loss** - Creates grids of all *latency* and *latencybg* tasks that alarm on the packet loss using a default set of thresholds.
+* **default_throughput** - Creates grids of all *throughput* tasks that alarm on the throughput values reported using a default set of thresholds.
+
+If these grids fit your needs, you may not need to do any further configuration. You can remove any of these grids with a the command ``psconfig maddash-grid delete --name NAME`` where ``NAME`` is the name of the grid to delete. An example set of commands that delete all of the default grids is shown below::
+
+    psconfig maddash-grid delete --name default_ping_loss
+    psconfig maddash-grid delete --name default_trace
+    psconfig maddash-grid delete --name default_loss
+    psconfig maddash-grid delete --name default_throughput
+
+.. note:: If you leave these grids in place and then add your own grids using the same check plugin, make sure you set the :ref:`priority <psconfig_maddash_agent-grids-prios>` otherwise you may end up with duplicate grids in MaDDash. 
+
+If you'd like to add your own grid(s) then you can use the ``psconfig maddash-grid add`` command. The command requires three parameters as shown in the example below::
 
     psconfig maddash-grid add --name example_loss --check-type ps-nagios-loss --visualization-type ps-graphs
     
 The meaning of each parameters is as follows:
     
-* The *--name* is used to identify the check if later modifying the check. Only letters, numbers, hyphens(-), colons(:) and periods (.) are allows in the name. No whitespace or other specical characters. This value  will be used in the name displayed if the ``--display-name`` option is not provided. In the example the check will be referred to as ``example_loss``. 
-* The *--check-type* indicates the check plug-in to use. The ``ps-nagios-loss`` plug-in is selected in the example. That is a check that by default queries an esmond server for loss data from tasks with test type *latency* or *latencybg*. If you specify an invalid plug-in the tool gives an error and lists the valid plug-ins. See :ref:`psconfig_maddash_agent-grids-checks` for determining the list of plug-ins installed and how to get more info. 
-* The *--visualization-type* indicates the visualization plug-in to use. In the example ``ps-graphs`` is used which is the standard perfSONAR graphs that can query esmond for throughput, latency, and loss information. If you specify an invalid plug-in the tool gives an error and lists the valid plug-ins. See :ref:`psconfig_maddash_agent-grids-viz` for determining the list of plug-ins installed and how to get more info. 
+* The *--name* is used to identify the check if later modifying it. Only letters, numbers, hyphens(-), colons(:) and periods (.) are allowed in the name (no whitespace or other specical characters). This value  will be used in the name displayed if the ``--display-name`` option is not provided. In the example the check will be referred to as ``example_loss``. 
+* The *--check-type* indicates the check plugin to use. The ``ps-nagios-loss`` plugin is selected in the example. That is a check that by default queries an esmond server for loss data from tasks with test type *latency* or *latencybg*. If you specify an invalid plugin the tool gives an error and lists the valid plugins. See :ref:`psconfig_maddash_agent-grids-checks` for determining the list of plugins installed and how to get more info. 
+* The *--visualization-type* indicates the visualization plugin to use. In the example ``ps-graphs`` is used which is the standard perfSONAR graphs that can query esmond for throughput, latency, and loss information. If you specify an invalid plugin the tool gives an error and lists the valid plugins. See :ref:`psconfig_maddash_agent-grids-viz` for determining the list of plugins installed and how to get more info.   
 
+The ``psconfig maddash-grid add`` will not only add new grids but modify existing ones as well. Simply refer to the existing grid by name and provide the remainder of the options just like you're adding it for the first time. The existing grid will be completely replaced with your new definition.
 
-    
-    
-    
+This covers the basics of the ``maddash-grid`` command, see the remaining sections for more information on working with grids.
 
 .. _psconfig_maddash_agent-grids-checks:
 
-Determining Check Plug-ins Installed
+Determining Check Plugins Installed
 --------------------------------------
+You can list all the check plugins installed on your host with the following command::
+
+    psconfig maddash-check-plugins
+    
+It will give a list of plugins that can be passed to the ``--check-type`` option of the ``psconfig maddash-grid`` command. 
+
+If you would further like to know what the default values used for thresholds and check frequency you can give the above command the ``--defaults`` option::
+
+    psconfig maddash-check-plugins --defaults
+    
+This will spit out the values for every single plugin as a JSON object. If you would like just the output of a single check you can run the following where TYPE is the name of the check plugin to view (e.g. ``ps-nagios-loss``)::
+
+    psconfig maddash-check-plugins --defaults --type TYPE
+
+You will see some subset of the following values displayed in a JSON object for each check:
+
+* *critical-threshold* - The threshold at which a critical alarm is raised. The units are check specific.
+* *warning-threshold* - The threshold at which a warning alarm is raised. The units are check specific.
+* *check-interval* - The amount of time as an ISO8601 to wait in between runs of a check. For example, if you want the dashboard to check a value every 4 hours, this would get set to ``PT4H``.
+* *retry-attempts* - When a state change is detected (e.g. a check that was previously OK crosses the critical threshold), the number of times to retry before changing that state in the dashboard.
+* *retry-interval* - The amount of time as an ISO8601 to wait in between retry attempts. If not specified, *check-interval* is used.
+* *timeout* - The amount of time as an ISO8601 to wait for a check to complete before labelling the result with an UNKNOWN state. 
+* *params* - This is a check-specific object that contains parameters specific to the check in question that can be manipulated. An example might include the amount of data to query each time a check is run or additional filters for the result. 
+* *report-yaml-file* - This property is only for advanced users. The path to  a YAML file defining that can be inserted into the maddash.yaml ``reports`` section that defines pattens that generate the reports seen above grids and used to generate email notifications.
+
+For information on manipulating these values see :ref:`psconfig_maddash_agent-grids-thresholds`.
+
+Finally, if you would like even more detail about a particular plugin such as the types of tests supported, default paths to commands run, etc then you can run the following where TYPE is the name of the check plugin to view (e.g. ``ps-nagios-loss``)::
+
+    psconfig maddash-check-plugins --detail --type TYPE
 
 .. _psconfig_maddash_agent-grids-viz:
 
-Determining Visualization Plug-ins Installed
+Determining Visualization Plugins Installed
 ----------------------------------------------
+You can list all the visualization plugins installed on your host with the following command::
+
+     psconfig maddash-viz-plugins
+    
+It will give a list of plugins that can be passed to the ``--visualization-type`` option of the ``psconfig maddash-grid`` command. If you would like further detail about a particular plugin you can run the following where TYPE is the name of the visualization plugin to view (e.g. ``ps-graphs``)::
+
+    psconfig maddash-viz-plugins --type TYPE --detail
 
 .. _psconfig_maddash_agent-grids-thresholds:
 
-Adjusting Grid Thresholds and Other Parameters
+Adjusting Thresholds and Other Parameters
 -------------------------------------------------
+For many cases the default settings will be fine, but it is likely that at some point you may want to make adjustments. One of the most common changes to make is adjusting the thresholds used to alarm on values. You can adjust these by using the ``--check-critical-threshold`` and ``--check-warning-threshold`` of ``psconfig maddash-grid add`` command respectively. The values accepted by these are check dependent. 
+
+For example, the ``default_throughput`` grid defined in the file that ships with the agent defines a check of type ``ps-nagios-throughput``. This check type accepts thresholds in gigabits per second (Gbps). If we run the following we see defaults of ``.5`` (.5 Gbps = ~500 Mbps) for the critical threshold and 1 (i.e. 1Gbps) for the warning::
+
+    psconfig maddash-check-plugins --defaults --type ps-nagios-throughput
+    
+Example Output::
+
+    ps-nagios-throughput:
+    {
+       "critical-threshold" : ".5",
+       ...
+       "warning-threshold" : "1",
+       ...
+    }
+
+If we'd like to increase these thresholds in our grid named ``default_throughput`` to 6Gbps and 8Gbps respectively then we can run the following command::
+
+    psconfig maddash-grid add --name default_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 1 --check-critical-threshold 6 --check-warning-threshold 8
+
+.. note:: The extra optional properties of ``--display-name``, ``--priority-group`` and ``--priority-level`` are included to match what is defined in the default definition. If those are not included, the default values will be overriden and they will not be set. For more information on these properties see :ref:`psconfig_maddash_agent-grids-display` and :ref:`psconfig_maddash_agent-grids-prios`.
+
+Alternatively, let's say we want to update the default to now look at data over a wider time range. There is a check-specific parameter called ``time-range`` supported by ``ps-nagios-throughput`` that allows us to set the amount of data looked at by a check. This option is specified in seconds and defaults to 86400 (i.e. 1 day). We can change this to 1 week (604800 seconds) with the following command that also maintains our custom thresholds from the previous example::
+
+    psconfig maddash-grid add --name default_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 1 --check-critical-threshold 6 --check-warning-threshold 8 --check-params '{"time-range": 604800}'
+
+.. note:: ``time-range`` is not guaranteed to be supported by all checks since it is check specific and may not apply. Most of the checks beginning with the ``ps-`` prefix support it, but see :ref:`psconfig_maddash_agent-grids-checks` for details on determining what values a check supports. 
+
+Note that we have to specify the check-specific value as a JSON string. There are numerous other options you can control, see ``psconfig-maddash-grid --help`` and the remaining sections for more details.
 
 .. _psconfig_maddash_agent-grids-prios:
 
-Understanding Grid Priorities
-------------------------------
+Adding Multiple Grids with the Same Check Type
+-------------------------------------------------
+It is often the case that you want to apply different thresholds and/or parameters to tasks of the same type. For example, consider the following ``tasks`` section of a template that describes three throughput tasks::
+    
+    ...
+    "tasks": {
+        "task_low": {
+            "group": "group_low",
+            "test": "test_tput",
+            "schedule": "schedule_tput"
+        },
+        "task_medium": {
+            "group": "group_medium",
+            "test": "test_tput",
+            "schedule": "schedule_tput"
+        },
+        "task_high": {
+            "group": "group_high",
+            "test": "test_tput",
+            "schedule": "schedule_tput"
+        }
+    }
+    ...
+    
+Now let's assume as a starting point we have the default *ps-nagios-throughput* grid defined that ships with the agent. We can view just the *ps-nagios-throughput* grids with the following command::
+
+    psconfig maddash-grid list --check-type ps-nagios-throughput
+    
+Assuming we have the default, the output will look like the following::
+
+    {
+       "default_throughput" : {
+          "priority" : {
+             "level" : 1,
+             "group" : "throughput"
+          },
+          "check" : {
+             "type" : "ps-nagios-throughput"
+          },
+          "visualization" : {
+             "type" : "ps-graphs"
+          },
+          "display-name" : "Throughput"
+       }
+    }
+
+Let's say that we want ``task_medium`` to use this grid, but we want to define different thresholds for ``task_low`` and ``task_high``. We need to add two new grids that have the following properties:
+
+#. A **task selector** defined that tells the grid to only select tasks with certain features, in this case a name.
+#. **Priorities** defined that indicate that only one grid from a group of grids should be matched to each task so we don't end-up with MaDDash drawing two grids of the same type for the same task. 
+
+Let's look at the commands we'll use to add these grids then break them down::
+
+    psconfig maddash-grid add --name low_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 2 --check-critical-threshold .1 --check-warning-threshold .5 --selector-task-name task_low
+    
+    psconfig maddash-grid add --name high_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 2 --check-critical-threshold 6 --check-warning-threshold 8 --selector-task-name task_high
+
+Looking first at the selection criteria, the above examples add the ``--selector-task-name`` to the ``psconfig maddash-grid add`` command with the name of the task from the template we want to match. There are other selector options based on the archive type or a custom JQ script, see ``psconfig maddash-grid --help`` for more details on those. 
+
+The priorities are slightly more complicated and are handled with the ``--priority-group`` and ``--priority-level`` options. To better understand, let's look at what would happen with no priorities:
+
+* ``tasks_low`` is a test of type throughput, so it would match the ``default_throughput`` archive and MaDDash would create a grid for that. Since we also added a second grid called ``low_throughput`` which requires a test of type throughput and a task of name ``task_low`` which also matches, then a *second* grid would be drawn by MaDDash.
+* The fate of ``tasks_high`` would be similar to ``tasks_low``, except the second grid drawn would be the one defined by ``high_throughput``
+* ``tasks_medium`` would only match ``default_throughput``, so it would be displayed as desired
+
+In the case of ``tasks_low`` and ``tasks_high`` we get an extra grid drawn by MaDDash if we don't specify the priority. Priorities have two values: the *group* and the *level*. The group is a custom name, and only **one** MaDDash grid will be drawn for a task per priority group. We named our group *throughput* in this example. Within the priority group, the grid selected is the one matches the selection criteria AND has the **highest** priority of those that match. The ``default_throughput`` has a priority of 1 in our example. We set the priority level at 2 for our new grids. With this set, that means the grid with the  ``--selector-task-name`` option set has the higher priority, so it will be favored if it matches. Note that in our example the ``--priority-level`` is the same for both ``low_throughput`` and ``high_throughput``, which is fine since it is impossible for a task to match both. If this were a case where we were using a different selection criteria that made it possible for multiple grids with the same priority match, then the first grid encountered will be used. This is not very deterministic so it is generally advised you avoid situations where it is possible for two grids in the same priority group and with the same priority level match the same task.
+
+The examples above show just changing the thresholds, but we can set any parameters in the new grid, just make sure the selectors and priorities are defined as desired. 
 
 .. _psconfig_maddash_agent-grids-display:
 
-Controlling the Display Name
-------------------------------
+Controlling the Display Properties
+--------------------------------------
+The agent gives control over how the names of rows, columns, grids and dashboards are displayed in MaDDash. The first name generated is that of the *dashboard*. This is the name that gets displayed in the *Dashboards* pulldown menu of MaDDash and at the top of the screen when you select that menu item.  It is defined by a ``_meta`` property in the template itself called ``display-name``. This name in question comes from a ``_meta`` object in the top-level of a template. For example::
+
+    {
+        "_meta": {
+            "display-name": "Example Dashboard"
+        },
+    
+        "addresses": {...},
+    
+        "groups": {...},
+    
+        "tests": {...},
+    
+        "schedules": {...},
+    
+        "archives": {...},
+    
+        "tasks": {...}
+
+    }
+
+If this property is not defined then an auto-generated value will be used that is much uglier.
+
+.. note:: Remember that you can use :ref:`transform scripts <psconfig_pscheduler_agent-modify-transform_all>` to have the agent modify the JSON including setting the ``display-name`` if one is not set in a remote template. 
+
+Similarly, the rows and columns use this same property, but defined in the ``addressses`` object of the template. If not specified the value of the ``address`` property will be used instead. The agent also supports the use of a ``display-url`` property that will be used to generate a hyperlink that can be visited by clicking on the hostname in a grid. For example::
+
+    "addresses": {
+        "10.0.0.1": {
+            "address": "10.0.0.1",
+            "_meta": {
+                "display-name": "Endpoint 1",
+                "display-url": "https://10.0.0.1/toolkit"
+            }
+        },
+        "10.0.0.2": {
+            "address": "10.0.0.2",
+            "_meta": {
+                "display-name": "Endpoint 2"
+            }
+        }
+    }
+
+Finally the name displayed directly above a MaDDash grid comes from three components all separated by a hyphen (-). The first part of the name is the dashboard name as described above. The second part of the name comes from the *task* objects ``display-name`` property if defined. If not defined, the key used to label the task in the ``tasks`` section of the template is used with some minor formatting. An example of the ``display-name`` property is shown below::
+
+    "tasks": {
+        "task_low": {
+            "group": "group_low",
+            "test": "test_tput",
+            "schedule": "schedule_tput",
+            "_meta": {
+                "display-name": "Slow Testers"
+            }
+        },
+        "task_medium": {
+            "group": "group_medium",
+            "test": "test_tput",
+            "schedule": "schedule_tput",
+            "_meta": {
+                "display-name": "Average Testers"
+            }
+        },
+        "task_high": {
+            "group": "group_high",
+            "test": "test_tput",
+            "schedule": "schedule_tput",
+            "_meta": {
+                "display-name": "Fast Testers"
+            }
+        }
+    }
+
+The final part of the grid name comes not from the template, but from the agent. It will either use the value given to the ``--display-name`` option when running ``psconfig maddash-grid add`` or the ``--name`` option if the former was not specified. The command ``psconfig maddash-grid list`` should show the current value of ``display-name`` for each grid. 
 
 .. _psconfig_maddash_agent-troubleshoot:
 
