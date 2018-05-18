@@ -317,6 +317,10 @@ The meaning of each parameters is as follows:
 
 The ``psconfig maddash-grid add`` will not only add new grids but modify existing ones as well. Simply refer to the existing grid by name and provide the remainder of the options just like you're adding it for the first time. The existing grid will be completely replaced with your new definition.
 
+The ``psconfig maddash-grid edit`` command will modify existing grids as well, but does not require every option to be specified at the command-line for it to be maintained. For example, if we want to set the priority (see :ref:`psconfig_maddash_agent-grids-prios`) of the ``example_loss`` grid we added in the last example, then we can run  the following::
+
+    psconfig maddash-grid edit --name example_loss --priority-group loss --priority-level 2
+
 This covers the basics of the ``maddash-grid`` command, see the remaining sections for more information on working with grids.
 
 .. _psconfig_maddash_agent-grids-checks:
@@ -370,7 +374,7 @@ It will give a list of plugins that can be passed to the ``--visualization-type`
 
 Adjusting Thresholds and Other Parameters
 -------------------------------------------------
-For many cases the default settings will be fine, but it is likely that at some point you may want to make adjustments. One of the most common changes to make is adjusting the thresholds used to alarm on values. You can adjust these by using the ``--check-critical-threshold`` and ``--check-warning-threshold`` of ``psconfig maddash-grid add`` command respectively. The values accepted by these are check dependent. 
+For many cases the default settings will be fine, but it is likely that at some point you may want to make adjustments. One of the most common changes to make is adjusting the thresholds used to alarm on values. You can adjust these by using the ``--check-critical-threshold`` and ``--check-warning-threshold`` of ``psconfig maddash-grid add`` or ``psconfig maddash-grid edit`` commands. The values accepted by these are check dependent. 
 
 For example, the ``default_throughput`` grid defined in the file that ships with the agent defines a check of type ``ps-nagios-throughput``. This check type accepts thresholds in gigabits per second (Gbps). If we run the following we see defaults of ``.5`` (.5 Gbps = ~500 Mbps) for the critical threshold and 1 (i.e. 1Gbps) for the warning::
 
@@ -388,13 +392,11 @@ Example Output::
 
 If we'd like to increase these thresholds in our grid named ``default_throughput`` to 6Gbps and 8Gbps respectively then we can run the following command::
 
-    psconfig maddash-grid add --name default_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 1 --check-critical-threshold 6 --check-warning-threshold 8
+    psconfig maddash-grid edit --name default_throughput --check-critical-threshold 6 --check-warning-threshold 8
 
-.. note:: The extra optional properties of ``--display-name``, ``--priority-group`` and ``--priority-level`` are included to match what is defined in the default definition. If those are not included, the default values will be overriden and they will not be set. For more information on these properties see :ref:`psconfig_maddash_agent-grids-display` and :ref:`psconfig_maddash_agent-grids-prios`.
+Alternatively, let's say we want to update the default to now look at data over a wider time range. There is a check-specific parameter called ``time-range`` supported by ``ps-nagios-throughput`` that allows us to set the amount of data looked at by a check. This option is specified in seconds and defaults to 86400 (i.e. 1 day). We can change this to 1 week (604800 seconds) with the following command::
 
-Alternatively, let's say we want to update the default to now look at data over a wider time range. There is a check-specific parameter called ``time-range`` supported by ``ps-nagios-throughput`` that allows us to set the amount of data looked at by a check. This option is specified in seconds and defaults to 86400 (i.e. 1 day). We can change this to 1 week (604800 seconds) with the following command that also maintains our custom thresholds from the previous example::
-
-    psconfig maddash-grid add --name default_throughput --check-type ps-nagios-throughput --visualization-type ps-graphs --display-name Throughput --priority-group throughput --priority-level 1 --check-critical-threshold 6 --check-warning-threshold 8 --check-params '{"time-range": 604800}'
+    psconfig maddash-grid edit --name default_throughput --check-params '{"time-range": 604800}'
 
 .. note:: ``time-range`` is not guaranteed to be supported by all checks since it is check specific and may not apply. Most of the checks beginning with the ``ps-`` prefix support it, but see :ref:`psconfig_maddash_agent-grids-checks` for details on determining what values a check supports. 
 
