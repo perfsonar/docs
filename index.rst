@@ -93,7 +93,7 @@ Managing Multiple perfSONAR Hosts
    multi_mesh_server_config
    multi_mesh_agent_config
    multi_mesh_autoconfig
-   mca
+   pwa
    multi_ma_install
    multi_ma_clustering
    multi_ma_backups

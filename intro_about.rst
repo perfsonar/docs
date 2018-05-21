@@ -60,7 +60,7 @@ The configuration layer is where desired measurements are defined along with ins
 In order to simplify the process above there are also a few graphical interfaces for defining tests:
 
     * **Toolkit GUI** - This ships with every perfSONAR Toolkit and allows defining tests for the MeshConfig Agent on the local host only. See :doc:`manage_regular_tests` for more details.
-    * **MeshConfig Administrative GUI** - This is a GUI for defining remote meshes that can be read by the MeshConfig Agents of multiple hosts as well as the MeshConfig GUIAgent. See :doc:`mca` for more details.
+    * **pSConfig Web Admin** - This is a web-based application for defining remote meshes that can be read by the MeshConfig/pSConfig Agents of multiple hosts as well as the MeshConfig/pSConfig GUIAgent. See :doc:`pwa` for more details.
 
 
 .. _intro_about-visualization:
