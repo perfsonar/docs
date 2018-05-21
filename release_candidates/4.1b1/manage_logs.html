@@ -80,9 +80,9 @@
 <p>Most perfSONAR related services keep log files under the directory <strong>/var/log/perfsonar</strong>. Some external tools store them in other areas under <em>/var/log/</em> or elsewhere. There are many log files on the system but some of the most important ones (organized by the service that populates them) can be found below:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="34%" />
-<col width="34%" />
-<col width="32%" />
+<col width="29%" />
+<col width="43%" />
+<col width="28%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Service</th>
@@ -92,49 +92,77 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>pScheduler</td>
-<td>/var/log/pscheduler/pscheduler.log</td>
+<td><ul class="first last simple">
+<li>/var/log/pscheduler/pscheduler.log</li>
+</ul>
+</td>
 <td>Contains logs related to the scheduling, running, and storage of measurements. This is often a good starting point if you are trying to debug a missing or failed measurement.</td>
 </tr>
 <tr class="row-odd"><td>Esmond Measurement Archive</td>
-<td>/var/log/esmond/esmond.log
-/var/log/httpd/error_log
-/var/log/httpd24/error_log (CentOS 6 only)
-/var/log/apache2/error.log (Debian)
-/var/log/cassandra/cassandra.log
-/var/lib/pgsql/pgstartup.log
-/var/log/postgresql/postgresql-9.6-main.log)
-(Debian)</td>
+<td><ul class="first last simple">
+<li>/var/log/esmond/esmond.log</li>
+<li>/var/log/httpd/error_log</li>
+<li>/var/log/apache2/error.log (Debian)</li>
+<li>/var/log/cassandra/cassandra.log</li>
+<li>/var/lib/pgsql/pgstartup.log</li>
+<li>/var/log/postgresql/postgresql-9.6-main.log)</li>
+<li>(Debian)</li>
+</ul>
+</td>
 <td>If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. <em>esmond.log</em> has information from the archive itself (e.g. improperly formatted requests). The HTTPD error log has information such as if esmond was able to connect to it&#8217;s underlying databases. Speaking of databases, esmond connects to both Cassandra and PostgreSQL so it may be worth checking those logs as well.</td>
 </tr>
-<tr class="row-even"><td>perfSONAR Mesh Configuration Agent</td>
-<td>/var/log/perfsonar/meshconfig-agent.log</td>
-<td>In addition to the pScheduler logs, this is a good place to debug information regarding missing measurements. The MeshConfig agent handles the submission of tasks to pScheduler, so failure to do so is a common cause of missing tests.</td>
+<tr class="row-even"><td>pSConfig pScheduler Agent</td>
+<td><ul class="first last simple">
+<li>/var/log/perfsonar/psconfig-pscheduler-agent.log</li>
+<li>/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log</li>
+<li>/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log</li>
+</ul>
+</td>
+<td>See document <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-troubleshoot-logs"><em>here</em></a></td>
 </tr>
-<tr class="row-odd"><td>BWCTL and OWAMP</td>
-<td>/var/log/perfsonar/owamp_bwctl.log</td>
-<td>Every BWCTL and OWAMP test (both on the client and server side) is logged in this file. It should be used when a BWCTL or OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an <em>owamp-server</em> or <em>bwctl-server</em> process crashes unexpectedly. Please note that BWCTL is deprecated as of version 4.0, so you may be better served looking at the pScheduler logs.</td>
+<tr class="row-odd"><td>OWAMP</td>
+<td><ul class="first last simple">
+<li>/var/log/perfsonar/owamp.log</li>
+</ul>
+</td>
+<td>Every OWAMP test (both on the client and server side) is logged in this file. It should be used when an OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an <em>owamp-server</em> process crashes unexpectedly.</td>
 </tr>
 <tr class="row-even"><td>perfSONAR Configuration Daemon</td>
-<td>/var/log/perfsonar/configdaemon.log</td>
+<td><ul class="first last simple">
+<li>/var/log/perfsonar/configdaemon.log</li>
+</ul>
+</td>
 <td>If you are unable to save changes to the configuration made through the web interface, this is a good place to look.</td>
 </tr>
 <tr class="row-odd"><td>perfSONAR Lookup Service Cache Daemon</td>
-<td>/var/log/perfsonar/lscachedaemon.log</td>
+<td><ul class="first last simple">
+<li>/var/log/perfsonar/lscachedaemon.log</li>
+</ul>
+</td>
 <td>If you get a message saying that your communities or lookup service cache are out of date, this log file may contain more information.</td>
 </tr>
 <tr class="row-even"><td>perfSONAR Lookup Service Registration Daemon</td>
-<td>/var/log/perfsonar/lsregistrationdaemon.log</td>
+<td><ul class="first last simple">
+<li>/var/log/perfsonar/lsregistrationdaemon.log</li>
+</ul>
+</td>
 <td>Look here if your toolkit web page says that your host is not registered with the lookup service or you cannot find your host in the global services directory.</td>
 </tr>
 <tr class="row-odd"><td>perfSONAR Service Watcher</td>
-<td>/var/log/perfsonar/servicewatcher.log
-/var/log/perfsonar/servicewatcher_error.log</td>
+<td><ul class="first last simple">
+<li>/var/log/perfsonar/servicewatcher.log</li>
+<li>/var/log/perfsonar/servicewatcher_error.log</li>
+</ul>
+</td>
 <td>This log contains information about nightly restarts.</td>
 </tr>
 <tr class="row-even"><td>perfSONAR Web Interface</td>
-<td>/var/log/perfsonar/web_admin/web_admin.log
-/var/log/httpd/error_log
-/var/log/apache2/error.log (Debian)</td>
+<td><ul class="first last simple">
+<li>/var/log/perfsonar/web_admin/web_admin.log</li>
+<li>/var/log/httpd/error_log</li>
+<li>/var/log/apache2/error.log (Debian)</li>
+</ul>
+</td>
 <td>Use these logs when you encounter problems with the web interface.</td>
 </tr>
 </tbody>

@@ -52,13 +52,6 @@ Q: How do I disable global registration?
 ===========================================================================
 
 **A:** The following commands will stop, and disable, this service:
-    
-    - CentOS 6/Debian 7::
-    
-        service perfsonar-lsregistrationdaemon stop
-        chkconfig perfsonar-lsregistrationdaemon off 
-
-    - CentOS 7/Debian 8::
         
         systemctl stop perfsonar-lsregistrationdaemon
         systemctl disable perfsonar-lsregistrationdaemon
@@ -68,7 +61,7 @@ Q: Can I boot from a USB key instead of a DVD?
 
 **A:** The perfSONAR Toolkit Netinstall and FullInstall images are capable of being installed on a USB stick instead of a DVD. To write these images to the media, we recommend using dd, such as::
  
- sudo dd if=pS-Toolkit-4.0-FullInstall-x86_64.iso of=/dev/disk3
+ sudo dd if=pS-Toolkit-VERSION-FullInstall-x86_64.iso of=/dev/disk3
  
 
 Q: During the NetInstall, I see errors about a corrupt file being downloaded. What should I do?
@@ -80,7 +73,7 @@ Q: When trying a clean install with perfSONAR Toolkit, the system doesn't recogn
 
 **A:** You can try one of the vanilla CentOS images at http:://www.centos.org and then install the necessary packages via yum::
 
- yum install perfsonar-toolkit
+    yum install perfsonar-toolkit
 
 If that does not work, it sounds like an operating system issue and beyond the scope of perfSONAR.
 
@@ -150,10 +143,6 @@ Q: What is pScheduler and how do I use it?
 ========================================================================================================================================================================================
 **A:** pScheduler is used to schedule network tests on perfSONAR hosts. See :doc:`pscheduler_intro`
 
-Q: What is BWCTL and how do I use it?
-========================================================================================================================================================================================
-**A:** BWCTL was used to schedule network tests on perfSONAR hosts prior to perfSONAR v4.0. BWCTL is still supported in v4.0, but is considered deprecated and will be unsupported in perfSONAR 4.1 and beyond.
-
 
 Q: What is OWAMP and how do I use it?
 ========================================================================================================================================================================================
@@ -163,6 +152,10 @@ Q: What happened to the NDT and NPAD tools?
 ========================================================================================================================================================================================
 **A:** NDT and NPAD depend on web100, which is no longer supported, so they have been dropped from perfSONAR starting with v4.0. 
 If you need similar functionality, we recommend that you use https://www.measurementlab.net/tests/
+
+Q: What happened to the BWCTL tool?
+========================================================================================================================================================================================
+**A:** BWCTL is no longer included by default with perfSONAR. BWCTL was used to schedule network tests on perfSONAR hosts prior to perfSONAR v4.0 but has been replaced by pScheduler.
 
 
 Q: How can I set limits to prevent others from overusing my test host? What is the purpose of pscheduler limits?
@@ -177,23 +170,17 @@ Q: Can I run both throughput and latency/loss tests on the same interface withou
 **A:** Currently you cannot guarantee no interference. pScheduler *rtt* test that execute the ping tool and OWAMP *latency* and *latencybg* tests that execute owping and powstream respectively, are considered background tasks and can be scheduled in parallel to each other as well as throughput tests. Given the frequency with which users prefer to run tools such as ping and owping (and powstream runs constantly), there would be very few tests slots available if this were not the case. This does not mean you cannot run these tests on the same interface, it just means some correlation of results may be necessary when debugging. It is recommended, though not required, you run these tests on separate interfaces from throughput.
 
 
-Q: How can I force testing over IPv4 or IPv6 in the mesh configuration?
+Q: How can I force testing over IPv4 or IPv6 in a pSConfig template?
 ========================================================================================================================================================================================
-**A:** There is both a ipv4_only and ipv6_only option you can set in the test parameters of a mesh config. Setting them both at the same time gives an error.
+**A:** The exact option may very depending on the test plug-in, but in a *test* object's ``spec`` most of the default plug-ins support an ``ip-version`` field that can get set to ``4`` or ``6``.
 
-Q: How do I configure a test mesh to pace all TCP traffic to only 5Gbps, so that I don't use all my sites bandwidth?
+Q: How do I configure a pSConfig template to pace all TCP traffic to only 5Gbps, so that I don't use all my sites bandwidth?
 ========================================================================================================================================================================================
-**A:** Currently it is not possible to set iperf3's *--fq-rate* flag via the mesh config file, but this should be in the next release. In the meantime, you can set pacing for your entire host using the commands described
-at: https://fasterdata.es.net/host-tuning/packet-pacing/
+**A:** Set the ``bandwidth`` property in a *test* object's ``spec``. It accepts bandwidth as an integer in bits per second.
 
-Q: I want to operate a "Dynamic" Maddash Mesh with hosts from a lookup service. Where do I start?
+Q: I want to operate a "dynamic" template with hosts from a lookup service. Where do I start?
 ========================================================================================================================================================================================
-**A:** You can find more information on this at :doc:`multi_mesh_autoconfig`.
-
-Q: If you have made manual changes to meshconfig-agent-tasks.conf to point to a different MA (or multiple MAs), and you subsequently change test configurations through the GUI, does this leave your MA customizations alone?
-================================================================================================================================================================================================================================
-**A:** Yes. The GUI leaves all measurement_archive blocks alone.
-
+**A:** You can find more information on this at :doc:`psconfig_autoconfig`.
 
 Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?
 ========================================================================================================================================================================================
@@ -310,7 +297,7 @@ Q: What TCP congestion control algorithm is used by the perfSONAR Toolkit?
 ========================================================================================================================================================================================
 **A:** The perfSONAR toolkit sets the TCP congestion control algorithm to htcp. 
 
-Q: How can I add custom rules to IPTables?
+Q: How can I add custom rules to my firewall?
 ========================================================================================================================================================================================
 **A:** See :ref:`manage_security-custom`
 
@@ -331,24 +318,6 @@ If you're going to run a measurement infrastructure inside your own organization
 Q: Why doesn't the perfSONAR toolkit include the most recent version of vendor X’s driver?
 ========================================================================================================================================================================================
 **A:** We only support the default CentOS device drivers on the toolkit. Check your NIC vendor's website to see if a newer version of the driver is available for download.
-
-Q: Can I configure yum to exclude kernel packages from it's update procedure?
-========================================================================================================================================================================================
-**A:** Note that as of perfSOANR 4.0, the software ships witha standard kernel. It no longer uses the special web100 kernel as it did in versions prior to 4.0. If youa re still curious how to do this thoug, a detailed explanation of yum configuration can be found in the RHEL documents: https://access.redhat.com/site/solutions/10185. There are two ways to exclude kernel packages from a yum update, the first solution can be invoked on the command line::
- 
-  yum update --exclude=kernel*
- 
-To make permanent changes, edit the /etc/yum.conf file and following entries to it::
- 
- [main]
- cachedir=/var/cache/yum/$basearch/$releasever
- keepcache=0
- debuglevel=2
- logfile=/var/log/yum.log
- exclude=kernel* samba*                           <==== 
- 
- 
-NOTE: If there are multiple package to be excluded then separate them using a single space or comma.
  
 Q: How can I configure yum to automatically update the system?
 ========================================================================================================================================================================================
@@ -437,16 +406,7 @@ Q: How can I nuke all of the data in esmond, and start from scratch?
     ]
     }
 
-Then run the following commands to delete all esmond dat**A:**
-
-    * *CentOS 6*::
-
-        cd /usr/lib/esmond
-        source /opt/rh/python27/enable
-        . bin/activate
-        python /usr/lib/esmond/util/ps_remove_data.py -c esmond-nuke.conf
-
-    * *CentOS 7/Debian*::
+Then run the following commands to delete all esmond dat::
         
         cd /usr/lib/esmond
         . bin/activate
@@ -515,14 +475,9 @@ Q: How can I get cassandra to run on a host that only has an IPv6 address?
         ...
         rpc_address: "::1"
     #. Restart *htpd* and *cassandra*::
-        
-         #CentOS 7, Debian
+    
          systemctl restart cassandra
          systemctl restart httpd
-         
-         #CentOS 6
-         /sbin/service cassandra restart
-         /sbin/service httpd24-httpd restart
          
 
 perfSONAR Project Questions

@@ -11,7 +11,7 @@ As detailed in :doc:`psconfig_intro`, pSConfig's workflow centers around *templa
 The templates themselves are in JSON format. You have a number of options for constructing the JSON including:
 
 * Manually building the JSON in a text editor
-* Using the :doc:`pSConfig Web Editor <mca>`
+* Using :doc:`pSConfig WebAdmin <pwa>`
 
 Regardless of how you build your template, the ideas described in this document are useful in understanding how pSConfig works. This document further provides the necessary foundation you need if you are building your templates manually or trying to understand the JSON of an existing file. After reading this document, you should be able to construct and understand a pSConfig template file.
 

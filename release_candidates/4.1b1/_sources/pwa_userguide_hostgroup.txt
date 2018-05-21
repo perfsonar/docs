@@ -2,15 +2,15 @@
 Host Group
 ******************
 
-.. |editbutton| image:: images/mca/editbutton.png
+.. |editbutton| image:: images/pwa/editbutton.png
 
-.. image:: images/mca/hostgroups.png
+.. image:: images/pwa/hostgroups.png
 
 To define a meshconfig, you will need 2 basic ingredients. Hostgroups, and Test specs.  Host group is a logical grouping of toolkit instances, and you can reuse a single host group for multile meshconfigs. 
 
 Click button "Add New ..." button to open a new host group dialog.
 
-.. image:: images/mca/hostgroup.png
+.. image:: images/pwa/hostgroup.png
 
 * Name: Name of the hostgroup
 * Service Type: You need to pick a service type for this hostgroup. 
@@ -31,7 +31,7 @@ Dynamic Host Groups
 
 Dynamic Host Group allows you to enter host selection criteria to be evaluated at runtime. This is useful if you want to construct a host group that changes its member based on the latest information from the global registry.
 
-.. image:: images/mca/dynamichosteditor.png
+.. image:: images/pwa/dynamichosteditor.png
 
 As you can see, dynamic Host Group editor will show a *current* list of hosts that matches the criteria - which may change over time.
 
@@ -67,7 +67,7 @@ Inside the criteria editor, you can access service, and host object for each hos
         "ma": null,
     }
 
-You can also access host object which is sparsely populated (not all attributes are populated). Please see the Hosts tab in MCA UI for list of all information available.
+You can also access host object which is sparsely populated (not all attributes are populated). Please see the Hosts tab in PWA UI for list of all information available.
 
 .. code-block:: javascript
 
@@ -156,6 +156,6 @@ Converting from Dynamic Host Group to Static Host Group
 If you'd like to *freeze* the current search result produced by the dynamic hostgroup, you can simply click *Static* tab and it will copy the current criteria results to static list. 
 
 
-Please see :doc:`mca_userguide_testspec` next.
+Please see :doc:`pwa_userguide_testspec` next.
 
 

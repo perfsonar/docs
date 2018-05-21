@@ -9,9 +9,11 @@ Manually Updating with Yum or APT
 Anytime you want to manually update your host, simply run the following
     
 *CentOS*::
+
     yum update
     
 *Debian*::
+
     apt-get update
     apt-get upgrade
     
@@ -42,13 +44,8 @@ It is also important to note that automatic updates do not perform all required 
 Managing Automatic Updates from the Command-Line
 ------------------------------------------------
 You may enable auto updates from the command-line by enabling/disabling the yum-cron service on CentOS. Run the following commands (must be run as a root user) to **enable** automatic updates:
-
-*CentOS 6*::
-
-    chkconfig on yum-cron
-    service yum-cron start
     
-*CentOS 7*::
+*CentOS*::
   
     systemctl enable yum-cron
     systemctl start yum-cron
@@ -60,12 +57,7 @@ You may enable auto updates from the command-line by enabling/disabling the yum-
     
 Likewise, you may disable auto-updates from the command-line by running the following:
 
-*CentOS 6*::
-
-    chkconfig off yum-cron
-    service yum-cron stop
-
-*CentOS 7*::
+*CentOS*::
 
     systemctl stop yum-cron
     systemctl disable yum-cron
@@ -114,6 +106,44 @@ For Debian/Ubuntu systems, please refer to :ref:`manage_update-auto-cli`.
 
 To disable the automatic updating of perfSONAR packages on Debian delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
 
+.. _manage_update-notes:
+
 Special Upgrade Notes
 =====================
-* perfSONAR 4.0 can run on both CentOS 6 and CentOS 7 (and Ubuntu). If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`.
+
+BWCTL Support
+--------------
+When perfSONAR 4.0 was released in April 2017, the perfSONAR project began the deprecation of BWCTL. pScheduler supports backward compatibility with BWCTL through the use of plug-ins that will only get chosen if pScheduler cannot be detected on the remote end.
+
+In perfSONAR 4.1, the deprecation process will continue. The following actions will be taken with respect to BWCTL support in 4.1:
+
+* Brand new installs of 4.1 will not have BWCTL or the BWCTL backward compatibility pScheduler plug-ins by default. Users can install these separately by manually running ``yum install perfsonar-bwctl-compat``
+* Systems upgrading to version 4.1 from a previous version of perfSONAR already have BWCTL and the plug-ins installed. The upgrade process will NOT remove these packages, so BWCTL and tests using the backward compatibility plug-ins will continue to operate. If you no longer wish to have the BWCTL packages, you will be able to safely remove all BWCTL related packages with ``yum remove bwctl-server bwctl-client`` (through dependencies, this will also remove the BWCTL pScheduler plug-ins).
+
+Below is the plan for support for releases beyond 4.1:
+
+* perfSONAR 4.0 will be end-of-life six months after the final release of perfSONAR 4.1. BWCTL will also be end-of-life at this time meaning it will stop receiving security updates. 
+* The first major perfSONAR release after the perfSONAR 4.0 end-of-life date will remove BWCTL and the BWCTL pScheduler plug-ins. 
+* Security updates for the BWCTL pScheduler plug-ins will be supported as long as 4.1 is supported since they will still be part of a supported pScheduler codebase.
+
+All of this means that your BWCTL tests will continue to function in 4.1 but you likely have only a few months of BWCTL support left. BWCTL test are usually caused by the following:
+
+#. The remote end is running an unsupported 3.5 release. The remedy for this problem is for the remote end to update. 
+#. A firewall is blocking port 443. This can be solved by opening port 443 or a non-standard pScheduler port. See :ref:`psconfig_templates_advanced-addresses-pscheduler_address` for more information.
+
+You can determine which of your tests are still using BWCTL by running the following command on a toolkit installation::
+
+    /usr/lib/perfsonar/scripts/find_bwctl_tests
+
+This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See `/usr/lib/perfsonar/scripts/find_bwctl_tests --help` for information on command-line options to change the archive URL, time range fo data analyzed and other options. 
+
+pSConfig to MeshConfig Migration
+---------------------------------
+See :doc:`psconfig_meshconfig_migrate` for information on the upgrade of the former MeshConfig component to the new pSConfig component.
+
+
+CentOS 6 Support Discontinued
+-------------------------------
+perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`. You may also choose to switch to a supported :doc:`Debian platform <install_debian>`. **Security updates for CentOS 6 perfSONAR packages will be discontinued six months after the final release of perfSONAR 4.1**. Also see the `CentOS documentation <https://wiki.centos.org/About/Product>`_ for a schedule of when CentOS 6 will no longer be a supported operating system. 
+
+

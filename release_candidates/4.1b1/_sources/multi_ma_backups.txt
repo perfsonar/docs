@@ -355,13 +355,7 @@ The example contains several policies. The order of the policies is NOT signific
 
   *CentOS/RedHat:*:
 
-  If you would like to run the tool, you will need to first run the following if you are on CentOS/RedHat 6 to initialize Python 2.7::
-
-    cd /usr/lib/esmond
-    source /opt/rh/python27/enable
-    /opt/rh/python27/root/usr/bin/virtualenv --prompt="(esmond)" .
-
-  You can then run the tool as follows (replacing -c with your policy file)::
+  You can run the tool as follows (replacing -c with your policy file)::
 
     . bin/activate
     python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf

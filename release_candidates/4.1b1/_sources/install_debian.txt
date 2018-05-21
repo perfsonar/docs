@@ -169,6 +169,8 @@ Note that the `perfsonar-toolkit-security` package is automatically included in 
 
 Step 5: Auto updates
 --------------------
+If you have installed the `perfsonar-toolkit-systemenv-testpoint` package, then you're all set for the auto-updates of perfSONAR packages and security fix for your OS.
+
 To ensure you always have the most current and hopefully most secure packages you can install ``unattended-upgrades``. You’ll need to configure it to actually install the available updates with the following commands:
 ::
 
