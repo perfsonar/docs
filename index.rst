@@ -111,17 +111,6 @@ Archiving Measurements with esmond
    multi_ma_clustering
    multi_ma_backups
 
-.. _index-psui:
-
-Additional Tools: perfsonarUI
------------------------------
-.. toctree::
-   :maxdepth: 1
-   
-   install_psui
-   using_psui
-
-
 .. _index-config_ref:
 
 Configuration Reference
