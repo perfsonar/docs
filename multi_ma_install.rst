@@ -49,10 +49,6 @@ As an archive administrator you may create a username, generate an API key, and 
 #. Change to the esmond install directory::
 
     cd /usr/lib/esmond
-#. **RedHat/CentOS 6 users only**: The esmond commands require Python 2.7, which is installed when installing esmond. Unfortunately, the operating system default Python in only version 2.6. Using a **bash** shell, you can enable Python 2.7 for your current shell with the following commands::
-
-    source /opt/rh/python27/enable
-    /opt/rh/python27/root/usr/bin/virtualenv --prompt="(esmond)" .
 #. Run the commands below replacing *example_user* with the username of the account you would like to create::
 
     . bin/activate
@@ -85,10 +81,6 @@ As an archive administrator you may create an account that authenticates based o
 #. Change to the esmond install directory::
 
     cd /usr/lib/esmond
-#. **RedHat/CentOS 6 users only**: The esmond commands require Python 2.7, which is installed when installing esmond, and it creates a `python virtual environment <https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html>`_. To switch into the python virtual environment for esmond run the following::
-
-        source /opt/rh/python27/enable
-        /opt/rh/python27/root/usr/bin/virtualenv --prompt="(esmond)" .
 #. Run the commands below to create the account. You must provide a username as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of *X.X.X.X* or *X.X.X.X/Y* where *X* is each octet and *Y* is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host 10.0.1.1 or any host in the 10.0.2.0/24 subnet to register data to esmond::
 
     . bin/activate

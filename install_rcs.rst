@@ -30,15 +30,7 @@ Once downloaded you may follow the instructions at :doc:`install_centos_fullinst
 Testing CentOS Bundles Installation
 ====================================
 
-.. note:: These instructions will work on both CentOS 6 and CentOS 7
-
-You can test CentOS bundle installation by first pointing your existing CentOS installation at the perfSONAR main yum repository (if not already):
-
-*CentOS 6*::
-
-    rpm -hUv http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
-
-*CentOS 7*::
+You can test CentOS bundle installation by first pointing your existing CentOS installation at the perfSONAR main yum repository (if not already)::
 
     rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
     
@@ -54,7 +46,6 @@ Once you are pointing at the staging repository you may follow the steps at :doc
 
 Testing Upgrades of an Existing Toolkit or CentOS Bundle Installation
 =====================================================================
-.. note:: These instructions will work on both CentOS 6 and CentOS 7
 
 You can test upgrades of any existing CentOS-based perfSONAR installation by first pointing your existing CentOS installation at the perfSONAR staging yum repository and then running yum update::
 
