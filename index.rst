@@ -80,28 +80,36 @@ Running Measurements with pScheduler
    config_pscheduler_limits
    pscheduler_ref_tests_tools
    pscheduler_ref_archivers
+   pscheduler_ref_contexts
    pscheduler_ref_bwctl
 
+Managing Multiple Hosts with pSConfig
+-------------------------------------
+.. toctree::
+   :maxdepth: 1
+   
+   psconfig_intro
+   psconfig_quickstart
+   psconfig_templates_intro
+   psconfig_publish
+   psconfig_pscheduler_agent
+   psconfig_maddash_agent
+   mca
+   psconfig_templates_vars
+   psconfig_templates_advanced
+   psconfig_autoconfig
+   psconfig_meshconfig_migrate
+   
 .. _index-multiple:
 
-Managing Multiple perfSONAR Hosts
+Archiving Measurements with esmond
 ----------------------------------
 .. toctree::
    :maxdepth: 1
    
-   multi_overview
-   multi_mesh_server_config
-   multi_mesh_agent_config
-   multi_mesh_autoconfig
-   pwa
    multi_ma_install
    multi_ma_clustering
    multi_ma_backups
-   multi_logging
-   multi_puppet_overview
-   multi_puppet_install
-   multi_puppet_using_server
-   multi_puppet_using_client
 
 .. _index-psui:
 
@@ -124,19 +132,11 @@ Configuration Reference
 
    config_files
    config_ls_registration
-   config_mesh
-   config_mesh_agent
-   config_mesh_agent_tasks
-   config_mesh_gui
-   config_mesh_lookup_hosts
    config_pscheduler
    config_pscheduler_limits
    config_owamp
    config_owamp_limits
-   config_bwctl
-   config_bwctl_limits
-   config_oppd
-   
+
 .. _index-troubleshooting:
 
 Troubleshooting

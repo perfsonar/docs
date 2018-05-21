@@ -1,6 +1,9 @@
 ********************************************
-Automatic Test Configuration with MeshConfig
+pSConfig Auto-Configuration
 ********************************************
+
+NOTE: THIS PAGE HAS NOT BEEN UPDATED FOR 4.1. STILL UNDER CONSTRUCTION.
+==========================================================================
 
 If you have a very large mesh or a mesh that frequently is adding and removing test members, then it may become cumbersome to manually update your tests. For this reason the perfSONAR MeshConfig software has the concept of *automatic test configuration*. 
 

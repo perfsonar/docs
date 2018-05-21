@@ -8,7 +8,7 @@ System Requirements
 ==================== 
 * **Operating System:**
 
-  * **CentOS 7** and **CentOS 6** x86_64 installations are supported. Other RedHat-based operating systems may work, but are not officially supported at this time.
+  * **CentOS 7** x86_64 installations are supported. Other RedHat-based operating systems may work, but are not officially supported at this time.
   * See :doc:`install_hardware` for hardware requirements and more.
 
 .. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
@@ -24,24 +24,13 @@ Step 1: Configure Yum
 ---------------------- 
 The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. **You will need to follow the steps below as privileged user**:
 
-#. Install the EPEL RPM:
-    *CentOS 6*::
+#. Install the EPEL RPM::
 
-        yum install epel-release
+    yum install epel-release
 
-    *CentOS 7*::
+#. Install the perfSONAR-repo RPM::
 
-        yum install epel-release
-
-#. Install the perfSONAR-repo RPM:
-
-    *CentOS 6*::
-
-        yum install http://software.internet2.edu/rpms/el6/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
-
-    *CentOS 7*::
-
-        yum install http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
+    yum install http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
 
 #. Refresh yum's cache so it detects the new RPMS::
 
@@ -98,16 +87,9 @@ Step 3: Verify NTP and Tuning Parameters
 
   - **Auto-select NTP servers based on proximity**
     
-    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If an optional package was installed, then run::
+    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Measurements will not give accurate results unless NTP is configured. If an optional package was installed, then run::
 
         /usr/lib/perfsonar/scripts/configure_ntpd new
-        
-    For CentOS6::
-        
-        service ntpd restart
-        
-    For CentOS7::
-        
         systemctl restart ntpd
 
   You can verify if NTP is running with the following command::
@@ -145,9 +127,8 @@ The package also installs fail2ban.
 
 Or, if you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files ``bwctl-server.limits`` and ``pscheduler/limits.conf``. 
-ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and
-bwctl to use it are described on the page :doc:`manage_limits`.
+Additionally, pscheduler allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the ``/etc/pscheduler/limits.conf``. 
+ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page :doc:`manage_limits`.
 
 Note that the perfsonar-toolkit-security package is automatically included in the perfsonar-toolkit bundle.
 
@@ -164,7 +145,7 @@ You can also enable yum ‘auto updates’ to ensure you always have the most cu
 
 Step 6: Service Watcher
 ------------------------
-The ``perfsonar-toolkit-servicewatcher`` installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
+The ``perfsonar-toolkit-servicewatcher`` installs scripts that check if important processes are running and restarts if they have stopped unexpectedly. 
 
 The install automatically configures cron to run the service_watcher regularly.
 
@@ -186,56 +167,34 @@ No actual configuration is required but filling fields such as administrator_ema
 
 Step 8: Starting your services 
 ------------------------------- 
-You can start all the services by rebooting the host since all are configured to run by default. In order to check services status issue the following commands:
-    
-    For CentOS6::
+All services should be started after install. Additionally, you can start all the services by rebooting the host since all are configured to run by default. In order to check services status issue the following commands::
 
-        service pscheduler-scheduler status
-        service pscheduler-runner status
-        service pscheduler-archiver status
-        service pscheduler-ticker status
-        service owamp-server status
-        service bwctl-server status
-        service perfsonar-lsregistrationdaemon status
+    systemctl status pscheduler-scheduler
+    systemctl status pscheduler-runner
+    systemctl status pscheduler-archiver
+    systemctl status pscheduler-ticker
+    systemctl status psconfig-pscheduler-agent
+    systemctl status owamp-server
+    systemctl status perfsonar-lsregistrationdaemon
 
-    For CentOS7::
+If they are not running you may start them with appropriate init commands as a root user. For example::
 
-        systemctl status pscheduler-scheduler
-        systemctl status pscheduler-runner
-        systemctl status pscheduler-archiver
-        systemctl status pscheduler-ticker
-        systemctl status owamp-server
-        systemctl status bwctl-server  
-        systemctl status perfsonar-lsregistrationdaemon
-
-If they are not running you may start them with appropriate init commands as a root user. For example:
-
-    For CentOS6::
-
-        service pscheduler-scheduler start
-        service pscheduler-runner start
-        service pscheduler-archiver start
-        service pscheduler-ticker start
-        service owamp-server start
-        service bwctl-server start
-        service perfsonar-lsregistrationdaemon start
-
-    For CentOS7::
-
-        systemctl start pscheduler-scheduler
-        systemctl start pscheduler-runner
-        systemctl start pscheduler-archiver
-        systemctl start pscheduler-ticker
-        systemctl start perfsonar-lsregistrationdaemon
-        systemctl start bwctl-server
-        systemctl start owamp-server
-
-Note that you may have to wait a few hours for NTP to synchronize your clock before starting bwctl-server and owamp-server.
+    systemctl start pscheduler-scheduler
+    systemctl start pscheduler-runner
+    systemctl start pscheduler-archiver
+    systemctl start pscheduler-ticker
+    systemctl start psconfig-pscheduler-agent
+    systemctl start perfsonar-lsregistrationdaemon
+    systemctl start owamp-server
 
 Configuring Central Management
 -------------------------------
-If your node is part of a measurement mesh and you installed perfsonar-centralmanagement bundle refer to the documentation here: :doc:`/multi_overview`
+If your node is part of a measurement mesh and you installed perfsonar-centralmanagement bundle refer to the following:
 
+    * :doc:`Using pSConfig to publish a template of the tasks you want run and displayed<psconfig_intro>`
+    * :doc:`Storing results with esmond<multi_ma_install>`
+    * `Using MaDDash to build dashboards <http://software.es.net/maddash/>`_
+    
 Configuring perfSONAR through the web interface
 ------------------------------------------------
 If you installed the perfsonar-toolkit or perfsonar-centralmanagement bundle on an existing CentOS host, 
