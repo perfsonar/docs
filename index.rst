@@ -40,7 +40,7 @@ Installation
    install_centos
    install_debian
    install_migrate_centos7
-
+   manage_update
 
 .. _index-toolkit:
 
@@ -94,7 +94,7 @@ Managing Multiple Hosts with pSConfig
    psconfig_publish
    psconfig_pscheduler_agent
    psconfig_maddash_agent
-   mca
+   pwa
    psconfig_templates_vars
    psconfig_templates_advanced
    psconfig_autoconfig
