@@ -11,7 +11,7 @@ perfSONAR has historically been packaged as the **perfSONAR Toolkit**: an ISO co
 
 There are several other installation options as well for certain versions of both **CentOS** and **Debian/Ubuntu**:
 
-#. **perfsonar-tools:** This bundle includes just the command-line clients needed to run on-demand measurements such as iperf, iperf3, bwctl and owamp. This bundle is generally best for hosts that aren't dedicated measurement nodes but want the command-line utilities available for troubleshooting as the need arises.
+#. **perfsonar-tools:** This bundle includes just the command-line clients needed to run on-demand measurements such as iperf, iperf3 and owamp. This bundle is generally best for hosts that aren't dedicated measurement nodes but want the command-line utilities available for troubleshooting as the need arises.
 #. **perfsonar-testpoint:** This bundle includes everything from the perfsonar-tools bundle as well as the software required to:
       * Automatically run tests on a regular schedule
       * Participate in a centrally managed mesh of tests 

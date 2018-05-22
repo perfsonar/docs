@@ -150,8 +150,8 @@ Log Files
 Primary Log file
 ##########################
 :Description: OWAMP servers and clients can each write to log files. The location of the log file is dependent on your syslog configuration. The entries in this table assume a default configuration.
-:CentOS: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp_bwctl.log``
-:Debian: ``/var/log/perfsonar/owamp_bwctl.log``
+:CentOS: **RPM Only**: ``/var/log/messages`` **Toolkit:** ``/var/log/perfsonar/owamp.log``
+:Debian: ``/var/log/perfsonar/owamp.log``
 
 pScheduler
 ==========
