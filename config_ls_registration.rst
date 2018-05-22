@@ -713,6 +713,26 @@ capacity Directive
 :Default (Autodiscover): The speed as reported by */sys/class/net/IF_NAME/speed*. If not available, the speed as reported by *ethtool*. 
 :Compatibility: 3.3 and later
 
+.. _config_ls_registration-disable_autodiscover_tests:
+
+disable_autodiscover_tests Directive
+---------------------------------------
+:Description: Disables autodiscovery of pScheduler test types for interface
+:Syntax: ``disable_autodiscover_tests 0|1``
+:Contexts: :ref:`interface <config_ls_registration-interface>`
+:Occurrences:  Zero or More
+:Default: 0
+
+.. _config_ls_registration-disable_test:
+
+disable_test Directive
+-----------------------------------
+:Description: Removes test type from interface even if it is in the autodiscovery list
+:Syntax: ``disable_test TEST_TYPE``
+:Contexts: :ref:`interface <config_ls_registration-interface>`
+:Occurrences:  Zero or More
+:Default: N/A
+
 .. _config_ls_registration-if_name:
 
 if_name Directive
@@ -772,6 +792,19 @@ subnet Directive
 :Default: N/A
 :Default (Autodiscover): N/A
 :Compatibility: 3.3 and later
+
+.. _config_ls_registration-iface-test:
+
+test Directive
+-----------------------------------
+:Description: A pscheduler test type that is allowed on this interface. For example *throughput*, *latencybg* or *trace*. Will be merged with autodiscovered values unless :ref:`disable_autodiscover_tests <config_ls_registration-disable_autodiscover_tests>` set.
+:Syntax: ``test TEST_TYPE``
+:Contexts: :ref:`interface <config_ls_registration-interface>`
+:Occurrences:  Zero or More
+:Default: N/A
+:Default (Autodiscover): The tests found by querying pScheduler
+
+.. _config_ls_registration-iface-urn:
 
 urn Directive
 ------------------------
@@ -898,18 +931,12 @@ type Directive
 
 Valid values for this field are currently:
 
-* bwctl
 * dashboard
 * gridftp
 * ma
-* meshconfig
-* mp-bwctl
-* mp-owamp
 * owamp
-* phoebus
 * ping
 * pscheduler
-* reddnet
 * traceroute
 
 .. _config_ls_registration-service_type:
@@ -1040,7 +1067,7 @@ http_port Directive
 ---------------------------------
 :Description: The port where a web service listens for HTTP connections 
 :Syntax: ``http_port PORT``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *meshconfig*, *mp-bwctl*, *mp-owamp*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *pscheduler*
 :Occurrences:  Zero or One
 :Default: 80 (unless :ref:`config_ls_registration-https_port` set, then this is left unset if no manual value provided)
 :Default (Autodiscover): N/A
@@ -1052,7 +1079,7 @@ https_port Directive
 ---------------------------------
 :Description: The port where a web service listens for HTTPS connections 
 :Syntax: ``https_port PORT``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *meshconfig*, *mp-bwctl*, *mp-owamp*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *pscheduler*
 :Occurrences:  Zero or One
 :Default: N/A
 :Default (Autodiscover): N/A
@@ -1064,7 +1091,7 @@ url_path Directive
 ---------------------------------
 :Description: The path portion of the URL where a web service runs
 :Syntax: ``url_path PATH``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *meshconfig*, *mp-bwctl*, *mp-owamp*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *pscheduler*
 :Occurrences: Exactly one
 :Default: N/A
 :Default (Autodiscover): N/A
