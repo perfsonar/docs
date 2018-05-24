@@ -25,7 +25,6 @@ perfSONAR includes numerous utilities responsible for carrying out the actual ne
     * tracepath_ - Another path trace tool that also measures path MTU
     * paris-traceroute_ - A packet trace tool that attempts to identify paths in the presence of load balancers
     * ping_ - The classic utility for determining reachability, round-trip time (RTT) and basic packet loss.
-    * bwctl_  - **Deprecated in 4.0** The original perfSONAR scheduling tool but is now only used for backward compatibility with hosts running versions older than perfSONAR 4.0. It will be completely unsupported in a future release.
 
 .. _intro_about-scheduling:
 
@@ -99,5 +98,4 @@ Many of the layers provide open APIs, so its possible to use or write third-part
 .. _tracepath: https://linux.die.net/man/8/tracepath
 .. _paris-traceroute: http://manpages.ubuntu.com/manpages/trusty/man8/paris-traceroute.8.html
 .. _ping: https://linux.die.net/man/8/ping
-.. _bwctl: http://software.internet2.edu/bwctl/bwctl.man.html
 .. _esmond: http://software.es.net/esmond

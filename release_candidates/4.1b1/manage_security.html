@@ -129,11 +129,11 @@
 <td>5890-5900</td>
 <td>&nbsp;</td>
 </tr>
-<tr class="row-even"><td>ntp</td>
+<tr class="row-even"><td>ntp*</td>
 <td>&nbsp;</td>
 <td>123</td>
 </tr>
-<tr class="row-odd"><td>bwctl</td>
+<tr class="row-odd"><td>bwctl*</td>
 <td><dl class="first last docutils">
 <dt>4823, 5001-5900,</dt>
 <dd>6001-6200</dd>
@@ -146,8 +146,9 @@
 </table>
 <p><strong>Notes</strong>:</p>
 <ul class="simple">
+<li>The NTP and BWCTL tools are deprecated but their ports are left open for those wishing to run them.</li>
 <li>ICMP also needs to be open</li>
-<li>bwctl is needed for backwards compatibility with perfSONAR 3.5 hosts</li>
+<li>The NTP and BWCTL tools are deprecated but their ports are left open for those wishing to run them.</li>
 <li>simplestream is used for pscheduler testing and troubleshooting</li>
 </ul>
 <table border="1" class="docutils">
@@ -180,7 +181,8 @@
 </div>
 <div class="section" id="adding-your-own-firewall-rules">
 <span id="manage-security-custom"></span><h2>Adding Your Own Firewall Rules<a class="headerlink" href="#adding-your-own-firewall-rules" title="Permalink to this headline">¶</a></h2>
-<p>The rules added by the perfSONAR toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update.</p>
+<p>For operating systems using iptables, the rules added by the perfSONAR Toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update.</p>
+<p>For operating systems using firewalld (e.g. CentOS 7) it organizes the rules into &#8220;zones&#8221; and makes it more difficult to distinguish perfSONAR rules from custom rules. If you add a standard service to the zone it will get overwritten next time <em>perfsonar-toolkit-security</em> upgrades. We recommend looking at firewalld <a class="reference external" href="https://fedoraproject.org/wiki/Features/FirewalldRichLanguage">rich rules</a> for adding custom rules.</p>
 <p>For more information see:</p>
 <ul class="simple">
 <li><a class="reference external" href="https://wiki.centos.org/HowTos/Network/IPTables">https://wiki.centos.org/HowTos/Network/IPTables</a></li>
@@ -193,8 +195,7 @@
 </div>
 <div class="section" id="limiting-tests-to-research-and-education-networks-only">
 <span id="manage-security-ren"></span><h2>Limiting tests to Research and Education Networks Only<a class="headerlink" href="#limiting-tests-to-research-and-education-networks-only" title="Permalink to this headline">¶</a></h2>
-<p>ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and
-bwctl to use it are described on the page <a class="reference internal" href="manage_limits.html"><em>Limiting Tests to R&amp;E Networks Only</em></a>.</p>
+<p>ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page <a class="reference internal" href="manage_limits.html"><em>Limiting Tests to R&amp;E Networks Only</em></a>.</p>
 </div>
 <div class="section" id="managing-login-access">
 <h2>Managing Login Access<a class="headerlink" href="#managing-login-access" title="Permalink to this headline">¶</a></h2>

@@ -5,7 +5,7 @@ Detailed Information on perfSONAR Hardware Requirements
 *******************************************************
 
 A core port of the perfSONAR philosophy is test isolation: only one test should run on the host at a time. This
-ensures that test results are not impacted by other tests. Otherwise it is much more difficult to interpret test results, which may vary due to host effects rather then network effects. For this reason, the heart of perfSONAR is the tool 'pscheduler' (formerly bwctl), which is designed to carefully schedule one test at a time.
+ensures that test results are not impacted by other tests. Otherwise it is much more difficult to interpret test results, which may vary due to host effects rather then network effects. For this reason, the heart of perfSONAR is the tool *pScheduler*, which is designed to carefully schedule one test at a time.
 
 perfSONAR measurement tools are much more accurate running on dedicated hardware. While it may be useful to run them on other hosts such as Data Transfer Nodes as well, the development team recommends a specific measurement machine (or machines).  This will ensure the local operations staff, users, and the community at large, can rely on and use the measurement resource to the fullest extent. 
 

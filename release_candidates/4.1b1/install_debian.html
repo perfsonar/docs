@@ -189,7 +189,7 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 <li><p class="first"><strong>NTP Tuning</strong></p>
 <ul>
 <li><p class="first"><strong>Auto-select NTP servers based on proximity</strong></p>
-<p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If the optional package <cite>perfsonar-toolkit-ntp</cite> was installed this has already been done for you, but if you want to rerun manually:</p>
+<p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as OWAMP will give correct results unless NTP is running. If the optional package <cite>perfsonar-toolkit-ntp</cite> was installed this has already been done for you, but if you want to re-run manually:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_ntpd new
 service ntp restart
 </pre></div>
@@ -222,9 +222,8 @@ service ntp restart
 <p><em>Debian 8 / Debian 9 / Ubuntu 16</em>:</p>
 <blockquote>
 <div>The <cite>perfsonar-toolkit-security</cite> package uses <cite>firewalld</cite> to manage the firewall rules.</div></blockquote>
-<p>Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files <tt class="docutils literal"><span class="pre">bwctl-server.limits</span></tt> and <tt class="docutils literal"><span class="pre">pscheduler/limits.conf</span></tt>.
-ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and
-bwctl to use it are described on the page <a class="reference internal" href="manage_limits.html"><em>Limiting Tests to R&amp;E Networks Only</em></a>.</p>
+<p>Additionally, pscheduler allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the file <tt class="docutils literal"><span class="pre">pscheduler/limits.conf</span></tt>.
+ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page <a class="reference internal" href="manage_limits.html"><em>Limiting Tests to R&amp;E Networks Only</em></a>.</p>
 <p>Note that the <cite>perfsonar-toolkit-security</cite> package is automatically included in the <cite>perfsonar-toolkit</cite> bundle.</p>
 </div>
 <div class="section" id="step-5-auto-updates">
@@ -247,7 +246,7 @@ echo &#39;Unattended-Upgrade::Origins-Pattern:: &quot;origin=perfSONAR&quot;;&#3
 </div>
 <div class="section" id="step-6-service-watcher">
 <span id="install-debian-step6"></span><h3>Step 6: Service Watcher<a class="headerlink" href="#step-6-service-watcher" title="Permalink to this headline">¶</a></h3>
-<p>The <cite>perfsonar-toolkit-servicewatcher</cite> installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly.</p>
+<p>The <cite>perfsonar-toolkit-servicewatcher</cite> installs scripts that check if pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly.</p>
 <p>The install automatically configures cron to run the service_watcher regularly.</p>
 <p>To run the script manually, run:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/service_watcher
@@ -267,7 +266,6 @@ service pscheduler-runner status
 service pscheduler-archiver status
 service pscheduler-ticker status
 service owamp-server status
-service bwctl-server status
 service perfsonar-lsregistrationdaemon status
 </pre></div>
 </div>
@@ -277,7 +275,6 @@ service pscheduler-runner start
 service pscheduler-archiver start
 service pscheduler-ticker start
 service owamp-server start
-service bwctl-server start
 service perfsonar-lsregistrationdaemon start
 </pre></div>
 </div>
@@ -288,7 +285,13 @@ service perfsonar-lsregistrationdaemon start
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="configuring-central-management">
 <h3>Configuring Central Management<a class="headerlink" href="#configuring-central-management" title="Permalink to this headline">¶</a></h3>
-<p>If your node is part of a measurement mesh and you installed perfsonar-centralmanagement bundle refer to the documentation here: <tt class="xref doc docutils literal"><span class="pre">/multi_overview</span></tt></p>
+<p>If you installed the perfsonar-centralmanagement bundle see the following documents:</p>
+<ul class="simple">
+<li><a class="reference internal" href="multi_ma_install.html"><em>Deploying a Central Measurement Archive</em></a></li>
+<li><a class="reference internal" href="psconfig_publish.html"><em>Publishing a pSConfig Template</em></a></li>
+<li><a class="reference internal" href="psconfig_maddash_agent.html"><em>Running the pSConfig MaDDash Agent</em></a></li>
+<li><a class="reference external" href="http://software.es.net/maddash/">Using MaDDash to build dashboards</a></li>
+</ul>
 </div>
 <div class="section" id="configuring-perfsonar-through-the-web-interface">
 <h3>Configuring perfSONAR through the web interface<a class="headerlink" href="#configuring-perfsonar-through-the-web-interface" title="Permalink to this headline">¶</a></h3>

@@ -121,7 +121,7 @@ Step 3: Verify NTP and Tuning Parameters
 
   - **Auto-select NTP servers based on proximity**
     
-    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If the optional package `perfsonar-toolkit-ntp` was installed this has already been done for you, but if you want to rerun manually::
+    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as OWAMP will give correct results unless NTP is running. If the optional package `perfsonar-toolkit-ntp` was installed this has already been done for you, but if you want to re-run manually::
 
         /usr/lib/perfsonar/scripts/configure_ntpd new
         service ntp restart
@@ -159,9 +159,8 @@ If you would like to configure the rules manually, then please review the `docum
 
     The `perfsonar-toolkit-security` package uses `firewalld` to manage the firewall rules.
 
-Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files ``bwctl-server.limits`` and ``pscheduler/limits.conf``. 
-ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and
-bwctl to use it are described on the page :doc:`manage_limits`.
+Additionally, pscheduler allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the file ``pscheduler/limits.conf``. 
+ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page :doc:`manage_limits`.
 
 Note that the `perfsonar-toolkit-security` package is automatically included in the `perfsonar-toolkit` bundle.
 
@@ -190,7 +189,7 @@ Full perfSONAR toolkit upgrades (i.e. upgrade to new major versions) might still
 
 Step 6: Service Watcher
 ------------------------
-The `perfsonar-toolkit-servicewatcher` installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
+The `perfsonar-toolkit-servicewatcher` installs scripts that check if pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
 
 The install automatically configures cron to run the service_watcher regularly.
 
@@ -217,7 +216,6 @@ You can start all the services by rebooting the host since all are configured to
     service pscheduler-archiver status
     service pscheduler-ticker status
     service owamp-server status
-    service bwctl-server status
     service perfsonar-lsregistrationdaemon status
 
 If they are not running you may start them with appropriate service commands as a root user. For example::
@@ -227,7 +225,6 @@ If they are not running you may start them with appropriate service commands as 
     service pscheduler-archiver start
     service pscheduler-ticker start
     service owamp-server start
-    service bwctl-server start
     service perfsonar-lsregistrationdaemon start
 
 Note that you may have to wait a few hours for NTP to synchronize your clock before (re)starting owamp-server.
@@ -237,7 +234,13 @@ Configuration
 
 Configuring Central Management
 -------------------------------
-If your node is part of a measurement mesh and you installed perfsonar-centralmanagement bundle refer to the documentation here: :doc:`/multi_overview`
+If you installed the perfsonar-centralmanagement bundle see the following documents:
+
+* :doc:`multi_ma_install`
+* :doc:`psconfig_publish`
+* :doc:`psconfig_maddash_agent`
+* `Using MaDDash to build dashboards <http://software.es.net/maddash/>`_
+
 
 Configuring perfSONAR through the web interface
 ------------------------------------------------

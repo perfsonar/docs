@@ -133,7 +133,6 @@
 <div><ul class="simple">
 <li><a class="reference internal" href="pscheduler_client_tasks.html"><em>Creating and Managing Tasks</em></a></li>
 <li><a class="reference internal" href="pscheduler_client_schedule.html"><em>Viewing the Schedule</em></a></li>
-<li><tt class="xref doc docutils literal"><span class="pre">pscheduler_client_utils</span></tt></li>
 </ul>
 </div></blockquote>
 </div>
@@ -149,14 +148,14 @@
 </div>
 <div class="section" id="bwctl-backward-compatibility">
 <h2>BWCTL Backward Compatibility<a class="headerlink" href="#bwctl-backward-compatibility" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler was introduced in perfSONAR version 4.0 and replaces a component called BWCTL. pScheduler is a completely new codebase and protocol. It does NOT speak the BWCTL protocol natively but it does provide a backward compatibility strategy with BWCTL. This strategy does have limitations though and works as follows:</p>
+<p>pScheduler was introduced in perfSONAR version 4.0 and replaced a component called BWCTL. pScheduler is a completely new codebase and protocol. It does NOT speak the BWCTL protocol natively but it does provide a backward compatibility strategy with BWCTL. This strategy does have limitations though and works as follows:</p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>For tests from a host running pScheduler to a host with only BWCTL</strong> - For <em>throughput</em>, <em>rtt</em> and <em>trace</em> tests, pScheduler will automatically detect the lack of pScheduler on the remote-end and the presence of BWCTL. It will then choose a pScheduler <a class="reference internal" href="#term-tool"><em class="xref std std-term">tool</em></a> that  executes the <em>bwctl</em>, <em>bwping</em> or <em>bwctraceroute</em> command instead of the underlying tool directly. For <em>throughput</em> tests, this has the side effect of requiring more time on the pScheduler schedule since BWCTL may not run the test immediately. <em>If the BWCTL test does not start within 60 seconds of the start time assigned by pScheduler, the test will fail</em>.</li>
 <li><strong>For tests from a host running BWCTL to a host with only pScheduler</strong> - perfSONAR 4.0 still runs the BWCTL server to support this use case. The pScheduler server knows nothing about the BWCTL server&#8217;s schedule and vice versa, <em>so it is possible tests could collide</em>. Depending on how many remote sites initiates tests to you via BWCTL, the risk of this collision may be relatively low.</li>
 </ul>
 </div></blockquote>
-<p>The software attempts to handle BWCTL compatibility as transparently as possible. This means that when you upgrade your host to a version running pScheduler, there should be no special steps required to initiate the processes outlined above. Your host should continue testing to those running BWCTL and vice versa.</p>
+<p>Starting in 4.1, the BWCTL backward compatibility tools are not included in the default installation. If you would like to install them (along with BWCTL) you can install the <cite>perfsonar-bwctl-compat</cite> package using your operating system&#8217;s package manager.</p>
 <p>If you also frequently use BWCTL at the command-line, we suggest you stop and start using the pScheduler command line. For a guide on how to convert your BWCTL commands to pScheduler see <a class="reference internal" href="pscheduler_ref_bwctl.html"><em>BWCTL to pScheduler Command Reference</em></a>.</p>
 </div>
 <div class="section" id="more-information">

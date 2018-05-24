@@ -94,147 +94,40 @@ As an archive administrator you may create an account that authenticates based o
 
 Configuring Measurement Hosts
 ==============================
-Each measurement host must be configured to register its data to the central archive. You do this by adding a ``measurement_archive`` block to the :ref:`MeshConfig agent tasks file <config_files-meshconfig-conf-agent-tasks>` for each type of data to be registered in the central measurement archive. Valid test types are:
+Each measurement host must be configured to register its data to the central archive. This is done by configuring the :doc:`pSConfig pScheduler Agent <psconfig_pscheduler_agent>` to use the archive. The exact approach depends largely with how you are reading your template and which tasks you want to send to the central archive.
 
-* esmond/latency
-* esmond/throughput
-* esmond/traceroute
+One approach is to define the archive in the pSConfig template being used. In that case, the pSConfig template is going to need a section similar to the following::
 
-If you want all of the test types registered in the central archive then you will need to add three separate ``measurement_archive`` blocks. Each block has the following values related to the central archive:
+    "archives"{
+        "example_esmond_archive": {
+            "archiver": "esmond",
+            "data": {
+                "measurement-agent": "{% scheduled_by_address %}",
+                "url": "http://ma.example.perfsonar.net/esmond/perfsonar/archive/"
+        }
+    }
 
-#. **database** - This is the URL of your archive. Example: https://acme.local/esmond/perfsonar/archive/
-#. **username** - The username used to authenticate to the archive. This can be excluded if you plan to authenticate based on IP. Example: example_user
-#. **password** - The API key used to authenticate to the archive.  This can be excluded if you plan to authenticate based on IP. Example: 9130962c6b38722c0b9968e6903e1927e94e16fd
-#. **ca_certificate_path** - For https, this is the path to a directory where CA certificates are kept that can be used to verify the presented SSL certificate from the server running the archive. Example: /etc/ssl/certs
+.. note:: It is highly recommended you set the ``measurement-agent`` field to the template variable ``{% scheduled_by_address %}`` for esmond archives as it ensures the requester of the measurement is properly recorded. See :ref:`psconfig_templates_vars-scheduled_by_address` for more details on this variable.
 
-In addition, a ``measurement_archive`` block contains a number of ``summary`` blocks used to determine how data is summarized. In general, you should copy the summary information in the examples later in this section to ensure graphs and other tools work properly. If you would like to know more about these and other blocks see :doc:`config_mesh_agent_tasks`.
+The full set of options for the ``data`` section of an *archive* object of type *esmond* are detailed :ref:`here <pscheduler_ref_archivers-archivers-esmond>`.  The defined ``tasks`` section will need to reference the archive defined above for those tasks to be stored. See :doc:`psconfig_templates_intro` for information on how tasks and archives link together if that is not clear. 
 
-Given all the information above, lets look at an example where we want to register all types of data to a measurement archive running at *https://acme.local/esmond/perfsonar/archive/*. The username and API key assigned to us by the archive administrator are *example_user* and *9130962c6b38722c0b9968e6903e1927e94e16fd* respectively. Also, since the server uses https we have installed the CA certificate in */etc/ssl/certs*. Applying these details yields the following configuration::
+The above example does not define an API key for authentication. It is possible to set the API key using the ``_auth_token`` field. For example::
 
-    <measurement_archive>
-        type                esmond/latency
-        username            example_user
-        database            https://acme.local/esmond/perfsonar/archive/
-        password            9130962c6b38722c0b9968e6903e1927e94e16fd
-        ca_certificate_path /etc/ssl/certs
-        
-        <summary>
-            summary_window   300
-            event_type   packet-loss-rate
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   300
-            event_type   histogram-owdelay
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   300
-            event_type   histogram-owdelay
-            summary_type   statistics
-        </summary>
-        <summary>
-            summary_window   3600
-            event_type   packet-loss-rate
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   3600
-            event_type   packet-loss-rate-bidir
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   3600
-            event_type   histogram-owdelay
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   3600
-            event_type   histogram-rtt
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   3600
-            event_type   histogram-owdelay
-            summary_type   statistics
-        </summary>
-        <summary>
-            summary_window   3600
-            event_type   histogram-rtt
-            summary_type   statistics
-        </summary>
-        <summary>
-            summary_window   86400
-            event_type   packet-loss-rate
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   86400
-            event_type   packet-loss-rate-bidir
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   86400
-            event_type   histogram-owdelay
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   86400
-            event_type   histogram-owdelay
-            summary_type   statistics
-        </summary>
-        <summary>
-            summary_window   86400
-            event_type   histogram-rtt
-            summary_type   aggregation
-        </summary>
-        <summary>
-            summary_window   86400
-            event_type   histogram-rtt
-            summary_type   statistics
-        </summary>
-    </measurement_archive>
-    <measurement_archive>
-        type                esmond/throughput
-        database            https://acme.local/esmond/perfsonar/archive/
-        username            example_user
-        password            9130962c6b38722c0b9968e6903e1927e94e16fd
-        ca_certificate_path /etc/ssl/certs
-        
-        <summary>
-            summary_window   86400
-            event_type   throughput
-            summary_type   average
-        </summary>
-    </measurement_archive>
-    <measurement_archive>
-        type                esmond/traceroute
-        database            https://acme.local/esmond/perfsonar/archive/
-        username            example_user
-        password            9130962c6b38722c0b9968e6903e1927e94e16fd
-        ca_certificate_path /etc/ssl/certs
-    </measurement_archive>
+    "archives"{
+        "example_esmond_archive_with_key": {
+            "archiver": "esmond",
+            "data": {
+                "measurement-agent": "ps.example.net",
+                "url": "http://ma.example.perfsonar.net/esmond/perfsonar/archive/",
+                "_auth-token": "35dfc21ebf95a6deadbeef83f1e052fbadcafe57"
+        }
+    }
 
-After adding the above to you configuration you DO NOT need to restart any daemons, the change will automatically be detected by the meshconfig-agent daemon.
+**It is only recommended you set the** ``_auth-token`` **if your template is a file on the local system that will never be published to the web.** This is to protect your API key from being exposed. See :ref:`psconfig_pscheduler_agent-templates-local` for how to setup local templates. Alternatively see :ref:`psconfig_pscheduler_agent-modify-archives` for information on how to define a default archiver locally for all tasks. Finally, if you have a remote template and would like to set the ``_auth-token`` after the agent downloads the template see :ref:`psconfig_pscheduler_agent-modify-transform_all` and :ref:`psconfig_pscheduler_agent-modify-transform_one`.
+    
+If you are using a remote pSConfig template that has your archive defined in it, make sure you use the ``--configure-archives`` option of ``psconfig remote add`` when you add the URL to the template. Example::
 
-.. note:: If your central measurement archive goes down for any reason, pScheduler will store the results in the database and try to re-register them when there server returns. By default it will  try for one day after the failure occurs before abandoning the result.
-
-Registering to Multiple Measurement Archives
---------------------------------------------
-You may register to multiple measurement archives by adding multiple ``measurement_archive`` blocks to the :ref:`MeshConfig Agent tasks file <config_files-meshconfig-conf-agent-tasks>` of the same type. For example, to register traceroute data to both a local and remote archive you may have a configuration like the following::
-
-    <measurement_archive>
-        type                esmond/traceroute
-        database            https://acme.local/esmond/perfsonar/archive/
-        username            example_user
-        password            9130962c6b38722c0b9968e6903e1927e94e16fd
-        ca_certificate_path /etc/ssl/certs
-    </measurement_archive>
-     <measurement_archive>
-        type                esmond/traceroute
-        database            http://localhost/esmond/perfsonar/archive/
-        username            perfsonar
-        password            5bd139bdb77a85cfe65847e44556a2883a857942
-    </measurement_archive>
-
-.. note:: If one or more of your measurement archives goes down, data will continue to be registered to the running archive(s). Data for the down archives will be kept in the pScheduler database and it will attempt to re-register the data when it returns (as described in the note at the bottom of the previous section). 
+    psconfig remote add --configure-archives URL 
+ 
+ 
+If the option is not included then the archive will be ignored.
