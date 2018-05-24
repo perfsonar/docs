@@ -43,8 +43,7 @@ For example, to ensure your 10G host never exceeds 7Gbps, run this command:
 
 Where $ETH is the name of your host NIC. Add that command to /etc/rc.local to run at system boot time.
 
-You can also configure your test mesh to tell iperf3 to reduce it's bandwidth as well. Details on how to do that
-are coming soon.
+You can also configure your tasks to tell iperf3 to reduce it's bandwidth as well by using the ``bandwidth`` property in a *test* object's ``spec`` field. 
 
 More details on host pacing are available at:
 https://fasterdata.es.net/host-tuning/packet-pacing/

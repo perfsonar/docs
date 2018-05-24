@@ -4,7 +4,7 @@ Choosing a Management Method
 
 perfSONAR nodes can be managed in the following ways:
   * a standalone node
-  * part of a centrally managed mesh
+  * part of a centrally managed task template
   * a combination of the both of these methods
 
 Standalone Node
@@ -19,12 +19,12 @@ Centrally Managed Node
 ----------------------
 
 If you want to create a perfSONAR dashboard such as http://ps-dashboard.es.net, or have several perfSONAR hosts to manage,
-you probably want to use this method. Details are described under :doc:`Managing Multiple perfSONAR Toolkits <multi_overview>`.
+you probably want to use this method. Details are described under :doc:`psconfig_intro`.
 
 Combination Node
 ----------------
 
-If you configure tests via the web GUI, and put the host in a managed mesh, your host will run both sets of tests.
+If you configure tests via the web GUI, and put the host in a centrally managed task template, your host will run both sets of tests.
 This is not recommended, as it can be confusing to figure out which tests are configured where. However
 it can be useful if some other organization is managing the mesh that your host is in.
 

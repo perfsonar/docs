@@ -189,12 +189,13 @@ If they are not running you may start them with appropriate init commands as a r
 
 Configuring Central Management
 -------------------------------
-If your node is part of a measurement mesh and you installed perfsonar-centralmanagement bundle refer to the following:
+If you installed the perfsonar-centralmanagement bundle see the following documents:
 
-    * :doc:`Using pSConfig to publish a template of the tasks you want run and displayed<psconfig_intro>`
-    * :doc:`Storing results with esmond<multi_ma_install>`
-    * `Using MaDDash to build dashboards <http://software.es.net/maddash/>`_
-    
+* :doc:`multi_ma_install`
+* :doc:`psconfig_publish`
+* :doc:`psconfig_maddash_agent`
+* `Using MaDDash to build dashboards <http://software.es.net/maddash/>`_
+
 Configuring perfSONAR through the web interface
 ------------------------------------------------
 If you installed the perfsonar-toolkit or perfsonar-centralmanagement bundle on an existing CentOS host, 

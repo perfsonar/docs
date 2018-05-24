@@ -96,7 +96,6 @@ For more information on specific commands and their arguments see:
     
     - :doc:`pscheduler_client_tasks`
     - :doc:`pscheduler_client_schedule`
-    - :doc:`pscheduler_client_utils`
     
 Running A pScheduler Server
 ===========================

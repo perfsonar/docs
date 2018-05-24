@@ -2,7 +2,7 @@
 perfSONAR Installation Options
 ******************************
 
-perfSONAR has historically been packaged as the **perfSONAR Toolkit**: an ISO containing a custom distribution of the CentOS operating system with all of the perfSONAR tools and services (including the software required to automatically run tests on a regular schedule, participate in a centrally managed mesh of tests, publish the existence of a measurement node, archive used to store results and web interface). The **perfSONAR Toolkit ISO** is probably the best distribution for you if at least one or more of the following hold true:
+perfSONAR has historically been packaged as the **perfSONAR Toolkit**: an ISO containing a custom distribution of the CentOS operating system with all of the perfSONAR tools and services (including the software required to automatically run tests on a regular schedule, participate in a centrally managed set of tests, publish the existence of a measurement node, archive used to store results and web interface). The **perfSONAR Toolkit ISO** is probably the best distribution for you if at least one or more of the following hold true:
 
 * You are new to perfSONAR
 * You plan to only deploy a small number of perfSONAR nodes
@@ -14,7 +14,7 @@ There are several other installation options as well for certain versions of bot
 #. **perfsonar-tools:** This bundle includes just the command-line clients needed to run on-demand measurements such as iperf, iperf3 and owamp. This bundle is generally best for hosts that aren't dedicated measurement nodes but want the command-line utilities available for troubleshooting as the need arises.
 #. **perfsonar-testpoint:** This bundle includes everything from the perfsonar-tools bundle as well as the software required to:
       * Automatically run tests on a regular schedule
-      * Participate in a centrally managed mesh of tests 
+      * Participate in a centrally managed set of tests 
       * Publish the existence of a measurement node 
 
     This bundle does NOT contain the software required to store measurements locally in an archive; the archive must be remote. This is best for dedicated testers running on lightweight hardware platforms that have a remote location in which to publish results.
@@ -24,7 +24,7 @@ There are several other installation options as well for certain versions of bot
     * Scripts used to apply system-wide default tuning and security settings
 
     This bundle is for those that wish to install the full suite of tools included on the perfSONAR Toolkit ISO but on an existing Linux system. 
-#. **perfsonar-centralmanagement:** The perfsonar-centralmanagement bundle is independent from the bundles above and installs tools needed to centrally manage a large number of hosts and display their results. This includes the esmond measurement archive, tools for building meshes, and dashboard software for displaying results (maddash). 
+#. **perfsonar-centralmanagement:** The perfsonar-centralmanagement bundle is independent from the bundles above and installs tools needed to centrally manage a large number of hosts and display their results. This includes the esmond measurement archive, tools for publishing task templates, and dashboard software for displaying results (MaDDash). 
 
 .. image:: images/install_options-bundle_tree.png
 

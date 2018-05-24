@@ -61,7 +61,6 @@ perfSONAR Toolkit
    manage_security
    manage_limits
    manage_extra_tools
-   manage_daemons
    using_graphs
    using_ext_tools
 

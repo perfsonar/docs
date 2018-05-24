@@ -37,7 +37,7 @@ and Debian "Wheezy" and "Jessie". We provide compatible Debian packages for 4 di
 Installation Instructions
 =========================
 
-The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed test mesh with a central measurement archive. See: 
+The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed task template with a central measurement archive. See: 
 
 - :doc:`install_centos`
 - :doc:`install_debian`
