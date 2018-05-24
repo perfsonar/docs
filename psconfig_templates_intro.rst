@@ -542,6 +542,8 @@ Putting it all together
 
 You can download a full example of the JSON file described in this section :download:`here <psconfig_templates/psconfig_templates_intro-network.json>`.
 
+For more example templates see the directory ``/usr/share/doc/perfsonar/psconfig`` on any host with a pSConfig package installed. In particular see ``/usr/share/doc/perfsonar/psconfig/skeleton.json`` for a good starting point of building your own template. 
+
 Further Reading
 ================
 * `pSConfig Template JSON Schema <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_

@@ -103,7 +103,7 @@ One approach is to define the archive in the pSConfig template being used. In th
             "archiver": "esmond",
             "data": {
                 "measurement-agent": "{% scheduled_by_address %}",
-                "url": "http://ma.example.perfsonar.net/esmond/perfsonar/archive/"
+                "url": "https://ma.example.perfsonar.net/esmond/perfsonar/archive/"
         }
     }
 
@@ -118,7 +118,7 @@ The above example does not define an API key for authentication. It is possible 
             "archiver": "esmond",
             "data": {
                 "measurement-agent": "{% scheduled_by_address %}",
-                "url": "http://ma.example.perfsonar.net/esmond/perfsonar/archive/",
+                "url": "https://ma.example.perfsonar.net/esmond/perfsonar/archive/",
                 "_auth-token": "35dfc21ebf95a6deadbeef83f1e052fbadcafe57"
         }
     }
