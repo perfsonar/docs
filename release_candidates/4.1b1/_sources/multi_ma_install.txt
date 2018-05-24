@@ -98,7 +98,7 @@ Each measurement host must be configured to register its data to the central arc
 
 One approach is to define the archive in the pSConfig template being used. In that case, the pSConfig template is going to need a section similar to the following::
 
-    "archives"{
+    "archives": {
         "example_esmond_archive": {
             "archiver": "esmond",
             "data": {
@@ -113,11 +113,11 @@ The full set of options for the ``data`` section of an *archive* object of type 
 
 The above example does not define an API key for authentication. It is possible to set the API key using the ``_auth_token`` field. For example::
 
-    "archives"{
+    "archives": {
         "example_esmond_archive_with_key": {
             "archiver": "esmond",
             "data": {
-                "measurement-agent": "ps.example.net",
+                "measurement-agent": "{% scheduled_by_address %}",
                 "url": "http://ma.example.perfsonar.net/esmond/perfsonar/archive/",
                 "_auth-token": "35dfc21ebf95a6deadbeef83f1e052fbadcafe57"
         }
