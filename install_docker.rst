@@ -41,12 +41,18 @@ QuickStart
 
 The following assumes that Docker has been successfully installed and is running on the host system. It also assumes that the base host is running a time keeping system such as NTP and is NOT running httpd, postgres, or anything else listening on the list of ports below. The Docker image will share the network stack with the host and so expects to be able to bind to all of the ports as if it were being run natively. 
 
-Ports
-pScheduler: 443
-owamp: 861
+pScheduler
+############
+:Port: 443
+
+owamp
+############
+:Port: 861
 
 
-   .. note:: See Limitations section for more details on the network in OSX and Windows deployments.
+.. note:: See Limitations section for more details on the network in OSX and Windows deployments.
+
+.. note:: See http://www.perfsonar.net/deploy/security-considerations/ for a full listing of ports.
 
 Docker does support the concept of remapping network ports to guests, but is beyond the scope of this model.
 
