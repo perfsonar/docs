@@ -28,11 +28,11 @@ There are several other installation options as well for certain versions of bot
 
 .. image:: images/install_options-bundle_tree.png
 
-
 This flowchart was created to help pick the correct option:
 
 .. image:: images/bundle_flowchart.png
 
+In addition to the above, pieces of perfSONAR can also be run inside of the Docker ecosystem. This allows for perfSONAR to be run in otherwise unsupported environments, including Mac OSX and Windows. Note that there are some limitations while running in those environments. For more information, see :doc:`install_docker`.
  
 
 CentOS Toolkit ISO Installation 
@@ -46,6 +46,10 @@ CentOS Bundle Installation
 Debian Bundle Installation 
 ==========================
 * See :doc:`install_debian` 
+
+Docker Installation 
+==========================
+* See :doc:`install_docker` 
 
 
 

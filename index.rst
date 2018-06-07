@@ -23,7 +23,7 @@ Planning for Installation
    install_options
    install_hardware
    install_small_node_details
-   
+   install_docker
    
 .. _index-installation:
 
