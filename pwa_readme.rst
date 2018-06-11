@@ -79,6 +79,8 @@ You should install logrotate for docker container log
 Configuration
 ^^^^^^^^^^^^^
 
+**Note:** if you are upgrading from an older MCA instance, read `UPGRADING FROM MCA <pwa_upgrading_from_mca>`_
+
 Before we start installing PWA, you should prepare your configuration files first. You can bootstrap it by
 downloading and deploying PWA's default configuration files from git repo.
 
@@ -147,7 +149,7 @@ If you are enabling x509 authentication, then you will also need ``trusted.pem``
 Container Installation
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Now we have all configuration files necessary to start installing PWA servicves.
+Now we have all configuration files necessary to start installing PWA services.
 
 
 #. 
