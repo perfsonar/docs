@@ -1,8 +1,8 @@
 
-Upgrading from older MeshConfig Admin (MCA) to new psConfig Web Administrator (PWA)
+Upgrading
 ===================================================================================
 
-Upgrading
+Upgrading from older MeshConfig Admin (MCA) to new psConfig Web Administrator (PWA)
 ---------
 
 If you are upgrading from an older version of MCA to the new PWA, you may want to do a clean install and manually copy any configuration settings you have changed over to the new PWA config.
@@ -31,10 +31,10 @@ You will also need to add the new ``pwa`` role to each user:
 
 .. code-block:: bash
 
-   docker exec -it sca-auth /app/bin/auth.js modscope --username apertome --add '{"pwa": ["user"]}'
+   docker exec -it sca-auth /app/bin/auth.js modscope --username user --add '{"pwa": ["user"]}'
 
 To make them an admin:
 
 .. code-block:: bash
 
-   docker exec -it sca-auth /app/bin/auth.js modscope --username apertome --add '{"pwa": ["admin"]}'
+   docker exec -it sca-auth /app/bin/auth.js modscope --username user --add '{"pwa": ["admin"]}'

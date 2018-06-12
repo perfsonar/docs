@@ -4,6 +4,8 @@ Configuration
 
 Most of the configuration files for PWA can be found in the ``/etc/pwa`` directory. At a minimum, you need to configure the datasources for your instance before you can start using PWA.
 
+**Note:** If you are upgrading from an old MCA instance, view the docs on `Upgrading from MCA to PWA <pwa_upgrading_from_mca>`_
+
 Data Sources
 ============
 
@@ -52,7 +54,7 @@ A sample of filtered Global SLS datasource:
 * activehosts_url: should always point to http://ps1.es.net:8096/lookup/activehosts.json unless you know a different global registry.
 * query: This query is passed to all sLS instances that are member of the global registry. For more detail on sLS query, please refer to `sLS API Spec <https://github.com/esnet/simple-lookup-service/wiki/APISpec#query>`_
 
-So, the above sample datasource entry instructs mca-cache service to pull all service records (used to construct "hosts" for MCA) from the global lookup service (ps1.es.net) with community registered to "OSG". If you don't want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.
+So, the above sample datasource entry instructs mca-cache service to pull all service records (used to construct "hosts" for PWA) from the global lookup service (ps1.es.net) with community registered to "OSG". If you don't want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.
 
 As you may find in the default ``/etc/pwa/index.js``, you can list as many datasources as you want. Make sure to use a unique key, and label.
 
@@ -85,7 +87,7 @@ The database is also configured in ``/etc/pwa/index.js``
 
 ::
 
-    exports.mongodb = "mongodb://mongo/mca";
+    exports.mongodb = "mongodb://mongo/pwa";
 
 
 When you update this file, all meshconfig services will automatically restart. Please monitor logs by doing  ``sudo docker exec -it pwa-admin1 /usr/local/bin/pm2 logs``
@@ -93,38 +95,40 @@ When you update this file, all meshconfig services will automatically restart. P
 Test Spec Default parameters
 ============================
 
-**meshconfig.js** contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).
+``index.js`` contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).
 
-When you update this file, all meshconfig services will automatically restarts. Please monitor logs by "sudo -u mca pm2 logs"
+When you update this file, all meshconfig services will automatically restarts. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 /usr/local/bin/pm2 logs``
 
 Logging
 ========================
 
-**logger.js** contains logging related configuration. MCA uses Winston for logging. Please see `Winston <https://github.com/winstonjs/winston>`_ for more detail.
+``index.js`` also contains logging related configuration. It's unlikely you need to change this, but if you want to  enable debug logging, for instance, you would change:
+
+``level: 'info',``
+
+to
+
+``level: 'debug',``
+
+PWA uses Winston for logging. Please see `Winston <https://github.com/winstonjs/winston>`_ for more detail. 
 
 Others
 ========================
 
-**index.js** contains all other configuration such as ports and host names to bind MCA server and MCA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.
+``index.js`` contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.
 
 Authentication Service (sca-auth)
 =================================
 
-MCA uses authentication microservices developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying /opt/mca/auth/api/config/ .
+PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying ``/etc/pwa/auth/index.js``
 
-Certain features in MCA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.
+Certain features in PWA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.
 
 ::
 
-    cd /opt/mca/auth/bin
-    ./auth.js modscope --username hayashis --add '{"mca": ["admin"]}'
+    docker exec -it sca-auth /app/bin/auth.js modscope --username user --add '{"pwa": ["admin"]}'
 
 You need to sign out & login again in order for this change to take effect.
 
-Please refer to `sca-auth gitrepo <https://github.com/soichih/sca-auth>`_ for more information.
-
-Profile Service (sca-profile)
-=============================
-
-MCA uses profile microservices developed by SCA (Scalable Computing Archive) group at IU. Please refer to `sca-profile gitrepo <https://github.com/soichih/sca-profile>`_ for more information.
+Please refer to the `sca-auth gitrepo <https://github.com/soichih/auth>`_ for more information.
 
