@@ -79,7 +79,9 @@ You should install logrotate for docker container log
 Configuration
 ^^^^^^^^^^^^^
 
-**Note:** if you are upgrading from an older MCA instance, read `UPGRADING FROM MCA <pwa_upgrading_from_mca>`_
+**Interaction with other web applications:** If you want to run PWA on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See `Running alongside other web applications <pwa_running_alongside>`_
+
+**Upgrading:** If you are upgrading from a legacy MCA instance, read `UPGRADING FROM MCA <pwa_upgrading_from_mca>`_
 
 Before we start installing PWA, you should prepare your configuration files first. You can bootstrap it by
 downloading and deploying PWA's default configuration files from git repo.
@@ -257,77 +259,44 @@ Now you should see all 5 containers running.
    aa6471073c01        nginx               "nginx -g 'daemon ..."   11 hours ago        Up 11 hours         0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp, 0.0.0.0:9443->9443/tcp   nginx
    10fdf3b63e4f        mongo               "/entrypoint.sh mo..."   12 hours ago        Up 12 hours         27017/tcp                                                          mongo
 
-Testing / Monitoring
-^^^^^^^^^^^^^^^^^^^^
-
 Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running ``systemctl restart docker``
 
-You should now be able to access PWA by accessing your host on your browser on the host. You should be prompted to the login page. You should signup / confirm your email address, then define host gruops / testspecs, and construct new meshconfig using those test entries.
+Updating
+^^^^^^^^
 
-PWA reports the current health status via following API endpoint (for pwa-admin and pwa-cache)
+To update PWA containers to the latest version, stop/remove the current container. This example updates the pwa-admin image, but you might also need to do the same thing for ``pwa-pub`` and/or ``sca-auth``\ , as well.
 
-``https://<hostname>/api/pwa/health``
+.. code-block:: bash
 
-.. code-block:: javascript
+   docker stop pwa-admin1
+   docker rm pwa-admin1
 
-   {
-       status: "ok",
-       msg: "everything looks good",
-       cache: {
-           hosts: 255,
-           update_time: 1486994021924
-       }
-   }
+Pull down the latest version using:
 
-You can configure your monitoring systems (Sensu, Nagious, etc..) to check for ``status`` and make sure it's set to 'ok'. 
+.. code-block:: bash
 
-For pwa-pub instances, you should run separate test at ``http://<hostname>/pub/health`` (not https://)
+   docker pull perfsonar/pwa-admin1
 
-.. code-block:: javascript
-
-   {
-       status: "ok"
-   }
-
-..
-
-   Please note.. if you are running multiple instances of pwa-pub, then /pub/health is just from one of the instances (not all)
-
-
-You should also monitor the authentication service status
-
-``https://<hostname>/api/auth/health``
-
-.. code-block:: javascript
-
-   {
-       status: "ok",
-       headers: {...}
-   }
-
-You can also monitor docker stdout/stderr log - similar to syslog.
-
-Update
-^^^^^^
-
-To update PWA containers to the latest version, do ``docker pull`` the container you are trying to update and rerun the same ``docker run ...`` command you used to start it.
+Re-run the container using the same ``docker run ...`` command you used to start it.
 
 Firewall
 ^^^^^^^^
 
 Docker will take care of its own firewall rules, so you don't have to worry about opening ports manually. 
 
-However, following are the ports used by nginx container.
+By default, following are the ports used by nginx container:
 
 
 * 443 (For PWA administrative GUI)
 * 80 (For PWA configuration publisher)
 * 9443 (For x509 authentication to PWA administrative GUI)
 
-API
-===
+Other Topics
+============
 
-To use the API, see the `API DOC <pwa_api>`_
+
+* `Monitoring / Testing <pwa_monitoring>`_
+* PWA provides a developer API -- see the `API DOC <pwa_api>`_
 
 Reference
 =========

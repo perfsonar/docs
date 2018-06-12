@@ -78,7 +78,7 @@ If you have a private sLS instance, enter something like following, replacing ``
 * url: URL for your private sLS instance. For type off queries, please refer to `sLS API Spec <https://github.com/esnet/simple-lookup-service/wiki/APISpec#query>`_
 * cache: refrequency of polling from this sLS in msec.
 
-When you update this file, all PWA services will automatically restart. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 /usr/local/bin/pm2 logs``
+When you update this file, all PWA services will automatically restart. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 pm2 logs``
 
 Database 
 ============
@@ -90,14 +90,14 @@ The database is also configured in ``/etc/pwa/index.js``
     exports.mongodb = "mongodb://mongo/pwa";
 
 
-When you update this file, all meshconfig services will automatically restart. Please monitor logs by doing  ``sudo docker exec -it pwa-admin1 /usr/local/bin/pm2 logs``
+When you update this file, all meshconfig services will automatically restart. Please monitor logs by doing  ``sudo docker exec -it pwa-admin1 pm2 logs``
 
 Test Spec Default parameters
 ============================
 
 ``index.js`` contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).
 
-When you update this file, all meshconfig services will automatically restarts. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 /usr/local/bin/pm2 logs``
+When you update this file, all meshconfig services will automatically restarts. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 pm2 logs``
 
 Logging
 ========================
