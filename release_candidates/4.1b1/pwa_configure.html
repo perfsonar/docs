@@ -76,13 +76,34 @@
             
   <div class="section" id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
-<p>Most of the configuration files for MCA can be found in <strong>/opt/mca/mca/api/config</strong> directory. At minimum, you need to configure the datasources for your instance before you can start using MCA.</p>
+<p>Most of the configuration files for PWA can be found in the <tt class="docutils literal"><span class="pre">/etc/pwa</span></tt> directory. At a minimum, you need to configure the datasources for your instance before you can start using PWA.</p>
+<p><strong>Note:</strong> If you are upgrading from an old MCA instance, view the docs on <a class="reference external" href="pwa_upgrading_from_mca">Upgrading from MCA to PWA</a></p>
 <div class="section" id="data-sources">
 <h2>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
-<p><strong>datasource.js</strong> lists all sLS and global lookup service that host information is pulled from.</p>
+<p><tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt> lists the Global Lookup Service and any private LSes that host information is pulled from.</p>
 <div class="section" id="global-sls">
 <h3>Global SLS<a class="headerlink" href="#global-sls" title="Permalink to this headline">¶</a></h3>
-<p>A sample datasource entry for Global SLS</p>
+<p>A sample datasource entry for the Global SLS:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;gls&quot;: {
+    label: &#39;GLS&#39;,
+    type: &#39;global-sls&#39;,
+    activehosts_url: &#39;http://ps1.es.net:8096/lookup/activehosts.json&#39;,
+    query: &#39;?type=service&#39;,
+},
+</pre></div>
+</div>
+<ul class="simple">
+<li>&#8220;gls&#8221; is used as internal key to identify this datasource. Pick one that&#8217;s unique.</li>
+<li>label: is used to show the datasource name in the web UI</li>
+<li>type: needs to be &#8220;global-sls&#8221; for Global SLS datasource.</li>
+<li>activehosts_url: should always point to <a class="reference external" href="http://ps1.es.net:8096/lookup/activehosts.json">http://ps1.es.net:8096/lookup/activehosts.json</a> unless you know a different global registry.</li>
+<li>query: This query is passed to all sLS instances that are member of the global registry. You will always want <tt class="docutils literal"><span class="pre">?type=service</span></tt>, at the very least. For more detail on sLS query, see below.</li>
+</ul>
+</div>
+<div class="section" id="global-sls-filtered">
+<h3>Global SLS, filtered<a class="headerlink" href="#global-sls-filtered" title="Permalink to this headline">¶</a></h3>
+<p>You can define a query for the SLS instance, so if you want host datasources set differently depending on what communities they are in (or other parameters), you can do so.</p>
+<p>A sample of filtered Global SLS datasource:</p>
 <div class="highlight-python"><div class="highlight"><pre>&quot;osg&quot;: {
     label: &#39;OSG&#39;,
     type: &#39;global-sls&#39;,
@@ -98,17 +119,16 @@
 <li>activehosts_url: should always point to <a class="reference external" href="http://ps1.es.net:8096/lookup/activehosts.json">http://ps1.es.net:8096/lookup/activehosts.json</a> unless you know a different global registry.</li>
 <li>query: This query is passed to all sLS instances that are member of the global registry. For more detail on sLS query, please refer to <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/APISpec#query">sLS API Spec</a></li>
 </ul>
-<p>So, the above sample datasource entry instructs mca-cache service to pull all service records (used to construct &#8220;hosts&#8221; for MCA) from the global lookup service (ps1.es.net) with community registered to &#8220;OSG&#8221;. If you don&#8217;t want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.</p>
-<p>As you may find in the default datasource.js, you can list as many datasources as you want. Make sure to use a unique key, and label.</p>
+<p>So, the above sample datasource entry instructs mca-cache service to pull all service records (used to construct &#8220;hosts&#8221; for PWA) from the global lookup service (ps1.es.net) with community registered to &#8220;OSG&#8221;. If you don&#8217;t want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.</p>
+<p>As you may find in the default <tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt>, you can list as many datasources as you want. Make sure to use a unique key, and label.</p>
 </div>
 <div class="section" id="sls">
 <h3>sLS<a class="headerlink" href="#sls" title="Permalink to this headline">¶</a></h3>
-<p>If you have your private sLS instance, entering something like following</p>
+<p>If you have a private sLS instance, enter something like following, replacing <tt class="docutils literal"><span class="pre">sls_hostname</span></tt> with your sLS hostname:</p>
 <div class="highlight-python"><div class="highlight"><pre>&quot;wlcg&quot;: {
     label: &#39;WLCG&#39;,
     type: &#39;sls&#39;,
-    url: &#39;https://soichi7.ppa.iu.edu/sls/lookup/records/?type=service&amp;group-communities=WLCG&#39;,
-    //exclude: [], //TODO - allow user to remove certain service from appearing in the UI
+    url: &#39;https://sls_hostname/sls/lookup/records/?type=service&amp;group-communities=WLCG&#39;,
     cache: 1000*60*5, //refresh every 5 minutes (default 30 minutes)
 },
 </pre></div>
@@ -120,53 +140,43 @@
 <li>url: URL for your private sLS instance. For type off queries, please refer to <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/APISpec#query">sLS API Spec</a></li>
 <li>cache: refrequency of polling from this sLS in msec.</li>
 </ul>
-<p>When you update this file, all meshconfig services will automatically restarts. Please monitor logs by &#8220;sudo -u mca pm2 logs&#8221;</p>
+<p>When you update this file, all PWA services will automatically restart. Please monitor logs by doing <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
 </div>
 </div>
 <div class="section" id="database">
 <h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
-<p><strong>db.js</strong> is normally auto-generated by the setup script (please see <tt class="xref doc docutils literal"><span class="pre">mca_install</span></tt>), but you can update this to point to an appropriate DB endpoint.</p>
-<p>For example, to use mysql instead of postgres, update this to something like</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="s">&#39;mysql://localhost:3306/database&#39;</span><span class="p">;</span>
+<p>The database is also configured in <tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">exports</span><span class="o">.</span><span class="n">mongodb</span> <span class="o">=</span> <span class="s">&quot;mongodb://mongo/pwa&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Or.. for SQLite</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">dialect</span><span class="p">:</span> <span class="s">&#39;sqlite&#39;</span><span class="p">,</span>
-    <span class="n">storage</span><span class="p">:</span> <span class="s">&quot;/usr/local/tmp/meshconfig.sqlite&quot;</span><span class="p">,</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>MeshConfig Admin uses <a class="reference external" href="http://docs.sequelizejs.com/en/1.7.0/docs/usage/">Sequelize</a> which supports MySQL, MariaDB, SQLite, and PostgreSQL.</p>
-<p>When you update this file, all meshconfig services will automatically restarts. Please monitor logs by &#8220;sudo -u mca pm2 logs&#8221;</p>
+<p>When you update this file, all meshconfig services will automatically restart. Please monitor logs by doing  <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
 </div>
 <div class="section" id="test-spec-default-parameters">
 <h2>Test Spec Default parameters<a class="headerlink" href="#test-spec-default-parameters" title="Permalink to this headline">¶</a></h2>
-<p><strong>meshconfig.js</strong> contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).</p>
-<p>When you update this file, all meshconfig services will automatically restarts. Please monitor logs by &#8220;sudo -u mca pm2 logs&#8221;</p>
+<p><tt class="docutils literal"><span class="pre">index.js</span></tt> contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).</p>
+<p>When you update this file, all meshconfig services will automatically restarts. Please monitor logs by doing <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
 </div>
 <div class="section" id="logging">
 <h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
-<p><strong>logger.js</strong> contains logging related configuration. MCA uses Winston for logging. Please see <a class="reference external" href="https://github.com/winstonjs/winston">Winston</a> for more detail.</p>
+<p><tt class="docutils literal"><span class="pre">index.js</span></tt> also contains logging related configuration. It&#8217;s unlikely you need to change this, but if you want to  enable debug logging, for instance, you would change:</p>
+<p><tt class="docutils literal"><span class="pre">level:</span> <span class="pre">'info',</span></tt></p>
+<p>to</p>
+<p><tt class="docutils literal"><span class="pre">level:</span> <span class="pre">'debug',</span></tt></p>
+<p>PWA uses Winston for logging. Please see <a class="reference external" href="https://github.com/winstonjs/winston">Winston</a> for more detail.</p>
 </div>
 <div class="section" id="others">
 <h2>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
-<p><strong>index.js</strong> contains all other configuration such as ports and host names to bind MCA server and MCA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.</p>
+<p><tt class="docutils literal"><span class="pre">index.js</span></tt> contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.</p>
 </div>
 <div class="section" id="authentication-service-sca-auth">
 <h2>Authentication Service (sca-auth)<a class="headerlink" href="#authentication-service-sca-auth" title="Permalink to this headline">¶</a></h2>
-<p>MCA uses authentication microservices developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying /opt/mca/auth/api/config/ .</p>
-<p>Certain features in MCA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.</p>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/mca/auth/bin
-./auth.js modscope --username hayashis --add &#39;{&quot;mca&quot;: [&quot;admin&quot;]}&#39;
+<p>PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying <tt class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></tt></p>
+<p>Certain features in PWA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.</p>
+<div class="highlight-python"><div class="highlight"><pre>docker exec -it sca-auth /app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;admin&quot;]}&#39;
 </pre></div>
 </div>
 <p>You need to sign out &amp; login again in order for this change to take effect.</p>
-<p>Please refer to <a class="reference external" href="https://github.com/soichih/sca-auth">sca-auth gitrepo</a> for more information.</p>
-</div>
-<div class="section" id="profile-service-sca-profile">
-<h2>Profile Service (sca-profile)<a class="headerlink" href="#profile-service-sca-profile" title="Permalink to this headline">¶</a></h2>
-<p>MCA uses profile microservices developed by SCA (Scalable Computing Archive) group at IU. Please refer to <a class="reference external" href="https://github.com/soichih/sca-profile">sca-profile gitrepo</a> for more information.</p>
+<p>Please refer to the <a class="reference external" href="https://github.com/soichih/auth">sca-auth gitrepo</a> for more information.</p>
 </div>
 </div>
 
@@ -182,6 +192,7 @@
 <li><a class="reference internal" href="#">Configuration</a><ul>
 <li><a class="reference internal" href="#data-sources">Data Sources</a><ul>
 <li><a class="reference internal" href="#global-sls">Global SLS</a></li>
+<li><a class="reference internal" href="#global-sls-filtered">Global SLS, filtered</a></li>
 <li><a class="reference internal" href="#sls">sLS</a></li>
 </ul>
 </li>
@@ -190,7 +201,6 @@
 <li><a class="reference internal" href="#logging">Logging</a></li>
 <li><a class="reference internal" href="#others">Others</a></li>
 <li><a class="reference internal" href="#authentication-service-sca-auth">Authentication Service (sca-auth)</a></li>
-<li><a class="reference internal" href="#profile-service-sca-profile">Profile Service (sca-profile)</a></li>
 </ul>
 </li>
 </ul>
