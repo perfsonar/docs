@@ -6,14 +6,14 @@ Host Groups
 
 .. image:: images/pwa/hostgroups.png
 
-To define a meshconfig, you will need 2 basic ingredients. Hostgroups, and Test specs.  Host group is a logical grouping of toolkit instances, and you can reuse a single host group for multile meshconfigs. 
+To define a Config, you will need 2 basic ingredients: Host Groups and Testspecs. A host group is a logical grouping of perfSONAR nodes, and you can reuse a single host group for multile Configs.
 
-Click button "Add New ..." button to open a new host group dialog.
+Click the large "+" ("Add New") button to open a new host group dialog.
 
 .. image:: images/pwa/hostgroup.png
 
 * Name: Name of the hostgroup
-* Service Type: You need to pick a service type for this hostgroup. 
+* Service Type: You need to pick a service type for this hostgroup.
 * Admins: List of users who are *admin* of this hostgroup. Only admins can edit the hosts.
 
 * Hosts/Static
@@ -22,14 +22,17 @@ Click button "Add New ..." button to open a new host group dialog.
 * Hosts/Dynamic
     Dynamic hostgroup allows you to construct a hostgroup that automatically updated based on your custom criteria and current list of hosts registered in your datasource. Please see below for more detail.
 
-You can use host groups created by other users, but you can only edit ones with your name listed under Admins.
+You can use host groups created by other users, but you can only edit ones with your name listed under Admins, unless you are a Super Admin.
 
-You can click on a small pencil button |editbutton| to edit an existing host group.
+Static Host Groups
+-----------------------
+
+A static hostgroup allows you to manually enter or select hosts to put in the group. In most environments, Static Host Groups are sufficient, and they are certainly simpler to set up, so unless you have a specific need for dynamic hostgroups, static is recommended.
 
 Dynamic Host Groups
 -----------------------
 
-Dynamic Host Group allows you to enter host selection criteria to be evaluated at runtime. This is useful if you want to construct a host group that changes its member based on the latest information from the global registry.
+Dynamic Host Groups allow you to enter host selection criteria to be evaluated at runtime. This is useful if you want to construct a host group that changes its member based on the latest information from the global registry.
 
 .. image:: images/pwa/dynamichosteditor.png
 

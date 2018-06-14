@@ -1,22 +1,20 @@
 ********************
-Test Spec
+Testspecs
 ********************
 
-.. |editbutton| image:: images/mca/editbutton.png
+Testspecs are set of parameters used by a particular test services. Instead of defining such parameters for each test that you want to run, you can define them under Test Specs tab, and use them in one or more Configs.
 
-.. image:: images/mca/testspecs.png
+.. image:: images/pwa/testspecs.png
 
-Test specs are set of parameters used by a particular test services. Instead of defining such parameters for each tests that you want to run,
-you can define them under Test Specs tab, and use them by referencing it from each tests defined under Configs tab.
 
-Click "Add New" button to open a test spec editor, or can click on a small pencil button |editbutton| to edit an existing test spec.
+Click the large "+" ("Add New") button to create a new Testspec, or click on a Testspec name to edit an existing Testspec.
 
-.. image:: images/mca/testspec.png
+.. image:: images/pwa/testspec.png
 
-* Name: Name of the hostgroup
+* Name: Name of the Testspec 
 * Service Type: Service type that this parameter set applies. This field is preselected when you click on "Add New" button.
-* Admins: List of users who are admin of this test spec. Only admins can edit the hosts.
-* Depending on the service type, you will see different set of test specs that you can enter. Please read comments on the UI for details about each parameter.
+* Admins: List of users who are admin of this test spec. Only admins or super-admins can edit the Testspecs.
+* Depending on the service type, you will see different set of test parameters that you can enter. Please read comments on the UI for details about each parameter.
 
-Please see :doc:`mca_userguide_config` next.
+Please see :doc:`pwa_userguide_config` next.
 
