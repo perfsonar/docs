@@ -23,7 +23,6 @@ Planning for Installation
    install_options
    install_hardware
    install_small_node_details
-   install_docker
    
 .. _index-installation:
 
@@ -39,6 +38,7 @@ Installation
    install_config_first_time
    install_centos
    install_debian
+   install_docker
    install_migrate_centos7
    manage_update
 
