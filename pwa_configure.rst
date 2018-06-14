@@ -6,6 +6,14 @@ Most of the configuration files for PWA can be found in the ``/etc/pwa`` directo
 
 **Note:** If you are upgrading from an old MCA instance, view the docs on `Upgrading from MCA to PWA <pwa_upgrading_from_mca>`_
 
+
+Authentication
+============
+
+TODO: ADD CONTENT HERE
+`pwa_user_management`
+
+
 Data Sources
 ============
 

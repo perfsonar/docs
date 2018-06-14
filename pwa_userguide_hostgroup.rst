@@ -1,5 +1,5 @@
 ******************
-Host Group
+Host Groups
 ******************
 
 .. |editbutton| image:: images/pwa/editbutton.png
