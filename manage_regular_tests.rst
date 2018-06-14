@@ -100,7 +100,8 @@ Adding Regular Tests
         +----------------------------+------------------+-------------------------------------+
         | TOS bits                   | 0                | |add_params_throughput_tos|         |
         +----------------------------+------------------+-------------------------------------+
-
+        | Single-ended testing       | Disabled         | |add_params_throughput_single_ended||
+        +----------------------------+------------------+-------------------------------------+
     .. container:: topic
 
         **Ping**
@@ -328,6 +329,7 @@ You may delete a test with the following steps:
 .. |add_params_throughput_streams|      replace:: Number of concurrent streams for the test to run.
 .. |add_params_throughput_omit|         replace:: Initial period of data to omit from the final statistics. This is so that you can skip past initial conditions such as TCP slow start. Currently only implemented by the iperf3 tool.
 .. |add_params_throughput_zero_copy|    replace:: Allows to set using a "zero copy" method of sending data, such as *sendfile()* system call. This uses much less CPU to put the data. Currently only implemented by the iperf3 tool.
+.. |add_params_throughput_single_ended| replace:: Tells test to assume that pScheduler is not on the remote host and to run test without coordination. This requires a server such as iperf, iperf3 or nuttcp to be running on the far-end. It also has the limitation that there is no way to guarantee the far end is not running other tests.
 
 .. |add_params_ping_interval|           replace:: The amount of time in between tests. Ping tests are low bandwidth and generally run every few minutes.
 .. |add_params_ping_packets|            replace:: The number of packets to send per test. Multiplying by the **Time between packets** yields the duration of the test in seconds. 
