@@ -17,7 +17,8 @@ Tools
 -----
 perfSONAR includes numerous utilities responsible for carrying out the actual network measurements and form the foundational layer of perfSONAR. In general, you will not invoke these tools directly but instead use the :doc:`pscheduler<pscheduler_intro>` command from the :ref:`scheduling <intro_about-scheduling>` layer to execute them. The default tools that come with perfSONAR include:
 
-    * owamp_ - A tool primarily used for measuring packet loss and one-way delay. It includes the command *owping* for single short-lived tests and the *powstream* command for long-running background tests. 
+    * owamp_ - A set of tools primarily used for measuring packet loss and one-way delay. It includes the command *owping* for single short-lived tests and the *powstream* command for long-running background tests. 
+    * twamp_ - A tool primarily used for measuring packet loss and two-way delay. It has increased accuracy over tools like ping without the same clock synchronization requirements as OWAMP. The client tool is named *twping* and can be used to run against TWAMP servers. You can use the provided *twampd* server or many routers also come with vendor implementation of TWAMP servers that can be tested against. 
     * iperf3_ - A rewrite of the classic iperf tool used to measure network throughput and associated metrics.
     * iperf2_ - Also known as just *iperf*, a common tool used to measure network throughput that has been around for many years.
     * nuttcp_ - Another throughput tool with some useful options not found in other tools. 
@@ -51,15 +52,17 @@ The archiving layer currently consists a single component named esmond_ that sto
 Configuration
 -------------
 
-The configuration layer is where desired measurements are defined along with instructions on where to store them. The primary component as this layer is called the *MeshConfig*. The MeshConfig consists of three main parts:
-    #. **MeshConfig Agent** - This is the component that runs on the local measurement host and makes sure the scheduling layer is configured to run all the desired tests. It can do so by looking at manually defined tests in a local file or reading a remotely hosted configuration file that contains tests its supposed to run. See :doc:`multi_mesh_agent_config` for more details.
-    #. **MeshConfig GUIAgent** - This component can read from a remote mesh file and generate a `MaDDash <http://software.es.net/maddash>`_ dashboard that displays the results of the tests. See :ref:`intro_about-visualization` for more information on the visualization tools perfSONAR provides and the `MaDDash Auto-configuration <http://software.es.net/maddash/mesh_config.html>`_ page for more information on the MeshConfig GUIAgent.
-    #. **MeshConfig JSON Builder** - This is a simple tool that takes a configuration file in `Apache-like configuration format <http://search.cpan.org/dist/Config-General/General.pm>`_ and converts it into a JSON format readable as a remote mesh by the MeshConfig Agent and GUIAgent. See :doc:`multi_mesh_server_config` for more details.
-    
-In order to simplify the process above there are also a few graphical interfaces for defining tests:
+The configuration layer is where desired measurements are defined along with instructions on where to store them. The primary component at this layer is called *pSConfig*. pSConfig is a *template* framework for describing and configuring a *topology* of *tasks*. If you manage more than one perfSONAR host (or participate in a distributed community of perfSONAR measurement hosts), the following configuration tasks can quickly become unwieldy:
 
-    * **Toolkit GUI** - This ships with every perfSONAR Toolkit and allows defining tests for the MeshConfig Agent on the local host only. See :doc:`manage_regular_tests` for more details.
-    * **pSConfig Web Admin** - This is a web-based application for defining remote meshes that can be read by the MeshConfig/pSConfig Agents of multiple hosts as well as the MeshConfig/pSConfig GUIAgent. See :doc:`pwa` for more details.
+    #. **Scheduling the tasks** you want to run at each location. 
+    #. **Maintaining visualization components** to display results of the measurements from multiple hosts
+
+pSConfig assists with these challenges by providing agents to automate each of the configuration tasks listed above. This includes:
+
+    #. **pSconfig pScheduler Agent** - The agent responsible for reading a template and configuring the tasks defined in pScheduler. See :doc:`psconfig_pscheduler_agent` for more details on this agent.
+    #. **pSConfig MaDDash Agent** - The agent responsible for reading a template and configuring MaDDash to display the results of defined tasks in a dashboard. See :doc:`psconfig_maddash_agent` for more details on this agent.
+
+For complete information on pSConfig start with :doc:`psconfig_intro` for more details on pSConfig basic concepts/terminology.
 
 
 .. _intro_about-visualization:
@@ -72,25 +75,22 @@ perfSONAR also includes components for visualizing the data. These components pr
     * **Graphs** - The perfSONAR graphs package provides a set of graphs that display the various measurements over time and provide useful information about the hosts involved. See :doc:`using_graphs` for more detail.
     * **MaDDash** - This component queries the :ref:`archiving layer <intro_about-archiving>` periodically for measurements and displays a dashboard indicating the performance of each relative to a set of defined thresholds. It can also send alerts based on patterns in the dashboard. See the `MaDDash documentation <http://software.es.net/maddash>`_ for more details.
 
+In addition to displaying results, there are also graphical interfaces available for configuring perfSONAR components:
 
+    * **Toolkit GUI** - This ships with every perfSONAR Toolkit and allows defining tasks for the local pSConfig pScheduler agent. See :doc:`manage_regular_tests` for more details.
+    * **pSConfig Web Admin** - This is a web-based application for defining remote templates that can be read by the pSConfig Agents. See :doc:`pwa` for more details.
+    
 .. _intro_about-discovery:
 
 Discovery
 ---------
 Each perfSONAR node can run a component called the **Lookup Service (LS) Registration Daemon** that registers its existence in a public and/or private `lookup service <http://software.es.net/simple-lookup-service/>`_. The registration daemon gathers information about each perfSONAR layer as well as the host on which it runs. This information is then used in multiple places to help debug problems and find hosts with which to test when building new configurations. 
 
-In general, no configuration is needed of the registration component but for a guide of the options available see :doc:`config_ls_registration`. For a guide on automatically building test configurations based on registered lookup service content see :doc:`multi_mesh_autoconfig`.
-
-Additional Components
-----------------------
-In addition to what's included in the diagram above, there are some additional tools available that interact with one or more of the layers shown. For example:
-
-    * :doc:`perfSONAR UI <using_psui>` is a component that interacts with both the :ref:`scheduling <intro_about-scheduling>` and :ref:`archiving <intro_about-archiving>` layers to execute tests and visualize results. It currently uses the legacy perfSONAR scheduling system and will be updated to support pScheduler in a future release. See :doc:`using_psui` for more details.
-
-Many of the layers provide open APIs, so its possible to use or write third-party tools to do even more. For information on the APIs available see :doc:`client_apis`.
+In general, no configuration is needed of the registration component but for a guide of the options available see :doc:`config_ls_registration`. For a guide on automatically building test configurations based on registered lookup service content see :doc:`psconfig_autoconfig`.
 
 
-.. _owamp: http://software.internet2.edu/owamp
+.. _owamp: http://github.com/perfsonar/owamp
+.. _twamp: http://github.com/perfsonar/twamp
 .. _iperf3: http://software.es.net/iperf
 .. _iperf2: https://sourceforge.net/projects/iperf2/
 .. _nuttcp: https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/nuttcp/
