@@ -16,9 +16,10 @@ Interacting with the ``sca-auth`` service
 2. ``docker exec -it <container> bash`` - this starts an interactive bash shell within the container.
 
    ::
+
         $ sudo docker exec -it bash
 
-        *root@301be8a679c7:/#* ``/app/bin/auth.js listuser``
+        root@301be8a679c7:/# /app/bin/auth.js listuser
 
 The two examples above are equivalent. To exit a bash shell, type ``exit``
 
@@ -29,7 +30,7 @@ You can run SCA commands by running commands inside the ``sca-auth`` container, 
 sca-auth Commands
 ==================
 
-**NOTE:** before changes to user roles go into effect, the user has to log out and then log back in.
+**NOTE:** before changes to user roles go into effect, the user has to log out and then re-authenticate.
 
 Listing accounts
 ----------------
