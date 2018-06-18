@@ -42,7 +42,7 @@ There are two ways to run commands within a docker container.
 
         $ sudo docker exec -it pwa-admin1 pm2 logs
 
-2. ``docker exec -it <container> bash`` - this starts a bash shell within the container.
+2. ``docker exec -it <container> bash`` - this starts an interactive bash shell within the container.
 
 
 
@@ -96,10 +96,10 @@ You can monitor realtime stats of each services via
 For more information on PM2, please see `PM2 <http://pm2.keymetrics.io/>`_
 
 
-PWA Services
-=============
+PWA Conatiners
+===============
 
-Here is a complete list of PWA containers, and what services run under them 
+Here is a complete list of PWA Docker containers, and what services run under them.
 
 pwa-admin1
 ----------
@@ -122,10 +122,10 @@ sca-auth
 2. ``auth`` (*sca-auth*)
    The Authentication service provides the API for the authentication module
 
-Other Services
-==============
+Other Containers
+================
 
-These services are required by PWA, but not part of PWA itself.
+These Docker containers are required by PWA, but not part of PWA itself.
 
 mongo
 -----
