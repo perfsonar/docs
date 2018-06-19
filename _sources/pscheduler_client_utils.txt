@@ -4,6 +4,7 @@ Diagnostic and Utility Commands
 
 Page should contain at least the following:
 
+    * pscheduler troubleshoot
     * pscheduler env	        
     * pscheduler clock		  
     * pscheduler plugins	      

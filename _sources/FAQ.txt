@@ -1,6 +1,6 @@
-**************
-perfSONAR FAQ
-**************
+*******************************************
+perfSONAR Frequently Asked Questions (FAQs)
+*******************************************
 
 .. contents:: Topics
     :depth: 1
@@ -136,6 +136,16 @@ Q: Where can I find more resources regarding timekeeping for VMWare Virtual Mach
 - `Timekeeping In Virtual Machines <http://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/techpaper/Timekeeping-In-VirtualMachines.pdf>`_
 - `Timekeeping best practices for Linux guests <https://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=1006427>`_
 
+
+Q: How do you upgrade a perfSONAR node from Debian 7 to Debian 9
+================================================================
+
+**A:** Because of systemd, upgrading a host running perfSONAR on Debian 7 to Debian 9 is better done in multiple steps as described bellow:
+
+    #. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
+    #. Reboot (to get systemd running)
+    #. Change perfSONAR repository from perfsonar-wheezy-release to perfsonar-jessie-release
+    #. Upgrade Debian 8 to Debian 9 (following Debian instructions, here for `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_)
 
 
 Tool Questions
@@ -546,6 +556,5 @@ Q: How does version numbering work for the perfSONAR project?
 **A:** See https://github.com/perfsonar/project/wiki/Versioning if you are interested in learning about our version numbering scheme.
 
 
- 
 
 

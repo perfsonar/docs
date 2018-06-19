@@ -183,7 +183,6 @@ Further Information
 * `Source Code Repository <https://github.com/perfsonar>`_
 * `Issue Tracker <https://github.com/perfsonar/project/issues>`_
 * `Project Wiki <https://github.com/perfsonar/project/wiki>`_
-* `Frequently Asked Questions (FAQs) <http://www.perfsonar.net/about/faq/>`_
 * Mailing Lists
 
   * `User Mailing List <https://lists.internet2.edu/sympa/subscribe/perfsonar-user>`_ - Forum where users may ask and answer questions about their perfSONAR deployments
