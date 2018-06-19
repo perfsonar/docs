@@ -2,16 +2,10 @@
 Configuration
 *************
 
-Most of the configuration files for PWA can be found in the ``/etc/pwa`` directory. At a minimum, you need to configure the datasources for your instance before you can start using PWA.
+Most of the configuration files for PWA can be found in the ``/etc/pwa`` directory. At a minimum, you need to configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.
 
 **Note:** If you are upgrading from an old MCA instance, view the docs on `Upgrading from MCA to PWA <pwa_upgrading_from_mca>`_
 
-
-Authentication
-============
-
-TODO: ADD CONTENT HERE
-`pwa_user_management`
 
 
 Data Sources
@@ -138,5 +132,11 @@ Certain features in PWA are restricted to only super-admin. In order to become a
 
 You need to sign out & login again in order for this change to take effect.
 
-Please refer to the `sca-auth gitrepo <https://github.com/soichih/auth>`_ for more information.
+Please refer to `sca-auth gitrepo <https://github.com/perfsonar/sca-auth>`_ for more information.
+
+User Management
+===============
+
+For information on managing users, see `User Management <pwa_user_management>`_
+
 
