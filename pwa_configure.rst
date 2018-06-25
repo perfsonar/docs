@@ -137,10 +137,19 @@ Please refer to `sca-auth gitrepo <https://github.com/perfsonar/sca-auth>`_ for 
 User Management
 ================
 
-By default, signup is disabled and no users exist. You will need either allow signups by editing ``/etc/pwa/auth/index.js`` and setting this:
+By default, signup is disabled and no users exist. You will need either manually create users (see the next page for details), and/or allow signups 
+
+To enable user signup (registration through the web form), set these values in the following files:
+
+``/etc/pwa/auth/index.js``
 
 ::
     
     allow_signup: true
 
-Or, you can manually create users (see the next page for details).
+``/etc/pwa/shared/auth.ui.js``
+
+::
+    
+    signup: true
+

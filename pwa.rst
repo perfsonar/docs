@@ -32,4 +32,4 @@ Guide
    pwa_userguide
    pwa_operation
 
-Please submit bug reports / feature request at `PWA Github Repo <http://github.com/perfsonar/pscweb/issues>`_
+Please submit bug reports / feature request at `PWA Github Repo <http://github.com/perfsonar/psconfig-web/issues>`_
