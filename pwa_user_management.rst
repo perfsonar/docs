@@ -2,13 +2,18 @@
 User Management
 *************
 
+Default Configuration
+=====================
+
+By default, PWA ships with account registration disabled, and with no accounts created. You either need to enable registration, or create one or more super-admin accounts (see below).
+
 Interacting with the ``sca-auth`` service
 ==========================================
 
 ``sca-auth`` runs within a Docker container; there are two ways to run commands within a docker container.
 
 1. ``docker exec -it <container> <command>`` - this allows you to execute something inside the container without actually interactively entering the container. This is useful for one-off or scripted commands. For example, this gives you a list of all the users.
-   
+
    ::
 
         $ sudo docker exec -it sca-auth /app/bin/auth.js listuser

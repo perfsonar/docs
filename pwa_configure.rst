@@ -135,8 +135,12 @@ You need to sign out & login again in order for this change to take effect.
 Please refer to `sca-auth gitrepo <https://github.com/perfsonar/sca-auth>`_ for more information.
 
 User Management
-===============
+================
 
-For information on managing users, see `User Management <pwa_user_management>`_
+By default, signup is disabled and no users exist. You will need either allow signups by editing ``/etc/pwa/auth/index.js`` and setting this:
 
+::
+    
+    allow_signup: true
 
+Or, you can manually create users (see the next page for details).

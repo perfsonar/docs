@@ -130,10 +130,9 @@ downloading and deploying PWA's default configuration files from git repo.
 Host Certificates
 ~~~~~~~~~~~~~~~~~
 
-You will need SSL certificates for https access. On /etc/pwa/auth, you should see your host certificate with following file names, or place them there if not.
+You will need SSL certificates for https access. If these don't already exist, they will be created when you start up the ``sca-auth`` docker container.
 
-TODO: show how to create certs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In ``/etc/pwa/auth``\ , you should see your host certificate with following file names, or place them there if not. If you want to replace the automatically-generated certs with your own, copy them over these files.
 
 .. code-block:: bash
 
@@ -141,7 +140,7 @@ TODO: show how to create certs
    cert.pem 
    key.pem
 
-If you are enabling x509 authentication, then you will also need ``trusted.pem``. This file contains list of all CAs that you trust and grant access to PWA. 
+If you are enabling x509 authentication, then you will also need ``trusted.pem``. This file contains list of all CAs that you trust and grant access to PWA.
 
 ..
 
