@@ -1,11 +1,11 @@
-**************************
-Testing Release Candidates
-**************************
+****************************************
+Testing Beta Versions of perfSONAR
+****************************************
 
 .. warning:: Please note that none of the steps in this document should be performed on production hosts. These are solely intended for development or testing hosts and may result in your host running unstable software.  
 
 
-The perfSONAR project traditionally does public release candidate testing prior to major new releases. These are announced on the mailing lists when available. Participating in release candidates is open to anyone and feedback generated from these tests helps the development team formulate the best possible final release. You can help with testing by going through one or more of the following test scenarios:
+The perfSONAR project traditionally does public betas testing prior to major new releases. These are announced on the mailing lists when available. Participating in betas is open to anyone and feedback generated from these tests helps the development team formulate the best possible final release. You can help with testing by going through one or more of the following test scenarios:
 
 * A clean installation of our Toolkit ISOs
 * A clean installation of one of our CentOS bundles
@@ -13,15 +13,15 @@ The perfSONAR project traditionally does public release candidate testing prior 
 * A clean installation of our Debian packages and/or bundles
 * An upgrade of an existing Debian installation
 
-You may consult `the testing checklist <https://github.com/perfsonar/project/wiki/Toolkit-Testing-Checklist>`_ to help guide your testing. For full instructions on how to get release candidate packages and ISOs, see the sections below.
+You may consult `the testing checklist <https://github.com/perfsonar/project/wiki/Toolkit-Testing-Checklist>`_ to help guide your testing. For full instructions on how to get beta packages and ISOs, see the sections below.
 
 .. _install_rcs-clean-isos:
 
 Testing a Clean Installation of the Toolkit ISOs
 ================================================
-You may download the latest release candidate ISOs at the following URL :
+You may download the latest beta ISOs at the following URL :
 
-    * http://downloads.perfsonar.net/toolkit/release_candidates/
+    * http://downloads.perfsonar.net/toolkit/betas/
     
 Once downloaded you may follow the instructions at :doc:`install_centos_fullinstall` or :doc:`install_centos_netinstall` for step-by-step instructions on installing the software.
 
@@ -59,7 +59,7 @@ You can test upgrades of any existing CentOS-based perfSONAR installation by fir
 Testing Debian Installation
 ============================
 
-The release candidate packages for Debian can be found in the source lists below for their respective Debian versions:
+The beta packages for Debian can be found in the source lists below for their respective Debian versions:
 
 * **Debian 7 (Wheezy):** http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
 * **Debian 8 and 9 (Jessie - Stretch):** http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
