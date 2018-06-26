@@ -1,35 +1,85 @@
 Operational Guide
 ######################################
 
+User Management
+================
+
+For PWA user management details, read `User Management <pwa_user_management>`_
+
 Service Status
 ===============
 
-MCA uses pm2 to monitor various MCA related services and load-balance incoming requests. You can see a list of services by ..
+PWA runs in a Docker container; to list the containers running on the host, user the ``docker ps`` command. 
 
 ::
 
-    root@8f480cb15257 /]# su - mca
-    [mca@8f480cb15257 ~]$ pm2 list
-    ┌──────────┬────┬──────┬─────┬────────┬─────────┬────────┬──────────────┬──────────┐
-    │ App name │ id │ mode │ pid │ status │ restart │ uptime │ memory       │ watching │
-    ├──────────┼────┼──────┼─────┼────────┼─────────┼────────┼──────────────┼──────────┤
-    │ profile  │ 0  │ fork │ 234 │ online │ 0       │ 18h    │ 70.754 MB    │  enabled │
-    │ auth     │ 1  │ fork │ 238 │ online │ 0       │ 18h    │ 79.684 MB    │  enabled │
-    │ mcadmin  │ 2  │ fork │ 242 │ online │ 0       │ 18h    │ 86.453 MB    │  enabled │
-    │ mccache  │ 3  │ fork │ 244 │ online │ 0       │ 18h    │ 114.012 MB   │  enabled │
-    │ mcpub    │ 4  │ fork │ 248 │ online │ 0       │ 18h    │ 75.031 MB    │  enabled │
-    └──────────┴────┴──────┴─────┴────────┴─────────┴────────┴──────────────┴──────────┘
+    $ sudo docker ps
+    [root@mca-nightly mj82]# docker ps
+    CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                                                              NAMES
+    cc9137f3c1ec        perfsonar/pwa-admin   "/start.sh"              2 hours ago         Up 2 hours          80/tcp, 8080/tcp                                                   pwa-admin1
+    d23ed1cddbff        perfsonar/pwa-pub     "node /app/api/pwapu…"   2 hours ago         Up 2 hours          8080/tcp                                                           pwa-pub1
+    457a9ba151bf        nginx                 "nginx -g 'daemon of…"   11 days ago         Up 10 days          0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp, 0.0.0.0:9443->9443/tcp   nginx
+    301be8a679c7        perfsonar/sca-auth    "/app/docker/start.sh"   11 days ago         Up 11 days          80/tcp, 8080/tcp                                                   sca-auth
+    ccde4bfc7a2d        mongo                 "docker-entrypoint.s…"   11 days ago         Up 11 days          27017/tcp                                                          mongo
+
+
+To see logs for a container, use the ``docker logs`` command. 
+
+::
+
+    $ sudo docker logs --tail 20 pwa-admin1
+    
+If you leave out the `--tail` parameter, it will show ALL the logs for that container, which may be quite long.
+
+
+If you want to monitor a specific component within a container, PWA uses `PM2 <http://pm2.keymetrics.io/docs/usage/quick-start/#cheatsheet>`_ to manage its related services and load-balance incoming requests. 
+
+There are two ways to run commands within a docker container.
+
+1. ``docker exec -it <container> <command>`` - this allows you to execute something inside the container without actually interactively entering the container. This is useful for one-off or scripted commands.
+   
+   ::
+
+        $ sudo docker exec -it pwa-admin1 pm2 logs
+
+2. ``docker exec -it <container> bash`` - this starts an interactive bash shell within the container.
+
+
+
+You can see a list of services like this:
+
+::
+
+    $ sudo docker exec -it pwa-admin1 pm2 logs
+
+::
+
+    $ sudo docker exec -it pwa-admin1 bash
+    root@cc9137f3c1ec:/# pm2 status
+    ┌──────────┬────┬──────┬─────┬────────┬─────────┬────────┬─────┬───────────┬──────┬──────────┐
+    │ App name │ id │ mode │ pid │ status │ restart │ uptime │ cpu │ mem       │ user │ watching │
+    ├──────────┼────┼──────┼─────┼────────┼─────────┼────────┼─────┼───────────┼──────┼──────────┤
+    │ pwaadmin │ 1  │ fork │ 31  │ online │ 0       │ 2h     │ 0%  │ 44.2 MB   │ root │ disabled │
+    │ pwacache │ 2  │ fork │ 51  │ online │ 0       │ 2h     │ 0%  │ 49.6 MB   │ root │ disabled │
+    │ ui       │ 3  │ fork │ 67  │ online │ 0       │ 2h     │ 0%  │ 28.0 MB   │ root │ disabled │
+    └──────────┴────┴──────┴─────┴────────┴─────────┴────────┴─────┴───────────┴──────┴──────────┘
+     Module activated
+    ┌───────────────┬─────────┬────────────┬────────┬─────────┬─────┬─────────────┬──────┐
+    │ Module        │ version │ target PID │ status │ restart │ cpu │ memory      │ user │
+    ├───────────────┼─────────┼────────────┼────────┼─────────┼─────┼─────────────┼──────┤
+    │ pm2-logrotate │ 2.6.0   │ N/A        │ online │ 0       │ 0%  │ 31.465 MB   │ root │
+    └───────────────┴─────────┴────────────┴────────┴─────────┴─────┴─────────────┴──────┘
      Use `pm2 show <id|name>` to get more details about an app
 
-.. note:: Docker container runs all services under root, so you don't need to do "su - mca" before running pm2 commands
 
-profile and auth services provide MCA authentication and profile settings service. mcadmin is the main MCA UI (server side component), and mcpub generates MeshConfing to be downloaded by external services. You can safely shutdown / restart mcadmin without impacting mcpub service. mccache periodically loads host information from configured sLS and global LS instances.
 
-You should see all service to show "online" with small number of restart (if you update configuration for any service, the service will be automatically restarted, so you will see non-0 restart in such case). You can reset restart count by
+The auth service provides PWA authentication. pwaadmin is the main PWA UI (server side component), and pwapub generates MeshConfig/pSConfig output to be downloaded by external services. You can safely shutdown / restart pwaadmin without impacting mcapub service. pwacache periodically loads host information from configured sLS and global LS instances.
+
+You should see all service to show "online" with small number of restart (if you update configuration for any service, the service will be automatically restarted, so you will see non-0 restart in such case). You can reset restart count by doing this:
 
 ::
 
-    pm2 reset mcadmin
+    pm2 reset pwaadmin
 
 or
 
@@ -43,67 +93,66 @@ You can monitor realtime stats of each services via
 
     pm2 monit
 
-For more information on pm2, please see `PM2 <http://pm2.keymetrics.io/>`_
+For more information on PM2, please see `PM2 <http://pm2.keymetrics.io/>`_
 
 
-Log files
-============
+PWA Conatiners
+===============
 
-/var/log/sca
+Here is a complete list of PWA Docker containers, and what services run under them.
 
-::
+pwa-admin1
+----------
 
-    [root@8f480cb15257 mca]# ls -lrt
-    total 18308
-    -rw-rw-r-- 1 mca mca       77 Jan 22 02:11 profile.err
-    -rw-rw-r-- 1 mca mca     1303 Jan 22 02:11 pub.err
-    -rw-rw-r-- 1 mca mca     1976 Jan 22 02:14 pub-4.log
-    -rw-rw-r-- 1 mca mca      112 Jan 22 02:30 auth.err
-    -rw-rw-r-- 1 mca mca    13065 Jan 22 02:30 auth-1.log
-    -rw-rw-r-- 1 mca mca     4079 Jan 22 02:31 admin.err
-    -rw-rw-r-- 1 mca mca    71736 Jan 22 02:31 admin-2.log
-    -rw-rw-r-- 1 mca mca    32915 Jan 22 02:31 profile-0.log
-    -rw-rw-r-- 1 mca mca   198110 Jan 22 20:14 cache-3.log
-    -rw-rw-r-- 1 mca mca 18390157 Jan 22 20:37 cache.err
+1. ``pwaadmin``
+   This includes the PWA web-based UI, and the API
+2. ``pwacache``
+   The PWA cache, which pulls down host details from the global LS and any private LSes you may have configured, on a regular basis.
+
+pwa-pub1
+--------
+
+1. ``pwapub``
+   The PWA Publisher, which publishes MeshConfig/pSConfig outputs; this is what you point your MadDash instance and tests hosts at.
+
+sca-auth
+--------
+
+1. ``ui`` (*sca-auth*)
+2. ``auth`` (*sca-auth*)
+   The Authentication service provides the API for the authentication module
+
+Other Containers
+================
+
+These Docker containers are required by PWA, but not part of PWA itself.
+
+mongo
+-----
+
+This is the MongoDB database, and is used to store the Host Group/Testspec/Config options, as well as the LS cache.
+
+nginx
+-----
+
+A web server which is used as a reverse proxy to access the other components.
 
 Backup (Volatile Data)
 ======================
 
-MCA stores MeshConfig related information in postgreSQL. For RHEL7, postgreSQL data directory can be found in 
+All the PWA-related data is stored under this directory; if you want to back up your data, simply copy this folder.
+
 ::
+    
+    /usr/local/data
 
-    /var/lib/pgsql/data
+PWA stores Config-related information in the ``mongo/`` subdirectory, and auth data in ``auth/``. 
 
-For RHEL6, 
-::
-
-    /opt/rh/postgresql92/root/var/lib/pgsql/data
-
-SCA auth service stores authentication information in a sqlite3 DB at (by default)
-::
-
-    /var/lib/mca/auth.sqlite
-
-SCA profile service stores profile information in a sqlite3 DB at (by default)
-::
-
-    /var/lib/mca/profile.sqlite
-
-Following configuration directory should be backed-up
+Additionally, PWA config data is under
 
 ::
 
-    /opt/mca/mca/api/config
-    /opt/mca/auth/api/config
-    /opt/mca/profile/api/config
+    /etc/pwa
 
-And UI has its own set of configuration files. These should be backed-up if you have modified from the RPM installed content
-
-::
-
-    /opt/mca/mca/ui/config.js 
-    /opt/mca/auth/ui/config.js 
-    /opt/mca/profile/ui/config.js 
-    /opt/mca/shared/ui/config.js 
-
+So this folder should also be backed up, as well.
 
