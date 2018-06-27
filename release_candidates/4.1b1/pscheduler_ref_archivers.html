@@ -8,7 +8,7 @@
     
     <title>Archiver Reference &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Contexts Reference" href="pscheduler_ref_contexts.html" />
     <link rel="prev" title="Test and Tool Reference" href="pscheduler_ref_tests_tools.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,21 +70,21 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="archiver-reference">
 <h1>Archiver Reference<a class="headerlink" href="#archiver-reference" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <span id="pscheduler-ref-archivers-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler&#8217;s architecture features the concept of <a class="reference internal" href="pscheduler_intro.html#term-archiver"><em class="xref std std-term">archivers</em></a>, which send completed measurement results elsewhere for storage or processing.  Archivers are plugins, which means the set of destinations available for use with pScheduler can be easily expanded.</p>
+<p>pScheduler&#8217;s architecture features the concept of <a class="reference internal" href="pscheduler_intro.html#term-archiver"><span class="xref std std-term">archivers</span></a>, which send completed measurement results elsewhere for storage or processing.  Archivers are plugins, which means the set of destinations available for use with pScheduler can be easily expanded.</p>
 <p>Archiving in pScheduler is reliable.  After each attempt to dispose of the result, the archiver plugin will tell pScheduler whether it succeeded and, if not, whether or not to try again and how long to wait before the next attempt.</p>
 </div>
 <div class="section" id="basic-json-syntax">
 <span id="pscheduler-ref-archivers-syntax"></span><h2>Basic JSON Syntax<a class="headerlink" href="#basic-json-syntax" title="Permalink to this headline">¶</a></h2>
 <p>Archiving is accomplished by providing an <em>archive specification</em> in the form of a JSON object containing these values:</p>
-<p><tt class="docutils literal"><span class="pre">archiver</span></tt> - The name of the archiver to use. See <a class="reference internal" href="#pscheduler-ref-archivers-archivers"><em>Archivers</em></a> for a list available in the base pScheduler distribution.</p>
-<p><tt class="docutils literal"><span class="pre">data</span></tt> - A JSON object containing archiver-specific data to be used in deciding how to dispose of the result.</p>
-<p><tt class="docutils literal"><span class="pre">ttl</span></tt> - The absolute amount of time after which the result should be discarded if not successfully archived, specified as an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO8601 duration</a>.  This value is optional and will be treated as infinite if not provided.</p>
+<p><code class="docutils literal"><span class="pre">archiver</span></code> - The name of the archiver to use. See <a class="reference internal" href="#pscheduler-ref-archivers-archivers"><span>Archivers</span></a> for a list available in the base pScheduler distribution.</p>
+<p><code class="docutils literal"><span class="pre">data</span></code> - A JSON object containing archiver-specific data to be used in deciding how to dispose of the result.</p>
+<p><code class="docutils literal"><span class="pre">ttl</span></code> - The absolute amount of time after which the result should be discarded if not successfully archived, specified as an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO8601 duration</a>.  This value is optional and will be treated as infinite if not provided.</p>
 <p>For example (commentary is not part of the specification):</p>
 <div class="highlight-python"><div class="highlight"><pre>{
     &quot;archiver&quot;: &quot;bitbucket&quot;,      Send to the archiver that goes nowhere.
@@ -96,7 +96,7 @@
 </div>
 <div class="section" id="archiving-from-the-command-line">
 <span id="pscheduler-ref-archivers-cli"></span><h2>Archiving from the Command Line<a class="headerlink" href="#archiving-from-the-command-line" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler can be directed to send measurement results to an archiver by using the <tt class="docutils literal"><span class="pre">--archive</span></tt> switch followed by an archive specification.</p>
+<p>pScheduler can be directed to send measurement results to an archiver by using the <code class="docutils literal"><span class="pre">--archive</span></code> switch followed by an archive specification.</p>
 <div class="section" id="specifying-archivers">
 <span id="pscheduler-ref-archivers-cli-spec"></span><h3>Specifying Archivers<a class="headerlink" href="#specifying-archivers" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="directly-as-a-string-literal">
@@ -108,7 +108,7 @@
 </div>
 <div class="section" id="indirectly-from-a-file">
 <span id="pscheduler-ref-archivers-cli-spec-flie"></span><h4>Indirectly, From a File<a class="headerlink" href="#indirectly-from-a-file" title="Permalink to this headline">¶</a></h4>
-<p>If the argument given to the <tt class="docutils literal"><span class="pre">--archive</span></tt> switch begins with <tt class="docutils literal"><span class="pre">&#64;</span></tt>, the remainder of the argument will be treated as the path to a JSON file containing an archive specification which will be opened, read and treated as if it had been typed in by hand.  If the first character of the path is a tilde (<tt class="docutils literal"><span class="pre">~</span></tt>), it will be expanded to the user&#8217;s home directory.  For example:</p>
+<p>If the argument given to the <code class="docutils literal"><span class="pre">--archive</span></code> switch begins with <code class="docutils literal"><span class="pre">&#64;</span></code>, the remainder of the argument will be treated as the path to a JSON file containing an archive specification which will be opened, read and treated as if it had been typed in by hand.  If the first character of the path is a tilde (<code class="docutils literal"><span class="pre">~</span></code>), it will be expanded to the user&#8217;s home directory.  For example:</p>
 <div class="highlight-python"><div class="highlight"><pre>% cat /home/fred/archive-to-bitbucket.json
 {
     &quot;archiver&quot;: &quot;bitbucket&quot;,
@@ -122,7 +122,7 @@
 </div>
 <div class="section" id="multiple-archivers">
 <span id="pscheduler-ref-archivers-cli-multi"></span><h3>Multiple Archivers<a class="headerlink" href="#multiple-archivers" title="Permalink to this headline">¶</a></h3>
-<p>The results of a task can be sent to multiple archivers by using the <tt class="docutils literal"><span class="pre">--archive</span></tt> switch multiple times:</p>
+<p>The results of a task can be sent to multiple archivers by using the <code class="docutils literal"><span class="pre">--archive</span></code> switch multiple times:</p>
 <div class="highlight-python"><div class="highlight"><pre>% pscheduler task \
       --archive @/home/fred/archive-to-esmond.json \
       --archive &#39;{ &quot;archiver&quot;: &quot;bitbucket&quot;, &quot;data&quot;: {} }&#39; \
@@ -133,7 +133,7 @@
 </div>
 <div class="section" id="archiving-as-part-of-a-json-task-specification">
 <span id="pscheduler-ref-archivers-cli-json"></span><h3>Archiving as Part of a JSON Task Specification<a class="headerlink" href="#archiving-as-part-of-a-json-task-specification" title="Permalink to this headline">¶</a></h3>
-<p>Archive specifications can be added to a JSON task specification as an array of JSON objects as part of the <tt class="docutils literal"><span class="pre">archives</span></tt> property:</p>
+<p>Archive specifications can be added to a JSON task specification as an array of JSON objects as part of the <code class="docutils literal"><span class="pre">archives</span></code> property:</p>
 <div class="highlight-python"><div class="highlight"><pre>% cat mytask.json
 {
     &quot;schema&quot;: 1,
@@ -165,18 +165,18 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <tt class="docutils literal"><span class="pre">.</span></tt> in the command above is a placeholder for the test type, which is imported from <tt class="docutils literal"><span class="pre">mytask.json</span></tt>.)</p>
+<p class="last">The <code class="docutils literal"><span class="pre">.</span></code> in the command above is a placeholder for the test type, which is imported from <code class="docutils literal"><span class="pre">mytask.json</span></code>.)</p>
 </div>
 </div>
 </div>
 <div class="section" id="archiving-in-psconfig-templates">
 <span id="pscheduler-ref-archivers-psconfig"></span><h2>Archiving in pSConfig Templates<a class="headerlink" href="#archiving-in-psconfig-templates" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="psconfig_intro.html"><em>pSConfig</em></a> allows for the use of <em>archive</em> objects in the <tt class="docutils literal"><span class="pre">archives</span></tt> section of pSConfig templates. They take the exact same format as described in this document. For more information on pSConfig templates see <a class="reference internal" href="psconfig_templates_intro.html"><em>Introduction to pSConfig Templates</em></a></p>
+<p><a class="reference internal" href="psconfig_intro.html"><em>pSConfig</em></a> allows for the use of <em>archive</em> objects in the <code class="docutils literal"><span class="pre">archives</span></code> section of pSConfig templates. They take the exact same format as described in this document. For more information on pSConfig templates see <a class="reference internal" href="psconfig_templates_intro.html"><em>Introduction to pSConfig Templates</em></a></p>
 </div>
 <div class="section" id="archiving-globally">
 <span id="pscheduler-ref-archivers-global"></span><h2>Archiving Globally<a class="headerlink" href="#archiving-globally" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler can be configured to apply an archive specification to every run it performs on a host by placing each one in a file in <tt class="docutils literal"><span class="pre">/etc/pscheduler/default-archives</span></tt>.  Files must be readable by the <tt class="docutils literal"><span class="pre">pscheduler</span></tt> user.</p>
-<p>For example, this file will use the HTTP archiver to post the results of all throughput tests to <tt class="docutils literal"><span class="pre">https://host.example.com/place/to/post</span></tt>:</p>
+<p>pScheduler can be configured to apply an archive specification to every run it performs on a host by placing each one in a file in <code class="docutils literal"><span class="pre">/etc/pscheduler/default-archives</span></code>.  Files must be readable by the <code class="docutils literal"><span class="pre">pscheduler</span></code> user.</p>
+<p>For example, this file will use the HTTP archiver to post the results of all throughput tests to <code class="docutils literal"><span class="pre">https://host.example.com/place/to/post</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre>{
     &quot;archiver&quot;: &quot;http&quot;,
     &quot;data&quot;: {
@@ -199,8 +199,8 @@
 <p class="last">All items listed in each <em>Archiver Data</em> subsection are required unless otherwise noted.</p>
 </div>
 <div class="section" id="bitbucket">
-<span id="pscheduler-ref-archivers-archivers-bitbucket"></span><h3><tt class="docutils literal"><span class="pre">bitbucket</span></tt><a class="headerlink" href="#bitbucket" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">bitbucket</span></tt> archiver sends measurement results to the <a class="reference external" href="http://catb.org/jargon/html/B/bit-bucket.html">bit bucket</a> (i.e., it does nothing with them).  This archiver was developed for testing pScheduler and serves no useful function in a production setting.</p>
+<span id="pscheduler-ref-archivers-archivers-bitbucket"></span><h3><code class="docutils literal"><span class="pre">bitbucket</span></code><a class="headerlink" href="#bitbucket" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">bitbucket</span></code> archiver sends measurement results to the <a class="reference external" href="http://catb.org/jargon/html/B/bit-bucket.html">bit bucket</a> (i.e., it does nothing with them).  This archiver was developed for testing pScheduler and serves no useful function in a production setting.</p>
 <div class="section" id="archiver-data">
 <span id="pscheduler-ref-archivers-archivers-bitbucket-data"></span><h4>Archiver Data<a class="headerlink" href="#archiver-data" title="Permalink to this headline">¶</a></h4>
 <p>This archiver uses no archiver-specific data.</p>
@@ -216,26 +216,26 @@
 </div>
 </div>
 <div class="section" id="esmond">
-<span id="pscheduler-ref-archivers-archivers-esmond"></span><h3><tt class="docutils literal"><span class="pre">esmond</span></tt><a class="headerlink" href="#esmond" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">esmond</span></tt> archiver submits measurement results to the <a class="reference external" href="http://software.es.net/esmond/">esmond</a> time series database using specialized translations of results for <tt class="docutils literal"><span class="pre">throughput</span></tt>, <tt class="docutils literal"><span class="pre">latency</span></tt>, <tt class="docutils literal"><span class="pre">trace</span></tt> and <tt class="docutils literal"><span class="pre">rtt</span></tt> tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the <tt class="docutils literal"><span class="pre">pscheduler-raw</span></tt> event type.</p>
+<span id="pscheduler-ref-archivers-archivers-esmond"></span><h3><code class="docutils literal"><span class="pre">esmond</span></code><a class="headerlink" href="#esmond" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">esmond</span></code> archiver submits measurement results to the <a class="reference external" href="http://software.es.net/esmond/">esmond</a> time series database using specialized translations of results for <code class="docutils literal"><span class="pre">throughput</span></code>, <code class="docutils literal"><span class="pre">latency</span></code>, <code class="docutils literal"><span class="pre">trace</span></code> and <code class="docutils literal"><span class="pre">rtt</span></code> tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the <code class="docutils literal"><span class="pre">pscheduler-raw</span></code> event type.</p>
 <div class="section" id="pscheduler-ref-archivers-archivers-esmond-data">
 <span id="id2"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-esmond-data" title="Permalink to this headline">¶</a></h4>
-<p><tt class="docutils literal"><span class="pre">url</span></tt> - The URL for the esmond server which will collect the result.</p>
-<p><tt class="docutils literal"><span class="pre">_auth-token</span></tt> - Optional. The authorization token to be used when submitting the result.  Note that the <tt class="docutils literal"><span class="pre">_</span></tt> prefix indicates that this value is considered a secret and will not be supplied if the task specification is retrieved from pScheduler via its REST API.  If not specified, IP authentication is assumed.</p>
-<p><tt class="docutils literal"><span class="pre">measurement-agent</span></tt> - Optional. The name of the pScheduler host that produced the result. If not specified, defaults to the endpoint pscheduler deemed the lead.</p>
-<p><tt class="docutils literal"><span class="pre">retry-policy</span></tt> - Optional. Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.</p>
+<p><code class="docutils literal"><span class="pre">url</span></code> - The URL for the esmond server which will collect the result.</p>
+<p><code class="docutils literal"><span class="pre">_auth-token</span></code> - Optional. The authorization token to be used when submitting the result.  Note that the <code class="docutils literal"><span class="pre">_</span></code> prefix indicates that this value is considered a secret and will not be supplied if the task specification is retrieved from pScheduler via its REST API.  If not specified, IP authentication is assumed.</p>
+<p><code class="docutils literal"><span class="pre">measurement-agent</span></code> - Optional. The name of the pScheduler host that produced the result. If not specified, defaults to the endpoint pscheduler deemed the lead.</p>
+<p><code class="docutils literal"><span class="pre">retry-policy</span></code> - Optional. Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.</p>
 <dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">data-formatting-policy</span></tt> - Optional.  Indicates how the record should be stored.  Valid values are:</dt>
+<dt><code class="docutils literal"><span class="pre">data-formatting-policy</span></code> - Optional.  Indicates how the record should be stored.  Valid values are:</dt>
 <dd><ul class="first last simple">
-<li><tt class="docutils literal"><span class="pre">prefer-mapped</span></tt> - This is the default. It means that if test is type <tt class="docutils literal"><span class="pre">throughput</span></tt>, <tt class="docutils literal"><span class="pre">latency</span></tt>, <tt class="docutils literal"><span class="pre">trace</span></tt> and <tt class="docutils literal"><span class="pre">rtt</span></tt> than store using the traditional metadata and event types. If it does not recognize the result it will store as a <tt class="docutils literal"><span class="pre">pscheduler-raw</span></tt> record.</li>
-<li><tt class="docutils literal"><span class="pre">mapped-and-raw</span></tt> - Store both a mapped type and a raw record.  Will not store either if not a recognized type that can be mapped.</li>
-<li><tt class="docutils literal"><span class="pre">mapped-only</span></tt> - Only store a mapped type and do not store anything if it is not a known type</li>
-<li><tt class="docutils literal"><span class="pre">raw-only</span></tt> - Only store a <tt class="docutils literal"><span class="pre">pscheduler-raw</span></tt> record regardless of test type.</li>
+<li><code class="docutils literal"><span class="pre">prefer-mapped</span></code> - This is the default. It means that if test is type <code class="docutils literal"><span class="pre">throughput</span></code>, <code class="docutils literal"><span class="pre">latency</span></code>, <code class="docutils literal"><span class="pre">trace</span></code> and <code class="docutils literal"><span class="pre">rtt</span></code> than store using the traditional metadata and event types. If it does not recognize the result it will store as a <code class="docutils literal"><span class="pre">pscheduler-raw</span></code> record.</li>
+<li><code class="docutils literal"><span class="pre">mapped-and-raw</span></code> - Store both a mapped type and a raw record.  Will not store either if not a recognized type that can be mapped.</li>
+<li><code class="docutils literal"><span class="pre">mapped-only</span></code> - Only store a mapped type and do not store anything if it is not a known type</li>
+<li><code class="docutils literal"><span class="pre">raw-only</span></code> - Only store a <code class="docutils literal"><span class="pre">pscheduler-raw</span></code> record regardless of test type.</li>
 </ul>
 </dd>
 </dl>
-<p><tt class="docutils literal"><span class="pre">summaries</span></tt> - Optional.  A list of objects containing an <tt class="docutils literal"><span class="pre">event-type</span></tt>, <tt class="docutils literal"><span class="pre">summary-type</span></tt> and <tt class="docutils literal"><span class="pre">summary-window</span></tt>.  If not specified, defaults to a standard set of summaries used by perfSONAR.  See the <a class="reference external" href="http://software.es.net/esmond/perfsonar_client_rest.html#base-data-vs-summaries">esmond documentation</a> for more details on summaries.</p>
-<p><tt class="docutils literal"><span class="pre">verify-ssl</span></tt> - Optional.  Defaults to <tt class="docutils literal"><span class="pre">false</span></tt>. If enabled, check SSL certificate of esmond server against list of known certificate authorities (CAs).  See the <a class="reference external" href="http://docs.python-requests.org/en/v1.0.0/user/advanced/#ssl-cert-verification">requests documentation</a> for more details on environment variables and other options for specifying path to CA store.</p>
+<p><code class="docutils literal"><span class="pre">summaries</span></code> - Optional.  A list of objects containing an <code class="docutils literal"><span class="pre">event-type</span></code>, <code class="docutils literal"><span class="pre">summary-type</span></code> and <code class="docutils literal"><span class="pre">summary-window</span></code>.  If not specified, defaults to a standard set of summaries used by perfSONAR.  See the <a class="reference external" href="http://software.es.net/esmond/perfsonar_client_rest.html#base-data-vs-summaries">esmond documentation</a> for more details on summaries.</p>
+<p><code class="docutils literal"><span class="pre">verify-ssl</span></code> - Optional.  Defaults to <code class="docutils literal"><span class="pre">false</span></code>. If enabled, check SSL certificate of esmond server against list of known certificate authorities (CAs).  See the <a class="reference external" href="http://docs.python-requests.org/en/v1.0.0/user/advanced/#ssl-cert-verification">requests documentation</a> for more details on environment variables and other options for specifying path to CA store.</p>
 </div>
 <div class="section" id="pscheduler-ref-archivers-archivers-esmond-example">
 <span id="id3"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-esmond-example" title="Permalink to this headline">¶</a></h4>
@@ -257,12 +257,12 @@
 </div>
 </div>
 <div class="section" id="failer">
-<span id="pscheduler-ref-archivers-archivers-failer"></span><h3><tt class="docutils literal"><span class="pre">failer</span></tt><a class="headerlink" href="#failer" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">failer</span></tt> archiver provides the same archiving function as <tt class="docutils literal"><span class="pre">bitbucket</span></tt> but introduces failure and retries a random fraction of the time.  This archiver was developed for testing pScheduler and serves no useful function in a production setting.</p>
+<span id="pscheduler-ref-archivers-archivers-failer"></span><h3><code class="docutils literal"><span class="pre">failer</span></code><a class="headerlink" href="#failer" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">failer</span></code> archiver provides the same archiving function as <code class="docutils literal"><span class="pre">bitbucket</span></code> but introduces failure and retries a random fraction of the time.  This archiver was developed for testing pScheduler and serves no useful function in a production setting.</p>
 <div class="section" id="pscheduler-ref-archivers-archivers-failer-data">
 <span id="id4"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-failer-data" title="Permalink to this headline">¶</a></h4>
-<p><tt class="docutils literal"><span class="pre">fail</span></tt> - The fraction of the time that archive attempts will fail, in the range <tt class="docutils literal"><span class="pre">[0.0,1.0]</span></tt>.</p>
-<p><tt class="docutils literal"><span class="pre">retry</span></tt> - The fraction of the time that archive attempts will be retried after a failure, in the range <tt class="docutils literal"><span class="pre">[0.0,1.0]</span></tt>.</p>
+<p><code class="docutils literal"><span class="pre">fail</span></code> - The fraction of the time that archive attempts will fail, in the range <code class="docutils literal"><span class="pre">[0.0,1.0]</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">retry</span></code> - The fraction of the time that archive attempts will be retried after a failure, in the range <code class="docutils literal"><span class="pre">[0.0,1.0]</span></code>.</p>
 </div>
 <div class="section" id="pscheduler-ref-archivers-archivers-failer-example">
 <span id="id5"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-failer-example" title="Permalink to this headline">¶</a></h4>
@@ -278,13 +278,13 @@
 </div>
 </div>
 <div class="section" id="rabbitmq">
-<span id="pscheduler-ref-archivers-archivers-rabbitmq"></span><h3><tt class="docutils literal"><span class="pre">rabbitmq</span></tt><a class="headerlink" href="#rabbitmq" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">rabbitmq</span></tt> archiver sends raw JSON results to <a class="reference external" href="https://www.rabbitmq.com">RabbitMQ</a>.</p>
+<span id="pscheduler-ref-archivers-archivers-rabbitmq"></span><h3><code class="docutils literal"><span class="pre">rabbitmq</span></code><a class="headerlink" href="#rabbitmq" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">rabbitmq</span></code> archiver sends raw JSON results to <a class="reference external" href="https://www.rabbitmq.com">RabbitMQ</a>.</p>
 <div class="section" id="pscheduler-ref-archivers-archivers-rabbitmq-data">
 <span id="id7"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-data" title="Permalink to this headline">¶</a></h4>
-<p><tt class="docutils literal"><span class="pre">_url</span></tt> - An <tt class="docutils literal"><span class="pre">amqp</span></tt> URL for the RabbitMQ instance which will receive the result.</p>
-<p><tt class="docutils literal"><span class="pre">routing-key</span></tt> - Optional.  The routing key to be used when queueing the message.</p>
-<p><tt class="docutils literal"><span class="pre">retry-policy</span></tt> - Optional. Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.</p>
+<p><code class="docutils literal"><span class="pre">_url</span></code> - An <code class="docutils literal"><span class="pre">amqp</span></code> URL for the RabbitMQ instance which will receive the result.</p>
+<p><code class="docutils literal"><span class="pre">routing-key</span></code> - Optional.  The routing key to be used when queueing the message.</p>
+<p><code class="docutils literal"><span class="pre">retry-policy</span></code> - Optional. Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.</p>
 </div>
 <div class="section" id="pscheduler-ref-archivers-archivers-rabbitmq-example">
 <span id="id8"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-example" title="Permalink to this headline">¶</a></h4>
@@ -304,14 +304,14 @@
 </div>
 </div>
 <div class="section" id="syslog">
-<span id="pscheduler-ref-archivers-archivers-syslog"></span><h3><tt class="docutils literal"><span class="pre">syslog</span></tt><a class="headerlink" href="#syslog" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">syslog</span></tt> archiver sends the raw JSON result to the system log.</p>
+<span id="pscheduler-ref-archivers-archivers-syslog"></span><h3><code class="docutils literal"><span class="pre">syslog</span></code><a class="headerlink" href="#syslog" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">syslog</span></code> archiver sends the raw JSON result to the system log.</p>
 <p>Note that because most syslog implementations cannot handle arbitrarily-long log messages, this archiver should not be relied upon for anything other than debugging.</p>
 <div class="section" id="pscheduler-ref-archivers-archivers-syslog-data">
 <span id="id9"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-data" title="Permalink to this headline">¶</a></h4>
-<p><tt class="docutils literal"><span class="pre">ident</span></tt> - Optional.  The identification string to be used when submitting the log message.</p>
-<p><tt class="docutils literal"><span class="pre">facility</span></tt> - Optional.  The syslog facility to be used when the log entry is submitted.  Valid valies are <tt class="docutils literal"><span class="pre">kern</span></tt>, <tt class="docutils literal"><span class="pre">user</span></tt>, <tt class="docutils literal"><span class="pre">mail</span></tt>, <tt class="docutils literal"><span class="pre">daemon</span></tt>, <tt class="docutils literal"><span class="pre">auth</span></tt>, <tt class="docutils literal"><span class="pre">lpr</span></tt>, <tt class="docutils literal"><span class="pre">news</span></tt>, <tt class="docutils literal"><span class="pre">uucp</span></tt>, <tt class="docutils literal"><span class="pre">cron</span></tt>, <tt class="docutils literal"><span class="pre">syslog</span></tt>, <tt class="docutils literal"><span class="pre">local0</span></tt>, <tt class="docutils literal"><span class="pre">local1</span></tt>, <tt class="docutils literal"><span class="pre">local2</span></tt>, <tt class="docutils literal"><span class="pre">local3</span></tt>, <tt class="docutils literal"><span class="pre">local4</span></tt>, <tt class="docutils literal"><span class="pre">local5</span></tt>, <tt class="docutils literal"><span class="pre">local6</span></tt> and <tt class="docutils literal"><span class="pre">local7</span></tt>.</p>
-<p><tt class="docutils literal"><span class="pre">priority</span></tt> - Optional.  The syslog priority to be used when the log entry is submitted.  Valid values are <tt class="docutils literal"><span class="pre">emerg</span></tt>, <tt class="docutils literal"><span class="pre">alert</span></tt>, <tt class="docutils literal"><span class="pre">crit</span></tt>, <tt class="docutils literal"><span class="pre">err</span></tt>, <tt class="docutils literal"><span class="pre">warning</span></tt>, <tt class="docutils literal"><span class="pre">notice</span></tt>, <tt class="docutils literal"><span class="pre">info</span></tt> and <tt class="docutils literal"><span class="pre">debug</span></tt>.</p>
+<p><code class="docutils literal"><span class="pre">ident</span></code> - Optional.  The identification string to be used when submitting the log message.</p>
+<p><code class="docutils literal"><span class="pre">facility</span></code> - Optional.  The syslog facility to be used when the log entry is submitted.  Valid valies are <code class="docutils literal"><span class="pre">kern</span></code>, <code class="docutils literal"><span class="pre">user</span></code>, <code class="docutils literal"><span class="pre">mail</span></code>, <code class="docutils literal"><span class="pre">daemon</span></code>, <code class="docutils literal"><span class="pre">auth</span></code>, <code class="docutils literal"><span class="pre">lpr</span></code>, <code class="docutils literal"><span class="pre">news</span></code>, <code class="docutils literal"><span class="pre">uucp</span></code>, <code class="docutils literal"><span class="pre">cron</span></code>, <code class="docutils literal"><span class="pre">syslog</span></code>, <code class="docutils literal"><span class="pre">local0</span></code>, <code class="docutils literal"><span class="pre">local1</span></code>, <code class="docutils literal"><span class="pre">local2</span></code>, <code class="docutils literal"><span class="pre">local3</span></code>, <code class="docutils literal"><span class="pre">local4</span></code>, <code class="docutils literal"><span class="pre">local5</span></code>, <code class="docutils literal"><span class="pre">local6</span></code> and <code class="docutils literal"><span class="pre">local7</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">priority</span></code> - Optional.  The syslog priority to be used when the log entry is submitted.  Valid values are <code class="docutils literal"><span class="pre">emerg</span></code>, <code class="docutils literal"><span class="pre">alert</span></code>, <code class="docutils literal"><span class="pre">crit</span></code>, <code class="docutils literal"><span class="pre">err</span></code>, <code class="docutils literal"><span class="pre">warning</span></code>, <code class="docutils literal"><span class="pre">notice</span></code>, <code class="docutils literal"><span class="pre">info</span></code> and <code class="docutils literal"><span class="pre">debug</span></code>.</p>
 </div>
 <div class="section" id="pscheduler-ref-archivers-archivers-syslog-example">
 <span id="id10"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-example" title="Permalink to this headline">¶</a></h4>
@@ -330,7 +330,7 @@
 </div>
 <div class="section" id="transforms">
 <span id="pscheduler-ref-archivers-transforms"></span><h2>Transforms<a class="headerlink" href="#transforms" title="Permalink to this headline">¶</a></h2>
-<p>As part of an archive specification, pScheduler may be instructed to pre-process a run result before it is handed to the archiver plugin.  This is accomplished by adding a <tt class="docutils literal"><span class="pre">transform</span></tt> section to the archive specification:</p>
+<p>As part of an archive specification, pScheduler may be instructed to pre-process a run result before it is handed to the archiver plugin.  This is accomplished by adding a <code class="docutils literal"><span class="pre">transform</span></code> section to the archive specification:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;archiver&quot;</span><span class="p">:</span> <span class="s">&quot;syslog&quot;</span><span class="p">,</span>
     <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -345,10 +345,10 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <tt class="docutils literal"><span class="pre">script</span></tt> is a string containing a valid script for the <a class="reference external" href="https://stedolan.github.io/jq">jq JSON processor</a> version 1.5.  There is a <a class="reference external" href="https://www.youtube.com/watch?v=FrT6R75M3BE">tutorial on jq and pScheduler</a> available on the <a class="reference external" href="https://www.youtube.com/perfSONARProject">perfSONAR project&#8217;s YouTube channel</a>.  The value returned by the script should be JSON or plain text (see <tt class="docutils literal"><span class="pre">raw-output</span></tt>, below).</p>
-<p>If the script returns a JSON value of <tt class="docutils literal"><span class="pre">null</span></tt>, pScheduler will discard the result and not pass it to the plugin.  Because the transformation happens within pScheduler before any plugin code is invoked, this mechanism is a very efficient way to filter results and is preferred over writing custom plugins.</p>
-<p>If <tt class="docutils literal"><span class="pre">raw-output</span></tt> is present and <tt class="docutils literal"><span class="pre">true</span></tt>, the output will be treated as plain text instead of JSON.</p>
-<p>Note that some archiver plugins, notably <tt class="docutils literal"><span class="pre">esmond</span></tt>, may expect the input to be in the un-transformed format produced by pScheduler.  Using a transform in this case is not recommended.</p>
+<p>The <code class="docutils literal"><span class="pre">script</span></code> is a string containing a valid script for the <a class="reference external" href="https://stedolan.github.io/jq">jq JSON processor</a> version 1.5.  There is a <a class="reference external" href="https://www.youtube.com/watch?v=FrT6R75M3BE">tutorial on jq and pScheduler</a> available on the <a class="reference external" href="https://www.youtube.com/perfSONARProject">perfSONAR project&#8217;s YouTube channel</a>.  The value returned by the script should be JSON or plain text (see <code class="docutils literal"><span class="pre">raw-output</span></code>, below).</p>
+<p>If the script returns a JSON value of <code class="docutils literal"><span class="pre">null</span></code>, pScheduler will discard the result and not pass it to the plugin.  Because the transformation happens within pScheduler before any plugin code is invoked, this mechanism is a very efficient way to filter results and is preferred over writing custom plugins.</p>
+<p>If <code class="docutils literal"><span class="pre">raw-output</span></code> is present and <code class="docutils literal"><span class="pre">true</span></code>, the output will be treated as plain text instead of JSON.</p>
+<p>Note that some archiver plugins, notably <code class="docutils literal"><span class="pre">esmond</span></code>, may expect the input to be in the un-transformed format produced by pScheduler.  Using a transform in this case is not recommended.</p>
 <div class="section" id="example-transforms">
 <span id="pscheduler-ref-archivers-transforms-examples"></span><h3>Example Transforms<a class="headerlink" href="#example-transforms" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="convert-to-plain-text">
@@ -437,27 +437,27 @@
 <li><a class="reference internal" href="#archiving-in-psconfig-templates">Archiving in pSConfig Templates</a></li>
 <li><a class="reference internal" href="#archiving-globally">Archiving Globally</a></li>
 <li><a class="reference internal" href="#archivers">Archivers</a><ul>
-<li><a class="reference internal" href="#bitbucket"><tt class="docutils literal"><span class="pre">bitbucket</span></tt></a><ul>
+<li><a class="reference internal" href="#bitbucket"><code class="docutils literal"><span class="pre">bitbucket</span></code></a><ul>
 <li><a class="reference internal" href="#archiver-data">Archiver Data</a></li>
 <li><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#esmond"><tt class="docutils literal"><span class="pre">esmond</span></tt></a><ul>
+<li><a class="reference internal" href="#esmond"><code class="docutils literal"><span class="pre">esmond</span></code></a><ul>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-esmond-data">Archiver Data</a></li>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-esmond-example">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#failer"><tt class="docutils literal"><span class="pre">failer</span></tt></a><ul>
+<li><a class="reference internal" href="#failer"><code class="docutils literal"><span class="pre">failer</span></code></a><ul>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-failer-data">Archiver Data</a></li>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-failer-example">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#rabbitmq"><tt class="docutils literal"><span class="pre">rabbitmq</span></tt></a><ul>
+<li><a class="reference internal" href="#rabbitmq"><code class="docutils literal"><span class="pre">rabbitmq</span></code></a><ul>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-rabbitmq-data">Archiver Data</a></li>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-rabbitmq-example">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#syslog"><tt class="docutils literal"><span class="pre">syslog</span></tt></a><ul>
+<li><a class="reference internal" href="#syslog"><code class="docutils literal"><span class="pre">syslog</span></code></a><ul>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-syslog-data">Archiver Data</a></li>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-syslog-example">Example</a></li>
 </ul>
@@ -500,7 +500,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -512,7 +512,7 @@
         <li class="right" >
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -552,9 +552,9 @@
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2018, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

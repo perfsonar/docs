@@ -1,6 +1,6 @@
-*************
+***************
 User Management
-*************
+***************
 
 Default Configuration
 =====================
@@ -33,7 +33,7 @@ The two examples above are equivalent. To exit a bash shell, type ``exit``
 You can run SCA commands by running commands inside the ``sca-auth`` container, using either method above.
 
 sca-auth Commands
-==================
+=================
 
 **NOTE:** before changes to user roles go into effect, the user has to log out and then re-authenticate.
 
@@ -46,7 +46,7 @@ Listing accounts
 
 
 Creating accounts
-------------------
+-----------------
 
 Create a new user
  
@@ -58,7 +58,7 @@ Create a new user
 
 
 Modifying roles
-------------
+---------------
 
 Add PWA access for a user
 

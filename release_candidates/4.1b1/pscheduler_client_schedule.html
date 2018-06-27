@@ -8,7 +8,7 @@
     
     <title>Viewing the Schedule &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Running a pScheduler Server" href="pscheduler_server_running.html" />
     <link rel="prev" title="Creating and Managing Tasks" href="pscheduler_client_tasks.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="pscheduler_client_tasks.html" title="Creating and Managing Tasks"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,25 +70,25 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="viewing-the-schedule">
 <h1>Viewing the Schedule<a class="headerlink" href="#viewing-the-schedule" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <span id="pscheduler-client-schedule-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>It is often desirable to view the pScheduler schedule to plan new tests, debug a problem or just see how busy a host is at a particular time. The <tt class="docutils literal"><span class="pre">pscheduler</span></tt> command-line client includes the following commands to provide this visibility:</p>
+<p>It is often desirable to view the pScheduler schedule to plan new tests, debug a problem or just see how busy a host is at a particular time. The <code class="docutils literal"><span class="pre">pscheduler</span></code> command-line client includes the following commands to provide this visibility:</p>
 <blockquote>
 <div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></tt> - This command outputs the schedule in the requested timeframe as text. See <a class="reference internal" href="#pscheduler-client-schedule-schedule"><em>Viewing the Schedule as Text with pscheduler schedule</em></a>.</li>
-<li><tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></tt> - This command creates a PNG image file that provides a box plot of the schedule. See <a class="reference internal" href="#pscheduler-client-schedule-plot-schedule"><em>Visualizing the Schedule with pscheduler plot-schedule</em></a>.</li>
-<li><tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span></tt> - This command provides top-like output showing near real-time state of runs in the database. See <a class="reference internal" href="#pscheduler-client-schedule-monitor"><em>Monitoring the Schedule in Real Time with pscheduler monitor</em></a>.</li>
+<li><code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code> - This command outputs the schedule in the requested timeframe as text. See <a class="reference internal" href="#pscheduler-client-schedule-schedule"><span>Viewing the Schedule as Text with pscheduler schedule</span></a>.</li>
+<li><code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></code> - This command creates a PNG image file that provides a box plot of the schedule. See <a class="reference internal" href="#pscheduler-client-schedule-plot-schedule"><span>Visualizing the Schedule with pscheduler plot-schedule</span></a>.</li>
+<li><code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span></code> - This command provides top-like output showing near real-time state of runs in the database. See <a class="reference internal" href="#pscheduler-client-schedule-monitor"><span>Monitoring the Schedule in Real Time with pscheduler monitor</span></a>.</li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="the-basics">
 <span id="pscheduler-client-schedule-basics"></span><h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h2>
 <p>pScheduler maintains a schedule in the database and this schedule can be queried. Having some base knowledge of how pScheduler maintains its schedule can go a long way in understanding what is seen when you query the schedule.</p>
-<p>Every time a <a class="reference internal" href="pscheduler_intro.html#term-task"><em class="xref std std-term">task</em></a> is created, one or more <a class="reference internal" href="pscheduler_intro.html#term-run"><em class="xref std std-term">runs</em></a> are scheduled. Runs are scheduled 24 hours in advance by default (this is known as the <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><em class="xref std std-term">schedule horizon</em></a>). This means that you can not only see what has run in the past and what is running in the present, but also exactly when pScheduler will attempt a run in the future.</p>
+<p>Every time a <a class="reference internal" href="pscheduler_intro.html#term-task"><span class="xref std std-term">task</span></a> is created, one or more <a class="reference internal" href="pscheduler_intro.html#term-run"><span class="xref std std-term">runs</span></a> are scheduled. Runs are scheduled 24 hours in advance by default (this is known as the <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><span class="xref std std-term">schedule horizon</span></a>). This means that you can not only see what has run in the past and what is running in the present, but also exactly when pScheduler will attempt a run in the future.</p>
 <p>Runs also have a status depending on whether they have already run or are still waiting to do so.  Possible status values are:</p>
 <blockquote>
 <div><ul class="simple">
@@ -98,7 +98,7 @@
 <li><strong>Cleanup</strong> - This run completed execution and is doing some final operations</li>
 <li><strong>Finished</strong> - The run has already executed and finished successfully</li>
 <li><strong>Overdue</strong> - The run was scheduled to execute at a certain time in the past but did not. It may get executed soon if it is not beyond a certain threshold.</li>
-<li><strong>Missed</strong> - The run was scheduled but did not execute at it&#8217;s given time. This can happen if the scheduler was not running at the allotted time or the task was <a class="reference internal" href="pscheduler_client_tasks.html#pscheduler-client-tasks-pausing"><em>paused</em></a>.</li>
+<li><strong>Missed</strong> - The run was scheduled but did not execute at it&#8217;s given time. This can happen if the scheduler was not running at the allotted time or the task was <a class="reference internal" href="pscheduler_client_tasks.html#pscheduler-client-tasks-pausing"><span>paused</span></a>.</li>
 <li><strong>Failed</strong> - The run failed to complete for some reason</li>
 <li><strong>Non-Starter</strong> - The run could not be scheduled because there was no timeslots that could accomodate the constraints</li>
 <li><strong>Canceled</strong> - The task was cancelled before the run was executed</li>
@@ -107,8 +107,8 @@
 <p>The information above should be enough background to get started looking at the output of pScheduler commands.</p>
 </div>
 <div class="section" id="viewing-the-schedule-as-text-with-pscheduler-schedule">
-<span id="pscheduler-client-schedule-schedule"></span><h2>Viewing the Schedule as Text with <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></tt><a class="headerlink" href="#viewing-the-schedule-as-text-with-pscheduler-schedule" title="Permalink to this headline">¶</a></h2>
-<p>This <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></tt> command asks pScheduler to fetch scheduled task runs from the past, present or future and display them as text. It takes the following form:</p>
+<span id="pscheduler-client-schedule-schedule"></span><h2>Viewing the Schedule as Text with <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code><a class="headerlink" href="#viewing-the-schedule-as-text-with-pscheduler-schedule" title="Permalink to this headline">¶</a></h2>
+<p>This <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code> command asks pScheduler to fetch scheduled task runs from the past, present or future and display them as text. It takes the following form:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler schedule [ OPTIONS ] [ delta | start end ]
 </pre></div>
 </div>
@@ -138,7 +138,7 @@ trace --dest host1 --ip-version 4 --source host2 (Run
 https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e548-dff9-44d8-8475-b38791e2d5a5
 </pre></div>
 </div>
-<p>The runs displayed will include any task where your host is a <a class="reference internal" href="pscheduler_intro.html#term-participant"><em class="xref std std-term">participant</em></a>, not just the <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><em class="xref std std-term">lead participant</em></a>.</p>
+<p>The runs displayed will include any task where your host is a <a class="reference internal" href="pscheduler_intro.html#term-participant"><span class="xref std std-term">participant</span></a>, not just the <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><span class="xref std std-term">lead participant</span></a>.</p>
 <p>With one (delta) argument, the schedule between now and some point in the past or future will be shown. Deltas are ISO 8601 durations, with -PT1H meaning one hour in the past and P1D meaning one day in the future. Examples:</p>
 <blockquote>
 <div><ul>
@@ -169,42 +169,42 @@ https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e54
 </li>
 </ul>
 </div></blockquote>
-<p>It also provides the <tt class="docutils literal"><span class="pre">--filter-test</span> <span class="pre">TEST_TYPE</span></tt> option to ask for a particular <a class="reference internal" href="pscheduler_intro.html#term-test"><em class="xref std std-term">test</em></a> type. For a list of test types see <a class="reference internal" href="pscheduler_ref_tests_tools.html"><em>Test and Tool Reference</em></a>. For example, you may ask for all the throughput tests scheduled in the next hour with:</p>
+<p>It also provides the <code class="docutils literal"><span class="pre">--filter-test</span> <span class="pre">TEST_TYPE</span></code> option to ask for a particular <a class="reference internal" href="pscheduler_intro.html#term-test"><span class="xref std std-term">test</span></a> type. For a list of test types see <a class="reference internal" href="pscheduler_ref_tests_tools.html"><em>Test and Tool Reference</em></a>. For example, you may ask for all the throughput tests scheduled in the next hour with:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test throughput PT1H
 </pre></div>
 </div>
-<p>You may specify <tt class="docutils literal"><span class="pre">--filter-test</span></tt> multiple times to query multiple types of tests. For example, the following queries all <em>trace</em> and <em>rtt</em> tests that ran in the last 30 minutes:</p>
+<p>You may specify <code class="docutils literal"><span class="pre">--filter-test</span></code> multiple times to query multiple types of tests. For example, the following queries all <em>trace</em> and <em>rtt</em> tests that ran in the last 30 minutes:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test trace --filter-test rtt -PT30M
 </pre></div>
 </div>
-<p>You may also ask for all tests that are NOT a certain type by using the <tt class="docutils literal"><span class="pre">--invert</span></tt> option. This can be especially useful for ignoring background tasks that generally don&#8217;t prevent other tasks from running at the same time. For example, you could ignore all <em>latencybg</em> tests with:</p>
+<p>You may also ask for all tests that are NOT a certain type by using the <code class="docutils literal"><span class="pre">--invert</span></code> option. This can be especially useful for ignoring background tasks that generally don&#8217;t prevent other tasks from running at the same time. For example, you could ignore all <em>latencybg</em> tests with:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --filter-test latencybg --invert
 </pre></div>
 </div>
-<p>Any of the commands above can also be run to a remote pScheduler server using the <tt class="docutils literal"><span class="pre">--host</span> <span class="pre">HOST</span></tt> option, where <tt class="docutils literal"><span class="pre">HOST</span></tt> is the address of the pScheduler server with the schedule you&#8217;d like to see. For example, to see the schedule for the last hour of the pScheduler server on <em>host2</em> you would run:</p>
+<p>Any of the commands above can also be run to a remote pScheduler server using the <code class="docutils literal"><span class="pre">--host</span> <span class="pre">HOST</span></code> option, where <code class="docutils literal"><span class="pre">HOST</span></code> is the address of the pScheduler server with the schedule you&#8217;d like to see. For example, to see the schedule for the last hour of the pScheduler server on <em>host2</em> you would run:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler schedule --host host2 -PT1H
 </pre></div>
 </div>
-<p>If you are curious about any additional options or details, you can also run <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span> <span class="pre">--help</span></tt> to get more information about this command.</p>
+<p>If you are curious about any additional options or details, you can also run <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span> <span class="pre">--help</span></code> to get more information about this command.</p>
 </div>
 <div class="section" id="visualizing-the-schedule-with-pscheduler-plot-schedule">
-<span id="pscheduler-client-schedule-plot-schedule"></span><h2>Visualizing the Schedule with <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></tt><a class="headerlink" href="#visualizing-the-schedule-with-pscheduler-plot-schedule" title="Permalink to this headline">¶</a></h2>
-<p>The <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></tt> command asks pScheduler to fetch scheduled task runs from the past, present or future and display them as box plot in a PNG image file. It takes the following form where OPTIONS is command-line options and IMAGE_FILE is the location where you want the generated image saved:</p>
+<span id="pscheduler-client-schedule-plot-schedule"></span><h2>Visualizing the Schedule with <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></code><a class="headerlink" href="#visualizing-the-schedule-with-pscheduler-plot-schedule" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></code> command asks pScheduler to fetch scheduled task runs from the past, present or future and display them as box plot in a PNG image file. It takes the following form where OPTIONS is command-line options and IMAGE_FILE is the location where you want the generated image saved:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler plot-schedule [ OPTIONS ] [ delta | start end ] &gt; IMAGE_FILE
 </pre></div>
 </div>
 <p>You always redirect the output to a file and the program will return an error before execution if you do not. Example output is shown below:</p>
 <img alt="_images/pscheduler_client_schedule-plot.png" src="_images/pscheduler_client_schedule-plot.png" />
-<p>The vertical axis is the time that the test ran or is scheduled to run. The green boxes are <a class="reference internal" href="pscheduler_intro.html#term-run"><em class="xref std std-term">runs</em></a> of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of four classifications listed at the top:</p>
+<p>The vertical axis is the time that the test ran or is scheduled to run. The green boxes are <a class="reference internal" href="pscheduler_intro.html#term-run"><span class="xref std std-term">runs</span></a> of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of four classifications listed at the top:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><strong>Exclusive</strong> - These are tasks that cannot run at the same time as any other exclusive or normal task. An example is a <em>throughput</em> task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.</li>
 <li><strong>Normal</strong> - These are tasks that can run at the same time as other normal and background tasks, but cannot run at the same time as exclusive tasks. An example is a task with a test type of <em>latency</em>.</li>
 <li><strong>Background</strong> - These are tasks that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include <em>latency</em>, <em>latencybg</em>, <em>rtt</em> and <em>trace</em>. It is not uncommon to have this column look almost entirely solid if you have <em>latencybg</em> tasks since they run continuously. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.</li>
-<li><strong>Non-Start</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><em class="xref std std-term">schedule horizon</em></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</li>
+<li><strong>Non-Start</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><span class="xref std std-term">schedule horizon</span></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</li>
 </ol>
 </div></blockquote>
-<p>The primary options for manipulating what is in the image are the time arguments that take the same form as <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></tt>. If no arguments are given, all runs for the next hour will be displayed:</p>
+<p>The primary options for manipulating what is in the image are the time arguments that take the same form as <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code>. If no arguments are given, all runs for the next hour will be displayed:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler plot-schedule
 </pre></div>
 </div>
@@ -238,15 +238,15 @@ https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e54
 </li>
 </ul>
 </div></blockquote>
-<p>Any of the commands above can also be run to a remote pScheduler server using the <tt class="docutils literal"><span class="pre">--host</span> <span class="pre">HOST</span></tt> option, where <tt class="docutils literal"><span class="pre">HOST</span></tt> is the address of the pScheduler server with the schedule you&#8217;d like to see. For example, to see the schedule for the last hour of the pScheduler server on <em>host2</em> you would run:</p>
+<p>Any of the commands above can also be run to a remote pScheduler server using the <code class="docutils literal"><span class="pre">--host</span> <span class="pre">HOST</span></code> option, where <code class="docutils literal"><span class="pre">HOST</span></code> is the address of the pScheduler server with the schedule you&#8217;d like to see. For example, to see the schedule for the last hour of the pScheduler server on <em>host2</em> you would run:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler plot-schedule --host host2 -PT1H
 </pre></div>
 </div>
-<p>If you are curious about any additional options or details, you can also run <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span> <span class="pre">--help</span></tt> to get more information about this command.</p>
+<p>If you are curious about any additional options or details, you can also run <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span> <span class="pre">--help</span></code> to get more information about this command.</p>
 </div>
 <div class="section" id="monitoring-the-schedule-in-real-time-with-pscheduler-monitor">
-<span id="pscheduler-client-schedule-monitor"></span><h2>Monitoring the Schedule in Real Time with <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span></tt><a class="headerlink" href="#monitoring-the-schedule-in-real-time-with-pscheduler-monitor" title="Permalink to this headline">¶</a></h2>
-<p>The <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span></tt> command provides top-like output of what the schedule is doing in near real time. It takes the following form:</p>
+<span id="pscheduler-client-schedule-monitor"></span><h2>Monitoring the Schedule in Real Time with <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span></code><a class="headerlink" href="#monitoring-the-schedule-in-real-time-with-pscheduler-monitor" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span></code> command provides top-like output of what the schedule is doing in near real time. It takes the following form:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler monitor [ OPTIONS ]
 </pre></div>
 </div>
@@ -256,19 +256,19 @@ https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e54
 <blockquote>
 <div><ul class="simple">
 <li>The time that the task started</li>
-<li>The <a class="reference internal" href="#pscheduler-client-schedule-basics"><em>status</em></a> of the run. If it&#8217;s in the <em>Running</em> state it will be highlighted as well.</li>
-<li>The command-line parameters one could give to <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span></tt> to create the run</li>
+<li>The <a class="reference internal" href="#pscheduler-client-schedule-basics"><span>status</span></a> of the run. If it&#8217;s in the <em>Running</em> state it will be highlighted as well.</li>
+<li>The command-line parameters one could give to <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span></code> to create the run</li>
 </ul>
 </div></blockquote>
 <p>The most common method for invoking the command is to give it no options and it will fill the screen with as many tasks as it can fit:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler monitor
 </pre></div>
 </div>
-<p>If you would like to monitor a pScheduler server on remote host you can add the <tt class="docutils literal"><span class="pre">--host</span></tt> switch as follows:</p>
+<p>If you would like to monitor a pScheduler server on remote host you can add the <code class="docutils literal"><span class="pre">--host</span></code> switch as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler monitor --host host2
 </pre></div>
 </div>
-<p>If you are curious about any additional options or details, you can also run <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span> <span class="pre">--help</span></tt> to get more information about this command.</p>
+<p>If you are curious about any additional options or details, you can also run <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span> <span class="pre">--help</span></code> to get more information about this command.</p>
 </div>
 </div>
 
@@ -284,9 +284,9 @@ https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e54
 <li><a class="reference internal" href="#">Viewing the Schedule</a><ul>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#the-basics">The Basics</a></li>
-<li><a class="reference internal" href="#viewing-the-schedule-as-text-with-pscheduler-schedule">Viewing the Schedule as Text with <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></tt></a></li>
-<li><a class="reference internal" href="#visualizing-the-schedule-with-pscheduler-plot-schedule">Visualizing the Schedule with <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></tt></a></li>
-<li><a class="reference internal" href="#monitoring-the-schedule-in-real-time-with-pscheduler-monitor">Monitoring the Schedule in Real Time with <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span></tt></a></li>
+<li><a class="reference internal" href="#viewing-the-schedule-as-text-with-pscheduler-schedule">Viewing the Schedule as Text with <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code></a></li>
+<li><a class="reference internal" href="#visualizing-the-schedule-with-pscheduler-plot-schedule">Visualizing the Schedule with <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></code></a></li>
+<li><a class="reference internal" href="#monitoring-the-schedule-in-real-time-with-pscheduler-monitor">Monitoring the Schedule in Real Time with <code class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">monitor</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -310,7 +310,7 @@ https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e54
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -322,7 +322,7 @@ https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e54
         <li class="right" >
           <a href="pscheduler_client_tasks.html" title="Creating and Managing Tasks"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -362,9 +362,9 @@ https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e54
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2018, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

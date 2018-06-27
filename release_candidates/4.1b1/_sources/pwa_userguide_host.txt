@@ -24,7 +24,7 @@ Basic Host Settings
 .. image:: images/pwa/host_basic.png
 
 Host-level Measurement Archive Settings
------------------------
+---------------------------------------
 
 This section allows you to override MA settings at a host level.
 

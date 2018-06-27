@@ -8,7 +8,7 @@
     
     <title>Installation &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -30,7 +30,7 @@
     <link rel="next" title="Configuration" href="pwa_configure.html" />
     <link rel="prev" title="pSConfig Web Admin" href="pwa.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -49,7 +49,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -61,8 +61,8 @@
         <li class="right" >
           <a href="pwa.html" title="pSConfig Web Admin"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li>
-          <li><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -72,7 +72,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
@@ -103,7 +103,7 @@
 <div class="highlight-bash"><div class="highlight"><pre>mkdir /etc/docker
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">/etc/docker/daemon.json</span></tt></p>
+<p><code class="docutils literal"><span class="pre">/etc/docker/daemon.json</span></code></p>
 <div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
         <span class="nt">&quot;graph&quot;</span><span class="p">:</span> <span class="s2">&quot;/usr/local/docker&quot;</span>
 <span class="p">}</span>
@@ -141,19 +141,19 @@ tar -xzf pwa.sample.tar.gz -C /etc
 <ol class="arabic">
 <li><p class="first">For PWA</p>
 <blockquote>
-<div><p><tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt></p>
+<div><p><code class="docutils literal"><span class="pre">/etc/pwa/index.js</span></code></p>
 </div></blockquote>
 <ul class="simple">
-<li>Edit defaults <tt class="docutils literal"><span class="pre">testspecs</span></tt> if necessary (<tt class="docutils literal"><span class="pre">meshconfig.defaults.testspecs</span></tt>)</li>
+<li>Edit defaults <code class="docutils literal"><span class="pre">testspecs</span></code> if necessary (<code class="docutils literal"><span class="pre">meshconfig.defaults.testspecs</span></code>)</li>
 <li>Update pub.url with the hostname that your PWA instance will be exposed as. The easiest way to do this is to replace <span class="raw-html-m2r"><pwa_hostname></span> with the FQDN of your Docker host (removing the brackets).</li>
 <li>Edit datasource section which determines which host you&#8217;d like to load from sLS to construct your host config, if applicable (if you are not running a private LS, this most likely does not apply to you)</li>
 </ul>
 </li>
 <li><p class="first">For Authentication Service</p>
 <blockquote>
-<div><p><tt class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></tt></p>
+<div><p><code class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></code></p>
 <p>Update the hostname in the config by performing a search and replace in this file. Replace <span class="raw-html-m2r"><pwa_hostname></span> with the hostname (FQDN) of the host that holds your docker containers (remove the brackets).</p>
-<p>Update <tt class="docutils literal"><span class="pre">from</span></tt> address to administrator&#8217;s email address used to send email to confirmation new user accounts. You can do this by doing a search and replace in the file, replacing <span class="raw-html-m2r"><email_address></span> with the full e-mail address you want to use (remove the brackets).</p>
+<p>Update <code class="docutils literal"><span class="pre">from</span></code> address to administrator&#8217;s email address used to send email to confirmation new user accounts. You can do this by doing a search and replace in the file, replacing <span class="raw-html-m2r"><email_address></span> with the full e-mail address you want to use (remove the brackets).</p>
 <p>If you&#8217;d like to skip email confirmation when user signup, simply comment out the whole email_confirmation section.</p>
 </div></blockquote>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">email_confirmation</span> <span class="o">=</span> <span class="p">{</span>
@@ -166,20 +166,20 @@ tar -xzf pwa.sample.tar.gz -C /etc
 <li><p class="first">For Nginx</p>
 <blockquote>
 <div><p>Nginx will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit..</p>
-<p><tt class="docutils literal"><span class="pre">/etc/pwa/nginx</span></tt></p>
+<p><code class="docutils literal"><span class="pre">/etc/pwa/nginx</span></code></p>
 </div></blockquote>
 </li>
 </ol>
 <div class="section" id="host-certificates">
 <h5>Host Certificates<a class="headerlink" href="#host-certificates" title="Permalink to this headline">¶</a></h5>
-<p>You will need SSL certificates for https access. If these don&#8217;t already exist, they will be created when you start up the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> docker container.</p>
-<p>In <tt class="docutils literal"><span class="pre">/etc/pwa/auth</span></tt>, you should see your host certificate with following file names, or place them there if not. If you want to replace the automatically-generated certs with your own, copy them over these files.</p>
+<p>You will need SSL certificates for https access. If these don&#8217;t already exist, they will be created when you start up the <code class="docutils literal"><span class="pre">sca-auth</span></code> docker container.</p>
+<p>In <code class="docutils literal"><span class="pre">/etc/pwa/auth</span></code>, you should see your host certificate with following file names, or place them there if not. If you want to replace the automatically-generated certs with your own, copy them over these files.</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>ls /etc/pwa/auth
 cert.pem
 key.pem
 </pre></div>
 </div>
-<p>If you are enabling x509 authentication, then you will also need <tt class="docutils literal"><span class="pre">trusted.pem</span></tt>. This file contains list of all CAs that you trust and grant access to PWA.</p>
+<p>If you are enabling x509 authentication, then you will also need <code class="docutils literal"><span class="pre">trusted.pem</span></code>. This file contains list of all CAs that you trust and grant access to PWA.</p>
 <blockquote>
 <div>Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single .pem file.</div></blockquote>
 </div>
@@ -215,7 +215,7 @@ docker run <span class="se">\</span>
 </pre></div>
 </div>
 <blockquote>
-<div><p>sca-auth container will generate a few files under /config directory when it&#8217;s first started, so don&#8217;t mount it with <tt class="docutils literal"><span class="pre">ro</span></tt>.
+<div><p>sca-auth container will generate a few files under /config directory when it&#8217;s first started, so don&#8217;t mount it with <code class="docutils literal"><span class="pre">ro</span></code>.
 I am persisting the user account DB on /usr/local/data/auth.</p>
 </div></blockquote>
 </li>
@@ -240,8 +240,8 @@ I am persisting the user account DB on /usr/local/data/auth.</p>
 </div>
 </li>
 </ol>
-<p>You can create as many pwa-pub containers as desired (make sure to use unique names <tt class="docutils literal"><span class="pre">pwa-pub1</span></tt>, <tt class="docutils literal"><span class="pre">pwa-pub2</span></tt>, etc..) based on available resource (mainly CPU) . 1 or 2 should be fine for most cases.</p>
-<p>If you use more than 1 instance, please edit <tt class="docutils literal"><span class="pre">/etc/pwa/nginx/conf.d/pwa.conf</span></tt> to include all instances, like..</p>
+<p>You can create as many pwa-pub containers as desired (make sure to use unique names <code class="docutils literal"><span class="pre">pwa-pub1</span></code>, <code class="docutils literal"><span class="pre">pwa-pub2</span></code>, etc..) based on available resource (mainly CPU) . 1 or 2 should be fine for most cases.</p>
+<p>If you use more than 1 instance, please edit <code class="docutils literal"><span class="pre">/etc/pwa/nginx/conf.d/pwa.conf</span></code> to include all instances, like..</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">upstream</span> <span class="nx">pwapub</span> <span class="p">{</span>
     <span class="nx">server</span> <span class="nx">pwa</span><span class="o">-</span><span class="nx">pub1</span><span class="o">:</span><span class="mi">8080</span><span class="p">;</span>
     <span class="nx">server</span> <span class="nx">pwa</span><span class="o">-</span><span class="nx">pub2</span><span class="o">:</span><span class="mi">8080</span><span class="p">;</span>
@@ -269,18 +269,18 @@ I am persisting the user account DB on /usr/local/data/auth.</p>
 <p>Now you should see all 5 containers running.</p>
 <div class="highlight-bash"><div class="highlight"><pre>docker container list
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                              NAMES
-42efd21ff7f1        perfsonar/pwa-pub     <span class="s2">&quot;node /app/api/mcp...&quot;</span>   18 seconds ago      Up 17 seconds       8080/tcp                                                           pwa-pub1
-ab3936c7ab8c        perfsonar/pwa-admin   <span class="s2">&quot;/start.sh&quot;</span>              19 seconds ago      Up 18 seconds       80/tcp, 8080/tcp                                                   pwa-admin1
-90cfbb8ba096        perfsonar/sca-auth    <span class="s2">&quot;/app/docker/start.sh&quot;</span>   24 seconds ago      Up 24 seconds       80/tcp, 8080/tcp                                                   sca-auth
-aa6471073c01        nginx               <span class="s2">&quot;nginx -g &#39;daemon ...&quot;</span>   11 hours ago        Up 11 hours         0.0.0.0:80-&gt;80/tcp, 0.0.0.0:443-&gt;443/tcp, 0.0.0.0:9443-&gt;9443/tcp   nginx
-10fdf3b63e4f        mongo               <span class="s2">&quot;/entrypoint.sh mo...&quot;</span>   12 hours ago        Up 12 hours         27017/tcp                                                          mongo
+42efd21ff7f1        perfsonar/pwa-pub     <span class="s2">&quot;node /app/api/mcp...&quot;</span>   <span class="m">18</span> seconds ago      Up <span class="m">17</span> seconds       8080/tcp                                                           pwa-pub1
+ab3936c7ab8c        perfsonar/pwa-admin   <span class="s2">&quot;/start.sh&quot;</span>              <span class="m">19</span> seconds ago      Up <span class="m">18</span> seconds       80/tcp, 8080/tcp                                                   pwa-admin1
+90cfbb8ba096        perfsonar/sca-auth    <span class="s2">&quot;/app/docker/start.sh&quot;</span>   <span class="m">24</span> seconds ago      Up <span class="m">24</span> seconds       80/tcp, 8080/tcp                                                   sca-auth
+aa6471073c01        nginx               <span class="s2">&quot;nginx -g &#39;daemon ...&quot;</span>   <span class="m">11</span> hours ago        Up <span class="m">11</span> hours         0.0.0.0:80-&gt;80/tcp, 0.0.0.0:443-&gt;443/tcp, 0.0.0.0:9443-&gt;9443/tcp   nginx
+10fdf3b63e4f        mongo               <span class="s2">&quot;/entrypoint.sh mo...&quot;</span>   <span class="m">12</span> hours ago        Up <span class="m">12</span> hours         27017/tcp                                                          mongo
 </pre></div>
 </div>
-<p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <tt class="docutils literal"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></tt></p>
+<p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code></p>
 </div>
 <div class="section" id="updating">
 <h4>Updating<a class="headerlink" href="#updating" title="Permalink to this headline">¶</a></h4>
-<p>To update PWA containers to the latest version, stop/remove the current container. This example updates the pwa-admin image, but you might also need to do the same thing for <tt class="docutils literal"><span class="pre">pwa-pub</span></tt> and/or <tt class="docutils literal"><span class="pre">sca-auth</span></tt>, as well.</p>
+<p>To update PWA containers to the latest version, stop/remove the current container. This example updates the pwa-admin image, but you might also need to do the same thing for <code class="docutils literal"><span class="pre">pwa-pub</span></code> and/or <code class="docutils literal"><span class="pre">sca-auth</span></code>, as well.</p>
 <div class="highlight-bash"><div class="highlight"><pre>docker stop pwa-admin1
 docker rm pwa-admin1
 </pre></div>
@@ -289,7 +289,7 @@ docker rm pwa-admin1
 <div class="highlight-bash"><div class="highlight"><pre>docker pull perfsonar/pwa-admin1
 </pre></div>
 </div>
-<p>Re-run the container using the same <tt class="docutils literal"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">...</span></tt> command you used to start it.</p>
+<p>Re-run the container using the same <code class="docutils literal"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">...</span></code> command you used to start it.</p>
 </div>
 <div class="section" id="firewall">
 <h4>Firewall<a class="headerlink" href="#firewall" title="Permalink to this headline">¶</a></h4>
@@ -367,7 +367,7 @@ docker rm pwa-admin1
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -379,8 +379,8 @@ docker rm pwa-admin1
         <li class="right" >
           <a href="pwa.html" title="pSConfig Web Admin"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li>
-          <li><a href="pwa.html" >pSConfig Web Admin</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -420,9 +420,9 @@ docker rm pwa-admin1
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2018, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

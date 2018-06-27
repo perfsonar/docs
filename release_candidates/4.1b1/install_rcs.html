@@ -8,7 +8,7 @@
     
     <title>Testing Beta Versions of perfSONAR &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="perfSONAR Deployment Examples" href="deployment_examples.html" />
     <link rel="prev" title="Previous Release Documentation" href="previous_releases.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="previous_releases.html" title="Previous Release Documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="testing-beta-versions-of-perfsonar">
 <h1>Testing Beta Versions of perfSONAR<a class="headerlink" href="#testing-beta-versions-of-perfsonar" title="Permalink to this headline">¶</a></h1>
@@ -127,24 +127,17 @@ yum update
 </div>
 <div class="section" id="testing-debian-installation">
 <span id="install-rcs-clean-debian"></span><h2>Testing Debian Installation<a class="headerlink" href="#testing-debian-installation" title="Permalink to this headline">¶</a></h2>
-<p>The beta packages for Debian can be found in the source lists below for their respective Debian versions:</p>
+<p>The beta packages for Debian can be found in the source list below:</p>
 <ul class="simple">
-<li><strong>Debian 7 (Wheezy):</strong> <a class="reference external" href="http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list">http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list</a></li>
-<li><strong>Debian 8 and 9 (Jessie - Stretch):</strong> <a class="reference external" href="http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list">http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list</a></li>
+<li><a class="reference external" href="http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list">http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list</a></li>
 </ul>
-<p>You may install the appropriate source list as follows for <strong>Debian 7 (Wheezy)</strong>:</p>
-<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
-wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
-wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
-</pre></div>
-</div>
-<p>These Debian packages should also work on Ubuntu 14.</p>
-<p>Likewise for <strong>Debian 8 and 9 (Jessie - Stretch)</strong>:</p>
+<p>You may install this source list as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
 wget http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
 wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
 </pre></div>
 </div>
+<p>These Debian packages should work on Debian 8, Debian 9, Ubuntu 14 and Ubuntu 16.</p>
 <p>Once installed you may proceed to follow the steps in <a class="reference internal" href="install_debian.html"><em>Bundle Installation on Debian</em></a> to complete the installation.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -153,9 +146,17 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.k
 </div>
 <div class="section" id="testing-debian-upgrades">
 <span id="install-rcs-upgrades-debian"></span><h2>Testing Debian Upgrades<a class="headerlink" href="#testing-debian-upgrades" title="Permalink to this headline">¶</a></h2>
-<p>You may test upgrades of perfSONAR Debian packages by following the steps to setup the Debian repository in the <a class="reference internal" href="#install-rcs-clean-debian"><em>previous section</em></a>. Once completed run the following to upgrade:</p>
+<p>You may test upgrades of perfSONAR Debian packages by following the steps to setup the Debian repository in the <a class="reference internal" href="#install-rcs-clean-debian"><span>previous section</span></a>. Once completed run the following to upgrade:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get update
 apt-get dist-upgrade
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-docker-installation">
+<h2>Testing Docker Installation<a class="headerlink" href="#testing-docker-installation" title="Permalink to this headline">¶</a></h2>
+<p>Docker images are provided for the latest staging and nightly builds. Installation works exactly as described in <a class="reference internal" href="install_docker.html"><em>Using perfSONAR with Docker</em></a>, except with adding &#8221;:staging&#8221; or &#8221;:nightly&#8221; to the commands referencing perfsonar/testpoint. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>docker pull perfsonar/testpoint:staging
+docker run --privileged -d -P --net=host -v &quot;/var/run&quot; perfsonar/testpoint:staging
 </pre></div>
 </div>
 </div>
@@ -176,6 +177,7 @@ apt-get dist-upgrade
 <li><a class="reference internal" href="#testing-upgrades-of-an-existing-toolkit-or-centos-bundle-installation">Testing Upgrades of an Existing Toolkit or CentOS Bundle Installation</a></li>
 <li><a class="reference internal" href="#testing-debian-installation">Testing Debian Installation</a></li>
 <li><a class="reference internal" href="#testing-debian-upgrades">Testing Debian Upgrades</a></li>
+<li><a class="reference internal" href="#testing-docker-installation">Testing Docker Installation</a></li>
 </ul>
 </li>
 </ul>
@@ -199,7 +201,7 @@ apt-get dist-upgrade
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -211,7 +213,7 @@ apt-get dist-upgrade
         <li class="right" >
           <a href="previous_releases.html" title="Previous Release Documentation"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -251,9 +253,9 @@ apt-get dist-upgrade
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2018, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

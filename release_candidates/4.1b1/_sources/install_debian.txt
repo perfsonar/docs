@@ -4,7 +4,6 @@ Bundle Installation on Debian
 
 perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for five different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
-* Debian 7 Wheezy
 * Debian 8 Jessie
 * Debian 9 Stretch
 * Ubuntu 14 Trusty Tahr
@@ -24,7 +23,7 @@ System Requirements
   * ARMv7 and up (armhf)
   * ARM64 (arm64) (only for Debian 8/9)
 
-* **Operating System:**  Any system running a Debian 7, Debian 8, Debian 9, Ubuntu 14 or Ubuntu 16 server OS is supported.  Other Debian flavours derived from Debian 7/8/9 or Ubuntu 14/16 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 8, Debian 9, Ubuntu 14 or Ubuntu 16 server OS is supported.  Other Debian flavours derived from Debian 8/9 or Ubuntu 14/16 might work too but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
@@ -40,14 +39,6 @@ Installation
 Step 1: Configure APT
 ---------------------
 All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. **You will need to follow the steps below as privileged user**:
-
-    *Debian 7 / Ubuntu 14*::
-
-       cd /etc/apt/sources.list.d/
-       wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
-       wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
-
-    *Debian 8 / Debian 9 / Ubuntu 16*::
 
        cd /etc/apt/sources.list.d/
        wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
@@ -151,12 +142,6 @@ If you have installed the `perfsonar-toolkit-security` package, then your iptabl
 
 If you would like to configure the rules manually, then please review the `document here <http://www.perfsonar.net/deploy/security-considerations/>`_ on the ports that need to be open.
 
-*Debian 7 / Ubuntu 14*:
-
-    During the installation of the `perfsonar-toolkit-security` package you'll be asked if you want to keep your current set of iptables rules, both for IPV4 and for IPv6. This is part of the usual installation process of the `iptables-persistent` package that we use to setup the firewall protecting your perfSONAR node.  Whatever you answer to the question, your current rules will be saved as part of the `perfsonar-toolkit-security` package installation.
-
-*Debian 8 / Debian 9 / Ubuntu 16*:
-
     The `perfsonar-toolkit-security` package uses `firewalld` to manage the firewall rules.
 
 Additionally, pscheduler allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the file ``pscheduler/limits.conf``. 
@@ -246,22 +231,17 @@ Configuring perfSONAR through the web interface
 ------------------------------------------------
 After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
 
-Upgrading from 3.5.1
+Upgrading from 4.0.2
 ====================
-If you had installed perfSONAR 3.5.1 testpoint bundle and you now want to upgrade to perfSONAR 4.0, you'll have to follow the instructions here below.
+If you had installed a perfSONAR 4.0.2 bundle and you now want to upgrade to perfSONAR 4.1, you'll have to follow the instructions here below.
 
-Add the 4.0 APT sources
+Add the 4.1 APT sources
 -----------------------
 
-  *Debian 7 / Ubuntu 14*::
+Even though the sources.list file is named after the Debian 8 (Jessie) release, it is meant to work on Debian 8 and 9 and Ubuntu 14 and 16.  You can add it to your system with the following commands::
 
-    cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
-
-  *Debian 8 / Debian 9 / Ubuntu 16*::
-
-    cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
+   cd /etc/apt/sources.list.d/
+   wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
    
 Then refresh the packages list so APT knows about the perfSONAR packages::
 
@@ -269,18 +249,26 @@ Then refresh the packages list so APT knows about the perfSONAR packages::
 
 Upgrade the perfSONAR installation
 ----------------------------------
-To upgrade your perfsonar-testpoint installation, you just need to run::
+To upgrade your perfsonar installation, you just need to run::
 
     apt-get dist-upgrade
 
 During the installation process, you'll be asked to choose a password for the pscheduler database.  After the upgrade, the perfsonar-regulartesting daemon and the OPPD will be stoped as they are no longer required.
 
-The measurements and the measurement archives that you already have defined in your 3.5.1 installation will be migrated to the 4.0 tools automatically.
+The measurements and the measurement archives that you already have defined in your 4.0.2 installation will be migrated to the 4.1 tools automatically.
 
 Upgrade to another bundle
 -------------------------
-If you want to move from the `perfsonar-testpoint` bundle to another bundle that we now provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
+If you want to move from the `perfsonar-testpoint` bundle to another bundle that we provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
 
-Upgrade from Ubuntu 12 to Ubuntu 14
------------------------------------
-If you have a testpoint host running Ubuntu 12 and you want to upgrade it to Ubuntu 14, we recommend you to follow the `instructions provided by the Ubuntu Community <https://wiki.ubuntu.com/TrustyTahr/ReleaseNotes#Upgrading_from_Ubuntu_12.04_LTS_or_Ubuntu_13.10>`_ first and then upgrade to perfSONAR 4.0 once the Ubuntu upgrade is completed.
+Upgrade from Debian 7 to Debian 8 or 9
+--------------------------------------
+If you have a perfSONAR host running Debian 7 and you want to upgrade it to Debian 8 (Jessie) or 9 (Stretch), we recommend you to follow the following steps:
+
+#. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
+#. Reboot (to get systemd running)
+#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-jessie-release``
+#. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_)
+
+  * Alternatively, you can just run ``apt-get udpate; apt-get dist-upgrade`` if you prefer to stay with Debian 8.
+
