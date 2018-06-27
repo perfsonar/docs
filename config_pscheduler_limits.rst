@@ -60,7 +60,10 @@ Identifiers:  *Who's Asking?*
 
 The first phase of vetting a task or run is *identification*, where
 attributes of the arriving request are used to create a list of narrow
-categories into which the requester fits.
+categories into which the requester fits.  Note that _requester_ means
+the system making the request, identified by its IP address, and can
+be either the system that submitted the task to pScheduler or one
+pScheduler node setting up the task with another.
 
 The ``identifiers`` section of the limit configuration contains an
 array of *identifier objects*, each containing the following pairs:
