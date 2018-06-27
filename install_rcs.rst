@@ -59,24 +59,17 @@ You can test upgrades of any existing CentOS-based perfSONAR installation by fir
 Testing Debian Installation
 ============================
 
-The beta packages for Debian can be found in the source lists below for their respective Debian versions:
+The beta packages for Debian can be found in the source list below:
 
-* **Debian 7 (Wheezy):** http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
-* **Debian 8 and 9 (Jessie - Stretch):** http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
+* http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
 
-You may install the appropriate source list as follows for **Debian 7 (Wheezy)**::
+You may install this source list as follows::
     
-    cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-staging.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
-
-These Debian packages should also work on Ubuntu 14.
-    
-Likewise for **Debian 8 and 9 (Jessie - Stretch)**::
-
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
     wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
+
+These Debian packages should work on Debian 8, Debian 9, Ubuntu 14 and Ubuntu 16.
 
 Once installed you may proceed to follow the steps in :doc:`install_debian` to complete the installation.
 
