@@ -87,12 +87,13 @@ the perfSONAR toolkit may be found <a class="reference external" href="https://g
 <div class="section" id="the-limit-configuration-file">
 <h2>The Limit Configuration File<a class="headerlink" href="#the-limit-configuration-file" title="Permalink to this headline">¶</a></h2>
 <p>The file is <a class="reference external" href="http://www.json.org">JavaScript Object Notation</a> (JSON)
-containing a single object with the four pairs shown here:</p>
+containing a single object with the pairs shown here:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;#&quot;</span><span class="p">:</span> <span class="s">&quot;Skeletal pScheduler limit configuration&quot;</span><span class="p">,</span>
 
     <span class="s">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
     <span class="s">&quot;classifications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s">&quot;rewrite&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
     <span class="s">&quot;limits&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
     <span class="s">&quot;applications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
 <span class="p">}</span>
@@ -117,7 +118,10 @@ any pair whose key begins with a pound sign (<tt class="docutils literal"><span 
 <h2>Identifiers:  <em>Who&#8217;s Asking?</em><a class="headerlink" href="#identifiers-who-s-asking" title="Permalink to this headline">¶</a></h2>
 <p>The first phase of vetting a task or run is <em>identification</em>, where
 attributes of the arriving request are used to create a list of narrow
-categories into which the requester fits.</p>
+categories into which the requester fits.  Note that _requester_ means
+the system making the request, identified by its IP address, and can
+be either the system that submitted the task to pScheduler or one
+pScheduler node setting up the task with another.</p>
 <p>The <tt class="docutils literal"><span class="pre">identifiers</span></tt> section of the limit configuration contains an
 array of <em>identifier objects</em>, each containing the following pairs:</p>
 <ul class="simple">
@@ -282,10 +286,10 @@ been successfully retrieved.</li>
 </ul>
 <p>Note that this identifier will continue to use the list it last
 successfully downloaded until an update can be successfully retrieved.</p>
-<p>For example, this identifier downloads ESNet&#8217;s list of CIDRs for
-research and education networks, updates it daily with four-hour
-retries on failure and excludes the private networks defined by RFC
-1918:</p>
+<p><strong>Examples</strong></p>
+<p>This identifier downloads ESNet&#8217;s list of CIDRs for research and
+education networks, updates it daily with four-hour retries on failure
+and excludes the private networks defined by RFC 1918:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;r-and-e&quot;</span><span class="p">,</span>
     <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests from research and education networks&quot;</span><span class="p">,</span>
@@ -299,6 +303,24 @@ retries on failure and excludes the private networks defined by RFC
             <span class="s">&quot;172.16.0.0/12&quot;</span><span class="p">,</span>
             <span class="s">&quot;192.168.0.0/16&quot;</span>
         <span class="p">],</span>
+        <span class="s">&quot;fail-state&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This identifier downloads the <a class="reference external" href="https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">Amazon Web Services CIDR block list</a> and uses jq to translate it into the expected format:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;aws&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests from Amazon Web Services hosts&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;ip-cidr-list-url&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;source&quot;</span><span class="p">:</span> <span class="s">&quot;https://ip-ranges.amazonaws.com/ip-ranges.json&quot;</span><span class="p">,</span>
+        <span class="s">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="s">&quot;.prefixes[].ip_prefix, .ipv6_prefixes[].ipv6_prefix&quot;</span><span class="p">,</span>
+            <span class="s">&quot;output-raw&quot;</span><span class="p">:</span> <span class="n">true</span>
+        <span class="p">},</span>
+        <span class="s">&quot;update&quot;</span><span class="p">:</span> <span class="s">&quot;P1D&quot;</span><span class="p">,</span>
+        <span class="s">&quot;retry&quot;</span><span class="p">:</span> <span class="s">&quot;PT4H&quot;</span><span class="p">,</span>
         <span class="s">&quot;fail-state&quot;</span><span class="p">:</span> <span class="n">false</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -377,6 +399,57 @@ giving up after two seconds:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="jq-use-a-jq-script-to-identify-requesters">
+<h4><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Identify Requesters<a class="headerlink" href="#jq-use-a-jq-script-to-identify-requesters" title="Permalink to this headline">¶</a></h4>
+<p>The <tt class="docutils literal"><span class="pre">jq</span></tt> identifier allows decisions to be made based on hints about
+the requester provided by the system using a <a class="reference external" href="https://stedolan.github.io/jq">jq</a>
+script.</p>
+<p>Input to the script is a JSON object containing pairs for each of the
+hints that pScheduler provides.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;requester&quot;: &quot;198.51.100.19&quot;,    IP making the request
+    &quot;server&quot;: &quot;192.0.2.202&quot;          IP on which the request arrived
+}
+</pre></div>
+</div>
+<p>The script should return a single Boolean value, <tt class="docutils literal"><span class="pre">true</span></tt> to indicate
+that an identification was made, <tt class="docutils literal"><span class="pre">false</span></tt> otherwise.  Return of any
+other type will be treated the same as a value <tt class="docutils literal"><span class="pre">false</span></tt>.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Note:  Both of these examples would be better carried out using the ``ip-cidr-list`` identifier</strong> but are also good examples of jq scripting in this context.</p>
+<p>Check to see if the requesting IP is a single IP that should not be
+allowed to use the system. (Note that the <tt class="docutils literal"><span class="pre">ip-cidr-list</span></tt> identifier
+is a better choice for this example.)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;do-not-want&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;One IP we really, really dislike.&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;jq&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="s">&quot;.requester == </span><span class="se">\&quot;</span><span class="s">198.51.100.86</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Identify requests not being made to an address that&#8217;s not considered
+one of the management interfaces:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;non-management-if&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests not arriving on a management interface(s)&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;jq&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="s">&quot;[.server == $management_ips[]] | any | not&quot;</span><span class="p">,</span>
+            <span class="s">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;management_ips&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="s">&quot;198.51.100.46&quot;</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="localif-identify-requesters-on-local-interfaces">
 <h4><tt class="docutils literal"><span class="pre">localif</span></tt> - Identify Requesters On Local Interfaces<a class="headerlink" href="#localif-identify-requesters-on-local-interfaces" title="Permalink to this headline">¶</a></h4>
 <p>The <tt class="docutils literal"><span class="pre">localif</span></tt> identifier determines whether or not the requester&#8217;s
@@ -442,6 +515,168 @@ should be part of the classifier.</li>
 which makes it overlap with <tt class="docutils literal"><span class="pre">friendlies</span></tt> and <tt class="docutils literal"><span class="pre">hostiles</span></tt>.  As will
 be illustrated later, the narrower classifications can be used to
 allow or deny tasks before the wider ones.</p>
+</div>
+<div class="section" id="task-rewriting-what-should-be-changed">
+<h2>Task Rewriting:  <em>What Should Be Changed?</em><a class="headerlink" href="#task-rewriting-what-should-be-changed" title="Permalink to this headline">¶</a></h2>
+<p>Before applying limits to an incoming task, the pScheduler limit
+system can apply a <a class="reference external" href="https://stedolan.github.io/jq">jq</a> script to the
+task to make changes on the fly.</p>
+<p>If a <cite>rewrite</cite> pair is present in a limit configuration where the
+<cite>schema</cite> is <cite>2</cite> or later and the submission is on a system that is the
+lead participant, it specifies a jq transform applied to the task
+immediately after initial validation and prior to limit enforcement
+and tool selection.  Note that because the rewriter provides a set of
+functions that are inserted into the script, all <cite>import</cite> and
+<cite>include</cite> statements are extracted and relocated in order to the top
+to maintain correct jq syntax.</p>
+<p>Input to the transform&#8217;s script is a JSON object containing the
+contents of the task as it was submitted to the server.  The rewriter
+adds a private pair for its own internal use (currently named
+<cite>__REWRITER_PRIVATE__</cite>) which should not be examined or modified.</p>
+<p>Changes to the task are made by modifying the JSON in place (e.g.,
+<cite>.test.spec.bandwidth = 100000000</cite>) and must be followed by a call to
+the <cite>change()</cite> function (described below) with a message that will be
+meaningful to the end user (e.g., <cite>Limited bandwidth to 100 Mb/s</cite>).</p>
+<p>Conditions that would require that the incoming task be rejected may
+be dealt with by calling the <cite>reject()</cite> function (described below)
+with a message that will be meaningful to the end user (e.g., <cite>Cannot
+use tools whose names contain the letter T</cite>).  Tasks rejected in this
+way will _not_ be screened by other limits that might have allowed it
+to proceed, so use this feature carefully.  Also note that rewriting
+takes place only on the node which is the lead participant, so other
+nodes should not rely on this mechanism as a way of enforcing limits.</p>
+<p>Should the script fail when it is run, the incoming task will be
+rejected with a suitable diagnostic message.</p>
+<p><strong>Rewriter Built-In Functions</strong></p>
+<p>The following functions will be made available to rewriting scripts:</p>
+<p><cite>change(message)</cite> - Signals that a change has been made to the task
+and adds the string <cite>message</cite> to the set of diagnostics added to the
+task&#8217;s details.  This function must be called at least once if the
+script modifies the JSON in any way.  Any non-string value for
+<cite>message</cite> will be passed through jq&#8217;s <cite>tostring</cite> function.  A value of
+<cite>null</cite> will result in no message being appended to the diagnostics,
+although this is strongly discouraged.</p>
+<p><cite>classifiers</cite> - Returns an array of the classifiers into which the
+node requesting the task were grouped (e.g., <cite>[ &#8220;friendlies&#8221;,
+&#8220;partners&#8221; ]</cite>).</p>
+<p><cite>classifiers_has(value)</cite> - Returns a boolean indicating whether or not
+the string <cite>value</cite> is one of the classifiers.</p>
+<p><cite>reject(message)</cite> - Signals that the task should be rejected for the
+reason described by <cite>message</cite>.  Any non-string value for <cite>message</cite>
+will be passed through jq&#8217;s <cite>tostring</cite> function.</p>
+<p><strong>Examples</strong></p>
+<p>Force certain tests to operate from a specific interface:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    ...
+    &quot;rewrite&quot;: {
+        &quot;script&quot;: [
+            &quot;import \&quot;pscheduler/iso8601\&quot; as iso;&quot;,
+
+            &quot;# Recommended so the pipeline statements all begin with |.&quot;,
+            &quot;.&quot;,
+
+            &quot;# Hold this in a variable for use where it&#39;s not in-context&quot;,
+            &quot;| .task.type as $tasktype&quot;,
+
+            &quot;# Force latency onto a specific interface&quot;,
+            &quot;| if ( [\&quot;latency\&quot;, \&quot;latencybg\&quot; ] | contains([$tasktype]) )&quot;,
+            &quot;  then&quot;,
+            &quot;    .task.spec.source = \&quot;ps7-latency.example.org\&quot;&quot;,
+            &quot;    | change(\&quot;Forced use of interface reserved for latency\&quot;)&quot;,
+            &quot;  else&quot;,
+            &quot;    .&quot;,
+            &quot;  end&quot;,
+
+            &quot;# The end.  (This takes care of the no-comma-at-end problem)&quot;
+        ]
+    },
+    ...
+}
+</pre></div>
+</div>
+<p>Throttle the <cite>bandwidth</cite> parameter of <cite>throughput</cite> tests for all but
+certain groups to 50 Mb/s:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    ...
+    &quot;rewrite&quot;: {
+        &quot;script&quot;: [
+            &quot;.&quot;,
+
+            &quot;# Throttle non-friendlies to 50 Mb/s for throughput&quot;,
+            &quot;| if .task.type == \&quot;throughput\&quot;&quot;,
+            &quot;    and (&quot;,
+            &quot;      (.task.spec.bandwidth == null)&quot;,
+            &quot;      or (.task.spec.bandwidth &gt; 50000000)&quot;,
+            &quot;    )&quot;,
+            &quot;    and (.classifiers | contains([\&quot;friendlies\&quot;]) | not)&quot;,
+            &quot;  then&quot;,
+            &quot;    .task.spec.bandwidth = 50000000&quot;,
+            &quot;    | change(\&quot;Throttled bandwidth to 50 Mb/s\&quot;)&quot;,
+            &quot;  else&quot;,
+            &quot;    .&quot;,
+            &quot;  end&quot;,
+
+            &quot;# The end.&quot;
+        ]
+    },
+    ...
+}
+</pre></div>
+</div>
+<p>Force the minimum duration for certain tests that specify one to 5 seconds:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    ...
+    &quot;rewrite&quot;: {
+        &quot;script&quot;: [
+            &quot;import \&quot;pscheduler/iso8601\&quot; as iso;&quot;,
+
+            &quot;.&quot;,
+
+            &quot;# Hold this in a variable for use where it&#39;s not in-context&quot;,
+            &quot;| .task.type as $tasktype&quot;,
+
+            &quot;# Make some tests run a minimum of 5 seconds&quot;,
+            &quot;| if ( [\&quot;idle\&quot;, \&quot;idlebgm\&quot;, \&quot;idleex\&quot;, \&quot;latency\&quot;, \&quot;latencybg\&quot;, \&quot;throughput\&quot; ]&quot;,
+            &quot;       | contains([$tasktype]) )&quot;,
+            &quot;    and iso::duration_as_seconds(.task.spec.duration) &lt; 5&quot;,
+            &quot;  then&quot;,
+            &quot;    .task.spec.duration = \&quot;PT5S\&quot;&quot;,
+            &quot;    | change(\&quot;Bumped duration to 5-second minimum\&quot;)&quot;,
+            &quot;  else&quot;,
+            &quot;    .&quot;,
+            &quot;  end&quot;,
+
+            &quot;# The end.&quot;
+        ]
+    },
+    ...
+}
+</pre></div>
+</div>
+<p>Force the repeat interval, if specified, to a minimum of one minute:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    ...
+    &quot;rewrite&quot;: {
+        &quot;script&quot;: [
+            &quot;import \&quot;pscheduler/iso8601\&quot; as iso;&quot;,
+
+            &quot;.&quot;,
+            &quot;| if .schedule.repeat != null&quot;
+            &quot;    and iso::duration_as_seconds(.schedule.repeat) &lt; 60&quot;,
+            &quot;  then&quot;,
+            &quot;    .schedule.repeat = \&quot;PT1M\&quot;&quot;,
+            &quot;    | change(\&quot;Bumped repeat to one-minute minimum\&quot;)&quot;,
+            &quot;  else&quot;,
+            &quot;    .&quot;,
+            &quot;  end&quot;,
+
+            &quot;# The end.&quot;
+        ]
+    },
+    ...
+}
+</pre></div>
+</div>
 </div>
 <div class="section" id="limits-what-are-the-restrictions">
 <h2>Limits:  <em>What Are the Restrictions?</em><a class="headerlink" href="#limits-what-are-the-restrictions" title="Permalink to this headline">¶</a></h2>
@@ -533,6 +768,101 @@ would do the opposite).</li>
 </div>
 <div class="section" id="limit-types">
 <h3>Limit Types<a class="headerlink" href="#limit-types" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="jq-use-a-jq-script-to-make-a-pass-fail-decision">
+<h4><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Make a Pass/Fail Decision<a class="headerlink" href="#jq-use-a-jq-script-to-make-a-pass-fail-decision" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id2">
+<h4><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Make a Pass/Fail Decision<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>The <tt class="docutils literal"><span class="pre">jq</span></tt> limit hands the proposed task to a
+<a class="reference external" href="https://stedolan.github.io/jq">jq</a> script and passes or fails based
+on the script&#8217;s return value.</p>
+<p>Input to the script is a single JSON object containing two or three pairs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">type</span></tt> - A string that names the type of test being proposed</li>
+<li><tt class="docutils literal"><span class="pre">spec</span></tt> - A JSON object containing the test&#8217;s parameters</li>
+<li><tt class="docutils literal"><span class="pre">schedule</span></tt> - An optional JSON object containing an ISO8601 timestamp (<cite>start</cite>) and ISO8601 duration (<cite>duration</cite>) specifying when the run is proposed to start and how much time it will spend running.  (Note that the latter is usually greater than the test&#8217;s <cite>duration</cite> parameter if it has one.)  This object will not be present if a new task is being evaluated but will be for evaluation of runs.</li>
+</ul>
+</div></blockquote>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;throughput&quot;</span><span class="p">,</span>
+    <span class="s">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;dest&quot;</span><span class="p">:</span> <span class="s">&quot;ps.example.com&quot;</span><span class="p">,</span>
+        <span class="s">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="s">&quot;200M&quot;</span><span class="p">,</span>
+        <span class="s">&quot;duration&quot;</span><span class="p">:</span> <span class="s">&quot;PT1M&quot;</span>
+    <span class="p">},</span>
+    <span class="s">&quot;schedule&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;start&quot;</span><span class="p">:</span> <span class="s">&quot;2018-06-19T12:34:56&quot;</span><span class="p">,</span>
+        <span class="s">&quot;duration&quot;</span><span class="p">:</span> <span class="s">&quot;PT1M8S&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The script should produce one of the following values:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Boolean (<tt class="docutils literal"><span class="pre">true</span></tt> or <tt class="docutils literal"><span class="pre">false</span></tt>) - Signifies that the proposed task passes or does not pass the limit.  If the value is <tt class="docutils literal"><span class="pre">false</span></tt>, the limit system&#8217;s diagnostic output will indicate an unspecified reason for the failure.</li>
+<li>String - Signifies that the proposed task  does not pass the limit and uses the contents of the string as the reason for the failure in diagnostic output.</li>
+</ul>
+</div></blockquote>
+<p>Non-boolean or non-string output will be treated as if the limit did not pass and a suitable diagnostic message will be provided.</p>
+<p><strong>Examples</strong></p>
+<p>(Note that whitespace has been added to some strings for clarity.)</p>
+<p>Limit the <cite>length</cite> parameter of any test to 256:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;name&quot;: &quot;big-packets&quot;,
+    &quot;description&quot;: &quot;Limit packet size for all tests&quot;,
+    &quot;type&quot;: &quot;jq&quot;,
+    &quot;data&quot;: {
+        &quot;transform&quot;: {
+            &quot;script&quot;: &quot;256 as $max_length
+                       | if .spec.length &gt; $max_length
+                         then \&quot;Packets are limited to \\($max_length) bytes\&quot;
+                         else true
+                         end&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>Limit any the number of hops in a <cite>trace</cite> test to 20:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;name&quot;: &quot;trace-hops&quot;,
+    &quot;description&quot;: &quot;Limit trace hops&quot;,
+    &quot;type&quot;: &quot;jq&quot;,
+    &quot;data&quot;: {
+        &quot;transform&quot;: {
+            &quot;script&quot;: &quot;20 as $max_hops
+                       | if .type == \&quot;trace\&quot; and .spec.hops &gt; $max_hops
+                         then \&quot;No more than \\($max_hops) hops allowed.\&quot;
+                         else true
+                         end&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>Limit the bandwidth of <cite>throughput</cite> tests to 500 Mb/s:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;name&quot;: &quot;throughput-low-bandwidth&quot;,
+    &quot;description&quot;: &quot;Limit throughput test bandwidth&quot;,
+    &quot;type&quot;: &quot;jq&quot;,
+    &quot;data&quot;: {
+        &quot;transform&quot;: {
+            &quot;script&quot;: &quot;import \&quot;pscheduler/si\&quot; as si;
+                       &quot;500M&quot; as $max_bandwidth
+                       | if .type == \&quot;throughput\&quot;
+                           and si::as_integer(.spec.bandwidth) &gt; si::as_integer($max_bandwidth)
+                         then \&quot;Bandwidth is limited to \\($max_bandwidth)\&quot;
+                         else true
+                         end&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+</div>
 <div class="section" id="pass-fail-explicitly-pass-or-fail">
 <h4><tt class="docutils literal"><span class="pre">pass-fail</span></tt> - Explicitly Pass or Fail<a class="headerlink" href="#pass-fail-explicitly-pass-or-fail" title="Permalink to this headline">¶</a></h4>
 <p>The <tt class="docutils literal"><span class="pre">pass-fail</span></tt> limit will either pass or fail depending on a value
@@ -1055,14 +1385,18 @@ be negated.</li>
 <li><a class="reference internal" href="#ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list"><tt class="docutils literal"><span class="pre">ip-cidr-list-url</span></tt> - Identify By Requesting IP Address with Downloaded List</a></li>
 <li><a class="reference internal" href="#ip-cymru-bogon-identify-bogon-addresses"><tt class="docutils literal"><span class="pre">ip-cymru-bogon</span></tt> - Identify Bogon Addresses</a></li>
 <li><a class="reference internal" href="#ip-reverse-dns-identify-requesters-by-host-name"><tt class="docutils literal"><span class="pre">ip-reverse-dns</span></tt> - Identify Requesters By Host Name</a></li>
+<li><a class="reference internal" href="#jq-use-a-jq-script-to-identify-requesters"><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Identify Requesters</a></li>
 <li><a class="reference internal" href="#localif-identify-requesters-on-local-interfaces"><tt class="docutils literal"><span class="pre">localif</span></tt> - Identify Requesters On Local Interfaces</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a class="reference internal" href="#classifiers-how-do-we-group-the-identifiers">Classifiers:  <em>How Do We Group the Identifiers?</em></a></li>
+<li><a class="reference internal" href="#task-rewriting-what-should-be-changed">Task Rewriting:  <em>What Should Be Changed?</em></a></li>
 <li><a class="reference internal" href="#limits-what-are-the-restrictions">Limits:  <em>What Are the Restrictions?</em></a><ul>
 <li><a class="reference internal" href="#limit-types">Limit Types</a><ul>
+<li><a class="reference internal" href="#jq-use-a-jq-script-to-make-a-pass-fail-decision"><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Make a Pass/Fail Decision</a></li>
+<li><a class="reference internal" href="#id2"><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Make a Pass/Fail Decision</a></li>
 <li><a class="reference internal" href="#pass-fail-explicitly-pass-or-fail"><tt class="docutils literal"><span class="pre">pass-fail</span></tt> - Explicitly Pass or Fail</a></li>
 <li><a class="reference internal" href="#run-daterange-check-run-times-against-a-range"><tt class="docutils literal"><span class="pre">run-daterange</span></tt> - Check Run Times Against a Range</a></li>
 <li><a class="reference internal" href="#run-schedule-check-attributes-of-the-run-time"><tt class="docutils literal"><span class="pre">run-schedule</span></tt> - Check Attributes of the Run Time</a></li>
