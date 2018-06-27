@@ -24,13 +24,14 @@ The Limit Configuration File
 ****************************
 
 The file is `JavaScript Object Notation <http://www.json.org>`_ (JSON)
-containing a single object with the four pairs shown here::
+containing a single object with the pairs shown here::
 
     {
         "#": "Skeletal pScheduler limit configuration",
 
         "identifiers": [ ... ],
         "classifications": [ ... ],
+        "rewrite": [ ... ],
         "limits": [ ... ],
         "applications": [ ... ]
     }
@@ -59,7 +60,10 @@ Identifiers:  *Who's Asking?*
 
 The first phase of vetting a task or run is *identification*, where
 attributes of the arriving request are used to create a list of narrow
-categories into which the requester fits.
+categories into which the requester fits.  Note that _requester_ means
+the system making the request, identified by its IP address, and can
+be either the system that submitted the task to pScheduler or one
+pScheduler node setting up the task with another.
 
 The ``identifiers`` section of the limit configuration contains an
 array of *identifier objects*, each containing the following pairs:
@@ -128,14 +132,14 @@ Its ``data`` is an empty object::
 
 There are exactly two useful configurations of this identifier::
 
-        {   
+        {
             "name": "everybody",
             "description": "An identifier that identifies every requester",
             "type": "always",
             "data": { }
         }
 
-        {   
+        {
             "name": "nobody",
             "description": "An identifier that identifies no requesters",
             "type": "always",
@@ -237,10 +241,11 @@ Its ``data`` is an object containing the following pairs:
 Note that this identifier will continue to use the list it last
 successfully downloaded until an update can be successfully retrieved.
 
-For example, this identifier downloads ESNet's list of CIDRs for
-research and education networks, updates it daily with four-hour
-retries on failure and excludes the private networks defined by RFC
-1918::
+**Examples**
+
+This identifier downloads ESNet's list of CIDRs for research and
+education networks, updates it daily with four-hour retries on failure
+and excludes the private networks defined by RFC 1918::
 
     {
         "name": "r-and-e",
@@ -255,6 +260,27 @@ retries on failure and excludes the private networks defined by RFC
                 "172.16.0.0/12",
                 "192.168.0.0/16"
             ],
+            "fail-state": false
+        }
+    }
+
+
+This identifier downloads the `Amazon Web Services CIDR block
+list<https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html
+>`_ and uses jq to translate it into the expected format::
+
+    {
+        "name": "aws",
+        "description": "Requests from Amazon Web Services hosts",
+        "type": "ip-cidr-list-url",
+        "data": {
+            "source": "https://ip-ranges.amazonaws.com/ip-ranges.json",
+            "transform": {
+                "script": ".prefixes[].ip_prefix, .ipv6_prefixes[].ipv6_prefix",
+                "output-raw": true
+            },
+            "update": "P1D",
+            "retry": "PT4H",
             "fail-state": false
         }
     }
@@ -291,7 +317,7 @@ excludes three of the RFC1918 blocks, gives up after one second and
 does not identify the requester as a bogon if a definitive answer
 cannot be found::
 
-    {   
+    {
         "name": "bogons",
         "description": "Requests arriving from bogon/martian addresses",
         "type": "ip-cymru-bogon",
@@ -344,6 +370,65 @@ giving up after two seconds::
         }
     }
 
+
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``jq`` - Use a jq Script to Identify Requesters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``jq`` identifier allows decisions to be made based on hints about
+the requester provided by the system using a `jq <https://stedolan.github.io/jq>`_
+script.
+
+Input to the script is a JSON object containing pairs for each of the
+hints that pScheduler provides.  For example::
+
+    {
+        "requester": "198.51.100.19",    IP making the request
+        "server": "192.0.2.202"          IP on which the request arrived
+    }
+
+The script should return a single Boolean value, ``true`` to indicate
+that an identification was made, ``false`` otherwise.  Return of any
+other type will be treated the same as a value ``false``.
+
+
+**Examples**
+
+**Note:  Both of these examples would be better carried out using the ``ip-cidr-list`` identifier** but are also good examples of jq scripting in this context.
+
+Check to see if the requesting IP is a single IP that should not be
+allowed to use the system. (Note that the ``ip-cidr-list`` identifier
+is a better choice for this example.) ::
+
+    {
+        "name": "do-not-want",
+        "description": "One IP we really, really dislike.",
+        "type": "jq",
+        "data": {
+            "transform": {
+                "script": ".requester == \"198.51.100.86\"",
+            }
+        }
+    }
+
+Identify requests not being made to an address that's not considered
+one of the management interfaces: ::
+
+    {
+        "name": "non-management-if",
+        "description": "Requests not arriving on a management interface(s)",
+        "type": "jq",
+        "data": {
+            "transform": {
+                "script": "[.server == $management_ips[]] | any | not",
+                "args": {
+                    "management_ips": ["127.0.0.1", "198.51.100.46"]
+                }
+            }
+        }
+    }
 
 
 
@@ -421,6 +506,193 @@ Note that the ``neutrals`` classification will include all requesters,
 which makes it overlap with ``friendlies`` and ``hostiles``.  As will
 be illustrated later, the narrower classifications can be used to
 allow or deny tasks before the wider ones.
+
+
+******************************************
+Task Rewriting:  *What Should Be Changed?*
+******************************************
+
+Before applying limits to an incoming task, the pScheduler limit
+system can apply a `jq <https://stedolan.github.io/jq>`_ script to the
+task to make changes on the fly.
+
+If a `rewrite` pair is present in a limit configuration where the
+`schema` is `2` or later and the submission is on a system that is the
+lead participant, it specifies a jq transform applied to the task
+immediately after initial validation and prior to limit enforcement
+and tool selection.  Note that because the rewriter provides a set of
+functions that are inserted into the script, all `import` and
+`include` statements are extracted and relocated in order to the top
+to maintain correct jq syntax.
+
+Input to the transform's script is a JSON object containing the
+contents of the task as it was submitted to the server.  The rewriter
+adds a private pair for its own internal use (currently named
+`__REWRITER_PRIVATE__`) which should not be examined or modified.
+
+Changes to the task are made by modifying the JSON in place (e.g.,
+`.test.spec.bandwidth = 100000000`) and must be followed by a call to
+the `change()` function (described below) with a message that will be
+meaningful to the end user (e.g., `Limited bandwidth to 100 Mb/s`).
+
+Conditions that would require that the incoming task be rejected may
+be dealt with by calling the `reject()` function (described below)
+with a message that will be meaningful to the end user (e.g., `Cannot
+use tools whose names contain the letter T`).  Tasks rejected in this
+way will _not_ be screened by other limits that might have allowed it
+to proceed, so use this feature carefully.  Also note that rewriting
+takes place only on the node which is the lead participant, so other
+nodes should not rely on this mechanism as a way of enforcing limits.
+
+Should the script fail when it is run, the incoming task will be
+rejected with a suitable diagnostic message.
+
+
+**Rewriter Built-In Functions**
+
+The following functions will be made available to rewriting scripts:
+
+`change(message)` - Signals that a change has been made to the task
+and adds the string `message` to the set of diagnostics added to the
+task's details.  This function must be called at least once if the
+script modifies the JSON in any way.  Any non-string value for
+`message` will be passed through jq's `tostring` function.  A value of
+`null` will result in no message being appended to the diagnostics,
+although this is strongly discouraged.
+
+`classifiers` - Returns an array of the classifiers into which the
+node requesting the task were grouped (e.g., `[ "friendlies",
+"partners" ]`).
+
+`classifiers_has(value)` - Returns a boolean indicating whether or not
+the string `value` is one of the classifiers.
+
+`reject(message)` - Signals that the task should be rejected for the
+reason described by `message`.  Any non-string value for `message`
+will be passed through jq's `tostring` function.
+
+
+**Examples**
+
+Force certain tests to operate from a specific interface::
+
+    {
+        ...
+        "rewrite": {
+            "script": [
+                "import \"pscheduler/iso8601\" as iso;",
+
+                "# Recommended so the pipeline statements all begin with |.",
+                ".",
+
+                "# Hold this in a variable for use where it's not in-context",
+                "| .task.type as $tasktype",
+
+                "# Force latency onto a specific interface",
+                "| if ( [\"latency\", \"latencybg\" ] | contains([$tasktype]) )",
+                "  then",
+                "    .task.spec.source = \"ps7-latency.example.org\"",
+                "    | change(\"Forced use of interface reserved for latency\")",
+                "  else",
+                "    .",
+                "  end",
+
+                "# The end.  (This takes care of the no-comma-at-end problem)"
+            ]
+        },
+        ...
+    }
+
+
+
+Throttle the `bandwidth` parameter of `throughput` tests for all but
+certain groups to 50 Mb/s::
+
+    {
+        ...
+        "rewrite": {
+            "script": [
+                ".",
+
+                "# Throttle non-friendlies to 50 Mb/s for throughput",
+                "| if .task.type == \"throughput\"",
+                "    and (",
+                "      (.task.spec.bandwidth == null)",
+                "      or (.task.spec.bandwidth > 50000000)",
+                "    )",
+                "    and (.classifiers | contains([\"friendlies\"]) | not)",
+                "  then",
+                "    .task.spec.bandwidth = 50000000",
+                "    | change(\"Throttled bandwidth to 50 Mb/s\")",
+                "  else",
+                "    .",
+                "  end",
+
+                "# The end."
+            ]
+        },
+        ...
+    }
+
+
+Force the minimum duration for certain tests that specify one to 5 seconds::
+
+    {
+        ...
+        "rewrite": {
+            "script": [
+                "import \"pscheduler/iso8601\" as iso;",
+
+                ".",
+
+                "# Hold this in a variable for use where it's not in-context",
+                "| .task.type as $tasktype",
+
+                "# Make some tests run a minimum of 5 seconds",
+                "| if ( [\"idle\", \"idlebgm\", \"idleex\", \"latency\", \"latencybg\", \"throughput\" ]",
+                "       | contains([$tasktype]) )",
+                "    and iso::duration_as_seconds(.task.spec.duration) < 5",
+                "  then",
+                "    .task.spec.duration = \"PT5S\"",
+                "    | change(\"Bumped duration to 5-second minimum\")",
+                "  else",
+                "    .",
+                "  end",
+
+                "# The end."
+            ]
+        },
+        ...
+    }
+
+
+
+Force the repeat interval, if specified, to a minimum of one minute::
+
+    {
+        ...
+        "rewrite": {
+            "script": [
+                "import \"pscheduler/iso8601\" as iso;",
+
+                ".",
+                "| if .schedule.repeat != null"
+                "    and iso::duration_as_seconds(.schedule.repeat) < 60",
+                "  then",
+                "    .schedule.repeat = \"PT1M\"",
+                "    | change(\"Bumped repeat to one-minute minimum\")",
+                "  else",
+                "    .",
+                "  end",
+
+                "# The end."
+            ]
+        },
+        ...
+    }
+
+
+
 
 
 
@@ -520,6 +792,107 @@ For example::
 -----------
 Limit Types
 -----------
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``jq`` - Use a jq Script to Make a Pass/Fail Decision
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``jq`` - Use a jq Script to Make a Pass/Fail Decision
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``jq`` limit hands the proposed task to a
+`jq <https://stedolan.github.io/jq>`_ script and passes or fails based
+on the script's return value.
+
+Input to the script is a single JSON object containing two or three pairs:
+
+ * ``type`` - A string that names the type of test being proposed
+ * ``spec`` - A JSON object containing the test's parameters
+ * ``schedule`` - An optional JSON object containing an ISO8601 timestamp (`start`) and ISO8601 duration (`duration`) specifying when the run is proposed to start and how much time it will spend running.  (Note that the latter is usually greater than the test's `duration` parameter if it has one.)  This object will not be present if a new task is being evaluated but will be for evaluation of runs.
+
+For example::
+
+    {
+        "type": "throughput",
+        "spec": {
+            "dest": "ps.example.com",
+            "bandwidth": "200M",
+            "duration": "PT1M"
+        },
+        "schedule": {
+            "start": "2018-06-19T12:34:56",
+            "duration": "PT1M8S"
+        }
+    }
+
+The script should produce one of the following values:
+
+ * Boolean (``true`` or ``false``) - Signifies that the proposed task passes or does not pass the limit.  If the value is ``false``, the limit system's diagnostic output will indicate an unspecified reason for the failure.
+ * String - Signifies that the proposed task  does not pass the limit and uses the contents of the string as the reason for the failure in diagnostic output.
+
+Non-boolean or non-string output will be treated as if the limit did not pass and a suitable diagnostic message will be provided.
+
+**Examples**
+
+(Note that whitespace has been added to some strings for clarity.)
+
+Limit the `length` parameter of any test to 256::
+
+    {
+        "name": "big-packets",
+        "description": "Limit packet size for all tests",
+        "type": "jq",
+        "data": {
+            "transform": {
+                "script": "256 as $max_length
+                           | if .spec.length > $max_length
+                             then \"Packets are limited to \\($max_length) bytes\"
+                             else true
+                             end"
+            }
+        }
+    }
+
+
+Limit any the number of hops in a `trace` test to 20::
+
+    {
+        "name": "trace-hops",
+        "description": "Limit trace hops",
+        "type": "jq",
+        "data": {
+            "transform": {
+                "script": "20 as $max_hops
+                           | if .type == \"trace\" and .spec.hops > $max_hops
+                             then \"No more than \\($max_hops) hops allowed.\"
+                             else true
+                             end"
+            }
+        }
+    }
+
+Limit the bandwidth of `throughput` tests to 500 Mb/s::
+
+    {
+        "name": "throughput-low-bandwidth",
+        "description": "Limit throughput test bandwidth",
+        "type": "jq",
+        "data": {
+            "transform": {
+                "script": "import \"pscheduler/si\" as si;
+                           "500M" as $max_bandwidth
+                           | if .type == \"throughput\"
+                               and si::as_integer(.spec.bandwidth) > si::as_integer($max_bandwidth)
+                             then \"Bandwidth is limited to \\($max_bandwidth)\"
+                             else true
+                             end"
+            }
+        }
+    }
+
+
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ``pass-fail`` - Explicitly Pass or Fail
