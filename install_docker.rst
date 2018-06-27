@@ -136,10 +136,10 @@ Connect to the docker instance again and verify that you are running the version
 Your Docker instance of perfsonar-testpoint has now been upgraded to the latest perfSONAR code. 
 
 
-Updating LS Registration, Mesh Config, etc. files
+Updating LS Registration, pSConfig, etc. files
 =================================================
 
-In its stock deployment the perfsonar Docker image is not stateful. All changes made inside of the container are lost when it is stopped. Sometimes you want to make changes that persist through upgrades or restarts, such as being part of a mesh or registering to the lookup service. 
+In its stock deployment the perfsonar Docker image is not stateful. All changes made inside of the container are lost when it is stopped. Sometimes you want to make changes that persist through upgrades or restarts, such as being part of a pSConfig template or registering to the lookup service. 
 
 Before starting, be sure that the container isn't running::
  
@@ -150,7 +150,7 @@ Start the base container in interactive mode::
 
   # docker run -it perfsonar/testpoint /bin/bash
 
-You will now be at a bash prompt inside of the container. Make the desired changes to /etc/perfsonar/meshconfig-agent.conf or whatnot, save, and exit the container.
+You will now be at a bash prompt inside of the container. Make the desired changes with the ``psconfig remote`` command or similar (see :ref:`psconfig_pscheduler_agent-templates`) and exit the container.
 
 Find the container ID from the just modified container::
 
@@ -161,7 +161,7 @@ Find the container ID from the just modified container::
 
 and then use this to create the new layer for your perfsonar/testpoint Docker image::
 
-  docker commit --change "CMD /usr/bin/supervisord -c /etc/supervisord.conf" -m "adding mesh configuration" f3403177b25d perfsonar/testpoint
+  docker commit --change "CMD /usr/bin/supervisord -c /etc/supervisord.conf" -m "adding psconfig configuration" f3403177b25d perfsonar/testpoint
 
 Now the next time that the perfsonar/testpoint Docker image is started, the changes made to the edited perfSONAR configuration will persist.
 
