@@ -88,14 +88,17 @@ You may test upgrades of perfSONAR Debian packages by following the steps to set
 
 
 Testing Docker Installation
-========================
+============================
 
-Docker images are provided for the latest staging and nightly builds. Installation works exactly as described in :doc:`install_docker`, except with adding ":staging" or ":nightly" to the commands referencing perfsonar/testpoint. For example::
+Docker images are provided for the latest staging and nightly builds. Installation works exactly as described in :doc:`install_docker`, except with adding ":staging" to the commands referencing perfsonar/testpoint. For example::
 
     docker pull perfsonar/testpoint:staging
     docker run --privileged -d -P --net=host -v "/var/run" perfsonar/testpoint:staging
 
+Testing pSConfig Web Administrator Installation
+================================================
 
+The pSConfig Web Administrator is available via Docker. Since only the beta is available, see :doc:`pSConfig Web Administrator Installation <pwa_install>` for information on how to install the software.
 
 
 

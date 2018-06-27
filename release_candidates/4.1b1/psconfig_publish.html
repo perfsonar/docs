@@ -8,7 +8,7 @@
     
     <title>Publishing a pSConfig Template &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
     
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Running the pSConfig pScheduler Agent" href="psconfig_pscheduler_agent.html" />
     <link rel="prev" title="Introduction to pSConfig Templates" href="psconfig_templates_intro.html" /> 
   </head>
-  <body role="document">
+  <body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="psconfig_templates_intro.html" title="Introduction to pSConfig Templates"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <div class="section" id="publishing-a-psconfig-template">
 <h1>Publishing a pSConfig Template<a class="headerlink" href="#publishing-a-psconfig-template" title="Permalink to this headline">¶</a></h1>
@@ -78,7 +78,7 @@
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>After you have <a class="reference internal" href="psconfig_templates_intro.html"><em>created a template</em></a> you will need to publish your template so that it can be downloaded by agents. You have a number of options for doing so including choosing one of the following:</p>
 <ul class="simple">
-<li><strong>Option 1: Using the pSConfig publisher command-line tools.</strong> This is a set of simple command line tools provided by pSConfig that validate the JSON and save a version of it in a standard location under an Apache web server. More details on this method can be found below in the section <a class="reference internal" href="#psconfig-publish-cli"><span>pSConfig Publisher Command-Line Tools</span></a>.</li>
+<li><strong>Option 1: Using the pSConfig publisher command-line tools.</strong> This is a set of simple command line tools provided by pSConfig that validate the JSON and save a version of it in a standard location under an Apache web server. More details on this method can be found below in the section <a class="reference internal" href="#psconfig-publish-cli"><em>pSConfig Publisher Command-Line Tools</em></a>.</li>
 <li><strong>Option 2: Use pSConfig WebAdmin.</strong> This tool has its own method for publishing templates, see that tool&#8217;s <a class="reference internal" href="pwa.html"><em>documentation</em></a> for more details.</li>
 <li><strong>Option 3: Manually copy the template file to a web server.</strong> If you don&#8217;t want to use the above tools you may also manually copy the file to a web server on your own. The exact steps for doing this will depend on your web server&#8217;s setup, but at the end of the day pSConfig templates can be published just like any other file.</li>
 <li><strong>Option 4: Put the template on the local filesystem of the agent.</strong> You may either point at it directly or use an agent&#8217;s template include directory. See the <a class="reference internal" href="psconfig_pscheduler_agent.html"><em>Running the pSConfig pScheduler Agent</em></a> and <a class="reference internal" href="psconfig_maddash_agent.html"><em>Running the pSConfig MaDDash Agent</em></a> documents for information on how to do so for individual agents.</li>
@@ -116,22 +116,22 @@
 </div>
 </div>
 <div class="section" id="publishing-a-file-with-psconfig-publish">
-<h3>Publishing a File with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></code><a class="headerlink" href="#publishing-a-file-with-psconfig-publish" title="Permalink to this headline">¶</a></h3>
+<h3>Publishing a File with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></tt><a class="headerlink" href="#publishing-a-file-with-psconfig-publish" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You need to run this command as a <strong>sudo</strong> user since the web directory used by this tool is owned by the <em>perfsonar</em> user and group</p>
 </div>
-<p>The <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></code> command accepts a parameter with the location of a pSConfig template file either on the local filesystem or at an http(s) URL. As an example:</p>
+<p>The <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></tt> command accepts a parameter with the location of a pSConfig template file either on the local filesystem or at an http(s) URL. As an example:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig publish example.json
 </pre></div>
 </div>
 <p>The command performs the following actions:</p>
 <ol class="arabic simple">
 <li>If required, automatically detects and translates the given file from legacy MeshConfig format to the new pSConfig format. See <a class="reference internal" href="psconfig_meshconfig_migrate.html"><em>MeshConfig to pSConfig Migration Guide</em></a> for details on what this means.</li>
-<li>Validates the input file syntax against the pSConfig template schema. You may skip this step by providing the <code class="docutils literal"><span class="pre">--skip-validate</span></code> option.</li>
-<li>Adds a <code class="docutils literal"><span class="pre">psconfig-publisher</span></code> field to the template <code class="docutils literal"><span class="pre">_meta</span></code> object indicating this file was published by the CLI and he time at which this command ran. You may skip this step by providing the <code class="docutils literal"><span class="pre">--skip-meta</span></code> option.</li>
-<li>Saves the file to <em>/usr/lib/perfsonar/web-psconfig</em> with the same name as the provided file. The output of the file will remove extraneous whitespace in an attempt to be more compact for downloading agents. If you would like the file in a more human-readable format you can specify the <code class="docutils literal"><span class="pre">--pretty</span></code> option.</li>
-<li>It will output to standard output the location of the saved file as well as the URL and command that can be used to add it to an agent. If you would like to suppress this output you can use the <code class="docutils literal"><span class="pre">--quiet</span></code> option.</li>
+<li>Validates the input file syntax against the pSConfig template schema. You may skip this step by providing the <tt class="docutils literal"><span class="pre">--skip-validate</span></tt> option.</li>
+<li>Adds a <tt class="docutils literal"><span class="pre">psconfig-publisher</span></tt> field to the template <tt class="docutils literal"><span class="pre">_meta</span></tt> object indicating this file was published by the CLI and he time at which this command ran. You may skip this step by providing the <tt class="docutils literal"><span class="pre">--skip-meta</span></tt> option.</li>
+<li>Saves the file to <em>/usr/lib/perfsonar/web-psconfig</em> with the same name as the provided file. The output of the file will remove extraneous whitespace in an attempt to be more compact for downloading agents. If you would like the file in a more human-readable format you can specify the <tt class="docutils literal"><span class="pre">--pretty</span></tt> option.</li>
+<li>It will output to standard output the location of the saved file as well as the URL and command that can be used to add it to an agent. If you would like to suppress this output you can use the <tt class="docutils literal"><span class="pre">--quiet</span></tt> option.</li>
 </ol>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -148,10 +148,10 @@ Execute the following on a host running an agent to use this file:
 </pre></div>
 </div>
 <p>If there are any errors reading, validating or saving the file, then they will instead be printed to the screen.</p>
-<p>If you need to update a published file, simply run <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></code> against the same file and it will overwrite the existing file.</p>
+<p>If you need to update a published file, simply run <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></tt> against the same file and it will overwrite the existing file.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Note that <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></code> does not maintain a file history, so once you overwrite a file it is permanently gone.</p>
+<p class="last">Note that <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></tt> does not maintain a file history, so once you overwrite a file it is permanently gone.</p>
 </div>
 <p>If you have any further questions about the supported options you may run the following:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig publish --help
@@ -159,12 +159,12 @@ Execute the following on a host running an agent to use this file:
 </div>
 </div>
 <div class="section" id="viewing-published-files-with-psconfig-published">
-<h3>Viewing Published Files with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">published</span></code><a class="headerlink" href="#viewing-published-files-with-psconfig-published" title="Permalink to this headline">¶</a></h3>
+<h3>Viewing Published Files with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">published</span></tt><a class="headerlink" href="#viewing-published-files-with-psconfig-published" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You need to run this command as a <strong>sudo</strong> user since the web directory used by this tool is owned by the <em>perfsonar</em> user and group</p>
 </div>
-<p>The <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">published</span></code> command lists the location and URL of all the files that are currently published. It supports no additional options. An example command is:</p>
+<p>The <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">published</span></tt> command lists the location and URL of all the files that are currently published. It supports no additional options. An example command is:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig published
 </pre></div>
 </div>
@@ -181,7 +181,7 @@ Execute the following on a host running an agent to use this file:
 </div>
 <div class="section" id="removing-published-files">
 <h3>Removing Published Files<a class="headerlink" href="#removing-published-files" title="Permalink to this headline">¶</a></h3>
-<p>There is no special tool for unpublishing files. You may do so by removing the file directly from the published directory. If you need help determining the location you may use the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">published</span></code> command. An example of how to delete a file is as follows:</p>
+<p>There is no special tool for unpublishing files. You may do so by removing the file directly from the published directory. If you need help determining the location you may use the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">published</span></tt> command. An example of how to delete a file is as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">rm</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">web</span><span class="o">-</span><span class="n">psconfig</span><span class="o">/</span><span class="n">example</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
@@ -202,8 +202,8 @@ Execute the following on a host running an agent to use this file:
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#psconfig-publisher-command-line-tools">pSConfig Publisher Command-Line Tools</a><ul>
 <li><a class="reference internal" href="#installing">Installing</a></li>
-<li><a class="reference internal" href="#publishing-a-file-with-psconfig-publish">Publishing a File with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></code></a></li>
-<li><a class="reference internal" href="#viewing-published-files-with-psconfig-published">Viewing Published Files with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">published</span></code></a></li>
+<li><a class="reference internal" href="#publishing-a-file-with-psconfig-publish">Publishing a File with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">publish</span></tt></a></li>
+<li><a class="reference internal" href="#viewing-published-files-with-psconfig-published">Viewing Published Files with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">published</span></tt></a></li>
 <li><a class="reference internal" href="#removing-published-files">Removing Published Files</a></li>
 </ul>
 </li>
@@ -230,7 +230,7 @@ Execute the following on a host running an agent to use this file:
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -242,7 +242,7 @@ Execute the following on a host running an agent to use this file:
         <li class="right" >
           <a href="psconfig_templates_intro.html" title="Introduction to pSConfig Templates"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -282,9 +282,9 @@ Execute the following on a host running an agent to use this file:
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer" role="contentinfo">
+    <div class="footer">
         &copy; Copyright 2018, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
