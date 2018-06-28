@@ -170,9 +170,13 @@ rm -f /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
 <p>When perfSONAR 4.0 was released in April 2017, the perfSONAR project began the deprecation of BWCTL. pScheduler supports backward compatibility with BWCTL through the use of plug-ins that will only get chosen if pScheduler cannot be detected on the remote end.</p>
 <p>In perfSONAR 4.1, the deprecation process will continue. The following actions will be taken with respect to BWCTL support in 4.1:</p>
 <ul class="simple">
-<li>Brand new installs of 4.1 will not have BWCTL or the BWCTL backward compatibility pScheduler plug-ins by default. Users can install these separately by manually running <tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-bwctl-compat</span></tt></li>
+<li>Brand new installs of 4.1 will not have BWCTL or the BWCTL backward compatibility pScheduler plug-ins by default. Users can install these separately by manually running <tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-bwctl-compat</span></tt> or <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-bwctl-compat</span></tt></li>
 <li>Systems upgrading to version 4.1 from a previous version of perfSONAR already have BWCTL and the plug-ins installed. The upgrade process will NOT remove these packages, so BWCTL and tests using the backward compatibility plug-ins will continue to operate. If you no longer wish to have the BWCTL packages, you will be able to safely remove all BWCTL related packages with <tt class="docutils literal"><span class="pre">yum</span> <span class="pre">remove</span> <span class="pre">bwctl-server</span> <span class="pre">bwctl-client</span></tt> (through dependencies, this will also remove the BWCTL pScheduler plug-ins).</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Debian systems do have an auto-remove function that may remove BWCTL since no packages will be dependent on it once you upgrade to 4.1. Exact behavior depends on how you have apt configured. If you find that BWCTL is removed you can run <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-bwctl-compat</span></tt> to restore the packages.</p>
+</div>
 <p>Below is the plan for support for releases beyond 4.1:</p>
 <ul class="simple">
 <li>perfSONAR 4.0 will be end-of-life six months after the final release of perfSONAR 4.1. BWCTL will also be end-of-life at this time meaning it will stop receiving security updates.</li>
