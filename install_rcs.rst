@@ -21,7 +21,7 @@ Testing a Clean Installation of the Toolkit ISOs
 ================================================
 You may download the latest release candidate ISOs at the following URL :
 
-    * http://downloads.perfsonar.net/toolkit/release_candidates/
+    * http://downloads.perfsonar.net/toolkit/betas/
     
 Once downloaded you may follow the instructions at :doc:`install_centos_fullinstall` or :doc:`install_centos_netinstall` for step-by-step instructions on installing the software.
 
