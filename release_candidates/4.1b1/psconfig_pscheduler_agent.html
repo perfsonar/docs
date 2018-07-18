@@ -8,7 +8,7 @@
     
     <title>Running the pSConfig pScheduler Agent &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Running the pSConfig MaDDash Agent" href="psconfig_maddash_agent.html" />
     <link rel="prev" title="Publishing a pSConfig Template" href="psconfig_publish.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="psconfig_publish.html" title="Publishing a pSConfig Template"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="running-the-psconfig-pscheduler-agent">
 <h1>Running the pSConfig pScheduler Agent<a class="headerlink" href="#running-the-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h1>
@@ -78,10 +78,10 @@
 <span id="psconfig-pscheduler-agent-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="psconfig-pscheduler-agent-s-role">
 <span id="psconfig-pscheduler-agent-intro-role"></span><h3>pSConfig pScheduler Agent&#8217;s Role<a class="headerlink" href="#psconfig-pscheduler-agent-s-role" title="Permalink to this headline">¶</a></h3>
-<p>The role of the <em>pSConfig pScheduler Agent</em> is to read <a class="reference internal" href="psconfig_intro.html"><em>pSConfig templates</em></a> and generate a set of <a class="reference internal" href="pscheduler_intro.html"><em>pScheduler</em></a> <a class="reference internal" href="pscheduler_intro.html#term-task"><em class="xref std std-term">tasks</em></a>. The diagram below describes this role:</p>
-<div class="figure align-center">
+<p>The role of the <em>pSConfig pScheduler Agent</em> is to read <a class="reference internal" href="psconfig_intro.html"><em>pSConfig templates</em></a> and generate a set of <a class="reference internal" href="pscheduler_intro.html"><em>pScheduler</em></a> <a class="reference internal" href="pscheduler_intro.html#term-task"><span class="xref std std-term">tasks</span></a>. The diagram below describes this role:</p>
+<div class="figure align-center" id="id2">
 <img alt="_images/psconfig_pscheduler_agent-arch.png" src="_images/psconfig_pscheduler_agent-arch.png" />
-<p class="caption"><em>A diagram showing the psconfig-pscheduler-agent reading templates from a number of sources and submitting tasks to pScheduler servers.</em></p>
+<p class="caption"><span class="caption-text"><em>A diagram showing the psconfig-pscheduler-agent reading templates from a number of sources and submitting tasks to pScheduler servers.</em></span></p>
 </div>
 <p>Performing this role is a multi-step process that includes the following:</p>
 <ol class="arabic simple">
@@ -97,31 +97,31 @@
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See <a class="reference internal" href="#psconfig-pscheduler-agent-advanced"><em>Advanced Configuration</em></a> for more detail on the configuration options mentioned above.</p>
+<p class="last">See <a class="reference internal" href="#psconfig-pscheduler-agent-advanced"><span>Advanced Configuration</span></a> for more detail on the configuration options mentioned above.</p>
 </div>
 <p>The remainder of this section describes each of these steps in greater detail.</p>
 </div>
 <div class="section" id="reading-and-modifying-templates">
 <span id="psconfig-pscheduler-agent-intro-read"></span><h3>Reading and Modifying Templates<a class="headerlink" href="#reading-and-modifying-templates" title="Permalink to this headline">¶</a></h3>
-<p>The agents first job is to read a set of <a class="reference internal" href="psconfig_templates_intro.html"><em>templates</em></a>. The templates to read are configured by the administrator of the agent. For information on how to configure templates see <a class="reference internal" href="#psconfig-pscheduler-agent-templates"><em>Configuring Templates</em></a>.</p>
+<p>The agents first job is to read a set of <a class="reference internal" href="psconfig_templates_intro.html"><em>templates</em></a>. The templates to read are configured by the administrator of the agent. For information on how to configure templates see <a class="reference internal" href="#psconfig-pscheduler-agent-templates"><span>Configuring Templates</span></a>.</p>
 <p>After reading a template, an agent is also capable of performing local modifications to that template. The types of modifications supported include:</p>
 <ul class="simple">
-<li>Inclusion of default archives for all tasks. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-archives"><em>Configuring Default Archives</em></a> for more detail.</li>
-<li>Direct transformations to the template JSON. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-one"><em>Transforming Individual Remote Templates</em></a> and <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-all"><em>Transforming All Remote Templates</em></a> for more detail.</li>
+<li>Inclusion of default archives for all tasks. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-archives"><span>Configuring Default Archives</span></a> for more detail.</li>
+<li>Direct transformations to the template JSON. See <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-one"><span>Transforming Individual Remote Templates</span></a> and <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-all"><span>Transforming All Remote Templates</span></a> for more detail.</li>
 </ul>
 </div>
 <div class="section" id="determining-the-pscheduler-tasks-to-create">
 <span id="psconfig-pscheduler-agent-intro-determine"></span><h3>Determining the pScheduler Tasks to Create<a class="headerlink" href="#determining-the-pscheduler-tasks-to-create" title="Permalink to this headline">¶</a></h3>
-<p>An individual agent is not necessarily responsible for creating and managing all the tasks described by a template. Instead, an agent looks at the <a class="reference internal" href="psconfig_templates_intro.html#psconfig-templates-intro-concepts-addresses"><em>address objects</em></a> associated with individual tasks and only concerns itself with those it is configured to manage. It determines these addresses as follows:</p>
+<p>An individual agent is not necessarily responsible for creating and managing all the tasks described by a template. Instead, an agent looks at the <a class="reference internal" href="psconfig_templates_intro.html#psconfig-templates-intro-concepts-addresses"><span>address objects</span></a> associated with individual tasks and only concerns itself with those it is configured to manage. It determines these addresses as follows:</p>
 <ul class="simple">
 <li>By default, the agent detects the addresses on the local interfaces of the host which it runs.</li>
-<li>The default behavior can be overriden by setting the <tt class="docutils literal"><span class="pre">addresses</span></tt> option in the default configuration file. See <a class="reference internal" href="#psconfig-pscheduler-agent-advanced"><em>Advanced Configuration</em></a> for more detail.</li>
+<li>The default behavior can be overriden by setting the <code class="docutils literal"><span class="pre">addresses</span></code> option in the default configuration file. See <a class="reference internal" href="#psconfig-pscheduler-agent-advanced"><span>Advanced Configuration</span></a> for more detail.</li>
 </ul>
-<p>Once it has the list of addresses for which it is responsible, it is not just a matter of seeing if one of the addresses is in the generated address list for a task. Instead, it must also analyze if the address it matches is also the one designated to schedule the task. This designation is dependent on the task configuration. A full discussion of this stage of the decision process can be found in <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-tasks-scheduled-by"><em>Controlling the Agent That Schedules a Task</em></a>.</p>
+<p>Once it has the list of addresses for which it is responsible, it is not just a matter of seeing if one of the addresses is in the generated address list for a task. Instead, it must also analyze if the address it matches is also the one designated to schedule the task. This designation is dependent on the task configuration. A full discussion of this stage of the decision process can be found in <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-tasks-scheduled-by"><span>Controlling the Agent That Schedules a Task</span></a>.</p>
 </div>
 <div class="section" id="communicating-with-pscheduler">
 <span id="psconfig-pscheduler-agent-intro-communicate"></span><h3>Communicating with pScheduler<a class="headerlink" href="#communicating-with-pscheduler" title="Permalink to this headline">¶</a></h3>
-<p>Once the set of tasks that needs to be managed is determined, the agent must then decide which pScheduler servers to contact to make sure they are created. It does this by contacting a pScheduler <a class="reference internal" href="pscheduler_intro.html#term-assist-server"><em class="xref std std-term">assist server</em></a> that will identify a <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><em class="xref std std-term">lead participant</em></a>. The assist server is a pScheduler server running on the local host of the agent by default, but this <a class="reference internal" href="#psconfig-pscheduler-agent-advanced"><em>can be overridden</em></a>. How the lead is determined is test plug-in dependent which is why the agent needs a pScheduler assist server to make the decision.</p>
+<p>Once the set of tasks that needs to be managed is determined, the agent must then decide which pScheduler servers to contact to make sure they are created. It does this by contacting a pScheduler <a class="reference internal" href="pscheduler_intro.html#term-assist-server"><span class="xref std std-term">assist server</span></a> that will identify a <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><span class="xref std std-term">lead participant</span></a>. The assist server is a pScheduler server running on the local host of the agent by default, but this <a class="reference internal" href="#psconfig-pscheduler-agent-advanced"><span>can be overridden</span></a>. How the lead is determined is test plug-in dependent which is why the agent needs a pScheduler assist server to make the decision.</p>
 <p>Once it has the lead, the pSConfig agent will contact that server to see if the task already exists and will create it if not. Tasks are created with an end time that is the later of the following:</p>
 <ul class="simple">
 <li>A configurable fixed amount of time after the task is created. By default this is <em>24 hours</em>.</li>
@@ -129,7 +129,7 @@
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See <a class="reference internal" href="#psconfig-pscheduler-agent-advanced"><em>Advanced Configuration</em></a> for more detail on the configuration options listed above.</p>
+<p class="last">See <a class="reference internal" href="#psconfig-pscheduler-agent-advanced"><span>Advanced Configuration</span></a> for more detail on the configuration options listed above.</p>
 </div>
 <p>The task will be recreated after its expiration if it is still in the template. If at any point a task is removed, then the task will be canceled the next time the agent runs.</p>
 <div class="admonition note">
@@ -143,7 +143,7 @@
 <span id="psconfig-pscheduler-agent-install"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="installing-the-standalone-package">
 <span id="psconfig-pscheduler-agent-standalone"></span><h3>Installing the Standalone Package<a class="headerlink" href="#installing-the-standalone-package" title="Permalink to this headline">¶</a></h3>
-<p>The pSConfig pScheduler agent is installed with the package <tt class="docutils literal"><span class="pre">perfsonar-psconfig-pscheduler</span></tt>. You can run the following commands to install it:</p>
+<p>The pSConfig pScheduler agent is installed with the package <code class="docutils literal"><span class="pre">perfsonar-psconfig-pscheduler</span></code>. You can run the following commands to install it:</p>
 <blockquote>
 <div><p><em>CentOS</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>yum install perfsonar-psconfig-pscheduler
@@ -157,7 +157,7 @@
 </div>
 <div class="section" id="installing-as-part-of-a-bundle">
 <span id="psconfig-pscheduler-agent-bundle"></span><h3>Installing as Part of a Bundle<a class="headerlink" href="#installing-as-part-of-a-bundle" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">perfsonar-psconfig-pscheduler</span></tt> is included in the following <a class="reference internal" href="install_options.html"><em>perfSONAR bundles</em></a>:</p>
+<p>The <code class="docutils literal"><span class="pre">perfsonar-psconfig-pscheduler</span></code> is included in the following <a class="reference internal" href="install_options.html"><em>perfSONAR bundles</em></a>:</p>
 <ul class="simple">
 <li><em>perfsonar-testpoint</em></li>
 <li><em>perfsonar-core</em></li>
@@ -166,27 +166,27 @@
 </div>
 </div>
 <div class="section" id="running-psconfig-pscheduler-agent">
-<span id="psconfig-pscheduler-agent-run"></span><h2>Running <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt><a class="headerlink" href="#running-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h2>
+<span id="psconfig-pscheduler-agent-run"></span><h2>Running <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code><a class="headerlink" href="#running-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="starting-psconfig-pscheduler-agent">
-<span id="psconfig-pscheduler-agent-run-start"></span><h3>Starting <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt><a class="headerlink" href="#starting-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h3>
+<span id="psconfig-pscheduler-agent-run-start"></span><h3>Starting <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code><a class="headerlink" href="#starting-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>systemctl start psconfig-pscheduler-agent
 </pre></div>
 </div>
 </div>
 <div class="section" id="stopping-psconfig-pscheduler-agent">
-<span id="psconfig-pscheduler-agent-run-stop"></span><h3>Stopping <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt><a class="headerlink" href="#stopping-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h3>
+<span id="psconfig-pscheduler-agent-run-stop"></span><h3>Stopping <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code><a class="headerlink" href="#stopping-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>systemctl stop psconfig-pscheduler-agent
 </pre></div>
 </div>
 </div>
 <div class="section" id="restarting-psconfig-pscheduler-agent">
-<span id="psconfig-pscheduler-agent-run-restart"></span><h3>Restarting <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt><a class="headerlink" href="#restarting-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h3>
+<span id="psconfig-pscheduler-agent-run-restart"></span><h3>Restarting <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code><a class="headerlink" href="#restarting-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>systemctl restart psconfig-pscheduler-agent
 </pre></div>
 </div>
 </div>
 <div class="section" id="checking-the-status-of-psconfig-pscheduler-agent">
-<span id="psconfig-pscheduler-agent-run-status"></span><h3>Checking the status of <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt><a class="headerlink" href="#checking-the-status-of-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h3>
+<span id="psconfig-pscheduler-agent-run-status"></span><h3>Checking the status of <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code><a class="headerlink" href="#checking-the-status-of-psconfig-pscheduler-agent" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>systemctl status psconfig-pscheduler-agent
 </pre></div>
 </div>
@@ -198,27 +198,27 @@
 <span id="psconfig-pscheduler-agent-templates-basics"></span><h3>Configuration Basics<a class="headerlink" href="#configuration-basics" title="Permalink to this headline">¶</a></h3>
 <p>In order for the agent to create tasks, it must first be configured to read one or more templates. There are multiple ways to add a template depending on its location relative to the host system of the agent. These include:</p>
 <ol class="arabic simple">
-<li>Configuring <em>remote</em> templates  by supplying a URL and desired options to the agent. This is most commonly done using the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command. See <a class="reference internal" href="#psconfig-pscheduler-agent-templates-remote"><em>Remote Templates</em></a> for details.</li>
-<li>Configuring <em>local</em> templates that live on the agent&#8217;s filesystem either using the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command or by copying the template files to a dedicated directory whose contents are automatically read by the agent. See <a class="reference internal" href="#psconfig-pscheduler-agent-templates-local"><em>Local Templates</em></a> for details.</li>
+<li>Configuring <em>remote</em> templates  by supplying a URL and desired options to the agent. This is most commonly done using the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command. See <a class="reference internal" href="#psconfig-pscheduler-agent-templates-remote"><span>Remote Templates</span></a> for details.</li>
+<li>Configuring <em>local</em> templates that live on the agent&#8217;s filesystem either using the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command or by copying the template files to a dedicated directory whose contents are automatically read by the agent. See <a class="reference internal" href="#psconfig-pscheduler-agent-templates-local"><span>Local Templates</span></a> for details.</li>
 </ol>
 </div>
 <div class="section" id="remote-templates">
 <span id="psconfig-pscheduler-agent-templates-remote"></span><h3>Remote Templates<a class="headerlink" href="#remote-templates" title="Permalink to this headline">¶</a></h3>
-<p>The primary way to add, list, and delete the remote templates read by the agent is with the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command.</p>
+<p>The primary way to add, list, and delete the remote templates read by the agent is with the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command simply edits the <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/pscheduler-agent.json</span></tt> file. For most users it is recommended to use the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command as opposed to editing the file directly as it is less prone to syntax errors.</p>
+<p class="last">The <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command simply edits the <code class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/pscheduler-agent.json</span></code> file. For most users it is recommended to use the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command as opposed to editing the file directly as it is less prone to syntax errors.</p>
 </div>
-<p>As an example let&#8217;s say we have a pSConfig template at the URL <tt class="docutils literal"><span class="pre">https://10.0.0.1/example.json</span></tt>. The agent can be configured to read the template by running the following command <strong>as a root user</strong>:</p>
+<p>As an example let&#8217;s say we have a pSConfig template at the URL <code class="docutils literal"><span class="pre">https://10.0.0.1/example.json</span></code>. The agent can be configured to read the template by running the following command <strong>as a root user</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig remote add &quot;https://10.0.0.1/example.json&quot;
 </pre></div>
 </div>
 <p>The above command will add the new template to the agent. The agent should begin reading the template within 60 seconds of the change if using default settings (i.e. no agent restart required).</p>
-<p>You may also provide the command with additional processing instructions. For example, the default behavior of the agent is to ignore the archive definitions of the remote template. This is to ensure the local administrator has a chance to &#8220;opt-in&#8221; to where the results are sent. To use the archives defined in the remote template we can provide the <tt class="docutils literal"><span class="pre">--configure-archives</span></tt> option as shown below:</p>
+<p>You may also provide the command with additional processing instructions. For example, the default behavior of the agent is to ignore the archive definitions of the remote template. This is to ensure the local administrator has a chance to &#8220;opt-in&#8221; to where the results are sent. To use the archives defined in the remote template we can provide the <code class="docutils literal"><span class="pre">--configure-archives</span></code> option as shown below:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig remote add --configure-archives &quot;https://10.0.0.1/example.json&quot;
 </pre></div>
 </div>
-<p>Note that the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command ensures a given URL is only used once by the agent. If we already had <tt class="docutils literal"><span class="pre">https://10.0.0.1/example.json</span></tt> in our file and then ran the command above, the previous definition would be replaced with one that had the <tt class="docutils literal"><span class="pre">configure-archives</span></tt> option set. To see the full set of options available run the following:</p>
+<p>Note that the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command ensures a given URL is only used once by the agent. If we already had <code class="docutils literal"><span class="pre">https://10.0.0.1/example.json</span></code> in our file and then ran the command above, the previous definition would be replaced with one that had the <code class="docutils literal"><span class="pre">configure-archives</span></code> option set. To see the full set of options available run the following:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig remote --help
 </pre></div>
 </div>
@@ -227,34 +227,34 @@
 </pre></div>
 </div>
 <p>The above command returns a list of JSON objects containing the template URL and any options set.</p>
-<p>Finally, to remove our example remote template we can run the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">delete</span></tt> command <strong>as a root user</strong> as shown below:</p>
+<p>Finally, to remove our example remote template we can run the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">delete</span></code> command <strong>as a root user</strong> as shown below:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig remote delete &quot;https://10.0.0.1/example.json&quot;
 </pre></div>
 </div>
 <p>The command accepts only a URL and will remove the agent&#8217;s pointer to that template. Within 60 seconds of executing that command, the agent will run and begin canceling any tasks from the removed template that it was responsible for creating.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command is also the command used by the <a class="reference internal" href="psconfig_maddash_agent.html"><em>MaDDash agent</em></a> to manage remote templates. If you have both agents installed on the same system, then any <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command will affect both agents by default. If you&#8217;d only like a command to apply to the pScheduler agent then add the <tt class="docutils literal"><span class="pre">--agent</span> <span class="pre">pscheduler</span></tt> option. Run <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">--help</span></tt> for full details.</p>
+<p class="last">The <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command is also the command used by the <a class="reference internal" href="psconfig_maddash_agent.html"><em>MaDDash agent</em></a> to manage remote templates. If you have both agents installed on the same system, then any <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command will affect both agents by default. If you&#8217;d only like a command to apply to the pScheduler agent then add the <code class="docutils literal"><span class="pre">--agent</span> <span class="pre">pscheduler</span></code> option. Run <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">--help</span></code> for full details.</p>
 </div>
 </div>
 <div class="section" id="local-templates">
 <span id="psconfig-pscheduler-agent-templates-local"></span><h3>Local Templates<a class="headerlink" href="#local-templates" title="Permalink to this headline">¶</a></h3>
-<p>The agent can read templates from the local filesystem. One way to do this is by giving the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command either a URL beginning with <tt class="docutils literal"><span class="pre">file://</span></tt> or an absolute path to the file on the filesystem. An example command is below where <tt class="docutils literal"><span class="pre">/path/to/template.json</span></tt> is the example path to the template file:</p>
+<p>The agent can read templates from the local filesystem. One way to do this is by giving the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command either a URL beginning with <code class="docutils literal"><span class="pre">file://</span></code> or an absolute path to the file on the filesystem. An example command is below where <code class="docutils literal"><span class="pre">/path/to/template.json</span></code> is the example path to the template file:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig remote add /path/to/template.json
 </pre></div>
 </div>
-<p>Everything about the command works the same with a file path as it would with a http/https URL. See <a class="reference internal" href="#psconfig-pscheduler-agent-templates-remote"><em>Remote Templates</em></a> for more details on this command.</p>
-<p>A second way you can add a local template is to copy it into the <em>template include directory</em>. By default this is located at <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/pscheduler.d/</span></tt>. For example:</p>
+<p>Everything about the command works the same with a file path as it would with a http/https URL. See <a class="reference internal" href="#psconfig-pscheduler-agent-templates-remote"><span>Remote Templates</span></a> for more details on this command.</p>
+<p>A second way you can add a local template is to copy it into the <em>template include directory</em>. By default this is located at <code class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/pscheduler.d/</span></code>. For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">cp</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-<p>Any file ending with <tt class="docutils literal"><span class="pre">.json</span></tt> in this directory will get read by the agent automatically. Some important notes about including files in this manner:</p>
+<p>Any file ending with <code class="docutils literal"><span class="pre">.json</span></code> in this directory will get read by the agent automatically. Some important notes about including files in this manner:</p>
 <ul class="simple">
 <li>Adding a new file, removing a file or updating a file within the template include directory will get detected automatically by the agent within 60 seconds of the change (i.e. no need to restart the agent).</li>
 <li>Files are read every 60 minutes regardless of changes when the agent checks on the state of the tasks it has created in pScheduler.</li>
-<li>Any <tt class="docutils literal"><span class="pre">archives</span></tt> defined for the tasks will be configured. This is equivalent to the behavior of running <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">add</span></tt> with the <tt class="docutils literal"><span class="pre">-configure-archives</span></tt> option. If you do not want to use archives from the template, then remove them from the template file.</li>
+<li>Any <code class="docutils literal"><span class="pre">archives</span></code> defined for the tasks will be configured. This is equivalent to the behavior of running <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">add</span></code> with the <code class="docutils literal"><span class="pre">-configure-archives</span></code> option. If you do not want to use archives from the template, then remove them from the template file.</li>
 <li>The agent will follow symlinks if you use those instead of copying the file directly, though it may affect the agent&#8217;s ability to detect changes (i.e. you may have to wait up to 60 minutes for the agent to see the changes).</li>
-<li>The agent ignores any files that do not end in <tt class="docutils literal"><span class="pre">.json</span></tt></li>
+<li>The agent ignores any files that do not end in <code class="docutils literal"><span class="pre">.json</span></code></li>
 </ul>
 </div>
 </div>
@@ -262,8 +262,8 @@
 <span id="psconfig-pscheduler-agent-modify"></span><h2>Modifying Templates<a class="headerlink" href="#modifying-templates" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="configuring-default-archives">
 <span id="psconfig-pscheduler-agent-modify-archives"></span><h3>Configuring Default Archives<a class="headerlink" href="#configuring-default-archives" title="Permalink to this headline">¶</a></h3>
-<p>The agent can modify all tasks it manages to include additional archives not defined in the templates themselves. This can be done by copying archive definition files to the <em>archive include directory</em>. The default location of the <em>archive include directory</em> is <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/archives.d/</span></tt>.</p>
-<p>Archive definition files are JSON files that contain exactly one <a class="reference internal" href="pscheduler_ref_archivers.html#pscheduler-ref-archivers-archivers"><em>pScheduler archive definition</em></a>. For example, let&#8217;s say the file <tt class="docutils literal"><span class="pre">/path/to/archive-syslog.json</span></tt> contains the following:</p>
+<p>The agent can modify all tasks it manages to include additional archives not defined in the templates themselves. This can be done by copying archive definition files to the <em>archive include directory</em>. The default location of the <em>archive include directory</em> is <code class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/archives.d/</span></code>.</p>
+<p>Archive definition files are JSON files that contain exactly one <a class="reference internal" href="pscheduler_ref_archivers.html#pscheduler-ref-archivers-archivers"><span>pScheduler archive definition</span></a>. For example, let&#8217;s say the file <code class="docutils literal"><span class="pre">/path/to/archive-syslog.json</span></code> contains the following:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;archiver&quot;</span><span class="p">:</span> <span class="s">&quot;syslog&quot;</span><span class="p">,</span>
     <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -273,7 +273,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>We can copy this file to <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/archives.d/</span></tt> as follows:</p>
+<p>We can copy this file to <code class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/archives.d/</span></code> as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">cp</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">archive</span><span class="o">-</span><span class="n">syslog</span><span class="o">.</span><span class="n">json</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">archives</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">archive</span><span class="o">-</span><span class="n">syslog</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
@@ -282,7 +282,7 @@
 <li>Adding a new file, removing a file or updating a file within the archive include directory will get detected automatically by the agent within 60 seconds of the change (i.e. no need to restart the agent).</li>
 <li>Files are read every 60 minutes regardless of changes when the agent checks on the state of the tasks it&#8217;s created in pScheduler.</li>
 <li>The agent will follow symlinks if you use those instead of copying the file directly, though it may affect the agent&#8217;s ability to detect changes (i.e. you may have to wait up to 60 minutes for the agent to see the changes).</li>
-<li>The agent ignores any files that do not end in <tt class="docutils literal"><span class="pre">.json</span></tt>.</li>
+<li>The agent ignores any files that do not end in <code class="docutils literal"><span class="pre">.json</span></code>.</li>
 </ul>
 </div>
 <div class="section" id="transforming-all-remote-templates">
@@ -290,16 +290,16 @@
 <p>The agent can make custom local modifications to templates it reads using <em>transform scripts</em>. Transform scripts take the form of <a class="reference external" href="https://stedolan.github.io/jq/">jq</a> and give complete freedom to manipulate the JSON. This can be especially useful with remote templates where the agent administrator may not have the ability to make changes. Some changes you may consider making with transform scripts include (but are not limited to):</p>
 <ul class="simple">
 <li>Updating authentication tokens needed by an <em>archive</em> object that cannot be safely published in a publicly available template</li>
-<li>Updating parameters related to ports in a <em>test</em> object&#8217;s <tt class="docutils literal"><span class="pre">spec</span></tt> property if your local site has specific firewall restriction not applicable to other hosts running agents</li>
-<li>Adding additional <tt class="docutils literal"><span class="pre">reference</span></tt> information to a template <em>task</em> object so the generated pScheduler tasks contain extra metadata specific to the agent&#8217;s host</li>
+<li>Updating parameters related to ports in a <em>test</em> object&#8217;s <code class="docutils literal"><span class="pre">spec</span></code> property if your local site has specific firewall restriction not applicable to other hosts running agents</li>
+<li>Adding additional <code class="docutils literal"><span class="pre">reference</span></code> information to a template <em>task</em> object so the generated pScheduler tasks contain extra metadata specific to the agent&#8217;s host</li>
 </ul>
-<p>All components of the template JSON can be revised which creates countless possibilities. For transform scripts that you want to apply to ALL templates read by the agent, including both those added with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> and those added from the template include directory, you can add a file to the <em>transforms include directory</em>. This directory is located at  <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/transforms.d</span></tt> by default. The script takes the following form:</p>
+<p>All components of the template JSON can be revised which creates countless possibilities. For transform scripts that you want to apply to ALL templates read by the agent, including both those added with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> and those added from the template include directory, you can add a file to the <em>transforms include directory</em>. This directory is located at  <code class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/transforms.d</span></code> by default. The script takes the following form:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="o">...</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <tt class="docutils literal"><span class="pre">...</span></tt> can either be a jq statement as a string or it can be an array of strings used for readability. The example below uses the array form to define a script that sets the <tt class="docutils literal"><span class="pre">_auth-token</span></tt> field to <tt class="docutils literal"><span class="pre">ABC123</span></tt> of an archiver named <tt class="docutils literal"><span class="pre">example-archive-central</span></tt>:</p>
+<p>The <code class="docutils literal"><span class="pre">...</span></code> can either be a jq statement as a string or it can be an array of strings used for readability. The example below uses the array form to define a script that sets the <code class="docutils literal"><span class="pre">_auth-token</span></code> field to <code class="docutils literal"><span class="pre">ABC123</span></code> of an archiver named <code class="docutils literal"><span class="pre">example-archive-central</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&quot;if .archives.</span><span class="se">\&quot;</span><span class="s">example-archive-central</span><span class="se">\&quot;</span><span class="s"> then&quot;</span><span class="p">,</span>
@@ -311,7 +311,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If we say the script above lives in <tt class="docutils literal"><span class="pre">/path/to/esmond-auth.json</span></tt> we can add it to the agent as follows:</p>
+<p>If we say the script above lives in <code class="docutils literal"><span class="pre">/path/to/esmond-auth.json</span></code> we can add it to the agent as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">cp</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">esmond</span><span class="o">-</span><span class="n">auth</span><span class="o">.</span><span class="n">json</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">transforms</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">esmond</span><span class="o">-</span><span class="n">auth</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
@@ -320,33 +320,33 @@
 <li>Adding a new file, removing a file or updating a file within the transforms include directory will get detected automatically by the agent within 60 seconds of the change (i.e. no need to restart the agent).</li>
 <li>Files are read every 60 minutes regardless of changes when the agent checks on the state of the tasks it&#8217;s created in pScheduler.</li>
 <li>The agent will follow symlinks if you use those instead of copying the file directly, though it may affect the agent&#8217;s ability to detect changes (i.e. you may have to wait up to 60 minutes for the agent to see the changes).</li>
-<li>The agent ignores any files that do not end in <tt class="docutils literal"><span class="pre">.json</span></tt>.</li>
+<li>The agent ignores any files that do not end in <code class="docutils literal"><span class="pre">.json</span></code>.</li>
 </ul>
 </div>
 <div class="section" id="transforming-individual-remote-templates">
 <span id="psconfig-pscheduler-agent-modify-transform-one"></span><h3>Transforming Individual Remote Templates<a class="headerlink" href="#transforming-individual-remote-templates" title="Permalink to this headline">¶</a></h3>
-<p>It is possible to make custom local modification to <em>individual</em> templates added with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> using the <tt class="docutils literal"><span class="pre">--transform</span></tt> option. This is useful if you do not want a script affecting everything read by an agent.</p>
+<p>It is possible to make custom local modification to <em>individual</em> templates added with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> using the <code class="docutils literal"><span class="pre">--transform</span></code> option. This is useful if you do not want a script affecting everything read by an agent.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Templates added using the template include directory cannot be transformed individually. An agent administrator can apply default transformations to them as detailed in <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-all"><em>Transforming All Remote Templates</em></a> or make the change manually since the administrator presumably has access to the local template.</p>
+<p class="last">Templates added using the template include directory cannot be transformed individually. An agent administrator can apply default transformations to them as detailed in <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-all"><span>Transforming All Remote Templates</span></a> or make the change manually since the administrator presumably has access to the local template.</p>
 </div>
-<p>The <tt class="docutils literal"><span class="pre">--transform</span></tt> option accepts either a <a class="reference external" href="https://stedolan.github.io/jq/">jq</a> script as a string or from a file. For the later approach, if the option starts with <tt class="docutils literal"><span class="pre">&#64;</span></tt> it will read the file specified by the path after the <tt class="docutils literal"><span class="pre">&#64;</span></tt>. The example below shows the form where the script is provided as a string:</p>
+<p>The <code class="docutils literal"><span class="pre">--transform</span></code> option accepts either a <a class="reference external" href="https://stedolan.github.io/jq/">jq</a> script as a string or from a file. For the later approach, if the option starts with <code class="docutils literal"><span class="pre">&#64;</span></code> it will read the file specified by the path after the <code class="docutils literal"><span class="pre">&#64;</span></code>. The example below shows the form where the script is provided as a string:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig remote add --transform &quot;if .archives.\&quot;example-archive-central\&quot; then .archives.\&quot;example-archive-central\&quot;.data.\&quot;_auth-token\&quot; |= \&quot;ABC123\&quot; else . end&quot; &quot;https://10.0.0.1/example.json&quot;
 </pre></div>
 </div>
-<p>Alternatively, if we assume our script lives in a file at <tt class="docutils literal"><span class="pre">/path/to/esmond-auth.json</span></tt> with the format described in <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-all"><em>Transforming All Remote Templates</em></a>, we can run:</p>
+<p>Alternatively, if we assume our script lives in a file at <code class="docutils literal"><span class="pre">/path/to/esmond-auth.json</span></code> with the format described in <a class="reference internal" href="#psconfig-pscheduler-agent-modify-transform-all"><span>Transforming All Remote Templates</span></a>, we can run:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig remote add --transform @/path/to/esmond-auth.json &quot;https://10.0.0.1/example.json&quot;
 </pre></div>
 </div>
-<p>In both cases you can run <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">list</span></tt> to verify the transform is in the remote definition.</p>
+<p>In both cases you can run <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">list</span></code> to verify the transform is in the remote definition.</p>
 </div>
 </div>
 <div class="section" id="troubleshooting">
 <span id="psconfig-pscheduler-agent-troubleshoot"></span><h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="looking-at-the-last-run-with-psconfig-pscheduler-stats">
-<span id="psconfig-pscheduler-agent-troubleshoot-stats"></span><h3>Looking at the last run with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></tt><a class="headerlink" href="#looking-at-the-last-run-with-psconfig-pscheduler-stats" title="Permalink to this headline">¶</a></h3>
-<p>One of the first steps to perform when debugging the pSConfig pScheduler agent is to get information about the last time the agent ran. A run in this context describes an instance when pSConfig downloaded all the templates it is configured to use, made any local modifications and determined which tasks that need to be created and/or removed from the pScheduler servers with which it interacts. As described in <a class="reference internal" href="#psconfig-pscheduler-agent-intro-role"><em>pSConfig pScheduler Agent&#8217;s Role</em></a>, a run can be triggered by the passing of a set time interval (60 minutes by default) or a configuration file change.</p>
-<p>Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></tt> command. The command does not require any options and is shown below:</p>
+<span id="psconfig-pscheduler-agent-troubleshoot-stats"></span><h3>Looking at the last run with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></code><a class="headerlink" href="#looking-at-the-last-run-with-psconfig-pscheduler-stats" title="Permalink to this headline">¶</a></h3>
+<p>One of the first steps to perform when debugging the pSConfig pScheduler agent is to get information about the last time the agent ran. A run in this context describes an instance when pSConfig downloaded all the templates it is configured to use, made any local modifications and determined which tasks that need to be created and/or removed from the pScheduler servers with which it interacts. As described in <a class="reference internal" href="#psconfig-pscheduler-agent-intro-role"><span>pSConfig pScheduler Agent&#8217;s Role</span></a>, a run can be triggered by the passing of a set time interval (60 minutes by default) or a configuration file change.</p>
+<p>Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></code> command. The command does not require any options and is shown below:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig pscheduler-stats
 </pre></div>
 </div>
@@ -367,10 +367,10 @@ From remote definitions: 3
 <li><strong>Agent Last Run Start Time</strong> is the time when the agent began its last complete run.</li>
 <li><strong>Agent Last Run End Time</strong> is the time when the last complete run ended.</li>
 <li><strong>Agent Last Run Process ID (PID)</strong> is the process ID of the agent at the time of its last complete run. This should only change if the agent is restarted.</li>
-<li><strong>Agent Last Run Log GUID</strong> is a globally unique ID used to identify a run in the logs. You can grep the <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-logs"><em>log files</em></a> with this ID to get the information about a specific run.</li>
+<li><strong>Agent Last Run Log GUID</strong> is a globally unique ID used to identify a run in the logs. You can grep the <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-logs"><span>log files</span></a> with this ID to get the information about a specific run.</li>
 <li><strong>Total tasks managed by agent</strong> is the number of tasks the agent is responsible for managing. This is not necessarily the total number that were created the last run, but it is the number of tasks it is monitoring and managing across all pScheduler servers.</li>
 <li><strong>From include files</strong> is a count of the number of tasks that come from templates in the template include directory. Directly underneath that is a breakdown of the task count by the file from which they originate.</li>
-<li><strong>From remote definitions</strong> is a count of the number of tasks that come from URLs added using the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></tt> command. Underneath is a breakdown of the task count by URL.</li>
+<li><strong>From remote definitions</strong> is a count of the number of tasks that come from URLs added using the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command. Underneath is a breakdown of the task count by URL.</li>
 </ul>
 <p>This command is useful as a quick health check of the agent. It can answer questions like:</p>
 <ul class="simple">
@@ -385,8 +385,8 @@ From remote definitions: 3
 <p>This script may not give all the answers, but will hopefully get things started when debugging unexpected behavior of the agent.</p>
 </div>
 <div class="section" id="viewing-managed-pscheduler-tasks-with-psconfig-pscheduler-tasks">
-<span id="psconfig-pscheduler-agent-troubleshoot-tasks"></span><h3>Viewing Managed pScheduler Tasks with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></tt><a class="headerlink" href="#viewing-managed-pscheduler-tasks-with-psconfig-pscheduler-tasks" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></tt> command provides a JSON list of pScheduler tasks managed by the pSConfig pScheduler agent. It parses the file <tt class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log</span></tt> for all the tasks found in the last run. It does not require any options and can be run as follows:</p>
+<span id="psconfig-pscheduler-agent-troubleshoot-tasks"></span><h3>Viewing Managed pScheduler Tasks with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></code><a class="headerlink" href="#viewing-managed-pscheduler-tasks-with-psconfig-pscheduler-tasks" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></code> command provides a JSON list of pScheduler tasks managed by the pSConfig pScheduler agent. It parses the file <code class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log</span></code> for all the tasks found in the last run. It does not require any options and can be run as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>psconfig pscheduler-tasks
 </pre></div>
 </div>
@@ -477,13 +477,13 @@ From remote definitions: 3
 <p>If you need to debug beyond what the utilities above provide from the logs, then you can manually look at the log files.There are three important logs used by the agent:</p>
 <blockquote>
 <div><ul class="simple">
-<li>The <strong>agent log</strong> lives at <tt class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent.log</span></tt> and tracks basic information about agent activity and any errors encountered. This is often the first log to review when debugging as it is not as verbose as the others and provides a quick summary of the agent&#8217;s actions.</li>
-<li>The <strong>task log</strong> lives at <tt class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log</span></tt> and tracks the pScheduler tasks the agent manages. This is where the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></tt> <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-tasks"><em>command</em></a> gets the information it displays. This log is useful if you need to look at how pSConfig is defining tasks it gives (or tries to give) to pScheduler.</li>
-<li>The <strong>transaction log</strong> lives at <tt class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log</span></tt> and logs each individual interaction with pScheduler. Every request to list, create and delete tasks is shown in this log. Each line provides context such as the action being performed, the pScheduler server URL and the raw JSON sent/received from the server. This log is intended to be verbose and useful when intricate debugging is needed.</li>
+<li>The <strong>agent log</strong> lives at <code class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent.log</span></code> and tracks basic information about agent activity and any errors encountered. This is often the first log to review when debugging as it is not as verbose as the others and provides a quick summary of the agent&#8217;s actions.</li>
+<li>The <strong>task log</strong> lives at <code class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log</span></code> and tracks the pScheduler tasks the agent manages. This is where the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></code> <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-tasks"><span>command</span></a> gets the information it displays. This log is useful if you need to look at how pSConfig is defining tasks it gives (or tries to give) to pScheduler.</li>
+<li>The <strong>transaction log</strong> lives at <code class="docutils literal"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log</span></code> and logs each individual interaction with pScheduler. Every request to list, create and delete tasks is shown in this log. Each line provides context such as the action being performed, the pScheduler server URL and the raw JSON sent/received from the server. This log is intended to be verbose and useful when intricate debugging is needed.</li>
 </ul>
 </div></blockquote>
-<p>All of the logs are designed to by highly parsable with fields in the form of <tt class="docutils literal"><span class="pre">key=value</span></tt> separated by whitespace. Every line has a <tt class="docutils literal"><span class="pre">guid=</span></tt> field with an ID unique to the run of an agent. This ID is consistent between log files and is incredibly useful for linking events seen in separate logs.</p>
-<p>As an example, the GUID can be used for filtering log lines across files with <tt class="docutils literal"><span class="pre">grep</span></tt> or similar tools.  It is often easiest to run the <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></tt> <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-stats"><em>command</em></a> to get the GUID of the last run as a launching point to parse the logs. For example, looking at the example output from <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-stats"><em>Looking at the last run with psconfig pscheduler-stats</em></a>, the run had a GUID of <tt class="docutils literal"><span class="pre">DD85D234-47F5-11E8-B2F1-3613118410B6</span></tt>. Knowing this GUID, all the log messages associated with that run can be queried using a command like the following:</p>
+<p>All of the logs are designed to by highly parsable with fields in the form of <code class="docutils literal"><span class="pre">key=value</span></code> separated by whitespace. Every line has a <code class="docutils literal"><span class="pre">guid=</span></code> field with an ID unique to the run of an agent. This ID is consistent between log files and is incredibly useful for linking events seen in separate logs.</p>
+<p>As an example, the GUID can be used for filtering log lines across files with <code class="docutils literal"><span class="pre">grep</span></code> or similar tools.  It is often easiest to run the <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></code> <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-stats"><span>command</span></a> to get the GUID of the last run as a launching point to parse the logs. For example, looking at the example output from <a class="reference internal" href="#psconfig-pscheduler-agent-troubleshoot-stats"><span>Looking at the last run with psconfig pscheduler-stats</span></a>, the run had a GUID of <code class="docutils literal"><span class="pre">DD85D234-47F5-11E8-B2F1-3613118410B6</span></code>. Knowing this GUID, all the log messages associated with that run can be queried using a command like the following:</p>
 <div class="highlight-python"><div class="highlight"><pre>grep &quot;guid=DD85D234-47F5-11E8-B2F1-3613118410B6&quot; /var/log/perfsonar/psconfig-pscheduler-*.log
 </pre></div>
 </div>
@@ -492,7 +492,7 @@ From remote definitions: 3
 </div>
 <div class="section" id="advanced-configuration">
 <span id="psconfig-pscheduler-agent-advanced"></span><h2>Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Permalink to this headline">¶</a></h2>
-<p>The primary configuration file for the agent lives in <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/pscheduler-agent.json</span></tt>. Generally you should not have to edit that file directly, but if you are interested in the full set of options available, then see the <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-pscheduler-agent-schema.json">schema file</a>.</p>
+<p>The primary configuration file for the agent lives in <code class="docutils literal"><span class="pre">/etc/perfsonar/psconfig/pscheduler-agent.json</span></code>. Generally you should not have to edit that file directly, but if you are interested in the full set of options available, then see the <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-pscheduler-agent-schema.json">schema file</a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This section will be expanded upon the completion of a command-line tool to aid in configuration.</p>
@@ -501,7 +501,7 @@ From remote definitions: 3
 <div class="section" id="further-reading">
 <span id="psconfig-pscheduler-agent-reading"></span><h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>For a full listing of pSConfig pScheduler Agent related files see the reference <a class="reference internal" href="config_files.html#config-files-psconfig"><em>here</em></a></li>
+<li>For a full listing of pSConfig pScheduler Agent related files see the reference <a class="reference internal" href="config_files.html#config-files-psconfig"><span>here</span></a></li>
 <li>For information regarding dynamic templates and how they relate to the pSConfig pScheduler Agent see <a class="reference internal" href="psconfig_autoconfig.html"><em>pSConfig Auto-Configuration</em></a></li>
 </ul>
 </div>
@@ -529,11 +529,11 @@ From remote definitions: 3
 <li><a class="reference internal" href="#installing-as-part-of-a-bundle">Installing as Part of a Bundle</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-psconfig-pscheduler-agent">Running <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt></a><ul>
-<li><a class="reference internal" href="#starting-psconfig-pscheduler-agent">Starting <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt></a></li>
-<li><a class="reference internal" href="#stopping-psconfig-pscheduler-agent">Stopping <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt></a></li>
-<li><a class="reference internal" href="#restarting-psconfig-pscheduler-agent">Restarting <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt></a></li>
-<li><a class="reference internal" href="#checking-the-status-of-psconfig-pscheduler-agent">Checking the status of <tt class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></tt></a></li>
+<li><a class="reference internal" href="#running-psconfig-pscheduler-agent">Running <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code></a><ul>
+<li><a class="reference internal" href="#starting-psconfig-pscheduler-agent">Starting <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code></a></li>
+<li><a class="reference internal" href="#stopping-psconfig-pscheduler-agent">Stopping <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code></a></li>
+<li><a class="reference internal" href="#restarting-psconfig-pscheduler-agent">Restarting <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code></a></li>
+<li><a class="reference internal" href="#checking-the-status-of-psconfig-pscheduler-agent">Checking the status of <code class="docutils literal"><span class="pre">psconfig-pscheduler-agent</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configuring-templates">Configuring Templates</a><ul>
@@ -549,8 +549,8 @@ From remote definitions: 3
 </ul>
 </li>
 <li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
-<li><a class="reference internal" href="#looking-at-the-last-run-with-psconfig-pscheduler-stats">Looking at the last run with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></tt></a></li>
-<li><a class="reference internal" href="#viewing-managed-pscheduler-tasks-with-psconfig-pscheduler-tasks">Viewing Managed pScheduler Tasks with <tt class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></tt></a></li>
+<li><a class="reference internal" href="#looking-at-the-last-run-with-psconfig-pscheduler-stats">Looking at the last run with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-stats</span></code></a></li>
+<li><a class="reference internal" href="#viewing-managed-pscheduler-tasks-with-psconfig-pscheduler-tasks">Viewing Managed pScheduler Tasks with <code class="docutils literal"><span class="pre">psconfig</span> <span class="pre">pscheduler-tasks</span></code></a></li>
 <li><a class="reference internal" href="#reading-the-logs">Reading the Logs</a></li>
 </ul>
 </li>
@@ -579,7 +579,7 @@ From remote definitions: 3
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -591,7 +591,7 @@ From remote definitions: 3
         <li class="right" >
           <a href="psconfig_publish.html" title="Publishing a pSConfig Template"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -631,9 +631,9 @@ From remote definitions: 3
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2018, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

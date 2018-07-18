@@ -8,7 +8,7 @@
     
     <title>Lookup Service Registration Daemon Configuration File &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="Configuring pScheduler" href="config_pscheduler.html" />
     <link rel="prev" title="Listing of Important perfSONAR Files" href="config_files.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="config_files.html" title="Listing of Important perfSONAR Files"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="lookup-service-registration-daemon-configuration-file">
 <h1>Lookup Service Registration Daemon Configuration File<a class="headerlink" href="#lookup-service-registration-daemon-configuration-file" title="Permalink to this headline">¶</a></h1>
@@ -78,19 +78,19 @@
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>The file <em>lsregistrationdaemon.conf</em> is used to define what gets registered into the lookup service. The file allows a degree of flexibility in what is manually defined versus what is automatically discovered. In most cases, the defaults of this file will be suitable and you should not need to make any changes. Some situations where you might want to edit this file though are (this is not an exhaustive list):</p>
 <ul class="simple">
-<li>You have a private lookup service and would like to only register to that service. See <a class="reference internal" href="#config-ls-registration-ls-instance"><em>ls_instance Directive</em></a></li>
+<li>You have a private lookup service and would like to only register to that service. See <a class="reference internal" href="#config-ls-registration-ls-instance"><span>ls_instance Directive</span></a></li>
 <li>You have a host with multiple network interfaces and would like to choose the interface on which a particular service or set of services run</li>
 <li>You are not running a Toolkit (and thus don&#8217;t have the web UI) and would like to set location information, community tags or other values</li>
 <li>You wish to override the auto-discovered defaults for one reason or another (e.g. maybe they are not correct or you would like to provide more detail)</li>
 </ul>
 <p>The basic structure of the file is as follows:</p>
 <ul class="simple">
-<li>A collection of top-level directives to control things like <a class="reference internal" href="#config-ls-registration-ls-comm"><em>lookup service communication</em></a> and <a class="reference internal" href="#config-ls-registration-daemon"><em>how the daemon process runs</em></a></li>
-<li>A list of <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a> directives that group together elements with a common set of parameters</li>
-<li>A list of <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a> directives within those sites that represent the host to be registered. If the host in question is the host on which the LS Registration Daemon is running, than many of the values can be auto-discovered.</li>
-<li>A list of <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> directives within those hosts that represent the services to be registered.</li>
+<li>A collection of top-level directives to control things like <a class="reference internal" href="#config-ls-registration-ls-comm"><span>lookup service communication</span></a> and <a class="reference internal" href="#config-ls-registration-daemon"><span>how the daemon process runs</span></a></li>
+<li>A list of <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a> directives that group together elements with a common set of parameters</li>
+<li>A list of <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a> directives within those sites that represent the host to be registered. If the host in question is the host on which the LS Registration Daemon is running, than many of the values can be auto-discovered.</li>
+<li>A list of <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> directives within those hosts that represent the services to be registered.</li>
 </ul>
-<p>The <em>lsregistrationdaemon.conf</em> has the feature that almost any directive can be defined at a higher level in the configuration hierarchy and be inherited by all the descendents. For example, one can define the <a class="reference internal" href="#config-ls-registration-latitude"><em>latitude</em></a> and <a class="reference internal" href="#config-ls-registration-longitude"><em>longitude</em></a> directives at the top-level of the file. All registered hosts and services will in turn inherit these properties. In contrast, you can define them directly in each host directive if you want each individual host to have different values. You can even define both and have the more specific values in the host directive override the ones defined at a higher level in the hierarchy.</p>
+<p>The <em>lsregistrationdaemon.conf</em> has the feature that almost any directive can be defined at a higher level in the configuration hierarchy and be inherited by all the descendents. For example, one can define the <a class="reference internal" href="#config-ls-registration-latitude"><span>latitude</span></a> and <a class="reference internal" href="#config-ls-registration-longitude"><span>longitude</span></a> directives at the top-level of the file. All registered hosts and services will in turn inherit these properties. In contrast, you can define them directly in each host directive if you want each individual host to have different values. You can even define both and have the more specific values in the host directive override the ones defined at a higher level in the hierarchy.</p>
 <p>With these items in mind the remainder of this section contains a full reference of the options available in the <em>lsregistrationdaemon.conf</em> file.</p>
 </div>
 <div class="section" id="lookup-service-communication">
@@ -103,7 +103,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of seconds in between checking and renewing a record in the lookup service</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">check_interval</span> <span class="pre">SECONDS</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">check_interval</span> <span class="pre">SECONDS</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -124,7 +124,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL of the lookup service with which to register. If you are using a  private lookup service, you must set the URL here.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ls_instance</span> <span class="pre">URL</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">ls_instance</span> <span class="pre">URL</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -143,7 +143,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The percentage difference in round-trip-time as a decimal (e.g. .1 = 10% ) that a new lookup service server must be in order for the client to considering switching to that service. For example, if the threshold is set as .1 (10%) and a lookup services is 100ms away, a new lookup service must be at most 90ms away for the client to consider switching.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ls_instance_latency_threshold</span> <span class="pre">NUMBER</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">ls_instance_latency_threshold</span> <span class="pre">NUMBER</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -162,9 +162,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If no <a class="reference internal" href="#config-ls-registration-ls-instance"><em>ls_instance</em></a> is set, the the default behavior is to use the lookup service that is a) reachable and b) has the shortest round-trip-time. It&#8217;s possible due to outages, network changes, new lookup services in the bootstrap, etc the chosen lookup service will change over time. The daemon checks to see which lookup service to use every <a class="reference internal" href="#config-ls-registration-check-interval"><em>check interval</em></a>. Rather than immediately changing, this value sets how many times a new lookup service must be returned before your daemon will switch to using it. This prevents frequent <em>flapping</em> between lookup services.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If no <a class="reference internal" href="#config-ls-registration-ls-instance"><span>ls_instance</span></a> is set, the the default behavior is to use the lookup service that is a) reachable and b) has the shortest round-trip-time. It&#8217;s possible due to outages, network changes, new lookup services in the bootstrap, etc the chosen lookup service will change over time. The daemon checks to see which lookup service to use every <a class="reference internal" href="#config-ls-registration-check-interval"><span>check interval</span></a>. Rather than immediately changing, this value sets how many times a new lookup service must be returned before your daemon will switch to using it. This prevents frequent <em>flapping</em> between lookup services.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">server_flap_threshold</span> <span class="pre">NUMBER</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">server_flap_threshold</span> <span class="pre">NUMBER</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -188,9 +188,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether we want to automatically determine the value of any property not manually set in this file. If set to 1, it will try to determine as many fields as possible. If set to 0, all fields must be manually set. Manually set properties take precedence over any auto-discovered values.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -207,11 +207,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover</em></a> is enabled, indicates whether private IP addresses (<a class="reference external" href="https://tools.ietf.org/html/rfc1918">RFC 1918</a> and <a class="reference external" href="https://tools.ietf.org/html/rfc4193">RFC 4193</a>) can be used if discovered. Generally you will only want to set this if you are using a private lookup service.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover</span></a> is enabled, indicates whether private IP addresses (<a class="reference external" href="https://tools.ietf.org/html/rfc1918">RFC 1918</a> and <a class="reference external" href="https://tools.ietf.org/html/rfc4193">RFC 4193</a>) can be used if discovered. Generally you will only want to set this if you are using a private lookup service.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">allow_internal_addresses</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">allow_internal_addresses</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -230,9 +230,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL of the pScheduler instance to query for auto-discovering tests.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">allow_internal_addresses</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">allow_internal_addresses</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -251,9 +251,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Disables autodiscovery of pScheduler test types for interface</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disable_autodiscover_tests</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">disable_autodiscover_tests</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -268,11 +268,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover</em></a> is enabled, any IPv4 address found will lead to an attempt to discover a DNS name via a reverse DNS query. This disables that reverse lookup and any value that would have used the discovered hostname will use the raw IPv4 address instead.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover</span></a> is enabled, any IPv4 address found will lead to an attempt to discover a DNS name via a reverse DNS query. This disables that reverse lookup and any value that would have used the discovered hostname will use the raw IPv4 address instead.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disable_ipv4_reverse_lookup</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">disable_ipv4_reverse_lookup</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -289,11 +289,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover</em></a> is enabled, any IPv6 address found will lead to an attempt to discover a DNS name via a reverse DNS query. This disables that reverse lookup and any value that would have used the discovered hostname will use the raw IPv6 address instead.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover</span></a> is enabled, any IPv6 address found will lead to an attempt to discover a DNS name via a reverse DNS query. This disables that reverse lookup and any value that would have used the discovered hostname will use the raw IPv6 address instead.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disable_ipv6_reverse_lookup</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">disable_ipv6_reverse_lookup</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -312,9 +312,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Disables registration of the enclosing block and any sub-blocks.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disabled</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">disabled</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -333,9 +333,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Skips any automatic checks to see if a service is running and registers the record to the lookup service regardless of whether the item being registered is actually running or not.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">force_up_status</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">force_up_status</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -354,9 +354,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates that the service runs on the same machine as the LS registration Daemon. This must be set for most autodiscover functionality to work, especially as pertains to hosts.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">is_local</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">is_local</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -373,11 +373,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates the primary interface to use. When set, autodiscover will only register information for this interface when determining a <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> address</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates the primary interface to use. When set, autodiscover will only register information for this interface when determining a <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> address</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">primary_interface</span> <span class="pre">IFNAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">primary_interface</span> <span class="pre">IFNAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
 </tr>
@@ -394,11 +394,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A set of common parameters to be used by any <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> that <a class="reference internal" href="#config-ls-registration-inherits"><em>inherits</em></a> this template</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A set of common parameters to be used by any <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> that <a class="reference internal" href="#config-ls-registration-inherits"><span>inherits</span></a> this template</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;service_template</span> <span class="pre">TEMPLATENAME&gt;...&lt;/service_template&gt;</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">&lt;service_template</span> <span class="pre">TEMPLATENAME&gt;...&lt;/service_template&gt;</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -418,11 +418,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A person responsible for managing the  entity to be registered. See <a class="reference internal" href="#config-ls-registration-administrators"><em>Administrators</em></a> for more information.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A person responsible for managing the  entity to be registered. See <a class="reference internal" href="#config-ls-registration-administrators"><span>Administrators</span></a> for more information.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;administrator&gt;...&lt;/administrator&gt;</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">&lt;administrator&gt;...&lt;/administrator&gt;</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -441,9 +441,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The city in which the entity to be registered resides</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">city</span> <span class="pre">CITY</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">city</span> <span class="pre">CITY</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -465,9 +465,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The <a class="reference external" href="http://www.iso.org/iso/home/standards/country_codes.htm#2012_iso3166-2">ISO 3166</a> two-letter country code for the country in which the entity to be registered resides</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">country</span> <span class="pre">COUNTRY</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">country</span> <span class="pre">COUNTRY</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -489,9 +489,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The administrative domain in which the entity to be registered resides. Usually expressed as a DNS name (e.g. perfsonar.net).</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">domain</span> <span class="pre">DOMAIN</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">domain</span> <span class="pre">DOMAIN</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -513,9 +513,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The latitude of the entity to be registered. Specified as a positive (north of the equator) or negative (south of the equator) decimal.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">latitude</span> <span class="pre">LATITUDE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">latitude</span> <span class="pre">LATITUDE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -537,9 +537,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The longitude of the entity to be registered. Specified as a positive (east of the prime meridian) or negative (west of the prime meridian) decimal.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">longitude</span> <span class="pre">LONGITUDE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">longitude</span> <span class="pre">LONGITUDE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -561,9 +561,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The country specific region. For example, in the U.S. this value corresponds to the state. It should be the two-letter abbreviation if applicable.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">region</span> <span class="pre">REGION</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">region</span> <span class="pre">REGION</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -583,9 +583,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A grouping of elements that have similar configured properties, be it location, autodiscover settings or otherwise. See <a class="reference internal" href="#config-ls-registration-sites"><em>Sites</em></a> for more information.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A grouping of elements that have similar configured properties, be it location, autodiscover settings or otherwise. See <a class="reference internal" href="#config-ls-registration-sites"><span>Sites</span></a> for more information.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;site&gt;...&lt;/site&gt;</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">&lt;site&gt;...&lt;/site&gt;</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -607,9 +607,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The country specific postal code of the location where the entity to be registered resides.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">zip_code</span> <span class="pre">ZIPCODE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">zip_code</span> <span class="pre">ZIPCODE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -632,11 +632,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The full name of the administrator. Either this field or <a class="reference internal" href="#config-ls-registration-email"><em>email</em></a> is required.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The full name of the administrator. Either this field or <a class="reference internal" href="#config-ls-registration-email"><span>email</span></a> is required.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">name</span> <span class="pre">NAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">name</span> <span class="pre">NAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-administrator"><em>administrator</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-administrator"><span>administrator</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -656,11 +656,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The email address of the administrator. Either this field or <a class="reference internal" href="#config-ls-registration-admin-name"><em>name</em></a> is required.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The email address of the administrator. Either this field or <a class="reference internal" href="#config-ls-registration-admin-name"><span>name</span></a> is required.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">email</span> <span class="pre">EMAIL</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">email</span> <span class="pre">EMAIL</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-administrator"><em>administrator</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-administrator"><span>administrator</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -682,9 +682,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The organization to which the administrator belongs</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">organization</span> <span class="pre">ORGANIZATION</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">organization</span> <span class="pre">ORGANIZATION</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-administrator"><em>administrator</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-administrator"><span>administrator</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -706,9 +706,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The phone number of the administrator</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">phone</span> <span class="pre">PHONE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">phone</span> <span class="pre">PHONE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-administrator"><em>administrator</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-administrator"><span>administrator</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -731,11 +731,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A host to be registered. See <a class="reference internal" href="#config-ls-registration-hosts"><em>Hosts</em></a> for more details.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A host to be registered. See <a class="reference internal" href="#config-ls-registration-hosts"><span>Hosts</span></a> for more details.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;host&gt;...&lt;/host&gt;</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">&lt;host&gt;...&lt;/host&gt;</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-site"><em>site</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-site"><span>site</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -757,9 +757,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The name of the site</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">site_name</span> <span class="pre">NAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">site_name</span> <span class="pre">NAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -781,9 +781,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A community string or project string to be registered. Often used as a way to define custom tags for registered entities.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">site_name</span> <span class="pre">NAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">site_name</span> <span class="pre">NAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -806,11 +806,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates who may access this host to run tests. Valid values are <strong>public</strong> (anyone can access), <strong>private</strong> (only the owner&#8217;s local network can access), <strong>research-education</strong> (only those coming from R&amp;E networks may access) or <strong>limited</strong> (some combination of the others, you should provide more detail in <a class="reference internal" href="#config-ls-registration-access-policy-notes"><em>access_policy_notes</em></a>).</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates who may access this host to run tests. Valid values are <strong>public</strong> (anyone can access), <strong>private</strong> (only the owner&#8217;s local network can access), <strong>research-education</strong> (only those coming from R&amp;E networks may access) or <strong>limited</strong> (some combination of the others, you should provide more detail in <a class="reference internal" href="#config-ls-registration-access-policy-notes"><span>access_policy_notes</span></a>).</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">access_policy</span> <span class="pre">POLICY</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">access_policy</span> <span class="pre">POLICY</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -830,11 +830,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A human-readable description of the <a class="reference internal" href="#config-ls-registration-access-policy"><em>access_policy</em></a>. For example &#8220;Authenticate using username and password&#8221;. There is no defined form for this field and is intended as a way to provide additional information to those looking at the record.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A human-readable description of the <a class="reference internal" href="#config-ls-registration-access-policy"><span>access_policy</span></a>. For example &#8220;Authenticate using username and password&#8221;. There is no defined form for this field and is intended as a way to provide additional information to those looking at the record.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">access_policy_notes</span> <span class="pre">NOTES</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">access_policy_notes</span> <span class="pre">NOTES</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -854,15 +854,15 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether you want to autodiscover the list of interfaces on the host. Enabled if <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover Directive</em></a> is set. Disabling this with <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover Directive</em></a> enabled will turn-off interface discover but still allow other fields to be discovered.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether you want to autodiscover the list of interfaces on the host. Enabled if <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover Directive</span></a> is set. Disabling this with <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover Directive</span></a> enabled will turn-off interface discover but still allow other fields to be discovered.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_interfaces</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_interfaces</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The value of <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover Directive</em></a></td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The value of <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover Directive</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
@@ -880,9 +880,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of perfSONAR install. Examples include <em>test-point</em>, <em>perfsonar-core</em>, <em>perfsonar-complete</em>, and <em>perfsonar-toolkit</em></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">bundle_type</span> <span class="pre">TYPE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">bundle_type</span> <span class="pre">TYPE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -902,11 +902,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The version of the <a class="reference internal" href="#config-ls-registration-bundle-type"><em>bundle</em></a> installed</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The version of the <a class="reference internal" href="#config-ls-registration-bundle-type"><span>bundle</span></a> installed</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">bundle_version</span> <span class="pre">VERSION</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">bundle_version</span> <span class="pre">VERSION</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -928,9 +928,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A DNS name (preferably) or IP that identifies the host</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">host_name</span> <span class="pre">NAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">host_name</span> <span class="pre">NAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -950,11 +950,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Represents a manually defined interface on the host. See <a class="reference internal" href="#config-ls-registration-interfaces"><em>Interfaces</em></a> for more details.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Represents a manually defined interface on the host. See <a class="reference internal" href="#config-ls-registration-interfaces"><span>Interfaces</span></a> for more details.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;interface&gt;...&lt;interface&gt;</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">&lt;interface&gt;...&lt;interface&gt;</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -976,9 +976,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates if this host is a virtual machine (VM) as opposed to a physical host</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">is_virtual_machine</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">is_virtual_machine</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1000,9 +1000,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The amount of memory on the host appended with the units (e.g. 1024MB, 1GB)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">memory</span> <span class="pre">MEMORY</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">memory</span> <span class="pre">MEMORY</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1024,9 +1024,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The kernel and version running on the host.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">os_kernel</span> <span class="pre">KERNEL</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">os_kernel</span> <span class="pre">KERNEL</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1048,9 +1048,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The name of the operating system (e.g. CentOS, Debian, etc).</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">os_name</span> <span class="pre">NAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">os_name</span> <span class="pre">NAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1072,9 +1072,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The version of the operating system.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">os_version</span> <span class="pre">VERSION</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">os_version</span> <span class="pre">VERSION</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1096,9 +1096,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of cores on the machine&#8217;s processor(s)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">processor_cores</span> <span class="pre">CORES</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">processor_cores</span> <span class="pre">CORES</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1120,9 +1120,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number processors</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">processor_count</span> <span class="pre">COUNT</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">processor_count</span> <span class="pre">COUNT</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1144,9 +1144,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The processor speed with units at the end of value (e.g. 2400MHz, 2.4 GHz)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">processor_speed</span> <span class="pre">SPEED</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">processor_speed</span> <span class="pre">SPEED</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1168,9 +1168,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A human readable name and description of your processor</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">processor_cpuid</span> <span class="pre">DESCRIPTION</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">processor_cpuid</span> <span class="pre">DESCRIPTION</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1192,9 +1192,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of host. Valid values are zero or more of the following <em>nren</em>, <em>regional</em>, <em>site-border</em>, <em>site-internal</em>, <em>science-dmz</em>, <em>exchange-point</em>, <em>test-host</em>, <em>default-path</em>, <em>backup-path</em></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">role</span> <span class="pre">ROLE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">role</span> <span class="pre">ROLE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -1214,11 +1214,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A service running on the host. See <a class="reference internal" href="#config-ls-registration-services"><em>Services</em></a> for more details.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A service running on the host. See <a class="reference internal" href="#config-ls-registration-services"><span>Services</span></a> for more details.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;service&gt;...&lt;/service&gt;</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">&lt;service&gt;...&lt;/service&gt;</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -1240,9 +1240,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum receive buffer autotuning will calculate</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tcp_autotune_max_buffer_recv</span> <span class="pre">SIZE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">tcp_autotune_max_buffer_recv</span> <span class="pre">SIZE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1264,9 +1264,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum send buffer autotuning will calculate</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tcp_autotune_max_buffer_send</span> <span class="pre">SIZE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">tcp_autotune_max_buffer_send</span> <span class="pre">SIZE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1288,9 +1288,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The TCP congestion control algorithm configured for the host</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tcp_cc_algorithm</span> <span class="pre">SIZE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">tcp_cc_algorithm</span> <span class="pre">SIZE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1312,9 +1312,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The length of the processor input queue</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tcp_max_backlog</span> <span class="pre">SIZE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">tcp_max_backlog</span> <span class="pre">SIZE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1336,9 +1336,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum size of TCP buffers for receiving</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tcp_max_buffer_recv</span> <span class="pre">SIZE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">tcp_max_buffer_recv</span> <span class="pre">SIZE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1360,9 +1360,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum size of TCP buffers for sending</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tcp_max_buffer_send</span> <span class="pre">SIZE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">tcp_max_buffer_send</span> <span class="pre">SIZE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1384,9 +1384,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The known maximum achievable throughput on this host. This is a manually set value based on experience with the hardware. For example, some low cost hosts may have a 1Gbps network interface, but processor  limitations prevent it from ever achieving more than 500Mbps. Should be value followed by units (e.g. 1024Mbps, 1Gbps)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tcp_max_achievable</span> <span class="pre">BANDWIDTH</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">tcp_max_achievable</span> <span class="pre">BANDWIDTH</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1411,9 +1411,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The IP address or DNS name of the interface.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">address</span> <span class="pre">ADDRESS</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">address</span> <span class="pre">ADDRESS</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -1435,9 +1435,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The maximum throughput of the interface in bps.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">capacity</span> <span class="pre">CAPACITY</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">capacity</span> <span class="pre">CAPACITY</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1459,9 +1459,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Removes test type from interface even if it is in the autodiscovery list</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disable_test</span> <span class="pre">TEST_TYPE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">disable_test</span> <span class="pre">TEST_TYPE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -1478,9 +1478,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The interface name (e.g. eth1, em0)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">if_name</span> <span class="pre">NAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">if_name</span> <span class="pre">NAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1502,9 +1502,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of interface (e.g. Ethernet)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">if_type</span> <span class="pre">TYPE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">if_type</span> <span class="pre">TYPE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1526,9 +1526,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The MAC address of the interface</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">mac_address</span> <span class="pre">ADDRESS</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">mac_address</span> <span class="pre">ADDRESS</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1550,9 +1550,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The MTU of the interface in bytes</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">mtu</span> <span class="pre">MTU</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">mtu</span> <span class="pre">MTU</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1574,9 +1574,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The IP subnet mask of the interface.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">subnet</span> <span class="pre">MASK</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">subnet</span> <span class="pre">MASK</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1596,11 +1596,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A pscheduler test type that is allowed on this interface. For example <em>throughput</em>, <em>latencybg</em> or <em>trace</em>. Will be merged with autodiscovered values unless <a class="reference internal" href="#config-ls-registration-disable-autodiscover-tests"><em>disable_autodiscover_tests</em></a> set.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A pscheduler test type that is allowed on this interface. For example <em>throughput</em>, <em>latencybg</em> or <em>trace</em>. Will be merged with autodiscovered values unless <a class="reference internal" href="#config-ls-registration-disable-autodiscover-tests"><span>disable_autodiscover_tests</span></a> set.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">test</span> <span class="pre">TEST_TYPE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">test</span> <span class="pre">TEST_TYPE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -1620,9 +1620,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A URN used to identify his interface in an external topology description format</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">urn</span> <span class="pre">URN</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">urn</span> <span class="pre">URN</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-interface"><span>interface</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1647,9 +1647,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The IP address or DNS name on which the service listens</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">address</span> <span class="pre">ADDRESS</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">address</span> <span class="pre">ADDRESS</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -1671,9 +1671,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The method with which one may authenticate to this service.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">authentication_type</span> <span class="pre">TYPE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">authentication_type</span> <span class="pre">TYPE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -1693,15 +1693,15 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether you want to autodiscover the address on which the service listens. Enabled if <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover Directive</em></a> is set. Disabling this with <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover Directive</em></a> enabled will turn-off address discovery but still allow other fields to be discovered.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether you want to autodiscover the address on which the service listens. Enabled if <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover Directive</span></a> is set. Disabling this with <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover Directive</span></a> enabled will turn-off address discovery but still allow other fields to be discovered.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_addresses</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_addresses</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The value of <a class="reference internal" href="#config-ls-registration-autodiscover"><em>autodiscover Directive</em></a></td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The value of <a class="reference internal" href="#config-ls-registration-autodiscover"><span>autodiscover Directive</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
@@ -1717,11 +1717,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates the <a class="reference internal" href="#config-ls-registration-service-template"><em>service template</em></a> from which to inherit properties</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates the <a class="reference internal" href="#config-ls-registration-service-template"><span>service template</span></a> from which to inherit properties</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">inherits</span> <span class="pre">TEMPLATENAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">inherits</span> <span class="pre">TEMPLATENAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1743,13 +1743,13 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The port on which the service listens</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">NUMBER</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">port</span> <span class="pre">NUMBER</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Depends on the service <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a></td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Depends on the service <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
@@ -1767,13 +1767,13 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL where the service can be contacted</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">service_locator</span> <span class="pre">URL</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">service_locator</span> <span class="pre">URL</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Built from the <a class="reference internal" href="#config-ls-registration-service-address"><em>address</em></a> and <a class="reference internal" href="#config-ls-registration-port"><em>port</em></a></td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Built from the <a class="reference internal" href="#config-ls-registration-service-address"><span>address</span></a> and <a class="reference internal" href="#config-ls-registration-port"><span>port</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
@@ -1791,13 +1791,13 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The name of the service as a human-readable description</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">service_name</span> <span class="pre">NAME</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">service_name</span> <span class="pre">NAME</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The <a class="reference internal" href="#config-ls-registration-site-name"><em>site name</em></a> and service <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> separated by a space</td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The <a class="reference internal" href="#config-ls-registration-site-name"><span>site name</span></a> and service <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> separated by a space</td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
@@ -1815,9 +1815,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The version of the service</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">service_version</span> <span class="pre">VERSION</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">service_version</span> <span class="pre">VERSION</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a>, <a class="reference internal" href="#config-ls-registration-service-template"><em>service_template</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a>, <a class="reference internal" href="#config-ls-registration-service-template"><span>service_template</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1839,9 +1839,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of the service. See description below for valid types.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">type</span> <span class="pre">TYPE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">type</span> <span class="pre">TYPE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><em>site</em></a>, <a class="reference internal" href="#config-ls-registration-host"><em>host</em></a>, <a class="reference internal" href="#config-ls-registration-service"><em>service</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level, <a class="reference internal" href="#config-ls-registration-site"><span>site</span></a>, <a class="reference internal" href="#config-ls-registration-host"><span>host</span></a>, <a class="reference internal" href="#config-ls-registration-service"><span>service</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1876,9 +1876,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">For autodiscovery of information that requires contacting an HTTPS service, this is the path to the CA file that can be used to verify the identity of the server</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_ca_file</span> <span class="pre">FILE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_ca_file</span> <span class="pre">FILE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1900,9 +1900,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">For autodiscovery of information that requires contacting an HTTPS service, this is the path to a directory of CA files that can be used to verify the identity of the server when using HTTPS</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_ca_path</span> <span class="pre">DIR</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_ca_path</span> <span class="pre">DIR</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1922,15 +1922,15 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether or not to try to index results. Currently only traceroute data is supported. This will look at traceroute results in  <a class="reference internal" href="#config-ls-registration-autodiscover-index-time-range"><em>autodiscover_index_time_range</em></a> and report unique hops.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether or not to try to index results. Currently only traceroute data is supported. This will look at traceroute results in  <a class="reference internal" href="#config-ls-registration-autodiscover-index-time-range"><span>autodiscover_index_time_range</span></a> and report unique hops.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_indices</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_indices</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The value of <a class="reference internal" href="#config-ls-registration-autodiscover-tests"><em>autodiscover_tests</em></a></td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The value of <a class="reference internal" href="#config-ls-registration-autodiscover-tests"><span>autodiscover_tests</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
@@ -1946,11 +1946,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover-indices"><em>autodiscover_indices</em></a> is enabled, the time range to query the MA for results to index in seconds.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover-indices"><span>autodiscover_indices</span></a> is enabled, the time range to query the MA for results to index in seconds.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_index_time_range</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_index_time_range</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1972,9 +1972,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If enabled, contacts the MA service to be registered and automatically generates a list of tests to register based on the metadata returned.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_tests</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_tests</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1994,13 +1994,13 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL to contact to autodiscover details about an HTTP service</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_url</span> <span class="pre">URL</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_url</span> <span class="pre">URL</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The value of <a class="reference internal" href="#config-ls-registration-service-locator"><em>service_locator Directive</em></a></td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">The value of <a class="reference internal" href="#config-ls-registration-service-locator"><span>service_locator Directive</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
@@ -2016,9 +2016,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">For autodiscovery of information that requires contacting an HTTPS service, indicates whether the hostname must match the certificate common name</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_verify_hostname</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_verify_hostname</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -2040,9 +2040,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates whether the dashboard web interface URL should be auto-discovered</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_webui_url</span> <span class="pre">0|1</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">autodiscover_webui_url</span> <span class="pre">0|1</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>dashboard</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -2064,13 +2064,13 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The port where a web service listens for HTTP connections</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">http_port</span> <span class="pre">PORT</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">http_port</span> <span class="pre">PORT</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">80 (unless <a class="reference internal" href="#config-ls-registration-https-port"><em>https_port Directive</em></a> set, then this is left unset if no manual value provided)</td>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">80 (unless <a class="reference internal" href="#config-ls-registration-https-port"><span>https_port Directive</span></a> set, then this is left unset if no manual value provided)</td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
@@ -2088,9 +2088,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The port where a web service listens for HTTPS connections</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">https_port</span> <span class="pre">PORT</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">https_port</span> <span class="pre">PORT</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -2112,9 +2112,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The path portion of the URL where a web service runs</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">url_path</span> <span class="pre">PATH</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">url_path</span> <span class="pre">PATH</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
 </tr>
@@ -2136,9 +2136,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL of a web interface associated with a service</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">webui_url</span> <span class="pre">URL</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">webui_url</span> <span class="pre">URL</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>dashboard</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -2158,11 +2158,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Represents a measurement stored in an archive. See <a class="reference internal" href="#config-ls-registration-tests"><em>Measurement Archive Tests</em></a> for more details.</td>
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Represents a measurement stored in an archive. See <a class="reference internal" href="#config-ls-registration-tests"><span>Measurement Archive Tests</span></a> for more details.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">&lt;test&gt;...&lt;/test&gt;</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">&lt;test&gt;...&lt;/test&gt;</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><span>service</span></a> where <a class="reference internal" href="#config-ls-registration-service-type"><span>type</span></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -2185,9 +2185,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The type of test as defined <a class="reference external" href="http://software.es.net/esmond/perfsonar_client_rest.html#full-list-of-event-types">here</a>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">event_type</span> <span class="pre">EVENTTYPE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">event_type</span> <span class="pre">EVENTTYPE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><em>test</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><span>test</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or More</td>
 </tr>
@@ -2207,9 +2207,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The destination of the test as an IP address</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">destination</span> <span class="pre">IP</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">destination</span> <span class="pre">IP</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><em>test</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><span>test</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
 </tr>
@@ -2229,9 +2229,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL of the MA storing this test</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ma_locator</span> <span class="pre">URL</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">ma_locator</span> <span class="pre">URL</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><em>test</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><span>test</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">One or More</td>
 </tr>
@@ -2251,9 +2251,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The IP address of the test initiator</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">measurement_agent</span> <span class="pre">IP</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">measurement_agent</span> <span class="pre">IP</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><em>test</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><span>test</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
 </tr>
@@ -2273,9 +2273,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URI used to access a particular test</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">metadata_uri</span> <span class="pre">URI</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">metadata_uri</span> <span class="pre">URI</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><em>test</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><span>test</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
 </tr>
@@ -2295,9 +2295,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">In general, you will not manually set this value. A summarized value derived from the results of the test that can be searched by LS clients.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">result_index</span> <span class="pre">VALUE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">result_index</span> <span class="pre">VALUE</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><em>test</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><span>test</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
 </tr>
@@ -2317,9 +2317,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The source of the test as an IP address</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">source</span> <span class="pre">IP</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">source</span> <span class="pre">IP</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><em>test</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><span>test</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
 </tr>
@@ -2339,9 +2339,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The name of the tool used to perform a measurement</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tool_name</span> <span class="pre">TOOL</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">tool_name</span> <span class="pre">TOOL</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><em>test</em></a></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-test"><span>test</span></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly One</td>
 </tr>
@@ -2364,7 +2364,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The frequency in seconds to check the lsregistrationdaemon.conf file for changes.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">check_config_interval</span> <span class="pre">SECONDS</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">check_config_interval</span> <span class="pre">SECONDS</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -2385,7 +2385,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The location of the file containing a UUID to be registered with each record in the <em>client-uuid</em> field. If the file does not exist it will be created and populated with a random UUID.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">client_uuid_file</span> <span class="pre">FILE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">client_uuid_file</span> <span class="pre">FILE</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -2404,7 +2404,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The group to run the daemon as. Overridden by the <em>&#8211;group</em> command-line switch.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">group</span> <span class="pre">GID</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">group</span> <span class="pre">GID</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -2423,7 +2423,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The location of the <a class="reference external" href="https://www.sqlite.org">SQLite</a> database where registration keys are kept. Registration keys are assigned by the lookup service when a record is first created and are used for subsequent renewals.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">ls_key_db</span> <span class="pre">DB</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">ls_key_db</span> <span class="pre">DB</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -2442,7 +2442,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The PID file location. Overridden by the <em>&#8211;pidfile</em> command-line switch.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">pidfile</span> <span class="pre">FILE</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">pidfile</span> <span class="pre">FILE</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -2461,7 +2461,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The user to run the daemon as. Overridden by the <em>&#8211;user</em> command-line switch.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">user</span> <span class="pre">UID</span></tt></td>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><code class="docutils literal"><span class="pre">user</span> <span class="pre">UID</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body">top level</td>
 </tr>
@@ -2644,7 +2644,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -2656,7 +2656,7 @@
         <li class="right" >
           <a href="config_files.html" title="Listing of Important perfSONAR Files"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -2696,9 +2696,9 @@
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2018, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

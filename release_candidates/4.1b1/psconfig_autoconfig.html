@@ -8,7 +8,7 @@
     
     <title>pSConfig Auto-Configuration &mdash; perfSONAR Toolkit 4.1b1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
@@ -29,7 +29,7 @@
     <link rel="next" title="MeshConfig to pSConfig Migration Guide" href="psconfig_meshconfig_migrate.html" />
     <link rel="prev" title="Advanced pSConfig Templates" href="psconfig_templates_advanced.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="psconfig_templates_advanced.html" title="Advanced pSConfig Templates"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,18 +70,18 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="psconfig-auto-configuration">
 <h1>pSConfig Auto-Configuration<a class="headerlink" href="#psconfig-auto-configuration" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="note-this-page-has-not-been-updated-for-4-1-still-under-construction">
 <h2>NOTE: THIS PAGE HAS NOT BEEN UPDATED FOR 4.1. STILL UNDER CONSTRUCTION.<a class="headerlink" href="#note-this-page-has-not-been-updated-for-4-1-still-under-construction" title="Permalink to this headline">¶</a></h2>
 <p>If you have a very large mesh or a mesh that frequently is adding and removing test members, then it may become cumbersome to manually update your tests. For this reason the perfSONAR MeshConfig software has the concept of <em>automatic test configuration</em>.</p>
-<p>Automatic test configuration&#8217;s goal is NOT zero configuration, instead the idea is that there will be some initial configuration steps performed on a server hosting the MeshConfig that describes the tests in a general sense as opposed to explicitly naming each host that will be involved in a test. The MeshConfig provides constructs in the form of <em>host classes</em> and <em>tags</em> in support of this idea. See <a class="reference internal" href="#multi-mesh-autoconfig-classes"><em>Introducing Host Classes and Tags</em></a> for more information on these constructs.</p>
+<p>Automatic test configuration&#8217;s goal is NOT zero configuration, instead the idea is that there will be some initial configuration steps performed on a server hosting the MeshConfig that describes the tests in a general sense as opposed to explicitly naming each host that will be involved in a test. The MeshConfig provides constructs in the form of <em>host classes</em> and <em>tags</em> in support of this idea. See <a class="reference internal" href="#multi-mesh-autoconfig-classes"><span>Introducing Host Classes and Tags</span></a> for more information on these constructs.</p>
 <p>Once this initial configuration has taken place, each new host can simply point at this central file and know the tests to run <em>without the administrator of the central mesh configuration file having to update the mesh every time a new host is added</em> (this last part is what distinguishes it from a traditional MeshConfig setup). The configuration on the end host should also be minimized (though again it will be greater than zero). The configuration primarily consists of pointing at the URL where the central mesh lives (and perhaps optionally pointing at a private lookup service).</p>
-<p>The individual client configurations are simplified even further by using external configuration management software such as <a class="reference external" href="https://puppetlabs.com">Puppet</a> or similar. Essentially the configuration management software of your choice will need to copy one or two (depending on your use case) configuration files to each new host. See our document on using the <tt class="xref doc docutils literal"><span class="pre">perfSONAR</span> <span class="pre">Puppet</span> <span class="pre">module</span></tt> for more information on using this type of setup with puppet specifically or for ideas on how to integrate with another configuration managements software of your choosing.</p>
-<p>Once you have the basic ideas, there are a few common setups worth discussing further. First, using automated testing  constructs you can develop a simple automated configuration that tests to a fixed set of endpoints. For example, every new host that comes up may always test to the same two hosts, not aware of any other host that comes-up. See <a class="reference internal" href="#multi-mesh-autoconfig-fixed"><em>Testing to a Fixed Set of Target Hosts</em></a> for more details.</p>
-<p>You may also go even further and build a dynamic list of hosts from the perfSONAR Lookup Service. In this configuration, new nodes are discovered by other nodes in the mesh and the endpoint to which they test are changed accordingly. For information on this configuration, see <a class="reference internal" href="#multi-mesh-autoconfig-dynamic"><em>Testing to a Dynamic Set of Target Hosts</em></a>.</p>
+<p>The individual client configurations are simplified even further by using external configuration management software such as <a class="reference external" href="https://puppetlabs.com">Puppet</a> or similar. Essentially the configuration management software of your choice will need to copy one or two (depending on your use case) configuration files to each new host. See our document on using the <code class="xref doc docutils literal"><span class="pre">perfSONAR</span> <span class="pre">Puppet</span> <span class="pre">module</span></code> for more information on using this type of setup with puppet specifically or for ideas on how to integrate with another configuration managements software of your choosing.</p>
+<p>Once you have the basic ideas, there are a few common setups worth discussing further. First, using automated testing  constructs you can develop a simple automated configuration that tests to a fixed set of endpoints. For example, every new host that comes up may always test to the same two hosts, not aware of any other host that comes-up. See <a class="reference internal" href="#multi-mesh-autoconfig-fixed"><span>Testing to a Fixed Set of Target Hosts</span></a> for more details.</p>
+<p>You may also go even further and build a dynamic list of hosts from the perfSONAR Lookup Service. In this configuration, new nodes are discovered by other nodes in the mesh and the endpoint to which they test are changed accordingly. For information on this configuration, see <a class="reference internal" href="#multi-mesh-autoconfig-dynamic"><span>Testing to a Dynamic Set of Target Hosts</span></a>.</p>
 </div>
 <div class="section" id="introducing-host-classes-and-tags">
 <span id="multi-mesh-autoconfig-classes"></span><h2>Introducing Host Classes and Tags<a class="headerlink" href="#introducing-host-classes-and-tags" title="Permalink to this headline">¶</a></h2>
@@ -102,13 +102,13 @@
 &lt;/host_class&gt;
 </pre></div>
 </div>
-<p>The example above contains the following structural parts common to all classes (see also <em class="xref std std-ref">config_mesh-dynamic_gen</em> for more details):</p>
+<p>The example above contains the following structural parts common to all classes (see also <span class="xref std std-ref">config_mesh-dynamic_gen</span> for more details):</p>
 <ul class="simple">
-<li>The class <em>name</em> that identifies the class. We&#8217;ll use this later in a <em class="xref std std-ref">group</em> definition to indicate we want class members in a specific group.</li>
-<li>The <em>data source</em> which indicates the initial list of hosts to filter against. In this case, we specified <em>current_mesh</em>, which means any host defined in this mesh or it&#8217;s include files. For other types of data sources see <em class="xref std std-ref">config_mesh-dynamic_sources</em>.</li>
-<li>The <em>filters</em> in the form of a <em>match</em> block. The filter directives define the criteria a host must meet and the match directive indicates if the criteria are met to include ir in the mesh. Not shown is the <em>exclude</em> block which defines criteria for  hosts you want excluded for the mesh. For more information on the types of filters available see <em class="xref std std-ref">config_mesh-dynamic_filters</em>.</li>
+<li>The class <em>name</em> that identifies the class. We&#8217;ll use this later in a <span class="xref std std-ref">group</span> definition to indicate we want class members in a specific group.</li>
+<li>The <em>data source</em> which indicates the initial list of hosts to filter against. In this case, we specified <em>current_mesh</em>, which means any host defined in this mesh or it&#8217;s include files. For other types of data sources see <span class="xref std std-ref">config_mesh-dynamic_sources</span>.</li>
+<li>The <em>filters</em> in the form of a <em>match</em> block. The filter directives define the criteria a host must meet and the match directive indicates if the criteria are met to include ir in the mesh. Not shown is the <em>exclude</em> block which defines criteria for  hosts you want excluded for the mesh. For more information on the types of filters available see <span class="xref std std-ref">config_mesh-dynamic_filters</span>.</li>
 </ul>
-<p>Host classes allow for a lot of interesting selection criteria. They are made even more powerful though by the second construct: <em>tags</em>. Tags are custom labels you can add to any  <em class="xref std std-ref">organization</em>, <em class="xref std std-ref">site</em>, <em class="xref std std-ref">host</em>, or <em class="xref std std-ref">address</em> directive. You can then match against these using the <em>tag</em> filter in your host class. A common use case for this is to tag addresses designated for latency tests and those for throughput tests as such. If we extend our example above and assume that we have tagged addresses in the 10.0.1.0/24 as latency or throughput, we can define the following two classes to distinguish each:</p>
+<p>Host classes allow for a lot of interesting selection criteria. They are made even more powerful though by the second construct: <em>tags</em>. Tags are custom labels you can add to any  <span class="xref std std-ref">organization</span>, <span class="xref std std-ref">site</span>, <span class="xref std std-ref">host</span>, or <span class="xref std std-ref">address</span> directive. You can then match against these using the <em>tag</em> filter in your host class. A common use case for this is to tag addresses designated for latency tests and those for throughput tests as such. If we extend our example above and assume that we have tagged addresses in the 10.0.1.0/24 as latency or throughput, we can define the following two classes to distinguish each:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;host_class&gt;
     name      my_subnet_latency_class
 
@@ -151,7 +151,7 @@
 <p>Notice that each match block has two filters: one of type netmask and another of type tag. There is an implied AND condition between filters like this of different types.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">You can also explicitly define filters such as AND, OR and NOT. See <em class="xref std std-ref">config_mesh-dynamic_filters</em></p>
+<p class="last">You can also explicitly define filters such as AND, OR and NOT. See <span class="xref std std-ref">config_mesh-dynamic_filters</span></p>
 </div>
 <p>This example really just focuses the host class and tag constructs. It is also not an exhaustive list of all the options available for each of these constructs. See the sections that follow for some further examples of the uses of these constructs.</p>
 </div>
@@ -163,7 +163,7 @@
 <li>You do not need each tester to know about the other automatically configured testers</li>
 <li>You do not want your automatic tester to appear in a dashboard</li>
 </ul>
-<p>In order for this case to work you will need to define the appropriate directives in your <a class="reference internal" href="#multi-mesh-autoconfig-fixed-server"><em>central MeshConfig file</em></a> and in the <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><em>agent configuration</em></a> of the new testers.</p>
+<p>In order for this case to work you will need to define the appropriate directives in your <a class="reference internal" href="#multi-mesh-autoconfig-fixed-server"><span>central MeshConfig file</span></a> and in the <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><span>agent configuration</span></a> of the new testers.</p>
 <div class="section" id="meshconfig-server-configuration">
 <span id="multi-mesh-autoconfig-fixed-server"></span><h3>MeshConfig Server Configuration<a class="headerlink" href="#meshconfig-server-configuration" title="Permalink to this headline">¶</a></h3>
 <p>As an example, let&#8217;s use the following MeshConfig file:</p>
@@ -311,11 +311,11 @@
 &lt;/test&gt;
 </pre></div>
 </div>
-<p>We can then use the <em>build_json</em> script as described in <tt class="xref doc docutils literal"><span class="pre">multi_mesh_server_config</span></tt> to publish our file to a web server where clients may download it.</p>
+<p>We can then use the <em>build_json</em> script as described in <code class="xref doc docutils literal"><span class="pre">multi_mesh_server_config</span></code> to publish our file to a web server where clients may download it.</p>
 </div>
 <div class="section" id="meshconfig-client-configuration">
 <span id="multi-mesh-autoconfig-fixed-client"></span><h3>MeshConfig Client Configuration<a class="headerlink" href="#meshconfig-client-configuration" title="Permalink to this headline">¶</a></h3>
-<p>On each automatically configured tester you bring-up, you&#8217;ll need to point it at the JSON file generated in the previous section. Assuming the JSON file is at <a class="reference external" href="http://mesh.example/mesh.json">http://mesh.example/mesh.json</a>, you can do this in the <em class="xref std std-ref">agent configuration file</em> as follows:</p>
+<p>On each automatically configured tester you bring-up, you&#8217;ll need to point it at the JSON file generated in the previous section. Assuming the JSON file is at <a class="reference external" href="http://mesh.example/mesh.json">http://mesh.example/mesh.json</a>, you can do this in the <span class="xref std std-ref">agent configuration file</span> as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;mesh&gt;
     configuration_url   http://mesh.example/mesh.json
 &lt;/mesh&gt;
@@ -327,13 +327,13 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This <em>configure_archives</em> option assumes the measurement archive provided by the mesh configuration file has <a class="reference internal" href="multi_ma_install.html#multi-ma-install-auth-ip"><em>IP authentication</em></a> setup for this host. This is because the mesh configuration cannot securely distribute usernames and API keys. See the <a class="reference internal" href="multi_ma_install.html#multi-ma-install-auth-ip"><em>measurement archive documentation</em></a> for information on how to configure IP authentication on your archive server.</p>
+<p class="last">This <em>configure_archives</em> option assumes the measurement archive provided by the mesh configuration file has <a class="reference internal" href="multi_ma_install.html#multi-ma-install-auth-ip"><span>IP authentication</span></a> setup for this host. This is because the mesh configuration cannot securely distribute usernames and API keys. See the <a class="reference internal" href="multi_ma_install.html#multi-ma-install-auth-ip"><span>measurement archive documentation</span></a> for information on how to configure IP authentication on your archive server.</p>
 </div>
 <p>You&#8217;ll also want to set the following if you are NOT using a Toolkit deployment:</p>
 <div class="highlight-python"><div class="highlight"><pre>use_toolkit 0
 </pre></div>
 </div>
-<p>Finally, you&#8217;ll want to make sure your <em class="xref std std-ref">MeshConfig Agent tasks file</em> has no extra measurement archives uncommented. In general having no uncommented lines is just fine.</p>
+<p>Finally, you&#8217;ll want to make sure your <span class="xref std std-ref">MeshConfig Agent tasks file</span> has no extra measurement archives uncommented. In general having no uncommented lines is just fine.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you have additional <em>measurement_archive</em> directives in the file then your tests will be stored there IN ADDITION to those automatically configured by the mesh. This may or may not be desirable depending on your case.</p>
@@ -368,7 +368,7 @@
 ...
 </pre></div>
 </div>
-<p>In this case, how do we tag our agent downloading the file so that it matches this class? Normally we would do it in the <em class="xref std std-ref">host</em> directive but by definition our requesting agent does not have one of those. Instead we have to add a <em>local_host</em> block to the clients <em class="xref std std-ref">agent configuration file</em>:</p>
+<p>In this case, how do we tag our agent downloading the file so that it matches this class? Normally we would do it in the <span class="xref std std-ref">host</span> directive but by definition our requesting agent does not have one of those. Instead we have to add a <em>local_host</em> block to the clients <span class="xref std std-ref">agent configuration file</span>:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;local_host&gt;
     tag latency
 &lt;/local_host&gt;
@@ -397,10 +397,10 @@
 <li>Allow clients to automatically detect new testers, and remove any testers no longer in a mesh</li>
 <li>Include dynamically added testers in an automatically generated dashboard</li>
 </ul>
-<p>In order for this case to work you will need access to a lookup service. It is <strong>highly recommended</strong> you use a <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService">private lookup service</a> for this purpose. Using the public lookup service exposes the risk of others being able to (intentionally or unintentionally) change the tests your host runs, perhaps in ways you do not desire. For more information on setting up a private lookup service see <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService">this document</a>. Assuming you have a private lookup service setup, you can complete the configuration process by defining the appropriate directives in your <a class="reference internal" href="#multi-mesh-autoconfig-dynamic-server"><em>central MeshConfig file</em></a> and in the <a class="reference internal" href="#multi-mesh-autoconfig-dynamic-client"><em>agent configuration</em></a> of the new testers.</p>
+<p>In order for this case to work you will need access to a lookup service. It is <strong>highly recommended</strong> you use a <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService">private lookup service</a> for this purpose. Using the public lookup service exposes the risk of others being able to (intentionally or unintentionally) change the tests your host runs, perhaps in ways you do not desire. For more information on setting up a private lookup service see <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/PrivateLookupService">this document</a>. Assuming you have a private lookup service setup, you can complete the configuration process by defining the appropriate directives in your <a class="reference internal" href="#multi-mesh-autoconfig-dynamic-server"><span>central MeshConfig file</span></a> and in the <a class="reference internal" href="#multi-mesh-autoconfig-dynamic-client"><span>agent configuration</span></a> of the new testers.</p>
 <div class="section" id="multi-mesh-autoconfig-dynamic-server">
 <span id="id1"></span><h3>MeshConfig Server Configuration<a class="headerlink" href="#multi-mesh-autoconfig-dynamic-server" title="Permalink to this headline">¶</a></h3>
-<p>On our MeshConfig server, the first thing we need to setup is a file that defines the hosts we want to extract from the lookup service. By default, you will find it as listed <em class="xref std std-ref">here</em> for your operating system. An example of this file using a configuration that extracts all hosts running OWAMP (the service that performs one-way latency measurements) and tagged with the community <em>example</em>:</p>
+<p>On our MeshConfig server, the first thing we need to setup is a file that defines the hosts we want to extract from the lookup service. By default, you will find it as listed <span class="xref std std-ref">here</span> for your operating system. An example of this file using a configuration that extracts all hosts running OWAMP (the service that performs one-way latency measurements) and tagged with the community <em>example</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>ls_instance http://private-ls.example:8090/lookup/records
 
 &lt;query&gt;
@@ -450,10 +450,10 @@
 <p>If you don&#8217;t define any filters then all services of the specified type in the lookup service will return. For each filter that you do define, there is a <em>filter_key</em> and a <em>filter_value</em>. The key is the name of a lookup service field name you wish to match in the <strong>service</strong> record. You can find a complete list of valid field names in the <a class="reference external" href="https://docs.google.com/document/u/1/d/1dEROeTwW0R4qcLHKnA2fsWEz8fQWnPKSpPVf_FuB2Vc/pub">Lookup Service Records reference guide</a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <em class="xref std std-ref">lookup hosts configuration file</em> currently only supports fields for <strong>service</strong> records and not fields in the host, interface, person or other records.</p>
+<p class="last">The <span class="xref std std-ref">lookup hosts configuration file</span> currently only supports fields for <strong>service</strong> records and not fields in the host, interface, person or other records.</p>
 </div>
 <p>The <em>filter_value</em> is the value you want the field specified by the <em>filter_key</em> to take in order to match. In our example we want the <em>group-communities</em> of the service record to take the value of <em>example</em>.</p>
-<p>Finally, with our filters defined, we can create <em>output_settings</em> which define what the <em class="xref std std-ref">host</em> directives look like in our MeshConfig file:</p>
+<p>Finally, with our filters defined, we can create <em>output_settings</em> which define what the <span class="xref std std-ref">host</span> directives look like in our MeshConfig file:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;output_settings&gt;
     organization_name Acme
     address_tag owamp
@@ -467,7 +467,7 @@
 &lt;/output_settings&gt;
 </pre></div>
 </div>
-<p>None of the fields are required but the example highlights a few common ones to set. First we can set the <em>organization_name</em>. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an <em>address_tag</em> of <em>owamp</em>. Last, we can also set a <em class="xref std std-ref">measurement_archive</em> that we want the generated host elements to use. These look just like the same element we&#8217;d define in a MeshConfig file with a <em>type</em>, <em>read_url</em> and <em>write_url</em>.</p>
+<p>None of the fields are required but the example highlights a few common ones to set. First we can set the <em>organization_name</em>. This may be useful in later defining a host class that uses this host. In the same spirit, we can also define tags we want applied to the generated elements. In our example we apply an <em>address_tag</em> of <em>owamp</em>. Last, we can also set a <span class="xref std std-ref">measurement_archive</span> that we want the generated host elements to use. These look just like the same element we&#8217;d define in a MeshConfig file with a <em>type</em>, <em>read_url</em> and <em>write_url</em>.</p>
 <p>Once this file is set, we can use it to build a host list the MeshConfig can understand with the following command:</p>
 <blockquote>
 <div>/usr/lib/perfsonar/bin/lookup_hosts &#8211;input /etc/perfsonar/meshconfig-lookuphosts.conf &#8211;output /var/www/dynamic_host_list.json</div></blockquote>
@@ -541,17 +541,17 @@ include http://mesh.example/dynamic_host_list.json
 </div>
 <div class="section" id="multi-mesh-autoconfig-dynamic-client">
 <span id="id2"></span><h3>MeshConfig Client Configuration<a class="headerlink" href="#multi-mesh-autoconfig-dynamic-client" title="Permalink to this headline">¶</a></h3>
-<p>The configuration of the client in terms of the MeshConfig agent is largely the same as what is described in <tt class="xref doc docutils literal"><span class="pre">multi_mesh_agent_config</span></tt> and <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><em>MeshConfig Client Configuration</em></a>. There is not anything further to add on that file, but there is extra configuration to be done of the service that registers your clients in the lookup service. Specifically you need to do the following:</p>
+<p>The configuration of the client in terms of the MeshConfig agent is largely the same as what is described in <code class="xref doc docutils literal"><span class="pre">multi_mesh_agent_config</span></code> and <a class="reference internal" href="#multi-mesh-autoconfig-fixed-client"><span>MeshConfig Client Configuration</span></a>. There is not anything further to add on that file, but there is extra configuration to be done of the service that registers your clients in the lookup service. Specifically you need to do the following:</p>
 <ul class="simple">
 <li>Add a pointer to your private lookup service</li>
-<li>Configure any fields you use as a filter in <em class="xref std std-ref">lookup hosts configuration file</em> if they are not automatically generated (for example, fields like <em>group-communities</em>).</li>
+<li>Configure any fields you use as a filter in <span class="xref std std-ref">lookup hosts configuration file</span> if they are not automatically generated (for example, fields like <em>group-communities</em>).</li>
 </ul>
-<p>For our example we can do this simply by adding the following lines to the top of the <a class="reference internal" href="config_files.html#config-files-lsreg-conf-main"><em>LS Registration configuration file</em></a>:</p>
+<p>For our example we can do this simply by adding the following lines to the top of the <a class="reference internal" href="config_files.html#config-files-lsreg-conf-main"><span>LS Registration configuration file</span></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre>ls_instance http://private-ls.example:8090/lookup/records
 site_project example #site_project is group-communities in the lookup service
 </pre></div>
 </div>
-<p>For more information on the options available in the <a class="reference internal" href="config_files.html#config-files-lsreg-conf-main"><em>LS Registration configuration file</em></a> see <a class="reference internal" href="config_ls_registration.html"><em>Lookup Service Registration Daemon Configuration File</em></a> for a complete configuration reference.</p>
+<p>For more information on the options available in the <a class="reference internal" href="config_files.html#config-files-lsreg-conf-main"><span>LS Registration configuration file</span></a> see <a class="reference internal" href="config_ls_registration.html"><em>Lookup Service Registration Daemon Configuration File</em></a> for a complete configuration reference.</p>
 </div>
 </div>
 <div class="section" id="examples-of-common-host-class-configurations">
@@ -789,7 +789,7 @@ site_project example #site_project is group-communities in the lookup service
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -801,7 +801,7 @@ site_project example #site_project is group-communities in the lookup service
         <li class="right" >
           <a href="psconfig_templates_advanced.html" title="Advanced pSConfig Templates"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -841,9 +841,9 @@ site_project example #site_project is group-communities in the lookup service
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2018, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

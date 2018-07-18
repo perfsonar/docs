@@ -193,7 +193,6 @@ Related Projects
 * `iperf3 <http://software.es.net/iperf/>`_
 * `Lookup Service <http://code.google.com/p/simple-lookup-service/>`_
 * `MaDDash <http://software.es.net/maddash/>`_
-* `psUI <https://forge.geant.net/forge/display/perfsonar/Change+Log/>`_
 
 .. _index-search:
 
