@@ -42,7 +42,7 @@ Step 1: Configure APT
 All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. **You will need to follow the steps below as privileged user**::
 
        cd /etc/apt/sources.list.d/
-       wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
+       wget http://downloads.perfsonar.net/debian/perfsonar-release.list
        wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
    
 Then refresh the packages list so APT knows about the perfSONAR packages::
@@ -242,7 +242,7 @@ Add the 4.1 APT sources
 Even though the sources.list file is named after the Debian 8 (Jessie) release, it is meant to work on Debian 8 and 9 and Ubuntu 14, 16 and 18.  You can add it to your system with the following commands::
 
    cd /etc/apt/sources.list.d/
-   wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
+   wget http://downloads.perfsonar.net/debian/perfsonar-release.list
    
 Then refresh the packages list so APT knows about the perfSONAR packages::
 
@@ -268,7 +268,7 @@ If you have a perfSONAR host running Debian 7 and you want to upgrade it to Debi
 
 #. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
 #. Reboot (to get systemd running)
-#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-jessie-release``
+#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-release``
 #. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_)
 
   * Alternatively, you can just run ``apt-get udpate; apt-get dist-upgrade`` if you prefer to stay with Debian 8.

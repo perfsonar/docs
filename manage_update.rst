@@ -38,8 +38,10 @@ It is also important to note that automatic updates do not perform all required 
 
 Managing Automatic Updates from the Command-Line
 ------------------------------------------------
-You may enable auto updates from the command-line by enabling/disabling the yum-cron service on CentOS. Run the following commands (must be run as a root user) to **enable** automatic updates:
-    
+You can manage auto updates from the command-line by enabling/disabling the yum-cron service on CentOS and configuring the unattended-upgrades option of APT on Debian and Ubuntu.
+
+Run the following commands to **enable** automatic updates (must be run as a root user):
+
 *CentOS*::
   
     systemctl enable yum-cron
@@ -50,7 +52,7 @@ You may enable auto updates from the command-line by enabling/disabling the yum-
     apt-get install unattended-upgrades
     /usr/lib/perfsonar/scripts/system_environment/enable_auto_updates new
     
-Likewise, you may disable auto-updates from the command-line by running the following:
+Likewise, you may **disable** auto-updates from the command-line by running the following:
 
 *CentOS*::
 
@@ -68,7 +70,7 @@ These commands will automatically update **all packages** on the system. Also no
 
 *Debian/Ubuntu*:
 
-This configuration enables automatic updates for `Debian security updates <https://www.debian.org/security/>`_ and perfSONAR packages.
+This configuration enables automatic updates for `Debian security updates <https://www.debian.org/security/>`_ or `Ubuntu security updates <https://wiki.ubuntu.com/Security/Upgrades>`_ and perfSONAR packages.
 
 .. _manage_update-auto-gui:
 
@@ -95,11 +97,9 @@ Disabling Automatic Updates for perfSONAR Packages
 --------------------------------------------------
 The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file **/etc/yum.repos.d/perfSONAR.repo** with the option **enabled** set to **0**. 
 
-For Debian/Ubuntu systems, please refer to :ref:`manage_update-auto-cli`.
-
 .. note:: If you are running against one of our testing repositories you may also need to update the files **/etc/yum.repos.d/perfSONAR-staging.repo** and **/etc/yum.repos.d/perfSONAR-nightly.repo**.
 
-To disable the automatic updating of perfSONAR packages on Debian delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
+To disable the automatic updating of perfSONAR packages on Debian/Ubuntu delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
 
 .. _manage_update-notes:
 
@@ -149,6 +149,6 @@ perfSONAR 4.1 is NOT available for Debian 7 (and `Debian 7 is EOL <https://www.d
 
 #. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
 #. Reboot (to get systemd running)
-#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-jessie-release``
+#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-release``
 #. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_). Alternatively, you can just run ``apt-get udpate; apt-get dist-upgrade`` if you prefer to stay with Debian 8.
 
