@@ -8,6 +8,7 @@ perfSONAR combines various sets of measurement tools and services. For perfSONAR
 * Debian 9 Stretch
 * Ubuntu 14 Trusty Tahr
 * Ubuntu 16 Xenial Xerus
+* Ubuntu 18 Bionic Beaver
 
 Debian meta packages are available to install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
@@ -23,7 +24,7 @@ System Requirements
   * ARMv7 and up (armhf)
   * ARM64 (arm64) (only for Debian 8/9)
 
-* **Operating System:**  Any system running a Debian 8, Debian 9, Ubuntu 14 or Ubuntu 16 server OS is supported.  Other Debian flavours derived from Debian 8/9 or Ubuntu 14/16 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 8, Debian 9, Ubuntu 14, Ubuntu 16 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 8/9 or Ubuntu 14/16/18 might work too but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
@@ -238,7 +239,7 @@ If you had installed a perfSONAR 4.0.2 bundle and you now want to upgrade to per
 Add the 4.1 APT sources
 -----------------------
 
-Even though the sources.list file is named after the Debian 8 (Jessie) release, it is meant to work on Debian 8 and 9 and Ubuntu 14 and 16.  You can add it to your system with the following commands::
+Even though the sources.list file is named after the Debian 8 (Jessie) release, it is meant to work on Debian 8 and 9 and Ubuntu 14, 16 and 18.  You can add it to your system with the following commands::
 
    cd /etc/apt/sources.list.d/
    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
