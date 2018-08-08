@@ -18,8 +18,7 @@ Most perfSONAR related services keep log files under the directory **/var/log/pe
 |                                              | * /var/log/apache2/error.log (Debian)                             |                                            |
 |                                              | * /var/log/cassandra/cassandra.log                                |                                            |
 |                                              | * /var/lib/pgsql/pgstartup.log                                    |                                            |
-|                                              | * /var/log/postgresql/postgresql-9.6-main.log)                    |                                            |
-|                                              | * (Debian)                                                        |                                            |
+|                                              | * /var/log/postgresql/postgresql-9.6-main.log (Debian)            |                                            |
 +----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
 | pSConfig pScheduler Agent                    | * /var/log/perfsonar/psconfig-pscheduler-agent.log                | |log_descr_psconfig|                       |
 |                                              | * /var/log/perfsonar/psconfig-pscheduler-agent-transactions.log   |                                            |

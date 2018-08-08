@@ -254,8 +254,6 @@ To upgrade your perfsonar installation, you just need to run::
 
     apt-get dist-upgrade
 
-During the installation process, you'll be asked to choose a password for the pscheduler database.  After the upgrade, the perfsonar-regulartesting daemon and the OPPD will be stoped as they are no longer required.
-
 The measurements and the measurement archives that you already have defined in your 4.0.2 installation will be migrated to the 4.1 tools automatically.
 
 Upgrade to another bundle
