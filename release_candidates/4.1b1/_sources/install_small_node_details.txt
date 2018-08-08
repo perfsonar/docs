@@ -24,13 +24,13 @@ Please note that the perfSONAR team is not formally endorsing any particular pro
 System Requirements
 ===================
 
-ARM-based devices seem to work best running Ubuntu, while the slightly larger, $200-class nodes will usually work with CentOS, Debian or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on CentOS 7 and Ubuntu 14, 
-and Debian "Wheezy" and "Jessie". We provide compatible Debian packages for 4 different hardware architectures:
+ARM-based devices seem to work best running Ubuntu, while the slightly larger, $200-class nodes will usually work with CentOS, Debian or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on CentOS 7 and Ubuntu 14/16/18, and Debian 8/9. We provide compatible Debian packages for 5 different hardware architectures:
 
   * 32-bit (i386)
   * 64-bit (amd64)
   * ARMv4t and up (armel) - not recommended for the full testpoint bundle
   * ARMv7 and up (armhf) - not recommended for the full testpoint bundle
+  * ARM 64-bit (arm64)
 
 
 

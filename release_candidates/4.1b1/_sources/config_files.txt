@@ -274,7 +274,7 @@ pSConfig pScheduler Agent Start-up Script
 ############################################
 :Description: Scripts used to start|stop|restart the pSConfig pScheduler Agent
 :CentOS: ``systemctl start|stop|restart psconfig-pscheduler-agent``
-:Debian: ``systemctl start|stop|restart psconfig-pscheduler-agent``
+:Debian: ``sservice psconfig-pscheduler-agent start|stop|restart``
 
 .. _config_files-psconfig-scripts-maddash-startup:
 
@@ -282,7 +282,7 @@ pSConfig MaDDash Agent Start-up Script
 ############################################
 :Description: Scripts used to start|stop|restart the pSConfig MaDDash Agent
 :CentOS: ``systemctl start|stop|restart psconfig-maddash-agent``
-:Debian: ``systemctl start|stop|restart psconfig-maddash-agent``
+:Debian: ``service psconfig-maddash-agent start|stop|restart``
 
 .. _config_files-psconfig-scripts-ps_remove_data:
 
