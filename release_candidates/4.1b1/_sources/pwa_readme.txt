@@ -240,7 +240,7 @@ If you use more than 1 instance, please edit ``/etc/pwa/nginx/conf.d/pwa.conf`` 
            --name nginx \
            -v /etc/pwa/shared:/shared:ro \
            -v /etc/pwa/nginx:/etc/nginx:ro \
-           -v /etc/grid-security/host:/certs:ro \
+           -v /etc/pwa/auth:/certs:ro \
            -p 80:80 \
            -p 443:443 \
            -p 9443:9443 \

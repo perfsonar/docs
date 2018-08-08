@@ -41,7 +41,7 @@ You also need to run the nginx container differently:
        --name nginx \
        -v /etc/pwa/shared:/shared:ro \
        -v /etc/pwa/nginx:/etc/nginx:ro \
-       -v /etc/grid-security/host:/certs:ro \
+       -v /etc/pwa/auth:/certs:ro \
        -p 8000:8000 \
        -p 8443:8443 \
        -p 9443:9443 \

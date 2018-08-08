@@ -31,5 +31,7 @@ Guide
    pwa_user_management
    pwa_userguide
    pwa_operation
+   pwa_monitoring
+   pwa_api
 
 Please submit bug reports / feature request at `PWA Github Repo <http://github.com/perfsonar/psconfig-web/issues>`_

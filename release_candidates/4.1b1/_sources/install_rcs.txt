@@ -69,7 +69,7 @@ You may install this source list as follows::
     wget http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
     wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
 
-These Debian packages should work on Debian 8, Debian 9, Ubuntu 14 and Ubuntu 16.
+These Debian packages should work on Debian 8, Debian 9, Ubuntu 14, Ubuntu 16 and Ubuntu 18.
 
 Once installed you may proceed to follow the steps in :doc:`install_debian` to complete the installation.
 

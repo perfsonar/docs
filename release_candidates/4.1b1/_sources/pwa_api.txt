@@ -1,13 +1,13 @@
 
-psConfig Web Administrator (PWA) API
-====================================
-
 PWA API
--------
+=======
 
 PWA allows you to create / update meshconfig via REST API. You can use this to automate various configuration administration.
 
-Before you can start using the API, you need to obtain the access token. 
+Get Access token
+----------------
+
+Before you can start using the API, you need to obtain an access token. 
 
 Login to your PWA server, and run something like following..
 
@@ -19,6 +19,9 @@ Login to your PWA server, and run something like following..
    $ exit
 
 Copy the output from auth.js which is your access token. Store this on your server somewhere and make sure only you can access it (like chmod 600 ``~/.pwa.token.jwt``\ )
+
+Query APIs
+----------
 
 You can now use most of the PWA REST APIs as documented here.
 
