@@ -9,18 +9,15 @@ Manually Updating with Yum or APT
 Anytime you want to manually update your host, simply run the following
     
 *CentOS*::
+
     yum update
     
 *Debian*::
+
     apt-get update
     apt-get upgrade
     
 The *yum* package manager is used by RedHat-based operating systems like CentOS to update packages, *apt* is used by Debian-based OS. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.
-
-On Debian systems use the following commands::
-
-    apt-get update
-    apt-get upgrade
 
 .. _manage_update-auto:
 
@@ -41,11 +38,13 @@ It is also important to note that automatic updates do not perform all required 
 
 Managing Automatic Updates from the Command-Line
 ------------------------------------------------
-You may enable auto updates from the command-line by enabling/disabling the yum-cron service on CentOS. Run the following commands (must be run as a root user) to **enable** automatic updates:
+You can manage auto updates from the command-line by enabling/disabling the yum-cron service on CentOS and configuring the unattended-upgrades option of APT on Debian and Ubuntu.
+
+Run the following commands to **enable** automatic updates (must be run as a root user):
 
 *CentOS 6*::
 
-    chkconfig on yum-cron
+    chkconfig yum-cron on
     service yum-cron start
     
 *CentOS 7*::
@@ -58,11 +57,11 @@ You may enable auto updates from the command-line by enabling/disabling the yum-
     apt-get install unattended-upgrades
     /usr/lib/perfsonar/scripts/system_environment/enable_auto_updates new
     
-Likewise, you may disable auto-updates from the command-line by running the following:
+Likewise, you may **disable** auto-updates from the command-line by running the following:
 
 *CentOS 6*::
 
-    chkconfig off yum-cron
+    chkconfig yum-cron off
     service yum-cron stop
 
 *CentOS 7*::
@@ -81,7 +80,7 @@ These commands will automatically update **all packages** on the system. Also no
 
 *Debian/Ubuntu*:
 
-This configuration enables automatic updates for `Debian security updates <https://www.debian.org/security/>`_ and perfSONAR packages.
+This configuration enables automatic updates for `Debian security updates <https://www.debian.org/security/>`_ or `Ubuntu security updates <https://wiki.ubuntu.com/Security/Upgrades>`_ and perfSONAR packages.
 
 .. _manage_update-auto-gui:
 
@@ -108,11 +107,9 @@ Disabling Automatic Updates for perfSONAR Packages
 --------------------------------------------------
 The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file **/etc/yum.repos.d/perfSONAR.repo** with the option **enabled** set to **0**. 
 
-For Debian/Ubuntu systems, please refer to :ref:`manage_update-auto-cli`.
-
 .. note:: If you are running against one of our testing repositories you may also need to update the files **/etc/yum.repos.d/perfSONAR-staging.repo** and **/etc/yum.repos.d/perfSONAR-nightly.repo**.
 
-To disable the automatic updating of perfSONAR packages on Debian delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
+To disable the automatic updating of perfSONAR packages on Debian/Ubuntu delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
 
 Special Upgrade Notes
 =====================

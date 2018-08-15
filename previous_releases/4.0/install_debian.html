@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Bundle Installation on Debian &mdash; perfSONAR Toolkit 4.0 documentation</title>
+    <title>Bundle Installation on Debian &mdash; perfSONAR Toolkit 4.0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.0',
+        VERSION:     '4.0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.0.2 documentation" href="index.html" />
     <link rel="next" title="Migrating from CentOS 6 to CentOS 7" href="install_migrate_centos7.html" />
     <link rel="prev" title="Bundle Installation on CentOS" href="install_centos.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="install_centos.html" title="Bundle Installation on CentOS"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -78,7 +78,9 @@
 <ul class="simple">
 <li>Debian 7 Wheezy</li>
 <li>Debian 8 Jessie</li>
-<li>Ubuntu 14 Trusty</li>
+<li>Debian 9 Stretch</li>
+<li>Ubuntu 14 Trusty Tahr</li>
+<li>Ubuntu 16 Xenial Xerus</li>
 </ul>
 <p>Debian meta packages are available to install the bundles described in <a class="reference internal" href="install_options.html"><em>perfSONAR Installation Options</em></a>. The steps in the remaining sections of this document detail the steps required for installing these bundles.</p>
 <div class="section" id="system-requirements">
@@ -89,10 +91,10 @@
 <li>64-bit (amd64)</li>
 <li>ARMv4t and up (armel)</li>
 <li>ARMv7 and up (armhf)</li>
-<li>ARM64 (arm64) (only for Debian 8)</li>
+<li>ARM64 (arm64) (only for Debian 8/9)</li>
 </ul>
 </li>
-<li><strong>Operating System:</strong>  Any system running a Debian 7, Debian 8, or Ubuntu 14 server OS is supported.  Other Debian flavours derived from Debian 7 or 8 or Ubuntu 14 might work too but are not officially supported.</li>
+<li><strong>Operating System:</strong>  Any system running a Debian 7, Debian 8, Debian 9, Ubuntu 14 or Ubuntu 16 server OS is supported.  Other Debian flavours derived from Debian 7/8/9 or Ubuntu 14/16 might work too but are not officially supported.</li>
 <li>See <a class="reference internal" href="install_hardware.html"><em>Hardware Requirements</em></a> for hardware requirements and more.</li>
 </ul>
 <div class="admonition note">
@@ -112,7 +114,7 @@ wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
 wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 </pre></div>
 </div>
-<p><em>Debian 8</em>:</p>
+<p><em>Debian 8 / Debian 9 / Ubuntu 16</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
 wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
 wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
@@ -163,10 +165,11 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 <p>In addition to any of the bundles above you may also <strong>optionnally</strong> choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):</p>
 <blockquote>
 <div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-servicewatcher</span></tt> - Automatically detects closest NTP servers and sets them in ntp.conf</li>
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></tt> - Adds default firewall rules and installs fail2ban</li>
-<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></tt> - Adds a cron job that checks if services are still running</li>
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></tt> - Automatically detects closest NTP servers and sets them in ntp.conf</li>
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></tt> - Adds default firewall rules and installs fail2ban</li>
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-servicewatcher</span></tt> - Adds a cron job that checks if services are still running</li>
 <li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-sysctl</span></tt> - Adds default sysctl tuning settings</li>
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-systemenv-testpoint</span></tt> - Configures auto-update and set some default logging locations</li>
 </ul>
 </div></blockquote>
 <p>You may also run the command below to get everything listed above on <strong>perfsonar-testpoint</strong> and <strong>perfsonar-core</strong> bundles:</p>
@@ -216,7 +219,7 @@ service ntp restart
 <p><em>Debian 7 / Ubuntu 14</em>:</p>
 <blockquote>
 <div>During the installation of the <cite>perfsonar-toolkit-security</cite> package you&#8217;ll be asked if you want to keep your current set of iptables rules, both for IPV4 and for IPv6. This is part of the usual installation process of the <cite>iptables-persistent</cite> package that we use to setup the firewall protecting your perfSONAR node.  Whatever you answer to the question, your current rules will be saved as part of the <cite>perfsonar-toolkit-security</cite> package installation.</div></blockquote>
-<p><em>Debian 8</em>:</p>
+<p><em>Debian 8 / Debian 9 / Ubuntu 16</em>:</p>
 <blockquote>
 <div>The <cite>perfsonar-toolkit-security</cite> package uses <cite>firewalld</cite> to manage the firewall rules.</div></blockquote>
 <p>Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files <tt class="docutils literal"><span class="pre">bwctl-server.limits</span></tt> and <tt class="docutils literal"><span class="pre">pscheduler/limits.conf</span></tt>.
@@ -226,6 +229,7 @@ bwctl to use it are described on the page <a class="reference internal" href="ma
 </div>
 <div class="section" id="step-5-auto-updates">
 <span id="install-debian-step5"></span><h3>Step 5: Auto updates<a class="headerlink" href="#step-5-auto-updates" title="Permalink to this headline">¶</a></h3>
+<p>If you have installed the <cite>perfsonar-toolkit-systemenv-testpoint</cite> package, then you&#8217;re all set for the auto-updates of perfSONAR packages and security fix for your OS.</p>
 <p>To ensure you always have the most current and hopefully most secure packages you can install <tt class="docutils literal"><span class="pre">unattended-upgrades</span></tt>. You’ll need to configure it to actually install the available updates with the following commands:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get install unattended-upgrades
 echo &#39;APT::Periodic::Update-Package-Lists &quot;1&quot;;&#39; &gt; /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
@@ -302,7 +306,7 @@ service perfsonar-lsregistrationdaemon start
 wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
 </pre></div>
 </div>
-<p><em>Debian 8</em>:</p>
+<p><em>Debian 8 / Debian 9 / Ubuntu 16</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
 wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
 </pre></div>
@@ -406,7 +410,7 @@ wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
         <li class="right" >
           <a href="install_centos.html" title="Bundle Installation on CentOS"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -432,10 +436,12 @@ wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
 
                 <li id="footer-partner-i2" class="partner-menu">
                     <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
-    
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
                 </ul>
 
-             
             </nav>
             <nav id="minFooterNav" class="minFooterNav">
                 <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
@@ -445,7 +451,7 @@ wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2016, perfSONAR Project.
+        &copy; Copyright 2018, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

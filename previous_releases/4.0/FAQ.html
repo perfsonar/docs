@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>perfSONAR FAQ &mdash; perfSONAR Toolkit 4.0 documentation</title>
+    <title>perfSONAR Frequently Asked Questions (FAQs) &mdash; perfSONAR Toolkit 4.0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.0',
+        VERSION:     '4.0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.0 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.0.2 documentation" href="index.html" />
     <link rel="next" title="perfSONAR Client Tools" href="client_tools.html" />
     <link rel="prev" title="Troubleshooting perfSONAR" href="troubleshooting_overview.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="troubleshooting_overview.html" title="Troubleshooting perfSONAR"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -72,8 +72,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="perfsonar-faq">
-<h1>perfSONAR FAQ<a class="headerlink" href="#perfsonar-faq" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="perfsonar-frequently-asked-questions-faqs">
+<h1>perfSONAR Frequently Asked Questions (FAQs)<a class="headerlink" href="#perfsonar-frequently-asked-questions-faqs" title="Permalink to this headline">¶</a></h1>
 <div class="contents local topic" id="topics">
 <p class="topic-title first">Topics</p>
 <ul class="simple">
@@ -205,6 +205,18 @@ Don’t <em>restart</em> the journaling service (i.e., don’t do “systemctl r
 <li><a class="reference external" href="http://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/techpaper/Timekeeping-In-VirtualMachines.pdf">Timekeeping In Virtual Machines</a></li>
 <li><a class="reference external" href="https://kb.vmware.com/selfservice/microsites/search.do?language=en_US&amp;cmd=displayKC&amp;externalId=1006427">Timekeeping best practices for Linux guests</a></li>
 </ul>
+</div>
+<div class="section" id="q-how-do-you-upgrade-a-perfsonar-node-from-debian-7-to-debian-9">
+<h3>Q: How do you upgrade a perfSONAR node from Debian 7 to Debian 9<a class="headerlink" href="#q-how-do-you-upgrade-a-perfsonar-node-from-debian-7-to-debian-9" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> Because of systemd, upgrading a host running perfSONAR on Debian 7 to Debian 9 is better done in multiple steps as described bellow:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Upgrade Debian 7 to Debian 8 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html">Jessie upgrade notes for i386 architecture</a>)</li>
+<li>Reboot (to get systemd running)</li>
+<li>Change perfSONAR repository from perfsonar-wheezy-release to perfsonar-jessie-release</li>
+<li>Upgrade Debian 8 to Debian 9 (following Debian instructions, here for <a class="reference external" href="https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html">Stretch upgrade notes for i386 architecture</a>)</li>
+</ol>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="tool-questions">
@@ -536,6 +548,37 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
 <li><a class="reference external" href="http://software.es.net/esmond/perfsonar_client_python.html">http://software.es.net/esmond/perfsonar_client_python.html</a></li>
 </ul>
 </div>
+<div class="section" id="q-how-can-i-get-cassandra-to-run-on-a-host-that-only-has-an-ipv6-address">
+<h3>Q: How can I get cassandra to run on a host that only has an IPv6 address?<a class="headerlink" href="#q-how-can-i-get-cassandra-to-run-on-a-host-that-only-has-an-ipv6-address" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> The default configuration of cassandra will not properly bind to the localhost interface if the host only has an IPv6 address. This is a bug in cassandra where it tries to open an IPv6 socket on 127.0.0.1, which is not possible since 127.0.0.1 is an IPv4 address. You may fix this problem with the following steps:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Open <em>/etc/cassandra/conf/cassandra-env.sh</em>, find and comment-out the line <cite>JVM_OPTS=&#8221;$JVM_OPTS -Djava.net.preferIPv4Stack=true&#8221;</cite> (by adding a <cite>#</cite> at the beginning of the line). Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#JVM_OPTS=&quot;$JVM_OPTS -Djava.net.preferIPv4Stack=true&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Open <em>/etc/cassandra/conf/cassandra.yaml</em>, find, and set the options <cite>listen_address</cite> and <cite>rpc_address</cite> to <cite>&#8221;::1&#8221;</cite> (NOTE: don&#8217;t forget the double quotes). Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>listen_address: &quot;::1&quot;
+...
+rpc_address: &quot;::1&quot;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Restart <em>htpd</em> and <em>cassandra</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>#CentOS 7, Debian
+systemctl restart cassandra
+systemctl restart httpd
+
+#CentOS 6
+/sbin/service cassandra restart
+/sbin/service httpd24-httpd restart
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="perfsonar-project-questions">
 <h2><a class="toc-backref" href="#id5">perfSONAR Project Questions</a><a class="headerlink" href="#perfsonar-project-questions" title="Permalink to this headline">¶</a></h2>
@@ -568,7 +611,7 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">perfSONAR FAQ</a><ul>
+<li><a class="reference internal" href="#">perfSONAR Frequently Asked Questions (FAQs)</a><ul>
 <li><a class="reference internal" href="#installation-questions">Installation Questions</a><ul>
 <li><a class="reference internal" href="#q-what-are-the-hardware-requirements-for-running-the-perfsonar-toolkit">Q: What are the hardware requirements for running the perfSONAR Toolkit?</a></li>
 <li><a class="reference internal" href="#q-does-my-machine-have-to-meet-the-system-requirements">Q: Does my machine have to meet the System Requirements?</a></li>
@@ -586,6 +629,7 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
 <li><a class="reference internal" href="#q-i-am-trying-to-run-perfsonar-on-low-cost-hardware-e-g-raspberry-pi-etc-where-should-i-start">Q: I am trying to run perfSONAR on low-cost hardware (e.g. raspberry pi, etc.). Where should I start?</a></li>
 <li><a class="reference internal" href="#q-i-am-running-a-small-node-and-seeing-a-lot-of-io-what-is-going-on">Q: I am running a small node, and seeing a lot of IO. What is going on?</a></li>
 <li><a class="reference internal" href="#q-where-can-i-find-more-resources-regarding-timekeeping-for-vmware-virtual-machines">Q: Where can I find more resources regarding timekeeping for VMWare Virtual Machines?</a></li>
+<li><a class="reference internal" href="#q-how-do-you-upgrade-a-perfsonar-node-from-debian-7-to-debian-9">Q: How do you upgrade a perfSONAR node from Debian 7 to Debian 9</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#tool-questions">Tool Questions</a><ul>
@@ -641,6 +685,7 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
 <li><a class="reference internal" href="#q-how-can-i-clean-up-the-data-in-my-esmond-instance">Q: How can I clean up the data in my esmond instance?</a></li>
 <li><a class="reference internal" href="#q-how-can-i-backup-the-data-in-my-esmond-instance">Q: How can I backup the data in my esmond instance?</a></li>
 <li><a class="reference internal" href="#q-where-can-i-find-documentation-on-interacting-with-perfsonar-archive-via-a-custom-client">Q: Where can I find documentation on interacting with perfSONAR archive via a custom client?</a></li>
+<li><a class="reference internal" href="#q-how-can-i-get-cassandra-to-run-on-a-host-that-only-has-an-ipv6-address">Q: How can I get cassandra to run on a host that only has an IPv6 address?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#perfsonar-project-questions">perfSONAR Project Questions</a><ul>
@@ -685,7 +730,7 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
         <li class="right" >
           <a href="troubleshooting_overview.html" title="Troubleshooting perfSONAR"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -711,10 +756,12 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
 
                 <li id="footer-partner-i2" class="partner-menu">
                     <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
-    
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
                 </ul>
 
-             
             </nav>
             <nav id="minFooterNav" class="minFooterNav">
                 <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
@@ -724,7 +771,7 @@ INFO [CompactionExecutor:8] 2016-04-03 22:06:38,417 CompactionController.java (l
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2016, perfSONAR Project.
+        &copy; Copyright 2018, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

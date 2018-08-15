@@ -1,6 +1,6 @@
-**************
-perfSONAR FAQ
-**************
+*******************************************
+perfSONAR Frequently Asked Questions (FAQs)
+*******************************************
 
 .. contents:: Topics
     :depth: 1
@@ -136,6 +136,16 @@ Q: Where can I find more resources regarding timekeeping for VMWare Virtual Mach
 - `Timekeeping In Virtual Machines <http://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/techpaper/Timekeeping-In-VirtualMachines.pdf>`_
 - `Timekeeping best practices for Linux guests <https://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=1006427>`_
 
+
+Q: How do you upgrade a perfSONAR node from Debian 7 to Debian 9
+================================================================
+
+**A:** Because of systemd, upgrading a host running perfSONAR on Debian 7 to Debian 9 is better done in multiple steps as described bellow:
+
+    #. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
+    #. Reboot (to get systemd running)
+    #. Change perfSONAR repository from perfsonar-wheezy-release to perfsonar-jessie-release
+    #. Upgrade Debian 8 to Debian 9 (following Debian instructions, here for `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_)
 
 
 Tool Questions
@@ -497,6 +507,29 @@ Q: Where can I find documentation on interacting with perfSONAR archive via a cu
 - http://software.es.net/esmond/perfsonar_client_perl.html 
 - http://software.es.net/esmond/perfsonar_client_python.html
 
+Q: How can I get cassandra to run on a host that only has an IPv6 address?
+=========================================================================================================================================================================================================================================================================================================================================
+**A:** The default configuration of cassandra will not properly bind to the localhost interface if the host only has an IPv6 address. This is a bug in cassandra where it tries to open an IPv6 socket on 127.0.0.1, which is not possible since 127.0.0.1 is an IPv4 address. You may fix this problem with the following steps:
+
+    #. Open */etc/cassandra/conf/cassandra-env.sh*, find and comment-out the line `JVM_OPTS="$JVM_OPTS -Djava.net.preferIPv4Stack=true"` (by adding a `#` at the beginning of the line). Example::
+        
+        #JVM_OPTS="$JVM_OPTS -Djava.net.preferIPv4Stack=true"
+    #. Open */etc/cassandra/conf/cassandra.yaml*, find, and set the options `listen_address` and `rpc_address` to `"::1"` (NOTE: don't forget the double quotes). Example::
+        
+        listen_address: "::1"
+        ...
+        rpc_address: "::1"
+    #. Restart *htpd* and *cassandra*::
+        
+         #CentOS 7, Debian
+         systemctl restart cassandra
+         systemctl restart httpd
+         
+         #CentOS 6
+         /sbin/service cassandra restart
+         /sbin/service httpd24-httpd restart
+         
+
 perfSONAR Project Questions
 ---------------------------
 
@@ -523,6 +556,5 @@ Q: How does version numbering work for the perfSONAR project?
 **A:** See https://github.com/perfsonar/project/wiki/Versioning if you are interested in learning about our version numbering scheme.
 
 
- 
 
 
