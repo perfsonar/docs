@@ -239,7 +239,7 @@ If you had installed a perfSONAR 4.0.2 bundle and you now want to upgrade to per
 Add the 4.1 APT sources
 -----------------------
 
-Even though the sources.list file is named after the Debian 8 (Jessie) release, it is meant to work on Debian 8 and 9 and Ubuntu 14, 16 and 18.  You can add it to your system with the following commands::
+The perfSONAR Debian repository name has changed for this release, we support all Debian and Ubuntu releases through a single repository.  But this means you need to add our new repository to your system with the following commands::
 
    cd /etc/apt/sources.list.d/
    wget http://downloads.perfsonar.net/debian/perfsonar-release.list
