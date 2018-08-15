@@ -143,6 +143,17 @@ CentOS 6 Support Discontinued
 -----------------------------
 perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`. You may also choose to switch to a supported :doc:`Debian platform <install_debian>`. **Security updates for CentOS 6 perfSONAR packages will be discontinued on February 15, 2019**. Also see the `CentOS documentation <https://wiki.centos.org/About/Product>`_ for a schedule of when CentOS 6 will no longer be a supported operating system. 
 
+Debian packages upgrade
+-----------------------
+Due to package dependency changes, the Debian auto-updates will not bring you 4.1 automatically. Furthermore, our repository name changed to make it clearer that we now have a single repository for all the supported distributions.
+
+To upgrade from 4.0.x to 4.1 on Debian or Ubuntu, follow these commands:
+
+    cd /etc/apt/sources.list.d/
+    wget http://downloads.perfsonar.net/debian/perfsonar-release.list
+    apt-get update
+    apt-get dist-upgrade
+
 Debian 7 Support Discontiuned
 -----------------------------
 perfSONAR 4.1 is NOT available for Debian 7 (and `Debian 7 is EOL <https://www.debian.org/News/2018/20180601>`_ anyways). If you wish to migrate an existing Debian 7 host to Debian 8 (Jessie) or Debian 9 (Stretch) you are advised to do it with the following steps:
