@@ -147,7 +147,7 @@ Debian packages upgrade
 -----------------------
 Due to package dependency changes, the Debian auto-updates will not bring you 4.1 automatically. Furthermore, our repository name changed to make it clearer that we now have a single repository for all the supported distributions.
 
-To upgrade from 4.0.x to 4.1 on Debian or Ubuntu, follow these commands:
+To upgrade from 4.0.x to 4.1 on Debian or Ubuntu, follow these commands::
 
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-release.list
