@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Lookup Service Registration Daemon Configuration File &mdash; perfSONAR Toolkit 4.0.2 documentation</title>
+    <title>Lookup Service Registration Daemon Configuration File &mdash; perfSONAR Toolkit 4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.0.2',
+        VERSION:     '4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.0.2 documentation" href="index.html" />
-    <link rel="next" title="Mesh Configuration (.conf) file" href="config_mesh.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.1 documentation" href="index.html" />
+    <link rel="next" title="Configuring pScheduler" href="config_pscheduler.html" />
     <link rel="prev" title="Listing of Important perfSONAR Files" href="config_files.html" /> 
   </head>
   <body>
@@ -55,12 +55,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="config_mesh.html" title="Mesh Configuration (.conf) file"
+          <a href="config_pscheduler.html" title="Configuring pScheduler"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="config_files.html" title="Listing of Important perfSONAR Files"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -218,6 +218,46 @@
 <tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">3.3 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="autodiscover-tests-url">
+<span id="config-ls-registration-autodiscover-tests-url"></span><h3>autodiscover_tests_url<a class="headerlink" href="#autodiscover-tests-url" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The URL of the pScheduler instance to query for auto-discovering tests.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">allow_internal_addresses</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or one</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">Defaults to <em>https://ADDRESS/pscheduler</em> where <em>ADDRESS</em> is the interface address</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">4.1 and later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="disable-autodiscover-tests-directive">
+<span id="config-ls-registration-disable-autodiscover-tests"></span><h3>disable_autodiscover_tests Directive<a class="headerlink" href="#disable-autodiscover-tests-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Disables autodiscovery of pScheduler test types for interface</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disable_autodiscover_tests</span> <span class="pre">0|1</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
 </tr>
 </tbody>
 </table>
@@ -1411,6 +1451,25 @@
 </tbody>
 </table>
 </div>
+<div class="section" id="disable-test-directive">
+<span id="config-ls-registration-disable-test"></span><h3>disable_test Directive<a class="headerlink" href="#disable-test-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Removes test type from interface even if it is in the autodiscovery list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">disable_test</span> <span class="pre">TEST_TYPE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="if-name-directive">
 <span id="config-ls-registration-if-name"></span><h3>if_name Directive<a class="headerlink" href="#if-name-directive" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1531,8 +1590,30 @@
 </tbody>
 </table>
 </div>
+<div class="section" id="test-directive">
+<span id="config-ls-registration-iface-test"></span><h3>test Directive<a class="headerlink" href="#test-directive" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">A pscheduler test type that is allowed on this interface. For example <em>throughput</em>, <em>latencybg</em> or <em>trace</em>. Will be merged with autodiscovered values unless <a class="reference internal" href="#config-ls-registration-disable-autodiscover-tests"><em>disable_autodiscover_tests</em></a> set.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">test</span> <span class="pre">TEST_TYPE</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-interface"><em>interface</em></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">The tests found by querying pScheduler</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="urn-directive">
-<h3>urn Directive<a class="headerlink" href="#urn-directive" title="Permalink to this headline">¶</a></h3>
+<span id="config-ls-registration-iface-urn"></span><h3>urn Directive<a class="headerlink" href="#urn-directive" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1775,18 +1856,12 @@
 </table>
 <p>Valid values for this field are currently:</p>
 <ul class="simple">
-<li>bwctl</li>
 <li>dashboard</li>
 <li>gridftp</li>
 <li>ma</li>
-<li>meshconfig</li>
-<li>mp-bwctl</li>
-<li>mp-owamp</li>
 <li>owamp</li>
-<li>phoebus</li>
 <li>ping</li>
 <li>pscheduler</li>
-<li>reddnet</li>
 <li>traceroute</li>
 </ul>
 </div>
@@ -1803,7 +1878,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_ca_file</span> <span class="pre">FILE</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em> or <em>meshconfig</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1827,7 +1902,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_ca_path</span> <span class="pre">DIR</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em> or <em>meshconfig</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1837,28 +1912,6 @@
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="autodiscover-fields-directive">
-<span id="config-ls-registration-autodiscover-fields"></span><h3>autodiscover_fields Directive<a class="headerlink" href="#autodiscover-fields-directive" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Indicates that a mesh should be queried and the administrators and test members should be automatically detected</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_fields</span> <span class="pre">0|1</span></tt></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>meshconfig</em></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
 </tr>
 </tbody>
 </table>
@@ -1933,28 +1986,6 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="autodiscover-timeout-directive">
-<span id="config-ls-registration-autodiscover-timeout"></span><h3>autodiscover_timeout Directive<a class="headerlink" href="#autodiscover-timeout-directive" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If <a class="reference internal" href="#config-ls-registration-autodiscover-fields"><em>autodiscover_fields</em></a> is enabled, the time to wait in seconds for results when querying the mesh before giving an error.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_timeout</span> <span class="pre">TIMEOUT</span></tt></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>meshconfig</em></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">60</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
-</tr>
-</tbody>
-</table>
-</div>
 <div class="section" id="autodiscover-url-directive">
 <span id="config-ls-registration-autodiscover-url"></span><h3>autodiscover_url Directive<a class="headerlink" href="#autodiscover-url-directive" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1965,7 +1996,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_url</span> <span class="pre">URL</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em> or <em>meshconfig</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -1987,7 +2018,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">autodiscover_verify_hostname</span> <span class="pre">0|1</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em> or <em>meshconfig</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>ma</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -2035,7 +2066,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">http_port</span> <span class="pre">PORT</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>meshconfig</em>, <em>mp-bwctl</em>, <em>mp-owamp</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -2059,7 +2090,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">https_port</span> <span class="pre">PORT</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>meshconfig</em>, <em>mp-bwctl</em>, <em>mp-owamp</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
 </tr>
@@ -2083,7 +2114,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">url_path</span> <span class="pre">PATH</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>meshconfig</em>, <em>mp-bwctl</em>, <em>mp-owamp</em></td>
+<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>dashboard</em>, <em>ma</em>, <em>pscheduler</em></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Exactly one</td>
 </tr>
@@ -2121,32 +2152,8 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="skip-autodiscover-admins-directive">
-<span id="config-ls-registration-skip-autodiscover-admins"></span><h3>skip_autodiscover_admins Directive<a class="headerlink" href="#skip-autodiscover-admins-directive" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">If enabled, does not automatically register administrators found in the mesh file</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">skip_autodiscover_admins</span> <span class="pre">0|1</span></tt></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>meshconfig</em></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or One</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">N/A</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Compatibility:</th><td class="field-body">3.4 and later</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="test-directive">
-<span id="config-ls-registration-test"></span><h3>test Directive<a class="headerlink" href="#test-directive" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="config-ls-registration-test">
+<span id="id3"></span><h3>test Directive<a class="headerlink" href="#config-ls-registration-test" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2163,28 +2170,6 @@
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">The tests found by querying the MA metadata</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="test-member-directive">
-<span id="config-ls-registration-test-member"></span><h3>test_member Directive<a class="headerlink" href="#test-member-directive" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">An IP address or hostname that is included in a mesh</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Syntax:</th><td class="field-body"><tt class="docutils literal"><span class="pre">test_member</span> <span class="pre">ADDRESS</span></tt></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Contexts:</th><td class="field-body"><a class="reference internal" href="#config-ls-registration-service"><em>service</em></a> where <a class="reference internal" href="#config-ls-registration-service-type"><em>type</em></a> is <em>meshconfig</em></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Occurrences:</th><td class="field-body">Zero or More</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">N/A</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Default (Autodiscover):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">The members found by querying the MeshConfig file</td>
 </tr>
 </tbody>
 </table>
@@ -2511,6 +2496,8 @@
 <li><a class="reference internal" href="#auto-discovery">Auto-discovery</a><ul>
 <li><a class="reference internal" href="#autodiscover-directive">autodiscover Directive</a></li>
 <li><a class="reference internal" href="#allow-internal-addresses-directive">allow_internal_addresses Directive</a></li>
+<li><a class="reference internal" href="#autodiscover-tests-url">autodiscover_tests_url</a></li>
+<li><a class="reference internal" href="#disable-autodiscover-tests-directive">disable_autodiscover_tests Directive</a></li>
 <li><a class="reference internal" href="#disable-ipv4-reverse-lookup-directive">disable_ipv4_reverse_lookup Directive</a></li>
 <li><a class="reference internal" href="#disable-ipv6-reverse-lookup-directive">disable_ipv6_reverse_lookup Directive</a></li>
 <li><a class="reference internal" href="#disabled-directive">disabled Directive</a></li>
@@ -2576,11 +2563,13 @@
 <li><a class="reference internal" href="#interfaces">Interfaces</a><ul>
 <li><a class="reference internal" href="#address-directive">address Directive</a></li>
 <li><a class="reference internal" href="#capacity-directive">capacity Directive</a></li>
+<li><a class="reference internal" href="#disable-test-directive">disable_test Directive</a></li>
 <li><a class="reference internal" href="#if-name-directive">if_name Directive</a></li>
 <li><a class="reference internal" href="#if-type-directive">if_type Directive</a></li>
 <li><a class="reference internal" href="#mac-address-directive">mac_address Directive</a></li>
 <li><a class="reference internal" href="#mtu-directive">mtu Directive</a></li>
 <li><a class="reference internal" href="#subnet-directive">subnet Directive</a></li>
+<li><a class="reference internal" href="#test-directive">test Directive</a></li>
 <li><a class="reference internal" href="#urn-directive">urn Directive</a></li>
 </ul>
 </li>
@@ -2599,11 +2588,9 @@
 <li><a class="reference internal" href="#service-type-specific-parameters">Service Type-Specific Parameters</a><ul>
 <li><a class="reference internal" href="#autodiscover-ca-file-directive">autodiscover_ca_file Directive</a></li>
 <li><a class="reference internal" href="#autodiscover-ca-path-directive">autodiscover_ca_path Directive</a></li>
-<li><a class="reference internal" href="#autodiscover-fields-directive">autodiscover_fields Directive</a></li>
 <li><a class="reference internal" href="#autodiscover-indices-directive">autodiscover_indices Directive</a></li>
 <li><a class="reference internal" href="#autodiscover-index-time-range-directive">autodiscover_index_time_range Directive</a></li>
 <li><a class="reference internal" href="#autodiscover-tests-directive">autodiscover_tests Directive</a></li>
-<li><a class="reference internal" href="#autodiscover-timeout-directive">autodiscover_timeout Directive</a></li>
 <li><a class="reference internal" href="#autodiscover-url-directive">autodiscover_url Directive</a></li>
 <li><a class="reference internal" href="#autodiscover-verify-hostname-directive">autodiscover_verify_hostname Directive</a></li>
 <li><a class="reference internal" href="#autodiscover-webui-url-directive">autodiscover_webui_url Directive</a></li>
@@ -2611,9 +2598,7 @@
 <li><a class="reference internal" href="#https-port-directive">https_port Directive</a></li>
 <li><a class="reference internal" href="#url-path-directive">url_path Directive</a></li>
 <li><a class="reference internal" href="#webui-url-directive">webui_url Directive</a></li>
-<li><a class="reference internal" href="#skip-autodiscover-admins-directive">skip_autodiscover_admins Directive</a></li>
-<li><a class="reference internal" href="#test-directive">test Directive</a></li>
-<li><a class="reference internal" href="#test-member-directive">test_member Directive</a></li>
+<li><a class="reference internal" href="#config-ls-registration-test">test Directive</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#measurement-archive-tests">Measurement Archive Tests</a><ul>
@@ -2648,8 +2633,8 @@
                 </ul>
                   <ul>
                       <li>
-                      <a href="config_mesh.html">Next topic</a>
-                      <ul><li><a href="config_mesh.html" title="next chapter">Mesh Configuration (.conf) file</a></li></ul>
+                      <a href="config_pscheduler.html">Next topic</a>
+                      <ul><li><a href="config_pscheduler.html" title="next chapter">Configuring pScheduler</a></li></ul>
                       </li>
                   </ul>
                 
@@ -2666,12 +2651,12 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="config_mesh.html" title="Mesh Configuration (.conf) file"
+          <a href="config_pscheduler.html" title="Configuring pScheduler"
              >next</a> |</li>
         <li class="right" >
           <a href="config_files.html" title="Listing of Important perfSONAR Files"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

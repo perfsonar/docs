@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>perfSONAR Frequently Asked Questions (FAQs) &mdash; perfSONAR Toolkit 4.0.2 documentation</title>
+    <title>perfSONAR Frequently Asked Questions (FAQs) &mdash; perfSONAR Toolkit 4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.0.2',
+        VERSION:     '4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.0.2 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.1 documentation" href="index.html" />
     <link rel="next" title="perfSONAR Client Tools" href="client_tools.html" />
     <link rel="prev" title="Troubleshooting perfSONAR" href="troubleshooting_overview.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="troubleshooting_overview.html" title="Troubleshooting perfSONAR"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -122,26 +122,13 @@
 <h3>Q: How do I disable global registration?<a class="headerlink" href="#q-how-do-i-disable-global-registration" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> The following commands will stop, and disable, this service:</p>
 <blockquote>
-<div><ul>
-<li><p class="first">CentOS 6/Debian 7:</p>
-<div class="highlight-python"><div class="highlight"><pre>service perfsonar-lsregistrationdaemon stop
-chkconfig perfsonar-lsregistrationdaemon off
-</pre></div>
-</div>
-</li>
-<li><p class="first">CentOS 7/Debian 8:</p>
-<div class="highlight-python"><div class="highlight"><pre>systemctl stop perfsonar-lsregistrationdaemon
-systemctl disable perfsonar-lsregistrationdaemon
-</pre></div>
-</div>
-</li>
-</ul>
-</div></blockquote>
+<div>systemctl stop perfsonar-lsregistrationdaemon
+systemctl disable perfsonar-lsregistrationdaemon</div></blockquote>
 </div>
 <div class="section" id="q-can-i-boot-from-a-usb-key-instead-of-a-dvd">
 <h3>Q: Can I boot from a USB key instead of a DVD?<a class="headerlink" href="#q-can-i-boot-from-a-usb-key-instead-of-a-dvd" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> The perfSONAR Toolkit Netinstall and FullInstall images are capable of being installed on a USB stick instead of a DVD. To write these images to the media, we recommend using dd, such as:</p>
-<div class="highlight-python"><div class="highlight"><pre>sudo dd if=pS-Toolkit-4.0-FullInstall-x86_64.iso of=/dev/disk3
+<div class="highlight-python"><div class="highlight"><pre>sudo dd if=pS-Toolkit-VERSION-FullInstall-x86_64.iso of=/dev/disk3
 </pre></div>
 </div>
 </div>
@@ -173,16 +160,21 @@ Those should be the only places you need as linux.mirrors.es.net also has a mirr
 <div class="section" id="q-is-there-a-way-to-re-image-perfsonar-resources-remotely">
 <h3>Q: Is there a way to re-image perfSONAR resources remotely?<a class="headerlink" href="#q-is-there-a-way-to-re-image-perfsonar-resources-remotely" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a DVD or USB would be mounted.
-As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance some services support &#8220;virtual media&#8221; if they contain a DRACs with the enterprise feature set enabled.
-For a more general solution, and going on the assumption that a remote console access is available to a servers, consider a package called iPXE. iPXE can do is attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are:</p>
+As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance, some services support &#8220;virtual media&#8221; if they contain a DRACs with the enterprise feature set enabled.
+For a more general solution, and going on the assumption that remote console access is available to a servers, consider a package called iPXE. iPXE can attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are:</p>
 <div class="highlight-python"><div class="highlight"><pre>set net0/ip 10.9.8.7
 set net0/netmask 255.255.255.0
 set net0/gateway 10.9.8.1
 set dns 10.9.8.2
-sanboot http://server.kinber.org/toolkit.iso
+sanboot http://server.example.net/toolkit.iso
 </pre></div>
 </div>
-<p>If there is DHCP available, the four set commands can be removed and a single dhcp command put in their place. Any HTTP server used to serve the ISO must support range requests. The standard Apache on most systems will.
+<p>If DHCP is available, the process is considerably simpler:</p>
+<div class="highlight-python"><div class="highlight"><pre>dhcp
+sanboot http://server.example.net/toolkit.iso
+</pre></div>
+</div>
+<p>Any HTTP server used to serve the ISO must support range requests. The standard Apache on most systems will.
 Note that iPXE needs to be on a bootable medium, and it’s operationally better when separate from the disk in the machine. This means that remote locations will need to have something like a USB stick installed. Once in place, set the BIOS to ignore it and boot it explicitly when needed. Since it’s a regular USB device, it can be updated remotely while the main OS is running.</p>
 </div>
 <div class="section" id="q-i-am-trying-to-run-perfsonar-on-low-cost-hardware-e-g-raspberry-pi-etc-where-should-i-start">
@@ -213,8 +205,8 @@ Don’t <em>restart</em> the journaling service (i.e., don’t do “systemctl r
 <div><ol class="arabic simple">
 <li>Upgrade Debian 7 to Debian 8 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html">Jessie upgrade notes for i386 architecture</a>)</li>
 <li>Reboot (to get systemd running)</li>
-<li>Change perfSONAR repository from perfsonar-wheezy-release to perfsonar-jessie-release</li>
-<li>Upgrade Debian 8 to Debian 9 (following Debian instructions, here for <a class="reference external" href="https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html">Stretch upgrade notes for i386 architecture</a>)</li>
+<li>Change perfSONAR repository from perfsonar-wheezy-release to perfsonar-release</li>
+<li>Upgrade Debian 8 to Debian 9 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html">Stretch upgrade notes for i386 architecture</a>)</li>
 </ol>
 </div></blockquote>
 </div>
@@ -225,10 +217,6 @@ Don’t <em>restart</em> the journaling service (i.e., don’t do “systemctl r
 <h3>Q: What is pScheduler and how do I use it?<a class="headerlink" href="#q-what-is-pscheduler-and-how-do-i-use-it" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> pScheduler is used to schedule network tests on perfSONAR hosts. See <a class="reference internal" href="pscheduler_intro.html"><em>What is pScheduler?</em></a></p>
 </div>
-<div class="section" id="q-what-is-bwctl-and-how-do-i-use-it">
-<h3>Q: What is BWCTL and how do I use it?<a class="headerlink" href="#q-what-is-bwctl-and-how-do-i-use-it" title="Permalink to this headline">¶</a></h3>
-<p><strong>A:</strong> BWCTL was used to schedule network tests on perfSONAR hosts prior to perfSONAR v4.0. BWCTL is still supported in v4.0, but is considered deprecated and will be unsupported in perfSONAR 4.1 and beyond.</p>
-</div>
 <div class="section" id="q-what-is-owamp-and-how-do-i-use-it">
 <h3>Q: What is OWAMP and how do I use it?<a class="headerlink" href="#q-what-is-owamp-and-how-do-i-use-it" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> OWAMP (One-Way Ping) is a client server program that was developed to provide delay and jitter measurements between two target computers. At boot time, the perfSONAR Toolkit starts an OWAMP server process and leaves it listening on TCP port 861. This server may then be used by remote clients. Additionally, perfSONAR includes an OWAMP client application that can be used to test to remote instances. For more information on how it fits into perfSONAR overall see <a class="reference internal" href="intro_about.html"><em>What is perfSONAR?</em></a>.</p>
@@ -237,6 +225,10 @@ Don’t <em>restart</em> the journaling service (i.e., don’t do “systemctl r
 <h3>Q: What happened to the NDT and NPAD tools?<a class="headerlink" href="#q-what-happened-to-the-ndt-and-npad-tools" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> NDT and NPAD depend on web100, which is no longer supported, so they have been dropped from perfSONAR starting with v4.0.
 If you need similar functionality, we recommend that you use <a class="reference external" href="https://www.measurementlab.net/tests/">https://www.measurementlab.net/tests/</a></p>
+</div>
+<div class="section" id="q-what-happened-to-the-bwctl-tool">
+<h3>Q: What happened to the BWCTL tool?<a class="headerlink" href="#q-what-happened-to-the-bwctl-tool" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> BWCTL is no longer included by default with perfSONAR. BWCTL was used to schedule network tests on perfSONAR hosts prior to perfSONAR v4.0 but has been replaced by pScheduler.</p>
 </div>
 <div class="section" id="q-how-can-i-set-limits-to-prevent-others-from-overusing-my-test-host-what-is-the-purpose-of-pscheduler-limits">
 <h3>Q: How can I set limits to prevent others from overusing my test host? What is the purpose of pscheduler limits?<a class="headerlink" href="#q-how-can-i-set-limits-to-prevent-others-from-overusing-my-test-host-what-is-the-purpose-of-pscheduler-limits" title="Permalink to this headline">¶</a></h3>
@@ -247,22 +239,17 @@ For example, to prevent your machine/network from being saturated with throughpu
 <h3>Q: Can I run both throughput and latency/loss tests on the same interface without interference due to the way pscheduler scheduling works?<a class="headerlink" href="#q-can-i-run-both-throughput-and-latency-loss-tests-on-the-same-interface-without-interference-due-to-the-way-pscheduler-scheduling-works" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> Currently you cannot guarantee no interference. pScheduler <em>rtt</em> test that execute the ping tool and OWAMP <em>latency</em> and <em>latencybg</em> tests that execute owping and powstream respectively, are considered background tasks and can be scheduled in parallel to each other as well as throughput tests. Given the frequency with which users prefer to run tools such as ping and owping (and powstream runs constantly), there would be very few tests slots available if this were not the case. This does not mean you cannot run these tests on the same interface, it just means some correlation of results may be necessary when debugging. It is recommended, though not required, you run these tests on separate interfaces from throughput.</p>
 </div>
-<div class="section" id="q-how-can-i-force-testing-over-ipv4-or-ipv6-in-the-mesh-configuration">
-<h3>Q: How can I force testing over IPv4 or IPv6 in the mesh configuration?<a class="headerlink" href="#q-how-can-i-force-testing-over-ipv4-or-ipv6-in-the-mesh-configuration" title="Permalink to this headline">¶</a></h3>
-<p><strong>A:</strong> There is both a ipv4_only and ipv6_only option you can set in the test parameters of a mesh config. Setting them both at the same time gives an error.</p>
+<div class="section" id="q-how-can-i-force-testing-over-ipv4-or-ipv6-in-a-psconfig-template">
+<h3>Q: How can I force testing over IPv4 or IPv6 in a pSConfig template?<a class="headerlink" href="#q-how-can-i-force-testing-over-ipv4-or-ipv6-in-a-psconfig-template" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> The exact option may very depending on the test plug-in, but in a <em>test</em> object&#8217;s <tt class="docutils literal"><span class="pre">spec</span></tt> most of the default plug-ins support an <tt class="docutils literal"><span class="pre">ip-version</span></tt> field that can get set to <tt class="docutils literal"><span class="pre">4</span></tt> or <tt class="docutils literal"><span class="pre">6</span></tt>.</p>
 </div>
-<div class="section" id="q-how-do-i-configure-a-test-mesh-to-pace-all-tcp-traffic-to-only-5gbps-so-that-i-don-t-use-all-my-sites-bandwidth">
-<h3>Q: How do I configure a test mesh to pace all TCP traffic to only 5Gbps, so that I don&#8217;t use all my sites bandwidth?<a class="headerlink" href="#q-how-do-i-configure-a-test-mesh-to-pace-all-tcp-traffic-to-only-5gbps-so-that-i-don-t-use-all-my-sites-bandwidth" title="Permalink to this headline">¶</a></h3>
-<p><strong>A:</strong> Currently it is not possible to set iperf3&#8217;s <em>&#8211;fq-rate</em> flag via the mesh config file, but this should be in the next release. In the meantime, you can set pacing for your entire host using the commands described
-at: <a class="reference external" href="https://fasterdata.es.net/host-tuning/packet-pacing/">https://fasterdata.es.net/host-tuning/packet-pacing/</a></p>
+<div class="section" id="q-how-do-i-configure-a-psconfig-template-to-pace-all-tcp-traffic-to-only-5gbps-so-that-i-don-t-use-all-my-sites-bandwidth">
+<h3>Q: How do I configure a pSConfig template to pace all TCP traffic to only 5Gbps, so that I don&#8217;t use all my sites bandwidth?<a class="headerlink" href="#q-how-do-i-configure-a-psconfig-template-to-pace-all-tcp-traffic-to-only-5gbps-so-that-i-don-t-use-all-my-sites-bandwidth" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> Set the <tt class="docutils literal"><span class="pre">bandwidth</span></tt> property in a <em>test</em> object&#8217;s <tt class="docutils literal"><span class="pre">spec</span></tt>. It accepts bandwidth as an integer in bits per second.</p>
 </div>
-<div class="section" id="q-i-want-to-operate-a-dynamic-maddash-mesh-with-hosts-from-a-lookup-service-where-do-i-start">
-<h3>Q: I want to operate a &#8220;Dynamic&#8221; Maddash Mesh with hosts from a lookup service. Where do I start?<a class="headerlink" href="#q-i-want-to-operate-a-dynamic-maddash-mesh-with-hosts-from-a-lookup-service-where-do-i-start" title="Permalink to this headline">¶</a></h3>
-<p><strong>A:</strong> You can find more information on this at <a class="reference internal" href="multi_mesh_autoconfig.html"><em>Automatic Test Configuration with MeshConfig</em></a>.</p>
-</div>
-<div class="section" id="q-if-you-have-made-manual-changes-to-meshconfig-agent-tasks-conf-to-point-to-a-different-ma-or-multiple-mas-and-you-subsequently-change-test-configurations-through-the-gui-does-this-leave-your-ma-customizations-alone">
-<h3>Q: If you have made manual changes to meshconfig-agent-tasks.conf to point to a different MA (or multiple MAs), and you subsequently change test configurations through the GUI, does this leave your MA customizations alone?<a class="headerlink" href="#q-if-you-have-made-manual-changes-to-meshconfig-agent-tasks-conf-to-point-to-a-different-ma-or-multiple-mas-and-you-subsequently-change-test-configurations-through-the-gui-does-this-leave-your-ma-customizations-alone" title="Permalink to this headline">¶</a></h3>
-<p><strong>A:</strong> Yes. The GUI leaves all measurement_archive blocks alone.</p>
+<div class="section" id="q-i-want-to-operate-a-dynamic-template-with-hosts-from-a-lookup-service-where-do-i-start">
+<h3>Q: I want to operate a &#8220;dynamic&#8221; template with hosts from a lookup service. Where do I start?<a class="headerlink" href="#q-i-want-to-operate-a-dynamic-template-with-hosts-from-a-lookup-service-where-do-i-start" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> You can find more information on this at <a class="reference internal" href="psconfig_autoconfig.html"><em>pSConfig Auto-Configuration</em></a>.</p>
 </div>
 <div class="section" id="q-why-do-i-get-such-weird-results-when-i-test-from-a-10g-connected-host-to-1g-connected-host">
 <h3>Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?<a class="headerlink" href="#q-why-do-i-get-such-weird-results-when-i-test-from-a-10g-connected-host-to-1g-connected-host" title="Permalink to this headline">¶</a></h3>
@@ -359,8 +346,8 @@ options ipv6 disable=1
 <h3>Q: What TCP congestion control algorithm is used by the perfSONAR Toolkit?<a class="headerlink" href="#q-what-tcp-congestion-control-algorithm-is-used-by-the-perfsonar-toolkit" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> The perfSONAR toolkit sets the TCP congestion control algorithm to htcp.</p>
 </div>
-<div class="section" id="q-how-can-i-add-custom-rules-to-iptables">
-<h3>Q: How can I add custom rules to IPTables?<a class="headerlink" href="#q-how-can-i-add-custom-rules-to-iptables" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-how-can-i-add-custom-rules-to-my-firewall">
+<h3>Q: How can I add custom rules to my firewall?<a class="headerlink" href="#q-how-can-i-add-custom-rules-to-my-firewall" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> See <a class="reference internal" href="manage_security.html#manage-security-custom"><em>Adding Your Own Firewall Rules</em></a></p>
 </div>
 <div class="section" id="q-is-it-possible-to-change-the-default-port-for-tool-x">
@@ -377,23 +364,6 @@ options ipv6 disable=1
 <div class="section" id="q-why-doesn-t-the-perfsonar-toolkit-include-the-most-recent-version-of-vendor-xs-driver">
 <h3>Q: Why doesn&#8217;t the perfSONAR toolkit include the most recent version of vendor X’s driver?<a class="headerlink" href="#q-why-doesn-t-the-perfsonar-toolkit-include-the-most-recent-version-of-vendor-xs-driver" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> We only support the default CentOS device drivers on the toolkit. Check your NIC vendor&#8217;s website to see if a newer version of the driver is available for download.</p>
-</div>
-<div class="section" id="q-can-i-configure-yum-to-exclude-kernel-packages-from-it-s-update-procedure">
-<h3>Q: Can I configure yum to exclude kernel packages from it&#8217;s update procedure?<a class="headerlink" href="#q-can-i-configure-yum-to-exclude-kernel-packages-from-it-s-update-procedure" title="Permalink to this headline">¶</a></h3>
-<p><strong>A:</strong> Note that as of perfSOANR 4.0, the software ships witha standard kernel. It no longer uses the special web100 kernel as it did in versions prior to 4.0. If youa re still curious how to do this thoug, a detailed explanation of yum configuration can be found in the RHEL documents: <a class="reference external" href="https://access.redhat.com/site/solutions/10185">https://access.redhat.com/site/solutions/10185</a>. There are two ways to exclude kernel packages from a yum update, the first solution can be invoked on the command line:</p>
-<div class="highlight-python"><div class="highlight"><pre>yum update --exclude=kernel*
-</pre></div>
-</div>
-<p>To make permanent changes, edit the /etc/yum.conf file and following entries to it:</p>
-<div class="highlight-python"><div class="highlight"><pre>[main]
-cachedir=/var/cache/yum/$basearch/$releasever
-keepcache=0
-debuglevel=2
-logfile=/var/log/yum.log
-exclude=kernel* samba*                           &lt;====
-</pre></div>
-</div>
-<p>NOTE: If there are multiple package to be excluded then separate them using a single space or comma.</p>
 </div>
 <div class="section" id="q-how-can-i-configure-yum-to-automatically-update-the-system">
 <h3>Q: How can I configure yum to automatically update the system?<a class="headerlink" href="#q-how-can-i-configure-yum-to-automatically-update-the-system" title="Permalink to this headline">¶</a></h3>
@@ -476,26 +446,12 @@ sudo modprobe ixgbe allow_unsupported_sfp=0</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Then run the following commands to delete all esmond dat**A:**</p>
-<blockquote>
-<div><ul>
-<li><p class="first"><em>CentOS 6</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>cd /usr/lib/esmond
-source /opt/rh/python27/enable
-. bin/activate
-python /usr/lib/esmond/util/ps_remove_data.py -c esmond-nuke.conf
-</pre></div>
-</div>
-</li>
-<li><p class="first"><em>CentOS 7/Debian</em>:</p>
+<p>Then run the following commands to delete all esmond dat:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /usr/lib/esmond
 . bin/activate
 python /usr/lib/esmond/util/ps_remove_data.py -c esmond-nuke.conf
 </pre></div>
 </div>
-</li>
-</ul>
-</div></blockquote>
 </div>
 <div class="section" id="q-i-have-a-central-ma-for-my-perfsonar-data-what-happens-if-the-central-ma-goes-down-for-a-while-or-the-network-is-unavailable-between-the-beacons-and-the-ma-are-the-measurements-lost-or-are-they-buffered-to-be-delivered-later-does-this-have-any-effect-on-the-timing-of-subsequent-measurements">
 <h3>Q: I have a central MA for my perfSONAR data. What happens if the central MA goes down for a while, or the network is unavailable between the beacons and the MA? Are the measurements lost, or are they buffered to be delivered later? Does this have any effect on the timing of subsequent measurements?<a class="headerlink" href="#q-i-have-a-central-ma-for-my-perfsonar-data-what-happens-if-the-central-ma-goes-down-for-a-while-or-the-network-is-unavailable-between-the-beacons-and-the-ma-are-the-measurements-lost-or-are-they-buffered-to-be-delivered-later-does-this-have-any-effect-on-the-timing-of-subsequent-measurements" title="Permalink to this headline">¶</a></h3>
@@ -566,13 +522,8 @@ rpc_address: &quot;::1&quot;
 </div>
 </li>
 <li><p class="first">Restart <em>htpd</em> and <em>cassandra</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>#CentOS 7, Debian
-systemctl restart cassandra
+<div class="highlight-python"><div class="highlight"><pre>systemctl restart cassandra
 systemctl restart httpd
-
-#CentOS 6
-/sbin/service cassandra restart
-/sbin/service httpd24-httpd restart
 </pre></div>
 </div>
 </li>
@@ -634,15 +585,14 @@ systemctl restart httpd
 </li>
 <li><a class="reference internal" href="#tool-questions">Tool Questions</a><ul>
 <li><a class="reference internal" href="#q-what-is-pscheduler-and-how-do-i-use-it">Q: What is pScheduler and how do I use it?</a></li>
-<li><a class="reference internal" href="#q-what-is-bwctl-and-how-do-i-use-it">Q: What is BWCTL and how do I use it?</a></li>
 <li><a class="reference internal" href="#q-what-is-owamp-and-how-do-i-use-it">Q: What is OWAMP and how do I use it?</a></li>
 <li><a class="reference internal" href="#q-what-happened-to-the-ndt-and-npad-tools">Q: What happened to the NDT and NPAD tools?</a></li>
+<li><a class="reference internal" href="#q-what-happened-to-the-bwctl-tool">Q: What happened to the BWCTL tool?</a></li>
 <li><a class="reference internal" href="#q-how-can-i-set-limits-to-prevent-others-from-overusing-my-test-host-what-is-the-purpose-of-pscheduler-limits">Q: How can I set limits to prevent others from overusing my test host? What is the purpose of pscheduler limits?</a></li>
 <li><a class="reference internal" href="#q-can-i-run-both-throughput-and-latency-loss-tests-on-the-same-interface-without-interference-due-to-the-way-pscheduler-scheduling-works">Q: Can I run both throughput and latency/loss tests on the same interface without interference due to the way pscheduler scheduling works?</a></li>
-<li><a class="reference internal" href="#q-how-can-i-force-testing-over-ipv4-or-ipv6-in-the-mesh-configuration">Q: How can I force testing over IPv4 or IPv6 in the mesh configuration?</a></li>
-<li><a class="reference internal" href="#q-how-do-i-configure-a-test-mesh-to-pace-all-tcp-traffic-to-only-5gbps-so-that-i-don-t-use-all-my-sites-bandwidth">Q: How do I configure a test mesh to pace all TCP traffic to only 5Gbps, so that I don&#8217;t use all my sites bandwidth?</a></li>
-<li><a class="reference internal" href="#q-i-want-to-operate-a-dynamic-maddash-mesh-with-hosts-from-a-lookup-service-where-do-i-start">Q: I want to operate a &#8220;Dynamic&#8221; Maddash Mesh with hosts from a lookup service. Where do I start?</a></li>
-<li><a class="reference internal" href="#q-if-you-have-made-manual-changes-to-meshconfig-agent-tasks-conf-to-point-to-a-different-ma-or-multiple-mas-and-you-subsequently-change-test-configurations-through-the-gui-does-this-leave-your-ma-customizations-alone">Q: If you have made manual changes to meshconfig-agent-tasks.conf to point to a different MA (or multiple MAs), and you subsequently change test configurations through the GUI, does this leave your MA customizations alone?</a></li>
+<li><a class="reference internal" href="#q-how-can-i-force-testing-over-ipv4-or-ipv6-in-a-psconfig-template">Q: How can I force testing over IPv4 or IPv6 in a pSConfig template?</a></li>
+<li><a class="reference internal" href="#q-how-do-i-configure-a-psconfig-template-to-pace-all-tcp-traffic-to-only-5gbps-so-that-i-don-t-use-all-my-sites-bandwidth">Q: How do I configure a pSConfig template to pace all TCP traffic to only 5Gbps, so that I don&#8217;t use all my sites bandwidth?</a></li>
+<li><a class="reference internal" href="#q-i-want-to-operate-a-dynamic-template-with-hosts-from-a-lookup-service-where-do-i-start">Q: I want to operate a &#8220;dynamic&#8221; template with hosts from a lookup service. Where do I start?</a></li>
 <li><a class="reference internal" href="#q-why-do-i-get-such-weird-results-when-i-test-from-a-10g-connected-host-to-1g-connected-host">Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?</a></li>
 <li><a class="reference internal" href="#q-my-perfsonar-results-show-consistent-line-rate-performance-but-a-researcher-at-my-site-is-reporting-really-poor-performance-what-gives">Q: My perfSONAR results show consistent line-rate performance, but a researcher at my site is reporting really poor performance, what gives?</a></li>
 <li><a class="reference internal" href="#q-is-there-a-way-to-visualize-gridftp-results-in-maddash">Q: Is there a way to visualize GridFTP results in MaDDash?</a></li>
@@ -660,10 +610,9 @@ systemctl restart httpd
 <li><a class="reference internal" href="#q-why-is-the-static-ipv6-address-i-assigned-during-the-net-install-process-not-configured-when-my-host-starts-up">Q: Why is the static IPv6 address I assigned during the net-install process not configured when my host starts-up?</a></li>
 <li><a class="reference internal" href="#q-how-do-i-setup-a-perfsonar-node-to-have-two-interfaces-on-the-same-subnet">Q: How do I setup a perfSONAR node to have two interfaces on the same subnet?</a></li>
 <li><a class="reference internal" href="#q-what-tcp-congestion-control-algorithm-is-used-by-the-perfsonar-toolkit">Q: What TCP congestion control algorithm is used by the perfSONAR Toolkit?</a></li>
-<li><a class="reference internal" href="#q-how-can-i-add-custom-rules-to-iptables">Q: How can I add custom rules to IPTables?</a></li>
+<li><a class="reference internal" href="#q-how-can-i-add-custom-rules-to-my-firewall">Q: How can I add custom rules to my firewall?</a></li>
 <li><a class="reference internal" href="#q-is-it-possible-to-change-the-default-port-for-tool-x">Q: Is it possible to change the default port for tool X?</a></li>
 <li><a class="reference internal" href="#q-why-doesn-t-the-perfsonar-toolkit-include-the-most-recent-version-of-vendor-xs-driver">Q: Why doesn&#8217;t the perfSONAR toolkit include the most recent version of vendor X’s driver?</a></li>
-<li><a class="reference internal" href="#q-can-i-configure-yum-to-exclude-kernel-packages-from-it-s-update-procedure">Q: Can I configure yum to exclude kernel packages from it&#8217;s update procedure?</a></li>
 <li><a class="reference internal" href="#q-how-can-i-configure-yum-to-automatically-update-the-system">Q: How can I configure yum to automatically update the system?</a></li>
 <li><a class="reference internal" href="#q-my-host-was-impacted-by-linux-security-issue-shellshock-heartbleed-etc-what-should-i-do">Q: My host was impacted by Linux security issue (Shellshock/Heartbleed/etc.). What should I do?</a></li>
 <li><a class="reference internal" href="#q-how-to-get-rid-of-there-isn-t-a-perfsonar-sudo-user-defined-message">Q: How to get rid of &#8220;There isn&#8217;t a perfSONAR sudo user defined&#8221; message?</a></li>
@@ -730,7 +679,7 @@ systemctl restart httpd
         <li class="right" >
           <a href="troubleshooting_overview.html" title="Troubleshooting perfSONAR"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

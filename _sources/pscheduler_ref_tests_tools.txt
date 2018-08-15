@@ -60,7 +60,7 @@ simplestream
 throughput
 ############
 :Description: A test to measure the observed speed of a data transfer and associated statistics between two endpoints
-:Tools: iperf3, iperf2, nuttcp, bwctliperf3, bwctliperf2
+:Tools: iperf3, iperf2, nuttcp
 
 trace
 ############

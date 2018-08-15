@@ -111,7 +111,7 @@ PostgreSQL provides a number of options for high availability, data replication,
 
 * The name of the database where the esmond information is kept is *esmond*
 * You can change the PostgreSQL username, password and host that esmond uses in */etc/esmond/esmond.conf* by changing  *sql_db_user*, *sql_db_password*, and *sql_db_host* respectively
-* Often when choosing a replication strategy it is important to understand the write profile of a database. Esmond will only insert new rows into PostgreSQL if you add new tests to be run or change the parameters of an existing test. For example, changing the parameters of a BWCTL test to run for 30 seconds instead of 20 seconds. Esmond also executes an update on a single column every time it adds new data to Cassandra so that it can keep track of when data was last updated. This means that there will likely be lots of small updates but very few inserts of new data. 
+* Often when choosing a replication strategy it is important to understand the write profile of a database. Esmond will only insert new rows into PostgreSQL if you add new tests to be run or change the parameters of an existing test. For example, changing the parameters of a throughput test to run for 30 seconds instead of 20 seconds. Esmond also executes an update on a single column every time it adds new data to Cassandra so that it can keep track of when data was last updated. This means that there will likely be lots of small updates but very few inserts of new data. 
 
 
 .. _multi_ma_clustering-httpd:

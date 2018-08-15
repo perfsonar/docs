@@ -15,9 +15,9 @@ Anytime you want to manually update your host, simply run the following
 *Debian*::
 
     apt-get update
-    apt-get upgrade
+    apt-get dist-upgrade
     
-The *yum* package manager is used by RedHat-based operating systems like CentOS to update packages, *apt* is used by Debian-based OS. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.
+The *yum* package manager is used by RedHat-based operating systems like CentOS to update packages, *apt-get* is used by Debian-based OS. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.
 
 .. _manage_update-auto:
 
@@ -42,12 +42,7 @@ You can manage auto updates from the command-line by enabling/disabling the yum-
 
 Run the following commands to **enable** automatic updates (must be run as a root user):
 
-*CentOS 6*::
-
-    chkconfig yum-cron on
-    service yum-cron start
-    
-*CentOS 7*::
+*CentOS*::
   
     systemctl enable yum-cron
     systemctl start yum-cron
@@ -59,12 +54,7 @@ Run the following commands to **enable** automatic updates (must be run as a roo
     
 Likewise, you may **disable** auto-updates from the command-line by running the following:
 
-*CentOS 6*::
-
-    chkconfig yum-cron off
-    service yum-cron stop
-
-*CentOS 7*::
+*CentOS*::
 
     systemctl stop yum-cron
     systemctl disable yum-cron
@@ -111,6 +101,54 @@ The commands in the previous sections control updates for the entire system. If 
 
 To disable the automatic updating of perfSONAR packages on Debian/Ubuntu delete the line with ``origin=perfSONAR`` pattern from ``/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar``.  After that only the Debian security updates will be installed automatically.
 
+.. _manage_update-notes:
+
 Special Upgrade Notes
 =====================
-* perfSONAR 4.0 can run on both CentOS 6 and CentOS 7 (and Ubuntu). If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`.
+
+BWCTL Support
+-------------
+When perfSONAR 4.0 was released in April 2017, the perfSONAR project began the deprecation of BWCTL. pScheduler supports backward compatibility with BWCTL through the use of plug-ins that will only get chosen if pScheduler cannot be detected on the remote end.
+
+In perfSONAR 4.1, the deprecation process will continue. The following actions will be taken with respect to BWCTL support in 4.1:
+
+* Brand new installs of 4.1 will not have BWCTL or the BWCTL backward compatibility pScheduler plug-ins by default. Users can install these separately by manually running ``yum install perfsonar-bwctl-compat`` or ``apt-get install perfsonar-bwctl-compat``
+* Systems upgrading to version 4.1 from a previous version of perfSONAR already have BWCTL and the plug-ins installed. The upgrade process will NOT remove these packages, so BWCTL and tests using the backward compatibility plug-ins will continue to operate. If you no longer wish to have the BWCTL packages, you will be able to safely remove all BWCTL related packages with ``yum remove bwctl-server bwctl-client`` (through dependencies, this will also remove the BWCTL pScheduler plug-ins).
+
+.. note:: Debian systems do have an auto-remove function that may remove BWCTL since no packages will be dependent on it once you upgrade to 4.1. Exact behavior depends on how you have apt configured. If you find that BWCTL is removed you can run ``apt-get install perfsonar-bwctl-compat`` to restore the packages.
+
+Below is the plan for support for releases beyond 4.1:
+
+* perfSONAR 4.0 will be end-of-life on **February 15, 2019** (six months after the final release of perfSONAR 4.1). BWCTL will also be end-of-life at this time meaning it will stop receiving security updates. 
+* The first major perfSONAR release after February 15, 2019 will remove BWCTL and the BWCTL pScheduler plug-ins. 
+* Security updates for the BWCTL pScheduler plug-ins will be supported as long as 4.1 is supported since they will still be part of a supported pScheduler codebase.
+
+All of this means that your BWCTL tests will continue to function in 4.1 but you likely have only a few months of BWCTL support left. BWCTL test are usually caused by the following:
+
+#. The remote end is running an unsupported 3.5 release. The remedy for this problem is for the remote end to update. 
+#. A firewall is blocking port 443. This can be solved by opening port 443 or a non-standard pScheduler port. See :ref:`psconfig_templates_advanced-addresses-pscheduler_address` for more information.
+
+You can determine which of your tests are still using BWCTL by running the following command on a toolkit installation::
+
+    /usr/lib/perfsonar/scripts/find_bwctl_tests
+
+This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See `/usr/lib/perfsonar/scripts/find_bwctl_tests --help` for information on command-line options to change the archive URL, time range fo data analyzed and other options. 
+
+pSConfig to MeshConfig Migration
+--------------------------------
+See :doc:`psconfig_meshconfig_migrate` for information on the upgrade of the former MeshConfig component to the new pSConfig component.
+
+
+CentOS 6 Support Discontinued
+-----------------------------
+perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`. You may also choose to switch to a supported :doc:`Debian platform <install_debian>`. **Security updates for CentOS 6 perfSONAR packages will be discontinued on February 15, 2019**. Also see the `CentOS documentation <https://wiki.centos.org/About/Product>`_ for a schedule of when CentOS 6 will no longer be a supported operating system. 
+
+Debian 7 Support Discontiuned
+-----------------------------
+perfSONAR 4.1 is NOT available for Debian 7 (and `Debian 7 is EOL <https://www.debian.org/News/2018/20180601>`_ anyways). If you wish to migrate an existing Debian 7 host to Debian 8 (Jessie) or Debian 9 (Stretch) you are advised to do it with the following steps:
+
+#. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
+#. Reboot (to get systemd running)
+#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-release``
+#. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_). Alternatively, you can just run ``apt-get udpate; apt-get dist-upgrade`` if you prefer to stay with Debian 8.
+

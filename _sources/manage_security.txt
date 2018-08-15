@@ -25,6 +25,8 @@ perfSONAR uses the following ports:
 +============+================+============+
 | owamp      | 861            | 8760-9960  |
 +------------+----------------+------------+
+| twamp      | 862            | 18760-19960|
++------------+----------------+------------+
 | pscheduler | 443            |            |
 +------------+----------------+------------+
 | iperf3     | 5201           |            |
@@ -35,19 +37,20 @@ perfSONAR uses the following ports:
 +------------+----------------+------------+
 | traceroute |                | 33434-33634|
 +------------+----------------+------------+
-|simplestream| 5890-5900      | 	   |
+|simplestream| 5890-5900      |            |
 +------------+----------------+------------+
-| ntp        |                | 123        |
+| ntp*       |                | 123        |
 +------------+----------------+------------+
-| bwctl      |4823, 5001-5900,| 5001-5900, | 
-| 	     | 6001-6200      | 6001-6200  | 
+| bwctl*     |4823, 5001-5900,| 5001-5900, | 
+|            | 6001-6200      | 6001-6200  | 
 +------------+----------------+------------+
 
 **Notes**: 
 
-- ICMP also needs to be open
-- bwctl is needed for backwards compatibility with perfSONAR 3.5 hosts
-- simplestream is used for pscheduler testing and troubleshooting
+* The NTP and BWCTL tools are deprecated but their ports are left open for those wishing to run them.
+* ICMP also needs to be open
+* The NTP and BWCTL tools are deprecated but their ports are left open for those wishing to run them.
+* simplestream is used for pscheduler testing and troubleshooting
 
 +--------------------------------------+
 | perfSONAR Toolkit Ports              | 
@@ -65,7 +68,9 @@ perfSONAR uses the following ports:
 
 Adding Your Own Firewall Rules
 ==============================
-The rules added by the perfSONAR toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update. 
+For operating systems using iptables, the rules added by the perfSONAR Toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update. 
+
+For operating systems using firewalld (e.g. CentOS 7) it organizes the rules into "zones" and makes it more difficult to distinguish perfSONAR rules from custom rules. If you add a standard service to the zone it will get overwritten next time *perfsonar-toolkit-security* upgrades. We recommend looking at firewalld `rich rules <https://fedoraproject.org/wiki/Features/FirewalldRichLanguage>`_ for adding custom rules.
 
 For more information see:
 
@@ -87,8 +92,7 @@ By default the perfSONAR Toolkit installs and configures the `fail2ban`_ Intrusi
 Limiting tests to Research and Education Networks Only
 ======================================================
 
-ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and 
-bwctl to use it are described on the page :doc:`manage_limits`.
+ESnet provides a file containing all R&E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page :doc:`manage_limits`.
 
 Managing Login Access
 ======================

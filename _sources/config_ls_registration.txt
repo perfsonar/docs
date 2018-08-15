@@ -100,6 +100,27 @@ allow_internal_addresses Directive
 :Default: 0
 :Compatibility: 3.3 and later
 
+.. _config_ls_registration-autodiscover_tests_url:
+
+autodiscover_tests_url
+---------------------------
+:Description: The URL of the pScheduler instance to query for auto-discovering tests.
+:Syntax: ``allow_internal_addresses 0|1``
+:Contexts: :ref:`interface <config_ls_registration-interface>`
+:Occurrences:  Zero or one
+:Default: Defaults to *https://ADDRESS/pscheduler* where *ADDRESS* is the interface address
+:Compatibility: 4.1 and later
+
+.. _config_ls_registration-disable_autodiscover_tests:
+
+disable_autodiscover_tests Directive
+---------------------------------------
+:Description: Disables autodiscovery of pScheduler test types for interface
+:Syntax: ``disable_autodiscover_tests 0|1``
+:Contexts: :ref:`interface <config_ls_registration-interface>`
+:Occurrences:  Zero or More
+:Default: 0
+
 .. _config_ls_registration-disable_ipv4_reverse_lookup:
 
 disable_ipv4_reverse_lookup Directive
@@ -713,6 +734,16 @@ capacity Directive
 :Default (Autodiscover): The speed as reported by */sys/class/net/IF_NAME/speed*. If not available, the speed as reported by *ethtool*. 
 :Compatibility: 3.3 and later
 
+.. _config_ls_registration-disable_test:
+
+disable_test Directive
+-----------------------------------
+:Description: Removes test type from interface even if it is in the autodiscovery list
+:Syntax: ``disable_test TEST_TYPE``
+:Contexts: :ref:`interface <config_ls_registration-interface>`
+:Occurrences:  Zero or More
+:Default: N/A
+
 .. _config_ls_registration-if_name:
 
 if_name Directive
@@ -772,6 +803,19 @@ subnet Directive
 :Default: N/A
 :Default (Autodiscover): N/A
 :Compatibility: 3.3 and later
+
+.. _config_ls_registration-iface-test:
+
+test Directive
+-----------------------------------
+:Description: A pscheduler test type that is allowed on this interface. For example *throughput*, *latencybg* or *trace*. Will be merged with autodiscovered values unless :ref:`disable_autodiscover_tests <config_ls_registration-disable_autodiscover_tests>` set.
+:Syntax: ``test TEST_TYPE``
+:Contexts: :ref:`interface <config_ls_registration-interface>`
+:Occurrences:  Zero or More
+:Default: N/A
+:Default (Autodiscover): The tests found by querying pScheduler
+
+.. _config_ls_registration-iface-urn:
 
 urn Directive
 ------------------------
@@ -898,18 +942,12 @@ type Directive
 
 Valid values for this field are currently:
 
-* bwctl
 * dashboard
 * gridftp
 * ma
-* meshconfig
-* mp-bwctl
-* mp-owamp
 * owamp
-* phoebus
 * ping
 * pscheduler
-* reddnet
 * traceroute
 
 .. _config_ls_registration-service_type:
@@ -923,7 +961,7 @@ autodiscover_ca_file Directive
 ---------------------------------
 :Description: For autodiscovery of information that requires contacting an HTTPS service, this is the path to the CA file that can be used to verify the identity of the server
 :Syntax: ``autodiscover_ca_file FILE``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *ma* or *meshconfig*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *ma*
 :Occurrences:  Zero or One
 :Default: N/A
 :Default (Autodiscover): N/A
@@ -935,22 +973,11 @@ autodiscover_ca_path Directive
 ---------------------------------
 :Description: For autodiscovery of information that requires contacting an HTTPS service, this is the path to a directory of CA files that can be used to verify the identity of the server when using HTTPS
 :Syntax: ``autodiscover_ca_path DIR``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *ma* or *meshconfig*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *ma*
 :Occurrences:  Zero or One
 :Default: N/A
 :Default (Autodiscover): N/A
 :Compatibility: 3.4 and later
-
-.. _config_ls_registration-autodiscover_fields:
-
-autodiscover_fields Directive
-----------------------------------------
-:Description: Indicates that a mesh should be queried and the administrators and test members should be automatically detected
-:Syntax: ``autodiscover_fields 0|1``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *meshconfig*
-:Occurrences:  Zero or One
-:Default: 0
-:Default (Autodiscover): N/A
 
 .. _config_ls_registration-autodiscover_indices:
 
@@ -988,24 +1015,13 @@ autodiscover_tests Directive
 :Default: 0
 :Default (Autodiscover): N/A
 
-.. _config_ls_registration-autodiscover_timeout:
-
-autodiscover_timeout Directive
-----------------------------------------
-:Description: If :ref:`autodiscover_fields <config_ls_registration-autodiscover_fields>` is enabled, the time to wait in seconds for results when querying the mesh before giving an error.
-:Syntax: ``autodiscover_timeout TIMEOUT``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *meshconfig*
-:Occurrences:  Zero or One
-:Default: 60
-:Default (Autodiscover): N/A
-
 .. _config_ls_registration-autodiscover_url:
 
 autodiscover_url Directive
 ----------------------------------------
 :Description: The URL to contact to autodiscover details about an HTTP service
 :Syntax: ``autodiscover_url URL``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *ma* or *meshconfig*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *ma*
 :Occurrences:  Zero or One
 :Default: The value of :ref:`config_ls_registration-service_locator`
 :Default (Autodiscover): N/A
@@ -1016,7 +1032,7 @@ autodiscover_verify_hostname Directive
 ---------------------------------------
 :Description: For autodiscovery of information that requires contacting an HTTPS service, indicates whether the hostname must match the certificate common name
 :Syntax: ``autodiscover_verify_hostname 0|1``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *ma* or *meshconfig*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *ma*
 :Occurrences:  Zero or One
 :Default: 0
 :Default (Autodiscover): N/A
@@ -1040,7 +1056,7 @@ http_port Directive
 ---------------------------------
 :Description: The port where a web service listens for HTTP connections 
 :Syntax: ``http_port PORT``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *meshconfig*, *mp-bwctl*, *mp-owamp*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *pscheduler*
 :Occurrences:  Zero or One
 :Default: 80 (unless :ref:`config_ls_registration-https_port` set, then this is left unset if no manual value provided)
 :Default (Autodiscover): N/A
@@ -1052,7 +1068,7 @@ https_port Directive
 ---------------------------------
 :Description: The port where a web service listens for HTTPS connections 
 :Syntax: ``https_port PORT``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *meshconfig*, *mp-bwctl*, *mp-owamp*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *pscheduler*
 :Occurrences:  Zero or One
 :Default: N/A
 :Default (Autodiscover): N/A
@@ -1064,7 +1080,7 @@ url_path Directive
 ---------------------------------
 :Description: The path portion of the URL where a web service runs
 :Syntax: ``url_path PATH``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *meshconfig*, *mp-bwctl*, *mp-owamp*
+:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*, *ma*, *pscheduler*
 :Occurrences: Exactly one
 :Default: N/A
 :Default (Autodiscover): N/A
@@ -1082,18 +1098,6 @@ webui_url Directive
 :Default (Autodiscover): The auto-detected address and port with path */maddash-webui*
 :Compatibility: 3.4 and later
 
-.. _config_ls_registration-skip_autodiscover_admins:
-
-skip_autodiscover_admins Directive
------------------------------------
-:Description: If enabled, does not automatically register administrators found in the mesh file
-:Syntax: ``skip_autodiscover_admins 0|1``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *meshconfig*
-:Occurrences:  Zero or One
-:Default: 0
-:Default (Autodiscover): N/A
-:Compatibility: 3.4 and later
-
 .. _config_ls_registration-test:
 
 test Directive
@@ -1104,17 +1108,6 @@ test Directive
 :Occurrences:  Zero or More
 :Default: N/A
 :Default (Autodiscover): The tests found by querying the MA metadata
-
-.. _config_ls_registration-test_member:
-
-test_member Directive
------------------------------------
-:Description: An IP address or hostname that is included in a mesh
-:Syntax: ``test_member ADDRESS``
-:Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *meshconfig*
-:Occurrences:  Zero or More
-:Default: N/A
-:Default (Autodiscover): The members found by querying the MeshConfig file
 
 .. _config_ls_registration-tests:
 

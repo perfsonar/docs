@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Bundle Installation on Debian &mdash; perfSONAR Toolkit 4.0.2 documentation</title>
+    <title>Bundle Installation on Debian &mdash; perfSONAR Toolkit 4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.0.2',
+        VERSION:     '4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.0.2 documentation" href="index.html" />
-    <link rel="next" title="Migrating from CentOS 6 to CentOS 7" href="install_migrate_centos7.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.1 documentation" href="index.html" />
+    <link rel="next" title="Using perfSONAR with Docker" href="install_docker.html" />
     <link rel="prev" title="Bundle Installation on CentOS" href="install_centos.html" /> 
   </head>
   <body>
@@ -55,12 +55,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="install_migrate_centos7.html" title="Migrating from CentOS 6 to CentOS 7"
+          <a href="install_docker.html" title="Using perfSONAR with Docker"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="install_centos.html" title="Bundle Installation on CentOS"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -76,11 +76,11 @@
 <h1>Bundle Installation on Debian<a class="headerlink" href="#bundle-installation-on-debian" title="Permalink to this headline">¶</a></h1>
 <p>perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for five different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:</p>
 <ul class="simple">
-<li>Debian 7 Wheezy</li>
 <li>Debian 8 Jessie</li>
 <li>Debian 9 Stretch</li>
 <li>Ubuntu 14 Trusty Tahr</li>
 <li>Ubuntu 16 Xenial Xerus</li>
+<li>Ubuntu 18 Bionic Beaver</li>
 </ul>
 <p>Debian meta packages are available to install the bundles described in <a class="reference internal" href="install_options.html"><em>perfSONAR Installation Options</em></a>. The steps in the remaining sections of this document detail the steps required for installing these bundles.</p>
 <div class="section" id="system-requirements">
@@ -94,7 +94,7 @@
 <li>ARM64 (arm64) (only for Debian 8/9)</li>
 </ul>
 </li>
-<li><strong>Operating System:</strong>  Any system running a Debian 7, Debian 8, Debian 9, Ubuntu 14 or Ubuntu 16 server OS is supported.  Other Debian flavours derived from Debian 7/8/9 or Ubuntu 14/16 might work too but are not officially supported.</li>
+<li><strong>Operating System:</strong>  Any system running a Debian 8, Debian 9, Ubuntu 14, Ubuntu 16 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 8/9 or Ubuntu 14/16/18 might work too but are not officially supported.</li>
 <li>See <a class="reference internal" href="install_hardware.html"><em>Hardware Requirements</em></a> for hardware requirements and more.</li>
 </ul>
 <div class="admonition note">
@@ -107,20 +107,11 @@
 <div class="section" id="step-1-configure-apt">
 <span id="install-debian-step1"></span><h3>Step 1: Configure APT<a class="headerlink" href="#step-1-configure-apt" title="Permalink to this headline">¶</a></h3>
 <p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. <strong>You will need to follow the steps below as privileged user</strong>:</p>
-<blockquote>
-<div><p><em>Debian 7 / Ubuntu 14</em>:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
-wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
+wget http://downloads.perfsonar.net/debian/perfsonar-release.list
 wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
 </pre></div>
 </div>
-<p><em>Debian 8 / Debian 9 / Ubuntu 16</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
-wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
-wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
-</pre></div>
-</div>
-</div></blockquote>
 <p>Then refresh the packages list so APT knows about the perfSONAR packages:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get update
 </pre></div>
@@ -189,7 +180,7 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 <li><p class="first"><strong>NTP Tuning</strong></p>
 <ul>
 <li><p class="first"><strong>Auto-select NTP servers based on proximity</strong></p>
-<p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as BWCTL/pscheduler will not even run unless NTP is configured. If the optional package <cite>perfsonar-toolkit-ntp</cite> was installed this has already been done for you, but if you want to rerun manually:</p>
+<p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Some of the tools such as OWAMP will give correct results unless NTP is running. If the optional package <cite>perfsonar-toolkit-ntp</cite> was installed this has already been done for you, but if you want to re-run manually:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/configure_ntpd new
 service ntp restart
 </pre></div>
@@ -216,15 +207,10 @@ service ntp restart
 <span id="install-debian-step4"></span><h3>Step 4: Firewall and Security Considerations<a class="headerlink" href="#step-4-firewall-and-security-considerations" title="Permalink to this headline">¶</a></h3>
 <p>If you have installed the <cite>perfsonar-toolkit-security</cite> package, then your iptables are already configured with our default rules.  The package also installs fail2ban.</p>
 <p>If you would like to configure the rules manually, then please review the <a class="reference external" href="http://www.perfsonar.net/deploy/security-considerations/">document here</a> on the ports that need to be open.</p>
-<p><em>Debian 7 / Ubuntu 14</em>:</p>
-<blockquote>
-<div>During the installation of the <cite>perfsonar-toolkit-security</cite> package you&#8217;ll be asked if you want to keep your current set of iptables rules, both for IPV4 and for IPv6. This is part of the usual installation process of the <cite>iptables-persistent</cite> package that we use to setup the firewall protecting your perfSONAR node.  Whatever you answer to the question, your current rules will be saved as part of the <cite>perfsonar-toolkit-security</cite> package installation.</div></blockquote>
-<p><em>Debian 8 / Debian 9 / Ubuntu 16</em>:</p>
 <blockquote>
 <div>The <cite>perfsonar-toolkit-security</cite> package uses <cite>firewalld</cite> to manage the firewall rules.</div></blockquote>
-<p>Additionally, bwctl and pscheduler allow you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the files <tt class="docutils literal"><span class="pre">bwctl-server.limits</span></tt> and <tt class="docutils literal"><span class="pre">pscheduler/limits.conf</span></tt>.
-ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler and
-bwctl to use it are described on the page <a class="reference internal" href="manage_limits.html"><em>Limiting Tests to R&amp;E Networks Only</em></a>.</p>
+<p>Additionally, pscheduler allows you to limit the parameters of tests such as duration and bandwidth based on the requesters IP address. It does this through the file <tt class="docutils literal"><span class="pre">pscheduler/limits.conf</span></tt>.
+ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page <a class="reference internal" href="manage_limits.html"><em>Limiting Tests to R&amp;E Networks Only</em></a>.</p>
 <p>Note that the <cite>perfsonar-toolkit-security</cite> package is automatically included in the <cite>perfsonar-toolkit</cite> bundle.</p>
 </div>
 <div class="section" id="step-5-auto-updates">
@@ -247,7 +233,7 @@ echo &#39;Unattended-Upgrade::Origins-Pattern:: &quot;origin=perfSONAR&quot;;&#3
 </div>
 <div class="section" id="step-6-service-watcher">
 <span id="install-debian-step6"></span><h3>Step 6: Service Watcher<a class="headerlink" href="#step-6-service-watcher" title="Permalink to this headline">¶</a></h3>
-<p>The <cite>perfsonar-toolkit-servicewatcher</cite> installs scripts that check if bwctl, pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly.</p>
+<p>The <cite>perfsonar-toolkit-servicewatcher</cite> installs scripts that check if pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly.</p>
 <p>The install automatically configures cron to run the service_watcher regularly.</p>
 <p>To run the script manually, run:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/service_watcher
@@ -267,7 +253,6 @@ service pscheduler-runner status
 service pscheduler-archiver status
 service pscheduler-ticker status
 service owamp-server status
-service bwctl-server status
 service perfsonar-lsregistrationdaemon status
 </pre></div>
 </div>
@@ -277,7 +262,6 @@ service pscheduler-runner start
 service pscheduler-archiver start
 service pscheduler-ticker start
 service owamp-server start
-service bwctl-server start
 service perfsonar-lsregistrationdaemon start
 </pre></div>
 </div>
@@ -288,30 +272,29 @@ service perfsonar-lsregistrationdaemon start
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="configuring-central-management">
 <h3>Configuring Central Management<a class="headerlink" href="#configuring-central-management" title="Permalink to this headline">¶</a></h3>
-<p>If your node is part of a measurement mesh and you installed perfsonar-centralmanagement bundle refer to the documentation here: <a class="reference internal" href="multi_overview.html"><em>Central Configuration Overview</em></a></p>
+<p>If you installed the perfsonar-centralmanagement bundle see the following documents:</p>
+<ul class="simple">
+<li><a class="reference internal" href="multi_ma_install.html"><em>Deploying a Central Measurement Archive</em></a></li>
+<li><a class="reference internal" href="psconfig_publish.html"><em>Publishing a pSConfig Template</em></a></li>
+<li><a class="reference internal" href="psconfig_maddash_agent.html"><em>Running the pSConfig MaDDash Agent</em></a></li>
+<li><a class="reference external" href="http://software.es.net/maddash/">Using MaDDash to build dashboards</a></li>
+</ul>
 </div>
 <div class="section" id="configuring-perfsonar-through-the-web-interface">
 <h3>Configuring perfSONAR through the web interface<a class="headerlink" href="#configuring-perfsonar-through-the-web-interface" title="Permalink to this headline">¶</a></h3>
 <p>After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from <a class="reference internal" href="install_config_first_time.html"><em>Configuring the Toolkit for the First Time</em></a>.</p>
 </div>
 </div>
-<div class="section" id="upgrading-from-3-5-1">
-<h2>Upgrading from 3.5.1<a class="headerlink" href="#upgrading-from-3-5-1" title="Permalink to this headline">¶</a></h2>
-<p>If you had installed perfSONAR 3.5.1 testpoint bundle and you now want to upgrade to perfSONAR 4.0, you&#8217;ll have to follow the instructions here below.</p>
-<div class="section" id="add-the-4-0-apt-sources">
-<h3>Add the 4.0 APT sources<a class="headerlink" href="#add-the-4-0-apt-sources" title="Permalink to this headline">¶</a></h3>
-<blockquote>
-<div><p><em>Debian 7 / Ubuntu 14</em>:</p>
+<div class="section" id="upgrading-from-4-0-2">
+<h2>Upgrading from 4.0.2<a class="headerlink" href="#upgrading-from-4-0-2" title="Permalink to this headline">¶</a></h2>
+<p>If you had installed a perfSONAR 4.0.2 bundle and you now want to upgrade to perfSONAR 4.1, you&#8217;ll have to follow the instructions here below.</p>
+<div class="section" id="add-the-4-1-apt-sources">
+<h3>Add the 4.1 APT sources<a class="headerlink" href="#add-the-4-1-apt-sources" title="Permalink to this headline">¶</a></h3>
+<p>Even though the sources.list file is named after the Debian 8 (Jessie) release, it is meant to work on Debian 8 and 9 and Ubuntu 14, 16 and 18.  You can add it to your system with the following commands:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
-wget http://downloads.perfsonar.net/debian/perfsonar-wheezy-release.list
+wget http://downloads.perfsonar.net/debian/perfsonar-release.list
 </pre></div>
 </div>
-<p><em>Debian 8 / Debian 9 / Ubuntu 16</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
-wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
-</pre></div>
-</div>
-</div></blockquote>
 <p>Then refresh the packages list so APT knows about the perfSONAR packages:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get update
 </pre></div>
@@ -319,20 +302,30 @@ wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
 </div>
 <div class="section" id="upgrade-the-perfsonar-installation">
 <h3>Upgrade the perfSONAR installation<a class="headerlink" href="#upgrade-the-perfsonar-installation" title="Permalink to this headline">¶</a></h3>
-<p>To upgrade your perfsonar-testpoint installation, you just need to run:</p>
+<p>To upgrade your perfsonar installation, you just need to run:</p>
 <div class="highlight-python"><div class="highlight"><pre>apt-get dist-upgrade
 </pre></div>
 </div>
-<p>During the installation process, you&#8217;ll be asked to choose a password for the pscheduler database.  After the upgrade, the perfsonar-regulartesting daemon and the OPPD will be stoped as they are no longer required.</p>
-<p>The measurements and the measurement archives that you already have defined in your 3.5.1 installation will be migrated to the 4.0 tools automatically.</p>
+<p>The measurements and the measurement archives that you already have defined in your 4.0.2 installation will be migrated to the 4.1 tools automatically.</p>
 </div>
 <div class="section" id="upgrade-to-another-bundle">
 <h3>Upgrade to another bundle<a class="headerlink" href="#upgrade-to-another-bundle" title="Permalink to this headline">¶</a></h3>
-<p>If you want to move from the <cite>perfsonar-testpoint</cite> bundle to another bundle that we now provide for Debian, you can do so by following the instructions above from <a class="reference internal" href="#install-debian-step2"><em>Step 2: Install a Bundle</em></a>.</p>
+<p>If you want to move from the <cite>perfsonar-testpoint</cite> bundle to another bundle that we provide for Debian, you can do so by following the instructions above from <a class="reference internal" href="#install-debian-step2"><em>Step 2: Install a Bundle</em></a>.</p>
 </div>
-<div class="section" id="upgrade-from-ubuntu-12-to-ubuntu-14">
-<h3>Upgrade from Ubuntu 12 to Ubuntu 14<a class="headerlink" href="#upgrade-from-ubuntu-12-to-ubuntu-14" title="Permalink to this headline">¶</a></h3>
-<p>If you have a testpoint host running Ubuntu 12 and you want to upgrade it to Ubuntu 14, we recommend you to follow the <a class="reference external" href="https://wiki.ubuntu.com/TrustyTahr/ReleaseNotes#Upgrading_from_Ubuntu_12.04_LTS_or_Ubuntu_13.10">instructions provided by the Ubuntu Community</a> first and then upgrade to perfSONAR 4.0 once the Ubuntu upgrade is completed.</p>
+<div class="section" id="upgrade-from-debian-7-to-debian-8-or-9">
+<h3>Upgrade from Debian 7 to Debian 8 or 9<a class="headerlink" href="#upgrade-from-debian-7-to-debian-8-or-9" title="Permalink to this headline">¶</a></h3>
+<p>If you have a perfSONAR host running Debian 7 and you want to upgrade it to Debian 8 (Jessie) or 9 (Stretch), we recommend you to follow the following steps:</p>
+<ol class="arabic simple">
+<li>Upgrade Debian 7 to Debian 8 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html">Jessie upgrade notes for i386 architecture</a>)</li>
+<li>Reboot (to get systemd running)</li>
+<li>Change perfSONAR repository from <tt class="docutils literal"><span class="pre">perfsonar-wheezy-release</span></tt> to <tt class="docutils literal"><span class="pre">perfsonar-release</span></tt></li>
+<li>Upgrade Debian 8 to Debian 9 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html">Stretch upgrade notes for i386 architecture</a>)</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Alternatively, you can just run <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">udpate;</span> <span class="pre">apt-get</span> <span class="pre">dist-upgrade</span></tt> if you prefer to stay with Debian 8.</li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 </div>
@@ -368,11 +361,11 @@ wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
 <li><a class="reference internal" href="#configuring-perfsonar-through-the-web-interface">Configuring perfSONAR through the web interface</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#upgrading-from-3-5-1">Upgrading from 3.5.1</a><ul>
-<li><a class="reference internal" href="#add-the-4-0-apt-sources">Add the 4.0 APT sources</a></li>
+<li><a class="reference internal" href="#upgrading-from-4-0-2">Upgrading from 4.0.2</a><ul>
+<li><a class="reference internal" href="#add-the-4-1-apt-sources">Add the 4.1 APT sources</a></li>
 <li><a class="reference internal" href="#upgrade-the-perfsonar-installation">Upgrade the perfSONAR installation</a></li>
 <li><a class="reference internal" href="#upgrade-to-another-bundle">Upgrade to another bundle</a></li>
-<li><a class="reference internal" href="#upgrade-from-ubuntu-12-to-ubuntu-14">Upgrade from Ubuntu 12 to Ubuntu 14</a></li>
+<li><a class="reference internal" href="#upgrade-from-debian-7-to-debian-8-or-9">Upgrade from Debian 7 to Debian 8 or 9</a></li>
 </ul>
 </li>
 </ul>
@@ -387,8 +380,8 @@ wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
                 </ul>
                   <ul>
                       <li>
-                      <a href="install_migrate_centos7.html">Next topic</a>
-                      <ul><li><a href="install_migrate_centos7.html" title="next chapter">Migrating from CentOS 6 to CentOS 7</a></li></ul>
+                      <a href="install_docker.html">Next topic</a>
+                      <ul><li><a href="install_docker.html" title="next chapter">Using perfSONAR with Docker</a></li></ul>
                       </li>
                   </ul>
                 
@@ -405,12 +398,12 @@ wget http://downloads.perfsonar.net/debian/perfsonar-jessie-release.list
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="install_migrate_centos7.html" title="Migrating from CentOS 6 to CentOS 7"
+          <a href="install_docker.html" title="Using perfSONAR with Docker"
              >next</a> |</li>
         <li class="right" >
           <a href="install_centos.html" title="Bundle Installation on CentOS"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

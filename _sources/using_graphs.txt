@@ -21,7 +21,7 @@ Things to notice on this plot include the following:
 Some other features include:
 
  * Clicking on the colored boxes above the chart toggles showing and hiding that information. Note that the vertical axis scale will adjust automatically to what is shown. For example, on the chart below, test results in the reverse direction have been disabled, and only forward results are displayed. This is indicated by the background of the **Reverse** legend turning grey. 
- * When moving your cursor within the plot window, an overlay will display values at the crosshair. The arrows indicate whether values are for the forward or reverse direction. The protocol (UDP/TCP) or one-way vs round-trip (owamp/ping) is given in parentheses, while the tool used for the test is given in square brackets (`Bwctl/` in the tool name indicates that the test is in backwards-compatibility mode with a perfSONAR 3.5 host).
+ * When moving your cursor within the plot window, an overlay will display values at the crosshair. The arrows indicate whether values are for the forward or reverse direction. The protocol (UDP/TCP) or one-way vs round-trip (owamp/ping) is given in parentheses, while the tool used for the test is given in square brackets (`bwctl/` in the tool name indicates that the test is in backwards-compatibility mode with a perfSONAR 3.5 host or cannot connect to pScheduler).
  * You can place the crosshair over a red dot (which indicates a test failure) to see the error text.
 
     .. image:: images/using_graphs_reverse_disabled_tooltip.png

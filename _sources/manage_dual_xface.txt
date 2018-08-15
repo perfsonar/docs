@@ -6,7 +6,7 @@ You may run the perfSONAR Toolkit on a host with multiple interfaces. The most c
 
     #. Decide what IP addresses you are going to assign each interface. See :ref:`MultiXface_Addressing` for a discussion on choosing subnets and other relevant decision points.
     #. Setup routing rules that ensure when a source IP address is selected for a test, that  the operating system honors that IP address by sending it out the desired interface. A script is provided for this purpose and is detailed in the section :ref:`MultiXface_Route`
-    #. When defining your tests either through the :doc:`configuration GUI <manage_regular_tests>` or :doc:`mesh configuration file <multi_mesh_server_config>`, you need to select the desired interface. See the individual pages for a description on how to make this selection.
+    #. When defining your tests either through the :doc:`configuration GUI <manage_regular_tests>` or :doc:`pSConfig template <psconfig_templates_intro>`, you need to select the desired interface. See the individual pages for a description on how to make this selection.
 
 
 .. _MultiXface_Addressing:

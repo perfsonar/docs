@@ -45,7 +45,7 @@ There are a variety of perfSONAR use cases where low-end hardware may make sense
   - Requires two 2GHz cores (four cores recommended) and 2GB RAM (4GB recommended)
   - sample hardware includes: Zotac Zbox model nano ci320, Intel NUC model NUC5CPYH
 
-- perfSONAR Toolkit participating in a small test mesh  
+- perfSONAR Toolkit running a small number of central managed measurements
 
   - Requires two 2GHz cores (four cores recommended) and 4GB RAM
   - sample hardware includes Zotac Zbox model nano ci323 (dual NIC), Intel NUC model NUC5CPYH

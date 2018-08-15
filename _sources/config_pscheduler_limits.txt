@@ -265,9 +265,7 @@ and excludes the private networks defined by RFC 1918::
     }
 
 
-This identifier downloads the `Amazon Web Services CIDR block
-list<https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html
->`_ and uses jq to translate it into the expected format::
+This identifier downloads the `Amazon Web Services CIDR block list <https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html>`_ and uses jq to translate it into the expected format::
 
     {
         "name": "aws",

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>What is pScheduler? &mdash; perfSONAR Toolkit 4.0.2 documentation</title>
+    <title>What is pScheduler? &mdash; perfSONAR Toolkit 4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.0.2',
+        VERSION:     '4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.0.2 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.1 documentation" href="index.html" />
     <link rel="next" title="Creating and Managing Tasks" href="pscheduler_client_tasks.html" />
     <link rel="prev" title="External Tools" href="using_ext_tools.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="using_ext_tools.html" title="External Tools"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -85,6 +85,8 @@
 <dd>Software that transfers <a class="reference internal" href="#term-result"><em class="xref std std-term">results</em></a> to long-term storage or elsewhere for further processing.</dd>
 <dt id="term-assist-server">Assist Server</dt>
 <dd>A pScheduler server that accepts a test specification and can return the <a class="reference internal" href="#term-lead-participant"><em class="xref std std-term">lead participant</em></a>. The assist server may or may not be involved in the test specified, it&#8217;s role is simply to tell you the lead where the task should be submitted. By default the assist server is always the local host.</dd>
+<dt id="term-context">Context</dt>
+<dd>A construct that allows certain user-specified changes to the execution environment prior to the execution of a <a class="reference internal" href="#term-tool"><em class="xref std std-term">tool</em></a> running a <a class="reference internal" href="#term-test"><em class="xref std std-term">test</em></a>.</dd>
 <dt id="term-lead-participant">Lead Participant</dt>
 <dd>The pScheduler server where a task should be submitted. It will become responsible for contacting other participants, making scheduling decisions based on gathered information and archiving results.</dd>
 <dt id="term-limits">Limits</dt>
@@ -131,7 +133,6 @@
 <div><ul class="simple">
 <li><a class="reference internal" href="pscheduler_client_tasks.html"><em>Creating and Managing Tasks</em></a></li>
 <li><a class="reference internal" href="pscheduler_client_schedule.html"><em>Viewing the Schedule</em></a></li>
-<li><a class="reference internal" href="pscheduler_client_utils.html"><em>Diagnostic and Utility Commands</em></a></li>
 </ul>
 </div></blockquote>
 </div>
@@ -147,14 +148,14 @@
 </div>
 <div class="section" id="bwctl-backward-compatibility">
 <h2>BWCTL Backward Compatibility<a class="headerlink" href="#bwctl-backward-compatibility" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler was introduced in perfSONAR version 4.0 and replaces a component called BWCTL. pScheduler is a completely new codebase and protocol. It does NOT speak the BWCTL protocol natively but it does provide a backward compatibility strategy with BWCTL. This strategy does have limitations though and works as follows:</p>
+<p>pScheduler was introduced in perfSONAR version 4.0 and replaced a component called BWCTL. pScheduler is a completely new codebase and protocol. It does NOT speak the BWCTL protocol natively but it does provide a backward compatibility strategy with BWCTL. This strategy does have limitations though and works as follows:</p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>For tests from a host running pScheduler to a host with only BWCTL</strong> - For <em>throughput</em>, <em>rtt</em> and <em>trace</em> tests, pScheduler will automatically detect the lack of pScheduler on the remote-end and the presence of BWCTL. It will then choose a pScheduler <a class="reference internal" href="#term-tool"><em class="xref std std-term">tool</em></a> that  executes the <em>bwctl</em>, <em>bwping</em> or <em>bwctraceroute</em> command instead of the underlying tool directly. For <em>throughput</em> tests, this has the side effect of requiring more time on the pScheduler schedule since BWCTL may not run the test immediately. <em>If the BWCTL test does not start within 60 seconds of the start time assigned by pScheduler, the test will fail</em>.</li>
 <li><strong>For tests from a host running BWCTL to a host with only pScheduler</strong> - perfSONAR 4.0 still runs the BWCTL server to support this use case. The pScheduler server knows nothing about the BWCTL server&#8217;s schedule and vice versa, <em>so it is possible tests could collide</em>. Depending on how many remote sites initiates tests to you via BWCTL, the risk of this collision may be relatively low.</li>
 </ul>
 </div></blockquote>
-<p>The software attempts to handle BWCTL compatibility as transparently as possible. This means that when you upgrade your host to a version running pScheduler, there should be no special steps required to initiate the processes outlined above. Your host should continue testing to those running BWCTL and vice versa.</p>
+<p>Starting in 4.1, the BWCTL backward compatibility tools are not included in the default installation. If you would like to install them (along with BWCTL) you can install the <cite>perfsonar-bwctl-compat</cite> package using your operating system&#8217;s package manager.</p>
 <p>If you also frequently use BWCTL at the command-line, we suggest you stop and start using the pScheduler command line. For a guide on how to convert your BWCTL commands to pScheduler see <a class="reference internal" href="pscheduler_ref_bwctl.html"><em>BWCTL to pScheduler Command Reference</em></a>.</p>
 </div>
 <div class="section" id="more-information">
@@ -221,7 +222,7 @@
         <li class="right" >
           <a href="using_ext_tools.html" title="External Tools"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

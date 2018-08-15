@@ -17,19 +17,12 @@ pScheduler consists for four daemon processes that run as separate services. The
 
 These services can be started/stopped with ``systemctl`` or the ``service`` command depending on the operating system. For example:
 
-    * Using systemctl (e.g. CentOS 7/Debian 8)::
+    * Using systemctl::
         
         systemctl start pscheduler-scheduler
         systemctl start pscheduler-runner
         systemctl start pscheduler-archiver
         systemctl start pscheduler-ticker
-        
-    * Using the service command (e.g. CentOS 6/Debian 7)::
-    
-        /sbin/service pscheduler-scheduler start
-        /sbin/service pscheduler-runner start
-        /sbin/service pscheduler-archiver start
-        /sbin/service pscheduler-ticker start
         
 In addition to these processes, it also requires Apache HTTPD and PostgreSQL daemons to be running. Apache provides the web server where pScheduler accepts REST API requests and PostgreSQL is where the schedule is stored. The name of these processes is dependent on the operating system:
 
