@@ -119,8 +119,8 @@ In perfSONAR 4.1, the deprecation process will continue. The following actions w
 
 Below is the plan for support for releases beyond 4.1:
 
-* perfSONAR 4.0 will be end-of-life six months after the final release of perfSONAR 4.1. BWCTL will also be end-of-life at this time meaning it will stop receiving security updates. 
-* The first major perfSONAR release after the perfSONAR 4.0 end-of-life date will remove BWCTL and the BWCTL pScheduler plug-ins. 
+* perfSONAR 4.0 will be end-of-life on **February 15, 2019** (six months after the final release of perfSONAR 4.1). BWCTL will also be end-of-life at this time meaning it will stop receiving security updates. 
+* The first major perfSONAR release after February 15, 2019 will remove BWCTL and the BWCTL pScheduler plug-ins. 
 * Security updates for the BWCTL pScheduler plug-ins will be supported as long as 4.1 is supported since they will still be part of a supported pScheduler codebase.
 
 All of this means that your BWCTL tests will continue to function in 4.1 but you likely have only a few months of BWCTL support left. BWCTL test are usually caused by the following:
@@ -141,7 +141,7 @@ See :doc:`psconfig_meshconfig_migrate` for information on the upgrade of the for
 
 CentOS 6 Support Discontinued
 -----------------------------
-perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`. You may also choose to switch to a supported :doc:`Debian platform <install_debian>`. **Security updates for CentOS 6 perfSONAR packages will be discontinued six months after the final release of perfSONAR 4.1**. Also see the `CentOS documentation <https://wiki.centos.org/About/Product>`_ for a schedule of when CentOS 6 will no longer be a supported operating system. 
+perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`. You may also choose to switch to a supported :doc:`Debian platform <install_debian>`. **Security updates for CentOS 6 perfSONAR packages will be discontinued on February 15, 2019**. Also see the `CentOS documentation <https://wiki.centos.org/About/Product>`_ for a schedule of when CentOS 6 will no longer be a supported operating system. 
 
 Debian 7 Support Discontiuned
 -----------------------------
