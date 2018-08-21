@@ -195,15 +195,26 @@ https://host2/pscheduler/tasks/a07cdaa6-624b-4128-9821-0b2dc9c2b760/runs/2cd5e54
 </div>
 <p>You always redirect the output to a file and the program will return an error before execution if you do not. Example output is shown below:</p>
 <img alt="_images/pscheduler_client_schedule-plot.png" src="_images/pscheduler_client_schedule-plot.png" />
-<p>The vertical axis is the time that the test ran or is scheduled to run. The green boxes are <a class="reference internal" href="pscheduler_intro.html#term-run"><em class="xref std std-term">runs</em></a> of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of four classifications listed at the top:</p>
+<p>The vertical axis is the time that the test ran or is scheduled to run. The green boxes are <a class="reference internal" href="pscheduler_intro.html#term-run"><em class="xref std std-term">runs</em></a> of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of five classifications listed at the top:</p>
 <blockquote>
-<div><ol class="arabic simple">
-<li><strong>Exclusive</strong> - These are tasks that cannot run at the same time as any other exclusive or normal task. An example is a <em>throughput</em> task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.</li>
-<li><strong>Normal</strong> - These are tasks that can run at the same time as other normal and background tasks, but cannot run at the same time as exclusive tasks. An example is a task with a test type of <em>latency</em>.</li>
-<li><strong>Background</strong> - These are tasks that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include <em>latency</em>, <em>latencybg</em>, <em>rtt</em> and <em>trace</em>. It is not uncommon to have this column look almost entirely solid if you have <em>latencybg</em> tasks since they run continuously. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.</li>
-<li><strong>Non-Start</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><em class="xref std std-term">schedule horizon</em></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</li>
+<div><ol class="arabic">
+<li><p class="first"><strong>Exclusive</strong> - An example is a <em>throughput</em> task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.</p>
+</li>
+<li><p class="first"><strong>Normal</strong> - An example is a task with a test type of <em>latency</em>.</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Background</strong> - Example test types include <em>rtt</em> and <em>trace</em> or <em>clock</em>.</dt>
+<dd><ol class="first last arabic simple">
+<li><strong>Background-multi</strong> - Example test type is <em>latencybg</em>. It is not uncommon to have this column look almost entirely solid if you have <em>latencybg</em> tasks since they run continuously.</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>Non-Start</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><em class="xref std std-term">schedule horizon</em></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</p>
+</li>
 </ol>
 </div></blockquote>
+<p>For more detailed information about test classifications see <a class="reference internal" href="pscheduler_ref_tests_tools.html#pscheduler-ref-tests-tools-test-classifications"><em>Test Classifications</em></a>.</p>
 <p>The primary options for manipulating what is in the image are the time arguments that take the same form as <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">schedule</span></tt>. If no arguments are given, all runs for the next hour will be displayed:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler plot-schedule
 </pre></div>
