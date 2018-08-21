@@ -74,20 +74,31 @@
             
   <div class="section" id="managing-users">
 <h1>Managing Users<a class="headerlink" href="#managing-users" title="Permalink to this headline">¶</a></h1>
-<p>The perfSONAR Toolkit provides utilities for adding, deleting and modifying users. In particular it helps with the management of users that have permissions to access the web interface or login to the host via SSH. All of these tasks could be done through the standard *NIX command-line tools and the tools provided are mainly for convenience .</p>
-<div class="section" id="adding-a-user">
-<h2>Adding a User<a class="headerlink" href="#adding-a-user" title="Permalink to this headline">¶</a></h2>
-<p>When adding users to the toolkit, in particular those that you want to access the web interface or SSH into the host, it is recommended you use the provided script <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>. To add users with that script run the following:</p>
+<p>The perfSONAR Toolkit provides utilities for adding, deleting and modifying users that have permissions to access the web interface. All of these tasks could be done through the standard *NIX command-line tools and the tools provided are mainly for convenience.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will also be prompted to create a user and password that can be used to administer the host through the web interface during the first command line root login to the server. See also <a class="reference internal" href="install_config_first_time.html"><em>Configuring the Toolkit for the First Time</em></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The perfSONAR Toolkit does not provide any special utilities to create superusers after it is already installed. You will need to use built-in utilities like <em>visudo</em> to create privileged users and add them to <strong>pssudo</strong> group (<strong>pssudo</strong> group is installed by perfSONAR Toolkit and allows anyone in pssudo group to have sudo on the machine). Note that any users in the wheel group will NOT be allowed access to the web interface.</p>
+</div>
+<div class="section" id="adding-a-web-user">
+<span id="manage-users-add-web-user"></span><h2>Adding a Web User<a class="headerlink" href="#adding-a-web-user" title="Permalink to this headline">¶</a></h2>
+<p>When adding users to the Toolkit that you want to access the web interface, it is recommended you use the provided script <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>. To add web users with that script run the following:</p>
 <ol class="arabic">
 <li><p class="first">Login to the system as a root user</p>
 </li>
-<li><p class="first">Run ** <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em> **</p>
+<li><p class="first">Run ** <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em> <a href="#id1"><span class="problematic" id="id2">**</span></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/nptoolkit-configure.py
+</pre></div>
+</div>
 </li>
-<li><p class="first">At the prompt, select option <strong>2. Manage Users</strong>:</p>
+<li><p class="first">At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
 
 1. Change Timezone
-2. Manage Users
+2. Manage Web Users
 0. exit
 
 Make a selection: 2
@@ -107,62 +118,37 @@ Make a selection:  1
 </div>
 </li>
 <li><p class="first">Enter the name of the user you would like to add and hit <strong>Enter</strong>:</p>
-<blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre>Enter the user whose account you&#39;d like to add. Just hit enter to exit: myuser
+<div class="highlight-python"><div class="highlight"><pre>Enter the user whose account you&#39;d like to add. Just hit enter to exit: myuser
 </pre></div>
 </div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">You may not create a user with name <em>psadmin</em> as it will conflict with an existing group.</p>
-</div>
-</div></blockquote>
-</li>
-<li><p class="first">At the next prompt enter <strong>yes</strong> or enter <em>no</em> if you want the user to be able to login via SSH. Alternatively leave the input blank and it will default to <strong>yes</strong>.:</p>
-<div class="highlight-python"><div class="highlight"><pre>Should this user be able to login via SSH? [yes]
-</pre></div>
-</div>
-</li>
-<li><p class="first">At the next prompt enter <strong>yes</strong> or <em>no</em> if you want the user to be able to manage the host through the web interface. Alternatively leave the input blank and it will default to <strong>yes</strong>.:</p>
-<blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre>Should this user be able to login to the web interface? [yes]
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Under the covers, this adds the user to the system group <em>psadmin</em>.</p>
-</div>
-</div></blockquote>
 </li>
 <li><p class="first">Next enter and confirm the password for the new user:</p>
-<div class="highlight-python"><div class="highlight"><pre>Please specify a password for the myuser account.
-Changing password for user myuser.
-New password:
-Retype new password:
-passwd: all authentication tokens updated successfully.
+<div class="highlight-python"><div class="highlight"><pre>New password:
+    Re-type new password:
+    Adding password for user myuser
 </pre></div>
 </div>
 </li>
-<li><p class="first">The new user is added. You may enter <strong>0</strong> to exit the program or perform other operations with the tool.</p>
+<li><p class="first">The new user is added. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p>
 </li>
 </ol>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The perfSONAR Toolkit does not provide any special utilities to create superusers. You will need to use built-in utilities like <em>visudo</em> to create privileged users. Note that any users in the wheel group will NOT be allowed access to the web interface. The <strong>psadmin</strong> group is provided as a special group for web administrators.</p>
 </div>
-</div>
-<div class="section" id="deleting-a-user">
-<h2>Deleting a User<a class="headerlink" href="#deleting-a-user" title="Permalink to this headline">¶</a></h2>
-<p>You may delete a user with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
+<div class="section" id="deleting-a-web-user">
+<h2>Deleting a Web User<a class="headerlink" href="#deleting-a-web-user" title="Permalink to this headline">¶</a></h2>
+<p>You may delete a Web user with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
 <ol class="arabic">
 <li><p class="first">Login to the system as a root user.</p>
 </li>
-<li><p class="first">Run <strong>|nptoolkit_script|</strong></p>
+<li><p class="first">Run <strong>|nptoolkit_script|</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/nptoolkit-configure.py
+</pre></div>
+</div>
 </li>
-<li><p class="first">At the prompt, select option <strong>2. Manage Users</strong>:</p>
+<li><p class="first">At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
 
 1. Change Timezone
-2. Manage Users
+2. Manage Web Users
 0. exit
 
 Make a selection: 2
@@ -181,33 +167,31 @@ Make a selection:  2
 </pre></div>
 </div>
 </li>
-<li><p class="first">Type the name of the user you would like to delete:</p>
+<li><p class="first">Type the name of the user you would like to delete and confirm:</p>
 <div class="highlight-python"><div class="highlight"><pre>Enter the user whose account you&#39;d like to remove. Just hit enter to exit: myuser
 </pre></div>
 </div>
 </li>
-<li><p class="first">At the next prompt, enter <strong>yes</strong> or <em>no</em> if you would like to delete the user&#8217;s home directory (default is <strong>yes</strong>):</p>
-<div class="highlight-python"><div class="highlight"><pre>Would you like to delete myuser&#39;s home directory? [yes]
-</pre></div>
-</div>
-</li>
-<li><p class="first">The new user is deleted. You may enter <strong>0</strong> to exit the program or perform other operations with the tool.</p>
+<li><p class="first">The user is deleted. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p>
 </li>
 </ol>
 </div>
-<div class="section" id="changing-a-user-s-password">
-<h2>Changing a User&#8217;s Password<a class="headerlink" href="#changing-a-user-s-password" title="Permalink to this headline">¶</a></h2>
-<p>You may change a user&#8217;s password with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
+<div class="section" id="changing-a-web-user-s-password">
+<h2>Changing a Web User&#8217;s Password<a class="headerlink" href="#changing-a-web-user-s-password" title="Permalink to this headline">¶</a></h2>
+<p>You may change a web user&#8217;s password with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
 <ol class="arabic">
 <li><p class="first">Login to the system as a root user.</p>
 </li>
-<li><p class="first">Run <strong>|nptoolkit_script|</strong></p>
+<li><p class="first">Run <strong>|nptoolkit_script|</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/nptoolkit-configure.py
+</pre></div>
+</div>
 </li>
-<li><p class="first">At the prompt, select option <strong>2. Manage Users</strong>:</p>
+<li><p class="first">At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
 
 1. Change Timezone
-2. Manage Users
+2. Manage Web Users
 0. exit
 
 Make a selection: 2
@@ -233,16 +217,15 @@ Make a selection:  3
 </li>
 <li><p class="first">Type and confirm the new password:</p>
 <div class="highlight-python"><div class="highlight"><pre>Please specify a password for the myuser account.
-Changing password for user myuser.
-New password:
-Retype new password:
-passwd: all authentication tokens updated successfully.
+    New password:
+    Re-type new password:
+    Updating password for user myuser
 </pre></div>
 </div>
 </li>
-<li><p class="first">Normal precautions should be taken to protect the password as it can be used to access the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.</p>
+<li><p class="first">Normal precautions should be taken to protect the password as it can be used to access the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8. It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.</p>
 </li>
-<li><p class="first">The new user&#8217;s password is now changed. You may enter <strong>0</strong> to exit the program or perform other operations with the tool.</p>
+<li><p class="first">The user&#8217;s password is now changed. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p>
 </li>
 </ol>
 </div>
@@ -258,9 +241,9 @@ passwd: all authentication tokens updated successfully.
                 
                 <ul>
 <li><a class="reference internal" href="#">Managing Users</a><ul>
-<li><a class="reference internal" href="#adding-a-user">Adding a User</a></li>
-<li><a class="reference internal" href="#deleting-a-user">Deleting a User</a></li>
-<li><a class="reference internal" href="#changing-a-user-s-password">Changing a User&#8217;s Password</a></li>
+<li><a class="reference internal" href="#adding-a-web-user">Adding a Web User</a></li>
+<li><a class="reference internal" href="#deleting-a-web-user">Deleting a Web User</a></li>
+<li><a class="reference internal" href="#changing-a-web-user-s-password">Changing a Web User&#8217;s Password</a></li>
 </ul>
 </li>
 </ul>
