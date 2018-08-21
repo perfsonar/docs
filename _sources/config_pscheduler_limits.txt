@@ -18,10 +18,23 @@ the perfSONAR toolkit may be found `in the toolkit sources
 <https://github.com/perfsonar/toolkit/blob/master/etc/default_service_configs/pscheduler_limits.conf>`_.
 
 
-
 ****************************
 The Limit Configuration File
 ****************************
+
+--------------------------------
+Installing a Limit Configuration
+--------------------------------
+
+The limit configuration is installed in ``/etc/pscheduler/limits.conf`` and must be readable by the ``pscheduler`` user.  The recommended file attributes are owner ``root``, group ``pscheduler`` and permissions `0644`.
+
+pScheduler server automatically detect changes to the limit configuration and put them into effect upon the arrival of the first request that requires checking limits or 15 seconds, whichever is longer.  Changes to the limit file are noted in the pScheduler log (usually ``/var/log/pscheduler/pscheduler.log``), as are notifications of problems.
+
+.. warning:: If the configuration file does not exist, is removed or fails to load, pScheduler will enforce no limits and grant every task request it receives.  **For this reason, it is strongly recommended that configurations be verified as described in :ref:`config_pscheduler_limits-check-validity` before they are installed.**
+
+-------
+Content
+-------
 
 The file is `JavaScript Object Notation <http://www.json.org>`_ (JSON)
 containing a single object with the pairs shown here::
@@ -1165,9 +1178,7 @@ Each limit requirement is a JSON object containing the following:
    pass.
 
 
-
-
-
+.. _config_pscheduler_limits-check-validity:
 
 ***********************************************
 Checking Limit Configuration Files for Validity
@@ -1198,31 +1209,6 @@ is not in effect.
 
 Details on command-line switches and sample invocations can be
 obtained by running the command ``pscheduler validate-limits --help``.
-
-
-
-
-********************************
-Installing a Limit Configuration
-********************************
-
-The limit configuration is installed in ``/etc/pscheduler/limits.conf``
-and must be readable by the ``pscheduler`` user.  The recommended file
-attributes are owner ``root``, group ``pscheduler`` and permissions
-`0644`.
-
-pScheduler server automatically detect changes to the limit
-configuration and put them into effect upon the arrival of the first
-request that requires checking limits or 15 seconds, whichever is
-longer.  Changes to the limit file are noted in the pScheduler log
-(usually ``/var/log/pscheduler/pscheduler.log``), as are notifications
-of problems.
-
-If the configuration file does not exist, is removed or fails to load,
-pScheduler will enforce no limits and grant every task request it
-receives.  **For this reason, it is strongly recommended that
-configurations be verified as described above before they are
-installed.**
 
 
 ****************

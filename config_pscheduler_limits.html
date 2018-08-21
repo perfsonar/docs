@@ -86,6 +86,17 @@ the perfSONAR toolkit may be found <a class="reference external" href="https://g
 </div>
 <div class="section" id="the-limit-configuration-file">
 <h2>The Limit Configuration File<a class="headerlink" href="#the-limit-configuration-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-a-limit-configuration">
+<h3>Installing a Limit Configuration<a class="headerlink" href="#installing-a-limit-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The limit configuration is installed in <tt class="docutils literal"><span class="pre">/etc/pscheduler/limits.conf</span></tt> and must be readable by the <tt class="docutils literal"><span class="pre">pscheduler</span></tt> user.  The recommended file attributes are owner <tt class="docutils literal"><span class="pre">root</span></tt>, group <tt class="docutils literal"><span class="pre">pscheduler</span></tt> and permissions <cite>0644</cite>.</p>
+<p>pScheduler server automatically detect changes to the limit configuration and put them into effect upon the arrival of the first request that requires checking limits or 15 seconds, whichever is longer.  Changes to the limit file are noted in the pScheduler log (usually <tt class="docutils literal"><span class="pre">/var/log/pscheduler/pscheduler.log</span></tt>), as are notifications of problems.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If the configuration file does not exist, is removed or fails to load, pScheduler will enforce no limits and grant every task request it receives.  <strong>For this reason, it is strongly recommended that configurations be verified as described in :ref:`config_pscheduler_limits-check-validity` before they are installed.</strong></p>
+</div>
+</div>
+<div class="section" id="content">
+<h3>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h3>
 <p>The file is <a class="reference external" href="http://www.json.org">JavaScript Object Notation</a> (JSON)
 containing a single object with the pairs shown here:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
@@ -100,6 +111,7 @@ containing a single object with the pairs shown here:</p>
 </pre></div>
 </div>
 <p>Each pair is described in the sections below.</p>
+</div>
 <div class="section" id="comments">
 <h3>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h3>
 <p>All JSON read by pScheduler supports in-line commenting by ignoring
@@ -1109,7 +1121,7 @@ pass.</li>
 </div>
 </div>
 <div class="section" id="checking-limit-configuration-files-for-validity">
-<h2>Checking Limit Configuration Files for Validity<a class="headerlink" href="#checking-limit-configuration-files-for-validity" title="Permalink to this headline">¶</a></h2>
+<span id="config-pscheduler-limits-check-validity"></span><h2>Checking Limit Configuration Files for Validity<a class="headerlink" href="#checking-limit-configuration-files-for-validity" title="Permalink to this headline">¶</a></h2>
 <p>pScheduler includes a <tt class="docutils literal"><span class="pre">validate-limits</span></tt> command which can be used to
 verify that a limit configuration is valid during development and
 prior to installation on the system.</p>
@@ -1133,24 +1145,6 @@ sent to the standard output if it is a TTY or the <tt class="docutils literal"><
 is not in effect.</p>
 <p>Details on command-line switches and sample invocations can be
 obtained by running the command <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">validate-limits</span> <span class="pre">--help</span></tt>.</p>
-</div>
-<div class="section" id="installing-a-limit-configuration">
-<h2>Installing a Limit Configuration<a class="headerlink" href="#installing-a-limit-configuration" title="Permalink to this headline">¶</a></h2>
-<p>The limit configuration is installed in <tt class="docutils literal"><span class="pre">/etc/pscheduler/limits.conf</span></tt>
-and must be readable by the <tt class="docutils literal"><span class="pre">pscheduler</span></tt> user.  The recommended file
-attributes are owner <tt class="docutils literal"><span class="pre">root</span></tt>, group <tt class="docutils literal"><span class="pre">pscheduler</span></tt> and permissions
-<cite>0644</cite>.</p>
-<p>pScheduler server automatically detect changes to the limit
-configuration and put them into effect upon the arrival of the first
-request that requires checking limits or 15 seconds, whichever is
-longer.  Changes to the limit file are noted in the pScheduler log
-(usually <tt class="docutils literal"><span class="pre">/var/log/pscheduler/pscheduler.log</span></tt>), as are notifications
-of problems.</p>
-<p>If the configuration file does not exist, is removed or fails to load,
-pScheduler will enforce no limits and grant every task request it
-receives.  <strong>For this reason, it is strongly recommended that
-configurations be verified as described above before they are
-installed.</strong></p>
 </div>
 <div class="section" id="standard-objects">
 <h2>Standard Objects<a class="headerlink" href="#standard-objects" title="Permalink to this headline">¶</a></h2>
@@ -1374,6 +1368,8 @@ be negated.</li>
 <li><a class="reference internal" href="#">Configuring pScheduler Limits</a><ul>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#the-limit-configuration-file">The Limit Configuration File</a><ul>
+<li><a class="reference internal" href="#installing-a-limit-configuration">Installing a Limit Configuration</a></li>
+<li><a class="reference internal" href="#content">Content</a></li>
 <li><a class="reference internal" href="#comments">Comments</a></li>
 </ul>
 </li>
@@ -1411,7 +1407,6 @@ be negated.</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#checking-limit-configuration-files-for-validity">Checking Limit Configuration Files for Validity</a></li>
-<li><a class="reference internal" href="#installing-a-limit-configuration">Installing a Limit Configuration</a></li>
 <li><a class="reference internal" href="#standard-objects">Standard Objects</a><ul>
 <li><a class="reference internal" href="#stringmatch-string-matching-specification"><tt class="docutils literal"><span class="pre">StringMatch</span></tt> - String Matching Specification</a></li>
 </ul>
