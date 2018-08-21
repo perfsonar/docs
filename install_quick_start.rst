@@ -20,7 +20,7 @@ These instructions are for the full Toolkit installation. For other perfSONAR in
 #. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created in the previous step
     
     .. image:: images/install_quick_start-web-admin-info1.png
-#. On the page that loads, enter the requested information in the provided fields. Click **Save** when you are done.
+#. On the page that loads, enter the requested information in the provided fields. In order to save **Administrative Information** you will be required to agree to the perfSONAR `Privacy Policy <https://www.perfsonar.net/about/privacy-policy/>`_. Tick the Privacy Policy checkbox to accept it. Click **Save** when you are done. 
 
     .. image:: images/install_quick_start-web-admin-info2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
