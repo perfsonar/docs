@@ -67,13 +67,18 @@ trace
 :Description: Trace the path between IP hosts
 :Tools: traceroute, tracepath, paris-traceroute
 
+.. _pscheduler_ref_tests_tools-test_classifications:
+
 Test Classifications
 ======================
-Each test classified in one of three categories thatd etermines what other tests can be run in parallel:
+Each test classified in one of four categories that determines what other tests can be run in parallel:
 
-    #. **Exclusive** - These are tests that cannot run at the same time as any other exclusive or normal test. An example is a *throughput* test. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.
-    #. **Normal** - These are tests that can run at the same time as other normal and background tests, but cannot run at the same time as exclusive tests. Currently there are no examples of these in the default test set, but the classification is available for those writing new tools.
-    #. **Background** - These are tests that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include *latency*, *latencybg*, *rtt* and *trace*. It is not uncommon to have this column look almost entirely solid if you have *latencybg* tests since they run continuously. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.
+    #. **Exclusive** - These are tests that cannot run at the same time as any other exclusive or normal test. An example is a *throughput* test. If you have very frequent tests in this category then you may have difficulty finding a timeslot for new tests.
+    #. **Normal** - These are tests that can run at the same time as other normal and background tests, but cannot run at the same time as exclusive tests. An example is a task with a test type of *latency*.
+    #. **Background** - These are tests that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include *rtt* and *trace* or *clock*. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.
+	#. **Background-multi** - These are tests that can be run in parallel with any other test and produce multiple results that appear as separate runs. Example test type is *latencybg* that runs continuously.
+	
+You may visualize different types of tests using ``pscheduler plot-schedule`` command. See also :ref:`pscheduler_client_schedule-plot_schedule`.
     
 throughput Tests
 ================
