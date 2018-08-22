@@ -42,19 +42,19 @@ Editing Host Information
             Administrator Name
                 The full name of a person to contact about this host. For privacy reasons, we recommend you use a role or group name to be registered.
 			
-			Administrator Email
+            Administrator Email
                 The email address where correspondence regarding this host may be sent. Since this e-mail address should be used only for communication related to the operations of the specific node, it is highly recommended that a role or group e-mail address is used instead of a personal one.
 			
-			City
+            City
                 The city where the host resides
             
             Country
                 The country where the host resides
 			
-			ZIP/Postal Code
+            ZIP/Postal Code
                 The postal code of the location where the host resides
 			
-			State/Province
+            State/Province
                 The state, province or other country-specific region where the host resides. May be the 2-letter abbreviation if applicable.
               
             Latitude

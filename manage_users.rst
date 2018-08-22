@@ -14,7 +14,7 @@ Adding a Web User
 When adding users to the Toolkit that you want to access the web interface, it is recommended you use the provided script |nptoolkit_script|. To add web users with that script run the following:
 
 #. Login to the system as a root user
-#. Run ** |nptoolkit_script| **::
+#. Run |nptoolkit_script| ::
 
     /usr/lib/perfsonar/scripts/nptoolkit-configure.py
 	
@@ -46,8 +46,8 @@ When adding users to the Toolkit that you want to access the web interface, it i
 #. Next enter and confirm the password for the new user::
 
     New password:
-	Re-type new password:
-	Adding password for user myuser
+    Re-type new password:
+    Adding password for user myuser
 
 #. The new user is added. You may perform other operations with the tool or enter **0** to go back to main menu and then **0** to exit the program.
 
@@ -56,7 +56,7 @@ Deleting a Web User
 You may delete a Web user with the |nptoolkit_script|:
 
 #. Login to the system as a root user.
-#. Run **|nptoolkit_script|**::
+#. Run |nptoolkit_script| ::
 
     /usr/lib/perfsonar/scripts/nptoolkit-configure.py
 	
@@ -91,7 +91,7 @@ Changing a Web User's Password
 You may change a web user's password with the |nptoolkit_script|:
 
 #. Login to the system as a root user.
-#. Run **|nptoolkit_script|**::
+#. Run |nptoolkit_script| ::
 
     /usr/lib/perfsonar/scripts/nptoolkit-configure.py
 	

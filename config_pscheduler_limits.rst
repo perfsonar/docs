@@ -30,7 +30,7 @@ The limit configuration is installed in ``/etc/pscheduler/limits.conf`` and must
 
 pScheduler server automatically detect changes to the limit configuration and put them into effect upon the arrival of the first request that requires checking limits or 15 seconds, whichever is longer.  Changes to the limit file are noted in the pScheduler log (usually ``/var/log/pscheduler/pscheduler.log``), as are notifications of problems.
 
-.. warning:: If the configuration file does not exist, is removed or fails to load, pScheduler will enforce no limits and grant every task request it receives.  **For this reason, it is strongly recommended that configurations be verified as described in :ref:`config_pscheduler_limits-check-validity` before they are installed.**
+.. warning:: If the configuration file does not exist, is removed or fails to load, pScheduler will enforce no limits and grant every task request it receives.  For this reason, it is strongly recommended that configurations be verified as described in :ref:`config_pscheduler_limits-check-validity` before they are installed.
 
 -------
 Content
