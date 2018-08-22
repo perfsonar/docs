@@ -127,7 +127,7 @@ The vertical axis is the time that the test ran or is scheduled to run. The gree
     #. **Exclusive** - An example is a *throughput* task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.
     #. **Normal** - An example is a task with a test type of *latency*.
     #. **Background** - Example test types include *rtt* and *trace* or *clock*.
-	#. **Background-multi** - Example test type is *latencybg*. It is not uncommon to have this column look almost entirely solid if you have *latencybg* tasks since they run continuously.
+    #. **Background-multi** - Example test type is *latencybg*. It is not uncommon to have this column look almost entirely solid if you have *latencybg* tasks since they run continuously.
     #. **Non-Start** - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a :term:`schedule horizon` so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.
 	
 For more detailed information about test classifications see :ref:`pscheduler_ref_tests_tools-test_classifications`.
