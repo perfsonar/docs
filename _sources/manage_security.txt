@@ -4,7 +4,7 @@ Firewalls and Security Software
 
 The perfSONAR Toolkit utilizes a number of tools the help protect against attacks on the system. Some of these tools include:
  
-    * A default set of iptables and ip6tables (or firewalld for CentOS7) rules that only allow connections to ports required by perfSONAR tools.
+    * A default set of *iptables* and *ip6tables* (for CentOS6) or *firewalld* (for CentOS7) rules that only allow connections to ports required by perfSONAR tools.
     * Inclusion of the `fail2ban`_ intrusion detection system (IDS) to log suspicious activity such as brute-force SSH attacks
 
 None of these solutions will protect your host from all kinds of attacks so best common practices and good sense should be used when administering your host. In addition to tools like above it's important :doc:`update your host <manage_update>` with the latest packages and to watch the `mailing lists <http://www.perfsonar.net/about/getting-help/>`_ for important security announcements. 
@@ -14,43 +14,61 @@ None of these solutions will protect your host from all kinds of attacks so best
 
 Default Firewall Rules and perfSONAR port requirements
 ======================================================
-The perfSONAR Toolkit uses *iptables* and *ip6tables* to implement IPv4 and IPv6 firewall rules respectively. The default configurations for each in */etc/sysconfig/iptables* and */etc/sysconfig/ip6tables*. Also see /usr/lib/firewalld/services and /etc/perfsonar/toolkit/perfsonar_firewalld_settings.conf for rules on CentOS7. 
+The perfSONAR Toolkit uses *iptables* and *ip6tables* to implement IPv4 and IPv6 firewall rules respectively. The default configurations for *iptabel* are in ``/etc/sysconfig/iptables`` and ``/etc/sysconfig/ip6tables``. Also see ``/usr/lib/firewalld/services`` and ``/etc/perfsonar/toolkit/perfsonar_firewalld_settings.conf`` for *firewalld* settings on CentOS7.
 
-perfSONAR uses the following ports:
+The current perfSONAR release uses the following ports (used by a Tool when requesting a test. See also :doc:`pscheduler_ref_tests_tools`) by default:
 
-+------------------------------------------+
-| perfSONAR Tools Ports                    | 
-+------------+----------------+------------+
-| Tool       | TCP ports      | UDP Ports  |
-+============+================+============+
-| owamp      | 861            | 8760-9960  |
-+------------+----------------+------------+
-| twamp      | 862            | 18760-19960|
-+------------+----------------+------------+
-| pscheduler | 443            |            |
-+------------+----------------+------------+
-| iperf3     | 5201           |            |
-+------------+----------------+------------+
-| iperf2     | 5001           |            |
-+------------+----------------+------------+
-| nuttcp     | 5000, 5101     |            |
-+------------+----------------+------------+
-| traceroute |                | 33434-33634|
-+------------+----------------+------------+
-|simplestream| 5890-5900      |            |
-+------------+----------------+------------+
-| ntp*       |                | 123        |
-+------------+----------------+------------+
-| bwctl*     |4823, 5001-5900,| 5001-5900, | 
-|            | 6001-6200      | 6001-6200  | 
-+------------+----------------+------------+
++--------------------------------------------+
+| perfSONAR Tools Ports                      | 
++-----------------+-------------+------------+
+| Tool            | TCP ports   | UDP Ports  |
++=================+=============+============+
+| owamp (control) | 861         |            |
++-----------------+-------------+------------+
+| owamp (test)    | 8760-9960   | 8760-9960  |
++-----------------+-------------+------------+
+| twamp (control) | 862         |            |
++-----------------+-------------+------------+
+| twamp (test)    | 18760-19960 | 18760-19960|
++-----------------+-------------+------------+
+| pscheduler      | 443         |            |
++-----------------+-------------+------------+
+| traceroute      |             | 33434-33634|
++-----------------+-------------+------------+
+| simplestream    | 5890-5900   |            |
++-----------------+-------------+------------+
+| nuttcp          | 5000, 5101  |            |
++-----------------+-------------+------------+
+| iperf3          | 5201        |            |
++-----------------+-------------+------------+
+| iperf2          | 5001        |            |
++-----------------+-------------+------------+
+| ntp             |             | 123        |
++-----------------+-- ----------+------------+
 
-**Notes**: 
+Depending on operating system version used and how your perfSONAR host is customized with additional software (e.g. NDT, BWCTL) additional ports may be applied to the firewall:
 
-* The NTP and BWCTL tools are deprecated but their ports are left open for those wishing to run them.
-* ICMP also needs to be open
-* The NTP and BWCTL tools are deprecated but their ports are left open for those wishing to run them.
-* simplestream is used for pscheduler testing and troubleshooting
+.. note:: Some tools are deprecated in the latest perfSONAR version but its ports are still left open for those wishing to run them.
+
++-----------------------------------------+
+| perfSONAR Tools Ports                   | 
++-----------------+-----------+-----------+
+| Tool            | TCP ports | UDP Ports |
++=================+===========+===========+
+| bwctl (control) | 4823      |           | 
++-----------------+-----------+-----------+
+| bwctl (peer)    | 6001-6200 | 6001-6200 | 
++-----------------+-----------+-----------+
+| bwctl (test)    | 5001-5900 | 5001-5900 | 
++-----------------+-----------+-----------+
+| ndt (control)   | 7123      |           | 
++-----------------+-----------+-----------+
+| ndt (test)      | 3001-3003 |           | 
++-----------------+-----------+-----------+
+| ndt (flash)     | 843       |           | 
++-----------------+-----------+-----------+
+| DHCPv6          |           | 546, 547  |
++-----------------+-----------+-----------+
 
 +--------------------------------------+
 | perfSONAR Toolkit Ports              | 
@@ -64,11 +82,14 @@ perfSONAR uses the following ports:
 | Lookup Service        | 8090         +   
 +-----------------------+--------------+
 
+**Notes**: 
+* ICMP also needs to be open
+
 .. _manage_security-custom:
 
 Adding Your Own Firewall Rules
 ==============================
-For operating systems using iptables, the rules added by the perfSONAR Toolkit are contained within a special perfSONAR chain of iptables (and ip6tables). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update. 
+For operating systems using *iptables*, the rules added by the perfSONAR Toolkit are contained within a special perfSONAR chain of *iptables* (and *ip6tables*). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update. 
 
 For operating systems using firewalld (e.g. CentOS 7) it organizes the rules into "zones" and makes it more difficult to distinguish perfSONAR rules from custom rules. If you add a standard service to the zone it will get overwritten next time *perfsonar-toolkit-security* upgrades. We recommend looking at firewalld `rich rules <https://fedoraproject.org/wiki/Features/FirewalldRichLanguage>`_ for adding custom rules.
 
