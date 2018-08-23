@@ -44,46 +44,48 @@ The current perfSONAR release uses the following ports (used by a Tool when requ
 | iperf2          | 5001        |            |
 +-----------------+-------------+------------+
 | ntp             |             | 123        |
-+-----------------+-- ----------+------------+
++-----------------+-------------+------------+
 
 Depending on operating system version used and how your perfSONAR host is customized with additional software (e.g. NDT, BWCTL) additional ports may be applied to the firewall:
 
-.. note:: Some tools are deprecated in the latest perfSONAR version but its ports are still left open for those wishing to run them.
+.. note:: Some tools are deprecated in the latest perfSONAR version but their ports are still left open for those wishing to run them.
 
-+-----------------------------------------+
-| perfSONAR Tools Ports                   | 
-+-----------------+-----------+-----------+
-| Tool            | TCP ports | UDP Ports |
-+=================+===========+===========+
-| bwctl (control) | 4823      |           | 
-+-----------------+-----------+-----------+
-| bwctl (peer)    | 6001-6200 | 6001-6200 | 
-+-----------------+-----------+-----------+
-| bwctl (test)    | 5001-5900 | 5001-5900 | 
-+-----------------+-----------+-----------+
-| ndt (control)   | 7123      |           | 
-+-----------------+-----------+-----------+
-| ndt (test)      | 3001-3003 |           | 
-+-----------------+-----------+-----------+
-| ndt (flash)     | 843       |           | 
-+-----------------+-----------+-----------+
-| DHCPv6          |           | 546, 547  |
-+-----------------+-----------+-----------+
++--------------------------------------------+
+| perfSONAR Tools Ports                      | 
++-----------------+-------------+------------+
+| Tool            | TCP ports   | UDP Ports  |
++=================+=============+============+
+| bwctl (control) | 4823        |            | 
++-----------------+-------------+------------+
+| bwctl (peer)    | 6001-6200   | 6001-6200  | 
++-----------------+-------------+------------+
+| bwctl (test)    | 5001-5900   | 5001-5900  | 
++-----------------+-------------+------------+
+| ndt (control)   | 7123        |            | 
++-----------------+-------------+------------+
+| ndt (test)      | 3001-3003   |            | 
++-----------------+-------------+------------+
+| ndt (flash)     | 843         |            | 
++-----------------+-------------+------------+
+| DHCPv6          |             | 546, 547   |
++-----------------+-------------+------------+
 
-+--------------------------------------+
-| perfSONAR Toolkit Ports              | 
-+-----------------------+--------------+
-| Tool                  | TCP ports    |
-+=======================+==============+
-| management interface  | 80, 443      +   
-+-----------------------+--------------+
-| esmond                | 80, 443      +   
-+-----------------------+--------------+
-| Lookup Service        | 8090         +   
-+-----------------------+--------------+
+Some ports are also used to access the perfSOANR Toolkit management interfaces:
 
-**Notes**: 
-* ICMP also needs to be open
++--------------------------------------------+
+| perfSONAR Toolkit Ports                    | 
++-------------------------------+------------+
+| Tool                          | TCP ports  |
++===============================+============+
+| management interface          | 80, 443    +   
++-------------------------------+------------+
+| esmond                        | 80, 443    +   
++-------------------------------+------------+
+| Lookup Service                | 8090       +   
++-------------------------------+------------+
+
+
+.. note:: ICMP also needs to be open
 
 .. _manage_security-custom:
 
