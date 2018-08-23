@@ -115,17 +115,10 @@
 <div class="section" id="authenticating-by-username-and-api-key">
 <h3>Authenticating by Username and API Key<a class="headerlink" href="#authenticating-by-username-and-api-key" title="Permalink to this headline">¶</a></h3>
 <p>As an archive administrator you may create a username, generate an API key, and assign the needed permissions to register data with the commands below:</p>
-<p><em>CentOS/RedHat:</em></p>
 <ol class="arabic">
-<li><p class="first">Change to the esmond install directory:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Run the commands below replacing <em>example_user</em> with the username of the account you would like to create:</p>
-<div class="highlight-python"><div class="highlight"><pre>. bin/activate
-python esmond/manage.py add_ps_metadata_post_user example_user
-python esmond/manage.py add_timeseries_post_user example_user
+<li><p class="first">As priviledged user run the commands below replacing <em>example_user</em> with the username of the account you would like to create:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/sbin/esmond_manage add_ps_metadata_post_user example_user
+/usr/sbin/esmond_manage add_timeseries_post_user example_user
 </pre></div>
 </div>
 </li>
@@ -135,15 +128,7 @@ python esmond/manage.py add_timeseries_post_user example_user
 </div>
 </li>
 </ol>
-<p><em>Debian/Ubuntu:</em></p>
-<blockquote>
-<div><p>On a <strong>Debian/Ubuntu</strong> system you can use:</p>
-<div class="highlight-python"><div class="highlight"><pre>/usr/share/esmond/util/esmond_manage add_ps_metadata_post_user example_user
-/usr/share/esmond/util/esmond_manage add_timeseries_post_user example_user
-</pre></div>
-</div>
-</div></blockquote>
-<p>At this point provide the administrator of the measurement host wishing to register data with the username and API key.</p>
+<p>At this point provide the administrator of the measurement host wishing to register data with the username and generated API key.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">There is no technical limitation preventing multiple measurement hosts from sharing a username and API key. It is up to you as an archive administrator to make a decision about whether you will share accounts between multiple measurement hosts or require unique accounts for each. It is the responsibility of both you and the measurement host administrator to follow best commons security practices and common sense in preventing unwanted parties from obtaining these credentials.</p>
@@ -152,27 +137,13 @@ python esmond/manage.py add_timeseries_post_user example_user
 <div class="section" id="authenticating-by-ip-address">
 <span id="multi-ma-install-auth-ip"></span><h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this headline">¶</a></h3>
 <p>As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a username and password (API key) to be defined for each host in their tasks file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows:</p>
-<p><em>CentOS/RedHat:</em></p>
 <ol class="arabic">
-<li><p class="first">Change to the esmond install directory:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Run the commands below to create the account. You must provide a username as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of <em>X.X.X.X</em> or <em>X.X.X.X/Y</em> where <em>X</em> is each octet and <em>Y</em> is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host 10.0.1.1 or any host in the 10.0.2.0/24 subnet to register data to esmond:</p>
-<div class="highlight-python"><div class="highlight"><pre>. bin/activate
-python esmond/manage.py add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
+<li><p class="first">As priviledged user run the commands below to create the account. You must provide a username (replacing <em>example_user</em>) as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of <em>X.X.X.X</em> or <em>X.X.X.X/Y</em> where <em>X</em> is each octet and <em>Y</em> is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host <em>10.0.1.1</em> or any host in the <em>10.0.2.0/24</em> subnet to register data to esmond:</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/sbin/esmond_manage add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
 </pre></div>
 </div>
 </li>
 </ol>
-<p><em>Debian/Ubuntu:</em></p>
-<blockquote>
-<div><p>On a <strong>Debian/Ubuntu</strong> system you can use:</p>
-<div class="highlight-python"><div class="highlight"><pre>/usr/share/esmond/util/esmond_manage add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
-</pre></div>
-</div>
-</div></blockquote>
 </div>
 </div>
 <div class="section" id="configuring-measurement-hosts">

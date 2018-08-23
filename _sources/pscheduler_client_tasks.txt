@@ -168,9 +168,7 @@ You may cancel a task with the ``pscheduler cancel`` command which takes the fol
     
     pscheduler cancel TASK_URL
     
-The ``TASK_URL`` is the full URL of the task to be canceled and should have been output by the ``pscheduler task`` command when a task was submitted. This command cancels any future runs of the task specified. Any run of the task which is underway will continue to completion. The task will still be in the database but will be marked as disabled. This means you will still be able to query results of runs completed prior to cancellation but no new results will be generated. A full example of the command is shown below::
+The ``TASK_URL`` is the full URL of the task to be canceled and should have been output by the ``pscheduler task`` command when a task was submitted. This command cancels any future runs of the task specified. The task itself plus all runs prior to the time of the transaction remain intact. Any run of the task which is underway will continue to completion. The task will still be in the database but will be marked as disabled. This means you will still be able to query results of runs completed prior to cancellation but no new results will be generated. A full example of the command is shown below::
 
     pscheduler cancel https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
     
-
-

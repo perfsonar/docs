@@ -44,28 +44,16 @@ Authenticating by Username and API Key
 
 As an archive administrator you may create a username, generate an API key, and assign the needed permissions to register data with the commands below:
 
-*CentOS/RedHat:*
+#. As priviledged user run the commands below replacing *example_user* with the username of the account you would like to create::
 
-#. Change to the esmond install directory::
+    /usr/sbin/esmond_manage add_ps_metadata_post_user example_user
+    /usr/sbin/esmond_manage add_timeseries_post_user example_user
 
-    cd /usr/lib/esmond
-#. Run the commands below replacing *example_user* with the username of the account you would like to create::
-
-    . bin/activate
-    python esmond/manage.py add_ps_metadata_post_user example_user
-    python esmond/manage.py add_timeseries_post_user example_user
 #. After running the commands above you should see the generated API key in the output (if not, re-run the commands above and they will re-show you the generated API key without affecting the user you just created). An example of the output line showing the API key (*9130962c6b38722c0b9968e6903e1927e94e16fd* in this example) is below::
 
     Key: 9130962c6b38722c0b9968e6903e1927e94e16fd for example_user
-
-*Debian/Ubuntu:*
-
-  On a **Debian/Ubuntu** system you can use::
-
-    /usr/share/esmond/util/esmond_manage add_ps_metadata_post_user example_user
-    /usr/share/esmond/util/esmond_manage add_timeseries_post_user example_user
-    
-At this point provide the administrator of the measurement host wishing to register data with the username and API key. 
+      
+At this point provide the administrator of the measurement host wishing to register data with the username and generated API key. 
 
 .. note:: There is no technical limitation preventing multiple measurement hosts from sharing a username and API key. It is up to you as an archive administrator to make a decision about whether you will share accounts between multiple measurement hosts or require unique accounts for each. It is the responsibility of both you and the measurement host administrator to follow best commons security practices and common sense in preventing unwanted parties from obtaining these credentials.
 
@@ -76,21 +64,9 @@ Authenticating by IP Address
 
 As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a username and password (API key) to be defined for each host in their tasks file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows: 
 
-*CentOS/RedHat:*
+#. As priviledged user run the commands below to create the account. You must provide a username (replacing *example_user*) as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of *X.X.X.X* or *X.X.X.X/Y* where *X* is each octet and *Y* is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host *10.0.1.1* or any host in the *10.0.2.0/24* subnet to register data to esmond::
 
-#. Change to the esmond install directory::
-
-    cd /usr/lib/esmond
-#. Run the commands below to create the account. You must provide a username as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of *X.X.X.X* or *X.X.X.X/Y* where *X* is each octet and *Y* is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host 10.0.1.1 or any host in the 10.0.2.0/24 subnet to register data to esmond::
-
-    . bin/activate
-    python esmond/manage.py add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
-
-*Debian/Ubuntu:*
-
-  On a **Debian/Ubuntu** system you can use::
-
-    /usr/share/esmond/util/esmond_manage add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
+    /usr/sbin/esmond_manage add_user_ip_address example_user 10.0.1.1 10.0.2.0/24
 
 Configuring Measurement Hosts
 ==============================
