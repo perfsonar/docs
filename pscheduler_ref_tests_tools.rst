@@ -222,3 +222,9 @@ RTT tests support the following arguments::
   --deadline=DEADLINE   Deadline for all measurements to complete
   --timeout=TIMEOUT     Timeout for each round trip
 
+trace Tests
+===========
+
+The currently supported trace tools are *traceroute*, *tracepath*, *paris-traceroute*. *traceroute* is the default.
+
+..note: Please note that if you have a server that has more then one network interface the *tracepath* tool does not provide an option to select the outgoing source interface.
