@@ -192,7 +192,7 @@ Observations
 The following information was researched and tested in October of 2016 to test 100G perfSONAR. Testing revealed that CentOS 7 with fair queing performed the best:
 
 * SMCi X10DRi Motherboard
-* 2 x Intel Xeon Haswell E5-2643V3 3.4GHz 6 Cores (Total 12 Cores each)
+* 2 x Intel Xeon Haswell E5-2643V3 3.4GHz 6 Cores (Total 12 Threads each)
 * On Board Dual 10/100/1000 NIC
 * 8 x 16GB DDR4-2133MHz RAM ECC/REG (128GB total)
 * 2 x 480GB SSD Data Center M510DC Drives
