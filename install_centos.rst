@@ -77,6 +77,8 @@ You may also run the command below to get everything listed above on **perfsonar
 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
 
+.. note:: These optional packages are **not** meant to be run on a **perfsonar-centralmanagement** system.
+
 .. _install_centos_step3:
 
 Step 3: Verify NTP and Tuning Parameters 
