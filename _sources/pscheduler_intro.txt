@@ -52,7 +52,7 @@ Terminology
 
 Benefits
 ============
-The pScheduler server will handle the coordination, execution and optionally storage of the task requested. Many of the :term:`tools <tool>` pScheduler executes could be run independently of pScheduler, but the added value provide by pScheduler is significant to perfSONAR hosts for the following reasons:
+The pScheduler server will handle the coordination, execution and optionally storage of the task requested. Many of the :term:`tools <tool>` pScheduler executes could be run independently of pScheduler, but the added value provided by pScheduler is significant to perfSONAR hosts for the following reasons:
 
     * **Measurement Integrity** - pScheduler maintains a schedule of all measurements to be run and will not allow any measurements it knowns about to run simultaneously if doing so would adversely affect the result in a significant way. For example, it will not run two throughput tests at the same time as the competition for resources could affect the results of each. In contrast it will run latency tests in the background as the low resource consumption does not significantly affect results of parallel tests.
     * **Simplified Coordination** - pScheduler not only simplifies coordination during task execution, but also after you have the result. pScheduler will contact each end and handle bringing up any daemons as required. It also has a plug-in architecture that allows you to send the result elsewhere, such as a long-erm storage system, when the measurement completes. 
