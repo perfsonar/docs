@@ -2,15 +2,13 @@
 Migrating from CentOS 6 to CentOS 7
 ************************************
 
-This page describes the migration procedure for moving a perfSONAR installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same :doc:`bundle <install_options>` and version of perfSONAR installed. If you do not wish to keep any existing data or configuration from the CentOS 6 host you may ignore this section and do a normal clean installation. 
+This page describes the migration procedure for moving a perfSONAR installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same :doc:`bundle <install_options>` installed. If you do not wish to keep any existing data or configuration from the CentOS 6 host you may ignore this section and do a normal clean installation. 
 
 .. note:: These steps can also be used to migrate an existing host to new hardware even if both systems are running the same OS version. There is nothing specific to CentOS 6 or CentOS 7 in this procedure. It is only labelled as such for convenience since for the time-being this is likely the most common type of migration to be performed by perfSONAR users.
 
 Migration Process
 =================
 #. Login in to your CentOS 6 host via SSH or the terminal. You must do so as a user that has superuser privileges or is allowed to run the `sudo` command. **All commands in this section require superuser privileges.**
-
-#. Upgrade your CentOS 6 host to the same version of perfSONAR as the CentOS 7 host if you have not already done so. See :doc:`manage_update` for more details on the update process
 
 #. Run **one** of the commands below to create a backup of all relevant files in `~/ps-backup.tgz`. The option you choose depends on whether you also want to preserve your measurement archive data:
 
