@@ -77,6 +77,8 @@ You may also run the command below to get everything listed above on **perfsonar
 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
 
+.. note:: On a **perfsonar-centralmanagement** system you probably only want the **perfsonar-toolkit-servicewatcher** package to be installed.
+
 .. _install_centos_step3:
 
 Step 3: Verify NTP and Tuning Parameters 
