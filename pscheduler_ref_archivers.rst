@@ -326,9 +326,9 @@ Example
     {
         "archiver": "syslog",
         "data": {
-            "ident", "mytests",
-            "facility", "local3",
-            "priority", "warning",
+            "ident": "mytests",
+            "facility": "local3",
+            "priority": "warning"
         }
     }
 
