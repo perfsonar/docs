@@ -246,8 +246,8 @@ This script accepts the following arguments:
 
 The config file is in JSON format and defines data retention policies for your data. It allows you to match on three values: 
 
-* **event_type** - The type of data for which this policy applies. A valid list can be found in the esmond `API documentation <http://software.es.net/esmond/perfsonar_client_rest.html#full-list-of-event-types>`_. You may also pass ``*`` to match any value.
-* **summary_type** - The type of summary to which this policy applies. Valid values are *base* for unsummarized data and any value from the list found in `this discussion <http://software.es.net/esmond/perfsonar_client_rest.html#base-data-vs-summaries>`_. You may also pass ``*`` to match any value.
+* **event_type** - The type of data for which this policy applies. A valid list can be found in the esmond :ref:`API documentation <psclient-rest-eventtypes>`. You may also pass ``*`` to match any value.
+* **summary_type** - The type of summary to which this policy applies. Valid values are *base* for unsummarized data and any value from the list found in `this discussion <psclient-rest-basevsumm>`. You may also pass ``*`` to match any value.
 * **summary_window** - An integer indicating the summary window to match (in seconds). A value of 0 means unsummarized (a.k.a base) data. You may also pass ``*`` to match any value. 
 
 .. note:: If you are curious about the summary types and summary windows being used, look in the *measurement_archive* blocks of you /etc/perfsonar/regulartesting.conf files on your testing nodes.

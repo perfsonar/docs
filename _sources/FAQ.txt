@@ -210,7 +210,7 @@ The user of a network may not have a machine that is as tuned as a perfSONAR nod
 Q: Is there a way to visualize GridFTP results in MaDDash?
 =======================================================================================
 
-**A:** Please see documentation at http://software.es.net/esmond/perfsonar_gridftp.html
+**A:** Please see documentation at :doc:`esmond_gridftp`
 
 
 
@@ -393,9 +393,12 @@ Q: I have a measurement archive machine with esmond running, and there is a sepa
 
 For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandr**A:** service cassandra restart
 
-For postgres, in /var/lib/pgsql/data/postgresql.conf change the data_directory to the new location. Restart postgres: /etc/init.d postgresql restart. 
+For postgres, in /var/lib/pgsql/data/postgresql.conf cha
 
-You will need to rebuild the esmond tables after this change is made. To do so, follow the instructions here: http://software.es.net/esmond/rpm_install.html#configuration
+Run the following commands::
+
+    /usr/pgsql-9.5/bin/postgresql96-setup initdb
+    /usr/lib/perfsonar/scripts/toolkit/system_environment/configure_esmond
 
 An alternative way to do what you want is to stop both postgres and cassandra, move /var/lib/cassandra and /var/lib/pgsql to the new partition and then create symlinks to the new location in /var/lib/cassandra and /var/lib/pgsql. That saves the need to rebuild postgres and preserves any existing data.
 
@@ -468,9 +471,9 @@ Q: Where can I find documentation on interacting with perfSONAR archive via a cu
 ========================================================================================================================================================================================
 **A:** See: 
 
-- http://software.es.net/esmond/perfsonar_client_rest.html 
-- http://software.es.net/esmond/perfsonar_client_perl.html 
-- http://software.es.net/esmond/perfsonar_client_python.html
+- :doc:`esmond_api_rest`
+- :doc:`esmond_api_perl`
+- :doc:`esmond_api_python`
 
 Q: How can I get cassandra to run on a host that only has an IPv6 address?
 =========================================================================================================================================================================================================================================================================================================================================

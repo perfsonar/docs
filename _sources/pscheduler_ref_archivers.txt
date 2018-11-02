@@ -186,7 +186,7 @@ Example
 ``esmond``
 -------------------------------------------
 
-The ``esmond`` archiver submits measurement results to the `esmond <http://software.es.net/esmond/>`_ time series database using specialized translations of results for ``throughput``, ``latency``, ``trace`` and ``rtt`` tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the ``pscheduler-raw`` event type. 
+The ``esmond`` archiver submits measurement results to the esmond time series database using specialized translations of results for ``throughput``, ``latency``, ``trace`` and ``rtt`` tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the ``pscheduler-raw`` event type. 
 
 .. _pscheduler_ref_archivers-archivers-esmond-data:
 
@@ -207,7 +207,7 @@ Archiver Data
   * ``mapped-only`` - Only store a mapped type and do not store anything if it is not a known type
   * ``raw-only`` - Only store a ``pscheduler-raw`` record regardless of test type. 
 
-``summaries`` - Optional.  A list of objects containing an ``event-type``, ``summary-type`` and ``summary-window``.  If not specified, defaults to a standard set of summaries used by perfSONAR.  See the `esmond documentation <http://software.es.net/esmond/perfsonar_client_rest.html#base-data-vs-summaries>`_ for more details on summaries.
+``summaries`` - Optional.  A list of objects containing an ``event-type``, ``summary-type`` and ``summary-window``.  If not specified, defaults to a standard set of summaries used by perfSONAR.  See the :ref:`esmond documentation <psclient-rest-basevsumm>` for more details on summaries.
 
 ``verify-ssl`` - Optional.  Defaults to ``false``. If enabled, check SSL certificate of esmond server against list of known certificate authorities (CAs).  See the `requests documentation <http://docs.python-requests.org/en/v1.0.0/user/advanced/#ssl-cert-verification>`_ for more details on environment variables and other options for specifying path to CA store.
 
