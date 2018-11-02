@@ -110,6 +110,19 @@ Archiving Measurements with esmond
    multi_ma_clustering
    multi_ma_backups
 
+Displaying Measurements with MaDDash
+-------------------------------------
+.. toctree::
+   :maxdepth: 1
+  
+   maddash_intro
+   maddash_install
+   maddash_config_server
+   maddash_running
+   maddash_config_webui
+   maddash_admin_ui
+   maddash_api_intro
+
 .. _index-config_ref:
 
 Configuration Reference
