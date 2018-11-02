@@ -227,7 +227,7 @@ If you installed the perfsonar-centralmanagement bundle see the following docume
 * :doc:`multi_ma_install`
 * :doc:`psconfig_publish`
 * :doc:`psconfig_maddash_agent`
-* `Using MaDDash to build dashboards <http://software.es.net/maddash/>`_
+* :doc:`maddash_intro`
 
 
 Configuring perfSONAR through the web interface

@@ -9,8 +9,8 @@ have a some libraries and scripts that make data retrieval easy.
 
 **Measure Archive (esmond) APIs and clients**: 
 
-  * http://software.es.net/esmond/perfsonar_client_perl.html
-  * http://software.es.net/esmond/perfsonar_client_python.html
+  * :doc:`esmond_api_perl`
+  * :doc:`esmond_api_python`
   * https://pypi.python.org/pypi/esmond_client/ 
 
 The esmond Service clients can be installed using python's *easy_install*::
@@ -26,7 +26,7 @@ The esmond Service clients can be installed using python's *easy_install*::
    easy_install sls-client
 
 **perfSONAR Dashboard (MaDDash) API**:
-   * http://software.es.net/maddash/index.html#api
+   * :doc:`maddash_api_intro`
 
 **Toolkit Host configuration API**:
    * perfSONAR toolkit host configuration info can be retrieved using a URL of this format:

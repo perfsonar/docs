@@ -40,13 +40,3 @@ To run find_ps_ma: find_ps_ma -n <host-name>
 
 The sls_dig is especially useful if you debugging some problem and want to do a quick lookup on a host registered in the lookup-service. 
 
-
-Working with GridFTP Data
--------------------------
-
-perfSONAR provides some mechanisms for uploading GridFTP logs into a perfSONAR measurement archive.  
-Sample code for this is available in `github <https://github.com/esnet/esmond/blob/develop/esmond_client/clients/esmond-ps-load-gridftp>`_.
-
-Instructions for using and running the script here:
-http://software.es.net/esmond/perfsonar_gridftp.html
-

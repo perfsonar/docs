@@ -60,7 +60,6 @@ perfSONAR Toolkit
    manage_dual_xface
    manage_security
    manage_limits
-   manage_extra_tools
    using_graphs
    using_ext_tools
 
@@ -109,7 +108,8 @@ Archiving Measurements with esmond
    multi_ma_install
    multi_ma_clustering
    multi_ma_backups
-
+   esmond_api_rest
+   
 Displaying Measurements with MaDDash
 -------------------------------------
 .. toctree::
@@ -202,10 +202,8 @@ Deployment Examples
 
 Related Projects
 ----------------
-* `esmond <http://software.es.net/esmond/>`_
 * `iperf3 <http://software.es.net/iperf/>`_
-* `Lookup Service <http://code.google.com/p/simple-lookup-service/>`_
-* `MaDDash <http://software.es.net/maddash/>`_
+* `Lookup Service <https://github.com/esnet/simple-lookup-service/>`_
 
 .. _index-search:
 
