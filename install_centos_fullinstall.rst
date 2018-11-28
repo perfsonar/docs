@@ -24,7 +24,7 @@ Downloading installation media and booting the system
 
 #. Mount the ISO to a DVD or USB drive 
      .. note:: The Full Install ISO is generally too large to fit on current writable CDs
-     .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK``
+     .. note:: Detailed instructions on mounting an ISO image to the above media is beyond the scope of this document. Linux and Macintosh users may consider using the dd tool: ``sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK`` or the pv tool (as root): ``pv /PATH/TO/FILE.iso > /dev/DISK``
 #. Insert the media containing the ISO into the target end system
 #. Power on the host 
     .. note:: By default CentOS 7 will use a graphical installer.
