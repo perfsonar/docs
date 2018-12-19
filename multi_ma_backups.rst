@@ -23,6 +23,8 @@ You may want to back-up data in case of a failure. Both Cassandra and PostgreSQL
 Cassandra Snapshots with `nodetool`
 -----------------------------------
 
+.. _multi_ma_backups-snapshots-cassandra-prep:
+
 Preparing Your Environment
 ##########################
 Cassandra comes with a command called *nodetool* that is capable of performing a number of administrative operations. One such operation is creating and restoring snapshots of the data. In order to make sure your cassandra server can use nodetool, login to your cassandra host(s) and do the following:
