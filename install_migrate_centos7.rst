@@ -16,9 +16,13 @@ Migration Process
 
         /usr/lib/perfsonar/scripts/ps-migrate-backup.sh ~/ps-backup.tgz
 
-    * *Option 2:* Alternatively, if you also wish to migrate the measurement archive databases add the `--data` parameter. Please note, **this may take several minutes to several hours depending on the amount of data in your measurement archive**::
-
-        /usr/lib/perfsonar/scripts/ps-migrate-backup.sh --data ~/ps-backup.tgz
+    * *Option 2:* Alternatively, if you also wish to migrate the measurement archive databases add the `--data` parameter:
+        .. note:: You MUST first prepare your cassandra environment for the transfer by following the steps in the section titled :ref:`multi_ma_backups-snapshots-cassandra-prep` located :ref:`here <multi_ma_backups-snapshots-cassandra-prep>`
+        .. note:: This may take several minutes to several hours depending on the amount of data in your measurement archive.
+        
+        ::
+        
+            /usr/lib/perfsonar/scripts/ps-migrate-backup.sh --data ~/ps-backup.tgz
 
 #. Copy the backup file `~/ps-backup.tgz` from your CentOS 6 host to a safe location. This will need to be copied to the new installation later. If you will be overwriting the CentOS 6 host with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.
 
