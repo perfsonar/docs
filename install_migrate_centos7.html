@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Migrating from CentOS 6 to CentOS 7 &mdash; perfSONAR Toolkit 4.1.4 documentation</title>
+    <title>Migrating from CentOS 6 to CentOS 7 &mdash; perfSONAR Toolkit 4.1.5 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.1.4',
+        VERSION:     '4.1.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.1.4 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.1.5 documentation" href="index.html" />
     <link rel="next" title="Updating perfSONAR" href="manage_update.html" />
     <link rel="prev" title="Using perfSONAR with Docker" href="install_docker.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="install_docker.html" title="Using perfSONAR with Docker"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.4 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -74,7 +74,7 @@
             
   <div class="section" id="migrating-from-centos-6-to-centos-7">
 <h1>Migrating from CentOS 6 to CentOS 7<a class="headerlink" href="#migrating-from-centos-6-to-centos-7" title="Permalink to this headline">¶</a></h1>
-<p>This page describes the migration procedure for moving a perfSONAR installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same <a class="reference internal" href="install_options.html"><em>bundle</em></a> installed. If you do not wish to keep any existing data or configuration from the CentOS 6 host you may ignore this section and do a normal clean installation.</p>
+<p>This page describes the migration procedure for moving a perfSONAR installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same <a class="reference internal" href="install_options.html"><em>bundle</em></a> installed (e.g. both run the Toolkit bundle). If you do not wish to keep any existing data or configuration from the CentOS 6 host you may ignore this section and do a normal clean installation.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">These steps can also be used to migrate an existing host to new hardware even if both systems are running the same OS version. There is nothing specific to CentOS 6 or CentOS 7 in this procedure. It is only labelled as such for convenience since for the time-being this is likely the most common type of migration to be performed by perfSONAR users.</p>
@@ -92,10 +92,21 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first"><em>Option 2:</em> Alternatively, if you also wish to migrate the measurement archive databases add the <cite>&#8211;data</cite> parameter. Please note, <strong>this may take several minutes to several hours depending on the amount of data in your measurement archive</strong>:</p>
-<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-migrate-backup.sh --data ~/ps-backup.tgz
+<li><dl class="first docutils">
+<dt><em>Option 2:</em> Alternatively, if you also wish to migrate the measurement archive databases add the <cite>&#8211;data</cite> parameter:</dt>
+<dd><div class="first admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You MUST first prepare your cassandra environment for the transfer by following the steps in the section titled <a class="reference internal" href="multi_ma_backups.html#multi-ma-backups-snapshots-cassandra-prep"><em>Preparing Your Environment</em></a> located <a class="reference internal" href="multi_ma_backups.html#multi-ma-backups-snapshots-cassandra-prep"><em>here</em></a></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This may take several minutes to several hours depending on the amount of data in your measurement archive.</p>
+</div>
+<div class="last highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/ps-migrate-backup.sh --data ~/ps-backup.tgz
 </pre></div>
 </div>
+</dd>
+</dl>
 </li>
 </ul>
 </div></blockquote>
@@ -133,6 +144,10 @@
 </li>
 </ol>
 <p>Your host should now be migrated.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Due to differences in the way users and groups are stored between operating systems, these scripts no longer attempt to migrate system users accounts. You will need to recreate any system users manually.</p>
+</div>
 </div>
 <div class="section" id="changing-ip-address-hostname">
 <h2>Changing IP Address/Hostname<a class="headerlink" href="#changing-ip-address-hostname" title="Permalink to this headline">¶</a></h2>
@@ -194,7 +209,7 @@
         <li class="right" >
           <a href="install_docker.html" title="Using perfSONAR with Docker"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.4 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.1.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

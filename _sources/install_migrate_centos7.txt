@@ -2,7 +2,7 @@
 Migrating from CentOS 6 to CentOS 7
 ************************************
 
-This page describes the migration procedure for moving a perfSONAR installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same :doc:`bundle <install_options>` installed. If you do not wish to keep any existing data or configuration from the CentOS 6 host you may ignore this section and do a normal clean installation. 
+This page describes the migration procedure for moving a perfSONAR installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same :doc:`bundle <install_options>` installed (e.g. both run the Toolkit bundle). If you do not wish to keep any existing data or configuration from the CentOS 6 host you may ignore this section and do a normal clean installation. 
 
 .. note:: These steps can also be used to migrate an existing host to new hardware even if both systems are running the same OS version. There is nothing specific to CentOS 6 or CentOS 7 in this procedure. It is only labelled as such for convenience since for the time-being this is likely the most common type of migration to be performed by perfSONAR users.
 
@@ -16,9 +16,13 @@ Migration Process
 
         /usr/lib/perfsonar/scripts/ps-migrate-backup.sh ~/ps-backup.tgz
 
-    * *Option 2:* Alternatively, if you also wish to migrate the measurement archive databases add the `--data` parameter. Please note, **this may take several minutes to several hours depending on the amount of data in your measurement archive**::
-
-        /usr/lib/perfsonar/scripts/ps-migrate-backup.sh --data ~/ps-backup.tgz
+    * *Option 2:* Alternatively, if you also wish to migrate the measurement archive databases add the `--data` parameter:
+        .. note:: You MUST first prepare your cassandra environment for the transfer by following the steps in the section titled :ref:`multi_ma_backups-snapshots-cassandra-prep` located :ref:`here <multi_ma_backups-snapshots-cassandra-prep>`
+        .. note:: This may take several minutes to several hours depending on the amount of data in your measurement archive.
+        
+        ::
+        
+            /usr/lib/perfsonar/scripts/ps-migrate-backup.sh --data ~/ps-backup.tgz
 
 #. Copy the backup file `~/ps-backup.tgz` from your CentOS 6 host to a safe location. This will need to be copied to the new installation later. If you will be overwriting the CentOS 6 host with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.
 
@@ -45,6 +49,8 @@ Migration Process
     reboot
 
 Your host should now be migrated.
+
+.. note:: Due to differences in the way users and groups are stored between operating systems, these scripts no longer attempt to migrate system users accounts. You will need to recreate any system users manually.
 
 Changing IP Address/Hostname
 =============================
