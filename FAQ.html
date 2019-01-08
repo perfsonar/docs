@@ -121,9 +121,10 @@
 <div class="section" id="q-how-do-i-disable-global-registration">
 <h3>Q: How do I disable global registration?<a class="headerlink" href="#q-how-do-i-disable-global-registration" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> The following commands will stop, and disable, this service:</p>
-<blockquote>
-<div>systemctl stop perfsonar-lsregistrationdaemon
-systemctl disable perfsonar-lsregistrationdaemon</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre>systemctl stop perfsonar-lsregistrationdaemon
+systemctl disable perfsonar-lsregistrationdaemon
+</pre></div>
+</div>
 </div>
 <div class="section" id="q-can-i-boot-from-a-usb-key-instead-of-a-dvd">
 <h3>Q: Can I boot from a USB key instead of a DVD?<a class="headerlink" href="#q-can-i-boot-from-a-usb-key-instead-of-a-dvd" title="Permalink to this headline">¶</a></h3>
@@ -379,11 +380,15 @@ options ipv6 disable=1
 </div>
 <div class="section" id="q-is-it-possible-to-use-non-intel-sfp-optics-in-the-intel-x520-sr2-nic">
 <h3>Q: Is it possible to use non-intel SFP+ optics in the Intel X520-SR2 NIC?<a class="headerlink" href="#q-is-it-possible-to-use-non-intel-sfp-optics-in-the-intel-x520-sr2-nic" title="Permalink to this headline">¶</a></h3>
-<p><strong>A:</strong> The ixgbe driver has an option to allow alternative optics:
-allow_unsupported_sfp=1
-This can be tested using the fillow commands:
-sudo modprobe -r ixgbe
-sudo modprobe ixgbe allow_unsupported_sfp=0</p>
+<p><strong>A:</strong> The ixgbe driver has an option to allow alternative optics:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">allow_unsupported_sfp</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>This can be tested using the fillow commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo modprobe -r ixgbe
+sudo modprobe ixgbe allow_unsupported_sfp=0
+</pre></div>
+</div>
 </div>
 <div class="section" id="q-how-can-i-tune-a-dell-server-for-a-high-throughput-and-low-latency">
 <h3>Q: How can I tune a Dell server for a high throughput and low latency?<a class="headerlink" href="#q-how-can-i-tune-a-dell-server-for-a-high-throughput-and-low-latency" title="Permalink to this headline">¶</a></h3>
@@ -415,13 +420,15 @@ sudo modprobe ixgbe allow_unsupported_sfp=0</p>
 <h3>Q: When trying to migrate from a CentOS 6 to a CentOS 7 host I receive pg_dump error. How to fix it?<a class="headerlink" href="#q-when-trying-to-migrate-from-a-centos-6-to-a-centos-7-host-i-receive-pg-dump-error-how-to-fix-it" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> Using a script that will create a backup/restore of relevant configuration files and measurement data may generate <tt class="docutils literal"><span class="pre">pg_dump</span></tt> error failing to create pScheduler backup. This happens when you have both postgresql 8 and postgresql 9 installed, but pscheduler backup script expects only postgresql 9. This can be patched by editing <tt class="docutils literal"><span class="pre">/usr/libexec/pscheduler/commands/backup</span></tt>:</p>
 <p>Remove line:</p>
-<blockquote>
-<div>pg_dump </div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pg_dump</span> \
+</pre></div>
+</div>
 <p>Add in this place these three lines:</p>
-<blockquote>
-<div>PG_DUMP=pg_dump
+<div class="highlight-python"><div class="highlight"><pre>PG_DUMP=pg_dump
 [ -x /usr/pgsql-9.5/bin/pg_dump ] &amp;&amp; PG_DUMP=/usr/pgsql-9.5/bin/pg_dump
-$PG_DUMP </div></blockquote>
+$PG_DUMP \
+</pre></div>
+</div>
 <p>Rerun the backup script.</p>
 </div>
 </div>
@@ -437,7 +444,10 @@ $PG_DUMP </div></blockquote>
 <div class="section" id="q-i-have-a-measurement-archive-machine-with-esmond-running-and-there-is-a-separate-disk-partition-mounted-on-the-machine-where-i-want-to-store-all-the-incoming-measurement-data-from-measurement-points-what-is-the-proper-way-to-change-the-default-directory-location-for-storing-the-measurement-archive-data">
 <h3>Q: I have a measurement archive machine with esmond running, and there is a separate disk partition mounted on the machine where I want to store all the incoming measurement data from measurement points. What is the proper way to change the default directory location for storing the measurement archive data?<a class="headerlink" href="#q-i-have-a-measurement-archive-machine-with-esmond-running-and-there-is-a-separate-disk-partition-mounted-on-the-machine-where-i-want-to-store-all-the-incoming-measurement-data-from-measurement-points-what-is-the-proper-way-to-change-the-default-directory-location-for-storing-the-measurement-archive-data" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> Change the directory where cassandra and postgres store data. This is controlled through the respective tools configuration files and not esmond directly.</p>
-<p>For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandr**A:** service cassandra restart</p>
+<p>For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandra:</p>
+<div class="highlight-python"><div class="highlight"><pre>service cassandra restart
+</pre></div>
+</div>
 <p>For postgres, in /var/lib/pgsql/data/postgresql.conf cha</p>
 <p>Run the following commands:</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/pgsql-9.5/bin/postgresql96-setup initdb

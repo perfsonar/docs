@@ -51,7 +51,7 @@ Q: I do not think I am a member of a community, should I put anything?
 Q: How do I disable global registration?
 ===========================================================================
 
-**A:** The following commands will stop, and disable, this service:
+**A:** The following commands will stop, and disable, this service::
         
         systemctl stop perfsonar-lsregistrationdaemon
         systemctl disable perfsonar-lsregistrationdaemon
@@ -344,11 +344,14 @@ Q: How to get rid of "There isn't a perfSONAR sudo user defined" message?
 
 Q: Is it possible to use non-intel SFP+ optics in the Intel X520-SR2 NIC?
 ========================================================================================================================================================================================
-**A:** The ixgbe driver has an option to allow alternative optics:
-allow_unsupported_sfp=1
-This can be tested using the fillow commands:
-sudo modprobe -r ixgbe
-sudo modprobe ixgbe allow_unsupported_sfp=0
+**A:** The ixgbe driver has an option to allow alternative optics::
+
+    allow_unsupported_sfp=1
+
+This can be tested using the fillow commands::
+
+    sudo modprobe -r ixgbe
+    sudo modprobe ixgbe allow_unsupported_sfp=0
 
 
 Q: How can I tune a Dell server for a high throughput and low latency?
@@ -381,11 +384,11 @@ Q: When trying to migrate from a CentOS 6 to a CentOS 7 host I receive pg_dump e
 ========================================================================================================================================================================================
 **A:** Using a script that will create a backup/restore of relevant configuration files and measurement data may generate ``pg_dump`` error failing to create pScheduler backup. This happens when you have both postgresql 8 and postgresql 9 installed, but pscheduler backup script expects only postgresql 9. This can be patched by editing ``/usr/libexec/pscheduler/commands/backup``:
 
-Remove line:
+Remove line::
 
     pg_dump \
 
-Add in this place these three lines:
+Add in this place these three lines::
 
     PG_DUMP=pg_dump
     [ -x /usr/pgsql-9.5/bin/pg_dump ] && PG_DUMP=/usr/pgsql-9.5/bin/pg_dump
@@ -406,7 +409,9 @@ Q: I have a measurement archive machine with esmond running, and there is a sepa
 =========================================================================================================================================================================================================================================================================================================================================
 **A:** Change the directory where cassandra and postgres store data. This is controlled through the respective tools configuration files and not esmond directly.
 
-For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandr**A:** service cassandra restart
+For cassandra, in /etc/cassandra/conf/cassandra.yaml change the commitlog_directory, data_file_directories and saved_caches_directory to the new locations you desire. Restart cassandra::
+
+    service cassandra restart
 
 For postgres, in /var/lib/pgsql/data/postgresql.conf cha
 
