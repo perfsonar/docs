@@ -411,6 +411,19 @@ sudo modprobe ixgbe allow_unsupported_sfp=0</p>
 <h3>Q: Does perfSONAR support PTP?<a class="headerlink" href="#q-does-perfsonar-support-ptp" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> Not at this time. The prohibitive cost of deploying PTP makes it unlikely to be used widely enough to merit adding support. The current perfSONAR code contains assumptions that the clock is disciplined by NTP and would need to be modified for other protocols.</p>
 </div>
+<div class="section" id="q-when-trying-to-migrate-from-a-centos-6-to-a-centos-7-host-i-receive-pg-dump-error-how-to-fix-it">
+<h3>Q: When trying to migrate from a CentOS 6 to a CentOS 7 host I receive pg_dump error. How to fix it?<a class="headerlink" href="#q-when-trying-to-migrate-from-a-centos-6-to-a-centos-7-host-i-receive-pg-dump-error-how-to-fix-it" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> Using a script that will create a backup/restore of relevant configuration files and measurement data may generate <tt class="docutils literal"><span class="pre">pg_dump</span></tt> error failing to create pScheduler backup. This happens when you have both postgresql 8 and postgresql 9 installed, but pscheduler backup script expects only postgresql 9. This can be patched by editing <tt class="docutils literal"><span class="pre">/usr/libexec/pscheduler/commands/backup</span></tt>:</p>
+<p>Remove line:</p>
+<blockquote>
+<div>pg_dump </div></blockquote>
+<p>Add in this place these three lines:</p>
+<blockquote>
+<div>PG_DUMP=pg_dump
+[ -x /usr/pgsql-9.5/bin/pg_dump ] &amp;&amp; PG_DUMP=/usr/pgsql-9.5/bin/pg_dump
+$PG_DUMP </div></blockquote>
+<p>Rerun the backup script.</p>
+</div>
 </div>
 <div class="section" id="perfsonar-archive-esmond-questions">
 <h2><a class="toc-backref" href="#id4">perfSONAR Archive (esmond) Questions</a><a class="headerlink" href="#perfsonar-archive-esmond-questions" title="Permalink to this headline">¶</a></h2>
@@ -626,6 +639,7 @@ systemctl restart httpd
 <li><a class="reference internal" href="#q-what-is-ptp">Q: What is PTP?</a></li>
 <li><a class="reference internal" href="#q-what-is-required-to-use-ptp-in-my-network">Q: What is required to use PTP in my network?</a></li>
 <li><a class="reference internal" href="#q-does-perfsonar-support-ptp">Q: Does perfSONAR support PTP?</a></li>
+<li><a class="reference internal" href="#q-when-trying-to-migrate-from-a-centos-6-to-a-centos-7-host-i-receive-pg-dump-error-how-to-fix-it">Q: When trying to migrate from a CentOS 6 to a CentOS 7 host I receive pg_dump error. How to fix it?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#perfsonar-archive-esmond-questions">perfSONAR Archive (esmond) Questions</a><ul>
@@ -724,7 +738,7 @@ systemctl restart httpd
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2018, perfSONAR Project.
+        &copy; Copyright 2019, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
