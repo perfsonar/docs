@@ -377,6 +377,21 @@ Q: Does perfSONAR support PTP?
 ========================================================================================================================================================================================
 **A:** Not at this time. The prohibitive cost of deploying PTP makes it unlikely to be used widely enough to merit adding support. The current perfSONAR code contains assumptions that the clock is disciplined by NTP and would need to be modified for other protocols.
 
+Q: When trying to migrate from a CentOS 6 to a CentOS 7 host I receive pg_dump error. How to fix it?
+========================================================================================================================================================================================
+**A:** Using a script that will create a backup/restore of relevant configuration files and measurement data may generate ``pg_dump`` error failing to create pScheduler backup. This happens when you have both postgresql 8 and postgresql 9 installed, but pscheduler backup script expects only postgresql 9. This can be patched by editing ``/usr/libexec/pscheduler/commands/backup``:
+
+Remove line:
+
+    pg_dump \
+
+Add in this place these three lines:
+
+    PG_DUMP=pg_dump
+    [ -x /usr/pgsql-9.5/bin/pg_dump ] && PG_DUMP=/usr/pgsql-9.5/bin/pg_dump
+    $PG_DUMP \
+
+Rerun the backup script.
 
 perfSONAR Archive (esmond) Questions
 -------------------------------------
