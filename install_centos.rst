@@ -22,6 +22,8 @@ Installation
 
 Step 1: Configure Yum 
 ---------------------- 
+.. note:: If your system is using yum priorities make sure that repositories required for perfSONAR are higher priority than anything else to avoid conflicts with older versions. Please note that yum maintainers do not recommend using priorities.
+
 The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. **You will need to follow the steps below as privileged user**:
 
 #. Install the EPEL RPM::
