@@ -946,6 +946,7 @@ Valid values for this field are currently:
 * gridftp
 * ma
 * owamp
+* twamp
 * ping
 * pscheduler
 * traceroute
