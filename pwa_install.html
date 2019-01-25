@@ -172,16 +172,26 @@ tar -xzf pwa.sample.tar.gz -C /etc
 </ol>
 <div class="section" id="host-certificates">
 <h5>Host Certificates<a class="headerlink" href="#host-certificates" title="Permalink to this headline">¶</a></h5>
-<p>You will need SSL certificates for https access. If these don&#8217;t already exist, they will be created when you start up the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> docker container.</p>
-<p>In <tt class="docutils literal"><span class="pre">/etc/pwa/auth</span></tt>, you should see your host certificate with following file names, or place them there if not. If you want to replace the automatically-generated certs with your own, copy them over these files.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>ls /etc/pwa/auth
-cert.pem
+<p>You will need SSL certificates for https access.</p>
+<p>If you want to generate self-signed certs, you can do so like this, or use <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig-web/master/deploy/generate_nginx_cert.sh">this script</a>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">CERT_PATH</span><span class="o">=</span><span class="s2">&quot;/etc/pwa/nginx/certs&quot;</span>
+mkdir -p <span class="s2">&quot;$CERT_PATH&quot;</span>
+openssl req -x509 -nodes -days 10000 -newkey rsa:2048 -keyout <span class="s2">&quot;$CERT_PATH/key.pem&quot;</span> -out <span class="s2">&quot;$CERT_PATH/cert.pem&quot;</span> -batch
+chmod 640 <span class="s2">&quot;$CERT_PATH/*.pem&quot;</span>
+</pre></div>
+</div>
+<p>If you want to provide your own certs, place them in <tt class="docutils literal"><span class="pre">/etc/pwa/nginx/certs</span></tt> with these names:</p>
+<div class="highlight-bash"><div class="highlight"><pre>cert.pem
 key.pem
 </pre></div>
 </div>
-<p>If you are enabling x509 authentication, then you will also need <tt class="docutils literal"><span class="pre">trusted.pem</span></tt>. This file contains list of all CAs that you trust and grant access to PWA.</p>
+<p>If you are enabling x509 authentication, then you will also need <tt class="docutils literal"><span class="pre">trusted.pem</span></tt>; This file contains list of all CAs that you trust and grant access to PWA. You will have to adapt the nginx config in <tt class="docutils literal"><span class="pre">/etc/pwa/nginx/conf.d/pwa.conf</span></tt> as follows:</p>
+<div class="highlight-bash"><div class="highlight"><pre>ssl_client_certificate /etc/nginx/certs/trusted.pem
+ssl_verify_client on
+</pre></div>
+</div>
 <blockquote>
-<div>Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single .pem file.</div></blockquote>
+<div>Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single <tt class="docutils literal"><span class="pre">trusted.pem</span> <span class="pre">file</span></tt></div></blockquote>
 </div>
 </div>
 <div class="section" id="container-installation">
