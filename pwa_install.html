@@ -154,15 +154,45 @@ tar -xzf pwa.sample.tar.gz -C /etc
 <div><p><tt class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></tt></p>
 <p>Update the hostname in the config by performing a search and replace in this file. Replace <span class="raw-html-m2r"><pwa_hostname></span> with the hostname (FQDN) of the host that holds your docker containers (remove the brackets).</p>
 <p>Update <tt class="docutils literal"><span class="pre">from</span></tt> address to administrator&#8217;s email address used to send email to confirmation new user accounts. You can do this by doing a search and replace in the file, replacing <span class="raw-html-m2r"><email_address></span> with the full e-mail address you want to use (remove the brackets).</p>
-<p>If you&#8217;d like to skip email confirmation when user signup, simply comment out the whole email_confirmation section.</p>
+<p>If you&#8217;d like to skip email confirmation when user signup, simply comment out the whole <tt class="docutils literal"><span class="pre">email_confirmation</span></tt> section.</p>
 </div></blockquote>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">email_confirmation</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nx">subject</span><span class="o">:</span> <span class="s1">&#39;psConfig Web Admin Account Confirmation&#39;</span><span class="p">,</span>
-    <span class="nx">from</span><span class="o">:</span> <span class="s1">&#39;&lt;email_address&gt;&#39;</span><span class="p">,</span>  <span class="c1">//most mail server will reject if this is not replyable address</span>
-<span class="p">};</span>
+<div class="highlight-javascript"><div class="highlight"><pre>  exports.email_confirmation = {
+   subject: &#39;psConfig Web Admin Account Confirmation&#39;,
+   from: &#39;&lt;email_address&gt;&#39;  //most mail server will reject if this is not replyable address
+  };
+
+Now update the ``mailer`` section depending on whether you are using a separate docker container running postfix, or specifying an smtp server.
 </pre></div>
 </div>
 </li>
+</ol>
+<p><strong>Using a separate postfix docker container</strong></p>
+<p>Replace <tt class="docutils literal"><span class="pre">postfix</span></tt> with the actual name of the postfix container, if you have run it under a different name.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">mailer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;postfix&#39;</span><span class="p">,</span>
+    <span class="nx">secure</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">port</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nx">tls</span><span class="o">:</span> <span class="p">{</span>
+            <span class="c1">// do not fail on invalid certs</span>
+            <span class="nx">rejectUnauthorized</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Using external SMTP server</strong></p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// example config with SMTP server; make sure the pass path exists, or things will break</span>
+<span class="c1">// alternatively, hard-code the password if this is acceptable in your environment</span>
+<span class="nx">mailer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;mail-relay.domain.com&#39;</span><span class="p">,</span>
+    <span class="nx">secure</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">user</span><span class="o">:</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
+        <span class="nx">pass</span><span class="o">:</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">__dirname</span><span class="o">+</span><span class="s1">&#39;/smtp.password&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">encoding</span><span class="o">:</span> <span class="s1">&#39;ascii&#39;</span><span class="p">}).</span><span class="nx">trim</span><span class="p">(),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic">
 <li><p class="first">For Nginx</p>
 <blockquote>
 <div><p>Nginx will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit..</p>
@@ -275,8 +305,23 @@ I am persisting the user account DB on /usr/local/data/auth.</p>
 </pre></div>
 </div>
 </li>
+<li><p class="first">Determine how you want your Auth service to send e-mail</p>
+</li>
 </ol>
-<p>Now you should see all 5 containers running.</p>
+<p>The <tt class="docutils literal"><span class="pre">sca-auth</span></tt> service sometimes needs to send e-mails to users, as part of the registration process, or for password resets, etc. It can be configured to use an external SMTP server, or you can run a separate docker container that runs postfix, in which case PWA will send its e-mail notices through that.</p>
+<p>If you are not using an external SMTP server, install a postfix docker container. This one has been tested and appears to work well, but it is not maintained by the perfSONAR project:</p>
+<p><a class="reference external" href="https://hub.docker.com/r/yorkshirekev/postfix/">Docker-postfix</a></p>
+<div class="highlight-bash"><div class="highlight"><pre>docker run <span class="se">\</span>
+    --network pwa <span class="se">\</span>
+    -d --name postfix <span class="se">\</span>
+    -p 587:25 <span class="se">\</span>
+    --restart always <span class="se">\</span>
+    yorkshirekev/postfix HOSTNAME
+</pre></div>
+</div>
+<p>Make sure to replace HOSTNAME with the actual hostname of the main host.
+You might need to try different ports for <tt class="docutils literal"><span class="pre">-p</span> <span class="pre">587:25</span></tt>, depending on what is available on the main host.</p>
+<p>Now you should see all 5-6 containers running.</p>
 <div class="highlight-bash"><div class="highlight"><pre>docker container list
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                              NAMES
 42efd21ff7f1        perfsonar/pwa-pub     <span class="s2">&quot;node /app/api/mcp...&quot;</span>   18 seconds ago      Up 17 seconds       8080/tcp                                                           pwa-pub1
@@ -286,7 +331,7 @@ aa6471073c01        nginx               <span class="s2">&quot;nginx -g &#39;dae
 10fdf3b63e4f        mongo               <span class="s2">&quot;/entrypoint.sh mo...&quot;</span>   12 hours ago        Up 12 hours         27017/tcp                                                          mongo
 </pre></div>
 </div>
-<p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <tt class="docutils literal"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></tt></p>
+<p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <tt class="docutils literal"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></tt>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
 </div>
 <div class="section" id="updating">
 <h4>Updating<a class="headerlink" href="#updating" title="Permalink to this headline">¶</a></h4>

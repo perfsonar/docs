@@ -111,14 +111,48 @@ downloading and deploying PWA's default configuration files from git repo.
 
     Update ``from`` address to administrator's email address used to send email to confirmation new user accounts. You can do this by doing a search and replace in the file, replacing :raw-html-m2r:`<email_address>` with the full e-mail address you want to use (remove the brackets).
 
-    If you'd like to skip email confirmation when user signup, simply comment out the whole email_confirmation section.
+    If you'd like to skip email confirmation when user signup, simply comment out the whole ``email_confirmation`` section.
 
    .. code-block:: javascript
 
-       exports.email_confirmation = {
-           subject: 'psConfig Web Admin Account Confirmation',
-           from: '<email_address>',  //most mail server will reject if this is not replyable address
-       };
+      exports.email_confirmation = {
+       subject: 'psConfig Web Admin Account Confirmation',
+       from: '<email_address>'  //most mail server will reject if this is not replyable address
+      };
+
+    Now update the ``mailer`` section depending on whether you are using a separate docker container running postfix, or specifying an smtp server.
+
+**Using a separate postfix docker container**
+
+Replace ``postfix`` with the actual name of the postfix container, if you have run it under a different name.
+
+.. code-block:: javascript
+
+   mailer: {
+       host: 'postfix',
+       secure: false,
+       port: 25,
+       tls: {
+               // do not fail on invalid certs
+               rejectUnauthorized: false
+       }
+   }
+
+**Using external SMTP server**
+
+.. code-block:: javascript
+
+   // example config with SMTP server; make sure the pass path exists, or things will break
+   // alternatively, hard-code the password if this is acceptable in your environment
+   mailer: {
+       host: 'mail-relay.domain.com',
+       secure: true,
+       auth: {
+           user: 'username',
+           pass: fs.readFileSync(__dirname+'/smtp.password', {encoding: 'ascii'}).trim(),
+       }
+   }
+
 
 #. 
    For Nginx
@@ -259,7 +293,28 @@ If you use more than 1 instance, please edit ``/etc/pwa/nginx/conf.d/pwa.conf`` 
            -p 9443:9443 \
            -d nginx
 
-Now you should see all 5 containers running.
+#. 
+   Determine how you want your Auth service to send e-mail
+
+The ``sca-auth`` service sometimes needs to send e-mails to users, as part of the registration process, or for password resets, etc. It can be configured to use an external SMTP server, or you can run a separate docker container that runs postfix, in which case PWA will send its e-mail notices through that.
+
+If you are not using an external SMTP server, install a postfix docker container. This one has been tested and appears to work well, but it is not maintained by the perfSONAR project:
+
+`Docker-postfix <https://hub.docker.com/r/yorkshirekev/postfix/>`_
+
+.. code-block:: bash
+
+       docker run \
+           --network pwa \
+           -d --name postfix \
+           -p 587:25 \
+           --restart always \
+           yorkshirekev/postfix HOSTNAME
+
+Make sure to replace HOSTNAME with the actual hostname of the main host.
+You might need to try different ports for ``-p 587:25``\ , depending on what is available on the main host.
+
+Now you should see all 5-6 containers running.
 
 .. code-block:: bash
 
@@ -271,7 +326,7 @@ Now you should see all 5 containers running.
    aa6471073c01        nginx               "nginx -g 'daemon ..."   11 hours ago        Up 11 hours         0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp, 0.0.0.0:9443->9443/tcp   nginx
    10fdf3b63e4f        mongo               "/entrypoint.sh mo..."   12 hours ago        Up 12 hours         27017/tcp                                                          mongo
 
-Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running ``systemctl restart docker``
+Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running ``systemctl restart docker``. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).
 
 Updating
 ^^^^^^^^
