@@ -46,7 +46,8 @@ containing a single object with the pairs shown here::
         "classifications": [ ... ],
         "rewrite": [ ... ],
         "limits": [ ... ],
-        "applications": [ ... ]
+        "applications": [ ... ],
+        "priority": { ... }
     }
 
 Each pair is described in the sections below.
@@ -1176,6 +1177,84 @@ Each limit requirement is a JSON object containing the following:
    limits passes.
  - ``all`` - Consider the requirement met only if all of the limits
    pass.
+
+
+
+.. _config_pscheduler_limits-priorities:
+
+*************************************************
+Priorities: *Which Runs Happen and Which Do Not?*
+*************************************************
+
+Once a run has been vetted by the limit system, it can be assigned a
+priority used in resolving conflicts with other runs scheduled at the
+same time.  This applies to tests like ``throughput``, which are given
+exclusive use of the system.  Tests which run in the background may be
+given priorities but will be unaffected.
+
+The priority value is an integer.  When comparing two or more runs,
+the one wit the highest priority value will be run.  Nominally, the
+dafault priority is ``0``, but any initial value can be configured.
+
+During scheduling, pScheduler will make two attempts to schedule each
+run within the allowed slip time.  The first is without regard to
+priority as a way to avoid conflicts by adjusting the start time
+within the allowed slip range.  If that fails, the second will be made
+with the priority and disregarding the presence of lower-priority
+runs, effectively preempting them.  If neither attempt succeeds, the
+run will be posted as a non-starter.
+
+Once a run is posted to the schedule, it remains there even if one
+with a higher priority is scheduled.  At the scheduled start time, the
+run will happen if there are no overlapping runs of higher priority.
+Otherwise, the lower-priority run will be considered preempted in
+favor of the higher-priority run.
+
+-------------------
+The Priority Script
+-------------------
+
+If the limit configuration contains a ``priority`` object, its
+contents will be a standard jq transform as used elsewhere in
+pScheduler.  If it does not, the priority system will be disabled and
+the default of ``0`` will be assigned to all runs scheduled.  Note
+that participants in multi-participant tests having a priority
+configuration may still prioritize runs.
+
+Input to the transform's script is a JSON object containing the
+contents of the task as it was submitted to the server.  The
+prioritizer adds a private pair for its own internal use (currently
+named `__PRIOIRITIZER_PRIVATE__`) which should not be examined or
+modified.
+
+The jq script is passed the task in the same format as other jq
+scripts used in the limit system.
+
+Scripts will have the following functions available to get additional
+information and make changes:
+
+ - ``classifiers`` - Returns an array of the classifiers into which the
+node requesting the task were grouped (e.g., `[ "friendlies",
+"partners" ]`).
+ - ``classifiers_has(value)`` - Returns a boolean indicating whether or
+not the string `value` is one of the classifiers.
+ - ``default`` - Returns the default priority, normally ``0``.
+ - ``requested`` - Returns the requested priority or ``null`` if no
+   priority was requested.
+
+The following functions can be used to make changes to the 
+
+ - ``note(message)`` - Adds ``message`` to the diagnostics.
+ - ``set(value; message)`` - Sets the priority to ``value`` and adds
+   ``message`` to the diagnostics.
+ - ``adjust(value; message)`` - Adjusts the priority by ``value``,
+   which can be positive or negative, and adds ``message`` to the
+   diagnostics.
+
+The priority in effect at the end of the script will be assigned to
+the run and any diagnostics produced will be stored.
+
+
 
 
 .. _config_pscheduler_limits-check-validity:
