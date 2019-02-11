@@ -66,6 +66,8 @@ Add PWA access for a user
 
     /app/bin/auth.js modscope --username user --add '{"pwa": ["user"]}'
 
+Certain features in PWA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.
+
 Make a user a PWA super-admin:
 
 ::
