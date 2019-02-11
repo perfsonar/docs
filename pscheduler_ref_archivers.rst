@@ -22,13 +22,17 @@ Archiving is accomplished by providing an *archive specification* in the form of
 
 ``data`` - A JSON object containing archiver-specific data to be used in deciding how to dispose of the result.
 
+``runs`` (Requires schema 2) - Which runs should be archived.  Valid values are ``succeeded`` for runs that produced a result, ``failed`` for those that did not and ``all`` for both.  This value is optional and will be treated as ``succeeded`` if not provided.
+
 ``ttl`` - The absolute amount of time after which the result should be discarded if not successfully archived, specified as an `ISO8601 duration <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.  This value is optional and will be treated as infinite if not provided.
 
 For example (commentary is not part of the specification)::
 
     {
+        "schema": 2,                  Second schema, required for 'runs'
         "archiver": "bitbucket",      Send to the archiver that goes nowhere.
         "data": { },                  The "bitbucket" archiver takes no specific data.
+        "runs": "all",                Archive all runs.
         "ttl": "PT12H"                Give up after 12 hours if not successfully archived.
     }
 
