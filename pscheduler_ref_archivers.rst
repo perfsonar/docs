@@ -26,6 +26,8 @@ Archiving is accomplished by providing an *archive specification* in the form of
 
 ``ttl`` - The absolute amount of time after which the result should be discarded if not successfully archived, specified as an `ISO8601 duration <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.  This value is optional and will be treated as infinite if not provided.
 
+``uri-host`` (Requeres schema 2) - Host name and optional port to be used in URIs for the task and run provided to the archiver.  This value is optional and will default to the system's best estimate of its own fully-qualified domain name.
+
 For example (commentary is not part of the specification)::
 
     {
