@@ -76,11 +76,40 @@
             
   <div class="section" id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
-<p>Most of the configuration files for PWA can be found in the <tt class="docutils literal"><span class="pre">/etc/pwa</span></tt> directory. At a minimum, you need to configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.</p>
-<p><strong>Note:</strong> If you are upgrading from an old MCA instance, view the docs on <a class="reference external" href="pwa_upgrading_from_mca">Upgrading from MCA to PWA</a></p>
+<p>This guide assumes you have already pulled down the sample PWA config and extracted it like this (you should have done this during the Install step; if not, do it now:</p>
+<div class="highlight-bash"><div class="highlight"><pre>wget https://github.com/perfsonar/psconfig-web/raw/master/deploy/docker/pwa.sample.tar.gz
+sudo tar -C /etc -xvf pwa.sample.tar.gz pwa <span class="o">&amp;&amp;</span> sudo tar -C /usr/local/sbin --strip-components<span class="o">=</span>1 -xvf pwa.sample.tar.gz scripts
+</pre></div>
+</div>
+<p>Most of the configuration files for PWA can be found in the <tt class="docutils literal"><span class="pre">/etc/pwa</span></tt> directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.</p>
+<p><strong>Interaction with other web applications:</strong> If you want to run PWA on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See <a class="reference external" href="pwa_running_alongside">Running alongside other web applications</a></p>
+<p><strong>Upgrading:</strong> If you are upgrading from an old MCA instance, view the docs on <a class="reference external" href="pwa_upgrading_from_mca">Upgrading from MCA to PWA</a></p>
+<p>When you update <tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt>, all PWA services will automatically restart. Please monitor logs by doing  <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
+<div class="section" id="hostname">
+<h2>Hostname<a class="headerlink" href="#hostname" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Update the publisher URL with the hostname of your PWA instance. Most likely, this will be the full hostname of your Docker host. Replace <tt class="docutils literal"><span class="pre">&lt;pwa_hostname&gt;</span></tt> with your full hostname, like this.</li>
+</ul>
+<p>If your hostname is <tt class="docutils literal"><span class="pre">pwa.example.com</span></tt>,</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://&lt;pwa_hostname&gt;/pub/&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>becomes</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://pwa.example.com/pub/&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="database">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
+<p>The database is also configured in <tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">exports</span><span class="o">.</span><span class="n">mongodb</span> <span class="o">=</span> <span class="s">&quot;mongodb://mongo/pwa&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="data-sources">
 <h2>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt> lists the Global Lookup Service and any private LSes that host information is pulled from.</p>
+<p>In most cases, you won&#8217;t need to change the LS configuration.</p>
 <div class="section" id="global-sls">
 <h3>Global SLS<a class="headerlink" href="#global-sls" title="Permalink to this headline">¶</a></h3>
 <p>A sample datasource entry for the Global SLS:</p>
@@ -143,14 +172,6 @@
 <p>When you update this file, all PWA services will automatically restart. Please monitor logs by doing <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
 </div>
 </div>
-<div class="section" id="database">
-<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
-<p>The database is also configured in <tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">exports</span><span class="o">.</span><span class="n">mongodb</span> <span class="o">=</span> <span class="s">&quot;mongodb://mongo/pwa&quot;</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>When you update this file, all meshconfig services will automatically restart. Please monitor logs by doing  <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
-</div>
 <div class="section" id="test-spec-default-parameters">
 <h2>Test Spec Default parameters<a class="headerlink" href="#test-spec-default-parameters" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">index.js</span></tt> contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).</p>
@@ -163,24 +184,93 @@
 <p>to</p>
 <p><tt class="docutils literal"><span class="pre">level:</span> <span class="pre">'debug',</span></tt></p>
 <p>PWA uses Winston for logging. Please see <a class="reference external" href="https://github.com/winstonjs/winston">Winston</a> for more detail.</p>
-</div>
 <div class="section" id="others">
-<h2>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
+<h3>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h3>
 <p><tt class="docutils literal"><span class="pre">index.js</span></tt> contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.</p>
+</div>
+</div>
+<div class="section" id="nginx-web-server">
+<h2>Nginx (web server)<a class="headerlink" href="#nginx-web-server" title="Permalink to this headline">¶</a></h2>
+<p>Nginx will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit:</p>
+<div class="highlight-bash"><div class="highlight"><pre>/etc/pwa/nginx
+</pre></div>
+</div>
+<p><strong>Host Certificates</strong></p>
+<p>You will need SSL certificates for https access.</p>
+<p>If you want to generate self-signed certs, you can run this script (you may wish to edit it if you are using custom file paths):</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo /usr/local/sbin/generate_nginx_cert.sh
+</pre></div>
+</div>
+<p>If you want to provide your own certs, place them in <tt class="docutils literal"><span class="pre">/etc/pwa/nginx/certs</span></tt> with these names:</p>
+<div class="highlight-bash"><div class="highlight"><pre>cert.pem
+key.pem
+</pre></div>
+</div>
+<p>If you are enabling x509 authentication, then you will also need <tt class="docutils literal"><span class="pre">trusted.pem</span></tt>; This file contains list of all CAs that you trust and grant access to PWA. You will have to adapt the nginx config in <tt class="docutils literal"><span class="pre">/etc/pwa/nginx/conf.d/pwa.conf</span></tt> as follows:</p>
+<div class="highlight-bash"><div class="highlight"><pre>ssl_client_certificate /etc/nginx/certs/trusted.pem
+ssl_verify_client on
+</pre></div>
+</div>
+<p>Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single <tt class="docutils literal"><span class="pre">trusted.pem</span> <span class="pre">file</span></tt></p>
 </div>
 <div class="section" id="authentication-service-sca-auth">
 <h2>Authentication Service (sca-auth)<a class="headerlink" href="#authentication-service-sca-auth" title="Permalink to this headline">¶</a></h2>
-<p>PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying <tt class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></tt></p>
-<p>Certain features in PWA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.</p>
-<div class="highlight-python"><div class="highlight"><pre>docker exec -it sca-auth /app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;admin&quot;]}&#39;
+<p>PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying the config file.</p>
+<p>Edit the auth config file:</p>
+<p><tt class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></tt></p>
+<ul>
+<li><p class="first">Update the hostname in the config by performing a search and replace in this file. Replace <tt class="docutils literal"><span class="pre">&lt;pwa_hostname&gt;</span></tt> with the hostname (FQDN) of your Docker host (remove the brackets).</p>
+</li>
+<li><p class="first">Update <tt class="docutils literal"><span class="pre">from</span></tt> address to administrator&#8217;s email address used to send email to confirmation new user accounts. You can do this by doing a search and replace in the file, replacing <tt class="docutils literal"><span class="pre">&lt;email_address&gt;</span></tt> with the full e-mail address you want to use (remove the brackets).</p>
+</li>
+<li><p class="first">If you&#8217;d like to skip email confirmation when user signup, simply comment out the whole <tt class="docutils literal"><span class="pre">email_confirmation</span></tt> section.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">email_confirmation</span> <span class="o">=</span> <span class="p">{</span>
+<span class="nx">subject</span><span class="o">:</span> <span class="s1">&#39;psConfig Web Admin Account Confirmation&#39;</span><span class="p">,</span>
+<span class="nx">from</span><span class="o">:</span> <span class="s1">&#39;&lt;email_address&gt;&#39;</span>  <span class="c1">//most mail server will reject if this is not replyable address</span>
+<span class="p">};</span>
 </pre></div>
 </div>
-<p>You need to sign out &amp; login again in order for this change to take effect.</p>
-<p>Please refer to <a class="reference external" href="https://github.com/perfsonar/sca-auth">sca-auth gitrepo</a> for more information.</p>
+</li>
+</ul>
+<div class="section" id="authentication-service-mail-server-configuration">
+<h3>Authentication service mail server configuration<a class="headerlink" href="#authentication-service-mail-server-configuration" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Now update the <tt class="docutils literal"><span class="pre">mailer</span></tt> section depending on whether you are using a separate docker container running postfix, or specifying an SMTP server.</p>
+<p><strong>Using a separate postfix docker container</strong></p>
+<p>Replace <tt class="docutils literal"><span class="pre">postfix</span></tt> with the actual name of the postfix container, if you are running it under a different name.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">mailer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;postfix&#39;</span><span class="p">,</span>
+    <span class="nx">secure</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">port</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nx">tls</span><span class="o">:</span> <span class="p">{</span>
+            <span class="c1">// do not fail on invalid certs</span>
+            <span class="nx">rejectUnauthorized</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>OR</strong></p>
+<p><strong>Using external SMTP server</strong></p>
+<blockquote>
+<div><div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// example config with SMTP server; make sure the pass path exists, or things will break</span>
+<span class="c1">// alternatively, hard-code the password if this is acceptable in your environment</span>
+<span class="nx">mailer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;mail-relay.domain.com&#39;</span><span class="p">,</span>
+    <span class="nx">secure</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">user</span><span class="o">:</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
+        <span class="nx">pass</span><span class="o">:</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">__dirname</span><span class="o">+</span><span class="s1">&#39;/smtp.password&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">encoding</span><span class="o">:</span> <span class="s1">&#39;ascii&#39;</span><span class="p">}).</span><span class="nx">trim</span><span class="p">(),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="user-management">
 <h2>User Management<a class="headerlink" href="#user-management" title="Permalink to this headline">¶</a></h2>
-<p>By default, signup is disabled and no users exist. You will need either manually create users (see the next page for details), and/or allow signups</p>
+<p>By default, signup is disabled and no users exist. You will need either manually create users once the docker containers have been created (see the next page for details), and/or allow signups.</p>
 <p>To enable user signup (registration through the web form), set these values in the following files:</p>
 <p><tt class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre>allow_signup: true
@@ -203,17 +293,24 @@
                 
                 <ul>
 <li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#hostname">Hostname</a></li>
+<li><a class="reference internal" href="#database">Database</a></li>
 <li><a class="reference internal" href="#data-sources">Data Sources</a><ul>
 <li><a class="reference internal" href="#global-sls">Global SLS</a></li>
 <li><a class="reference internal" href="#global-sls-filtered">Global SLS, filtered</a></li>
 <li><a class="reference internal" href="#sls">sLS</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#database">Database</a></li>
 <li><a class="reference internal" href="#test-spec-default-parameters">Test Spec Default parameters</a></li>
-<li><a class="reference internal" href="#logging">Logging</a></li>
+<li><a class="reference internal" href="#logging">Logging</a><ul>
 <li><a class="reference internal" href="#others">Others</a></li>
-<li><a class="reference internal" href="#authentication-service-sca-auth">Authentication Service (sca-auth)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nginx-web-server">Nginx (web server)</a></li>
+<li><a class="reference internal" href="#authentication-service-sca-auth">Authentication Service (sca-auth)</a><ul>
+<li><a class="reference internal" href="#authentication-service-mail-server-configuration">Authentication service mail server configuration</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#user-management">User Management</a></li>
 </ul>
 </li>
