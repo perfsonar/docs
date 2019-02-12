@@ -29,6 +29,7 @@ Guide
    pwa_install
    pwa_configure
    pwa_docker_create
+   pwa_docker_troubleshoot
    pwa_user_management
    pwa_userguide
    pwa_operation

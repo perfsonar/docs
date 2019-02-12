@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Creating Docker containers &mdash; perfSONAR Toolkit 4.1.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.1.5 documentation" href="index.html" />
+    <link rel="up" title="pSConfig Web Admin" href="pwa.html" />
+    <link rel="next" title="Troubleshooting Docker Containers" href="pwa_docker_troubleshoot.html" />
+    <link rel="prev" title="Configuration" href="pwa_configure.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pwa_docker_troubleshoot.html" title="Troubleshooting Docker Containers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pwa_configure.html" title="Configuration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1.5 documentation</a> &raquo;</li>
+          <li><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="creating-docker-containers">
+<h1>Creating Docker containers<a class="headerlink" href="#creating-docker-containers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creating-containers-using-a-script">
+<h2>Creating containers using a script<a class="headerlink" href="#creating-containers-using-a-script" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Now we have all configuration files necessary to start installing PWA services.</p>
+<p>The easiest way to get the necessary containers installed and running is to use these scripts. You may want to modify them if you are doing something other than a default setup.</p>
+<p>Default setup uses a <tt class="docutils literal"><span class="pre">pwa</span></tt> docker network, data under <tt class="docutils literal"><span class="pre">/usr/local/data</span></tt>, one publisher named <tt class="docutils literal"><span class="pre">pwa-pub1</span></tt>, one PWA application named <tt class="docutils literal"><span class="pre">pwa-admin1</span></tt>, and one <tt class="docutils literal"><span class="pre">sca-auth</span></tt> instance named <tt class="docutils literal"><span class="pre">sca-auth</span></tt>. It also initializes <tt class="docutils literal"><span class="pre">mongodb</span></tt> and <tt class="docutils literal"><span class="pre">nginx</span></tt> instances. By default, a <tt class="docutils literal"><span class="pre">postfix</span></tt> instance is not created, so if you want to use that you&#8217;ll have to modify the script.</p>
+<p>Only run this script when you initially install PWA:</p>
+<div class="highlight-shell"><div class="highlight"><pre>/usr/local/sbin/init_docker.sh
+</pre></div>
+</div>
+<p>Then, you can use this script to start the containers:</p>
+<div class="highlight-shell"><div class="highlight"><pre>/usr/local/sbin/start_pwa_containers.sh
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="update-containers-with-a-script">
+<h2>Update containers with a script<a class="headerlink" href="#update-containers-with-a-script" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>To update PWA containers to the latest version, use this script (you may have to modify it, if you changed <tt class="docutils literal"><span class="pre">init_docker.sh</span></tt> or <tt class="docutils literal"><span class="pre">start_pwa_containers.sh</span></tt> above).</p>
+<div class="highlight-shell"><div class="highlight"><pre>/usr/local/sbin/update_pwa_containers.sh
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="manually-creating-containers">
+<h2>Manually creating containers<a class="headerlink" href="#manually-creating-containers" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">First, create the <tt class="docutils literal"><span class="pre">data</span></tt> directory:</p>
+<blockquote>
+<div><div class="highlight-shell"><div class="highlight"><pre>mkdir -p /usr/local/data
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Next, create a docker network to group all PWA containers (so that you don&#8217;t have &#8211;link them)</p>
+<div class="highlight-shell"><div class="highlight"><pre>docker network create pwa
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create mongoDB container. Use -v to persist data on host directory (/usr/local/data/mongo)</p>
+<div class="highlight-shell"><div class="highlight"><pre>mkdir -p /usr/local/data
+docker run \
+        --restart=always \
+        --net pwa \
+        --name mongo \
+        -v /usr/local/data/mongo:/data/db \
+        -d mongo
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create SCA authentication service container. This service handles user authentication / account/user group management.</p>
+<div class="highlight-shell"><div class="highlight"><pre>docker run \
+    --restart=always \
+    --net pwa \
+    --name sca-auth \
+    -v /etc/pwa/auth:/app/api/config \
+    -v /usr/local/data/auth:/db \
+    -d perfsonar/sca-auth
+</pre></div>
+</div>
+<blockquote>
+<div><p>The sca-auth container will generate a few files under the /config directory when it&#8217;s first started, so don&#8217;t mount it with <tt class="docutils literal"><span class="pre">ro</span></tt>.
+The user account DB is stored in <tt class="docutils literal"><span class="pre">/usr/local/data/auth</span></tt>.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Create PWA&#8217;s main UI/API container.</p>
+<div class="highlight-shell"><div class="highlight"><pre>docker run \
+    --restart=always \
+    --net pwa \
+    --name pwa-admin1 \
+    -v /etc/pwa:/app/api/config:ro \
+    -d perfsonar/pwa-admin
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create meshconfig publishers.</p>
+<div class="highlight-shell"><div class="highlight"><pre>   docker run \
+       --restart=always \
+       --net pwa \
+       --name pwa-pub1 \
+       -v /etc/pwa:/app/api/config:ro \
+       -d perfsonar/pwa-pub
+
+You can create as many pwa-pub containers as desired (make sure to use unique names ``pwa-pub1``\ , ``pwa-pub2``\ , etc..) based on available resource (mainly CPU) . 1 or 2 should be fine for most cases.
+
+If you use more than 1 instance, please edit ``/etc/pwa/nginx/conf.d/pwa.conf`` to include all instances, like..
+
+.. code-block:: javascript
+
+   upstream pwapub {
+       server pwa-pub1:8080;
+       server pwa-pub2:8080;
+       server pwa-pub3:8080;
+   }
+</pre></div>
+</div>
+</li>
+<li><p class="first">Finally, we install nginx to expose these container via 80/443/9443</p>
+<div class="highlight-shell"><div class="highlight"><pre>docker run \
+    --restart=always \
+    --net pwa \
+    --name nginx \
+    -v /etc/pwa/shared:/shared:ro \
+    -v /etc/pwa/nginx:/etc/nginx:ro \
+    -v /etc/pwa/auth:/certs:ro \
+    -p 80:80 \
+    -p 443:443 \
+    -p 9443:9443 \
+    -d nginx
+</pre></div>
+</div>
+</li>
+<li><p class="first">Start the <tt class="docutils literal"><span class="pre">postfix</span></tt> container (optional)</p>
+<p>The <tt class="docutils literal"><span class="pre">sca-auth</span></tt> service sometimes needs to send e-mails to users, as part of the registration process, or for password resets, etc. It can be configured to use an external SMTP server, or you can run a separate docker container that runs postfix, in which case PWA will send its e-mail notices through that.</p>
+<p>If you are not using an external SMTP server, install a postfix docker container. This one has been tested and appears to work well, but it is not maintained by the perfSONAR project:</p>
+<p><a class="reference external" href="https://hub.docker.com/r/yorkshirekev/postfix/">Docker-postfix</a></p>
+<div class="highlight-shell"><div class="highlight"><pre>       docker run \
+           --network pwa \
+           -d --name postfix \
+           -p 587:25 \
+           --restart always \
+           yorkshirekev/postfix HOSTNAME
+
+Make sure to replace HOSTNAME with the actual hostname of the main host.
+You might need to try different ports for ``-p 587:25``\ , depending on what is available on the main host.
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="manually-updating">
+<h2>Manually updating<a class="headerlink" href="#manually-updating" title="Permalink to this headline">¶</a></h2>
+<p>Pull down the latest version using (for example):</p>
+<div class="highlight-shell"><div class="highlight"><pre>docker pull perfsonar/pwa-admin1
+docker pull perfsonar/pwa-pub1
+docker pull perfsonar/sca-auth
+</pre></div>
+</div>
+<p>Then stop and remove each container you wish to upgrade &#8211; for example:</p>
+<div class="highlight-shell"><div class="highlight"><pre>docker stop pwa-admin1
+docker rm pwa-admin1
+docker stop pwa-pub1
+docker rm pwa-pub1
+docker stop sca-auth
+docker rm sca-auth
+</pre></div>
+</div>
+<p>Re-run the container using the same <tt class="docutils literal"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">...</span></tt> command you used to start it.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Creating Docker containers</a><ul>
+<li><a class="reference internal" href="#creating-containers-using-a-script">Creating containers using a script</a></li>
+<li><a class="reference internal" href="#update-containers-with-a-script">Update containers with a script</a></li>
+<li><a class="reference internal" href="#manually-creating-containers">Manually creating containers</a></li>
+<li><a class="reference internal" href="#manually-updating">Manually updating</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pwa_configure.html">Previous topic</a>
+                  <ul><li><a href="pwa_configure.html" title="previous chapter">Configuration</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pwa_docker_troubleshoot.html">Next topic</a>
+                      <ul><li><a href="pwa_docker_troubleshoot.html" title="next chapter">Troubleshooting Docker Containers</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pwa_docker_troubleshoot.html" title="Troubleshooting Docker Containers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pwa_configure.html" title="Configuration"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1.5 documentation</a> &raquo;</li>
+          <li><a href="pwa.html" >pSConfig Web Admin</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

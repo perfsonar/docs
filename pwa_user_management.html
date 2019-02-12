@@ -28,7 +28,7 @@
     <link rel="top" title="perfSONAR Toolkit 4.1.5 documentation" href="index.html" />
     <link rel="up" title="pSConfig Web Admin" href="pwa.html" />
     <link rel="next" title="User Guide" href="pwa_userguide.html" />
-    <link rel="prev" title="Configuration" href="pwa_configure.html" /> 
+    <link rel="prev" title="Troubleshooting Docker Containers" href="pwa_docker_troubleshoot.html" /> 
   </head>
   <body>
     <header>
@@ -59,7 +59,7 @@
           <a href="pwa_userguide.html" title="User Guide"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pwa_configure.html" title="Configuration"
+          <a href="pwa_docker_troubleshoot.html" title="Troubleshooting Docker Containers"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">perfSONAR Toolkit 4.1.5 documentation</a> &raquo;</li>
           <li><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &raquo;</li> 
@@ -85,12 +85,12 @@
 <p><tt class="docutils literal"><span class="pre">sca-auth</span></tt> runs within a Docker container; there are two ways to run commands within a docker container.</p>
 <ol class="arabic">
 <li><p class="first"><tt class="docutils literal"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container&gt;</span> <span class="pre">&lt;command&gt;</span></tt> - this allows you to execute something inside the container without actually interactively entering the container. This is useful for one-off or scripted commands. For example, this gives you a list of all the users.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ sudo docker exec -it sca-auth /app/bin/auth.js listuser
+<div class="highlight-shell"><div class="highlight"><pre>$ sudo docker exec -it sca-auth /app/bin/auth.js listuser
 </pre></div>
 </div>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container&gt;</span> <span class="pre">bash</span></tt> - this starts an interactive bash shell within the container.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ sudo docker exec -it bash
+<div class="highlight-shell"><div class="highlight"><pre>$ sudo docker exec -it bash
 
 root@301be8a679c7:/# /app/bin/auth.js listuser
 </pre></div>
@@ -106,40 +106,40 @@ root@301be8a679c7:/# /app/bin/auth.js listuser
 <p><strong>NOTE:</strong> before changes to user roles go into effect, the user has to log out and then re-authenticate.</p>
 <div class="section" id="listing-accounts">
 <h3>Listing accounts<a class="headerlink" href="#listing-accounts" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre>/app/bin/auth.js listuser
+<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js listuser
 </pre></div>
 </div>
 </div>
 <div class="section" id="creating-accounts">
 <h3>Creating accounts<a class="headerlink" href="#creating-accounts" title="Permalink to this headline">¶</a></h3>
 <p>Create a new user</p>
-<div class="highlight-python"><div class="highlight"><pre>/app/bin/auth.js useradd --username &lt;user&gt; --fullname &quot;&lt;name&gt;&quot; --email &quot;&lt;email&gt;&quot; [--password &quot;&lt;password&gt;&quot;]
+<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js useradd --username &lt;user&gt; --fullname &quot;&lt;name&gt;&quot; --email &quot;&lt;email&gt;&quot; [--password &quot;&lt;password&gt;&quot;]
 </pre></div>
 </div>
 </div>
 <div class="section" id="modifying-roles">
 <h3>Modifying roles<a class="headerlink" href="#modifying-roles" title="Permalink to this headline">¶</a></h3>
 <p>Add PWA access for a user</p>
-<div class="highlight-python"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;]}&#39;
+<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;]}&#39;
 </pre></div>
 </div>
 <p>Certain features in PWA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.</p>
 <p>Make a user a PWA super-admin:</p>
-<div class="highlight-python"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
+<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
 </pre></div>
 </div>
 <p>Reset password</p>
-<div class="highlight-python"><div class="highlight"><pre>/app/bin/auth.js setpass --username user --password &quot;password#123&quot;
+<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js setpass --username user --password &quot;password#123&quot;
 </pre></div>
 </div>
 <p>Modify (set/add/del) user scopes</p>
-<div class="highlight-python"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --set &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
+<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --set &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
 /app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
 /app/bin/auth.js modscope --username user --del &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
 </pre></div>
 </div>
-<p>remove user</p>
-<div class="highlight-python"><div class="highlight"><pre>/app/bin/auth.js userdel --username user
+<p>Remove a user</p>
+<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js userdel --username user
 </pre></div>
 </div>
 </div>
@@ -170,8 +170,8 @@ root@301be8a679c7:/# /app/bin/auth.js listuser
 
                 <ul>
                   <li>
-                  <a href="pwa_configure.html">Previous topic</a>
-                  <ul><li><a href="pwa_configure.html" title="previous chapter">Configuration</a></li></ul>
+                  <a href="pwa_docker_troubleshoot.html">Previous topic</a>
+                  <ul><li><a href="pwa_docker_troubleshoot.html" title="previous chapter">Troubleshooting Docker Containers</a></li></ul>
                   </li>
                 </ul>
                   <ul>
@@ -197,7 +197,7 @@ root@301be8a679c7:/# /app/bin/auth.js listuser
           <a href="pwa_userguide.html" title="User Guide"
              >next</a> |</li>
         <li class="right" >
-          <a href="pwa_configure.html" title="Configuration"
+          <a href="pwa_docker_troubleshoot.html" title="Troubleshooting Docker Containers"
              >previous</a> |</li>
         <li><a href="index.html">perfSONAR Toolkit 4.1.5 documentation</a> &raquo;</li>
           <li><a href="pwa.html" >pSConfig Web Admin</a> &raquo;</li> 

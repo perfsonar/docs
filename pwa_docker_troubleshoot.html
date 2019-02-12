@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Troubleshooting Docker Containers &mdash; perfSONAR Toolkit 4.1.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.1.5 documentation" href="index.html" />
+    <link rel="up" title="pSConfig Web Admin" href="pwa.html" />
+    <link rel="next" title="User Management" href="pwa_user_management.html" />
+    <link rel="prev" title="Creating Docker containers" href="pwa_docker_create.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pwa_user_management.html" title="User Management"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pwa_docker_create.html" title="Creating Docker containers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1.5 documentation</a> &raquo;</li>
+          <li><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="troubleshooting-docker-containers">
+<h1>Troubleshooting Docker Containers<a class="headerlink" href="#troubleshooting-docker-containers" title="Permalink to this headline">¶</a></h1>
+<p>Use the <tt class="docutils literal"><span class="pre">docker</span> <span class="pre">ps</span></tt> command to list the running containers.</p>
+<p>You should see all 5-6 containers running (again, <tt class="docutils literal"><span class="pre">postfix</span></tt> is optional).</p>
+<div class="highlight-shell"><div class="highlight"><pre># docker ps
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                                                              NAMES
+2dd0cd671538        perfsonar/pwa-admin    &quot;/start.sh&quot;              2 weeks ago         Up 2 weeks          80/tcp, 8080/tcp                                                   pwa-admin1
+f2227dd2ee2a        perfsonar/pwa-pub      &quot;node /app/api/pwapub&quot;   2 weeks ago         Up 2 weeks          8080/tcp                                                           pwa-pub1
+36179bd10524        perfsonar/sca-auth     &quot;/app/docker/start.sh&quot;   2 weeks ago         Up 2 weeks          80/tcp, 8080/tcp                                                   sca-auth
+c10b07ae72cc        nginx                  &quot;nginx -g &#39;daemon off&quot;   3 weeks ago         Up 5 days           0.0.0.0:80-&gt;80/tcp, 0.0.0.0:443-&gt;443/tcp, 0.0.0.0:9443-&gt;9443/tcp   nginx
+727dc2f5e528        mongo                  &quot;docker-entrypoint.sh&quot;   8 months ago        Up 4 weeks          27017/tcp                                                          mongo
+0c03b689c722        yorkshirekev/postfix   &quot;/startservices.sh mc&quot;   3 weeks ago         Up 3 weeks          0.0.0.0:587-&gt;25/tcp                                                postfix
+</pre></div>
+</div>
+<p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <tt class="docutils literal"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></tt>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
+<p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <tt class="docutils literal"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></tt>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
+<div class="section" id="troubleshooting-containers">
+<h2>Troubleshooting Containers<a class="headerlink" href="#troubleshooting-containers" title="Permalink to this headline">¶</a></h2>
+<p>Use the <tt class="docutils literal"><span class="pre">docker</span> <span class="pre">logs</span></tt> command to see logs for a container. Adjust <tt class="docutils literal"><span class="pre">--tail</span></tt> to change how many logs are displayed. Add the <tt class="docutils literal"><span class="pre">-f</span></tt> flag to watch the logs as new records come in (like <tt class="docutils literal"><span class="pre">tail</span></tt>)</p>
+<div class="highlight-shell"><div class="highlight"><pre># docker logs pwa-admin1 --tail 10
+1|pwaadmin       | Tue Feb 12 2019 21:41:43 GMT+0000 (UTC) - info: HTTP POST /health/pwacache statusCode=200, url=/health/pwacache, host=0.0.0.0:8080, accept=application/json, content-type=application/json, content-length=14, connection=close, method=POST, httpVersion=1.1, originalUrl=/health/pwacache, , responseTime=1
+2|pwacache       | Tue Feb 12 2019 21:42:43 GMT+0000 (UTC) - info: Host found in hostgroup; not expiring  5b05d426f895e94f17bef826 em-4.of-proxy.newy32aoa.net.internet2.edu
+2|pwacache       | Tue Feb 12 2019 21:42:43 GMT+0000 (UTC) - info: Host found in hostgroup; not expiring  5b05d42af895e94f17bf0216 perfsonar.cbio.uct.ac.za
+2|pwacache       | Tue Feb 12 2019 21:42:43 GMT+0000 (UTC) - info: All hosts have been processed successfully
+2|pwacache       | Tue Feb 12 2019 21:42:43 GMT+0000 (UTC) - info: successfully deleted hosts
+2|pwacache       | Tue Feb 12 2019 21:42:43 GMT+0000 (UTC) - info: processing datasource for expiration/duplication prevention:gls ................................................................................
+2|pwacache       | Tue Feb 12 2019 21:42:43 GMT+0000 (UTC) - info: lookup service label=GLS, type=global-sls, activehosts_url=http://ps1.es.net:8096/lookup/activehosts.json, query=?type=service, url=http://35.237.255.214:8090/lookup/records?type=service
+2|pwacache       | Tue Feb 12 2019 21:42:43 GMT+0000 (UTC) - info: num result 2543
+2|pwacache       | Tue Feb 12 2019 21:42:47 GMT+0000 (UTC) - info: done expiring/updating LS URLs for db hosts
+3|ui             | [Tue Feb 12 2019 21:51:56 GMT+0000 (UTC)] &quot;GET /&quot; &quot;undefined&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="interacting-with-containers">
+<h2>Interacting with containers<a class="headerlink" href="#interacting-with-containers" title="Permalink to this headline">¶</a></h2>
+<p>You can enter an interactive <tt class="docutils literal"><span class="pre">bash</span></tt> shell within a container like this:</p>
+<div class="highlight-shell"><div class="highlight"><pre>[root@hostname ~]# docker exec -it pwa-admin1 bash
+root@2dd0cd671538:/# ls
+app  bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  start.sh  sys  tmp  usr  var
+root@2dd0cd671538:/# ls -l app/api/config
+total 12
+drwxrwxr-x 2 11264 11264  146 Jan 24 22:06 auth
+-rw-rw-r-- 1 11264 11264 6096 May 23  2018 index.js
+drwxrwxr-x 4 11264 11264 4096 Jan 25 20:44 nginx
+drwxrwxr-x 2 11264 11264   55 May 23  2018 shared
+</pre></div>
+</div>
+<p>Or directly execute commands like this:</p>
+<div class="highlight-shell"><div class="highlight"><pre>[root@hostname ~]# docker exec -it pwa-admin1 ls /app/api/config
+auth  index.js  nginx  shared
+</pre></div>
+</div>
+</div>
+<div class="section" id="firewall">
+<h2>Firewall<a class="headerlink" href="#firewall" title="Permalink to this headline">¶</a></h2>
+<p>Docker will take care of its own firewall rules, so you don&#8217;t have to worry about opening ports manually.</p>
+<p>By default, following are the ports used by nginx container:</p>
+<ul class="simple">
+<li>443 (For PWA administrative GUI)</li>
+<li>80 (For PWA configuration publisher)</li>
+<li>9443 (For x509 authentication to PWA administrative GUI)</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Troubleshooting Docker Containers</a><ul>
+<li><a class="reference internal" href="#troubleshooting-containers">Troubleshooting Containers</a></li>
+<li><a class="reference internal" href="#interacting-with-containers">Interacting with containers</a></li>
+<li><a class="reference internal" href="#firewall">Firewall</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pwa_docker_create.html">Previous topic</a>
+                  <ul><li><a href="pwa_docker_create.html" title="previous chapter">Creating Docker containers</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pwa_user_management.html">Next topic</a>
+                      <ul><li><a href="pwa_user_management.html" title="next chapter">User Management</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pwa_user_management.html" title="User Management"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pwa_docker_create.html" title="Creating Docker containers"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1.5 documentation</a> &raquo;</li>
+          <li><a href="pwa.html" >pSConfig Web Admin</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
