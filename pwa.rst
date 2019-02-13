@@ -4,9 +4,9 @@ pSConfig Web Admin
 
 .. note:: BETA
 
-pSConfig Web Admin (PWA) is a web-based UI for perfSONAR administrators to define and publish MeshConfig/pSConfig meshes, which automates tests executed by test nodes, and provides topology information to various services such as MadDash, OSG/WLCG datastore, and others.
+pSConfig Web Admin (PWA) is a web-based UI for perfSONAR administrators to define and publish MeshConfig/pSConfig meshes, which automates tests executed by test nodes, and provides topology information to various services, such as MadDash.
 
-In addition to providing a user-friendly interface for creating pSConfig/MeshConfig output to define meshes, PWA allows multiple users to collaborate on the test configuration. Users can be designated super-admins or normal users, depending on how much access they need. It is also possible to allow users to edit some meshes, but not others.
+In addition to providing a user-friendly interface for creating pSConfig/MeshConfig output to define meshes, PWA allows multiple users to collaborate on the configuration of testspecs, host groups, and configs. Users can be designated super-admins or normal users, depending on how much access they need. It is also possible to allow users to edit some meshes, but not others.
 
 .. image:: images/pwa/pwa_install.png
    :target: images/pwa/pwa_install.png
@@ -26,6 +26,7 @@ Guide
 .. toctree::
    :maxdepth: 2
 
+   pwa_docker_architecture
    pwa_install
    pwa_configure
    pwa_docker_create
