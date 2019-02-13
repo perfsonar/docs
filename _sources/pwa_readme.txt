@@ -5,7 +5,7 @@
 pSConfig Web Administrator (PWA)
 ================================
 
-pSConfig Web-based administration GUI and tools to publish configs in pSConfig/MeshConfig formats.
+PWA is a pSConfig Web-based administration GUI and tools to publish configs in pSConfig/MeshConfig formats. The current deployment model for PWA utilizes Docker containers. RPM/DEB packaging is planned.
 
 
 .. image:: images/pwa/pwa_install.png
@@ -19,7 +19,7 @@ Installation
 VM Host
 ^^^^^^^
 
-To install PWA, you will need a VM with any OS that supports Docker; such as CentOS7
+To install PWA, you will need a VM with any OS that supports Docker, such as CentOS7
 
 Minimum resource requirements are..
 
