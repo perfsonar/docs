@@ -125,10 +125,3 @@ perfSONAR nodes are meant to be used, both by local users and the public at larg
 
 - If SSHD is turned on, consider using a jump host setup wherein access to the perfSONAR node can only be accomplished through a single (or set) of trusted hosts.  This type of restriction can be implemented in IPTables. 
 
-
-NTAC Performance Working Group Statement
-========================================
-The NTAC Performance Working Group has published a document related to deploying perfSONAR while still justifying cybersecurity policy.  This document can be found here:
-
-- https://www.perfsonar.net/media/cms_page_media/1256/20141110-Firewall-PerfWG.pdf
-
