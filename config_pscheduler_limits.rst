@@ -810,10 +810,6 @@ Limit Types
 ``jq`` - Use a jq Script to Make a Pass/Fail Decision
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-``jq`` - Use a jq Script to Make a Pass/Fail Decision
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 The ``jq`` limit hands the proposed task to a
 `jq <https://stedolan.github.io/jq>`_ script and passes or fails based
 on the script's return value.
