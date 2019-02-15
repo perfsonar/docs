@@ -1073,6 +1073,107 @@ For example::
 
 
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``url-fetch`` - Get a decision by fetching a URL
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``url-fetch`` limit asks an external HTTP(S) server for a
+pass/fail decision based on information passed in as parameters or
+part of the URL.
+
+If the ``success-only`` parameter is ``false``, the server must return
+an HTTP status of ``200`` and a document of type ``applicastion/json``
+containing an object with the following pairs:
+
+- ``passed`` - A boolean indicating whether or not this limit should
+  pass.
+- ``message`` - An string containing a message that the server thinks
+  is relevant about the transaction.  A simple ``OK`` is sufficient if
+  ``passed`` is ``true``.
+
+Any other HTTP status will be treated as an error.
+
+The limit's ``data`` is an object containing the following pairs:
+
+- ``url`` - The URL to be queried.  Note that this value is required
+  even if ``url-transform`` (below) is being used to produce the URL.
+  (An empty string is acceptable.)
+- ``url-transform`` - An optional jq transform to alter the contents
+  of the ``url`` parameter.  The returned value must be a string.  The
+  proposed task may be accessed with ``.task`` and server hints are
+  available by calling the ``hint($value)`` function.  The original
+  URL can be accessed as ``.url``.
+- ``bind`` - An optional string indicating the hostname or address to
+  which the system should bind when connecting.
+- ``verify-keys`` - An optional boolean indicating whether or not
+  HTTPS protocol should verify the server's keys as part of the
+  connection process.  If not provided, the default is ``true``.
+- ``follow-redirects`` - An optional boolean indicating whether or not
+  server-provided redirects should be followed.  If ``false``, a
+  redirection will be treated as an error.  If not provided, the
+  default is ``true``.
+- ``headers`` - An optional JSON object containing headers to be sent
+  to the server during the fetch.  If not provided, no headers will be
+  added.
+- ``headers-transform`` - An optional jq transform to alter the
+  contents of the ``headers`` parameter by modifying ``.headers`` in
+  place.  The transform should return everything provided as input.
+  The proposed task may be accessed in ``.task`` and server hints
+  are available by calling the ``hint($value)`` function.
+- ``params`` - An optional JSON object containing parameters to be added to the 
+- ``params-transform`` - An optional jq transform to alter the
+  contents of the ``params`` parameter by modifying ``.params`` in
+  place.  The transform should return everything provided as input.
+  The proposed task may be accessed in ``.task`` and server hints
+  are available by calling the ``hint($value)`` function.
+- ``timeout`` - An optional ISO 8601 duration that determines how much
+  time can elapse before the fetch is considered a failure and
+  aborted.  The default is ``PT3S``.
+- ``success-only`` - An optional boolean that, if ``true``, disregards
+  any content returned by the server and treats the limit as having
+  passed if the HTTP status is ``200`` or failed if it is ``404``.
+  Any other error is treated as a failure and will be handled
+  according to the state of ``fail-result``, described below.  If not
+  provided, the default is ``false``.
+- ``fail-result`` - An optional boolean that determines whether the
+  limit passes or fails when the fetch returns any HTTP status other
+  than ``200``.  If not provided, the default is ``false``.
+
+For example::
+
+    {
+        "name": "server-says-ok",
+        "description": "An external server approves of this task",
+        "type": "url-fetch",
+        "data": {
+            "url": "https://decider.example.org/is-okay",
+            "params": {
+                "check-type": "whatever"
+            },
+            "params-transform": {
+                "script": [
+                    "  .params.requester = hint(\"requester\")",
+                    "| .params.test  = .test.type"
+                ]
+            },
+            "headers": {
+                "Cache-Control": "no-cache"
+            },
+            "headers-transform": {
+                "script": [
+                    ".Authorizatiion = \"Basic \\($auth)\""
+                ],
+                "args": {
+                    "auth": "bXVtYmxlbXVtYmxlbXVtYmxlCg=="
+                }
+            }
+
+        }
+    }
+
+
+
+
 
 ***********************************************
 Applications: *To Whom do We Apply the Limits?*
