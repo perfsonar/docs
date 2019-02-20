@@ -43,7 +43,7 @@ More information on using the pScheduler can be found in the section :ref:`index
 
 Archiving
 ----------
-The archiving layer currently consists a single component named esmond_ that stores measurement information as time-series data. It is often referred to as the *measurement archive (MA)* and the term is used interchangeably with *esmond*. It can be installed on each measurement host if they meet hardware requirements or a single central instance may store results from multiple measurement hosts. For more information on esmond see the `esmond documentation <http://software.es.net/esmond>`_. For information on running a central measurement archive see :doc:`multi_ma_install`.
+The archiving layer currently consists a single component named esmond that stores measurement information as time-series data. It is often referred to as the *measurement archive (MA)* and the term is used interchangeably with *esmond*. It can be installed on each measurement host if they meet hardware requirements or a single central instance may store results from multiple measurement hosts. For more information on esmond see :doc:`multi_ma_install`. For information on running a central measurement archive see :doc:`multi_ma_install`.
 
 .. note: The :doc:`pScheduler<pscheduler_intro>` component does allow the creation of plug-ins for sending results to other types of archives, this is just the setup included with relevant perfSONAR bundles by default. See :doc:`pscheduler_ref_archivers` for a list of a few other options currently available as plug-ins. 
 
@@ -73,7 +73,7 @@ Visualization
 perfSONAR also includes components for visualizing the data. These components provide a window into the data and are the primary way most operators analyze and identify network issues.  The primary tools provided by the main perfSONAR project are:
 
     * **Graphs** - The perfSONAR graphs package provides a set of graphs that display the various measurements over time and provide useful information about the hosts involved. See :doc:`using_graphs` for more detail.
-    * **MaDDash** - This component queries the :ref:`archiving layer <intro_about-archiving>` periodically for measurements and displays a dashboard indicating the performance of each relative to a set of defined thresholds. It can also send alerts based on patterns in the dashboard. See the `MaDDash documentation <http://software.es.net/maddash>`_ for more details.
+    * **MaDDash** - This component queries the :ref:`archiving layer <intro_about-archiving>` periodically for measurements and displays a dashboard indicating the performance of each relative to a set of defined thresholds. It can also send alerts based on patterns in the dashboard. See the :doc:`MaDDash documentation <maddash_intro>` for more details.
 
 In addition to displaying results, there are also graphical interfaces available for configuring perfSONAR components:
 
@@ -98,4 +98,3 @@ In general, no configuration is needed of the registration component but for a g
 .. _tracepath: https://linux.die.net/man/8/tracepath
 .. _paris-traceroute: http://manpages.ubuntu.com/manpages/trusty/man8/paris-traceroute.8.html
 .. _ping: https://linux.die.net/man/8/ping
-.. _esmond: http://software.es.net/esmond

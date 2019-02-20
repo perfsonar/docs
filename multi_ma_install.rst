@@ -19,12 +19,10 @@ Those are just a few examples. If you think a central measurement archive is rig
 
 Installing the Measurement Archive Software
 ============================================
-The measurement archive is implemented using a software package named `esmond <http://software.es.net/esmond/>`_. If your central archive is a perfSONAR Toolkit, then esmond is already installed. It is more likely though that you will install your measurement archive on an instance completely separate from the perfSONAR Toolkit. There are a few options for installing esmond:
+The measurement archive is implemented using a software package named *esmond*. The following installation options are available for installing esmond:
 
-#. RedHat Linux (including CentOS) users may install a standalone instance of esmond using an RPM. See the `RPM installation page <http://software.es.net/esmond/rpm_install.html>`_ for details on installing a standalone RPM. 
-#. You may install esmond as part of the perfSONAR CentralManagement bundle. See :doc:`install_options` for more information.
-#. You may consult the `esmond web site <http://software.es.net/esmond/>`_ for more guidance on various other deployment options. 
-
+#. As part of the perfSONAR *core*, *toolkit* or *centralmanagement* bundles. See :doc:`install_options` for more information.
+#. As a standalone package on any perfSONAR supported operating system (e.g. ``yum install esmond``, ``apt-get install esmond``)
 
 Authenticating Measurement Hosts
 ================================

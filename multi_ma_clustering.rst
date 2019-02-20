@@ -2,7 +2,7 @@
 Clustering a Measurement Archive
 ********************************
 
-The perfSONAR Measurement Archive software `esmond <http://software.es.net/esmond>`_ is built-on a number of technologies that allow you to run the service across a collection of servers. A collection of servers configured in such a manner is often referred to as a *cluster*. In general, the primary motivation behind running the measurement archive on a cluster is for one or more of the reasons below:
+The perfSONAR Measurement Archive software esmond is built-on a number of technologies that allow you to run the service across a collection of servers. A collection of servers configured in such a manner is often referred to as a *cluster*. In general, the primary motivation behind running the measurement archive on a cluster is for one or more of the reasons below:
 
 #. *High availability* - If you are running your archive on one server and a component of the software goes down, such as a database, your archive will not be able to service any requests. Clustering can be used to configure things like data replication across servers and fail over to another dataset if a host goes down. 
 #. *Load balancing* - If your measurement archive is servicing a large number of requests, you may want to create a cluster so multiple servers can share the load. There are number of strategies for doing this such as round-robing requests or splitting read and write operations.

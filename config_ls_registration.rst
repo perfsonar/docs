@@ -1118,7 +1118,7 @@ Measurement Archive Tests
 
 event_type Directive
 -----------------------------------
-:Description: The type of test as defined `here <http://software.es.net/esmond/perfsonar_client_rest.html#full-list-of-event-types>`_.
+:Description: The type of test as defined :ref:`here <psclient-rest-eventtypes>`.
 :Syntax: ``event_type EVENTTYPE``
 :Contexts: :ref:`test <config_ls_registration-test>`
 :Occurrences:  One or More

@@ -192,7 +192,7 @@ Example
 ``esmond``
 -------------------------------------------
 
-The ``esmond`` archiver submits measurement results to the `esmond <http://software.es.net/esmond/>`_ time series database using specialized translations of results for ``throughput``, ``latency``, ``trace`` and ``rtt`` tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the ``pscheduler-raw`` event type. 
+The ``esmond`` archiver submits measurement results to the esmond time series database using specialized translations of results for ``throughput``, ``latency``, ``trace`` and ``rtt`` tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the ``pscheduler-raw`` event type. 
 
 .. _pscheduler_ref_archivers-archivers-esmond-data:
 
@@ -213,7 +213,7 @@ Archiver Data
   * ``mapped-only`` - Only store a mapped type and do not store anything if it is not a known type
   * ``raw-only`` - Only store a ``pscheduler-raw`` record regardless of test type. 
 
-``summaries`` - Optional.  A list of objects containing an ``event-type``, ``summary-type`` and ``summary-window``.  If not specified, defaults to a standard set of summaries used by perfSONAR.  See the `esmond documentation <http://software.es.net/esmond/perfsonar_client_rest.html#base-data-vs-summaries>`_ for more details on summaries.
+``summaries`` - Optional.  A list of objects containing an ``event-type``, ``summary-type`` and ``summary-window``.  If not specified, defaults to a standard set of summaries used by perfSONAR.  See the :ref:`esmond documentation <psclient-rest-basevsumm>` for more details on summaries.
 
 ``verify-ssl`` - Optional.  Defaults to ``false``. If enabled, check SSL certificate of esmond server against list of known certificate authorities (CAs).  See the `requests documentation <http://docs.python-requests.org/en/v1.0.0/user/advanced/#ssl-cert-verification>`_ for more details on environment variables and other options for specifying path to CA store.
 
@@ -266,6 +266,59 @@ Example
             "retry": 0.75
         }
     }
+
+
+
+.. _pscheduler_ref_archivers-archivers-http:
+
+``http``
+-------------------------------------------
+
+The ``http`` archiver sends results to HTTP or HTTPS servers using the ``POST`` or ``PUT`` operation.
+
+ provides the same archiving function as ``bitbucket`` but introduces failure and retries a random fraction of the time.  This archiver was developed for testing pScheduler and serves no useful function in a production setting.
+
+.. _pscheduler_ref_archivers-archivers-http-data:
+
+Archiver Data
+++++++++++++++++++++++++++++++++++++++++++++++
+
+``_url`` - The URL to which the data should be posted or put.
+
+``op`` - Optional.  The HTTP operation to be used, ``post`` or ``put``.
+
+``headers`` - Optional, available in schema 2 and later.  A JSON object consisting of pairs whose values are strings, numeric types or ``null``.  Each pair except those whose values are ``null`` will be passed to the HTTP server as a header.  The archiver gives special treatment to the following headers:
+
+ - ``Content-Type`` - If not provided, the archiver will provide one of ``text/plain`` if the data to be archived is a string or ``application/json`` for any other JSON-representable type.  To force strings into JSON format, provide a ``Content-Type`` of ``application/json``.  This behavior can be disabled by providing a ``Content-Type`` header with the desired type or ``null``.
+
+ - ``Content-Length`` - If not provided (which should be the usual case), the archiver will calculate and supply the length of the content.  This behavior can be disabled by providing a ``Content-Length`` of ``null``.
+
+``bind`` - Optional.  The address on the host to which the HTTP client should bind when making the request.
+
+``retry-policy`` - Optional.  Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.
+
+
+.. _pscheduler_ref_archivers-archivers-http-example:
+
+Example
+++++++++++++++++++++++++++++++++++++++++++++++
+::
+  
+    {
+        "archiver": "http",
+        "data": {
+            "schema": 2,
+            "_url": "https://server.example.com/post/here",
+	    "_headers": {
+	        "Authorization": "mumblemumble",
+	        "Content-Type": "application/json"
+	    }
+        }
+    }
+
+
+
+
 
 .. _pscheduler_ref_archivers-archivers-rabbitmq:
 
@@ -332,9 +385,9 @@ Example
     {
         "archiver": "syslog",
         "data": {
-            "ident", "mytests",
-            "facility", "local3",
-            "priority", "warning",
+            "ident": "mytests",
+            "facility": "local3",
+            "priority": "warning"
         }
     }
 

@@ -69,7 +69,7 @@ In addition to any of the bundles above you may also **optionnally** choose to i
 
      * ``yum install perfsonar-toolkit-ntp`` - Automatically detects closest NTP servers and sets them in ntp.conf
      * ``yum install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
-     * ``yum install perfsonar-toolkit-servicewatcher``- Adds a cron job that checks if services are still running.
+     * ``yum install perfsonar-toolkit-servicewatcher`` - Adds a cron job that checks if services are still running.
      * ``yum install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
      * ``yum install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
@@ -77,7 +77,7 @@ You may also run the command below to get everything listed above on **perfsonar
 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
 
-.. note:: On a **perfsonar-centralmanagement** system you probably only want the **perfsonar-toolkit-servicewatcher** package to be installed.
+.. note:: On a **perfsonar-centralmanagement** system you probably only want the optional **perfsonar-toolkit-servicewatcher** package to be installed.
 
 .. _install_centos_step3:
 
@@ -196,7 +196,7 @@ If you installed the perfsonar-centralmanagement bundle see the following docume
 * :doc:`multi_ma_install`
 * :doc:`psconfig_publish`
 * :doc:`psconfig_maddash_agent`
-* `Using MaDDash to build dashboards <http://software.es.net/maddash/>`_
+* :doc:`maddash_intro`
 
 Configuring perfSONAR through the web interface
 ------------------------------------------------
