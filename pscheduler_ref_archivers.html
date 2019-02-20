@@ -277,17 +277,53 @@
 </div>
 </div>
 </div>
+<div class="section" id="http">
+<span id="pscheduler-ref-archivers-archivers-http"></span><h3><tt class="docutils literal"><span class="pre">http</span></tt><a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">http</span></tt> archiver sends results to HTTP or HTTPS servers using the <tt class="docutils literal"><span class="pre">POST</span></tt> or <tt class="docutils literal"><span class="pre">PUT</span></tt> operation.</p>
+<blockquote>
+<div>provides the same archiving function as <tt class="docutils literal"><span class="pre">bitbucket</span></tt> but introduces failure and retries a random fraction of the time.  This archiver was developed for testing pScheduler and serves no useful function in a production setting.</div></blockquote>
+<div class="section" id="pscheduler-ref-archivers-archivers-http-data">
+<span id="id5"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-http-data" title="Permalink to this headline">¶</a></h4>
+<p><tt class="docutils literal"><span class="pre">_url</span></tt> - The URL to which the data should be posted or put.</p>
+<p><tt class="docutils literal"><span class="pre">op</span></tt> - Optional.  The HTTP operation to be used, <tt class="docutils literal"><span class="pre">post</span></tt> or <tt class="docutils literal"><span class="pre">put</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">headers</span></tt> - Optional, available in schema 2 and later.  A JSON object consisting of pairs whose values are strings, numeric types or <tt class="docutils literal"><span class="pre">null</span></tt>.  Each pair except those whose values are <tt class="docutils literal"><span class="pre">null</span></tt> will be passed to the HTTP server as a header.  The archiver gives special treatment to the following headers:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">Content-Type</span></tt> - If not provided, the archiver will provide one of <tt class="docutils literal"><span class="pre">text/plain</span></tt> if the data to be archived is a string or <tt class="docutils literal"><span class="pre">application/json</span></tt> for any other JSON-representable type.  To force strings into JSON format, provide a <tt class="docutils literal"><span class="pre">Content-Type</span></tt> of <tt class="docutils literal"><span class="pre">application/json</span></tt>.  This behavior can be disabled by providing a <tt class="docutils literal"><span class="pre">Content-Type</span></tt> header with the desired type or <tt class="docutils literal"><span class="pre">null</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">Content-Length</span></tt> - If not provided (which should be the usual case), the archiver will calculate and supply the length of the content.  This behavior can be disabled by providing a <tt class="docutils literal"><span class="pre">Content-Length</span></tt> of <tt class="docutils literal"><span class="pre">null</span></tt>.</li>
+</ul>
+</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">bind</span></tt> - Optional.  The address on the host to which the HTTP client should bind when making the request.</p>
+<p><tt class="docutils literal"><span class="pre">retry-policy</span></tt> - Optional.  Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.</p>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-http-example">
+<span id="id6"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-http-example" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;archiver&quot;</span><span class="p">:</span> <span class="s">&quot;http&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s">&quot;_url&quot;</span><span class="p">:</span> <span class="s">&quot;https://server.example.com/post/here&quot;</span><span class="p">,</span>
+        <span class="s">&quot;_headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;Authorization&quot;</span><span class="p">:</span> <span class="s">&quot;mumblemumble&quot;</span><span class="p">,</span>
+            <span class="s">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s">&quot;application/json&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="rabbitmq">
 <span id="pscheduler-ref-archivers-archivers-rabbitmq"></span><h3><tt class="docutils literal"><span class="pre">rabbitmq</span></tt><a class="headerlink" href="#rabbitmq" title="Permalink to this headline">¶</a></h3>
 <p>The <tt class="docutils literal"><span class="pre">rabbitmq</span></tt> archiver sends raw JSON results to <a class="reference external" href="https://www.rabbitmq.com">RabbitMQ</a>.</p>
 <div class="section" id="pscheduler-ref-archivers-archivers-rabbitmq-data">
-<span id="id6"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-data" title="Permalink to this headline">¶</a></h4>
+<span id="id8"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-data" title="Permalink to this headline">¶</a></h4>
 <p><tt class="docutils literal"><span class="pre">_url</span></tt> - An <tt class="docutils literal"><span class="pre">amqp</span></tt> URL for the RabbitMQ instance which will receive the result.</p>
 <p><tt class="docutils literal"><span class="pre">routing-key</span></tt> - Optional.  The routing key to be used when queueing the message.</p>
 <p><tt class="docutils literal"><span class="pre">retry-policy</span></tt> - Optional. Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.</p>
 </div>
 <div class="section" id="pscheduler-ref-archivers-archivers-rabbitmq-example">
-<span id="id7"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-example" title="Permalink to this headline">¶</a></h4>
+<span id="id9"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;archiver&quot;</span><span class="p">:</span> <span class="s">&quot;rabbitmq&quot;</span><span class="p">,</span>
     <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -308,13 +344,13 @@
 <p>The <tt class="docutils literal"><span class="pre">syslog</span></tt> archiver sends the raw JSON result to the system log.</p>
 <p>Note that because most syslog implementations cannot handle arbitrarily-long log messages, this archiver should not be relied upon for anything other than debugging.</p>
 <div class="section" id="pscheduler-ref-archivers-archivers-syslog-data">
-<span id="id8"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-data" title="Permalink to this headline">¶</a></h4>
+<span id="id10"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-data" title="Permalink to this headline">¶</a></h4>
 <p><tt class="docutils literal"><span class="pre">ident</span></tt> - Optional.  The identification string to be used when submitting the log message.</p>
 <p><tt class="docutils literal"><span class="pre">facility</span></tt> - Optional.  The syslog facility to be used when the log entry is submitted.  Valid valies are <tt class="docutils literal"><span class="pre">kern</span></tt>, <tt class="docutils literal"><span class="pre">user</span></tt>, <tt class="docutils literal"><span class="pre">mail</span></tt>, <tt class="docutils literal"><span class="pre">daemon</span></tt>, <tt class="docutils literal"><span class="pre">auth</span></tt>, <tt class="docutils literal"><span class="pre">lpr</span></tt>, <tt class="docutils literal"><span class="pre">news</span></tt>, <tt class="docutils literal"><span class="pre">uucp</span></tt>, <tt class="docutils literal"><span class="pre">cron</span></tt>, <tt class="docutils literal"><span class="pre">syslog</span></tt>, <tt class="docutils literal"><span class="pre">local0</span></tt>, <tt class="docutils literal"><span class="pre">local1</span></tt>, <tt class="docutils literal"><span class="pre">local2</span></tt>, <tt class="docutils literal"><span class="pre">local3</span></tt>, <tt class="docutils literal"><span class="pre">local4</span></tt>, <tt class="docutils literal"><span class="pre">local5</span></tt>, <tt class="docutils literal"><span class="pre">local6</span></tt> and <tt class="docutils literal"><span class="pre">local7</span></tt>.</p>
 <p><tt class="docutils literal"><span class="pre">priority</span></tt> - Optional.  The syslog priority to be used when the log entry is submitted.  Valid values are <tt class="docutils literal"><span class="pre">emerg</span></tt>, <tt class="docutils literal"><span class="pre">alert</span></tt>, <tt class="docutils literal"><span class="pre">crit</span></tt>, <tt class="docutils literal"><span class="pre">err</span></tt>, <tt class="docutils literal"><span class="pre">warning</span></tt>, <tt class="docutils literal"><span class="pre">notice</span></tt>, <tt class="docutils literal"><span class="pre">info</span></tt> and <tt class="docutils literal"><span class="pre">debug</span></tt>.</p>
 </div>
 <div class="section" id="pscheduler-ref-archivers-archivers-syslog-example">
-<span id="id9"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-example" title="Permalink to this headline">¶</a></h4>
+<span id="id11"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;archiver&quot;</span><span class="p">:</span> <span class="s">&quot;syslog&quot;</span><span class="p">,</span>
     <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -450,6 +486,11 @@
 <li><a class="reference internal" href="#failer"><tt class="docutils literal"><span class="pre">failer</span></tt></a><ul>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-failer-data">Archiver Data</a></li>
 <li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-failer-example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#http"><tt class="docutils literal"><span class="pre">http</span></tt></a><ul>
+<li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-http-data">Archiver Data</a></li>
+<li><a class="reference internal" href="#pscheduler-ref-archivers-archivers-http-example">Example</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#rabbitmq"><tt class="docutils literal"><span class="pre">rabbitmq</span></tt></a><ul>

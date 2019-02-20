@@ -261,6 +261,59 @@ Example
         }
     }
 
+
+
+.. _pscheduler_ref_archivers-archivers-http:
+
+``http``
+-------------------------------------------
+
+The ``http`` archiver sends results to HTTP or HTTPS servers using the ``POST`` or ``PUT`` operation.
+
+ provides the same archiving function as ``bitbucket`` but introduces failure and retries a random fraction of the time.  This archiver was developed for testing pScheduler and serves no useful function in a production setting.
+
+.. _pscheduler_ref_archivers-archivers-http-data:
+
+Archiver Data
+++++++++++++++++++++++++++++++++++++++++++++++
+
+``_url`` - The URL to which the data should be posted or put.
+
+``op`` - Optional.  The HTTP operation to be used, ``post`` or ``put``.
+
+``headers`` - Optional, available in schema 2 and later.  A JSON object consisting of pairs whose values are strings, numeric types or ``null``.  Each pair except those whose values are ``null`` will be passed to the HTTP server as a header.  The archiver gives special treatment to the following headers:
+
+ - ``Content-Type`` - If not provided, the archiver will provide one of ``text/plain`` if the data to be archived is a string or ``application/json`` for any other JSON-representable type.  To force strings into JSON format, provide a ``Content-Type`` of ``application/json``.  This behavior can be disabled by providing a ``Content-Type`` header with the desired type or ``null``.
+
+ - ``Content-Length`` - If not provided (which should be the usual case), the archiver will calculate and supply the length of the content.  This behavior can be disabled by providing a ``Content-Length`` of ``null``.
+
+``bind`` - Optional.  The address on the host to which the HTTP client should bind when making the request.
+
+``retry-policy`` - Optional.  Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.
+
+
+.. _pscheduler_ref_archivers-archivers-http-example:
+
+Example
+++++++++++++++++++++++++++++++++++++++++++++++
+::
+  
+    {
+        "archiver": "http",
+        "data": {
+            "schema": 2,
+            "_url": "https://server.example.com/post/here",
+	    "_headers": {
+	        "Authorization": "mumblemumble",
+	        "Content-Type": "application/json"
+	    }
+        }
+    }
+
+
+
+
+
 .. _pscheduler_ref_archivers-archivers-rabbitmq:
 
 ``rabbitmq``
