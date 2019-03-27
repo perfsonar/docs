@@ -38,7 +38,7 @@ See :doc:`psconfig_pscheduler_agent` for more information on using the pSConfig 
 
 .. _psconfig_mesconfig_migrate-agents-maddash:
 
-Upgrade details of *perfsonar-meshconfig-agent* to *perfsonar-psconfig-pscheduler*
+Upgrade details of *perfsonar-meshconfig-guiagent* to *perfsonar-psconfig-maddash*
 -------------------------------------------------------------------------------------
 .. note:: This section provides advanced details for those interested in the upgrade process. You DO NOT need to run any of the commands in this section, all the work is done automatically on upgrade.
 
