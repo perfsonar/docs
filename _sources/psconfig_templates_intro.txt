@@ -317,7 +317,7 @@ As we've seen in the other template sections, it is given a name *colors_archive
 ``schedules``
 -------------
 
-*Schedule* objects are optional components of the template that tell agents where the results of the described tasks are to be stored. They are optional because you don't need them for tasks that run continuously, but for periodic tasks they are needed if you want the task to run more than once. Schedule objects are borrowed directly from :doc:`pScheduler <pscheduler_intro>`. See the 
+*Schedule* objects are optional components of the template that tell agents how often to run a task. They are optional because you don't need them for tasks that run continuously, but for periodic tasks they are needed if you want the task to run more than once. Schedule objects are borrowed directly from :doc:`pScheduler <pscheduler_intro>`. See the 
 `schema file <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_ for a full list of properties, but some of the more common ones are shown below::
 
     "schedules": {
