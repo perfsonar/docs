@@ -28,16 +28,16 @@ Authenticating Measurement Hosts
 ================================
 Measurement hosts need to authenticate to the measurement archive when they register data. This is implemented in esmond using one of two methods:
 
-#. A username and API key that is passed in the HTTP header of all requests.
+#. An API key that is passed in the HTTP header of all requests.
 #. Using IP based authentication
 
 The remainder of this section describes how to setup both type of accounts.
 
 .. note:: You may have a combination of the above where some accounts authenticate based on IP address and others based on API key.  If a request matches both an API key account and an IP address account, then the API account will be tried first. If the API key authentication fails, then it will fallback to the IP address account. 
 
-.. warning:: It is **highly recommended** you run your measurement archive server with HTTPS. This encrypts transfers and protects the username and API key (if applicable) from being exposed in plain text since it is just in the HTTP header. See the Apache HTTPD documentation for information on how to configure HTTPS.
+.. warning:: It is **highly recommended** you run your measurement archive server with HTTPS. This encrypts transfers and protects the API key (if applicable) from being exposed in plain text since it is just in the HTTP header. See the Apache HTTPD documentation for information on how to configure HTTPS.
 
-Authenticating by Username and API Key
+Authenticating by API Key
 --------------------------------------
 
 As an archive administrator you may create a username, generate an API key, and assign the needed permissions to register data with the commands below:
@@ -51,16 +51,16 @@ As an archive administrator you may create a username, generate an API key, and 
 
     Key: 9130962c6b38722c0b9968e6903e1927e94e16fd for example_user
       
-At this point provide the administrator of the measurement host wishing to register data with the username and generated API key. 
+At this point provide the administrator of the measurement host wishing to register datagenerated API key. 
 
-.. note:: There is no technical limitation preventing multiple measurement hosts from sharing a username and API key. It is up to you as an archive administrator to make a decision about whether you will share accounts between multiple measurement hosts or require unique accounts for each. It is the responsibility of both you and the measurement host administrator to follow best commons security practices and common sense in preventing unwanted parties from obtaining these credentials.
+.. note:: There is no technical limitation preventing multiple measurement hosts from sharing an API key. It is up to you as an archive administrator to make a decision about whether you will share accounts between multiple measurement hosts or require unique accounts for each. It is the responsibility of both you and the measurement host administrator to follow best commons security practices and common sense in preventing unwanted parties from obtaining these credentials.
 
 .. _multi_ma_install-auth_ip:
 
 Authenticating by IP Address
 ----------------------------
 
-As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a username and password (API key) to be defined for each host in their tasks file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows: 
+As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a password (API key) to be defined for each host in their tasks file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows: 
 
 #. As priviledged user run the commands below to create the account. You must provide a username (replacing *example_user*) as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of *X.X.X.X* or *X.X.X.X/Y* where *X* is each octet and *Y* is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host *10.0.1.1* or any host in the *10.0.2.0/24* subnet to register data to esmond::
 

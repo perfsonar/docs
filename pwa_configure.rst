@@ -2,9 +2,49 @@
 Configuration
 *************
 
-Most of the configuration files for PWA can be found in the ``/etc/pwa`` directory. At a minimum, you need to configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.
 
-**Note:** If you are upgrading from an old MCA instance, view the docs on `Upgrading from MCA to PWA <pwa_upgrading_from_mca>`_
+This guide assumes you have already pulled down the sample PWA config and extracted it like this (you should have done this during the Install step; if not, do it now:
+
+.. code-block:: bash
+
+   wget https://github.com/perfsonar/psconfig-web/raw/master/deploy/docker/pwa.sample.tar.gz
+   sudo tar -C /etc -xvf pwa.sample.tar.gz pwa && sudo tar -C /usr/local/sbin --strip-components=1 -xvf pwa.sample.tar.gz scripts 
+
+
+Most of the configuration files for PWA can be found in the ``/etc/pwa`` directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.
+
+**Interaction with other web applications:** If you want to run PWA on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See `Running alongside other web applications <pwa_running_alongside>`_
+
+**Upgrading:** If you are upgrading from an old MCA instance, view the docs on `Upgrading from MCA to PWA <pwa_upgrading_from_mca>`_
+
+When you update ``/etc/pwa/index.js``, all PWA services will automatically restart. Please monitor logs by doing  ``sudo docker exec -it pwa-admin1 pm2 logs``
+
+Hostname
+========
+
+* 
+  Update the publisher URL with the hostname of your PWA instance. Most likely, this will be the full hostname of your Docker host. Replace ``<pwa_hostname>`` with your full hostname, like this.
+
+If your hostname is ``pwa.example.com``,
+
+.. code-block:: javascript
+
+    url: "http://<pwa_hostname>/pub/",
+
+becomes
+
+.. code-block:: javascript
+
+        url: "http://pwa.example.com/pub/",
+
+Database 
+============
+
+The database is also configured in ``/etc/pwa/index.js``
+
+::
+
+    exports.mongodb = "mongodb://mongo/pwa";
 
 
 
@@ -12,6 +52,8 @@ Data Sources
 ============
 
 ``/etc/pwa/index.js`` lists the Global Lookup Service and any private LSes that host information is pulled from. 
+
+In most cases, you won't need to change the LS configuration.
 
 
 Global SLS
@@ -82,17 +124,6 @@ If you have a private sLS instance, enter something like following, replacing ``
 
 When you update this file, all PWA services will automatically restart. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 pm2 logs``
 
-Database 
-============
-
-The database is also configured in ``/etc/pwa/index.js``
-
-::
-
-    exports.mongodb = "mongodb://mongo/pwa";
-
-
-When you update this file, all meshconfig services will automatically restart. Please monitor logs by doing  ``sudo docker exec -it pwa-admin1 pm2 logs``
 
 Test Spec Default parameters
 ============================
@@ -115,29 +146,117 @@ to
 PWA uses Winston for logging. Please see `Winston <https://github.com/winstonjs/winston>`_ for more detail. 
 
 Others
-========================
+------
 
 ``index.js`` contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.
+
+Nginx (web server)
+==================
+
+Nginx will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit:
+
+.. code-block:: bash
+
+    /etc/pwa/nginx
+
+**Host Certificates**
+
+You will need SSL certificates for https access.
+
+If you want to generate self-signed certs, you can run this script (you may wish to edit it if you are using custom file paths): 
+
+.. code-block:: bash
+
+    sudo /usr/local/sbin/generate_nginx_cert.sh
+
+If you want to provide your own certs, place them in ``/etc/pwa/nginx/certs`` with these names:
+
+.. code-block:: bash
+
+   cert.pem
+   key.pem
+
+If you are enabling x509 authentication, then you will also need ``trusted.pem``\ ; This file contains list of all CAs that you trust and grant access to PWA. You will have to adapt the nginx config in ``/etc/pwa/nginx/conf.d/pwa.conf`` as follows:
+
+.. code-block:: bash
+
+   ssl_client_certificate /etc/nginx/certs/trusted.pem
+   ssl_verify_client on
+
+..
+
+Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single ``trusted.pem file``
+
 
 Authentication Service (sca-auth)
 =================================
 
-PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying ``/etc/pwa/auth/index.js``
+PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying the config file.
 
-Certain features in PWA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.
+Edit the auth config file:
 
-::
+``/etc/pwa/auth/index.js``
 
-    docker exec -it sca-auth /app/bin/auth.js modscope --username user --add '{"pwa": ["admin"]}'
+* 
+ Update the hostname in the config by performing a search and replace in this file. Replace ``<pwa_hostname>`` with the hostname (FQDN) of your Docker host (remove the brackets).
 
-You need to sign out & login again in order for this change to take effect.
+* 
+ Update ``from`` address to administrator's email address used to send email to confirmation new user accounts. You can do this by doing a search and replace in the file, replacing ``<email_address>`` with the full e-mail address you want to use (remove the brackets).
 
-Please refer to `sca-auth gitrepo <https://github.com/perfsonar/sca-auth>`_ for more information.
+* 
+ If you'd like to skip email confirmation when user signup, simply comment out the whole ``email_confirmation`` section.
+
+ .. code-block:: javascript
+
+    exports.email_confirmation = {
+    subject: 'psConfig Web Admin Account Confirmation',
+    from: '<email_address>'  //most mail server will reject if this is not replyable address
+    };
+
+
+Authentication service mail server configuration
+------------------------------------------------
+
+    Now update the ``mailer`` section depending on whether you are using a separate docker container running postfix, or specifying an SMTP server.
+
+    **Using a separate postfix docker container**
+
+    Replace ``postfix`` with the actual name of the postfix container, if you are running it under a different name.
+
+    .. code-block:: javascript
+
+       mailer: {
+           host: 'postfix',
+           secure: false,
+           port: 25,
+           tls: {
+                   // do not fail on invalid certs
+                   rejectUnauthorized: false
+           }
+       }
+
+**OR**
+
+**Using external SMTP server**
+
+    .. code-block:: javascript
+
+       // example config with SMTP server; make sure the pass path exists, or things will break
+       // alternatively, hard-code the password if this is acceptable in your environment
+       mailer: {
+           host: 'mail-relay.domain.com',
+           secure: true,
+           auth: {
+               user: 'username',
+               pass: fs.readFileSync(__dirname+'/smtp.password', {encoding: 'ascii'}).trim(),
+           }
+       }
+
 
 User Management
 ================
 
-By default, signup is disabled and no users exist. You will need either manually create users (see the next page for details), and/or allow signups 
+By default, signup is disabled and no users exist. You will need either manually create users once the docker containers have been created (see the next page for details), and/or allow signups.
 
 To enable user signup (registration through the web form), set these values in the following files:
 
