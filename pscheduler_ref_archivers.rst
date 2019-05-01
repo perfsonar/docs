@@ -276,8 +276,6 @@ Example
 
 The ``http`` archiver sends results to HTTP or HTTPS servers using the ``POST`` or ``PUT`` operation.
 
- provides the same archiving function as ``bitbucket`` but introduces failure and retries a random fraction of the time.  This archiver was developed for testing pScheduler and serves no useful function in a production setting.
-
 .. _pscheduler_ref_archivers-archivers-http-data:
 
 Archiver Data
