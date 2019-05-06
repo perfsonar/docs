@@ -814,22 +814,42 @@ The ``jq`` limit hands the proposed task to a
 `jq <https://stedolan.github.io/jq>`_ script and passes or fails based
 on the script's return value.
 
-Input to the script is a single JSON object containing two or three pairs:
+Input to the script is a single JSON object containing the following
+pairs:
 
- * ``type`` - A string that names the type of test being proposed
- * ``spec`` - A JSON object containing the test's parameters
- * ``schedule`` - An optional JSON object containing an ISO8601 timestamp (`start`) and ISO8601 duration (`duration`) specifying when the run is proposed to start and how much time it will spend running.  (Note that the latter is usually greater than the test's `duration` parameter if it has one.)  This object will not be present if a new task is being evaluated but will be for evaluation of runs.
+ * ``test`` - A JSON object containing the proposed test with a
+   ``type`` (a string) and ``spec`` (a JSON object containing the test
+   specification).
+ * ``tool`` - A string that names the tool that was selected.
+ * ``schedule`` - A JSON object containing all schedule paramaters
+   submitted with the test (any of ``start``, ``repeat``,
+  ``max-runs``, ``until``, ``slip``, and ``sliprand``)
+
+ * ``run_schedule`` - An optional JSON object containing an ISO8601
+   timestamp (`start`) and ISO8601 duration (`duration`) specifying
+   when the run is proposed to start and how much time it will spend
+   running.  (Note that the latter is usually greater than the test's
+   `duration` parameter if it has one.)  This object will not be
+   present if a new task is being evaluated but will be for evaluation
+   of runs.
 
 For example::
 
     {
-        "type": "throughput",
-        "spec": {
-            "dest": "ps.example.com",
-            "bandwidth": "200M",
-            "duration": "PT1M"
+        "test": {
+            "type": "throughput",
+            "spec": {
+                "dest": "ps.example.com",
+                "bandwidth": "200M",
+                "duration": "PT1M"
+            },
         },
+        "tool": "iperf3",
         "schedule": {
+            "repeat": "PT10M",
+            "max-runs": 10,
+        },
+        "run_schedule": {
             "start": "2018-06-19T12:34:56",
             "duration": "PT1M8S"
         }
