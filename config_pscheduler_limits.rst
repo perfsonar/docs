@@ -823,7 +823,7 @@ pairs:
  * ``tool`` - A string that names the tool that was selected.
  * ``schedule`` - A JSON object containing all schedule paramaters
    submitted with the test (any of ``start``, ``repeat``,
-  ``max-runs``, ``until``, ``slip``, and ``sliprand``)
+   ``max-runs``, ``until``, ``slip``, and ``sliprand``)
 
  * ``run_schedule`` - An optional JSON object containing an ISO8601
    timestamp (`start`) and ISO8601 duration (`duration`) specifying
