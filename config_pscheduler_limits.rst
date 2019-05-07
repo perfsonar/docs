@@ -1033,6 +1033,9 @@ For example::
 ``test`` - Check Test Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+**NOTE:  This limit type is considered deprecated and will be removed
+in a future release.  Use the ``jq`` limit instead.** 
+
 The ``test`` limit compares the parameters of a proposed test against
 a template containing acceptable values.
 
