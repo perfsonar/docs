@@ -28,7 +28,7 @@ Runs also have a status depending on whether they have already run or are still 
     * **Cleanup** - This run completed execution and is doing some final operations
     * **Finished** - The run has already executed and finished successfully
     * **Overdue** - The run was scheduled to execute at a certain time in the past but did not. It may get executed soon if it is not beyond a certain threshold.
-    * **Missed** - The run was scheduled but did not execute at it's given time. This can happen if the scheduler was not running at the allotted time or the task was :ref:`paused<pscheduler_client_tasks-pausing>`.
+    * **Missed** - The run was scheduled but did not execute at it's given time. This can happen if the runner was not running at the scheduled time or the pScheduler was instructed to stop executing runs using the `pause` command.
     * **Failed** - The run failed to complete for some reason
     * **Non-Starter** - The run could not be scheduled because there was no timeslots that could accomodate the constraints
     * **Canceled** - The task was cancelled before the run was executed
