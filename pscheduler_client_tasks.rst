@@ -136,29 +136,6 @@ Test parameters may be changed on the fly by adding them to the command line aft
 
     pscheduler task --import mytask.json throughput --dest somewhere.else
 
-.. _pscheduler_client_tasks-pausing:
-
-Pausing Tasks
-------------------
-You can pause a pscheduler task so that any scheduled runs will not be executed until the task is :ref:`resumed<pscheduler_client_tasks-resuming>`. It takes the following form::
-    
-    pscheduler pause TASK_URL
-
-The ``TASK_URL`` is the full URL of the task to be paused and should have been output by the ``pscheduler task`` command when a task was submitted. Any runs that would have occurred while in the paused state will be marked as missed. A full example is shown below::
-
-    pscheduler pause https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
-
-.. _pscheduler_client_tasks-resuming:
-
-Resuming Tasks
-------------------
-You can resume a previously :ref:`paused<pscheduler_client_tasks-pausing>` pscheduler task so that its runs will again be executed. It takes the following form::
-    
-    pscheduler resume TASK_URL
-
-The ``TASK_URL`` is the full URL of the task to be resumed and should have been output by the ``pscheduler task`` command when a task was submitted. Future runs will be carried-out normally after being resumed. A full example is shown below::
-
-    pscheduler resume https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
 
 .. _pscheduler_client_tasks-canceling:
  

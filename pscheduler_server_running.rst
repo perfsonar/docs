@@ -43,5 +43,18 @@ pScheduler has regular configuration files for configuring various aspects of th
 
     * :doc:`config_pscheduler`
     * :doc:`config_pscheduler_limits`
-        
-    
+
+
+
+Pausing and Resuming
+--------------------
+
+pScheduler can be directed to stop running tasks using the ``pause``
+command.  With no arguments, the pause will last indefinitely; with an
+ISO 8601 duration (e.g., ``PT2H``), the pause will last for the amount
+of time specified.  Note that any runs in progress when this command
+is executed will be allowed to run to completion.  Runs scheduled
+while the system is paused will fail with a ``missed`` status.
+
+The ``resume`` command will start runing tasks with the next one on
+the schedule.
