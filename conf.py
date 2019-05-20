@@ -292,9 +292,10 @@ centos_version = '7'
 #Create a |version| substitution variable that c an be used in .rst files
 rst_epilog = """
 .. |version| replace:: %s
+.. |release| replace:: %s
 .. |CentOS| replace:: CentOS %s
 .. _CentOS: http://www.centos.org
-""" % (version, centos_version)
+""" % (version, release, centos_version)
 
 # Create directives used to generate ISO and md5 links.
 #   :centos_netinstall_iso:`x86_64`
