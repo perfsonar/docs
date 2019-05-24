@@ -46,9 +46,11 @@ A complete example of setting this up::
     filters.time_start = time.time() - 3600
     filters.time_end = time.time()
     filters.source = '198.129.254.30'
-    filters.tool_name = 'bwctl/iperf3'
-
-    conn = ApiConnect('http://localhost:8000/', filters)
+    filters.tool_name = 'pscheduler/iperf3'
+    filters.timeout = 5
+    filters.ssl_verify = False #allows self-signed https certificate
+    
+    conn = ApiConnect('https://localhost/', filters)
 
 NOTE: the default perfSONAR/esmond deployments use a WSGIScriptAlias of /esmond 
 prefixing the URI - this is set in Apache.  The client libraries default to 
@@ -185,7 +187,7 @@ optional (the commented key/val pairs in the arg dict are optional)::
         "subject_type": "point-to-point",
         "source": "10.10.0.1",
         "destination": "10.10.0.2",
-        "tool_name": "bwctl/iperf3",
+        "tool_name": "pscheduler/iperf3",
         "measurement_agent": "10.10.0.2",
         "input_source": "host1",
         "input_destination": "host2",
@@ -193,8 +195,9 @@ optional (the commented key/val pairs in the arg dict are optional)::
         # "ip_transport_protocol": "tcp"
     }
 
-    mp = MetadataPost('http://localhost:8000/', username='pS_user', 
-        api_key='api-key-generated-by-auth-database', **args)
+    mp = MetadataPost('https://localhost/', username='pS_user', 
+        api_key='api-key-generated-by-auth-database', 
+        ssl_verify=False, timeout=5, **args)
 
 This will create the basic data associated with this metadata.  Then add 
 the event types and summaries associated with this metadata and post the 
@@ -213,15 +216,16 @@ associated "read only" Metadata object that was covered in the previous
 section.  This is mostly necessary to get the newly generated metadata_key 
 property, it will be needed for other operations.
 
-Next data can be added to the assocaited event types - the process is similar 
-for both numeric and histogram data.  Intialize an EventTypePost object 
+Next data can be added to the associated event types - the process is similar 
+for both numeric and histogram data.  Initialize an EventTypePost object 
 similarly to the MetadataPost object, but also using the appropriate 
 metadata_key and event_type to add the data to::
 
-    et = EventTypePost('http://localhost:8000/', username='pS_user',
+    et = EventTypePost('https://localhost/', username='pS_user',
         api_key='api-key-generated-by-auth-database', 
         metadata_key=new_meta.metadata_key,
-        event_type='throughput')
+        event_type='throughput',
+        ssl_verify=False)
 
 Discrete data points can be added the process is similar for both numeric 
 data and histogram data - first arg is an integer timestamp in seconds and 
@@ -241,9 +245,9 @@ It is also possible to bulk post data for a variety of event types associated
 with a single metadata using the EventTypeBulkPost interface.  Intialize in 
 a similar fashion minus the event_type arg::
 
-    etb = EventTypeBulkPost('http://localhost:8000/', username='pS_user',
+    etb = EventTypeBulkPost('https://localhost/', username='pS_user',
             api_key='api-key-generated-by-auth-database', 
-            metadata_key=new_meta.metadata_key)
+            metadata_key=new_meta.metadata_key, ssl_verify=False)
 
 Add a mix of data points specified by event type and post::
 
