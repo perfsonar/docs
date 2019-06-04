@@ -330,11 +330,24 @@ The ``rabbitmq`` archiver sends raw JSON results to `RabbitMQ <https://www.rabbi
 Archiver Data
 ++++++++++++++++++++++++++++++++++++++++++++++
 
-``_url`` - An ``amqp`` URL for the RabbitMQ instance which will receive the result.
+``_url`` - An ``amqp`` URL for the RabbitMQ instance which will
+receive the result.
 
-``routing-key`` - Optional.  The routing key to be used when queueing the message.
+``exchange`` (Optional) - The exchange to which the result will be
+sent.
 
-``retry-policy`` - Optional. Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.
+``routing-key`` (Optional) - The routing key to be used when queueing
+the message.
+
+``connection-lifetime`` (Optional) - An ISO8601 duration recommending
+how long the connection to RabbitMQ for a given URL/exchange/key
+combination should be kept alive.  The default is to create a new
+connection for each result archived.  Note that a small value such as
+``P0D`` can be used to force an existing connection to expire.
+
+``retry-policy`` (Optional) - Describes how to retry failed attempts
+to submit the measurement to RabbitMQ before giving up.  The default
+behavior is to try once and then give up.
 
 .. _pscheduler_ref_archivers-archivers-rabbitmq-example:
 
