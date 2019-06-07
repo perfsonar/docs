@@ -315,6 +315,35 @@ Example
     }
 
 
+.. _pscheduler_ref_archivers-archivers-kafka:
+
+``kafka``
+-------------------------------------------
+
+The Kafka archiver sends the result of a pScheduler test as a message to a preexisting Apache Kafka message bus.
+
+.. _pscheduler_ref_archivers-archivers-kafka-data:
+
+Archiver Data
+++++++++++++++++++++++++++++++++++++++++++++++
+
+``topic`` - The topic under which the message should be posted on the message bus.
+
+``server`` - The address of the server hosting the Apache Kafka message bus.
+
+.. _pscheduler_ref_archivers-archivers-kafka-example:
+
+Example
+++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+    {
+    	"archiver": "kafka",
+    	"data": {
+        	"topic": "test",
+        	"server-address": "localhost:9092"
+    	}	
+    }
 
 
 
