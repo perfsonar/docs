@@ -80,7 +80,8 @@ Running Measurements with pScheduler
    pscheduler_ref_archivers
    pscheduler_ref_contexts
    pscheduler_ref_bwctl
-
+   pscheduler_disk_to_disk
+   
 Managing Multiple Hosts with pSConfig
 -------------------------------------
 .. toctree::

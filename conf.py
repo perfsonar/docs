@@ -305,5 +305,6 @@ extlinks = {
     'centos_netinstall_iso': ("%s/pS-Toolkit-%s-CentOS%s-NetInstall-%s-%s.iso" % (ps_download_url, release, centos_version, '%s', iso_netinstall_build_date), ''),
     'centos_netinstall_md5': ("%s/pS-Toolkit-%s-CentOS%s-NetInstall-%s-%s.iso.md5" % (ps_download_url, release, centos_version, '%s', iso_netinstall_build_date), ''),
     'centos_fullinstall_iso': ("%s/pS-Toolkit-%s-CentOS%s-FullInstall-%s-%s.iso" % (ps_download_url, release, centos_version,'%s', iso_fullinstall_build_date), ''),
-    'centos_fullinstall_md5': ("%s/pS-Toolkit-%s-CentOS%s-FullInstall-%s-%s.iso.md5" % (ps_download_url, release, centos_version, '%s', iso_fullinstall_build_date), '')
+    'centos_fullinstall_md5': ("%s/pS-Toolkit-%s-CentOS%s-FullInstall-%s-%s.iso.md5" % (ps_download_url, release, centos_version, '%s', iso_fullinstall_build_date), ''),
+    'maddash_quick_install': ("https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharing", '')
 }
