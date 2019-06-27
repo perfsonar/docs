@@ -337,13 +337,18 @@ receive the result.
 sent.
 
 ``routing-key`` (Optional) - The routing key to be used when queueing
-the message.
+the message.  This can be a string or a standard pScheduler jq
+transform.  If the latter, the ``schema`` must be ``2``.  Note that
+this transform is provided with the same data that will go to the
+archiver, meaning that it is whatever resulted after any ``transform``
+in the archive specification.
 
 ``connection-lifetime`` (Optional) - An ISO8601 duration recommending
 how long the connection to RabbitMQ for a given URL/exchange/key
 combination should be kept alive.  The default is to create a new
 connection for each result archived.  Note that a small value such as
 ``P0D`` can be used to force an existing connection to expire.
+Requires ``schema`` of ``2`` or later.
 
 ``retry-policy`` (Optional) - Describes how to retry failed attempts
 to submit the measurement to RabbitMQ before giving up.  The default
