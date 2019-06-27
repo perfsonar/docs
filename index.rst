@@ -80,7 +80,8 @@ Running Measurements with pScheduler
    pscheduler_ref_archivers
    pscheduler_ref_contexts
    pscheduler_ref_bwctl
-
+   pscheduler_disk_to_disk
+   
 Managing Multiple Hosts with pSConfig
 -------------------------------------
 .. toctree::
@@ -116,6 +117,7 @@ Displaying Measurements with MaDDash
    :maxdepth: 1
   
    maddash_intro
+   MaDDash Quick Install Guide <https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharing>
    maddash_install
    maddash_config_server
    maddash_running
