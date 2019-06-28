@@ -1,0 +1,327 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Updating perfSONAR &#8212; perfSONAR Toolkit 4.2.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Choosing a Management Method" href="manage_choose.html" />
+    <link rel="prev" title="Migrating from CentOS 6 to CentOS 7" href="install_migrate_centos7.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_choose.html" title="Choosing a Management Method"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_migrate_centos7.html" title="Migrating from CentOS 6 to CentOS 7"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="updating-perfsonar">
+<h1>Updating perfSONAR<a class="headerlink" href="#updating-perfsonar" title="Permalink to this headline">¶</a></h1>
+<p>Just like any other host on your network, it is critical to stay up-to-date with the latest packages on your perfSONAR Toolkit. You will want to make sure you have the latest security fixes as well as the ability to take advantage of the great new features constantly being added to the tools. In general you will keep your host up-to-date with the operating system’s package manager (e.g. yum or apt), but in some special cases things may be more involved. Be sure to watch release notes and this page when such cases arise.</p>
+<div class="section" id="manually-updating-with-yum-or-apt">
+<h2>Manually Updating with Yum or APT<a class="headerlink" href="#manually-updating-with-yum-or-apt" title="Permalink to this headline">¶</a></h2>
+<p>Anytime you want to manually update your host, simply run the following</p>
+<p><em>CentOS</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">update</span>
+</pre></div>
+</div>
+<p><em>Debian</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+<span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">dist</span><span class="o">-</span><span class="n">upgrade</span>
+</pre></div>
+</div>
+<p>The <em>yum</em> package manager is used by RedHat-based operating systems like CentOS to update packages, <em>apt-get</em> is used by Debian-based OS. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.</p>
+</div>
+<div class="section" id="automatic-updates">
+<span id="manage-update-auto"></span><h2>Automatic Updates<a class="headerlink" href="#automatic-updates" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Automatic updates are enabled by default in the perfSONAR Toolkit.</p>
+</div>
+<p>You may choose to enable automatic updates to aid in applying the latest software packages to your system. Automatic updates include all perfSONAR, operating system and third-party packages. Enabling this feature will help keep the latest security fixes on the system, but keep in mind it is possible some updates may break your host unexpectedly. The following rule of thumb from <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">Fedora</a> may be useful when considering whether to enable this feature:</p>
+<blockquote class="epigraph">
+<div>If the machine is a critical server, for which unplanned downtime of a service on the machine can not be tolerated, then you should not use automatic updates. Otherwise, you <strong>may</strong> choose to use them.</div></blockquote>
+<p>It is also important to note that automatic updates do not perform all required system reboots or service restarts. Also, auto-updates happen nightly so there may be a period of up to 24 hours where you do not receive a patch. Enabling this feature still requires close monitoring of the host to make sure all updates are applied completely and properly.</p>
+<div class="section" id="managing-automatic-updates-from-the-command-line">
+<span id="manage-update-auto-cli"></span><h3>Managing Automatic Updates from the Command-Line<a class="headerlink" href="#managing-automatic-updates-from-the-command-line" title="Permalink to this headline">¶</a></h3>
+<p>You can manage auto updates from the command-line by enabling/disabling the yum-cron service on CentOS and configuring the unattended-upgrades option of APT on Debian and Ubuntu.</p>
+<p>Run the following commands to <strong>enable</strong> automatic updates (must be run as a root user):</p>
+<p><em>CentOS</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">enable</span> <span class="n">yum</span><span class="o">-</span><span class="n">cron</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">yum</span><span class="o">-</span><span class="n">cron</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">unattended</span><span class="o">-</span><span class="n">upgrades</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">system_environment</span><span class="o">/</span><span class="n">enable_auto_updates</span> <span class="n">new</span>
+</pre></div>
+</div>
+<p>Likewise, you may <strong>disable</strong> auto-updates from the command-line by running the following:</p>
+<p><em>CentOS</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">stop</span> <span class="n">yum</span><span class="o">-</span><span class="n">cron</span>
+<span class="n">systemctl</span> <span class="n">disable</span> <span class="n">yum</span><span class="o">-</span><span class="n">cron</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">purge</span> <span class="n">unattended</span><span class="o">-</span><span class="n">upgrades</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">apt</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="mi">60</span><span class="n">unattended</span><span class="o">-</span><span class="n">upgrades</span><span class="o">-</span><span class="n">perfsonar</span>
+</pre></div>
+</div>
+<p><em>CentOS</em>:</p>
+<p>These commands will automatically update <strong>all packages</strong> on the system. Also note that the main configuration file for auto-updates lives at <em>/etc/yum</em>. See the yum-cron man page or the page <a class="reference external" href="http://fedoraproject.org/wiki/AutoUpdates">here</a> for more information on using auto-updates and advanced options like excluding packages from update. Also see <a class="reference internal" href="#manage-update-auto-disable"><span class="std std-ref">Disabling Automatic Updates for perfSONAR Packages</span></a>.</p>
+<p><em>Debian/Ubuntu</em>:</p>
+<p>This configuration enables automatic updates for <a class="reference external" href="https://www.debian.org/security/">Debian security updates</a> or <a class="reference external" href="https://wiki.ubuntu.com/Security/Upgrades">Ubuntu security updates</a> and perfSONAR packages.</p>
+</div>
+<div class="section" id="managing-automatic-updates-from-the-toolkit-web-interface">
+<span id="manage-update-auto-gui"></span><h3>Managing Automatic Updates from the Toolkit Web Interface<a class="headerlink" href="#managing-automatic-updates-from-the-toolkit-web-interface" title="Permalink to this headline">¶</a></h3>
+<p>If you are running the perfSONAR Toolkit, you may enable/disable automatic updates for <strong>all packages</strong> (not just perfSONAR) on the system from the web interface as follows:</p>
+<ol class="arabic">
+<li><p class="first">Open your toolkit web interface in a browser.</p>
+</li>
+<li><p class="first">Click on <strong>Edit</strong> (A) in the host information section of the main page or <strong>Configuration</strong> (B) button in the right-upper corner and login as the web administrator user created during installation.</p>
+<blockquote>
+<div><img alt="_images/manage_update-configure-icon.png" src="_images/manage_update-configure-icon.png" />
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See <a class="reference internal" href="manage_users.html"><span class="doc">Managing Users</span></a> for more details on creating a web administrator account.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">On the <strong>Host</strong> tab click the button under the <strong>Auto Updates</strong> heading to enable or disable auto-updates as indicated by the color and status text of the button.</p>
+<blockquote>
+<div><img alt="_images/manage_update-enable.png" src="_images/manage_update-enable.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Click <strong>Save</strong> to apply your changes. After a loading screen you should see a green message at the bottom indicating your changes have been saved.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="disabling-automatic-updates-for-perfsonar-packages">
+<span id="manage-update-auto-disable"></span><h3>Disabling Automatic Updates for perfSONAR Packages<a class="headerlink" href="#disabling-automatic-updates-for-perfsonar-packages" title="Permalink to this headline">¶</a></h3>
+<p>The commands in the previous sections control updates for the entire system. If you want to leave automatic updates on for base system packages, but would like to just disable the perfSONAR updates you can do so by following the steps in the previous sections and editing the file <strong>/etc/yum.repos.d/perfSONAR.repo</strong> with the option <strong>enabled</strong> set to <strong>0</strong>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are running against one of our testing repositories you may also need to update the files <strong>/etc/yum.repos.d/perfSONAR-staging.repo</strong> and <strong>/etc/yum.repos.d/perfSONAR-nightly.repo</strong>.</p>
+</div>
+<p>To disable the automatic updating of perfSONAR packages on Debian/Ubuntu delete the line with <code class="docutils literal notranslate"><span class="pre">origin=perfSONAR</span></code> pattern from <code class="docutils literal notranslate"><span class="pre">/etc/apt/apt.conf.d/60unattended-upgrades-perfsonar</span></code>.  After that only the Debian security updates will be installed automatically.</p>
+</div>
+</div>
+<div class="section" id="special-upgrade-notes">
+<span id="manage-update-notes"></span><h2>Special Upgrade Notes<a class="headerlink" href="#special-upgrade-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bwctl-support">
+<h3>BWCTL Support<a class="headerlink" href="#bwctl-support" title="Permalink to this headline">¶</a></h3>
+<p>When perfSONAR 4.0 was released in April 2017, the perfSONAR project began the deprecation of BWCTL. pScheduler supports backward compatibility with BWCTL through the use of plug-ins that will only get chosen if pScheduler cannot be detected on the remote end.</p>
+<p>In perfSONAR 4.1, the deprecation process will continue. The following actions will be taken with respect to BWCTL support in 4.1:</p>
+<ul class="simple">
+<li>Brand new installs of 4.1 will not have BWCTL or the BWCTL backward compatibility pScheduler plug-ins by default. Users can install these separately by manually running <code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-bwctl-compat</span></code> or <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-bwctl-compat</span></code></li>
+<li>Systems upgrading to version 4.1 from a previous version of perfSONAR already have BWCTL and the plug-ins installed. The upgrade process will NOT remove these packages, so BWCTL and tests using the backward compatibility plug-ins will continue to operate. If you no longer wish to have the BWCTL packages, you will be able to safely remove all BWCTL related packages with <code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">remove</span> <span class="pre">bwctl-server</span> <span class="pre">bwctl-client</span></code> (through dependencies, this will also remove the BWCTL pScheduler plug-ins).</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Debian systems do have an auto-remove function that may remove BWCTL since no packages will be dependent on it once you upgrade to 4.1. Exact behavior depends on how you have apt configured. If you find that BWCTL is removed you can run <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-bwctl-compat</span></code> to restore the packages.</p>
+</div>
+<p>Below is the plan for support for releases beyond 4.1:</p>
+<ul class="simple">
+<li>perfSONAR 4.0 will be end-of-life on <strong>February 15, 2019</strong> (six months after the final release of perfSONAR 4.1). BWCTL will also be end-of-life at this time meaning it will stop receiving security updates.</li>
+<li>The first major perfSONAR release after February 15, 2019 will remove BWCTL and the BWCTL pScheduler plug-ins.</li>
+<li>Security updates for the BWCTL pScheduler plug-ins will be supported as long as 4.1 is supported since they will still be part of a supported pScheduler codebase.</li>
+</ul>
+<p>All of this means that your BWCTL tests will continue to function in 4.1 but you likely have only a few months of BWCTL support left. BWCTL test are usually caused by the following:</p>
+<ol class="arabic simple">
+<li>The remote end is running an unsupported 3.5 release. The remedy for this problem is for the remote end to update.</li>
+<li>A firewall is blocking port 443. This can be solved by opening port 443 or a non-standard pScheduler port. See <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-pscheduler-address"><span class="std std-ref">Using Non-Standard pScheduler Ports and Addresses</span></a> for more information.</li>
+</ol>
+<p>You can determine which of your tests are still using BWCTL by running the following command on a toolkit installation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">find_bwctl_tests</span>
+</pre></div>
+</div>
+<p>This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See <cite>/usr/lib/perfsonar/scripts/find_bwctl_tests –help</cite> for information on command-line options to change the archive URL, time range fo data analyzed and other options.</p>
+</div>
+<div class="section" id="psconfig-to-meshconfig-migration">
+<h3>pSConfig to MeshConfig Migration<a class="headerlink" href="#psconfig-to-meshconfig-migration" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="psconfig_meshconfig_migrate.html"><span class="doc">MeshConfig to pSConfig Migration Guide</span></a> for information on the upgrade of the former MeshConfig component to the new pSConfig component.</p>
+</div>
+<div class="section" id="centos-6-support-discontinued">
+<h3>CentOS 6 Support Discontinued<a class="headerlink" href="#centos-6-support-discontinued" title="Permalink to this headline">¶</a></h3>
+<p>perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at <a class="reference internal" href="install_migrate_centos7.html"><span class="doc">Migrating from CentOS 6 to CentOS 7</span></a>. You may also choose to switch to a supported <a class="reference internal" href="install_debian.html"><span class="doc">Debian platform</span></a>. <strong>Security updates for CentOS 6 perfSONAR packages will be discontinued on February 15, 2019</strong>. Also see the <a class="reference external" href="https://wiki.centos.org/About/Product">CentOS documentation</a> for a schedule of when CentOS 6 will no longer be a supported operating system.</p>
+</div>
+<div class="section" id="debian-packages-upgrade">
+<h3>Debian packages upgrade<a class="headerlink" href="#debian-packages-upgrade" title="Permalink to this headline">¶</a></h3>
+<p>Due to package dependency changes, the Debian auto-updates will not bring you 4.1 automatically. Furthermore, our repository name changed to make it clearer that we now have a single repository for all the supported distributions.</p>
+<p>To upgrade from 4.0.x to 4.1 on Debian or Ubuntu, follow these commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span>
+<span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">list</span>
+<span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+<span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">dist</span><span class="o">-</span><span class="n">upgrade</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="debian-7-support-discontiuned">
+<h3>Debian 7 Support Discontiuned<a class="headerlink" href="#debian-7-support-discontiuned" title="Permalink to this headline">¶</a></h3>
+<p>perfSONAR 4.1 is NOT available for Debian 7 (and <a class="reference external" href="https://www.debian.org/News/2018/20180601">Debian 7 is EOL</a> anyways). If you wish to migrate an existing Debian 7 host to Debian 8 (Jessie) or Debian 9 (Stretch) you are advised to do it with the following steps:</p>
+<ol class="arabic simple">
+<li>Upgrade Debian 7 to Debian 8 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html">Jessie upgrade notes for i386 architecture</a>)</li>
+<li>Reboot (to get systemd running)</li>
+<li>Change perfSONAR repository from <code class="docutils literal notranslate"><span class="pre">perfsonar-wheezy-release</span></code> to <code class="docutils literal notranslate"><span class="pre">perfsonar-release</span></code></li>
+<li>Upgrade Debian 8 to Debian 9 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html">Stretch upgrade notes for i386 architecture</a>). Alternatively, you can just run <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">udpate;</span> <span class="pre">apt-get</span> <span class="pre">dist-upgrade</span></code> if you prefer to stay with Debian 8.</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Updating perfSONAR</a><ul>
+<li><a class="reference internal" href="#manually-updating-with-yum-or-apt">Manually Updating with Yum or APT</a></li>
+<li><a class="reference internal" href="#automatic-updates">Automatic Updates</a><ul>
+<li><a class="reference internal" href="#managing-automatic-updates-from-the-command-line">Managing Automatic Updates from the Command-Line</a></li>
+<li><a class="reference internal" href="#managing-automatic-updates-from-the-toolkit-web-interface">Managing Automatic Updates from the Toolkit Web Interface</a></li>
+<li><a class="reference internal" href="#disabling-automatic-updates-for-perfsonar-packages">Disabling Automatic Updates for perfSONAR Packages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#special-upgrade-notes">Special Upgrade Notes</a><ul>
+<li><a class="reference internal" href="#bwctl-support">BWCTL Support</a></li>
+<li><a class="reference internal" href="#psconfig-to-meshconfig-migration">pSConfig to MeshConfig Migration</a></li>
+<li><a class="reference internal" href="#centos-6-support-discontinued">CentOS 6 Support Discontinued</a></li>
+<li><a class="reference internal" href="#debian-packages-upgrade">Debian packages upgrade</a></li>
+<li><a class="reference internal" href="#debian-7-support-discontiuned">Debian 7 Support Discontiuned</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_migrate_centos7.html">Previous topic</a>
+                  <ul><li><a href="install_migrate_centos7.html" title="previous chapter">Migrating from CentOS 6 to CentOS 7</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_choose.html">Next topic</a>
+                      <ul><li><a href="manage_choose.html" title="next chapter">Choosing a Management Method</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_choose.html" title="Choosing a Management Method"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_migrate_centos7.html" title="Migrating from CentOS 6 to CentOS 7"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

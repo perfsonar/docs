@@ -1,0 +1,196 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PWA API &#8212; perfSONAR Toolkit 4.2.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pSConfig Template Variables" href="psconfig_templates_vars.html" />
+    <link rel="prev" title="Monitoring" href="pwa_monitoring.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="psconfig_templates_vars.html" title="pSConfig Template Variables"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pwa_monitoring.html" title="Monitoring"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pwa-api">
+<h1>PWA API<a class="headerlink" href="#pwa-api" title="Permalink to this headline">¶</a></h1>
+<p>PWA allows you to create / update meshconfig via REST API. You can use this to automate various configuration administration.</p>
+<div class="section" id="get-access-token">
+<h2>Get Access token<a class="headerlink" href="#get-access-token" title="Permalink to this headline">¶</a></h2>
+<p>Before you can start using the API, you need to obtain an access token.</p>
+<p>Login to your PWA server, and run something like following..</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ docker <span class="nb">exec</span> -it sca-auth bash
+$ /app/bin/auth.js issue --scopes <span class="s1">&#39;{&quot;pwa&quot;: [&quot;user&quot;]}&#39;</span> --username <span class="s1">&#39;username&#39;</span>
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3NjYS5pdS5lZHUvYXV0aCIsImlhdCI6MTQ4NzYyNzE2OS45NjMsInNjb3BlcyI6eyJtY2EiOlsidXNlciJdfSwic3ViIjowfQ.hmKr5GAhabMwSltdyq21__-JSGFXFyhxLB7HxhucXLMOslqVo2yOx4qZoLprBDKcCFnKQ7fQNY0fI9coi9ix40clci--p5iSD-w4gzXaxRm2wvldUDQeA...
+$ <span class="nb">exit</span>
+</pre></div>
+</div>
+<p>Copy the output from auth.js which is your access token. Store this on your server somewhere and make sure only you can access it (like chmod 600 <code class="docutils literal notranslate"><span class="pre">~/.pwa.token.jwt</span></code>)</p>
+</div>
+<div class="section" id="query-apis">
+<h2>Query APIs<a class="headerlink" href="#query-apis" title="Permalink to this headline">¶</a></h2>
+<p>You can now use most of the PWA REST APIs as documented here.</p>
+<blockquote>
+<div><a class="reference external" href="https://hostname/apidoc/">https://hostname/apidoc/</a></div></blockquote>
+<p>For example, to query for the hostgroups, you can do something like</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">jwt</span><span class="o">=</span><span class="sb">`</span>cat ~/.pwa.token.jwt<span class="sb">`</span>
+curl -k <span class="se">\</span>
+    -H <span class="s2">&quot;Authorization: Bearer </span><span class="nv">$jwt</span><span class="s2">&quot;</span> <span class="se">\</span>
+    -H <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+    -X POST https://&lt;hostname&gt;/api/pwa/hostgroup?limit<span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;hostgroups&quot;</span><span class="p">:[{</span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;5884d2c28c5b1e0021328cfa&quot;</span><span class="p">,</span><span class="nt">&quot;desc&quot;</span><span class="p">:</span><span class="s2">&quot;New Hostgroup&quot;</span><span class="p">,</span><span class="nt">&quot;host_filter&quot;</span><span class="p">:</span><span class="s2">&quot;return false; //select none&quot;</span><span class="p">,</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Test Bandwidth Group&quot;</span><span class="p">,</span><span class="nt">&quot;service_type&quot;</span><span class="p">:</span><span class="s2">&quot;bwctl&quot;</span><span class="p">,</span><span class="nt">&quot;update_date&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-31T01:29:02.949Z&quot;</span><span class="p">,</span><span class="nt">&quot;create_date&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-22T15:41:54.031Z&quot;</span><span class="p">,</span><span class="nt">&quot;admins&quot;</span><span class="p">:[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">],</span><span class="nt">&quot;hosts&quot;</span><span class="p">:[</span><span class="s2">&quot;588544c662b49f61a8cd84ab&quot;</span><span class="p">,</span><span class="s2">&quot;5886871bd4d83100216d158a&quot;</span><span class="p">,</span><span class="s2">&quot;58868aa2d4d83100216d15b3&quot;</span><span class="p">,</span><span class="s2">&quot;58869eea4208e70020963856&quot;</span><span class="p">,</span><span class="s2">&quot;58868945d4d83100216d159a&quot;</span><span class="p">,</span><span class="s2">&quot;5886895ed4d83100216d159e&quot;</span><span class="p">,</span><span class="s2">&quot;5886897cd4d83100216d15a2&quot;</span><span class="p">,</span><span class="s2">&quot;58868996d4d83100216d15a5&quot;</span><span class="p">,</span><span class="s2">&quot;588689afd4d83100216d15a8&quot;</span><span class="p">],</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;static&quot;</span><span class="p">,</span><span class="nt">&quot;__v&quot;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="nt">&quot;_canedit&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">}],</span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="mi">11</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">PWA API</a><ul>
+<li><a class="reference internal" href="#get-access-token">Get Access token</a></li>
+<li><a class="reference internal" href="#query-apis">Query APIs</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pwa_monitoring.html">Previous topic</a>
+                  <ul><li><a href="pwa_monitoring.html" title="previous chapter">Monitoring</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="psconfig_templates_vars.html">Next topic</a>
+                      <ul><li><a href="psconfig_templates_vars.html" title="next chapter">pSConfig Template Variables</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="psconfig_templates_vars.html" title="pSConfig Template Variables"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pwa_monitoring.html" title="Monitoring"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

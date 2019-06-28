@@ -1,0 +1,780 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Running the pSConfig MaDDash Agent &#8212; perfSONAR Toolkit 4.2.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pSConfig Web Admin" href="pwa.html" />
+    <link rel="prev" title="Running the pSConfig pScheduler Agent" href="psconfig_pscheduler_agent.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pwa.html" title="pSConfig Web Admin"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_pscheduler_agent.html" title="Running the pSConfig pScheduler Agent"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="running-the-psconfig-maddash-agent">
+<h1>Running the pSConfig MaDDash Agent<a class="headerlink" href="#running-the-psconfig-maddash-agent" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="psconfig-maddash-agent-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="psconfig-maddash-agent-s-role">
+<span id="psconfig-maddash-agent-intro-role"></span><h3>pSConfig MaDDash Agent’s Role<a class="headerlink" href="#psconfig-maddash-agent-s-role" title="Permalink to this headline">¶</a></h3>
+<p>The role of the <em>pSConfig MaDDash Agent</em> is to read <a class="reference internal" href="psconfig_intro.html"><span class="doc">pSConfig templates</span></a> and generate a set of grids to be displayed by MaDDash. It does this by updating the primary MaDDash configuration file, <code class="docutils literal notranslate"><span class="pre">maddash.yaml</span></code>. The diagram below describes this role:</p>
+<div class="figure align-center" id="id1">
+<img alt="_images/psconfig_maddash_agent-arch.png" src="_images/psconfig_maddash_agent-arch.png" />
+<p class="caption"><span class="caption-text"><em>A diagram showing the psconfig-maddash-agent reading templates from a number of sources and generating a MaDDash configuration file.</em></span></p>
+</div>
+<p>Performing this role is a multi-step process that includes the following:</p>
+<ol class="arabic simple">
+<li>Read the configured templates and optionally apply local modifications</li>
+<li>Determine how to display tasks</li>
+<li>Generate a <code class="docutils literal notranslate"><span class="pre">maddash.yaml</span></code> file</li>
+</ol>
+<p>These steps are completed anytime one of the following events occur:</p>
+<ul class="simple">
+<li>The agent starts</li>
+<li>Within a configurable amount of time of a change to a <em>local</em> configuration file (changes to remote templates are not detected). By default the value is <em>1 minute</em>.</li>
+<li>If no changes, on a configurable interval after the start of the last run. By default these steps are run every <em>1 hour</em>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See <a class="reference internal" href="#psconfig-maddash-agent-advanced"><span class="std std-ref">Advanced Configuration</span></a> for more detail on the configuration options mentioned above.</p>
+</div>
+<p>The remainder of this section describes each of these steps in greater detail.</p>
+</div>
+<div class="section" id="reading-and-modifying-templates">
+<span id="psconfig-maddash-agent-intro-read"></span><h3>Reading and Modifying Templates<a class="headerlink" href="#reading-and-modifying-templates" title="Permalink to this headline">¶</a></h3>
+<p>The agents first job is to read a set of <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">templates</span></a>. The templates to read are configured by the administrator of the agent. For information on how to configure templates see <a class="reference internal" href="#psconfig-maddash-agent-templates"><span class="std std-ref">Configuring Templates</span></a>.</p>
+<p>After reading a template, an agent is also capable of performing local modifications. See <a class="reference internal" href="#psconfig-maddash-agent-modify"><span class="std std-ref">Modifying Templates</span></a> for more details.</p>
+</div>
+<div class="section" id="determining-how-to-display-tasks">
+<span id="psconfig-maddash-agent-intro-match"></span><h3>Determining How to Display Tasks<a class="headerlink" href="#determining-how-to-display-tasks" title="Permalink to this headline">¶</a></h3>
+<p>After reading the templates, the agent needs to decide how to display the task topology in MaDDash. This decision includes:</p>
+<ul class="simple">
+<li>Selecting which tasks to display</li>
+<li>Selecting how to analyze results</li>
+<li>Selecting how to visualize results</li>
+<li>Setting custom thresholds and other parameters</li>
+</ul>
+<p>In <a class="reference internal" href="#psconfig-maddash-agent-grids"><span class="std std-ref">Configuring Grids</span></a> the process of defining how to display the tasks is detailed.</p>
+</div>
+<div class="section" id="generating-the-maddash-yaml-file">
+<span id="psconfig-maddash-agent-intro-generate"></span><h3>Generating the <code class="docutils literal notranslate"><span class="pre">maddash.yaml</span></code> file<a class="headerlink" href="#generating-the-maddash-yaml-file" title="Permalink to this headline">¶</a></h3>
+<p>After determining what to display, the agent outputs the result to <code class="docutils literal notranslate"><span class="pre">/etc/maddash/maddash-server/maddash.yaml</span></code> by default. At that point, MaDDash takes over and will detect the change within 60 seconds by default. Shortly thereafter visiting the MaDDash web interface should show the changes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The agent runs as the <em>maddash</em> user since this account owns the <code class="docutils literal notranslate"><span class="pre">maddash.yaml</span></code> file. This is contrast to many other perfsonar services that run as the <em>perfsonar</em> user or a user named for the component. This also impacts the owner and location of log files as detailed in <a class="reference internal" href="#psconfig-maddash-agent-troubleshoot-logs"><span class="std std-ref">Reading the Logs</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="installation">
+<span id="psconfig-maddash-agent-install"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-the-standalone-package">
+<span id="psconfig-maddash-agent-standalone"></span><h3>Installing the Standalone Package<a class="headerlink" href="#installing-the-standalone-package" title="Permalink to this headline">¶</a></h3>
+<p>The pSConfig MaDDash agent is installed with the package <code class="docutils literal notranslate"><span class="pre">perfsonar-psconfig-maddash</span></code>. You can run the following commands to install it:</p>
+<blockquote>
+<div><p><em>CentOS</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="installing-as-part-of-a-bundle">
+<span id="psconfig-maddash-agent-bundle"></span><h3>Installing as Part of a Bundle<a class="headerlink" href="#installing-as-part-of-a-bundle" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">perfsonar-psconfig-maddash</span></code> is included in the following <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR bundles</span></a>:</p>
+<ul class="simple">
+<li><em>perfsonar-centralmanagement</em></li>
+</ul>
+</div>
+</div>
+<div class="section" id="running-psconfig-maddash-agent">
+<span id="psconfig-maddash-agent-run"></span><h2>Running <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code><a class="headerlink" href="#running-psconfig-maddash-agent" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="starting-psconfig-maddash-agent">
+<span id="psconfig-maddash-agent-run-start"></span><h3>Starting <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code><a class="headerlink" href="#starting-psconfig-maddash-agent" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span><span class="o">-</span><span class="n">agent</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="stopping-psconfig-maddash-agent">
+<span id="psconfig-maddash-agent-run-stop"></span><h3>Stopping <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code><a class="headerlink" href="#stopping-psconfig-maddash-agent" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">stop</span> <span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span><span class="o">-</span><span class="n">agent</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="restarting-psconfig-maddash-agent">
+<span id="psconfig-maddash-agent-run-restart"></span><h3>Restarting <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code><a class="headerlink" href="#restarting-psconfig-maddash-agent" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span><span class="o">-</span><span class="n">agent</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="checking-the-status-of-psconfig-maddash-agent">
+<span id="psconfig-maddash-agent-run-status"></span><h3>Checking the status of <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code><a class="headerlink" href="#checking-the-status-of-psconfig-maddash-agent" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">status</span> <span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span><span class="o">-</span><span class="n">agent</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuring-templates">
+<span id="psconfig-maddash-agent-templates"></span><h2>Configuring Templates<a class="headerlink" href="#configuring-templates" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration-basics">
+<span id="psconfig-maddash-agent-templates-basics"></span><h3>Configuration Basics<a class="headerlink" href="#configuration-basics" title="Permalink to this headline">¶</a></h3>
+<p>In order for the agent to configure MaDDash, it must first be configured to read one or more templates. There are multiple ways to add a template depending on its location relative to the host system of the agent. These include:</p>
+<ol class="arabic simple">
+<li>Configuring <em>remote</em> templates  by supplying a URL and desired options to the agent. This is most commonly done using the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command. See <a class="reference internal" href="#psconfig-maddash-agent-templates-remote"><span class="std std-ref">Remote Templates</span></a> for details.</li>
+<li>Configuring <em>local</em> templates that live on the agent’s filesystem either using the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command or by copying the template files to a dedicated directory whose contents are automatically read by the agent. See <a class="reference internal" href="#psconfig-maddash-agent-templates-local"><span class="std std-ref">Local Templates</span></a> for details.</li>
+</ol>
+</div>
+<div class="section" id="remote-templates">
+<span id="psconfig-maddash-agent-templates-remote"></span><h3>Remote Templates<a class="headerlink" href="#remote-templates" title="Permalink to this headline">¶</a></h3>
+<p>The primary way to add, list, and delete the remote templates read by the agent is with the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command simply edits the <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/psconfig/maddash-agent.json</span></code> file. For most users it is recommended to use the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command as opposed to editing the file directly as it is less prone to syntax errors.</p>
+</div>
+<p>As an example let’s say we have a pSConfig template at the URL <code class="docutils literal notranslate"><span class="pre">https://10.0.0.1/example.json</span></code>. The agent can be configured to read the template by running the following command <strong>as a root user</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="n">add</span> <span class="s2">&quot;https://10.0.0.1/example.json&quot;</span>
+</pre></div>
+</div>
+<p>The above command will add the new template to the agent. The agent should begin reading the template within 60 seconds of the change if using default settings (i.e. no agent restart required).</p>
+<p>You may also provide the command with additional processing instructions. To see the full set of options available run the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unlike the <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">pSConfig pScheduler Agent</span></a>, the MaDDash agent will use archive definitions from templates with no extra options like <code class="docutils literal notranslate"><span class="pre">--configure-archives</span></code>. This is because MaDDash ultimately just uses the archives for <em>reading</em> data as opposed to <em>writing</em> results. Also, the agent would not be particularly useful otherwise since you cannot display results if you do not have them.</p>
+</div>
+<p>In addition to adding remote templates, you may also view them. The following command lists the remote templates in use by the agent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="nb">list</span>
+</pre></div>
+</div>
+<p>The above command returns a list of JSON objects containing the template URL and any options set.</p>
+<p>Finally, to remove our example remote template we can run the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">delete</span></code> command <strong>as a root user</strong> as shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="n">delete</span> <span class="s2">&quot;https://10.0.0.1/example.json&quot;</span>
+</pre></div>
+</div>
+<p>The command accepts only a URL and will remove the agent’s pointer to that template. Within 60 seconds of executing that command, the agent will run and instruct MaDDash to cease display of any tasks from the removed template.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command is also the command used by the <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">pScheduler agent</span></a> to manage remote templates. If you have both agents installed on the same system, then any <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command will affect both agents by default. If you’d only like a command to apply to the MaDDash agent then add the <code class="docutils literal notranslate"><span class="pre">--agent</span> <span class="pre">maddash</span></code> option. Run <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">--help</span></code> for full details.</p>
+</div>
+</div>
+<div class="section" id="local-templates">
+<span id="psconfig-maddash-agent-templates-local"></span><h3>Local Templates<a class="headerlink" href="#local-templates" title="Permalink to this headline">¶</a></h3>
+<p>The agent can read templates from the local filesystem. One way to do this is by giving the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command either a URL beginning with <code class="docutils literal notranslate"><span class="pre">file://</span></code> or an absolute path to the file on the filesystem. An example command is below where <code class="docutils literal notranslate"><span class="pre">/path/to/template.json</span></code> is the example path to the template file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="n">add</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>Everything about the command works the same with a file path as it would with a http/https URL. See <a class="reference internal" href="#psconfig-maddash-agent-templates-remote"><span class="std std-ref">Remote Templates</span></a> for more details on this command.</p>
+<p>A second way you can add a local template is to copy it into the <em>template include directory</em>. By default this is located at <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/psconfig/maddash.d/</span></code>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">maddash</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>Any file ending with <code class="docutils literal notranslate"><span class="pre">.json</span></code> in this directory will get read by the agent automatically. Some important notes about including files in this manner:</p>
+<ul class="simple">
+<li>Adding a new file, removing a file or updating a file within the template include directory will get detected automatically by the agent within 60 seconds of the change (i.e. no need to restart the agent).</li>
+<li>Files are read every 60 minutes regardless of changes when the agent checks on the state of the grids it has created in MaDDash.</li>
+<li>The agent will follow symlinks if you use those instead of copying the file directly, though it may affect the agent’s ability to detect changes (i.e. you may have to wait up to 60 minutes for the agent to see the changes).</li>
+<li>The agent ignores any files that do not end in <code class="docutils literal notranslate"><span class="pre">.json</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="modifying-templates">
+<span id="psconfig-maddash-agent-modify"></span><h2>Modifying Templates<a class="headerlink" href="#modifying-templates" title="Permalink to this headline">¶</a></h2>
+<p>Template modification in the MaDDash agent works exactly the same as in the pScheduler agent. They both use the same commands and directories to perform these operations. See <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify"><span class="std std-ref">Modifying Templates</span></a> in the pScheduler agent document for full details.</p>
+</div>
+<div class="section" id="configuring-grids">
+<span id="psconfig-maddash-agent-grids"></span><h2>Configuring Grids<a class="headerlink" href="#configuring-grids" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-a-grid">
+<span id="psconfig-maddash-agent-grids-intro"></span><h3>What is a grid?<a class="headerlink" href="#what-is-a-grid" title="Permalink to this headline">¶</a></h3>
+<p>After reading the templates, the agent needs to decide how to display the results produced by the task topology in MaDDash. Displaying the results requires specific instructions to be given to the agent with regards to which tasks to display and how to display them. By default the agent knows nothing about specific test types nor what to tell MaDDash to do with them. In order for it to translate a task to someting displayable it needs additional information.</p>
+<p>First of all it needs to associate a task from the template with a <strong>check</strong>. A <em>check</em> is an action to perform that generates a result for MaDDash to display. It consists of a command to run and additional information such as a URL to a graph. Usually this command takes the form of a nagios command since that is what MaDDash knows how to run. Building these commands manually is cumbersome so the pSConfig MaDDash agent ships with a number of <strong>check plugins</strong>. These plugins define the types of tasks they understand, the types of archives they know how to read  and ultimately use this information map the task parameters into a command-line template that can be stored in <code class="docutils literal notranslate"><span class="pre">maddash.yaml</span></code>. Note that the agent DOES NOT run this command, it simply builds the command template string for MaDDash to run.</p>
+<p>The <em>check</em> also needs to be associated with a <strong>visualization</strong>. A <em>visualization</em> is a URL that points at more information about a task’s result. More specifically this is the graph displayed when a cell is clicked in the MaDDash web interface. This URL may also contain parameters needed to grab the results of the test. Similar to checks, the agent includes <strong>visualization plugins</strong> that build the URL based on the contents of a task.</p>
+<p>Finally, these two concepts are brought together into a <strong>grid</strong>. A <em>grid</em> is the unit of configuration that instructs the agent how to convert pSConfig template tasks into something MaDDash can display. It consists of a check plugin, a visualization plugin and any desired customizations allowed by each. Potential customizations include task selection criteria, check thresholds and many other parameters. The name grid stems from the fact that it ultimately translates a pSConfig <em>task</em> object into the grid representation fundamental to MaDDash.</p>
+<p>This is a fair amount of terminology but the MaDDash agent provides configuration utilities that hopefully allows you to ignore or explore as much detail as you want. The remainder of this section is about how to configure grids with these utilities.</p>
+</div>
+<div class="section" id="introduction-to-the-psconfig-maddash-grid-command">
+<span id="psconfig-maddash-agent-grids-cmd"></span><h3>Introduction to the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span></code> command<a class="headerlink" href="#introduction-to-the-psconfig-maddash-grid-command" title="Permalink to this headline">¶</a></h3>
+<p>Grids are configured using the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span></code> command. By default, your agent comes pre-configured with some common grid definitions. You can view them with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="nb">list</span>
+</pre></div>
+</div>
+<p>This should lead to the following output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;default_ping_loss&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;priority&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;group&quot;</span> <span class="p">:</span> <span class="s2">&quot;ping_loss&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;level&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;check&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-nagios-ping-loss&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;visualization&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-graphs&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;display-name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Ping Loss&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;default_trace&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;priority&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;group&quot;</span> <span class="p">:</span> <span class="s2">&quot;trace&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;level&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;check&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-nagios-traceroute&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;visualization&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-traceroute-viewer&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;display-name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Path Count&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;default_loss&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;priority&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;group&quot;</span> <span class="p">:</span> <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;level&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;check&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-nagios-loss&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;visualization&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-graphs&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;display-name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Loss&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;default_throughput&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;priority&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;group&quot;</span> <span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;level&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;check&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-nagios-throughput&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;visualization&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-graphs&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;display-name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Throughput&quot;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Each of these grids do the following:</p>
+<ul class="simple">
+<li><strong>default_ping_loss</strong> - Creates grids of all <em>rtt</em> tasks that alarm on the packet loss values using a default set of thresholds.</li>
+<li><strong>default_trace</strong> - Creates grids of all <em>trace</em> tasks that alarm on the number of unique paths seen using a default set of thresholds.</li>
+<li><strong>default_loss</strong> - Creates grids of all <em>latency</em> and <em>latencybg</em> tasks that alarm on the packet loss using a default set of thresholds.</li>
+<li><strong>default_throughput</strong> - Creates grids of all <em>throughput</em> tasks that alarm on the throughput values reported using a default set of thresholds.</li>
+</ul>
+<p>If these grids fit your needs, you may not need to do any further configuration. You can remove any of these grids with a the command <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">delete</span> <span class="pre">--name</span> <span class="pre">NAME</span></code> where <code class="docutils literal notranslate"><span class="pre">NAME</span></code> is the name of the grid to delete. An example set of commands that delete all of the default grids is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">delete</span> <span class="o">--</span><span class="n">name</span> <span class="n">default_ping_loss</span>
+<span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">delete</span> <span class="o">--</span><span class="n">name</span> <span class="n">default_trace</span>
+<span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">delete</span> <span class="o">--</span><span class="n">name</span> <span class="n">default_loss</span>
+<span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">delete</span> <span class="o">--</span><span class="n">name</span> <span class="n">default_throughput</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you leave these grids in place and then add your own grids using the same check plugin, make sure you set the <a class="reference internal" href="#psconfig-maddash-agent-grids-prios"><span class="std std-ref">priority</span></a> otherwise you may end up with duplicate grids in MaDDash.</p>
+</div>
+<p>If you’d like to add your own grid(s) then you can use the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></code> command. The command requires three parameters as shown in the example below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">add</span> <span class="o">--</span><span class="n">name</span> <span class="n">example_loss</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="nb">type</span> <span class="n">ps</span><span class="o">-</span><span class="n">nagios</span><span class="o">-</span><span class="n">loss</span> <span class="o">--</span><span class="n">visualization</span><span class="o">-</span><span class="nb">type</span> <span class="n">ps</span><span class="o">-</span><span class="n">graphs</span>
+</pre></div>
+</div>
+<p>The meaning of each parameters is as follows:</p>
+<ul class="simple">
+<li>The <em>–name</em> is used to identify the check if later modifying it. Only letters, numbers, hyphens(-), colons(:) and periods (.) are allowed in the name (no whitespace or other specical characters). This value  will be used in the name displayed if the <code class="docutils literal notranslate"><span class="pre">--display-name</span></code> option is not provided. In the example the check will be referred to as <code class="docutils literal notranslate"><span class="pre">example_loss</span></code>.</li>
+<li>The <em>–check-type</em> indicates the check plugin to use. The <code class="docutils literal notranslate"><span class="pre">ps-nagios-loss</span></code> plugin is selected in the example. That is a check that by default queries an esmond server for loss data from tasks with test type <em>latency</em> or <em>latencybg</em>. If you specify an invalid plugin the tool gives an error and lists the valid plugins. See <a class="reference internal" href="#psconfig-maddash-agent-grids-checks"><span class="std std-ref">Determining Check Plugins Installed</span></a> for determining the list of plugins installed and how to get more info.</li>
+<li>The <em>–visualization-type</em> indicates the visualization plugin to use. In the example <code class="docutils literal notranslate"><span class="pre">ps-graphs</span></code> is used which is the standard perfSONAR graphs that can query esmond for throughput, latency, and loss information. If you specify an invalid plugin the tool gives an error and lists the valid plugins. See <a class="reference internal" href="#psconfig-maddash-agent-grids-viz"><span class="std std-ref">Determining Visualization Plugins Installed</span></a> for determining the list of plugins installed and how to get more info.</li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></code> will not only add new grids but modify existing ones as well. Simply refer to the existing grid by name and provide the remainder of the options just like you’re adding it for the first time. The existing grid will be completely replaced with your new definition.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">edit</span></code> command will modify existing grids as well, but does not require every option to be specified at the command-line for it to be maintained. For example, if we want to set the priority (see <a class="reference internal" href="#psconfig-maddash-agent-grids-prios"><span class="std std-ref">Adding Multiple Grids with the Same Check Type</span></a>) of the <code class="docutils literal notranslate"><span class="pre">example_loss</span></code> grid we added in the last example, then we can run  the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">edit</span> <span class="o">--</span><span class="n">name</span> <span class="n">example_loss</span> <span class="o">--</span><span class="n">priority</span><span class="o">-</span><span class="n">group</span> <span class="n">loss</span> <span class="o">--</span><span class="n">priority</span><span class="o">-</span><span class="n">level</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>This covers the basics of the <code class="docutils literal notranslate"><span class="pre">maddash-grid</span></code> command, see the remaining sections for more information on working with grids.</p>
+</div>
+<div class="section" id="determining-check-plugins-installed">
+<span id="psconfig-maddash-agent-grids-checks"></span><h3>Determining Check Plugins Installed<a class="headerlink" href="#determining-check-plugins-installed" title="Permalink to this headline">¶</a></h3>
+<p>You can list all the check plugins installed on your host with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">check</span><span class="o">-</span><span class="n">plugins</span>
+</pre></div>
+</div>
+<p>It will give a list of plugins that can be passed to the <code class="docutils literal notranslate"><span class="pre">--check-type</span></code> option of the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span></code> command.</p>
+<p>If you would further like to know what the default values used for thresholds and check frequency you can give the above command the <code class="docutils literal notranslate"><span class="pre">--defaults</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">check</span><span class="o">-</span><span class="n">plugins</span> <span class="o">--</span><span class="n">defaults</span>
+</pre></div>
+</div>
+<p>This will spit out the values for every single plugin as a JSON object. If you would like just the output of a single check you can run the following where TYPE is the name of the check plugin to view (e.g. <code class="docutils literal notranslate"><span class="pre">ps-nagios-loss</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">check</span><span class="o">-</span><span class="n">plugins</span> <span class="o">--</span><span class="n">defaults</span> <span class="o">--</span><span class="nb">type</span> <span class="n">TYPE</span>
+</pre></div>
+</div>
+<p>You will see some subset of the following values displayed in a JSON object for each check:</p>
+<ul class="simple">
+<li><em>critical-threshold</em> - The threshold at which a critical alarm is raised. The units are check specific.</li>
+<li><em>warning-threshold</em> - The threshold at which a warning alarm is raised. The units are check specific.</li>
+<li><em>check-interval</em> - The amount of time as an ISO8601 to wait in between runs of a check. For example, if you want the dashboard to check a value every 4 hours, this would get set to <code class="docutils literal notranslate"><span class="pre">PT4H</span></code>.</li>
+<li><em>retry-attempts</em> - When a state change is detected (e.g. a check that was previously OK crosses the critical threshold), the number of times to retry before changing that state in the dashboard.</li>
+<li><em>retry-interval</em> - The amount of time as an ISO8601 to wait in between retry attempts. If not specified, <em>check-interval</em> is used.</li>
+<li><em>timeout</em> - The amount of time as an ISO8601 to wait for a check to complete before labelling the result with an UNKNOWN state.</li>
+<li><em>params</em> - This is a check-specific object that contains parameters specific to the check in question that can be manipulated. An example might include the amount of data to query each time a check is run or additional filters for the result.</li>
+<li><em>report-yaml-file</em> - This property is only for advanced users. The path to  a YAML file defining that can be inserted into the maddash.yaml <code class="docutils literal notranslate"><span class="pre">reports</span></code> section that defines pattens that generate the reports seen above grids and used to generate email notifications.</li>
+</ul>
+<p>For information on manipulating these values see <a class="reference internal" href="#psconfig-maddash-agent-grids-thresholds"><span class="std std-ref">Adjusting Thresholds and Other Parameters</span></a>.</p>
+<p>Finally, if you would like even more detail about a particular plugin such as the types of tests supported, default paths to commands run, etc then you can run the following where TYPE is the name of the check plugin to view (e.g. <code class="docutils literal notranslate"><span class="pre">ps-nagios-loss</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">check</span><span class="o">-</span><span class="n">plugins</span> <span class="o">--</span><span class="n">detail</span> <span class="o">--</span><span class="nb">type</span> <span class="n">TYPE</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="determining-visualization-plugins-installed">
+<span id="psconfig-maddash-agent-grids-viz"></span><h3>Determining Visualization Plugins Installed<a class="headerlink" href="#determining-visualization-plugins-installed" title="Permalink to this headline">¶</a></h3>
+<p>You can list all the visualization plugins installed on your host with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">viz</span><span class="o">-</span><span class="n">plugins</span>
+</pre></div>
+</div>
+<p>It will give a list of plugins that can be passed to the <code class="docutils literal notranslate"><span class="pre">--visualization-type</span></code> option of the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span></code> command. If you would like further detail about a particular plugin you can run the following where TYPE is the name of the visualization plugin to view (e.g. <code class="docutils literal notranslate"><span class="pre">ps-graphs</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">viz</span><span class="o">-</span><span class="n">plugins</span> <span class="o">--</span><span class="nb">type</span> <span class="n">TYPE</span> <span class="o">--</span><span class="n">detail</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adjusting-thresholds-and-other-parameters">
+<span id="psconfig-maddash-agent-grids-thresholds"></span><h3>Adjusting Thresholds and Other Parameters<a class="headerlink" href="#adjusting-thresholds-and-other-parameters" title="Permalink to this headline">¶</a></h3>
+<p>For many cases the default settings will be fine, but it is likely that at some point you may want to make adjustments. One of the most common changes to make is adjusting the thresholds used to alarm on values. You can adjust these by using the <code class="docutils literal notranslate"><span class="pre">--check-critical-threshold</span></code> and <code class="docutils literal notranslate"><span class="pre">--check-warning-threshold</span></code> of <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></code> or <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">edit</span></code> commands. The values accepted by these are check dependent.</p>
+<p>For example, the <code class="docutils literal notranslate"><span class="pre">default_throughput</span></code> grid defined in the file that ships with the agent defines a check of type <code class="docutils literal notranslate"><span class="pre">ps-nagios-throughput</span></code>. This check type accepts thresholds in gigabits per second (Gbps). If we run the following we see defaults of <code class="docutils literal notranslate"><span class="pre">.5</span></code> (.5 Gbps = ~500 Mbps) for the critical threshold and 1 (i.e. 1Gbps) for the warning:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">check</span><span class="o">-</span><span class="n">plugins</span> <span class="o">--</span><span class="n">defaults</span> <span class="o">--</span><span class="nb">type</span> <span class="n">ps</span><span class="o">-</span><span class="n">nagios</span><span class="o">-</span><span class="n">throughput</span>
+</pre></div>
+</div>
+<p>Example Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span><span class="o">-</span><span class="n">nagios</span><span class="o">-</span><span class="n">throughput</span><span class="p">:</span>
+<span class="p">{</span>
+   <span class="s2">&quot;critical-threshold&quot;</span> <span class="p">:</span> <span class="s2">&quot;.5&quot;</span><span class="p">,</span>
+   <span class="o">...</span>
+   <span class="s2">&quot;warning-threshold&quot;</span> <span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+   <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If we’d like to increase these thresholds in our grid named <code class="docutils literal notranslate"><span class="pre">default_throughput</span></code> to 6Gbps and 8Gbps respectively then we can run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">edit</span> <span class="o">--</span><span class="n">name</span> <span class="n">default_throughput</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="n">critical</span><span class="o">-</span><span class="n">threshold</span> <span class="mi">6</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="n">warning</span><span class="o">-</span><span class="n">threshold</span> <span class="mi">8</span>
+</pre></div>
+</div>
+<p>Alternatively, let’s say we want to update the default to now look at data over a wider time range. There is a check-specific parameter called <code class="docutils literal notranslate"><span class="pre">time-range</span></code> supported by <code class="docutils literal notranslate"><span class="pre">ps-nagios-throughput</span></code> that allows us to set the amount of data looked at by a check. This option is specified in seconds and defaults to 86400 (i.e. 1 day). We can change this to 1 week (604800 seconds) with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">edit</span> <span class="o">--</span><span class="n">name</span> <span class="n">default_throughput</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="n">params</span> <span class="s1">&#39;{&quot;time-range&quot;: 604800}&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">time-range</span></code> is not guaranteed to be supported by all checks since it is check specific and may not apply. Most of the checks beginning with the <code class="docutils literal notranslate"><span class="pre">ps-</span></code> prefix support it, but see <a class="reference internal" href="#psconfig-maddash-agent-grids-checks"><span class="std std-ref">Determining Check Plugins Installed</span></a> for details on determining what values a check supports.</p>
+</div>
+<p>Note that we have to specify the check-specific value as a JSON string. There are numerous other options you can control, see <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-grid</span> <span class="pre">--help</span></code> and the remaining sections for more details.</p>
+</div>
+<div class="section" id="adding-multiple-grids-with-the-same-check-type">
+<span id="psconfig-maddash-agent-grids-prios"></span><h3>Adding Multiple Grids with the Same Check Type<a class="headerlink" href="#adding-multiple-grids-with-the-same-check-type" title="Permalink to this headline">¶</a></h3>
+<p>It is often the case that you want to apply different thresholds and/or parameters to tasks of the same type. For example, consider the following <code class="docutils literal notranslate"><span class="pre">tasks</span></code> section of a template that describes three throughput tasks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;task_low&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;group_low&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;test_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;schedule_tput&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;task_medium&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;group_medium&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;test_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;schedule_tput&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;task_high&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;group_high&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;test_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;schedule_tput&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Now let’s assume as a starting point we have the default <em>ps-nagios-throughput</em> grid defined that ships with the agent. We can view just the <em>ps-nagios-throughput</em> grids with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="nb">list</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="nb">type</span> <span class="n">ps</span><span class="o">-</span><span class="n">nagios</span><span class="o">-</span><span class="n">throughput</span>
+</pre></div>
+</div>
+<p>Assuming we have the default, the output will look like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;default_throughput&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;priority&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;level&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s2">&quot;group&quot;</span> <span class="p">:</span> <span class="s2">&quot;throughput&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;check&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-nagios-throughput&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;visualization&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;ps-graphs&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;display-name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Throughput&quot;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Let’s say that we want <code class="docutils literal notranslate"><span class="pre">task_medium</span></code> to use this grid, but we want to define different thresholds for <code class="docutils literal notranslate"><span class="pre">task_low</span></code> and <code class="docutils literal notranslate"><span class="pre">task_high</span></code>. We need to add two new grids that have the following properties:</p>
+<ol class="arabic simple">
+<li>A <strong>task selector</strong> defined that tells the grid to only select tasks with certain features, in this case a name.</li>
+<li><strong>Priorities</strong> defined that indicate that only one grid from a group of grids should be matched to each task so we don’t end-up with MaDDash drawing two grids of the same type for the same task.</li>
+</ol>
+<p>Let’s look at the commands we’ll use to add these grids then break them down:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">add</span> <span class="o">--</span><span class="n">name</span> <span class="n">low_throughput</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="nb">type</span> <span class="n">ps</span><span class="o">-</span><span class="n">nagios</span><span class="o">-</span><span class="n">throughput</span> <span class="o">--</span><span class="n">visualization</span><span class="o">-</span><span class="nb">type</span> <span class="n">ps</span><span class="o">-</span><span class="n">graphs</span> <span class="o">--</span><span class="n">display</span><span class="o">-</span><span class="n">name</span> <span class="n">Throughput</span> <span class="o">--</span><span class="n">priority</span><span class="o">-</span><span class="n">group</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">priority</span><span class="o">-</span><span class="n">level</span> <span class="mi">2</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="n">critical</span><span class="o">-</span><span class="n">threshold</span> <span class="o">.</span><span class="mi">1</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="n">warning</span><span class="o">-</span><span class="n">threshold</span> <span class="o">.</span><span class="mi">5</span> <span class="o">--</span><span class="n">selector</span><span class="o">-</span><span class="n">task</span><span class="o">-</span><span class="n">name</span> <span class="n">task_low</span>
+
+<span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">grid</span> <span class="n">add</span> <span class="o">--</span><span class="n">name</span> <span class="n">high_throughput</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="nb">type</span> <span class="n">ps</span><span class="o">-</span><span class="n">nagios</span><span class="o">-</span><span class="n">throughput</span> <span class="o">--</span><span class="n">visualization</span><span class="o">-</span><span class="nb">type</span> <span class="n">ps</span><span class="o">-</span><span class="n">graphs</span> <span class="o">--</span><span class="n">display</span><span class="o">-</span><span class="n">name</span> <span class="n">Throughput</span> <span class="o">--</span><span class="n">priority</span><span class="o">-</span><span class="n">group</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">priority</span><span class="o">-</span><span class="n">level</span> <span class="mi">2</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="n">critical</span><span class="o">-</span><span class="n">threshold</span> <span class="mi">6</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="n">warning</span><span class="o">-</span><span class="n">threshold</span> <span class="mi">8</span> <span class="o">--</span><span class="n">selector</span><span class="o">-</span><span class="n">task</span><span class="o">-</span><span class="n">name</span> <span class="n">task_high</span>
+</pre></div>
+</div>
+<p>Looking first at the selection criteria, the above examples add the <code class="docutils literal notranslate"><span class="pre">--selector-task-name</span></code> to the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></code> command with the name of the task from the template we want to match. There are other selector options based on the archive type or a custom JQ script, see <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">--help</span></code> for more details on those.</p>
+<p>The priorities are slightly more complicated and are handled with the <code class="docutils literal notranslate"><span class="pre">--priority-group</span></code> and <code class="docutils literal notranslate"><span class="pre">--priority-level</span></code> options. To better understand, let’s look at what would happen with no priorities:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">tasks_low</span></code> is a test of type throughput, so it would match the <code class="docutils literal notranslate"><span class="pre">default_throughput</span></code> archive and MaDDash would create a grid for that. Since we also added a second grid called <code class="docutils literal notranslate"><span class="pre">low_throughput</span></code> which requires a test of type throughput and a task of name <code class="docutils literal notranslate"><span class="pre">task_low</span></code> which also matches, then a <em>second</em> grid would be drawn by MaDDash.</li>
+<li>The fate of <code class="docutils literal notranslate"><span class="pre">tasks_high</span></code> would be similar to <code class="docutils literal notranslate"><span class="pre">tasks_low</span></code>, except the second grid drawn would be the one defined by <code class="docutils literal notranslate"><span class="pre">high_throughput</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">tasks_medium</span></code> would only match <code class="docutils literal notranslate"><span class="pre">default_throughput</span></code>, so it would be displayed as desired</li>
+</ul>
+<p>In the case of <code class="docutils literal notranslate"><span class="pre">tasks_low</span></code> and <code class="docutils literal notranslate"><span class="pre">tasks_high</span></code> we get an extra grid drawn by MaDDash if we don’t specify the priority. Priorities have two values: the <em>group</em> and the <em>level</em>. The group is a custom name, and only <strong>one</strong> MaDDash grid will be drawn for a task per priority group. We named our group <em>throughput</em> in this example. Within the priority group, the grid selected is the one matches the selection criteria AND has the <strong>highest</strong> priority of those that match. The <code class="docutils literal notranslate"><span class="pre">default_throughput</span></code> has a priority of 1 in our example. We set the priority level at 2 for our new grids. With this set, that means the grid with the  <code class="docutils literal notranslate"><span class="pre">--selector-task-name</span></code> option set has the higher priority, so it will be favored if it matches. Note that in our example the <code class="docutils literal notranslate"><span class="pre">--priority-level</span></code> is the same for both <code class="docutils literal notranslate"><span class="pre">low_throughput</span></code> and <code class="docutils literal notranslate"><span class="pre">high_throughput</span></code>, which is fine since it is impossible for a task to match both. If this were a case where we were using a different selection criteria that made it possible for multiple grids with the same priority match, then the first grid encountered will be used. This is not very deterministic so it is generally advised you avoid situations where it is possible for two grids in the same priority group and with the same priority level match the same task.</p>
+<p>The examples above show just changing the thresholds, but we can set any parameters in the new grid, just make sure the selectors and priorities are defined as desired.</p>
+</div>
+<div class="section" id="controlling-the-display-properties">
+<span id="psconfig-maddash-agent-grids-display"></span><h3>Controlling the Display Properties<a class="headerlink" href="#controlling-the-display-properties" title="Permalink to this headline">¶</a></h3>
+<p>The agent gives control over how the names of rows, columns, grids and dashboards are displayed in MaDDash. The first name generated is that of the <em>dashboard</em>. This is the name that gets displayed in the <em>Dashboards</em> pulldown menu of MaDDash and at the top of the screen when you select that menu item.  It is defined by a <code class="docutils literal notranslate"><span class="pre">_meta</span></code> property in the template itself called <code class="docutils literal notranslate"><span class="pre">display-name</span></code>. This name in question comes from a <code class="docutils literal notranslate"><span class="pre">_meta</span></code> object in the top-level of a template. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Dashboard&quot;</span>
+    <span class="p">},</span>
+
+    <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s2">&quot;tests&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s2">&quot;schedules&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+
+    <span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If this property is not defined then an auto-generated value will be used that is much uglier.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember that you can use <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-all"><span class="std std-ref">transform scripts</span></a> to have the agent modify the JSON including setting the <code class="docutils literal notranslate"><span class="pre">display-name</span></code> if one is not set in a remote template.</p>
+</div>
+<p>Similarly, the rows and columns use this same property, but defined in the <code class="docutils literal notranslate"><span class="pre">addressses</span></code> object of the template. If not specified the value of the <code class="docutils literal notranslate"><span class="pre">address</span></code> property will be used instead. The agent also supports the use of a <code class="docutils literal notranslate"><span class="pre">display-url</span></code> property that will be used to generate a hyperlink that can be visited by clicking on the hostname in a grid. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;10.0.0.1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Endpoint 1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;display-url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://10.0.0.1/toolkit&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;10.0.0.2&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Endpoint 2&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Finally the name displayed directly above a MaDDash grid comes from three components all separated by a hyphen (-). The first part of the name is the dashboard name as described above. The second part of the name comes from the <em>task</em> objects <code class="docutils literal notranslate"><span class="pre">display-name</span></code> property if defined. If not defined, the key used to label the task in the <code class="docutils literal notranslate"><span class="pre">tasks</span></code> section of the template is used with some minor formatting. An example of the <code class="docutils literal notranslate"><span class="pre">display-name</span></code> property is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;task_low&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;group_low&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;test_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;schedule_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Slow Testers&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;task_medium&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;group_medium&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;test_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;schedule_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Average Testers&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;task_high&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;group_high&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;test_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;schedule_tput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Fast Testers&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The final part of the grid name comes not from the template, but from the agent. It will either use the value given to the <code class="docutils literal notranslate"><span class="pre">--display-name</span></code> option when running <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">add</span></code> or the <code class="docutils literal notranslate"><span class="pre">--name</span></code> option if the former was not specified. The command <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span> <span class="pre">list</span></code> should show the current value of <code class="docutils literal notranslate"><span class="pre">display-name</span></code> for each grid.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<span id="psconfig-maddash-agent-troubleshoot"></span><h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="looking-at-the-last-run-with-psconfig-maddash-stats">
+<span id="psconfig-maddash-agent-troubleshoot-stats"></span><h3>Looking at the last run with <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-stats</span></code><a class="headerlink" href="#looking-at-the-last-run-with-psconfig-maddash-stats" title="Permalink to this headline">¶</a></h3>
+<p>One of the first steps to perform when debugging the pSConfig MaDDash agent is to get information about the last time the agent ran. A run in this context describes an instance when the agent downloaded all the templates it is configured to use, made any local modifications, matched task to configured grids and output the <code class="docutils literal notranslate"><span class="pre">maddash.yaml</span></code> file. As described in <a class="reference internal" href="#psconfig-maddash-agent-intro-role"><span class="std std-ref">pSConfig MaDDash Agent’s Role</span></a>, a run can be triggered by the passing of a set time interval (60 minutes by default) or a configuration file change.</p>
+<p>Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-stats</span></code> command. The command does not require any options and is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">stats</span>
+</pre></div>
+</div>
+<p>Below is an example of the successful output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Agent</span> <span class="n">Last</span> <span class="n">Run</span> <span class="n">Start</span> <span class="n">Time</span><span class="p">:</span> <span class="mi">2018</span><span class="o">/</span><span class="mi">04</span><span class="o">/</span><span class="mi">25</span> <span class="mi">15</span><span class="p">:</span><span class="mi">38</span><span class="p">:</span><span class="mi">48</span>
+<span class="n">Agent</span> <span class="n">Last</span> <span class="n">Run</span> <span class="n">End</span> <span class="n">Time</span><span class="p">:</span> <span class="mi">2018</span><span class="o">/</span><span class="mi">04</span><span class="o">/</span><span class="mi">25</span> <span class="mi">15</span><span class="p">:</span><span class="mi">38</span><span class="p">:</span><span class="mi">49</span>
+<span class="n">Agent</span> <span class="n">Last</span> <span class="n">Run</span> <span class="n">Process</span> <span class="n">ID</span> <span class="p">(</span><span class="n">PID</span><span class="p">):</span> <span class="mi">3751</span>
+<span class="n">Agent</span> <span class="n">Last</span> <span class="n">Run</span> <span class="n">Log</span> <span class="n">GUID</span><span class="p">:</span> <span class="n">BF30C416</span><span class="o">-</span><span class="mf">489E-11</span><span class="n">E8</span><span class="o">-</span><span class="mi">8</span><span class="n">BB6</span><span class="o">-</span><span class="mi">530</span><span class="n">A118410B6</span>
+<span class="n">Total</span> <span class="n">grids</span> <span class="n">managed</span> <span class="n">by</span> <span class="n">agent</span><span class="p">:</span> <span class="mi">8</span>
+<span class="n">From</span> <span class="n">include</span> <span class="n">files</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">maddash</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span><span class="p">:</span> <span class="mi">5</span>
+<span class="n">From</span> <span class="n">remote</span> <span class="n">definitions</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">json</span><span class="p">:</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>The output fields can be described as follows:</p>
+<ul class="simple">
+<li><strong>Agent Last Run Start Time</strong> is the time when the agent began its last complete run.</li>
+<li><strong>Agent Last Run End Time</strong> is the time when the last complete run ended.</li>
+<li><strong>Agent Last Run Process ID (PID)</strong> is the process ID of the agent at the time of its last complete run. This should only change if the agent is restarted.</li>
+<li><strong>Agent Last Run Log GUID</strong> is a globally unique ID used to identify a run in the logs. You can grep the <a class="reference internal" href="#psconfig-maddash-agent-troubleshoot-logs"><span class="std std-ref">log file</span></a> with this ID to get the information about a specific run.</li>
+<li><strong>Total grids managed by agent</strong> is the number of pSConfig <em>task</em> objects that match a grid configured by the agent from all input sources.</li>
+<li><strong>From include files</strong> is the number of pSConfig <em>task</em> objects that match a grid configured by the agent that come from templates in the template include directory. Directly underneath that is a breakdown of the task count by the file from which they originate.</li>
+<li><strong>From remote definitions</strong> is a count of the number of pSConfig <em>task</em> objects that match a grid configured by the agent that come from URLs added using the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span></code> command. Underneath is a breakdown of the task count by URL.</li>
+</ul>
+<p>This command is useful as a quick health check of the agent. It can answer questions like:</p>
+<ul class="simple">
+<li>When did my agent last run?</li>
+<li>What templates is it using?</li>
+<li>Is it building the expected set of grids?</li>
+</ul>
+<p>Also, if it throws an error that can be useful information too. In particular the output below is a good sign that your agent has never ran since it has not created the necessary log file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Unable</span> <span class="n">to</span> <span class="nb">open</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">maddash</span><span class="o">/</span><span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">log</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span>
+</pre></div>
+</div>
+<p>This script may not give all the answers, but will hopefully get things started when debugging unexpected behavior of the agent.</p>
+</div>
+<div class="section" id="reading-the-logs">
+<span id="psconfig-maddash-agent-troubleshoot-logs"></span><h3>Reading the Logs<a class="headerlink" href="#reading-the-logs" title="Permalink to this headline">¶</a></h3>
+<p>If you need to debug beyond what the utilities above provide from the logs, then you can manually look at the log files. There us one primary log used by the agent:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The <strong>agent log</strong> lives at <code class="docutils literal notranslate"><span class="pre">/var/log/maddash/psconfig-maddash-agent.log</span></code> and tracks basic information about agent activity and any errors encountered. A symlink can also be found at <code class="docutils literal notranslate"><span class="pre">/var/log/perfsonar/psconfig-maddash-agent.log</span></code> for convenience.</li>
+</ul>
+</div></blockquote>
+<p>The log is designed to by highly parsable with fields in the form of <code class="docutils literal notranslate"><span class="pre">key=value</span></code> separated by whitespace. Every line has a <code class="docutils literal notranslate"><span class="pre">guid=</span></code> field with an ID unique to the run of an agent. As an example, the GUID can be used for filtering log lines with <code class="docutils literal notranslate"><span class="pre">grep</span></code> or similar tools.  It is often easiest to run the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">mddash-stats</span></code> <a class="reference internal" href="#psconfig-maddash-agent-troubleshoot-stats"><span class="std std-ref">command</span></a> to get the GUID of the last run as a launching point to parse the log. For example, looking at the example output from <a class="reference internal" href="#psconfig-maddash-agent-troubleshoot-stats"><span class="std std-ref">Looking at the last run with psconfig maddash-stats</span></a>, the run had a GUID of <code class="docutils literal notranslate"><span class="pre">BF30C416-489E-11E8-8BB6-530A118410B6</span></code>. Knowing this GUID, all the log messages associated with that run can be queried using a command like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grep</span> <span class="s2">&quot;guid=BF30C416-489E-11E8-8BB6-530A118410B6&quot;</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">maddash</span><span class="o">/</span><span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+<p>You can further filter that output if needed, and hopefully eventually find the information needed to solve any issues encountered.</p>
+</div>
+</div>
+<div class="section" id="advanced-configuration">
+<span id="psconfig-maddash-agent-advanced"></span><h2>Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The primary configuration file for the agent lives in <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/psconfig/maddash-agent.json</span></code>. It provides a number of options for fine-tuning your agent such as how often to download remote templates, the location of the MaDDash YAML file, and more. The best way to edit the file is with the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">agentctl</span></code> command. You can get a full list of options supported by the agent with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>psconfig agentctl maddash ?
+</pre></div>
+</div>
+<p>For full details on how to use the <cite>psconfig agentctl</cite> command to display, set, and unset properties run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">agentctl</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="further-reading">
+<span id="psconfig-maddash-agent-reading"></span><h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>For a full listing of pSConfig MaDDash Agent related files see the reference <a class="reference internal" href="config_files.html#config-files-psconfig"><span class="std std-ref">here</span></a></li>
+<li>For information regarding dynamic templates and how they relate to the pSConfig MaDDash Agent see <a class="reference internal" href="psconfig_autoconfig.html"><span class="doc">pSConfig Auto-Configuration</span></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Running the pSConfig MaDDash Agent</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#psconfig-maddash-agent-s-role">pSConfig MaDDash Agent’s Role</a></li>
+<li><a class="reference internal" href="#reading-and-modifying-templates">Reading and Modifying Templates</a></li>
+<li><a class="reference internal" href="#determining-how-to-display-tasks">Determining How to Display Tasks</a></li>
+<li><a class="reference internal" href="#generating-the-maddash-yaml-file">Generating the <code class="docutils literal notranslate"><span class="pre">maddash.yaml</span></code> file</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#installing-the-standalone-package">Installing the Standalone Package</a></li>
+<li><a class="reference internal" href="#installing-as-part-of-a-bundle">Installing as Part of a Bundle</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-psconfig-maddash-agent">Running <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code></a><ul>
+<li><a class="reference internal" href="#starting-psconfig-maddash-agent">Starting <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code></a></li>
+<li><a class="reference internal" href="#stopping-psconfig-maddash-agent">Stopping <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code></a></li>
+<li><a class="reference internal" href="#restarting-psconfig-maddash-agent">Restarting <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code></a></li>
+<li><a class="reference internal" href="#checking-the-status-of-psconfig-maddash-agent">Checking the status of <code class="docutils literal notranslate"><span class="pre">psconfig-maddash-agent</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-templates">Configuring Templates</a><ul>
+<li><a class="reference internal" href="#configuration-basics">Configuration Basics</a></li>
+<li><a class="reference internal" href="#remote-templates">Remote Templates</a></li>
+<li><a class="reference internal" href="#local-templates">Local Templates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modifying-templates">Modifying Templates</a></li>
+<li><a class="reference internal" href="#configuring-grids">Configuring Grids</a><ul>
+<li><a class="reference internal" href="#what-is-a-grid">What is a grid?</a></li>
+<li><a class="reference internal" href="#introduction-to-the-psconfig-maddash-grid-command">Introduction to the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-grid</span></code> command</a></li>
+<li><a class="reference internal" href="#determining-check-plugins-installed">Determining Check Plugins Installed</a></li>
+<li><a class="reference internal" href="#determining-visualization-plugins-installed">Determining Visualization Plugins Installed</a></li>
+<li><a class="reference internal" href="#adjusting-thresholds-and-other-parameters">Adjusting Thresholds and Other Parameters</a></li>
+<li><a class="reference internal" href="#adding-multiple-grids-with-the-same-check-type">Adding Multiple Grids with the Same Check Type</a></li>
+<li><a class="reference internal" href="#controlling-the-display-properties">Controlling the Display Properties</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li><a class="reference internal" href="#looking-at-the-last-run-with-psconfig-maddash-stats">Looking at the last run with <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">maddash-stats</span></code></a></li>
+<li><a class="reference internal" href="#reading-the-logs">Reading the Logs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-configuration">Advanced Configuration</a></li>
+<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="psconfig_pscheduler_agent.html">Previous topic</a>
+                  <ul><li><a href="psconfig_pscheduler_agent.html" title="previous chapter">Running the pSConfig pScheduler Agent</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pwa.html">Next topic</a>
+                      <ul><li><a href="pwa.html" title="next chapter">pSConfig Web Admin</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pwa.html" title="pSConfig Web Admin"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_pscheduler_agent.html" title="Running the pSConfig pScheduler Agent"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,206 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pSConfig Web Administrator (PWA) &#8212; perfSONAR Toolkit 4.2.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="psconfig-web-administrator-pwa">
+<h1>pSConfig Web Administrator (PWA)<a class="headerlink" href="#psconfig-web-administrator-pwa" title="Permalink to this headline">¶</a></h1>
+<p>PWA is a pSConfig Web-based administration GUI and tools to publish configs in pSConfig/MeshConfig formats. The current deployment model for PWA utilizes Docker containers. RPM/DEB packaging is planned.</p>
+<a class="reference external image-reference" href="images/pwa/pwa_install.png"><img alt="Alt text" src="_images/pwa_install.png" /></a>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="vm-host">
+<h3>VM Host<a class="headerlink" href="#vm-host" title="Permalink to this headline">¶</a></h3>
+<p>To install PWA, you will need a VM with any OS that supports Docker, such as CentOS7</p>
+<p>Minimum resource requirements are..</p>
+<ul class="simple">
+<li>4-6 CPUs</li>
+<li>4G memory</li>
+<li>16G disk</li>
+</ul>
+</div>
+<div class="section" id="docker-engine">
+<h3>Docker Engine<a class="headerlink" href="#docker-engine" title="Permalink to this headline">¶</a></h3>
+<p>Read the official <a class="reference external" href="https://docs.docker.com/engine/installation/">docker installation doc</a> for more information. For CentOS 7, the Docker version from the CentOS Extras repo will work. For CentOS 6, the CentOS version might work, or you might need to try the version from the Docker repo.</p>
+<p>For CentOS7 as root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>yum install -y docker
+</pre></div>
+</div>
+<p>Before you start the docker engine, you might want to add any VM specific configuration. For example, your VM might be using /usr/local as a primary partition for your VM. If so, you should have something like following..</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir /etc/docker
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+        <span class="nt">&quot;graph&quot;</span><span class="p">:</span> <span class="s2">&quot;/usr/local/docker&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Enable &amp; start the docker engine.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ systemctl <span class="nb">enable</span> docker
+$ systemctl start docker
+</pre></div>
+</div>
+<p>You should install logrotate for docker container log</p>
+<p>/etc/logrotate.d/docker-container</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/var/lib/docker/containers/*/*.log <span class="o">{</span>
+  rotate <span class="m">7</span>
+  daily
+  compress
+  <span class="nv">size</span><span class="o">=</span>1M
+  missingok
+  delaycompress
+  copytruncate
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="other-topics">
+<h1>Other Topics<a class="headerlink" href="#other-topics" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="pwa_monitoring">Monitoring / Testing</a></li>
+<li>PWA provides a developer API – see the <a class="reference external" href="pwa_api">API DOC</a></li>
+</ul>
+</div>
+<div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<p>Meshconfig parameters
+<a class="reference external" href="http://docs.perfsonar.net/config_mesh.html">http://docs.perfsonar.net/config_mesh.html</a></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">pSConfig Web Administrator (PWA)</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#vm-host">VM Host</a></li>
+<li><a class="reference internal" href="#docker-engine">Docker Engine</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-topics">Other Topics</a></li>
+<li><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

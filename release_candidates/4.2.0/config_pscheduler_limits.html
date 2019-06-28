@@ -1,0 +1,1692 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuring pScheduler Limits &#8212; perfSONAR Toolkit 4.2.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Test and Tool Reference" href="pscheduler_ref_tests_tools.html" />
+    <link rel="prev" title="Running a pScheduler Server" href="pscheduler_server_running.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuring-pscheduler-limits">
+<h1>Configuring pScheduler Limits<a class="headerlink" href="#configuring-pscheduler-limits" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler offers the ability to control what tasks may be run, by
+whom and with what parameters.  This is achieved by writing and
+installing a <em>limit configuration file</em>.</p>
+<p>A number of commented samples may be found in
+<code class="docutils literal notranslate"><span class="pre">/usr/share/doc/pscheduler/limit-examples</span></code> on systems with the
+pScheduler bundle installed.  The limit configuration that ships with
+the perfSONAR toolkit may be found <a class="reference external" href="https://github.com/perfsonar/toolkit/blob/master/etc/default_service_configs/pscheduler_limits.conf">in the toolkit sources</a>.</p>
+</div>
+<div class="section" id="the-limit-configuration-file">
+<h2>The Limit Configuration File<a class="headerlink" href="#the-limit-configuration-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-a-limit-configuration">
+<h3>Installing a Limit Configuration<a class="headerlink" href="#installing-a-limit-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The limit configuration is installed in <code class="docutils literal notranslate"><span class="pre">/etc/pscheduler/limits.conf</span></code> and must be readable by the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> user.  The recommended file attributes are owner <code class="docutils literal notranslate"><span class="pre">root</span></code>, group <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> and permissions <cite>0644</cite>.</p>
+<p>pScheduler server automatically detect changes to the limit configuration and put them into effect upon the arrival of the first request that requires checking limits or 15 seconds, whichever is longer.  Changes to the limit file are noted in the pScheduler log (usually <code class="docutils literal notranslate"><span class="pre">/var/log/pscheduler/pscheduler.log</span></code>), as are notifications of problems.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If the configuration file does not exist, is removed or fails to load, pScheduler will enforce no limits and grant every task request it receives.  For this reason, it is strongly recommended that configurations be verified as described in <a class="reference internal" href="#config-pscheduler-limits-check-validity"><span class="std std-ref">Checking Limit Configuration Files for Validity</span></a> before they are installed.</p>
+</div>
+</div>
+<div class="section" id="content">
+<h3>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h3>
+<p>The file is <a class="reference external" href="http://www.json.org">JavaScript Object Notation</a> (JSON)
+containing a single object with the pairs shown here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;#&quot;</span><span class="p">:</span> <span class="s2">&quot;Skeletal pScheduler limit configuration&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s2">&quot;classifications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s2">&quot;rewrite&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s2">&quot;limits&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s2">&quot;applications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
+    <span class="s2">&quot;priority&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Each pair is described in the sections below.</p>
+</div>
+<div class="section" id="comments">
+<h3>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h3>
+<p>All JSON read by pScheduler supports in-line commenting by ignoring
+any pair whose key begins with a pound sign (<code class="docutils literal notranslate"><span class="pre">#</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;#&quot;</span><span class="p">:</span> <span class="s2">&quot;This is a comment.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#This&quot;</span><span class="p">:</span> <span class="s2">&quot;is also a comment.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;This&quot;</span><span class="p">:</span> <span class="s2">&quot;#is not a comment.&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that this behavior is not part of ECMA 404, the JSON standard.</p>
+</div>
+</div>
+<div class="section" id="identifiers-who-s-asking">
+<h2>Identifiers:  <em>Who’s Asking?</em><a class="headerlink" href="#identifiers-who-s-asking" title="Permalink to this headline">¶</a></h2>
+<p>The first phase of vetting a task or run is <em>identification</em>, where
+attributes of the arriving request are used to create a list of narrow
+categories into which the requester fits.  Note that _requester_ means
+the system making the request, identified by its IP address, and can
+be either the system that submitted the task to pScheduler or one
+pScheduler node setting up the task with another.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">identifiers</span></code> section of the limit configuration contains an
+array of <em>identifier objects</em>, each containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code> - A string which gives the identifier a name which must be
+unique among all identifiers.</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - A human-readable string describing the identifier.</li>
+<li><code class="docutils literal notranslate"><span class="pre">type</span></code> - A string indicating what the method to be used in
+determining whether or not the requester should be identified in
+this category.  (See <em>Identifier Types</em>.)</li>
+<li><code class="docutils literal notranslate"><span class="pre">data</span></code> - A JSON object containing <code class="docutils literal notranslate"><span class="pre">type</span></code>-specific data used in
+determining whether the requester should be identified in this
+category.  (See <em>Identifier Types</em>.)</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional boolean value indicating whether or not
+the identification should be inverted after evaluation (i.e.,
+<code class="docutils literal notranslate"><span class="pre">true</span></code> would make a requester identify in this category when it
+otherwise would not have done so and <code class="docutils literal notranslate"><span class="pre">false</span></code> would do the
+opposite).</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;partners-bio&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Research Partners in biology&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cidr-list&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;cidrs&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;192.0.2.0/24&quot;</span><span class="p">,</span> <span class="s2">&quot;198.51.100.0/24&quot;</span> <span class="p">]</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;invert&quot;</span><span class="p">:</span> <span class="n">false</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;local&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requesters on the local system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;localif&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;everyone&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;All requesters&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="p">},</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="identifier-types">
+<h3>Identifier Types<a class="headerlink" href="#identifier-types" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="always-identify-everyone">
+<h4><code class="docutils literal notranslate"><span class="pre">always</span></code> - Identify Everyone<a class="headerlink" href="#always-identify-everyone" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">always</span></code> identifier unconditionally identifies every requester,
+useful in catch-alls.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an empty object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There are exactly two useful configurations of this identifier:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;everybody&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An identifier that identifies every requester&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;nobody&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An identifier that identifies no requesters&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">},</span>
+    <span class="s2">&quot;invert&quot;</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hint-identify-using-server-provided-hints">
+<h4><code class="docutils literal notranslate"><span class="pre">hint</span></code> - Identify Using Server-Provided Hints<a class="headerlink" href="#hint-identify-using-server-provided-hints" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">hint</span></code> identifier matches information about the requester to
+make identifications.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">hint</span></code> - The name of the hint to be checked.  Valid hints are</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">requester</span></code>, a string containing the IP address of the host
+making the request, and <code class="docutils literal notranslate"><span class="pre">server</span></code>, a string containing the IP
+address of the interface on the local system where the request
+arrived.</dd>
+</dl>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">match</span></code> - A <code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> object.  (See <em>Standard Objects</em>.)</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;internal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving on our internal-facing interface&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;hint&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;exact&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="s2">&quot;198.51.100.23&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ip-cidr-list-identify-by-requesting-ip-address">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> - Identify By Requesting IP Address<a class="headerlink" href="#ip-cidr-list-identify-by-requesting-ip-address" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> identifier determines whether or not the IP
+address of the host making a request falls into any of a list of
+<cite>Classless Inter-Domain Routing
+&lt;https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&gt;`_</cite>
+(CIDR) blocks.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">cidrs</span></code> - A list of IPv4 or IPv6 CIDR blocks.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;partners&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Networks used by research partners&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cidr-list&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;cidrs&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;203.0.113.62&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;192.168.19.0/24&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;192.168.84.0/24&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2001:db8::1234&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fc00:1bad:cafe::/48&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fc00:dead:beef::/48&quot;</span>
+            <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-cidr-list-url</span></code> - Identify By Requesting IP Address with Downloaded List<a class="headerlink" href="#ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">ip-cidr-list-url</span></code> identifier serves the same purpose as
+<code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> but downloads the list of CIDRs from a URL and
+periodically updates it.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">source</span></code> - A string containing a URL from which the list should
+be downloaded.  The format of the downloaded data is a plain text
+list of individual IPs or CIDRs separated by newlines.  Empty lines
+or those beginning with a pound sign (<code class="docutils literal notranslate"><span class="pre">#</span></code>) are treated as
+comments and ignored.</li>
+<li><code class="docutils literal notranslate"><span class="pre">update</span></code> - An ISO 8601 duration indicating how often the limit
+processor should attempt to retrieve a new copy of the list from
+the <code class="docutils literal notranslate"><span class="pre">source</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">retry</span></code> - An ISO 8601 duration indicating how often the limit
+processor should attempt to retrieve a new copy of the list should
+the initial download or an update result in a failure.</li>
+<li><code class="docutils literal notranslate"><span class="pre">fail-state</span></code> - A boolean value indicating whether or not the
+identifer should identify all requesters when the CIDR list is not
+been successfully retrieved.</li>
+</ul>
+<p>Note that this identifier will continue to use the list it last
+successfully downloaded until an update can be successfully retrieved.</p>
+<p><strong>Examples</strong></p>
+<p>This identifier downloads ESNet’s list of CIDRs for research and
+education networks, updates it daily with four-hour retries on failure
+and excludes the private networks defined by RFC 1918:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;r-and-e&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests from research and education networks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cidr-list-url&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;http://stats.es.net/sample_configs/pscheduler/ren&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="s2">&quot;P1D&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;retry&quot;</span><span class="p">:</span> <span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;10.0.0.0/8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;172.16.0.0/12&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;192.168.0.0/16&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;fail-state&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This identifier downloads the <a class="reference external" href="https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">Amazon Web Services CIDR block list</a> and uses jq to translate it into the expected format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;aws&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests from Amazon Web Services hosts&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cidr-list-url&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;https://ip-ranges.amazonaws.com/ip-ranges.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;.prefixes[].ip_prefix, .ipv6_prefixes[].ipv6_prefix&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;output-raw&quot;</span><span class="p">:</span> <span class="n">true</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="s2">&quot;P1D&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;retry&quot;</span><span class="p">:</span> <span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fail-state&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ip-cymru-bogon-identify-bogon-addresses">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-cymru-bogon</span></code> - Identify Bogon Addresses<a class="headerlink" href="#ip-cymru-bogon-identify-bogon-addresses" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">ip-cymru-bogon</span></code> identifier determines whether or not the
+requester’s address is in Team Cymru’s <a class="reference external" href="http://www.team-cymru.org/bogon-reference.html">Bogon Refernce List</a>.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">exclude</span></code> - A list of IP addresses and CIDR blocks that should
+not be treated as bogons even if they are on Team Cymru’s list.</li>
+<li><code class="docutils literal notranslate"><span class="pre">timeout</span></code> - An ISO 8601 duration indicating how long the
+identifier should try to get an answer before giving up.</li>
+<li><code class="docutils literal notranslate"><span class="pre">fail-result</span></code> - A boolean value indicating whether or not the
+identifer should identify all requesters as bogons when a
+definitive answer cannot be found.</li>
+</ul>
+<p>Note that this identifier uses the <a class="reference external" href="http://www.team-cymru.org/bogon-reference-dns.html">Domain Name Service</a> to check
+whether or not an address is in the list, and therefore its use
+requires that the host be able to resolve hosts on the public
+Internet.  This system works with caching DNS servers, so direct
+access to the internet is not required.</p>
+<p>For example, this identifier checks incoming request addresses,
+excludes three of the RFC1918 blocks, gives up after one second and
+does not identify the requester as a bogon if a definitive answer
+cannot be found:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bogons&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving from bogon/martian addresses&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cymru-bogon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;10.10.0.0/16&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;192.168.86.0/24&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;192.168.99.0/24&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1S&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fail-result&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ip-reverse-dns-identify-requesters-by-host-name">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-reverse-dns</span></code> - Identify Requesters By Host Name<a class="headerlink" href="#ip-reverse-dns-identify-requesters-by-host-name" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">ip-reverse-dns</span></code> identifier attempts to reverse-resolve the
+requester’s IP address to a fully-qualified domain name and matches
+it against a pattern.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">match</span></code> - A <code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> object.  (See <em>Standard Objects</em>.)</li>
+<li><code class="docutils literal notranslate"><span class="pre">timeout</span></code> - An ISO 8601 duration indicating how long the
+identifier should try to get an answer before giving up.</li>
+</ul>
+<p>As a security measure, the fully-qualified domain name found during
+reverse resolution will be forward-resolved to an IP which must match
+that of the requester.</p>
+<p>For example, this identifier determines whether or not the incoming
+requester’s fully-qualified domain name falls within <code class="docutils literal notranslate"><span class="pre">example.org</span></code>,
+giving up after two seconds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;example-dot-org&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving from example.org IPs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-reverse-dns&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;regex&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">.example</span><span class="se">\\</span><span class="s2">.org$&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="s2">&quot;PT2S&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="jq-use-a-jq-script-to-identify-requesters">
+<h4><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Identify Requesters<a class="headerlink" href="#jq-use-a-jq-script-to-identify-requesters" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">jq</span></code> identifier allows decisions to be made based on hints about
+the requester provided by the system using a <a class="reference external" href="https://stedolan.github.io/jq">jq</a>
+script.</p>
+<p>Input to the script is a JSON object containing pairs for each of the
+hints that pScheduler provides.  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;requester&quot;</span><span class="p">:</span> <span class="s2">&quot;198.51.100.19&quot;</span><span class="p">,</span>    <span class="n">IP</span> <span class="n">making</span> <span class="n">the</span> <span class="n">request</span>
+    <span class="s2">&quot;server&quot;</span><span class="p">:</span> <span class="s2">&quot;192.0.2.202&quot;</span>          <span class="n">IP</span> <span class="n">on</span> <span class="n">which</span> <span class="n">the</span> <span class="n">request</span> <span class="n">arrived</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The script should return a single Boolean value, <code class="docutils literal notranslate"><span class="pre">true</span></code> to indicate
+that an identification was made, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise.  Return of any
+other type will be treated the same as a value <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Note:  Both of these examples would be better carried out using the ``ip-cidr-list`` identifier</strong> but are also good examples of jq scripting in this context.</p>
+<p>Check to see if the requesting IP is a single IP that should not be
+allowed to use the system. (Note that the <code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> identifier
+is a better choice for this example.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;do-not-want&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;One IP we really, really dislike.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;jq&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;.requester == </span><span class="se">\&quot;</span><span class="s2">198.51.100.86</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Identify requests not being made to an address that’s not considered
+one of the management interfaces:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;non-management-if&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests not arriving on a management interface(s)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;jq&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;[.server == $management_ips[]] | any | not&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;management_ips&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="s2">&quot;198.51.100.46&quot;</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="localif-identify-requesters-on-local-interfaces">
+<h4><code class="docutils literal notranslate"><span class="pre">localif</span></code> - Identify Requesters On Local Interfaces<a class="headerlink" href="#localif-identify-requesters-on-local-interfaces" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">localif</span></code> identifier determines whether or not the requester’s
+IP address is bound to an interface on the local system.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an empty object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;local-requester&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving from local interfaces&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;localif&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="classifiers-how-do-we-group-the-identifiers">
+<h2>Classifiers:  <em>How Do We Group the Identifiers?</em><a class="headerlink" href="#classifiers-how-do-we-group-the-identifiers" title="Permalink to this headline">¶</a></h2>
+<p>Once a list of identifiers is determined, the second phase is grouping
+them into broader categories called <em>classifiers</em>.  Classifiers are
+simple groups containing a list of one or more identifiers.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">classifiers</span></code> section of the limit configuration contains an
+array of <em>classifier objects</em>, each containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code> - A string which gives the identifier a name which must be
+unique among all classifiers.  To avoid confusion, it is
+recommended, but not required, that classifier names and identifier
+names do not overlap.</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - A human-readable string describing the classifier.</li>
+<li><code class="docutils literal notranslate"><span class="pre">identifiers</span></code> - An array of strings indicating what identifiers
+should be part of the classifier.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;classifiers&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;friendlies&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requesters we like&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="s2">&quot;partners&quot;</span><span class="p">,</span> <span class="s2">&quot;r-and-e&quot;</span> <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hostiles&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requesters we don&#39;t want using the system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;bogons&quot;</span><span class="p">,</span> <span class="s2">&quot;example-dot-org&quot;</span> <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;neutrals&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requesters we neither like nor dislike&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;everybody&quot;</span> <span class="p">]</span>
+        <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">neutrals</span></code> classification will include all requesters,
+which makes it overlap with <code class="docutils literal notranslate"><span class="pre">friendlies</span></code> and <code class="docutils literal notranslate"><span class="pre">hostiles</span></code>.  As will
+be illustrated later, the narrower classifications can be used to
+allow or deny tasks before the wider ones.</p>
+</div>
+<div class="section" id="task-rewriting-what-should-be-changed">
+<h2>Task Rewriting:  <em>What Should Be Changed?</em><a class="headerlink" href="#task-rewriting-what-should-be-changed" title="Permalink to this headline">¶</a></h2>
+<p>Before applying limits to an incoming task, the pScheduler limit
+system can apply a <a class="reference external" href="https://stedolan.github.io/jq">jq</a> script to the
+task to make changes on the fly.</p>
+<p>If a <cite>rewrite</cite> pair is present in a limit configuration where the
+<cite>schema</cite> is <cite>2</cite> or later and the submission is on a system that is the
+lead participant, it specifies a jq transform applied to the task
+immediately after initial validation and prior to limit enforcement
+and tool selection.  Note that because the rewriter provides a set of
+functions that are inserted into the script, all <cite>import</cite> and
+<cite>include</cite> statements are extracted and relocated in order to the top
+to maintain correct jq syntax.</p>
+<p>Input to the transform’s script is a JSON object containing the
+contents of the task as it was submitted to the server.  The rewriter
+adds a private pair for its own internal use (currently named
+<cite>__REWRITER_PRIVATE__</cite>) which should not be examined or modified.</p>
+<p>Changes to the task are made by modifying the JSON in place (e.g.,
+<cite>.test.spec.bandwidth = 100000000</cite>) and must be followed by a call to
+the <cite>change()</cite> function (described below) with a message that will be
+meaningful to the end user (e.g., <cite>Limited bandwidth to 100 Mb/s</cite>).</p>
+<p>Conditions that would require that the incoming task be rejected may
+be dealt with by calling the <cite>reject()</cite> function (described below)
+with a message that will be meaningful to the end user (e.g., <cite>Cannot
+use tools whose names contain the letter T</cite>).  Tasks rejected in this
+way will _not_ be screened by other limits that might have allowed it
+to proceed, so use this feature carefully.  Also note that rewriting
+takes place only on the node which is the lead participant, so other
+nodes should not rely on this mechanism as a way of enforcing limits.</p>
+<p>Should the script fail when it is run, the incoming task will be
+rejected with a suitable diagnostic message.</p>
+<p><strong>Rewriter Built-In Functions</strong></p>
+<p>The following functions will be made available to rewriting scripts:</p>
+<p><cite>change(message)</cite> - Signals that a change has been made to the task
+and adds the string <cite>message</cite> to the set of diagnostics added to the
+task’s details.  This function must be called at least once if the
+script modifies the JSON in any way.  Any non-string value for
+<cite>message</cite> will be passed through jq’s <cite>tostring</cite> function.  A value of
+<cite>null</cite> will result in no message being appended to the diagnostics,
+although this is strongly discouraged.</p>
+<p><cite>classifiers</cite> - Returns an array of the classifiers into which the
+node requesting the task were grouped (e.g., <cite>[ “friendlies”,
+“partners” ]</cite>).</p>
+<p><cite>classifiers_has(value)</cite> - Returns a boolean indicating whether or not
+the string <cite>value</cite> is one of the classifiers.</p>
+<p><cite>reject(message)</cite> - Signals that the task should be rejected for the
+reason described by <cite>message</cite>.  Any non-string value for <cite>message</cite>
+will be passed through jq’s <cite>tostring</cite> function.</p>
+<p><strong>Examples</strong></p>
+<p>Force certain tests to operate from a specific interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;rewrite&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;import </span><span class="se">\&quot;</span><span class="s2">pscheduler/iso8601</span><span class="se">\&quot;</span><span class="s2"> as iso;&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# Recommended so the pipeline statements all begin with |.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# Hold this in a variable for use where it&#39;s not in-context&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;| .task.type as $tasktype&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# Force latency onto a specific interface&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;| if ( [</span><span class="se">\&quot;</span><span class="s2">latency</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">latencybg</span><span class="se">\&quot;</span><span class="s2"> ] | contains([$tasktype]) )&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  then&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    .task.spec.source = </span><span class="se">\&quot;</span><span class="s2">ps7-latency.example.org</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    | change(</span><span class="se">\&quot;</span><span class="s2">Forced use of interface reserved for latency</span><span class="se">\&quot;</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  else&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    .&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  end&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# The end.  (This takes care of the no-comma-at-end problem)&quot;</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Throttle the <cite>bandwidth</cite> parameter of <cite>throughput</cite> tests for all but
+certain groups to 50 Mb/s:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;rewrite&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# Throttle non-friendlies to 50 Mb/s for throughput&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;| if .task.type == </span><span class="se">\&quot;</span><span class="s2">throughput</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    and (&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;      (.task.spec.bandwidth == null)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;      or (.task.spec.bandwidth &gt; 50000000)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    )&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    and (.classifiers | contains([</span><span class="se">\&quot;</span><span class="s2">friendlies</span><span class="se">\&quot;</span><span class="s2">]) | not)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  then&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    .task.spec.bandwidth = 50000000&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    | change(</span><span class="se">\&quot;</span><span class="s2">Throttled bandwidth to 50 Mb/s</span><span class="se">\&quot;</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  else&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    .&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  end&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# The end.&quot;</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Force the minimum duration for certain tests that specify one to 5 seconds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;rewrite&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;import </span><span class="se">\&quot;</span><span class="s2">pscheduler/iso8601</span><span class="se">\&quot;</span><span class="s2"> as iso;&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# Hold this in a variable for use where it&#39;s not in-context&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;| .task.type as $tasktype&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# Make some tests run a minimum of 5 seconds&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;| if ( [</span><span class="se">\&quot;</span><span class="s2">idle</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">idlebgm</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">idleex</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">latency</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">latencybg</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">throughput</span><span class="se">\&quot;</span><span class="s2"> ]&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;       | contains([$tasktype]) )&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    and iso::duration_as_seconds(.task.spec.duration) &lt; 5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  then&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    .task.spec.duration = </span><span class="se">\&quot;</span><span class="s2">PT5S</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    | change(</span><span class="se">\&quot;</span><span class="s2">Bumped duration to 5-second minimum</span><span class="se">\&quot;</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  else&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    .&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  end&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# The end.&quot;</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Force the repeat interval, if specified, to a minimum of one minute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;rewrite&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;import </span><span class="se">\&quot;</span><span class="s2">pscheduler/iso8601</span><span class="se">\&quot;</span><span class="s2"> as iso;&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;| if .schedule.repeat != null&quot;</span>
+            <span class="s2">&quot;    and iso::duration_as_seconds(.schedule.repeat) &lt; 60&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  then&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    .schedule.repeat = </span><span class="se">\&quot;</span><span class="s2">PT1M</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    | change(</span><span class="se">\&quot;</span><span class="s2">Bumped repeat to one-minute minimum</span><span class="se">\&quot;</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  else&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    .&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;  end&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;# The end.&quot;</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="limits-what-are-the-restrictions">
+<h2>Limits:  <em>What Are the Restrictions?</em><a class="headerlink" href="#limits-what-are-the-restrictions" title="Permalink to this headline">¶</a></h2>
+<p>The third phase of vetting a task is determining whether or not its
+parameters fall within acceptable values.  Each limit is evaluated and
+either <em>passes</em> (i.e., the task parameters fell within the limit’s
+restrictions) or <em>fails</em> (i.e., it did not).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">limits</span></code> section of the limit configuration is nearly identical
+to the <code class="docutils literal notranslate"><span class="pre">identifiers</span></code> section and contains the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code> - A string which gives the limit a name which must be
+unique among all limits.</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - A human-readable string describing the limit.</li>
+<li><code class="docutils literal notranslate"><span class="pre">clone</span></code> - A string naming another limit that should be used as a
+starting point for this one.</li>
+<li><code class="docutils literal notranslate"><span class="pre">type</span></code> - If the limit was not cloned from another, a string
+indicating what the type of limit to be checked.  (See <em>Limit
+Parameter Types</em>.)</li>
+<li><code class="docutils literal notranslate"><span class="pre">data</span></code> - A JSON object containing <code class="docutils literal notranslate"><span class="pre">type</span></code>-specific data used in
+determining whether the task meets this limit.  (See <em>Limit
+Parameter Types</em>.)</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional boolean value indicating whether or not
+the result should be inverted after evaluation (i.e., <code class="docutils literal notranslate"><span class="pre">true</span></code>
+would pass a limit that would otherwise have failed and <code class="docutils literal notranslate"><span class="pre">false</span></code>
+would do the opposite).</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;limits&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Always passes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;pass-fail&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;pass&quot;</span><span class="p">:</span> <span class="n">true</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;innocuous-tests&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Tests that are harmless&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;test-type&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;types&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span> <span class="s2">&quot;latency&quot;</span><span class="p">,</span> <span class="s2">&quot;rtt&quot;</span><span class="p">,</span> <span class="s2">&quot;trace&quot;</span> <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput-default-template&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Template for throughput defaults&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="s2">&quot;PT5S&quot;</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="s2">&quot;PT60S&quot;</span> <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput-default-udp&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;UDP throughput for all requesters&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;clone&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput-default-template&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="s2">&quot;800K&quot;</span> <span class="p">},</span>
+                    <span class="p">}</span>
+                    <span class="s2">&quot;udp&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="n">true</span> <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput-default-tcp&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;TCP throughput for all requesters&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;clone&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput-default-template&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="s2">&quot;50M&quot;</span> <span class="p">},</span>
+                    <span class="p">}</span>
+                    <span class="s2">&quot;udp&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="n">false</span> <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="limit-types">
+<h3>Limit Types<a class="headerlink" href="#limit-types" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="jq-use-a-jq-script-to-make-a-pass-fail-decision">
+<h4><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Make a Pass/Fail Decision<a class="headerlink" href="#jq-use-a-jq-script-to-make-a-pass-fail-decision" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">jq</span></code> limit hands the proposed task to a
+<a class="reference external" href="https://stedolan.github.io/jq">jq</a> script and passes or fails based
+on the script’s return value.</p>
+<p>Input to the script is a single JSON object containing the following
+pairs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">test</span></code> - A JSON object containing the proposed test with a
+<code class="docutils literal notranslate"><span class="pre">type</span></code> (a string) and <code class="docutils literal notranslate"><span class="pre">spec</span></code> (a JSON object containing the test
+specification).</li>
+<li><code class="docutils literal notranslate"><span class="pre">tool</span></code> - A string that names the tool that was selected.</li>
+<li><code class="docutils literal notranslate"><span class="pre">schedule</span></code> - A JSON object containing all schedule paramaters
+submitted with the test (any of <code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">repeat</span></code>,
+<code class="docutils literal notranslate"><span class="pre">max-runs</span></code>, <code class="docutils literal notranslate"><span class="pre">until</span></code>, <code class="docutils literal notranslate"><span class="pre">slip</span></code>, and <code class="docutils literal notranslate"><span class="pre">sliprand</span></code>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">run_schedule</span></code> - An optional JSON object containing an ISO8601
+timestamp (<cite>start</cite>) and ISO8601 duration (<cite>duration</cite>) specifying
+when the run is proposed to start and how much time it will spend
+running.  (Note that the latter is usually greater than the test’s
+<cite>duration</cite> parameter if it has one.)  This object will not be
+present if a new task is being evaluated but will be for evaluation
+of runs.</li>
+</ul>
+</div></blockquote>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;ps.example.com&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="s2">&quot;200M&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1M&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;tool&quot;</span><span class="p">:</span> <span class="s2">&quot;iperf3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span> <span class="s2">&quot;PT10M&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max-runs&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;run_schedule&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-06-19T12:34:56&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1M8S&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The script should produce one of the following values:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Boolean (<code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>) - Signifies that the proposed task passes or does not pass the limit.  If the value is <code class="docutils literal notranslate"><span class="pre">false</span></code>, the limit system’s diagnostic output will indicate an unspecified reason for the failure.</li>
+<li>String - Signifies that the proposed task  does not pass the limit and uses the contents of the string as the reason for the failure in diagnostic output.</li>
+</ul>
+</div></blockquote>
+<p>Non-boolean or non-string output will be treated as if the limit did not pass and a suitable diagnostic message will be provided.</p>
+<p><strong>Examples</strong></p>
+<p>(Note that whitespace has been added to some strings for clarity.)</p>
+<p>Limit the <cite>length</cite> parameter of any test to 256:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &quot;name&quot;: &quot;big-packets&quot;,
+    &quot;description&quot;: &quot;Limit packet size for all tests&quot;,
+    &quot;type&quot;: &quot;jq&quot;,
+    &quot;data&quot;: {
+        &quot;transform&quot;: {
+            &quot;script&quot;: &quot;256 as $max_length
+                       | if .spec.length &gt; $max_length
+                         then \&quot;Packets are limited to \\($max_length) bytes\&quot;
+                         else true
+                         end&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>Limit any the number of hops in a <cite>trace</cite> test to 20:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;trace-hops&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Limit trace hops&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;jq&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;20 as $max_hops</span>
+                       <span class="o">|</span> <span class="k">if</span> <span class="o">.</span><span class="n">type</span> <span class="o">==</span> \<span class="s2">&quot;trace</span><span class="se">\&quot;</span><span class="s2"> and .spec.hops &gt; $max_hops</span>
+                         <span class="n">then</span> \<span class="s2">&quot;No more than </span><span class="se">\\</span><span class="s2">($max_hops) hops allowed.</span><span class="se">\&quot;</span>
+                         <span class="k">else</span> <span class="n">true</span>
+                         <span class="n">end</span><span class="s2">&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Limit the bandwidth of <cite>throughput</cite> tests to 500 Mb/s:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &quot;name&quot;: &quot;throughput-low-bandwidth&quot;,
+    &quot;description&quot;: &quot;Limit throughput test bandwidth&quot;,
+    &quot;type&quot;: &quot;jq&quot;,
+    &quot;data&quot;: {
+        &quot;transform&quot;: {
+            &quot;script&quot;: &quot;import \&quot;pscheduler/si\&quot; as si;
+                       &quot;500M&quot; as $max_bandwidth
+                       | if .type == \&quot;throughput\&quot;
+                           and si::as_integer(.spec.bandwidth) &gt; si::as_integer($max_bandwidth)
+                         then \&quot;Bandwidth is limited to \\($max_bandwidth)\&quot;
+                         else true
+                         end&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="pass-fail-explicitly-pass-or-fail">
+<h4><code class="docutils literal notranslate"><span class="pre">pass-fail</span></code> - Explicitly Pass or Fail<a class="headerlink" href="#pass-fail-explicitly-pass-or-fail" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">pass-fail</span></code> limit will either pass or fail depending on a value
+in its <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pair:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">pass</span></code> - A boolean indicating whether or not the limit will pass
+or fail.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;never&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Fail to pass&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;pass-fail&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;pass&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-daterange-check-run-times-against-a-range">
+<h4><code class="docutils literal notranslate"><span class="pre">run-daterange</span></code> - Check Run Times Against a Range<a class="headerlink" href="#run-daterange-check-run-times-against-a-range" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">run-daterange</span></code> limit tests to see whether the time range for a
+run falls within a specified range.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">start</span></code> - An ISO 8601 timestamp specifying the start of the range.</li>
+<li><code class="docutils literal notranslate"><span class="pre">end</span></code> - An ISO 8601 timestamp specifying the end of the range.</li>
+<li><code class="docutils literal notranslate"><span class="pre">overlap</span></code> - A boolean which, if <code class="docutils literal notranslate"><span class="pre">true</span></code>, will let the limit pass
+if the run’s time range overlaps the specified range but does not
+fall completely within it.</li>
+</ul>
+<p>Note that limits of this type are not evaluated and will be
+considered to have passed when determining whether a task will be
+allowed on the system.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;summer-2017&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The summer of 2017&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;run-daterange&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-06-21T00:00:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-09-22T23:59:59&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-schedule-check-attributes-of-the-run-time">
+<h4><code class="docutils literal notranslate"><span class="pre">run-schedule</span></code> - Check Attributes of the Run Time<a class="headerlink" href="#run-schedule-check-attributes-of-the-run-time" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">run-daterange</span></code> limit tests to see whether attributes the time
+range for a run matches those specified.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs.  The format
+of the pairs is described below.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">year</span></code> - The years in which the run will happen.</li>
+<li><code class="docutils literal notranslate"><span class="pre">month</span></code> - The months in which the run will happen, numbered from <code class="docutils literal notranslate"><span class="pre">1</span></code> to <code class="docutils literal notranslate"><span class="pre">12</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">day</span></code> - The days of the month in which the run will happen, numbered from <code class="docutils literal notranslate"><span class="pre">1</span></code> to <code class="docutils literal notranslate"><span class="pre">31</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">weekday</span></code> - The days of the week in which the run will happen,
+numbered from <code class="docutils literal notranslate"><span class="pre">1</span></code> (Monday) to <code class="docutils literal notranslate"><span class="pre">7</span></code> (Sunday) according to
+ISO 8601.</li>
+<li><code class="docutils literal notranslate"><span class="pre">hour</span></code> - The hours in which the run will happen, numbered from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">23</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">minute</span></code> - The minutes in which the run will happen, numbered from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">59</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">minute</span></code> - The seconds in which the run will happen, numbered from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">59</span></code>.</li>
+</ul>
+<p>All pairs are optional.</p>
+<p>Each pair consists of a key (e.g., <code class="docutils literal notranslate"><span class="pre">month</span></code>) and an array of
+individual numbers or ranges.  Each range is an object containing the
+following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">lower</span></code> - An integer specifying the lower end of the range.</li>
+<li><code class="docutils literal notranslate"><span class="pre">upper</span></code> - An integer specifying the upper end of the range.</li>
+</ul>
+<p>Note that this limits of this type are not evaluated and will be
+considered to have passed when determining whether a task will be
+allowed on the system.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;not-in-maint-window&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Outside weekly maintenance windows (Wed &amp; Sun, 2 and 4-8 a.m.)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;run-schedule&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;weekday&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span> <span class="p">],</span>
+        <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="mi">7</span> <span class="p">}</span> <span class="p">],</span>
+        <span class="s2">&quot;overlap&quot;</span><span class="p">:</span> <span class="n">true</span>
+        <span class="s2">&quot;invert&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-check-test-parameters">
+<h4><code class="docutils literal notranslate"><span class="pre">test</span></code> - Check Test Parameters<a class="headerlink" href="#test-check-test-parameters" title="Permalink to this headline">¶</a></h4>
+<p><strong>NOTE:  This limit type is considered deprecated and will be removed
+in a future release.  Use the ``jq`` limit instead.</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">test</span></code> limit compares the parameters of a proposed test against
+a template containing acceptable values.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">test</span></code> - A string specifying the test type.  Proposed tests not
+of this type will fail this limit.</li>
+<li><code class="docutils literal notranslate"><span class="pre">limit</span></code> - A JSON object consisting of pairs for each test
+parameter.  The key used for each pair will match one of the test’s
+parameters, which match the names of the command-line interface’s
+long-form option switches.  (A list for a given test can be
+retrieved by running <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">task</span> <span class="pre">TEST-NAME</span> <span class="pre">--help</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">TEST-NAME</span></code> is the name of the test.)  The value and the value is
+a limit of the appropriate type for that parameter.  See <em>Limit
+Types</em> for further details.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput-udp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Limits for UDP throughput tests&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="s2">&quot;PT5S&quot;</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="s2">&quot;PT60S&quot;</span> <span class="p">}</span> <span class="p">},</span>
+        <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="s2">&quot;50M&quot;</span> <span class="p">}</span> <span class="p">},</span>
+        <span class="s2">&quot;udp&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="n">true</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-type-check-test-type">
+<h4><code class="docutils literal notranslate"><span class="pre">test-type</span></code> - Check Test Type<a class="headerlink" href="#test-type-check-test-type" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">test-type</span></code> limit compares the type of the proposed test to a
+list of test types.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pair:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">types</span></code> - An array of strings to be compared in deciding whether
+or not the limit passes.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;inoccuous-tests&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Tests that are harmless&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;test-type&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;types&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span> <span class="s2">&quot;latency&quot;</span><span class="p">,</span> <span class="s2">&quot;rtt&quot;</span><span class="p">,</span> <span class="s2">&quot;trace&quot;</span> <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="url-fetch-get-a-decision-by-fetching-a-url">
+<h4><code class="docutils literal notranslate"><span class="pre">url-fetch</span></code> - Get a decision by fetching a URL<a class="headerlink" href="#url-fetch-get-a-decision-by-fetching-a-url" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">url-fetch</span></code> limit asks an external HTTP(S) server for a
+pass/fail decision based on information passed in as parameters or
+part of the URL.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">success-only</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">false</span></code>, the server must return
+an HTTP status of <code class="docutils literal notranslate"><span class="pre">200</span></code> and a document of type <code class="docutils literal notranslate"><span class="pre">applicastion/json</span></code>
+containing an object with the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">passed</span></code> - A boolean indicating whether or not this limit should
+pass.</li>
+<li><code class="docutils literal notranslate"><span class="pre">message</span></code> - An string containing a message that the server thinks
+is relevant about the transaction.  A simple <code class="docutils literal notranslate"><span class="pre">OK</span></code> is sufficient if
+<code class="docutils literal notranslate"><span class="pre">passed</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</li>
+</ul>
+<p>Any other HTTP status will be treated as an error.</p>
+<p>The limit’s <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">url</span></code> - The URL to be queried.  Note that this value is required
+even if <code class="docutils literal notranslate"><span class="pre">url-transform</span></code> (below) is being used to produce the URL.
+(An empty string is acceptable.)</li>
+<li><code class="docutils literal notranslate"><span class="pre">url-transform</span></code> - An optional jq transform to alter the contents
+of the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter.  The returned value must be a string.  The
+proposed task may be accessed with <code class="docutils literal notranslate"><span class="pre">.task</span></code> and server hints are
+available by calling the <code class="docutils literal notranslate"><span class="pre">hint($value)</span></code> function.  The original
+URL can be accessed as <code class="docutils literal notranslate"><span class="pre">.url</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">bind</span></code> - An optional string indicating the hostname or address to
+which the system should bind when connecting.</li>
+<li><code class="docutils literal notranslate"><span class="pre">verify-keys</span></code> - An optional boolean indicating whether or not
+HTTPS protocol should verify the server’s keys as part of the
+connection process.  If not provided, the default is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">follow-redirects</span></code> - An optional boolean indicating whether or not
+server-provided redirects should be followed.  If <code class="docutils literal notranslate"><span class="pre">false</span></code>, a
+redirection will be treated as an error.  If not provided, the
+default is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">headers</span></code> - An optional JSON object containing headers to be sent
+to the server during the fetch.  If not provided, no headers will be
+added.</li>
+<li><code class="docutils literal notranslate"><span class="pre">headers-transform</span></code> - An optional jq transform to alter the
+contents of the <code class="docutils literal notranslate"><span class="pre">headers</span></code> parameter by modifying <code class="docutils literal notranslate"><span class="pre">.headers</span></code> in
+place.  The transform should return everything provided as input.
+The proposed task may be accessed in <code class="docutils literal notranslate"><span class="pre">.task</span></code> and server hints
+are available by calling the <code class="docutils literal notranslate"><span class="pre">hint($value)</span></code> function.</li>
+<li><code class="docutils literal notranslate"><span class="pre">params</span></code> - An optional JSON object containing parameters to be added to the</li>
+<li><code class="docutils literal notranslate"><span class="pre">params-transform</span></code> - An optional jq transform to alter the
+contents of the <code class="docutils literal notranslate"><span class="pre">params</span></code> parameter by modifying <code class="docutils literal notranslate"><span class="pre">.params</span></code> in
+place.  The transform should return everything provided as input.
+The proposed task may be accessed in <code class="docutils literal notranslate"><span class="pre">.task</span></code> and server hints
+are available by calling the <code class="docutils literal notranslate"><span class="pre">hint($value)</span></code> function.</li>
+<li><code class="docutils literal notranslate"><span class="pre">timeout</span></code> - An optional ISO 8601 duration that determines how much
+time can elapse before the fetch is considered a failure and
+aborted.  The default is <code class="docutils literal notranslate"><span class="pre">PT3S</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">success-only</span></code> - An optional boolean that, if <code class="docutils literal notranslate"><span class="pre">true</span></code>, disregards
+any content returned by the server and treats the limit as having
+passed if the HTTP status is <code class="docutils literal notranslate"><span class="pre">200</span></code> or failed if it is <code class="docutils literal notranslate"><span class="pre">404</span></code>.
+Any other error is treated as a failure and will be handled
+according to the state of <code class="docutils literal notranslate"><span class="pre">fail-result</span></code>, described below.  If not
+provided, the default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">fail-result</span></code> - An optional boolean that determines whether the
+limit passes or fails when the fetch returns any HTTP status other
+than <code class="docutils literal notranslate"><span class="pre">200</span></code>.  If not provided, the default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;server-says-ok&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An external server approves of this task&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;url-fetch&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://decider.example.org/is-okay&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;check-type&quot;</span><span class="p">:</span> <span class="s2">&quot;whatever&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;params-transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;  .params.requester = hint(</span><span class="se">\&quot;</span><span class="s2">requester</span><span class="se">\&quot;</span><span class="s2">)&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;| .params.test  = .test.type&quot;</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;Cache-Control&quot;</span><span class="p">:</span> <span class="s2">&quot;no-cache&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;headers-transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;.Authorizatiion = </span><span class="se">\&quot;</span><span class="s2">Basic </span><span class="se">\\</span><span class="s2">($auth)</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;auth&quot;</span><span class="p">:</span> <span class="s2">&quot;bXVtYmxlbXVtYmxlbXVtYmxlCg==&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="applications-to-whom-do-we-apply-the-limits">
+<h2>Applications: <em>To Whom do We Apply the Limits?</em><a class="headerlink" href="#applications-to-whom-do-we-apply-the-limits" title="Permalink to this headline">¶</a></h2>
+<p>The final phase of vetting a task or run is determining whether or not
+its parameters make it permissible.  This is accomplished by
+evaluating a series of <em>limit applications</em>, each of which ties a
+classifier to a series of conditions which must be met before approval
+can happen.</p>
+<p>Each limit application is a JSON object consisting of the following:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - A human-readable string describing what the application does.</li>
+<li><code class="docutils literal notranslate"><span class="pre">classifier</span></code> - A string naming a classifier to which the
+application should be applied.</li>
+<li><code class="docutils literal notranslate"><span class="pre">apply</span></code> - An array of <em>limit requirements</em> (described in detail
+in <em>Applying Limit Requirements</em>, below), all of which must be
+satisfied for the application to have passed.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - A boolean indicating that the application’s result
+should be inverted (i.e., an application that passes should be
+treated as if it failed and one that fails should be treated as if
+it passed).</li>
+<li><code class="docutils literal notranslate"><span class="pre">stop-on-failure</span></code> - A boolean indicating that if an application
+does not pass, the task or run should be denied without evaluating
+any further applications in the list.  This us useful for
+short-circuiting the process of denying requests you do not wish to
+service.</li>
+</ul>
+<p>The system will evaluate each application in sequence.  (This process
+is described in detail in <em>Applying Limit Requirements</em>, below.)  If
+an application <em>passes</em> (i.e., its conditions will allow the task or
+run to happen), the task or run is permitted.  If it <em>fails</em> and
+<code class="docutils literal notranslate"><span class="pre">stop-on-failure</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>, it is denied.  If if fails and
+<code class="docutils literal notranslate"><span class="pre">stop-on-failure</span></code> is <code class="docutils literal notranslate"><span class="pre">false</span></code>, the next application in the list is
+evaluated.  If the end of the list is reached with no application
+having passed, the task or run is denied.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;applications&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow users on the local system to do anything&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;classifier&quot;</span><span class="p">:</span> <span class="s2">&quot;local-requester&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;apply&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;require&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;limits&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;always&quot;</span> <span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;What we allow guests to do&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;classifier&quot;</span><span class="p">:</span> <span class="s2">&quot;guests&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;apply&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;require&quot;</span><span class="p">:</span> <span class="s2">&quot;any&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;limits&quot;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="s2">&quot;innocuous-tests&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;guest-throughput&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;guest-rtt&quot;</span>
+                    <span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;stop-on-failure&quot;</span><span class="p">:</span> <span class="n">true</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The first application allows any requester in the <code class="docutils literal notranslate"><span class="pre">local-requester</span></code>
+classification to run anything because it applies the <code class="docutils literal notranslate"><span class="pre">always</span></code>
+limit, which always passes.  The second application alows requesters
+in the <code class="docutils literal notranslate"><span class="pre">guests</span></code> classifier be runing any of the harmless tests or a
+throughput or round-trip time test that meets predefined limits for
+guests.  Failing both of those will result in denial because the
+policy is to deny unless explicitly allowed.</p>
+<div class="section" id="applying-limit-requirements">
+<h3>Applying Limit Requirements<a class="headerlink" href="#applying-limit-requirements" title="Permalink to this headline">¶</a></h3>
+<p>Each limit requirement is a JSON object containing the following:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">limits</span></code> - An array of strings naming one or more limits to be
+considered when deciding if this limit requirement passes.</li>
+<li><code class="docutils literal notranslate"><span class="pre">require</span></code> - A string specifying how many of the requirement’s
+limits must pass for the requirement to be considered met.  Valid
+values are:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">none</span></code> - Consider the requirement met if none of the limits
+passes.</li>
+<li><code class="docutils literal notranslate"><span class="pre">one</span></code> - Consider the requirement met if exactly one of the
+limits passes.</li>
+<li><code class="docutils literal notranslate"><span class="pre">any</span></code> - Consider the requirement met if at least one of the
+limits passes.</li>
+<li><code class="docutils literal notranslate"><span class="pre">all</span></code> - Consider the requirement met only if all of the limits
+pass.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="priorities-which-runs-happen-and-which-do-not">
+<span id="config-pscheduler-limits-priorities"></span><h2>Priorities: <em>Which Runs Happen and Which Do Not?</em><a class="headerlink" href="#priorities-which-runs-happen-and-which-do-not" title="Permalink to this headline">¶</a></h2>
+<p>Once a run has been vetted by the limit system, it can be assigned a
+priority used in resolving conflicts with other runs scheduled at the
+same time.  This applies to tests like <code class="docutils literal notranslate"><span class="pre">throughput</span></code>, which are given
+exclusive use of the system.  Tests which run in the background may be
+given priorities but will be unaffected.</p>
+<p>The priority value is an integer.  When comparing two or more runs,
+the one wit the highest priority value will be run.  Nominally, the
+dafault priority is <code class="docutils literal notranslate"><span class="pre">0</span></code>, but any initial value can be configured.</p>
+<p>During scheduling, pScheduler will make two attempts to schedule each
+run within the allowed slip time.  The first is without regard to
+priority as a way to avoid conflicts by adjusting the start time
+within the allowed slip range.  If that fails, the second will be made
+with the priority and disregarding the presence of lower-priority
+runs, effectively preempting them.  If neither attempt succeeds, the
+run will be posted as a non-starter.</p>
+<p>Once a run is posted to the schedule, it remains there even if one
+with a higher priority is scheduled.  At the scheduled start time, the
+run will happen if there are no overlapping runs of higher priority.
+Otherwise, the lower-priority run will be considered preempted in
+favor of the higher-priority run.</p>
+<div class="section" id="the-priority-script">
+<h3>The Priority Script<a class="headerlink" href="#the-priority-script" title="Permalink to this headline">¶</a></h3>
+<p>If the limit configuration contains a <code class="docutils literal notranslate"><span class="pre">priority</span></code> object, its
+contents will be a standard jq transform as used elsewhere in
+pScheduler.  If it does not, the priority system will be disabled and
+the default of <code class="docutils literal notranslate"><span class="pre">0</span></code> will be assigned to all runs scheduled.  Note
+that participants in multi-participant tests having a priority
+configuration may still prioritize runs.</p>
+<p>Input to the transform’s script is a JSON object containing the
+contents of the task as it was submitted to the server.  The
+prioritizer adds a private pair for its own internal use (currently
+named <cite>__PRIOIRITIZER_PRIVATE__</cite>) which should not be examined or
+modified.</p>
+<p>The jq script is passed the task in the same format as other jq
+scripts used in the limit system.</p>
+<p>Scripts will have the following functions available to get additional
+information and make changes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">classifiers</span></code> - Returns an array of the classifiers into which the</li>
+</ul>
+</div></blockquote>
+<p>node requesting the task were grouped (e.g., <cite>[ “friendlies”,
+“partners” ]</cite>).</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">classifiers_has(value)</span></code> - Returns a boolean indicating whether or</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>not the string <cite>value</cite> is one of the classifiers.</dt>
+<dd><ul class="first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">default</span></code> - Returns the default priority, normally <code class="docutils literal notranslate"><span class="pre">0</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">requested</span></code> - Returns the requested priority or <code class="docutils literal notranslate"><span class="pre">null</span></code> if no
+priority was requested.</li>
+</ul>
+</dd>
+</dl>
+<p>The following functions can be used to make changes to the</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">note(message)</span></code> - Adds <code class="docutils literal notranslate"><span class="pre">message</span></code> to the diagnostics.</li>
+<li><code class="docutils literal notranslate"><span class="pre">set(value;</span> <span class="pre">message)</span></code> - Sets the priority to <code class="docutils literal notranslate"><span class="pre">value</span></code> and adds
+<code class="docutils literal notranslate"><span class="pre">message</span></code> to the diagnostics.</li>
+<li><code class="docutils literal notranslate"><span class="pre">adjust(value;</span> <span class="pre">message)</span></code> - Adjusts the priority by <code class="docutils literal notranslate"><span class="pre">value</span></code>,
+which can be positive or negative, and adds <code class="docutils literal notranslate"><span class="pre">message</span></code> to the
+diagnostics.</li>
+</ul>
+</div></blockquote>
+<p>The priority in effect at the end of the script will be assigned to
+the run and any diagnostics produced will be stored.</p>
+</div>
+</div>
+<div class="section" id="checking-limit-configuration-files-for-validity">
+<span id="config-pscheduler-limits-check-validity"></span><h2>Checking Limit Configuration Files for Validity<a class="headerlink" href="#checking-limit-configuration-files-for-validity" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler includes a <code class="docutils literal notranslate"><span class="pre">validate-limits</span></code> command which can be used to
+verify that a limit configuration is valid during development and
+prior to installation on the system.</p>
+<p>To validate limits in a file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">pscheduler</span> <span class="n">validate</span><span class="o">-</span><span class="n">limits</span> <span class="n">valid</span><span class="o">-</span><span class="n">limits</span><span class="o">.</span><span class="n">conf</span>
+<span class="n">Limit</span> <span class="n">configuration</span> <span class="ow">is</span> <span class="n">valid</span><span class="o">.</span>
+
+<span class="o">%</span> <span class="n">pscheduler</span> <span class="n">validate</span><span class="o">-</span><span class="n">limits</span> <span class="n">invalid</span><span class="o">-</span><span class="n">limits</span><span class="o">.</span><span class="n">conf</span>
+<span class="n">Invalid</span> <span class="n">limit</span> <span class="n">file</span><span class="p">:</span> <span class="n">At</span> <span class="o">/</span><span class="p">:</span> <span class="n">Additional</span> <span class="n">properties</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">allowed</span> <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;notvalid&#39;</span> <span class="n">were</span> <span class="n">unexpected</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To validate the installed configuration, become <code class="docutils literal notranslate"><span class="pre">root</span></code> and execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># pscheduler validate-limits</span>
+<span class="n">Limit</span> <span class="n">configuration</span> <span class="ow">is</span> <span class="n">valid</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>The command will exit with a status of <code class="docutils literal notranslate"><span class="pre">0</span></code> if the limit file was
+valid or nonzero if it was not.  Errors will be sent to the standard
+error and a message indicating that the configuration is valid will be
+sent to the standard output if it is a TTY or the <code class="docutils literal notranslate"><span class="pre">--quiet</span></code> switch
+is not in effect.</p>
+<p>Details on command-line switches and sample invocations can be
+obtained by running the command <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">validate-limits</span> <span class="pre">--help</span></code>.</p>
+</div>
+<div class="section" id="standard-objects">
+<h2>Standard Objects<a class="headerlink" href="#standard-objects" title="Permalink to this headline">¶</a></h2>
+<p>This section describes standard JSON objects used in the limit configuration.</p>
+<p>Content in this section is forthcoming.</p>
+<div class="section" id="stringmatch-string-matching-specification">
+<h3><code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> - String Matching Specification<a class="headerlink" href="#stringmatch-string-matching-specification" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> is a JSON object containing the following pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">style</span></code> - A string specifying what type of matching should be
+done with the <code class="docutils literal notranslate"><span class="pre">match</span></code> string (see below).  Valid values are:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">exact</span></code> - The compared string must be exactly equal to <code class="docutils literal notranslate"><span class="pre">match</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">contains</span></code> - The <code class="docutils literal notranslate"><span class="pre">match</span></code> string must be contained somewhere
+within the compared string.</li>
+<li><code class="docutils literal notranslate"><span class="pre">regex</span></code> - The compared string must match the <a class="reference external" href="https://docs.python.org/2/library/re.html#regular-expression-syntax">Python 2 regular
+expression</a>
+specified in <code class="docutils literal notranslate"><span class="pre">match</span></code>.</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">match</span></code> - The string to be matched, subject to the specified <code class="docutils literal notranslate"><span class="pre">style</span></code>.</li>
+</ul>
+<p>For example, this <code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> looks for an empty string or one
+containing a vowel:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;regex&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="s2">&quot;(^$|[aeiou])&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="limit-parameter-types">
+<h2>Limit Parameter Types<a class="headerlink" href="#limit-parameter-types" title="Permalink to this headline">¶</a></h2>
+<p>This section describes standard types of objects used by the <code class="docutils literal notranslate"><span class="pre">test</span></code>
+limit.</p>
+<div class="section" id="boolean-compares-boolean-values">
+<h3><code class="docutils literal notranslate"><span class="pre">Boolean</span></code> - Compares Boolean Values<a class="headerlink" href="#boolean-compares-boolean-values" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">match</span></code> - A boolean value (<code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>) to be matched</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cardinal-compares-one-based-integers">
+<h3><code class="docutils literal notranslate"><span class="pre">Cardinal</span></code> - Compares One-Based Integers<a class="headerlink" href="#cardinal-compares-one-based-integers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">Cardinal</span></code> values to be matched.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="mi">8</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cardinallist-compares-a-list-of-one-based-integers">
+<h3><code class="docutils literal notranslate"><span class="pre">CardinalList</span></code> - Compares a List of One-Based Integers<a class="headerlink" href="#cardinallist-compares-a-list-of-one-based-integers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">match</span></code> - A list of <code class="docutils literal notranslate"><span class="pre">Cardinal</span></code> values to be matched.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span> <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cardinalzero-compares-zero-based-integers">
+<h3><code class="docutils literal notranslate"><span class="pre">CardinalZero</span></code> - Compares Zero-Based Integers<a class="headerlink" href="#cardinalzero-compares-zero-based-integers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">CardinalZero</span></code> values to be matched.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="mi">19</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cardinalzerolist-compares-a-list-of-zero-based-integers">
+<h3><code class="docutils literal notranslate"><span class="pre">CardinalZeroList</span></code> - Compares a List of Zero-Based Integers<a class="headerlink" href="#cardinalzerolist-compares-a-list-of-zero-based-integers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">match</span></code> - A list of <code class="docutils literal notranslate"><span class="pre">CardinalZero</span></code> values to be matched.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span> <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="duration-compares-iso-8601-durations">
+<h3><code class="docutils literal notranslate"><span class="pre">Duration</span></code> - Compares ISO 8601 Durations<a class="headerlink" href="#duration-compares-iso-8601-durations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">Duration</span></code> values to be matched.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="s2">&quot;PT15S&quot;</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1M&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sinumber-compares-ranges-of-integers-with-si-units">
+<h3><code class="docutils literal notranslate"><span class="pre">SINumber</span></code> - Compares Ranges of Integers with SI Units<a class="headerlink" href="#sinumber-compares-ranges-of-integers-with-si-units" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">SINumber</span></code> values to be matched.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="s2">&quot;600K&quot;</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="s2">&quot;5G&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ipversion-compares-internet-protocol-versions">
+<h3><code class="docutils literal notranslate"><span class="pre">IPVersion</span></code> - Compares Internet Protocol Versions<a class="headerlink" href="#ipversion-compares-internet-protocol-versions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">match</span></code> - An IP version to be matched</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="mi">6</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ipversionlist-compares-a-list-of-ip-protocol-versions">
+<h3><code class="docutils literal notranslate"><span class="pre">IPVersionList</span></code> - Compares a List of IP Protocol Versions<a class="headerlink" href="#ipversionlist-compares-a-list-of-ip-protocol-versions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">enumeration</span></code> - A list of <code class="docutils literal notranslate"><span class="pre">IPVersion</span></code> values to be matched.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;enumeration&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span> <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="probability-compares-ranges-of-decimal-probabilities">
+<h3><code class="docutils literal notranslate"><span class="pre">Probability</span></code> - Compares Ranges of Decimal Probabilities<a class="headerlink" href="#probability-compares-ranges-of-decimal-probabilities" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">Probability</span></code> values to be matched.</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="mf">1.0</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="string-compares-strings">
+<h3><code class="docutils literal notranslate"><span class="pre">String</span></code> - Compares Strings<a class="headerlink" href="#string-compares-strings" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">match</span></code> - A <code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> object.  (See <em>Standard Objects</em>, above.)</li>
+<li><code class="docutils literal notranslate"><span class="pre">invert</span></code> - An optional Boolean indicating that the result should
+be negated.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">style</span><span class="s2">&quot;: &quot;</span><span class="n">regex</span><span class="s2">&quot;,</span>
+        <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="s2">&quot;platypus&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;invert&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that it is possible to have <code class="docutils literal notranslate"><span class="pre">invert</span></code> in both the limit and the
+<code class="docutils literal notranslate"><span class="pre">match</span></code> <code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> object.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Configuring pScheduler Limits</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#the-limit-configuration-file">The Limit Configuration File</a><ul>
+<li><a class="reference internal" href="#installing-a-limit-configuration">Installing a Limit Configuration</a></li>
+<li><a class="reference internal" href="#content">Content</a></li>
+<li><a class="reference internal" href="#comments">Comments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#identifiers-who-s-asking">Identifiers:  <em>Who’s Asking?</em></a><ul>
+<li><a class="reference internal" href="#identifier-types">Identifier Types</a><ul>
+<li><a class="reference internal" href="#always-identify-everyone"><code class="docutils literal notranslate"><span class="pre">always</span></code> - Identify Everyone</a></li>
+<li><a class="reference internal" href="#hint-identify-using-server-provided-hints"><code class="docutils literal notranslate"><span class="pre">hint</span></code> - Identify Using Server-Provided Hints</a></li>
+<li><a class="reference internal" href="#ip-cidr-list-identify-by-requesting-ip-address"><code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> - Identify By Requesting IP Address</a></li>
+<li><a class="reference internal" href="#ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list"><code class="docutils literal notranslate"><span class="pre">ip-cidr-list-url</span></code> - Identify By Requesting IP Address with Downloaded List</a></li>
+<li><a class="reference internal" href="#ip-cymru-bogon-identify-bogon-addresses"><code class="docutils literal notranslate"><span class="pre">ip-cymru-bogon</span></code> - Identify Bogon Addresses</a></li>
+<li><a class="reference internal" href="#ip-reverse-dns-identify-requesters-by-host-name"><code class="docutils literal notranslate"><span class="pre">ip-reverse-dns</span></code> - Identify Requesters By Host Name</a></li>
+<li><a class="reference internal" href="#jq-use-a-jq-script-to-identify-requesters"><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Identify Requesters</a></li>
+<li><a class="reference internal" href="#localif-identify-requesters-on-local-interfaces"><code class="docutils literal notranslate"><span class="pre">localif</span></code> - Identify Requesters On Local Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classifiers-how-do-we-group-the-identifiers">Classifiers:  <em>How Do We Group the Identifiers?</em></a></li>
+<li><a class="reference internal" href="#task-rewriting-what-should-be-changed">Task Rewriting:  <em>What Should Be Changed?</em></a></li>
+<li><a class="reference internal" href="#limits-what-are-the-restrictions">Limits:  <em>What Are the Restrictions?</em></a><ul>
+<li><a class="reference internal" href="#limit-types">Limit Types</a><ul>
+<li><a class="reference internal" href="#jq-use-a-jq-script-to-make-a-pass-fail-decision"><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Make a Pass/Fail Decision</a></li>
+<li><a class="reference internal" href="#pass-fail-explicitly-pass-or-fail"><code class="docutils literal notranslate"><span class="pre">pass-fail</span></code> - Explicitly Pass or Fail</a></li>
+<li><a class="reference internal" href="#run-daterange-check-run-times-against-a-range"><code class="docutils literal notranslate"><span class="pre">run-daterange</span></code> - Check Run Times Against a Range</a></li>
+<li><a class="reference internal" href="#run-schedule-check-attributes-of-the-run-time"><code class="docutils literal notranslate"><span class="pre">run-schedule</span></code> - Check Attributes of the Run Time</a></li>
+<li><a class="reference internal" href="#test-check-test-parameters"><code class="docutils literal notranslate"><span class="pre">test</span></code> - Check Test Parameters</a></li>
+<li><a class="reference internal" href="#test-type-check-test-type"><code class="docutils literal notranslate"><span class="pre">test-type</span></code> - Check Test Type</a></li>
+<li><a class="reference internal" href="#url-fetch-get-a-decision-by-fetching-a-url"><code class="docutils literal notranslate"><span class="pre">url-fetch</span></code> - Get a decision by fetching a URL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applications-to-whom-do-we-apply-the-limits">Applications: <em>To Whom do We Apply the Limits?</em></a><ul>
+<li><a class="reference internal" href="#applying-limit-requirements">Applying Limit Requirements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#priorities-which-runs-happen-and-which-do-not">Priorities: <em>Which Runs Happen and Which Do Not?</em></a><ul>
+<li><a class="reference internal" href="#the-priority-script">The Priority Script</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#checking-limit-configuration-files-for-validity">Checking Limit Configuration Files for Validity</a></li>
+<li><a class="reference internal" href="#standard-objects">Standard Objects</a><ul>
+<li><a class="reference internal" href="#stringmatch-string-matching-specification"><code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> - String Matching Specification</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#limit-parameter-types">Limit Parameter Types</a><ul>
+<li><a class="reference internal" href="#boolean-compares-boolean-values"><code class="docutils literal notranslate"><span class="pre">Boolean</span></code> - Compares Boolean Values</a></li>
+<li><a class="reference internal" href="#cardinal-compares-one-based-integers"><code class="docutils literal notranslate"><span class="pre">Cardinal</span></code> - Compares One-Based Integers</a></li>
+<li><a class="reference internal" href="#cardinallist-compares-a-list-of-one-based-integers"><code class="docutils literal notranslate"><span class="pre">CardinalList</span></code> - Compares a List of One-Based Integers</a></li>
+<li><a class="reference internal" href="#cardinalzero-compares-zero-based-integers"><code class="docutils literal notranslate"><span class="pre">CardinalZero</span></code> - Compares Zero-Based Integers</a></li>
+<li><a class="reference internal" href="#cardinalzerolist-compares-a-list-of-zero-based-integers"><code class="docutils literal notranslate"><span class="pre">CardinalZeroList</span></code> - Compares a List of Zero-Based Integers</a></li>
+<li><a class="reference internal" href="#duration-compares-iso-8601-durations"><code class="docutils literal notranslate"><span class="pre">Duration</span></code> - Compares ISO 8601 Durations</a></li>
+<li><a class="reference internal" href="#sinumber-compares-ranges-of-integers-with-si-units"><code class="docutils literal notranslate"><span class="pre">SINumber</span></code> - Compares Ranges of Integers with SI Units</a></li>
+<li><a class="reference internal" href="#ipversion-compares-internet-protocol-versions"><code class="docutils literal notranslate"><span class="pre">IPVersion</span></code> - Compares Internet Protocol Versions</a></li>
+<li><a class="reference internal" href="#ipversionlist-compares-a-list-of-ip-protocol-versions"><code class="docutils literal notranslate"><span class="pre">IPVersionList</span></code> - Compares a List of IP Protocol Versions</a></li>
+<li><a class="reference internal" href="#probability-compares-ranges-of-decimal-probabilities"><code class="docutils literal notranslate"><span class="pre">Probability</span></code> - Compares Ranges of Decimal Probabilities</a></li>
+<li><a class="reference internal" href="#string-compares-strings"><code class="docutils literal notranslate"><span class="pre">String</span></code> - Compares Strings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pscheduler_server_running.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_server_running.html" title="previous chapter">Running a pScheduler Server</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pscheduler_ref_tests_tools.html">Next topic</a>
+                      <ul><li><a href="pscheduler_ref_tests_tools.html" title="next chapter">Test and Tool Reference</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>
