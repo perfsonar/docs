@@ -7,8 +7,15 @@ Default Configuration
 
 By default, PWA ships with account registration disabled, and with no accounts created. You either need to enable registration, or create one or more super-admin accounts (see below).
 
-Interacting with the ``sca-auth`` service
-==========================================
+This interaction is slightly different between docker and RPM installs
+
+Interacting with the ``sca-auth`` service (rpm)
+==================================================
+
+Everything is the same as below, except you can ignore the Docker commands, and rather than ``/app/bin/auth.js``, you run ``/usr/sbin/pwa_auth``
+
+Interacting with the ``sca-auth`` service (docker)
+==================================================
 
 ``sca-auth`` runs within a Docker container; there are two ways to run commands within a docker container.
 
@@ -30,7 +37,7 @@ The two examples above are equivalent. To exit a bash shell, type ``exit``
 
 **Running SCA commands**
 
-You can run SCA commands by running commands inside the ``sca-auth`` container, using either method above.
+You can run other SCA commands by running commands inside the ``sca-auth`` container, using either method above.
 
 sca-auth Commands
 =================
@@ -40,9 +47,19 @@ sca-auth Commands
 Listing accounts
 ----------------
 
+Docker
+
 .. code-block:: shell
 
     /app/bin/auth.js listuser
+
+RPM
+
+.. code-block:: shell
+
+    /usr/sbin/pwa_auth listuser
+
+The commands for RPM installs are the same as the Docker ones, simply with pwa_auth rather than auth.js.
 
 
 Creating accounts

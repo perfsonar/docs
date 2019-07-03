@@ -28,6 +28,8 @@ Guide
 
    pwa_docker_architecture
    pwa_install
+   pwa_install_rpm
+   pwa_install_docker
    pwa_configure
    pwa_docker_create
    pwa_docker_troubleshoot
