@@ -3,55 +3,51 @@ Configuration
 *************
 
 
-This guide assumes you have already pulled down the sample PWA config and extracted it like this (you should have done this during the Install step; if not, do it now:
+This guide assumes you have already pulled down the sample PWA config, either from RPM packages, or a manual step in the Docker installation.
 
-.. code-block:: bash
+Most of the configuration files for PWA can be found in the ``/etc/perfsonar/psconfig-web`` directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.
 
-   wget https://github.com/perfsonar/psconfig-web/raw/master/deploy/docker/pwa.sample.tar.gz
-   sudo tar -C /etc -xvf pwa.sample.tar.gz pwa && sudo tar -C /usr/local/sbin --strip-components=1 -xvf pwa.sample.tar.gz scripts 
+**Interaction with other web applications:** If you want to run PWA via Docker, on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See `Running alongside other web applications <pwa_running_alongside>`_
 
-
-Most of the configuration files for PWA can be found in the ``/etc/pwa`` directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.
-
-**Interaction with other web applications:** If you want to run PWA on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See `Running alongside other web applications <pwa_running_alongside>`_
+If you are running an RPM-based install, you likely won't have to do anything differently.
 
 **Upgrading:** If you are upgrading from an old MCA instance, view the docs on `Upgrading from MCA to PWA <pwa_upgrading_from_mca>`_
 
-When you update ``/etc/pwa/index.js``, all PWA services will automatically restart. Please monitor logs by doing  ``sudo docker exec -it pwa-admin1 pm2 logs``
+When you update ``/etc/perfsonar/psconfig-web/index.js``, all PWA services will automatically restart. Please monitor logs by doing  ``sudo docker exec -it pwa-admin1 pm2 logs``
 
 Hostname
 ========
 
 * 
-  Update the publisher URL with the hostname of your PWA instance. Most likely, this will be the full hostname of your Docker host. Replace ``<pwa_hostname>`` with your full hostname, like this.
+  Update the publisher URL with the hostname of your PWA instance. Most likely, this will be the full hostname of your Docker host. Replace ``<hostname>`` or ``<pwa_hostname>`` with your full hostname, like this.
 
 If your hostname is ``pwa.example.com``,
 
 .. code-block:: javascript
 
-    url: "http://<pwa_hostname>/pub/",
+    url: "http://<pwa_hostname>/pwa/pub/",
 
 becomes
 
 .. code-block:: javascript
 
-        url: "http://pwa.example.com/pub/",
+        url: "http://pwa.example.com/pwa/pub/",
 
 Database 
 ============
 
-The database is also configured in ``/etc/pwa/index.js``
+The database is also configured in ``/etc/perfsonar/psconfig-web/index.js``
 
 ::
 
-    exports.mongodb = "mongodb://mongo/pwa";
+    exports.mongodb = "mongodb://localhost/pwa";
 
 
 
 Data Sources
 ============
 
-``/etc/pwa/index.js`` lists the Global Lookup Service and any private LSes that host information is pulled from. 
+``/etc/perfsonar/psconfig-web/index.js`` lists the Global Lookup Service and any private LSes that host information is pulled from. 
 
 In most cases, you won't need to change the LS configuration.
 
@@ -98,9 +94,9 @@ A sample of filtered Global SLS datasource:
 * activehosts_url: should always point to http://ps1.es.net:8096/lookup/activehosts.json unless you know a different global registry.
 * query: This query is passed to all sLS instances that are member of the global registry. For more detail on sLS query, please refer to `sLS API Spec <https://github.com/esnet/simple-lookup-service/wiki/APISpec#query>`_
 
-So, the above sample datasource entry instructs mca-cache service to pull all service records (used to construct "hosts" for PWA) from the global lookup service (ps1.es.net) with community registered to "OSG". If you don't want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.
+So, the above sample datasource entry instructs the PWA cache service to pull all service records (used to construct "hosts" for PWA) from the global lookup service (ps1.es.net) with community registered to "OSG". If you don't want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.
 
-As you may find in the default ``/etc/pwa/index.js``, you can list as many datasources as you want. Make sure to use a unique key, and label.
+As you may find in the default ``/etc/perfsonar/psconfig-web/index.js``, you can list as many datasources as you want. Make sure to use a unique key, and label.
 
 sLS
 --------
@@ -130,7 +126,11 @@ Test Spec Default parameters
 
 ``index.js`` contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).
 
-When you update this file, all meshconfig services will automatically restarts. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 pm2 logs``
+When you update this file, all PWA services will automatically restart. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 pm2 logs`` 
+
+if running Docker, or
+
+``/var/log/messages`` if running RPMs
 
 Logging
 ========================
@@ -148,20 +148,26 @@ PWA uses Winston for logging. Please see `Winston <https://github.com/winstonjs/
 Others
 ------
 
-``index.js`` contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.
+``index.js`` contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by the PWA authentication service.
 
-Nginx (web server)
-==================
+Web server (nginx/apache)
+=========================
 
-Nginx will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit:
+A webserver (apache for RPM installs, nginx for docker installs) will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit:
 
 .. code-block:: bash
 
-    /etc/pwa/nginx
+    /etc/perfsonar/psconfig-web/nginx
+
+or
+
+.. code-block:: bash
+
+    /etc/httpd/conf.d/pwa*.conf
 
 **Host Certificates**
 
-You will need SSL certificates for https access.
+You will need SSL certificates for https access. These should automatically be generated when you install/run the services, but you can also create them manually.
 
 If you want to generate self-signed certs, you can run this script (you may wish to edit it if you are using custom file paths): 
 
@@ -169,14 +175,14 @@ If you want to generate self-signed certs, you can run this script (you may wish
 
     sudo /usr/local/sbin/generate_nginx_cert.sh
 
-If you want to provide your own certs, place them in ``/etc/pwa/nginx/certs`` with these names:
+If you want to provide your own certs, place them in ``/etc/perfsonar/psconfig-web/nginx/certs`` with these names:
 
 .. code-block:: bash
 
    cert.pem
    key.pem
 
-If you are enabling x509 authentication, then you will also need ``trusted.pem``\ ; This file contains list of all CAs that you trust and grant access to PWA. You will have to adapt the nginx config in ``/etc/pwa/nginx/conf.d/pwa.conf`` as follows:
+If you are enabling x509 authentication, then you will also need ``trusted.pem``\ ; This file contains list of all CAs that you trust and grant access to PWA. You will have to adapt the nginx config in ``/etc/perfsonar/psconfig-web/nginx/conf.d/pwa.conf`` as follows:
 
 .. code-block:: bash
 
@@ -187,15 +193,16 @@ If you are enabling x509 authentication, then you will also need ``trusted.pem``
 
 Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single ``trusted.pem file``
 
+Typically, Apache will just work with RPM installs, but you may have to change Apache's config similarly, if using an RPM install.
 
-Authentication Service (sca-auth)
+Authentication Service (pwa-auth)
 =================================
 
 PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying the config file.
 
 Edit the auth config file:
 
-``/etc/pwa/auth/index.js``
+``/etc/perfsonar/psconfig-web/auth/index.js``
 
 * 
  Update the hostname in the config by performing a search and replace in this file. Replace ``<pwa_hostname>`` with the hostname (FQDN) of your Docker host (remove the brackets).
@@ -253,20 +260,20 @@ Authentication service mail server configuration
        }
 
 
-User Management
-================
+User Registration
+=================
 
 By default, signup is disabled and no users exist. You will need either manually create users once the docker containers have been created (see the next page for details), and/or allow signups.
 
 To enable user signup (registration through the web form), set these values in the following files:
 
-``/etc/pwa/auth/index.js``
+``/etc/perfsonar/psconfig-web/auth/index.js``
 
 ::
     
     allow_signup: true
 
-``/etc/pwa/shared/auth.ui.js``
+``/etc/perfsonar/psconfig-web/shared/auth.ui.js``
 
 ::
     
