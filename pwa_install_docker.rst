@@ -5,6 +5,8 @@ Docker Installation
 .. role:: raw-html-m2r(raw)
    :format: html
 
+**If you are installing with RPMs, SKIP THIS PAGE**
+
 
 VM Host
 ^^^^^^^

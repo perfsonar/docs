@@ -7,7 +7,9 @@ This guide assumes you have already pulled down the sample PWA config, either fr
 
 Most of the configuration files for PWA can be found in the ``/etc/perfsonar/psconfig-web`` directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.
 
-**Interaction with other web applications:** If you want to run PWA on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See `Running alongside other web applications <pwa_running_alongside>`_
+**Interaction with other web applications:** If you want to run PWA via Docker, on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See `Running alongside other web applications <pwa_running_alongside>`_
+
+If you are running an RPM-based install, you likely won't have to do anything differently.
 
 **Upgrading:** If you are upgrading from an old MCA instance, view the docs on `Upgrading from MCA to PWA <pwa_upgrading_from_mca>`_
 
@@ -38,7 +40,7 @@ The database is also configured in ``/etc/perfsonar/psconfig-web/index.js``
 
 ::
 
-    exports.mongodb = "mongodb://mongo/pwa";
+    exports.mongodb = "mongodb://localhost/pwa";
 
 
 
@@ -124,7 +126,11 @@ Test Spec Default parameters
 
 ``index.js`` contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).
 
-When you update this file, all PWA services will automatically restart. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 pm2 logs``
+When you update this file, all PWA services will automatically restart. Please monitor logs by doing ``sudo docker exec -it pwa-admin1 pm2 logs`` 
+
+if running Docker, or
+
+``/var/log/messages`` if running RPMs
 
 Logging
 ========================
@@ -187,7 +193,7 @@ If you are enabling x509 authentication, then you will also need ``trusted.pem``
 
 Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single ``trusted.pem file``
 
-You may have to change Apache's config similarly, if using an RPM install.
+Typically, Apache will just work with RPM installs, but you may have to change Apache's config similarly, if using an RPM install.
 
 Authentication Service (pwa-auth)
 =================================

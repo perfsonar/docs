@@ -19,7 +19,9 @@ Included with PWA is a publisher that allows users to download defined pSConfig/
     :alt: MeshConfig JSON Screenshot
     :width: 450px
 
-PWA relies on the perfSONAR Global Lookup Service to provide a list of hosts that administrator can select in PWA's host group editor. PWA can also load host information from a private `Simple Loookup Service <https://github.com/esnet/simple-lookup-service/wiki>`_ instance, as well as supporting hosts that are not in any LS, called "ad hoc" hosts.
+PWA leverages the perfSONAR Global Lookup Service to provide a list of hosts that administrators can select in PWA's host group editor. It supports adding new "ad-hoc" hosts manually. 
+
+PWA can also load host information from a private `Simple Loookup Service <https://github.com/esnet/simple-lookup-service/wiki>`_ instance.
 
 Guide
 -------------------------
