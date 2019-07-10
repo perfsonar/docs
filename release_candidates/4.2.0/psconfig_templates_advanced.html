@@ -20,7 +20,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pSConfig Auto-Configuration" href="psconfig_autoconfig.html" />
+    <link rel="next" title="MeshConfig to pSConfig Migration Guide" href="psconfig_meshconfig_migrate.html" />
     <link rel="prev" title="pSConfig Template Variables" href="psconfig_templates_vars.html" /> 
   </head><body>
     <header>
@@ -48,7 +48,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="psconfig_autoconfig.html" title="pSConfig Auto-Configuration"
+          <a href="psconfig_meshconfig_migrate.html" title="MeshConfig to pSConfig Migration Guide"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="psconfig_templates_vars.html" title="pSConfig Template Variables"
@@ -290,7 +290,7 @@
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Using separate address objects and optionally combining them with <a class="reference internal" href="psconfig_autoconfig.html"><span class="doc">address classes</span></a> is probably the cleanest way to build a template to meet this goal. The example that follows is a useful learning tool for demonstrating how <code class="docutils literal notranslate"><span class="pre">labels</span></code> work in pSConfig even if it is not the most efficient solution.</p>
+<p class="last">Using separate address objects is probably the cleanest way to build a template to meet this goal. The example that follows is a useful learning tool for demonstrating how <code class="docutils literal notranslate"><span class="pre">labels</span></code> work in pSConfig even if it is not the most efficient solution.</p>
 </div>
 <p>We could do the following where the 1Gbps interfaces is represented by the top-level <code class="docutils literal notranslate"><span class="pre">address</span></code> property and the 10Gbps interfaces are in labels:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -564,7 +564,6 @@
 <ul class="simple">
 <li>For information on setting a archives to be used anytime an <em>address</em> object belonging to a <em>host</em> is the <a class="reference internal" href="psconfig_templates_vars.html#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a> see <a class="reference internal" href="#psconfig-templates-advanced-hosts-archives"><span class="std std-ref">Setting Host Archives</span></a></li>
 <li>For information on disabling all the addresses belonging to a host, see <a class="reference internal" href="#psconfig-templates-advanced-hosts-disabled"><span class="std std-ref">Disabling a Host</span></a></li>
-<li>For information on using tags and other properties of hosts to dynamically build groups see <a class="reference internal" href="psconfig_autoconfig.html"><span class="doc">pSConfig Auto-Configuration</span></a></li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -643,7 +642,7 @@
 <li>An include file does NOT need to validate against the <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json">pSConfig Template JSON Schema</a>. Instead it can be a partial template containing one or more of the following sections: <cite>addresses</cite>, <cite>address-classes</cite>, <cite>archives</cite>, <cite>contexts</cite>, <cite>groups</cite>, <cite>hosts</cite>, <cite>schedules</cite>, <cite>tasks</cite>, and/or <cite>tests</cite>.</li>
 <li>The sections from the include file will be merged into the corresponding section of the base template. If during a merge an object (e.g. an individual <em>address</em> object) has the same name as an object already in the template, the object from the include file will be ignored.</li>
 </ul>
-<p>To better illustrate the points above, let’s look at an example using includes to recreate the JSON template from the <a class="reference internal" href="psconfig_templates_intro.html#psconfig-templates-intro-example"><span class="std std-ref">template introduction</span></a> that can be downloaded <a class="reference download internal" download="" href="_downloads/787ca229c2b2f053c8483cb576e6e0f1/psconfig_templates_intro-network.json"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>. Let’s define two template files, one that defines the latency <code class="docutils literal notranslate"><span class="pre">addresses</span></code> and <code class="docutils literal notranslate"><span class="pre">groups</span></code> and another that defines the throughput <code class="docutils literal notranslate"><span class="pre">addresses</span></code> and <code class="docutils literal notranslate"><span class="pre">groups</span></code>.</p>
+<p>To better illustrate the points above, let’s look at an example using includes to recreate the JSON template from the <a class="reference internal" href="psconfig_templates_intro.html#psconfig-templates-intro-example"><span class="std std-ref">template introduction</span></a> that can be downloaded <a class="reference download internal" download="" href="_downloads/4a29441fdebaf16a87558cd5cc350f1e/psconfig_templates_intro-network.json"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>. Let’s define two template files, one that defines the latency <code class="docutils literal notranslate"><span class="pre">addresses</span></code> and <code class="docutils literal notranslate"><span class="pre">groups</span></code> and another that defines the throughput <code class="docutils literal notranslate"><span class="pre">addresses</span></code> and <code class="docutils literal notranslate"><span class="pre">groups</span></code>.</p>
 <p>The latency include file is below (we’ll assume it lives at <code class="docutils literal notranslate"><span class="pre">https://example.perfsonar.net/psconfig/includes/latency.json</span></code>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -762,7 +761,6 @@
 <li>The base template MUST validate prior to merging the include files, so there are empty <code class="docutils literal notranslate"><span class="pre">addresses</span></code> and <code class="docutils literal notranslate"><span class="pre">groups</span></code> since those are required by the schema.</li>
 <li>Both include files contain an <em>address</em> object named <code class="docutils literal notranslate"><span class="pre">thrlat1</span></code>. The address will only be included once. Since the latency include file is listed first in our <code class="docutils literal notranslate"><span class="pre">includes</span></code> section, that definition will be used.</li>
 </ul>
-<p>Include files like the above can be useful for organizing templates making them more readable. For further information on advanced use cases where include files can be used to make your templates more dynamic see <a class="reference internal" href="psconfig_autoconfig.html"><span class="doc">pSConfig Auto-Configuration</span></a>.</p>
 </div>
 <div class="section" id="using-contexts">
 <span id="psconfig-templates-advanced-contexts"></span><h2>Using <code class="docutils literal notranslate"><span class="pre">contexts</span></code><a class="headerlink" href="#using-contexts" title="Permalink to this headline">¶</a></h2>
@@ -1131,8 +1129,8 @@ both <em>mesh</em> and <em>disjoint</em> group types have a base set of address 
                 </ul>
                   <ul>
                       <li>
-                      <a href="psconfig_autoconfig.html">Next topic</a>
-                      <ul><li><a href="psconfig_autoconfig.html" title="next chapter">pSConfig Auto-Configuration</a></li></ul>
+                      <a href="psconfig_meshconfig_migrate.html">Next topic</a>
+                      <ul><li><a href="psconfig_meshconfig_migrate.html" title="next chapter">MeshConfig to pSConfig Migration Guide</a></li></ul>
                       </li>
                   </ul>
                 
@@ -1149,7 +1147,7 @@ both <em>mesh</em> and <em>disjoint</em> group types have a base set of address 
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="psconfig_autoconfig.html" title="pSConfig Auto-Configuration"
+          <a href="psconfig_meshconfig_migrate.html" title="MeshConfig to pSConfig Migration Guide"
              >next</a> |</li>
         <li class="right" >
           <a href="psconfig_templates_vars.html" title="pSConfig Template Variables"

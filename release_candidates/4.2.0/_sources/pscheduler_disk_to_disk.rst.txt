@@ -6,7 +6,7 @@ Overview
 ---------
 This document describes how to install the plug-in for perfSONAR disk-to-disk tests. This includes tools for standard curl tool as well as GridFTP using Globus. The sections below walk-through the following:
  
- #. How to setup your yum repositories to use the *nightly* perfSONAR repo that contains the disk-to-disk test plugin and associated tools.
+ #. How to setup your yum repositories to use the *staging* perfSONAR repo that contains the disk-to-disk test plugin and associated tools.
  #. Installing perfSONAR and the new plugins using yum
  #. Configuring Globus using provided Ansible roles
  #. Commands for performing disk-to-disk transfers with pScheduler
@@ -14,15 +14,15 @@ This document describes how to install the plug-in for perfSONAR disk-to-disk te
 
 Configuring Yum Repositories
 ------------------------------------
-You need to use the perfSONAR nightly yum repository to get the plug-ins. **It is NOT recommended you do this on a production host** as the nightly repository contains software still under active development. You can setup the repository with the commands below::
+You need to use the perfSONAR staging yum repository to get the plug-ins. **It is NOT recommended you do this on a production host** as the staging repository contains software still under active development. You can setup the repository with the commands below::
  
     yum install epel-release
-    yum install https://perfsonar-dev3.grnoc.iu.edu/nightly/el/7/x86_64/perfsonar/minor/packages/perfSONAR-repo-nightly-minor-0.9-1.noarch.rpm
+    yum install https://perfsonar-dev3.grnoc.iu.edu/staging/el/7/x86_64/perfsonar/latest/packages/perfSONAR-repo-staging-0.9-1.noarch.rpm
     yum clean all
 
 Installing perfSONAR
 ------------------------------------
-Once the nightly repository is configured you can install perfSONAR and the associated plug-ins using the commands below::
+Once the staging repository is configured you can install perfSONAR and the associated plug-ins using the commands below::
 
     yum install perfsonar-testpoint pscheduler-test-disk-to-disk pscheduler-tool-curl pscheduler-tool-globus
 
@@ -86,5 +86,5 @@ Configuring pSConfig and MaDDash
 
 You can add `disk-to-disk` tests to a pSConfig template. There is a lot of flexibility in how you define your tests, but one example can be found here: https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json
 
-Once you have the test added to the pSConfig template and assuming you are storing them in esmond, then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash :maddash_quick_install:`quick install guide`.
+Once you have the test added to the pSConfig template and assuming you are storing them in esmond, then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash :maddash_quick_install:`quick install guide<>`.
 

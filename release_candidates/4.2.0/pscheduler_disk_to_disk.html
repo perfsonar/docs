@@ -72,7 +72,7 @@
 <p>This document describes how to install the plug-in for perfSONAR disk-to-disk tests. This includes tools for standard curl tool as well as GridFTP using Globus. The sections below walk-through the following:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>How to setup your yum repositories to use the <em>nightly</em> perfSONAR repo that contains the disk-to-disk test plugin and associated tools.</li>
+<li>How to setup your yum repositories to use the <em>staging</em> perfSONAR repo that contains the disk-to-disk test plugin and associated tools.</li>
 <li>Installing perfSONAR and the new plugins using yum</li>
 <li>Configuring Globus using provided Ansible roles</li>
 <li>Commands for performing disk-to-disk transfers with pScheduler</li>
@@ -82,16 +82,16 @@
 </div>
 <div class="section" id="configuring-yum-repositories">
 <h2>Configuring Yum Repositories<a class="headerlink" href="#configuring-yum-repositories" title="Permalink to this headline">¶</a></h2>
-<p>You need to use the perfSONAR nightly yum repository to get the plug-ins. <strong>It is NOT recommended you do this on a production host</strong> as the nightly repository contains software still under active development. You can setup the repository with the commands below:</p>
+<p>You need to use the perfSONAR staging yum repository to get the plug-ins. <strong>It is NOT recommended you do this on a production host</strong> as the staging repository contains software still under active development. You can setup the repository with the commands below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">epel</span><span class="o">-</span><span class="n">release</span>
-<span class="n">yum</span> <span class="n">install</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">dev3</span><span class="o">.</span><span class="n">grnoc</span><span class="o">.</span><span class="n">iu</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">nightly</span><span class="o">/</span><span class="n">el</span><span class="o">/</span><span class="mi">7</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">minor</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfSONAR</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">nightly</span><span class="o">-</span><span class="n">minor</span><span class="o">-</span><span class="mf">0.9</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">dev3</span><span class="o">.</span><span class="n">grnoc</span><span class="o">.</span><span class="n">iu</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">staging</span><span class="o">/</span><span class="n">el</span><span class="o">/</span><span class="mi">7</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfSONAR</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">staging</span><span class="o">-</span><span class="mf">0.9</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
 <span class="n">yum</span> <span class="n">clean</span> <span class="nb">all</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="installing-perfsonar">
 <h2>Installing perfSONAR<a class="headerlink" href="#installing-perfsonar" title="Permalink to this headline">¶</a></h2>
-<p>Once the nightly repository is configured you can install perfSONAR and the associated plug-ins using the commands below:</p>
+<p>Once the staging repository is configured you can install perfSONAR and the associated plug-ins using the commands below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">testpoint</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">disk</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">disk</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">tool</span><span class="o">-</span><span class="n">curl</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">tool</span><span class="o">-</span><span class="n">globus</span>
 </pre></div>
 </div>
@@ -157,7 +157,7 @@
 <div class="section" id="configuring-psconfig-and-maddash">
 <h2>Configuring pSConfig and MaDDash<a class="headerlink" href="#configuring-psconfig-and-maddash" title="Permalink to this headline">¶</a></h2>
 <p>You can add <cite>disk-to-disk</cite> tests to a pSConfig template. There is a lot of flexibility in how you define your tests, but one example can be found here: <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json">https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json</a></p>
-<p>Once you have the test added to the pSConfig template and assuming you are storing them in esmond, then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash <a class="reference external" href="https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharingquick install guide">quick install guide</a>.</p>
+<p>Once you have the test added to the pSConfig template and assuming you are storing them in esmond, then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash <a class="reference external" href="https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharing">quick install guide</a>.</p>
 </div>
 </div>
 

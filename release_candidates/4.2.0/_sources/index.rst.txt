@@ -1,5 +1,5 @@
 *******************************************
-perfSONAR User Guide
+User Guide for perfSONAR |release|
 *******************************************
 
 perfSONAR is a collection of software for performing and sharing end-to-end network measurements. This document guides you through the process of installing, configuring and using perfSONAR on one or more hosts. 
@@ -96,7 +96,6 @@ Managing Multiple Hosts with pSConfig
    pwa
    psconfig_templates_vars
    psconfig_templates_advanced
-   psconfig_autoconfig
    psconfig_meshconfig_migrate
    
 .. _index-multiple:
