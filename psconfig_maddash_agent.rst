@@ -632,4 +632,3 @@ For full details on how to use the `psconfig agentctl` command to display, set, 
 Further Reading
 =========================
 * For a full listing of pSConfig MaDDash Agent related files see the reference :ref:`here <config_files-psconfig>`
-* For information regarding dynamic templates and how they relate to the pSConfig MaDDash Agent see :doc:`psconfig_autoconfig`

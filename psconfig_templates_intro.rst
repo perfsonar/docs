@@ -196,7 +196,7 @@ Groups of type *mesh* have one required property: ``addresses``. An example is b
 
 The ``addresses`` property is an array of *address selector* objects. These selectors describe which *address* objects to use from the ``addresses`` section of the template. The most common way to select is by name, as is done in the example above. This group will combine all of the addresses selected into pairs with all the other selected addresses.
 
-.. note:: Other types of address selectors are outside of the scope of this document but are detailed in :ref:`psconfig_templates_advanced-addresses-labels` and :doc:`psconfig_autoconfig`.
+.. note:: Other types of address selectors are outside of the scope of this document but are detailed in :ref:`psconfig_templates_advanced-addresses-labels`.
 
 Groups of type *disjoint* have two required properties: ``a-addresses`` and ``b-addresses``. An example is below::
 
@@ -549,4 +549,3 @@ Further Reading
 * `pSConfig Template JSON Schema <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_
 * :doc:`psconfig_templates_vars`
 * :doc:`psconfig_templates_advanced`
-* :doc:`psconfig_autoconfig`
