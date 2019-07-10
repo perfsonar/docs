@@ -86,7 +86,7 @@ Discovery
 ---------
 Each perfSONAR node can run a component called the **Lookup Service (LS) Registration Daemon** that registers its existence in a public and/or private `lookup service <http://software.es.net/simple-lookup-service/>`_. The registration daemon gathers information about each perfSONAR layer as well as the host on which it runs. This information is then used in multiple places to help debug problems and find hosts with which to test when building new configurations. 
 
-In general, no configuration is needed of the registration component but for a guide of the options available see :doc:`config_ls_registration`. For a guide on automatically building test configurations based on registered lookup service content see :doc:`psconfig_autoconfig`.
+In general, no configuration is needed of the registration component but for a guide of the options available see :doc:`config_ls_registration`.
 
 
 .. _owamp: http://github.com/perfsonar/owamp

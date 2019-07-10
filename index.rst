@@ -96,7 +96,6 @@ Managing Multiple Hosts with pSConfig
    pwa
    psconfig_templates_vars
    psconfig_templates_advanced
-   psconfig_autoconfig
    psconfig_meshconfig_migrate
    
 .. _index-multiple:
