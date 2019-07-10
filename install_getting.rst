@@ -2,6 +2,8 @@
 Getting the Software
 ****************************
 
+perfSONAR |release| is the latest release. This is a bug fix release for the |version| series of perfSONAR.
+
 Toolkit
 ---------
 
