@@ -1,5 +1,5 @@
 
-Upgrading from pre-4.2.0 versions
+Upgrading from older MeshConfig Admin (MCA) to new psConfig Web Administrator (PWA)
 ===================================================================================
 
 Upgrading
@@ -9,8 +9,9 @@ If you are upgrading from an older version of MCA to the new PWA, you may want t
 
 Files that have changed/that you need to change
 
-* ``/etc/mca`` or ``/etc/pwa`` moves to /etc/perfsonar/psconfig-web
-* within /etc/perfsonar/psconfig-web:
+
+* /etc/mca moves to /etc/pwa
+* within /etc/pwa:
 
   * index.js
 
