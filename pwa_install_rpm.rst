@@ -24,12 +24,13 @@ perfSONAR Repo
 
 **TODO: UPDATE**
 
-You will need to have the proper perfSONAR repo installed:
+You will need to have the main perfSONAR repo installed, if not already::
 
-.. code-block:: bash
+    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
 
-    yum install http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-nightly-minor-0.9-1.noarch.rpm
+Next, install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
 
+    yum install perfSONAR-repo-staging
 
 Installing PWA from RPMs
 ^^^^^^^^^^^^^^^^^^^^^^^^
