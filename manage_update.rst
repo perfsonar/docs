@@ -130,9 +130,9 @@ All of this means that your BWCTL tests will continue to function in 4.1 but you
 
 You can determine which of your tests are still using BWCTL by running the following command on a toolkit installation::
 
-    /usr/lib/perfsonar/scripts/find_bwctl_tests
+    /usr/lib/perfsonar/scripts/find_bwctl_measurements
 
-This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See `/usr/lib/perfsonar/scripts/find_bwctl_tests --help` for information on command-line options to change the archive URL, time range fo data analyzed and other options. 
+This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See `/usr/lib/perfsonar/scripts/find_bwctl_measurements --help` for information on command-line options to change the archive URL, time range fo data analyzed and other options. 
 
 pSConfig to MeshConfig Migration
 --------------------------------
