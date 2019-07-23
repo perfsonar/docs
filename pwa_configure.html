@@ -28,7 +28,7 @@
     <link rel="top" title="perfSONAR Toolkit 4.1.6 documentation" href="index.html" />
     <link rel="up" title="pSConfig Web Admin" href="pwa.html" />
     <link rel="next" title="Creating Docker containers" href="pwa_docker_create.html" />
-    <link rel="prev" title="Installation" href="pwa_install.html" /> 
+    <link rel="prev" title="Docker Installation" href="pwa_install_docker.html" /> 
   </head>
   <body>
     <header>
@@ -59,7 +59,7 @@
           <a href="pwa_docker_create.html" title="Creating Docker containers"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pwa_install.html" title="Installation"
+          <a href="pwa_install_docker.html" title="Docker Installation"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li>
           <li><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &raquo;</li> 
@@ -76,39 +76,36 @@
             
   <div class="section" id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
-<p>This guide assumes you have already pulled down the sample PWA config and extracted it like this (you should have done this during the Install step; if not, do it now:</p>
-<div class="highlight-bash"><div class="highlight"><pre>wget https://github.com/perfsonar/psconfig-web/raw/master/deploy/docker/pwa.sample.tar.gz
-sudo tar -C /etc -xvf pwa.sample.tar.gz pwa <span class="o">&amp;&amp;</span> sudo tar -C /usr/local/sbin --strip-components<span class="o">=</span>1 -xvf pwa.sample.tar.gz scripts
-</pre></div>
-</div>
-<p>Most of the configuration files for PWA can be found in the <tt class="docutils literal"><span class="pre">/etc/pwa</span></tt> directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.</p>
-<p><strong>Interaction with other web applications:</strong> If you want to run PWA on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See <a class="reference external" href="pwa_running_alongside">Running alongside other web applications</a></p>
+<p>This guide assumes you have already pulled down the sample PWA config, either from RPM packages, or a manual step in the Docker installation.</p>
+<p>Most of the configuration files for PWA can be found in the <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web</span></tt> directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.</p>
+<p><strong>Interaction with other web applications:</strong> If you want to run PWA via Docker, on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See <a class="reference external" href="pwa_running_alongside">Running alongside other web applications</a></p>
+<p>If you are running an RPM-based install, you likely won&#8217;t have to do anything differently.</p>
 <p><strong>Upgrading:</strong> If you are upgrading from an old MCA instance, view the docs on <a class="reference external" href="pwa_upgrading_from_mca">Upgrading from MCA to PWA</a></p>
-<p>When you update <tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt>, all PWA services will automatically restart. Please monitor logs by doing  <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
+<p>When you update <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/index.js</span></tt>, all PWA services will automatically restart. Please monitor logs by doing  <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
 <div class="section" id="hostname">
 <h2>Hostname<a class="headerlink" href="#hostname" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Update the publisher URL with the hostname of your PWA instance. Most likely, this will be the full hostname of your Docker host. Replace <tt class="docutils literal"><span class="pre">&lt;pwa_hostname&gt;</span></tt> with your full hostname, like this.</li>
+<li>Update the publisher URL with the hostname of your PWA instance. Most likely, this will be the full hostname of your Docker host. Replace <tt class="docutils literal"><span class="pre">&lt;hostname&gt;</span></tt> or <tt class="docutils literal"><span class="pre">&lt;pwa_hostname&gt;</span></tt> with your full hostname, like this.</li>
 </ul>
 <p>If your hostname is <tt class="docutils literal"><span class="pre">pwa.example.com</span></tt>,</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://&lt;pwa_hostname&gt;/pub/&quot;</span><span class="p">,</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://&lt;pwa_hostname&gt;/pwa/pub/&quot;</span><span class="p">,</span>
 </pre></div>
 </div>
 <p>becomes</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://pwa.example.com/pub/&quot;</span><span class="p">,</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://pwa.example.com/pwa/pub/&quot;</span><span class="p">,</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="database">
 <h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
-<p>The database is also configured in <tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">exports</span><span class="o">.</span><span class="n">mongodb</span> <span class="o">=</span> <span class="s">&quot;mongodb://mongo/pwa&quot;</span><span class="p">;</span>
+<p>The database is also configured in <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/index.js</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">exports</span><span class="o">.</span><span class="n">mongodb</span> <span class="o">=</span> <span class="s">&quot;mongodb://localhost/pwa&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="data-sources">
 <h2>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
-<p><tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt> lists the Global Lookup Service and any private LSes that host information is pulled from.</p>
+<p><tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/index.js</span></tt> lists the Global Lookup Service and any private LSes that host information is pulled from.</p>
 <p>In most cases, you won&#8217;t need to change the LS configuration.</p>
 <div class="section" id="global-sls">
 <h3>Global SLS<a class="headerlink" href="#global-sls" title="Permalink to this headline">¶</a></h3>
@@ -148,8 +145,8 @@ sudo tar -C /etc -xvf pwa.sample.tar.gz pwa <span class="o">&amp;&amp;</span> su
 <li>activehosts_url: should always point to <a class="reference external" href="http://ps1.es.net:8096/lookup/activehosts.json">http://ps1.es.net:8096/lookup/activehosts.json</a> unless you know a different global registry.</li>
 <li>query: This query is passed to all sLS instances that are member of the global registry. For more detail on sLS query, please refer to <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/APISpec#query">sLS API Spec</a></li>
 </ul>
-<p>So, the above sample datasource entry instructs mca-cache service to pull all service records (used to construct &#8220;hosts&#8221; for PWA) from the global lookup service (ps1.es.net) with community registered to &#8220;OSG&#8221;. If you don&#8217;t want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.</p>
-<p>As you may find in the default <tt class="docutils literal"><span class="pre">/etc/pwa/index.js</span></tt>, you can list as many datasources as you want. Make sure to use a unique key, and label.</p>
+<p>So, the above sample datasource entry instructs the PWA cache service to pull all service records (used to construct &#8220;hosts&#8221; for PWA) from the global lookup service (ps1.es.net) with community registered to &#8220;OSG&#8221;. If you don&#8217;t want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.</p>
+<p>As you may find in the default <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/index.js</span></tt>, you can list as many datasources as you want. Make sure to use a unique key, and label.</p>
 </div>
 <div class="section" id="sls">
 <h3>sLS<a class="headerlink" href="#sls" title="Permalink to this headline">¶</a></h3>
@@ -175,7 +172,9 @@ sudo tar -C /etc -xvf pwa.sample.tar.gz pwa <span class="o">&amp;&amp;</span> su
 <div class="section" id="test-spec-default-parameters">
 <h2>Test Spec Default parameters<a class="headerlink" href="#test-spec-default-parameters" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">index.js</span></tt> contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).</p>
-<p>When you update this file, all meshconfig services will automatically restarts. Please monitor logs by doing <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
+<p>When you update this file, all PWA services will automatically restart. Please monitor logs by doing <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></tt></p>
+<p>if running Docker, or</p>
+<p><tt class="docutils literal"><span class="pre">/var/log/messages</span></tt> if running RPMs</p>
 </div>
 <div class="section" id="logging">
 <h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
@@ -186,38 +185,43 @@ sudo tar -C /etc -xvf pwa.sample.tar.gz pwa <span class="o">&amp;&amp;</span> su
 <p>PWA uses Winston for logging. Please see <a class="reference external" href="https://github.com/winstonjs/winston">Winston</a> for more detail.</p>
 <div class="section" id="others">
 <h3>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h3>
-<p><tt class="docutils literal"><span class="pre">index.js</span></tt> contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.</p>
+<p><tt class="docutils literal"><span class="pre">index.js</span></tt> contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by the PWA authentication service.</p>
 </div>
 </div>
-<div class="section" id="nginx-web-server">
-<h2>Nginx (web server)<a class="headerlink" href="#nginx-web-server" title="Permalink to this headline">¶</a></h2>
-<p>Nginx will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit:</p>
-<div class="highlight-bash"><div class="highlight"><pre>/etc/pwa/nginx
+<div class="section" id="web-server-nginx-apache">
+<h2>Web server (nginx/apache)<a class="headerlink" href="#web-server-nginx-apache" title="Permalink to this headline">¶</a></h2>
+<p>A webserver (apache for RPM installs, nginx for docker installs) will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit:</p>
+<div class="highlight-bash"><div class="highlight"><pre>/etc/perfsonar/psconfig-web/nginx
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash"><div class="highlight"><pre>/etc/httpd/conf.d/pwa*.conf
 </pre></div>
 </div>
 <p><strong>Host Certificates</strong></p>
-<p>You will need SSL certificates for https access.</p>
+<p>You will need SSL certificates for https access. These should automatically be generated when you install/run the services, but you can also create them manually.</p>
 <p>If you want to generate self-signed certs, you can run this script (you may wish to edit it if you are using custom file paths):</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo /usr/local/sbin/generate_nginx_cert.sh
 </pre></div>
 </div>
-<p>If you want to provide your own certs, place them in <tt class="docutils literal"><span class="pre">/etc/pwa/nginx/certs</span></tt> with these names:</p>
+<p>If you want to provide your own certs, place them in <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/nginx/certs</span></tt> with these names:</p>
 <div class="highlight-bash"><div class="highlight"><pre>cert.pem
 key.pem
 </pre></div>
 </div>
-<p>If you are enabling x509 authentication, then you will also need <tt class="docutils literal"><span class="pre">trusted.pem</span></tt>; This file contains list of all CAs that you trust and grant access to PWA. You will have to adapt the nginx config in <tt class="docutils literal"><span class="pre">/etc/pwa/nginx/conf.d/pwa.conf</span></tt> as follows:</p>
+<p>If you are enabling x509 authentication, then you will also need <tt class="docutils literal"><span class="pre">trusted.pem</span></tt>; This file contains list of all CAs that you trust and grant access to PWA. You will have to adapt the nginx config in <tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/nginx/conf.d/pwa.conf</span></tt> as follows:</p>
 <div class="highlight-bash"><div class="highlight"><pre>ssl_client_certificate /etc/nginx/certs/trusted.pem
 ssl_verify_client on
 </pre></div>
 </div>
 <p>Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single <tt class="docutils literal"><span class="pre">trusted.pem</span> <span class="pre">file</span></tt></p>
+<p>Typically, Apache will just work with RPM installs, but you may have to change Apache&#8217;s config similarly, if using an RPM install.</p>
 </div>
-<div class="section" id="authentication-service-sca-auth">
-<h2>Authentication Service (sca-auth)<a class="headerlink" href="#authentication-service-sca-auth" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="authentication-service-pwa-auth">
+<h2>Authentication Service (pwa-auth)<a class="headerlink" href="#authentication-service-pwa-auth" title="Permalink to this headline">¶</a></h2>
 <p>PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying the config file.</p>
 <p>Edit the auth config file:</p>
-<p><tt class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/auth/index.js</span></tt></p>
 <ul>
 <li><p class="first">Update the hostname in the config by performing a search and replace in this file. Replace <tt class="docutils literal"><span class="pre">&lt;pwa_hostname&gt;</span></tt> with the hostname (FQDN) of your Docker host (remove the brackets).</p>
 </li>
@@ -268,15 +272,15 @@ ssl_verify_client on
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="user-management">
-<h2>User Management<a class="headerlink" href="#user-management" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="user-registration">
+<h2>User Registration<a class="headerlink" href="#user-registration" title="Permalink to this headline">¶</a></h2>
 <p>By default, signup is disabled and no users exist. You will need either manually create users once the docker containers have been created (see the next page for details), and/or allow signups.</p>
 <p>To enable user signup (registration through the web form), set these values in the following files:</p>
-<p><tt class="docutils literal"><span class="pre">/etc/pwa/auth/index.js</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/auth/index.js</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre>allow_signup: true
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">/etc/pwa/shared/auth.ui.js</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web/shared/auth.ui.js</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre>signup: true
 </pre></div>
 </div>
@@ -306,20 +310,20 @@ ssl_verify_client on
 <li><a class="reference internal" href="#others">Others</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#nginx-web-server">Nginx (web server)</a></li>
-<li><a class="reference internal" href="#authentication-service-sca-auth">Authentication Service (sca-auth)</a><ul>
+<li><a class="reference internal" href="#web-server-nginx-apache">Web server (nginx/apache)</a></li>
+<li><a class="reference internal" href="#authentication-service-pwa-auth">Authentication Service (pwa-auth)</a><ul>
 <li><a class="reference internal" href="#authentication-service-mail-server-configuration">Authentication service mail server configuration</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#user-management">User Management</a></li>
+<li><a class="reference internal" href="#user-registration">User Registration</a></li>
 </ul>
 </li>
 </ul>
 
                 <ul>
                   <li>
-                  <a href="pwa_install.html">Previous topic</a>
-                  <ul><li><a href="pwa_install.html" title="previous chapter">Installation</a></li></ul>
+                  <a href="pwa_install_docker.html">Previous topic</a>
+                  <ul><li><a href="pwa_install_docker.html" title="previous chapter">Docker Installation</a></li></ul>
                   </li>
                 </ul>
                   <ul>
@@ -345,7 +349,7 @@ ssl_verify_client on
           <a href="pwa_docker_create.html" title="Creating Docker containers"
              >next</a> |</li>
         <li class="right" >
-          <a href="pwa_install.html" title="Installation"
+          <a href="pwa_install_docker.html" title="Docker Installation"
              >previous</a> |</li>
         <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li>
           <li><a href="pwa.html" >pSConfig Web Admin</a> &raquo;</li> 

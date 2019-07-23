@@ -79,67 +79,75 @@
 <div class="section" id="default-configuration">
 <h2>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h2>
 <p>By default, PWA ships with account registration disabled, and with no accounts created. You either need to enable registration, or create one or more super-admin accounts (see below).</p>
+<p>This interaction is slightly different between docker and RPM installs</p>
 </div>
-<div class="section" id="interacting-with-the-sca-auth-service">
-<h2>Interacting with the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> service<a class="headerlink" href="#interacting-with-the-sca-auth-service" title="Permalink to this headline">¶</a></h2>
-<p><tt class="docutils literal"><span class="pre">sca-auth</span></tt> runs within a Docker container; there are two ways to run commands within a docker container.</p>
+<div class="section" id="interacting-with-the-sca-auth-service-rpm">
+<h2>Interacting with the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> service (rpm)<a class="headerlink" href="#interacting-with-the-sca-auth-service-rpm" title="Permalink to this headline">¶</a></h2>
+<p>Everything is the same as below, except you can ignore the Docker commands to attach to the container.</p>
+</div>
+<div class="section" id="interacting-with-the-sca-auth-service-docker">
+<h2>Interacting with the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> service (docker)<a class="headerlink" href="#interacting-with-the-sca-auth-service-docker" title="Permalink to this headline">¶</a></h2>
+<p>If deployed with Docker, <tt class="docutils literal"><span class="pre">sca-auth</span></tt> runs within a Docker container; there are two ways to run commands within a docker container.</p>
 <ol class="arabic">
 <li><p class="first"><tt class="docutils literal"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container&gt;</span> <span class="pre">&lt;command&gt;</span></tt> - this allows you to execute something inside the container without actually interactively entering the container. This is useful for one-off or scripted commands. For example, this gives you a list of all the users.</p>
-<div class="highlight-shell"><div class="highlight"><pre>$ sudo docker exec -it sca-auth /app/bin/auth.js listuser
+<div class="highlight-shell"><div class="highlight"><pre>$ sudo docker exec -it sca-auth pwa_auth listuser
 </pre></div>
 </div>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container&gt;</span> <span class="pre">bash</span></tt> - this starts an interactive bash shell within the container.</p>
 <div class="highlight-shell"><div class="highlight"><pre>$ sudo docker exec -it bash
 
-root@301be8a679c7:/# /app/bin/auth.js listuser
+root@301be8a679c7:/# pwa_auth listuser
 </pre></div>
 </div>
 </li>
 </ol>
 <p>The two examples above are equivalent. To exit a bash shell, type <tt class="docutils literal"><span class="pre">exit</span></tt></p>
 <p><strong>Running SCA commands</strong></p>
-<p>You can run SCA commands by running commands inside the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> container, using either method above.</p>
+<p>You can run other SCA commands by running commands inside the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> container, using either method above.</p>
 </div>
 <div class="section" id="sca-auth-commands">
 <h2>sca-auth Commands<a class="headerlink" href="#sca-auth-commands" title="Permalink to this headline">¶</a></h2>
 <p><strong>NOTE:</strong> before changes to user roles go into effect, the user has to log out and then re-authenticate.</p>
 <div class="section" id="listing-accounts">
 <h3>Listing accounts<a class="headerlink" href="#listing-accounts" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js listuser
+<p><strong>NOTE:</strong> Different environments may have different environment paths; the command below should work on both RPM installs and Docker instances, but if you have issues, try looking in a different path.</p>
+<p>Generally, Docker uses <tt class="docutils literal"><span class="pre">/sbin</span></tt> and RPMs use <tt class="docutils literal"><span class="pre">/usr/sbin</span></tt></p>
+<div class="highlight-shell"><div class="highlight"><pre>pwa_auth listuser
 </pre></div>
 </div>
+<p>The commands for RPM installs are the same as the Docker ones, simply with pwa_auth rather than auth.js.</p>
 </div>
 <div class="section" id="creating-accounts">
 <h3>Creating accounts<a class="headerlink" href="#creating-accounts" title="Permalink to this headline">¶</a></h3>
 <p>Create a new user</p>
-<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js useradd --username &lt;user&gt; --fullname &quot;&lt;name&gt;&quot; --email &quot;&lt;email&gt;&quot; [--password &quot;&lt;password&gt;&quot;]
+<div class="highlight-shell"><div class="highlight"><pre>pwa_auth useradd --username &lt;user&gt; --fullname &quot;&lt;name&gt;&quot; --email &quot;&lt;email&gt;&quot; [--password &quot;&lt;password&gt;&quot;]
 </pre></div>
 </div>
 </div>
 <div class="section" id="modifying-roles">
 <h3>Modifying roles<a class="headerlink" href="#modifying-roles" title="Permalink to this headline">¶</a></h3>
 <p>Add PWA access for a user</p>
-<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;]}&#39;
+<div class="highlight-shell"><div class="highlight"><pre>pwa_auth modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;]}&#39;
 </pre></div>
 </div>
 <p>Certain features in PWA are restricted to only super-admin. In order to become a super-admin, you will need to run following as root via the command line.</p>
 <p>Make a user a PWA super-admin:</p>
-<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
+<div class="highlight-shell"><div class="highlight"><pre>pwa_auth modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
 </pre></div>
 </div>
 <p>Reset password</p>
-<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js setpass --username user --password &quot;password#123&quot;
+<div class="highlight-shell"><div class="highlight"><pre>pwa_auth setpass --username user --password &quot;password#123&quot;
 </pre></div>
 </div>
 <p>Modify (set/add/del) user scopes</p>
-<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js modscope --username user --set &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
-/app/bin/auth.js modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
-/app/bin/auth.js modscope --username user --del &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
+<div class="highlight-shell"><div class="highlight"><pre>pwa_auth modscope --username user --set &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
+pwa_auth modscope --username user --add &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
+pwa_auth modscope --username user --del &#39;{&quot;pwa&quot;: [&quot;user&quot;, &quot;admin&quot;]}&#39;
 </pre></div>
 </div>
 <p>Remove a user</p>
-<div class="highlight-shell"><div class="highlight"><pre>/app/bin/auth.js userdel --username user
+<div class="highlight-shell"><div class="highlight"><pre>pwa_auth userdel --username user
 </pre></div>
 </div>
 </div>
@@ -157,7 +165,8 @@ root@301be8a679c7:/# /app/bin/auth.js listuser
                 <ul>
 <li><a class="reference internal" href="#">User Management</a><ul>
 <li><a class="reference internal" href="#default-configuration">Default Configuration</a></li>
-<li><a class="reference internal" href="#interacting-with-the-sca-auth-service">Interacting with the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> service</a></li>
+<li><a class="reference internal" href="#interacting-with-the-sca-auth-service-rpm">Interacting with the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> service (rpm)</a></li>
+<li><a class="reference internal" href="#interacting-with-the-sca-auth-service-docker">Interacting with the <tt class="docutils literal"><span class="pre">sca-auth</span></tt> service (docker)</a></li>
 <li><a class="reference internal" href="#sca-auth-commands">sca-auth Commands</a><ul>
 <li><a class="reference internal" href="#listing-accounts">Listing accounts</a></li>
 <li><a class="reference internal" href="#creating-accounts">Creating accounts</a></li>

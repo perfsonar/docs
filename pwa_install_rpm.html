@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PWA RPM Installation &mdash; perfSONAR Toolkit 4.1.6 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.1.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.1.6 documentation" href="index.html" />
+    <link rel="up" title="pSConfig Web Admin" href="pwa.html" />
+    <link rel="next" title="Docker Installation" href="pwa_install_docker.html" />
+    <link rel="prev" title="Install Options" href="pwa_install.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pwa_install_docker.html" title="Docker Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pwa_install.html" title="Install Options"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li>
+          <li><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pwa-rpm-installation">
+<h1>PWA RPM Installation<a class="headerlink" href="#pwa-rpm-installation" title="Permalink to this headline">¶</a></h1>
+<p><strong>If you are installing with Docker, SKIP THIS PAGE</strong></p>
+<div class="section" id="host-requirements">
+<h2>Host Requirements<a class="headerlink" href="#host-requirements" title="Permalink to this headline">¶</a></h2>
+<p>To install PWA using RPM packages, you will need a host or VM with RHEL 7/CentOS 7.</p>
+<p>Minimum recommended resources:</p>
+<ul class="simple">
+<li>4 CPU cores</li>
+<li>4G memory</li>
+<li>30G disk</li>
+<li>RHEL 7/CentOS 7</li>
+</ul>
+</div>
+<div class="section" id="perfsonar-repo">
+<h2>perfSONAR Repo<a class="headerlink" href="#perfsonar-repo" title="Permalink to this headline">¶</a></h2>
+<p><strong>TODO: UPDATE</strong></p>
+<p>You will need to have the proper perfSONAR repo installed:</p>
+<div class="highlight-bash"><div class="highlight"><pre>yum install http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-nightly-minor-0.9-1.noarch.rpm
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-pwa-from-rpms">
+<h2>Installing PWA from RPMs<a class="headerlink" href="#installing-pwa-from-rpms" title="Permalink to this headline">¶</a></h2>
+<p>There are several packages relating to PWA:</p>
+<ol class="arabic simple">
+<li><strong>perfsonar-psconfig-web-admin-ui</strong><ul>
+<li>The web UI, REST API, and cache service</li>
+</ul>
+</li>
+<li><strong>perfsonar-psconfig-web-admin-publisher</strong><ul>
+<li>The publisher (the component from which mesh nodes and maddash pull down the configs</li>
+</ul>
+</li>
+<li><strong>perfsonar-psconfig-web-admin-auth</strong><ul>
+<li>The authentication module that is used for the web UI</li>
+</ul>
+</li>
+<li><strong>perfsonar-psconfig-web-admin-shared</strong><ul>
+<li>Shared libraries for the PWA components (not useful by itself)</li>
+</ul>
+</li>
+</ol>
+<p>To install all of PWA at once. On CentOS7, run this as root (the other packages will be installed as dependencies):</p>
+<div class="highlight-bash"><div class="highlight"><pre>yum install -y perfsonar-psconfig-web-admin-ui perfsonar-psconfig-web-admin-publisher
+</pre></div>
+</div>
+<p>It is also possible to install only specific components; you could run just a publisher on one host, and the UI on a different host, for instance.</p>
+<p>Installing just the UI:</p>
+<div class="highlight-bash"><div class="highlight"><pre>yum install -y perfsonar-psconfig-web-admin-ui
+</pre></div>
+</div>
+<p>Installing just the publisher:</p>
+<div class="highlight-bash"><div class="highlight"><pre>yum install -y perfsonar-psconfig-web-admin-publisher
+</pre></div>
+</div>
+<p>Before you start the docker engine, you might want to add any VM specific configuration. For example, your VM might be using /usr/local as a primary partition for your VM. If so, you should have something like following..</p>
+<p>By default, your configuration files will be placed under:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/etc/perfsonar/psconfig-web</span></tt></li>
+</ul>
+<p>PWA code and libraries will be stored under:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/usr/lib/perfsonar/psconfig-web-admin</span></tt></li>
+</ul>
+<p>Data will be stored under:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/var/lib/perfsonar/psconfig-web-admin</span></tt></li>
+</ul>
+</div>
+<div class="section" id="managing-services">
+<h2>Managing Services<a class="headerlink" href="#managing-services" title="Permalink to this headline">¶</a></h2>
+<p>The PWA services are managed by <tt class="docutils literal"><span class="pre">systemd</span></tt>, as with any standard daemon. Upon installing the packages, the appropriate servies will be enabed and started.</p>
+<p>Getting the status of the services, run this as root:</p>
+<div class="highlight-bash"><div class="highlight"><pre>systemctl status perfsonar-psconfig-web-admin-*
+</pre></div>
+</div>
+<p>Similarly, you can (re)start/enable/disable services using <tt class="docutils literal"><span class="pre">systemctl</span></tt></p>
+<p>Depending on which packages you installd, the following daemons are available:</p>
+<p>UI API:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">perfsonar-psconfig-web-admin-api</span></tt></li>
+</ul>
+<p>Host/LS Cache:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">perfsonar-psconfig-web-admin-cache</span></tt></li>
+</ul>
+<p>Publisher API:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">perfsonar-psconfig-web-admin-publisher</span></tt></li>
+</ul>
+<p>Authentication API:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">perfsonar-psconfig-web-admin-auth</span></tt></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">PWA RPM Installation</a><ul>
+<li><a class="reference internal" href="#host-requirements">Host Requirements</a></li>
+<li><a class="reference internal" href="#perfsonar-repo">perfSONAR Repo</a></li>
+<li><a class="reference internal" href="#installing-pwa-from-rpms">Installing PWA from RPMs</a></li>
+<li><a class="reference internal" href="#managing-services">Managing Services</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pwa_install.html">Previous topic</a>
+                  <ul><li><a href="pwa_install.html" title="previous chapter">Install Options</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pwa_install_docker.html">Next topic</a>
+                      <ul><li><a href="pwa_install_docker.html" title="next chapter">Docker Installation</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pwa_install_docker.html" title="Docker Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pwa_install.html" title="Install Options"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li>
+          <li><a href="pwa.html" >pSConfig Web Admin</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
