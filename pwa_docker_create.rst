@@ -1,6 +1,7 @@
 Creating Docker containers
 =============================================
 
+**If you are not using Docker, SKIP THIS PAGE**
 
 Creating containers using a script
 -----------------------------------------------
