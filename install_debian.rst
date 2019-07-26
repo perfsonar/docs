@@ -2,11 +2,9 @@
 Bundle Installation on Debian
 ***********************************
 
-perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for five different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
+perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.2 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
-* Debian 8 Jessie
 * Debian 9 Stretch
-* Ubuntu 14 Trusty Tahr
 * Ubuntu 16 Xenial Xerus
 * Ubuntu 18 Bionic Beaver
 
@@ -16,15 +14,16 @@ Debian meta packages are available to install the bundles described in :doc:`ins
 System Requirements
 ===================
 
-* **Architecture:** We provide Debian packages for 5 different architectures:
+* **Architecture:** We provide Debian packages for 6 different architectures:
 
   * 32-bit (i386)
   * 64-bit (amd64)
-  * ARMv4t and up (armel)
+  * ARMv4t and up (armel) (only for Debian)
   * ARMv7 and up (armhf)
-  * ARM64 (arm64) (only for Debian 8/9)
+  * ARM64 (arm64)
+  * PPC64 (ppc64el)
 
-* **Operating System:**  Any system running a Debian 8, Debian 9, Ubuntu 14, Ubuntu 16 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 8/9 or Ubuntu 14/16/18 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 9, Ubuntu 16 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 9 or Ubuntu 16/18 might work too but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
@@ -43,7 +42,7 @@ All you need to do is to configure the perfSONAR Debian repository source, along
 
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-release.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
    
 * **Ubuntu only**. Additionnaly, if you're running a stripped down Ubuntu installation, you might need to enable the universe repository.  This is done with the following command::
 
@@ -238,11 +237,26 @@ Configuring perfSONAR through the web interface
 ------------------------------------------------
 After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
 
-Upgrading from 4.0.2
-====================
-If you had installed a perfSONAR 4.0.2 bundle and you now want to upgrade to perfSONAR 4.1, you'll have to follow the instructions here below.
+Keeping 4.1.x on Debian 8 and Ubuntu 14
+=======================================
+If you're running Debian 8 or Ubuntu 14, you need to know that perfSONAR 4.2 is not supported on these OS.  We recommend that you either do a fresh installation of perfSONAR on a supported OS (Debian 9 or Ubuntu 16 or 18) or plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2 to happen later. In all cases, you should follow the instructions bellow to prevent perfSONAR to automatically upgrade you to version 4.2.
 
-Add the 4.1 APT sources
+You nedd to replace the ``perfsonar-release`` repository with a plain ``perfsonar-4.1`` repository entry.  This is done in the ``/etc/apt/sources.list.d/perfsonar-release.list`` file, where you just replace **perfsonar-release** with **perfsonar-4.1** in the ``deb`` and ``deb-src`` lines.  Then run ``apt-get update``.
+
+From this moment, you'll be only receiving the upgrades to the 4.1.x release branch and nothing else.  Please then plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2. as described bellow.
+
+Upgrading from 4.1.x
+====================
+If you had installed a perfSONAR 4.1.x bundle and you now want to upgrade to perfSONAR 4.2, you'll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Ubuntu 16 and Ubuntu 18.  For Debian 8 and Ubuntu 14, you should first lock your system on 4.1.x, then upgrade the OS and finally perfSONAR (as described above).
+
+Update to latest point release
+------------------------------
+If you don't automatically run the update, you should do so manually before upgrading to the next version.  This can be done with just the following commands run as root::
+
+   apt-get update
+   apt-get upgrade
+
+Add the 4.2 APT sources
 -----------------------
 
 The perfSONAR Debian repository name has changed for this release, we support all Debian and Ubuntu releases through a single repository.  But this means you need to add our new repository to your system with the following commands::
@@ -266,14 +280,23 @@ Upgrade to another bundle
 -------------------------
 If you want to move from the `perfsonar-testpoint` bundle to another bundle that we provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
 
-Upgrade from Debian 7 to Debian 8 or 9
---------------------------------------
-If you have a perfSONAR host running Debian 7 and you want to upgrade it to Debian 8 (Jessie) or 9 (Stretch), we recommend you to follow the following steps:
+Upgrade from Debian 8 to Debian 9
+---------------------------------
+If you have a perfSONAR host running Debian 8 and you want to upgrade it to 9 (Stretch), we recommend you to follow the following steps:
 
-#. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
-#. Reboot (to get systemd running)
-#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-release``
 #. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_)
+#. Reboot your system unless already done in previous step.
+#. Change perfSONAR repository from ``perfsonar-4.1`` to ``perfsonar-release`` (if you changed it as a temporary measure as described above)
+#. Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
+#. Reboot your system one last time.
 
-  * Alternatively, you can just run ``apt-get udpate; apt-get dist-upgrade`` if you prefer to stay with Debian 8.
+Upgrade from Ubuntu 14 to Ubuntu 16 (or 18)
+-------------------------------------------
+If you have a perfSONAR host running Ubuntu 14 and you want to upgrade it to 16, we recommend you to follow the following steps:
+
+#. Upgrade Ubuntu 14 to Ubuntu 16 (following official instructions, here are `Xenial Upgrades notes <https://help.ubuntu.com/community/XenialUpgrades>`_)
+#. Reboot your system unless already done in previous step.
+#. Change perfSONAR repository from ``perfsonar-4.1`` to ``perfsonar-release`` (if you changed it as a temporary measure as described above)
+#. Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
+#. Reboot your system one last time.
 
