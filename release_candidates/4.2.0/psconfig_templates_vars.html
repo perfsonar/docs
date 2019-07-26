@@ -1,28 +1,35 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pSConfig Template Variables &#8212; perfSONAR Toolkit 4.2.0b1 documentation</title>
+    
+    <title>pSConfig Template Variables &mdash; perfSONAR Toolkit 4.2.0b1 documentation</title>
+    
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.2.0b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.0b1 documentation" href="index.html" />
     <link rel="next" title="Advanced pSConfig Templates" href="psconfig_templates_advanced.html" />
     <link rel="prev" title="PWA API" href="pwa_api.html" /> 
-  </head><body>
+  </head>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -53,7 +60,7 @@
         <li class="right" >
           <a href="pwa_api.html" title="PWA API"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -71,20 +78,20 @@
 <span id="psconfig-templates-vars-intro"></span><h2>Template Variable Basics<a class="headerlink" href="#template-variable-basics" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="syntax">
 <h3>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h3>
-<p>Template variables are strings included in the JSON of a template that access properties of task components. They take the following form where <code class="docutils literal notranslate"><span class="pre">VARIABLE</span></code> is the variable being used:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">VARIABLE</span> <span class="o">%</span><span class="p">}</span>
+<p>Template variables are strings included in the JSON of a template that access properties of task components. They take the following form where <code class="docutils literal"><span class="pre">VARIABLE</span></code> is the variable being used:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% VARIABLE %}
 </pre></div>
 </div>
 <p><strong>Expansion</strong> is the process by which a variable is converted from the form above to the actual value it represents. Once expansion completes a variable is referred to as <strong>expanded</strong>. The following template sections support the expansion of template variables:</p>
 <ol class="arabic simple">
-<li><code class="docutils literal notranslate"><span class="pre">archives</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">contexts</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">tests</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">reference</span></code> object of <code class="docutils literal notranslate"><span class="pre">tasks</span></code></li>
+<li><code class="docutils literal"><span class="pre">archives</span></code></li>
+<li><code class="docutils literal"><span class="pre">contexts</span></code></li>
+<li><code class="docutils literal"><span class="pre">tests</span></code></li>
+<li><code class="docutils literal"><span class="pre">reference</span></code> object of <code class="docutils literal"><span class="pre">tasks</span></code></li>
 </ol>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Sections such as <code class="docutils literal notranslate"><span class="pre">addresses</span></code>, <code class="docutils literal notranslate"><span class="pre">groups</span></code>, <code class="docutils literal notranslate"><span class="pre">hosts</span></code> and fields outside the <code class="docutils literal notranslate"><span class="pre">reference</span></code> section in <code class="docutils literal notranslate"><span class="pre">tasks</span></code> <strong>DO NOT</strong> support template variables and values will not be expanded in those sections if used.</p>
+<p class="last">Sections such as <code class="docutils literal"><span class="pre">addresses</span></code>, <code class="docutils literal"><span class="pre">groups</span></code>, <code class="docutils literal"><span class="pre">hosts</span></code> and fields outside the <code class="docutils literal"><span class="pre">reference</span></code> section in <code class="docutils literal"><span class="pre">tasks</span></code> <strong>DO NOT</strong> support template variables and values will not be expanded in those sections if used.</p>
 </div>
 </div>
 <div class="section" id="determining-json-type-of-expanded-variables">
@@ -95,39 +102,39 @@
 <li>Whether the variable is used <em>standalone</em> or <em>embedded</em> within a string</li>
 </ol>
 <p>A <strong>standalone</strong> use of the variable is when you use just the variable surrounded by quotes. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% f</span><span class="s2">lip %}&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;example&quot;</span><span class="p">:</span> <span class="s">&quot;{</span><span class="si">% f</span><span class="s">lip %}&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>In this example, since the <a class="reference internal" href="#psconfig-templates-vars-flip"><span class="std std-ref">flip variable</span></a> is a boolean type and we have used it in standalone mode, the object will be expanded to the following (assuming flip evaluates to <code class="docutils literal notranslate"><span class="pre">true</span></code>):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="n">true</span>
+<p>In this example, since the <a class="reference internal" href="#psconfig-templates-vars-flip"><span>flip variable</span></a> is a boolean type and we have used it in standalone mode, the object will be expanded to the following (assuming flip evaluates to <code class="docutils literal"><span class="pre">true</span></code>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;example&quot;</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Notice that the surrounding double quotes are removed so it is a JSON boolean instead of a string. If we were to use a different variable, like <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a> that always evaluates to a string, the double quotes will remain intact. For example, consider the following template:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span>
+<p>Notice that the surrounding double quotes are removed so it is a JSON boolean instead of a string. If we were to use a different variable, like <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span>scheduled_by_address</span></a> that always evaluates to a string, the double quotes will remain intact. For example, consider the following template:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;example&quot;</span><span class="p">:</span> <span class="s">&quot;{</span><span class="si">% s</span><span class="s">cheduled_by_address %}&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>If we expand that variable we get the following (assuming 10.0.0.1 is the address to which it evaluates):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.1&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;example&quot;</span><span class="p">:</span> <span class="s">&quot;10.0.0.1&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Notice that since the variable is a string, the quotes are preserved.</p>
-<p>pSConfig agents can also expand variables <strong>embedded</strong> within an existing string. For example if we want to build a URL with a dynamic host portion that uses <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a> we can do the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;https://{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}/example/url&quot;</span>
+<p>pSConfig agents can also expand variables <strong>embedded</strong> within an existing string. For example if we want to build a URL with a dynamic host portion that uses <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span>scheduled_by_address</span></a> we can do the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;example&quot;</span><span class="p">:</span> <span class="s">&quot;https://{</span><span class="si">% s</span><span class="s">cheduled_by_address %}/example/url&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>This would expand to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;https://10.0.0.1/example/url&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;example&quot;</span><span class="p">:</span> <span class="s">&quot;https://10.0.0.1/example/url&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -135,92 +142,92 @@
 <div class="section" id="placement-in-objects">
 <h3>Placement in Objects<a class="headerlink" href="#placement-in-objects" title="Permalink to this headline">¶</a></h3>
 <p>For those objects that support template variables, they can be nested as deeply within the object as needed. For example, all the uses of template variables below are completely valid:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;nest1&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %} is nested one level&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;nest2&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="n">example</span><span class="s2">&quot;: &quot;</span><span class="p">{</span><span class="o">%</span> <span class="n">scheduled_by_address</span> <span class="o">%</span><span class="p">}</span> <span class="ow">is</span> <span class="n">nested</span> <span class="n">two</span> <span class="n">levels</span><span class="s2">&quot;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;example&quot;: &quot;{% scheduled_by_address %}&quot;,
+    &quot;nest1&quot;: {
+        &quot;example&quot;: &quot;{% scheduled_by_address %} is nested one level&quot;,
+        &quot;nest2&quot;: {
+            example&quot;: &quot;{% scheduled_by_address %} is nested two levels&quot;
+        }
+    }
+}
 </pre></div>
 </div>
-<p>Assuming <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a> still evaluates to 10.0.0.1, the expanded object would look as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;nest1&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.1 is nested one level&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;nest2&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="n">example</span><span class="s2">&quot;: &quot;</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="ow">is</span> <span class="n">nested</span> <span class="n">two</span> <span class="n">levels</span><span class="s2">&quot;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<p>Assuming <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span>scheduled_by_address</span></a> still evaluates to 10.0.0.1, the expanded object would look as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;example&quot;: &quot;10.0.0.1&quot;,
+    &quot;nest1&quot;: {
+        &quot;example&quot;: &quot;10.0.0.1 is nested one level&quot;,
+        &quot;nest2&quot;: {
+            example&quot;: &quot;10.0.0.1 is nested two levels&quot;
+        }
+    }
+}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="address-variable">
-<span id="psconfig-templates-vars-address"></span><h2><code class="docutils literal notranslate"><span class="pre">address</span></code> Variable<a class="headerlink" href="#address-variable" title="Permalink to this headline">¶</a></h2>
+<span id="psconfig-templates-vars-address"></span><h2><code class="docutils literal"><span class="pre">address</span></code> Variable<a class="headerlink" href="#address-variable" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="description">
 <span id="psconfig-templates-vars-address-description"></span><h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
-<p>This variable accesses the <code class="docutils literal notranslate"><span class="pre">address</span></code> property of an <em>address</em> object in the  list generated by a group for an individual task.</p>
+<p>This variable accesses the <code class="docutils literal"><span class="pre">address</span></code> property of an <em>address</em> object in the  list generated by a group for an individual task.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">Introduction to pSConfig Templates</span></a> for a discussion on how groups work and how they generate address lists.</p>
+<p class="last">See <a class="reference internal" href="psconfig_templates_intro.html"><em>Introduction to pSConfig Templates</em></a> for a discussion on how groups work and how they generate address lists.</p>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">address</span></code> template variable takes the following form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">address</span><span class="p">[</span><span class="n">INDEX</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+<p>The <code class="docutils literal"><span class="pre">address</span></code> template variable takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% address[INDEX] %}
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">INDEX</span></code> between square brackets indicates which address object in the generated list to access starting at 0. Since groups of type <em>mesh</em> and <em>disjoint</em> always return pairs of two addresses, the <em>INDEX</em> can be value 0 or 1. For groups of type <em>list</em> it must be 0 since that type only generates one address. This variable always returns a string and will take the form of an IP address or hostname.</p>
+<p>The <code class="docutils literal"><span class="pre">INDEX</span></code> between square brackets indicates which address object in the generated list to access starting at 0. Since groups of type <em>mesh</em> and <em>disjoint</em> always return pairs of two addresses, the <em>INDEX</em> can be value 0 or 1. For groups of type <em>list</em> it must be 0 since that type only generates one address. This variable always returns a string and will take the form of an IP address or hostname.</p>
 </div>
 <div class="section" id="examples">
 <span id="psconfig-templates-vars-address-examples"></span><h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">address</span></code> template variable is commonly used for test specifications that have <code class="docutils literal notranslate"><span class="pre">source</span></code> and/or <code class="docutils literal notranslate"><span class="pre">dest</span></code> parameters. Below is an example of a throughput test using this variable to set the <code class="docutils literal notranslate"><span class="pre">source</span></code> to the first address in the pair and the <code class="docutils literal notranslate"><span class="pre">dest</span></code> to the second address. Assuming that the first address in the input pair is <em>10.0.0.1</em> and the second is <em>10.0.0.2</em> the template and expansion look as follows:</p>
+<p>The <code class="docutils literal"><span class="pre">address</span></code> template variable is commonly used for test specifications that have <code class="docutils literal"><span class="pre">source</span></code> and/or <code class="docutils literal"><span class="pre">dest</span></code> parameters. Below is an example of a throughput test using this variable to set the <code class="docutils literal"><span class="pre">source</span></code> to the first address in the pair and the <code class="docutils literal"><span class="pre">dest</span></code> to the second address. Assuming that the first address in the input pair is <em>10.0.0.1</em> and the second is <em>10.0.0.2</em> the template and expansion look as follows:</p>
 <ul>
 <li><p class="first"><strong>Template</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;throughput_test&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{% address[1] %}&quot;</span><span class="p">,</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;throughput_test&quot;: {
+    &quot;type&quot;: &quot;throughput&quot;,
+    &quot;spec&quot;: {
+        &quot;source&quot;: &quot;{% address[0] %}&quot;,
+        &quot;dest&quot;: &quot;{% address[1] %}&quot;,
+    }
+}
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>Post-Expansion</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;throughput_test&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.2&quot;</span><span class="p">,</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;throughput_test&quot;: {
+    &quot;type&quot;: &quot;throughput&quot;,
+    &quot;spec&quot;: {
+        &quot;source&quot;: &quot;10.0.0.1&quot;,
+        &quot;dest&quot;: &quot;10.0.0.2&quot;,
+    }
+}
 </pre></div>
 </div>
 </li>
 </ul>
-<p>Likewise, this variable is useful for <em>archive</em> objects of type <em>esmond</em> where the Esmond server is running on one of the endpoints. For example, if paired with the test specification above, this would always store the result on the host that is the <code class="docutils literal notranslate"><span class="pre">source</span></code> of the test. The template and expanded values are shown below:</p>
+<p>Likewise, this variable is useful for <em>archive</em> objects of type <em>esmond</em> where the Esmond server is running on one of the endpoints. For example, if paired with the test specification above, this would always store the result on the host that is the <code class="docutils literal"><span class="pre">source</span></code> of the test. The template and expanded values are shown below:</p>
 <ul>
 <li><p class="first"><strong>Template</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;source_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://{% address[0] %}/esmond/perfsonar/archive/&quot;</span>
-     <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;source_archive&quot;: {
+     &quot;archiver&quot;: &quot;esmond&quot;,
+     &quot;data&quot;: {
+         &quot;url&quot;: &quot;https://{% address[0] %}/esmond/perfsonar/archive/&quot;
+     }
+}
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>Post-Expansion</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;source_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://10.0.0.1/esmond/perfsonar/archive/&quot;</span>
-     <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;source_archive&quot;: {
+     &quot;archiver&quot;: &quot;esmond&quot;,
+     &quot;data&quot;: {
+         &quot;url&quot;: &quot;https://10.0.0.1/esmond/perfsonar/archive/&quot;
+     }
+}
 </pre></div>
 </div>
 </li>
@@ -228,41 +235,41 @@
 </div>
 </div>
 <div class="section" id="flip-variable">
-<span id="psconfig-templates-vars-flip"></span><h2><code class="docutils literal notranslate"><span class="pre">flip</span></code> Variable<a class="headerlink" href="#flip-variable" title="Permalink to this headline">¶</a></h2>
+<span id="psconfig-templates-vars-flip"></span><h2><code class="docutils literal"><span class="pre">flip</span></code> Variable<a class="headerlink" href="#flip-variable" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="psconfig-templates-vars-flip-description">
 <span id="id1"></span><h3>Description<a class="headerlink" href="#psconfig-templates-vars-flip-description" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">flip</span></code> variable expands a boolean value that is <code class="docutils literal notranslate"><span class="pre">true</span></code> if the task will be scheduled by an agent other than the one representing either the first address in the list or the host indicated by the <code class="docutils literal notranslate"><span class="pre">scheduled_by</span></code> parameter of the <em>task</em> object if specified. What this usually means is that if the first address in a pair has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> enabled then the second address will have to schedule it, thus setting flip to true. Otherwise flip will be <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">flip</span></code> template variable takes the following form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">flip</span> <span class="o">%</span><span class="p">}</span>
+<p>The <code class="docutils literal"><span class="pre">flip</span></code> variable expands a boolean value that is <code class="docutils literal"><span class="pre">true</span></code> if the task will be scheduled by an agent other than the one representing either the first address in the list or the host indicated by the <code class="docutils literal"><span class="pre">scheduled_by</span></code> parameter of the <em>task</em> object if specified. What this usually means is that if the first address in a pair has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> enabled then the second address will have to schedule it, thus setting flip to true. Otherwise flip will be <code class="docutils literal"><span class="pre">false</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">flip</span></code> template variable takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% flip %}
 </pre></div>
 </div>
 <p>The return type of this is a JSON boolean meaning if used as a standalone variable the surrounding double quotes will be removed.</p>
 </div>
 <div class="section" id="psconfig-templates-vars-flip-examples">
 <span id="id2"></span><h3>Examples<a class="headerlink" href="#psconfig-templates-vars-flip-examples" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">flip</span></code> variable is commonly used with the aptly-named <code class="docutils literal notranslate"><span class="pre">flip</span></code> option of <code class="docutils literal notranslate"><span class="pre">latency</span></code> and <code class="docutils literal notranslate"><span class="pre">latencybg</span></code> test specifications. In fact, it is probably a good idea to set this for all tests of this type. What it does is allow these tests to work even if the the address set to the source has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> enabled. Assuming that the first address in the input pair is <em>10.0.0.1</em> , the second is <em>10.0.0.2</em> and  the address object of <em>10.0.0.1</em> has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> enabled, the template and expansion look as follows:</p>
+<p>The <code class="docutils literal"><span class="pre">flip</span></code> variable is commonly used with the aptly-named <code class="docutils literal"><span class="pre">flip</span></code> option of <code class="docutils literal"><span class="pre">latency</span></code> and <code class="docutils literal"><span class="pre">latencybg</span></code> test specifications. In fact, it is probably a good idea to set this for all tests of this type. What it does is allow these tests to work even if the the address set to the source has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> enabled. Assuming that the first address in the input pair is <em>10.0.0.1</em> , the second is <em>10.0.0.2</em> and  the address object of <em>10.0.0.1</em> has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> enabled, the template and expansion look as follows:</p>
 <ul>
 <li><p class="first"><strong>Template</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;latencybg_test&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;latencybg&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{% address[1] %}&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;flip&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% f</span><span class="s2">lip %}&quot;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;latencybg_test&quot;: {
+    &quot;type&quot;: &quot;latencybg&quot;,
+    &quot;spec&quot;: {
+        &quot;source&quot;: &quot;{% address[0] %}&quot;,
+        &quot;dest&quot;: &quot;{% address[1] %}&quot;,
+        &quot;flip&quot;: &quot;{% flip %}&quot;
+    }
+}
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>Post-Expansion</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;latencybg_test&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;latencybg&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.2&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;flip&quot;</span><span class="p">:</span> <span class="n">true</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;latencybg_test&quot;: {
+    &quot;type&quot;: &quot;latencybg&quot;,
+    &quot;spec&quot;: {
+        &quot;source&quot;: &quot;10.0.0.1&quot;,
+        &quot;dest&quot;: &quot;10.0.0.2&quot;,
+        &quot;flip&quot;: true
+    }
+}
 </pre></div>
 </div>
 </li>
@@ -270,172 +277,172 @@
 </div>
 </div>
 <div class="section" id="jq-variable">
-<span id="psconfig-templates-vars-jq"></span><h2><code class="docutils literal notranslate"><span class="pre">jq</span></code> Variable<a class="headerlink" href="#jq-variable" title="Permalink to this headline">¶</a></h2>
+<span id="psconfig-templates-vars-jq"></span><h2><code class="docutils literal"><span class="pre">jq</span></code> Variable<a class="headerlink" href="#jq-variable" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="psconfig-templates-vars-jq-description">
 <span id="id3"></span><h3>Description<a class="headerlink" href="#psconfig-templates-vars-jq-description" title="Permalink to this headline">¶</a></h3>
-<p>This variable  accepts a <a class="reference external" href="https://stedolan.github.io/jq/">jq</a> script that it performs against the JSON of a task and its components. This is by far the most flexible and powerful of the template variables. In fact, almost all the other template variables could be implemented using the <code class="docutils literal notranslate"><span class="pre">jq</span></code> template variable instead.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">jq</span></code> template variable takes the following form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">jq</span> <span class="n">SCRIPT</span> <span class="o">%</span><span class="p">}</span>
+<p>This variable  accepts a <a class="reference external" href="https://stedolan.github.io/jq/">jq</a> script that it performs against the JSON of a task and its components. This is by far the most flexible and powerful of the template variables. In fact, almost all the other template variables could be implemented using the <code class="docutils literal"><span class="pre">jq</span></code> template variable instead.</p>
+<p>The <code class="docutils literal"><span class="pre">jq</span></code> template variable takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% jq SCRIPT %}
 </pre></div>
 </div>
 <p>The <em>SCRIPT</em> is the jq to be executed. The JSON object on which the jq operates is a special form of the template itself, including only those elements relating to the individual task being generated. Specifically, the JSON being queried has the following sections:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">addresses</span></code> which is an array of the <em>address</em> object for this particular task. This means a variable like <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[0].address</span> <span class="pre">%}</span></code> is the exact equivalent of the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">address[0]</span> <span class="pre">%}</span></code> template variable (see <a class="reference internal" href="#psconfig-templates-vars-address"><span class="std std-ref">address Variable</span></a>).</li>
-<li><code class="docutils literal notranslate"><span class="pre">archives</span></code> is an array of the <em>archive</em> objects to be used for this task. A query such as <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">archives[0].archiver</span> <span class="pre">%}</span></code> returns the type of the first archiver in the list. The order is not guaranteed, so plan scripts accordingly if using more than one archiver for a task.</li>
-<li><code class="docutils literal notranslate"><span class="pre">contexts</span></code> is a two-dimensional array of the <em>context</em> objects to be used for this task. The index at the first level of the array corresponds with the index of the <em>address</em> object that is associated with the <em>context</em> objects in the list at the second level. A query such as <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">contexts[0]</span> <span class="pre">%}</span></code> returns an array of all the <em>context</em> objects associated with the first <em>address</em> object. The order within the second level of the context list is not guaranteed, so plan scripts accordingly if using more than one context for an address. If an address has no contexts, then the array will be empty.</li>
-<li><code class="docutils literal notranslate"><span class="pre">hosts</span></code> is an array of the <em>host</em> objects to be used for this task. The index of a host maps to the address to which that host belongs. If an address does not belong to a host, an empty object will be at that position. A script such as <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">host[0].tags</span> <span class="pre">%}</span></code> returns the tags of the host associated with the first address.</li>
-<li><code class="docutils literal notranslate"><span class="pre">task</span></code> is the <em>task</em> object exactly as defined in the template.  A script such as <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">task.tools</span> <span class="pre">%}</span></code> returns the <code class="docutils literal notranslate"><span class="pre">tools</span></code> array of the task.</li>
-<li><code class="docutils literal notranslate"><span class="pre">test</span></code> is the <em>test</em> object exactly as defined in the template.  A script such as <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">test.type</span> <span class="pre">%}</span></code> returns the <code class="docutils literal notranslate"><span class="pre">type</span></code> of the task.</li>
+<li><code class="docutils literal"><span class="pre">addresses</span></code> which is an array of the <em>address</em> object for this particular task. This means a variable like <code class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[0].address</span> <span class="pre">%}</span></code> is the exact equivalent of the <code class="docutils literal"><span class="pre">{%</span> <span class="pre">address[0]</span> <span class="pre">%}</span></code> template variable (see <a class="reference internal" href="#psconfig-templates-vars-address"><span>address Variable</span></a>).</li>
+<li><code class="docutils literal"><span class="pre">archives</span></code> is an array of the <em>archive</em> objects to be used for this task. A query such as <code class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">archives[0].archiver</span> <span class="pre">%}</span></code> returns the type of the first archiver in the list. The order is not guaranteed, so plan scripts accordingly if using more than one archiver for a task.</li>
+<li><code class="docutils literal"><span class="pre">contexts</span></code> is a two-dimensional array of the <em>context</em> objects to be used for this task. The index at the first level of the array corresponds with the index of the <em>address</em> object that is associated with the <em>context</em> objects in the list at the second level. A query such as <code class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">contexts[0]</span> <span class="pre">%}</span></code> returns an array of all the <em>context</em> objects associated with the first <em>address</em> object. The order within the second level of the context list is not guaranteed, so plan scripts accordingly if using more than one context for an address. If an address has no contexts, then the array will be empty.</li>
+<li><code class="docutils literal"><span class="pre">hosts</span></code> is an array of the <em>host</em> objects to be used for this task. The index of a host maps to the address to which that host belongs. If an address does not belong to a host, an empty object will be at that position. A script such as <code class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">host[0].tags</span> <span class="pre">%}</span></code> returns the tags of the host associated with the first address.</li>
+<li><code class="docutils literal"><span class="pre">task</span></code> is the <em>task</em> object exactly as defined in the template.  A script such as <code class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">task.tools</span> <span class="pre">%}</span></code> returns the <code class="docutils literal"><span class="pre">tools</span></code> array of the task.</li>
+<li><code class="docutils literal"><span class="pre">test</span></code> is the <em>test</em> object exactly as defined in the template.  A script such as <code class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">test.type</span> <span class="pre">%}</span></code> returns the <code class="docutils literal"><span class="pre">type</span></code> of the task.</li>
 </ul>
-<p>The JSON type returned by <code class="docutils literal notranslate"><span class="pre">jq</span></code> template variables depends on your query. It is important to keep this in mind when using these variables because the cost of the extra flexibility means unexpected things can happen if one is not careful.</p>
+<p>The JSON type returned by <code class="docutils literal"><span class="pre">jq</span></code> template variables depends on your query. It is important to keep this in mind when using these variables because the cost of the extra flexibility means unexpected things can happen if one is not careful.</p>
 </div>
 <div class="section" id="psconfig-templates-vars-jq-examples">
 <span id="id4"></span><h3>Examples<a class="headerlink" href="#psconfig-templates-vars-jq-examples" title="Permalink to this headline">¶</a></h3>
-<p>Let’s take a look at an example where we have the following template using the <code class="docutils literal notranslate"><span class="pre">jq</span></code> template variable in the <code class="docutils literal notranslate"><span class="pre">reference</span></code> section of a <em>task</em> object:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;thr1&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;thr1.perfsonar.net&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;ifspeed&quot;</span><span class="p">:</span> <span class="mi">10</span>
+<p>Let&#8217;s take a look at an example where we have the following template using the <code class="docutils literal"><span class="pre">jq</span></code> template variable in the <code class="docutils literal"><span class="pre">reference</span></code> section of a <em>task</em> object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;thr1&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;thr1.perfsonar.net&quot;</span><span class="p">,</span>
+            <span class="s">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;ifspeed&quot;</span><span class="p">:</span> <span class="mi">10</span>
             <span class="p">}</span>
         <span class="p">},</span>
-        <span class="s2">&quot;thr2&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;thr2.perfsonar.net&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;ifspeed&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="s">&quot;thr2&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;thr2.perfsonar.net&quot;</span><span class="p">,</span>
+            <span class="s">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;ifspeed&quot;</span><span class="p">:</span> <span class="mi">1</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;throughput_group&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
-                 <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;thr1&quot;</span><span class="p">},</span>
-                 <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;thr2&quot;</span><span class="p">}</span>
+    <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;throughput_group&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;mesh&quot;</span><span class="p">,</span>
+            <span class="s">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+                 <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;thr1&quot;</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;thr2&quot;</span><span class="p">}</span>
              <span class="p">]</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s2">&quot;tests&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;throughput_test&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{% address[1] %}&quot;</span>
+    <span class="s">&quot;tests&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;throughput_test&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;throughput&quot;</span><span class="p">,</span>
+            <span class="s">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;source&quot;</span><span class="p">:</span> <span class="s">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
+                <span class="s">&quot;dest&quot;</span><span class="p">:</span> <span class="s">&quot;{% address[1] %}&quot;</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;throughput_task&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;source_ifspeed&quot;</span><span class="p">:</span> <span class="s2">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;dest_ifspeed&quot;</span><span class="p">:</span> <span class="s2">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
+    <span class="s">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;throughput_task&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
+            <span class="s">&quot;test&quot;</span><span class="p">:</span> <span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
+            <span class="s">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span> <span class="s">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
+                <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span> <span class="s">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>In the example, each address object has a custom <code class="docutils literal notranslate"><span class="pre">_meta</span></code> property intended to indicate the speed of the network interface that the address object represents. Those fields will be included in a <code class="docutils literal notranslate"><span class="pre">reference</span></code> section of the task meaning it will be included in an informational section of the same name in the corresponding pScheduler task. Someone debugging pScheduler will be able to see these fields and may find it of use. Let’s take a closer look at how these will be expanded so we better understand their meaning.</p>
+<p>In the example, each address object has a custom <code class="docutils literal"><span class="pre">_meta</span></code> property intended to indicate the speed of the network interface that the address object represents. Those fields will be included in a <code class="docutils literal"><span class="pre">reference</span></code> section of the task meaning it will be included in an informational section of the same name in the corresponding pScheduler task. Someone debugging pScheduler will be able to see these fields and may find it of use. Let&#8217;s take a closer look at how these will be expanded so we better understand their meaning.</p>
 <p>First, we have a group of type <em>mesh</em> containing two members. This will generate the following address pairs:</p>
 <ul class="simple">
 <li>thr1.perfsonar.net, thr2.perfsonar.net</li>
 <li>thr2.perfsonar.net, thr1.perfsonar.net</li>
 </ul>
 <p>For the first address pair, the JSON generated against which we can run our jq script is shown below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="s2">&quot;addresses&quot;</span><span class="p">:[</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+   <span class="s">&quot;addresses&quot;</span><span class="p">:[</span>
       <span class="p">{</span>
-         <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;thr1.perfsonar.net&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;ifspeed&quot;</span><span class="p">:</span><span class="mi">10</span>
+         <span class="s">&quot;address&quot;</span><span class="p">:</span><span class="s">&quot;thr1.perfsonar.net&quot;</span><span class="p">,</span>
+         <span class="s">&quot;_meta&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;ifspeed&quot;</span><span class="p">:</span><span class="mi">10</span>
          <span class="p">}</span>
       <span class="p">},</span>
       <span class="p">{</span>
-         <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;thr2.perfsonar.net&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;ifspeed&quot;</span><span class="p">:</span><span class="mi">1</span>
+         <span class="s">&quot;address&quot;</span><span class="p">:</span><span class="s">&quot;thr2.perfsonar.net&quot;</span><span class="p">,</span>
+         <span class="s">&quot;_meta&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;ifspeed&quot;</span><span class="p">:</span><span class="mi">1</span>
          <span class="p">}</span>
       <span class="p">}</span>
    <span class="p">],</span>
-   <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[],</span>
-   <span class="s2">&quot;contexts&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">[],</span> <span class="p">[]</span> <span class="p">],</span>
-   <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{},</span> <span class="p">{}</span> <span class="p">],</span>
-   <span class="s2">&quot;test&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;spec&quot;</span><span class="p">:{</span>
-         <span class="s2">&quot;source&quot;</span><span class="p">:</span><span class="s2">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;dest&quot;</span><span class="p">:</span><span class="s2">&quot;{% address[1] %}&quot;</span>
+   <span class="s">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[],</span>
+   <span class="s">&quot;contexts&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">[],</span> <span class="p">[]</span> <span class="p">],</span>
+   <span class="s">&quot;hosts&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{},</span> <span class="p">{}</span> <span class="p">],</span>
+   <span class="s">&quot;test&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;throughput&quot;</span><span class="p">,</span>
+      <span class="s">&quot;spec&quot;</span><span class="p">:{</span>
+         <span class="s">&quot;source&quot;</span><span class="p">:</span><span class="s">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
+         <span class="s">&quot;dest&quot;</span><span class="p">:</span><span class="s">&quot;{% address[1] %}&quot;</span>
       <span class="p">}</span>
    <span class="p">},</span>
-   <span class="s2">&quot;task&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;reference&quot;</span><span class="p">:{</span>
-         <span class="s2">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="s2">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="s2">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
+   <span class="s">&quot;task&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
+      <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
+      <span class="s">&quot;reference&quot;</span><span class="p">:{</span>
+         <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
+         <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
       <span class="p">}</span>
    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Our variables <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[0]._meta.ifspeed</span> <span class="pre">%}</span></code> and <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[1]._meta.ifspeed</span> <span class="pre">%}</span></code> are standalone queries selecting a JSON integer from each of the address object in the list. That means the quotes will get dropped in the result. This yields the following expanded task:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;reference&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
-        <span class="s2">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="mi">1</span>
+<p>Our variables <code class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[0]._meta.ifspeed</span> <span class="pre">%}</span></code> and <code class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[1]._meta.ifspeed</span> <span class="pre">%}</span></code> are standalone queries selecting a JSON integer from each of the address object in the list. That means the quotes will get dropped in the result. This yields the following expanded task:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
+    <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
+    <span class="s">&quot;reference&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
+        <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="mi">1</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>For the second address pair, we get the following JSON against which we can run our jq script:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="s2">&quot;addresses&quot;</span><span class="p">:[</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+   <span class="s">&quot;addresses&quot;</span><span class="p">:[</span>
       <span class="p">{</span>
-         <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;thr2.perfsonar.net&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;ifspeed&quot;</span><span class="p">:</span><span class="mi">1</span>
+         <span class="s">&quot;address&quot;</span><span class="p">:</span><span class="s">&quot;thr2.perfsonar.net&quot;</span><span class="p">,</span>
+         <span class="s">&quot;_meta&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;ifspeed&quot;</span><span class="p">:</span><span class="mi">1</span>
          <span class="p">}</span>
       <span class="p">},</span>
       <span class="p">{</span>
-         <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;thr1.perfsonar.net&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;ifspeed&quot;</span><span class="p">:</span><span class="mi">10</span>
+         <span class="s">&quot;address&quot;</span><span class="p">:</span><span class="s">&quot;thr1.perfsonar.net&quot;</span><span class="p">,</span>
+         <span class="s">&quot;_meta&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;ifspeed&quot;</span><span class="p">:</span><span class="mi">10</span>
          <span class="p">}</span>
       <span class="p">}</span>
    <span class="p">],</span>
-   <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[],</span>
-   <span class="s2">&quot;contexts&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">[],</span> <span class="p">[]</span> <span class="p">],</span>
-   <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{},</span> <span class="p">{}</span> <span class="p">],</span>
-   <span class="s2">&quot;test&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;spec&quot;</span><span class="p">:{</span>
-         <span class="s2">&quot;source&quot;</span><span class="p">:</span><span class="s2">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;dest&quot;</span><span class="p">:</span><span class="s2">&quot;{% address[1] %}&quot;</span>
+   <span class="s">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[],</span>
+   <span class="s">&quot;contexts&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">[],</span> <span class="p">[]</span> <span class="p">],</span>
+   <span class="s">&quot;hosts&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{},</span> <span class="p">{}</span> <span class="p">],</span>
+   <span class="s">&quot;test&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;throughput&quot;</span><span class="p">,</span>
+      <span class="s">&quot;spec&quot;</span><span class="p">:{</span>
+         <span class="s">&quot;source&quot;</span><span class="p">:</span><span class="s">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
+         <span class="s">&quot;dest&quot;</span><span class="p">:</span><span class="s">&quot;{% address[1] %}&quot;</span>
       <span class="p">}</span>
    <span class="p">},</span>
-   <span class="s2">&quot;task&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;reference&quot;</span><span class="p">:{</span>
-         <span class="s2">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="s2">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="s2">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
+   <span class="s">&quot;task&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
+      <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
+      <span class="s">&quot;reference&quot;</span><span class="p">:{</span>
+         <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
+         <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
       <span class="p">}</span>
    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>This results in the following expanded task:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;reference&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="mi">10</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
+    <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
+    <span class="s">&quot;reference&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="mi">10</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -447,42 +454,42 @@
 </div>
 </div>
 <div class="section" id="lead-bind-address-variable">
-<span id="psconfig-templates-vars-lead-bind-address"></span><h2><code class="docutils literal notranslate"><span class="pre">lead_bind_address</span></code> Variable<a class="headerlink" href="#lead-bind-address-variable" title="Permalink to this headline">¶</a></h2>
+<span id="psconfig-templates-vars-lead-bind-address"></span><h2><code class="docutils literal"><span class="pre">lead_bind_address</span></code> Variable<a class="headerlink" href="#lead-bind-address-variable" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="psconfig-templates-vars-lead-bind-address-description">
 <span id="id5"></span><h3>Description<a class="headerlink" href="#psconfig-templates-vars-lead-bind-address-description" title="Permalink to this headline">¶</a></h3>
-<p>This variable accesses the <code class="docutils literal notranslate"><span class="pre">lead-bind-address</span></code> property of an <em>address</em> object in the  list generated by a group for an individual task. It will additionally fallback to the value of the <code class="docutils literal notranslate"><span class="pre">address</span></code> property if <code class="docutils literal notranslate"><span class="pre">lead-bind-address</span></code> is not set.</p>
+<p>This variable accesses the <code class="docutils literal"><span class="pre">lead-bind-address</span></code> property of an <em>address</em> object in the  list generated by a group for an individual task. It will additionally fallback to the value of the <code class="docutils literal"><span class="pre">address</span></code> property if <code class="docutils literal"><span class="pre">lead-bind-address</span></code> is not set.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">Introduction to pSConfig Templates</span></a> for a discussion on how groups work and how they generate address lists.</p>
+<p class="last">See <a class="reference internal" href="psconfig_templates_intro.html"><em>Introduction to pSConfig Templates</em></a> for a discussion on how groups work and how they generate address lists.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-lead-bind-address"><span class="std std-ref">Controlling pScheduler Server Binding</span></a> for a discussion of the <code class="docutils literal notranslate"><span class="pre">lead-bind-address</span></code> property’s meaning</p>
+<p class="last">See <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-lead-bind-address"><span>Controlling pScheduler Server Binding</span></a> for a discussion of the <code class="docutils literal"><span class="pre">lead-bind-address</span></code> property&#8217;s meaning</p>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">lead_bind_address</span></code> template variable takes the following form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">lead_bind_address</span><span class="p">[</span><span class="n">INDEX</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+<p>The <code class="docutils literal"><span class="pre">lead_bind_address</span></code> template variable takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% lead_bind_address[INDEX] %}
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">INDEX</span></code> between square brackets indicates which address object in the generated list to access starting at 0. Since groups of type <em>mesh</em> and <em>disjoint</em> always return pairs of two addresses, the <em>INDEX</em> can be value 0 or 1. For groups of type <em>list</em> it must be 0 since that type only generates one address. This variable always returns a string and will take the form of an IP address or hostname.</p>
+<p>The <code class="docutils literal"><span class="pre">INDEX</span></code> between square brackets indicates which address object in the generated list to access starting at 0. Since groups of type <em>mesh</em> and <em>disjoint</em> always return pairs of two addresses, the <em>INDEX</em> can be value 0 or 1. For groups of type <em>list</em> it must be 0 since that type only generates one address. This variable always returns a string and will take the form of an IP address or hostname.</p>
 </div>
 <div class="section" id="psconfig-templates-vars-lead-bind-address-examples">
 <span id="id6"></span><h3>Examples<a class="headerlink" href="#psconfig-templates-vars-lead-bind-address-examples" title="Permalink to this headline">¶</a></h3>
-<p>This property is primarily available for completeness and informational purposes. The pScheduler agent reads the <em>address</em> object’s <code class="docutils literal notranslate"><span class="pre">lead-bind-address</span></code> property automatically, so it is not required to use this variable in order to properly set a pScheduler server’s binding options. The example below shows <code class="docutils literal notranslate"><span class="pre">lead_bind_address</span></code> being used for informational purposes in a task:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;reference&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;source_lead_bind_address&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% le</span><span class="s2">ad_bind_address[0] %}&quot;</span>
+<p>This property is primarily available for completeness and informational purposes. The pScheduler agent reads the <em>address</em> object&#8217;s <code class="docutils literal"><span class="pre">lead-bind-address</span></code> property automatically, so it is not required to use this variable in order to properly set a pScheduler server&#8217;s binding options. The example below shows <code class="docutils literal"><span class="pre">lead_bind_address</span></code> being used for informational purposes in a task:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
+    <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
+    <span class="s">&quot;reference&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;source_lead_bind_address&quot;</span><span class="p">:</span> <span class="s">&quot;{</span><span class="si">% le</span><span class="s">ad_bind_address[0] %}&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Assuming the <code class="docutils literal notranslate"><span class="pre">lead-bind-address</span></code> property is set to 10.0.0.1 OR that it is not set and the <code class="docutils literal notranslate"><span class="pre">address</span></code> property is 10.0.0.1 we get the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;reference&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;source_lead_bind_address&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.1&quot;</span>
+<p>Assuming the <code class="docutils literal"><span class="pre">lead-bind-address</span></code> property is set to 10.0.0.1 OR that it is not set and the <code class="docutils literal"><span class="pre">address</span></code> property is 10.0.0.1 we get the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
+    <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
+    <span class="s">&quot;reference&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;source_lead_bind_address&quot;</span><span class="p">:</span> <span class="s">&quot;10.0.0.1&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -490,54 +497,54 @@
 </div>
 </div>
 <div class="section" id="localhost-variable">
-<span id="psconfig-templates-vars-localhost"></span><h2><code class="docutils literal notranslate"><span class="pre">localhost</span></code> Variable<a class="headerlink" href="#localhost-variable" title="Permalink to this headline">¶</a></h2>
+<span id="psconfig-templates-vars-localhost"></span><h2><code class="docutils literal"><span class="pre">localhost</span></code> Variable<a class="headerlink" href="#localhost-variable" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="psconfig-templates-vars-localhost-description">
 <span id="id7"></span><h3>Description<a class="headerlink" href="#psconfig-templates-vars-localhost-description" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">localhost</span></code> template variable returns a string value of “localhost” unless the <a class="reference internal" href="#psconfig-templates-vars-flip"><span class="std std-ref">flip</span></a> variable is true, then it returns the value of <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">localhost</span></code> template variable takes the following form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">localhost</span> <span class="o">%</span><span class="p">}</span>
+<p>The <code class="docutils literal"><span class="pre">localhost</span></code> template variable returns a string value of &#8220;localhost&#8221; unless the <a class="reference internal" href="#psconfig-templates-vars-flip"><span>flip</span></a> variable is true, then it returns the value of <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span>scheduled_by_address</span></a>.</p>
+<p>The <code class="docutils literal"><span class="pre">localhost</span></code> template variable takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% localhost %}
 </pre></div>
 </div>
-<p>This variable may be useful in instances where <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a> is desired, but the local system identifies itself using a private IP address different from that in <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a>.</p>
+<p>This variable may be useful in instances where <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span>scheduled_by_address</span></a> is desired, but the local system identifies itself using a private IP address different from that in <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span>scheduled_by_address</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you do not have the private IP limitation, then <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a> is generally preferred as its clearer as to where results are stored once expanded.</p>
+<p class="last">If you do not have the private IP limitation, then <a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address"><span>scheduled_by_address</span></a> is generally preferred as its clearer as to where results are stored once expanded.</p>
 </div>
 </div>
 <div class="section" id="psconfig-templates-vars-localhost-examples">
 <span id="id8"></span><h3>Examples<a class="headerlink" href="#psconfig-templates-vars-localhost-examples" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">localhost</span></code> template variable can be useful when building URLs for archives of type <em>esmond</em>. The example below embeds the variable in the <code class="docutils literal notranslate"><span class="pre">url</span></code> field. If the host expected to schedule the test does not have <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> enabled then it will expand to “localhost” as shown below:</p>
+<p>The <code class="docutils literal"><span class="pre">localhost</span></code> template variable can be useful when building URLs for archives of type <em>esmond</em>. The example below embeds the variable in the <code class="docutils literal"><span class="pre">url</span></code> field. If the host expected to schedule the test does not have <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> enabled then it will expand to &#8220;localhost&#8221; as shown below:</p>
 <ul>
 <li><p class="first"><strong>Template</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;local_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://{</span><span class="si">% lo</span><span class="s2">calhost %}/esmond/perfsonar/archive/&quot;</span>
-     <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;local_archive&quot;: {
+     &quot;archiver&quot;: &quot;esmond&quot;,
+     &quot;data&quot;: {
+         &quot;url&quot;: &quot;https://{% localhost %}/esmond/perfsonar/archive/&quot;
+     }
+}
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>Post-Expansion</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;local_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://localhost/esmond/perfsonar/archive/&quot;</span>
-     <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;local_archive&quot;: {
+     &quot;archiver&quot;: &quot;esmond&quot;,
+     &quot;data&quot;: {
+         &quot;url&quot;: &quot;https://localhost/esmond/perfsonar/archive/&quot;
+     }
+}
 </pre></div>
 </div>
 </li>
 </ul>
-<p>If that same example is for a task where the host expected to schedule the task has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> enabled, thus <a class="reference internal" href="#psconfig-templates-vars-flip"><span class="std std-ref">flip</span></a> is true, then it will return the following if the address of the <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> host is 10.0.0.1:</p>
+<p>If that same example is for a task where the host expected to schedule the task has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> enabled, thus <a class="reference internal" href="#psconfig-templates-vars-flip"><span>flip</span></a> is true, then it will return the following if the address of the <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> host is 10.0.0.1:</p>
 <ul>
 <li><p class="first"><strong>Post-Expansion</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;local_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://10.0.0.1/esmond/perfsonar/archive/&quot;</span>
-     <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;local_archive&quot;: {
+     &quot;archiver&quot;: &quot;esmond&quot;,
+     &quot;data&quot;: {
+         &quot;url&quot;: &quot;https://10.0.0.1/esmond/perfsonar/archive/&quot;
+     }
+}
 </pre></div>
 </div>
 </li>
@@ -545,112 +552,112 @@
 </div>
 </div>
 <div class="section" id="pscheduler-address-variable">
-<span id="psconfig-templates-vars-pscheduler-address"></span><h2><code class="docutils literal notranslate"><span class="pre">pscheduler_address</span></code> Variable<a class="headerlink" href="#pscheduler-address-variable" title="Permalink to this headline">¶</a></h2>
+<span id="psconfig-templates-vars-pscheduler-address"></span><h2><code class="docutils literal"><span class="pre">pscheduler_address</span></code> Variable<a class="headerlink" href="#pscheduler-address-variable" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="psconfig-templates-vars-pscheduler-address-description">
 <span id="id9"></span><h3>Description<a class="headerlink" href="#psconfig-templates-vars-pscheduler-address-description" title="Permalink to this headline">¶</a></h3>
-<p>This variable accesses the <code class="docutils literal notranslate"><span class="pre">pscheduler-address</span></code> property of an <em>address</em> object in the list generated by a group for an individual task. It will additionally fallback to the value of the <code class="docutils literal notranslate"><span class="pre">address</span></code> property if <code class="docutils literal notranslate"><span class="pre">pscheduler-address</span></code> is not set.</p>
+<p>This variable accesses the <code class="docutils literal"><span class="pre">pscheduler-address</span></code> property of an <em>address</em> object in the list generated by a group for an individual task. It will additionally fallback to the value of the <code class="docutils literal"><span class="pre">address</span></code> property if <code class="docutils literal"><span class="pre">pscheduler-address</span></code> is not set.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">Introduction to pSConfig Templates</span></a> for a discussion on how groups work and how they generate address lists.</p>
+<p class="last">See <a class="reference internal" href="psconfig_templates_intro.html"><em>Introduction to pSConfig Templates</em></a> for a discussion on how groups work and how they generate address lists.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-pscheduler-address"><span class="std std-ref">Using Non-Standard pScheduler Ports and Addresses</span></a> for a discussion of the <code class="docutils literal notranslate"><span class="pre">pscheduler-address</span></code> property’s meaning</p>
+<p class="last">See <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-pscheduler-address"><span>Using Non-Standard pScheduler Ports and Addresses</span></a> for a discussion of the <code class="docutils literal"><span class="pre">pscheduler-address</span></code> property&#8217;s meaning</p>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">pscheduler_address</span></code> template variable takes the following form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">pscheduler_address</span><span class="p">[</span><span class="n">INDEX</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+<p>The <code class="docutils literal"><span class="pre">pscheduler_address</span></code> template variable takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% pscheduler_address[INDEX] %}
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">INDEX</span></code> between square brackets indicates which address object in the generated list to access starting at 0. Since groups of type <em>mesh</em> and <em>disjoint</em> always return pairs of two addresses, the <em>INDEX</em> can be value 0 or 1. For groups of type <em>list</em> it must be 0 since that type only generates one address. This variable always returns a string and will take the form of an IP address, hostname with an optional port.</p>
+<p>The <code class="docutils literal"><span class="pre">INDEX</span></code> between square brackets indicates which address object in the generated list to access starting at 0. Since groups of type <em>mesh</em> and <em>disjoint</em> always return pairs of two addresses, the <em>INDEX</em> can be value 0 or 1. For groups of type <em>list</em> it must be 0 since that type only generates one address. This variable always returns a string and will take the form of an IP address, hostname with an optional port.</p>
 </div>
 <div class="section" id="psconfig-templates-vars-pscheduler-address-examples">
 <span id="id10"></span><h3>Examples<a class="headerlink" href="#psconfig-templates-vars-pscheduler-address-examples" title="Permalink to this headline">¶</a></h3>
-<p>Most of the standard perfSONAR pScheduler test plug-ins support a <code class="docutils literal notranslate"><span class="pre">source-node</span></code> and/or <code class="docutils literal notranslate"><span class="pre">dest-node</span></code> field in their specification. These are for defining a pScheduler server on a port other than 443 or at a different address from the <code class="docutils literal notranslate"><span class="pre">source</span></code> and <code class="docutils literal notranslate"><span class="pre">dest</span></code> fields. These are exactly the types of fields for which <code class="docutils literal notranslate"><span class="pre">pscheduler_address</span></code> is intended. Let’s assume we have a task using the following pair of address definitions:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;addresses&quot;</span><span class="p">:[</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;thr1.perfsonar.net&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pscheduler-address&quot;</span><span class="p">:</span> <span class="s2">&quot;[fd89:b4d9:341a:8465::1]:8080&quot;</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;thr2.perfsonar.net&quot;</span><span class="p">,</span>
-    <span class="p">}</span>
-<span class="p">]</span>
+<p>Most of the standard perfSONAR pScheduler test plug-ins support a <code class="docutils literal"><span class="pre">source-node</span></code> and/or <code class="docutils literal"><span class="pre">dest-node</span></code> field in their specification. These are for defining a pScheduler server on a port other than 443 or at a different address from the <code class="docutils literal"><span class="pre">source</span></code> and <code class="docutils literal"><span class="pre">dest</span></code> fields. These are exactly the types of fields for which <code class="docutils literal"><span class="pre">pscheduler_address</span></code> is intended. Let&#8217;s assume we have a task using the following pair of address definitions:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;addresses&quot;:[
+    {
+        &quot;address&quot;:&quot;thr1.perfsonar.net&quot;,
+        &quot;pscheduler-address&quot;: &quot;[fd89:b4d9:341a:8465::1]:8080&quot;
+    },
+    {
+        &quot;address&quot;:&quot;thr2.perfsonar.net&quot;,
+    }
+]
 </pre></div>
 </div>
 <p>Below is <em>test</em> object below and its subsequent expansion using the <em>address</em> objects above:</p>
 <ul>
 <li><p class="first"><strong>Template</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="p">{</span>
-   <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;spec&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;source&quot;</span><span class="p">:</span><span class="s2">&quot;{% address[0] %}&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;dest&quot;</span><span class="p">:</span><span class="s2">&quot;{% address[1] %}&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;source-node&quot;</span><span class="p">:</span><span class="s2">&quot;{% pscheduler_address[0] %}&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;dest-node&quot;</span><span class="p">:</span><span class="s2">&quot;{% pscheduler_address[1] %}&quot;</span>
-   <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre> {
+   &quot;type&quot;:&quot;throughput&quot;,
+   &quot;spec&quot;:{
+      &quot;source&quot;:&quot;{% address[0] %}&quot;,
+      &quot;dest&quot;:&quot;{% address[1] %}&quot;,
+      &quot;source-node&quot;:&quot;{% pscheduler_address[0] %}&quot;,
+      &quot;dest-node&quot;:&quot;{% pscheduler_address[1] %}&quot;
+   }
+}
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>Post-Expansion</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="p">{</span>
-   <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;spec&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;source&quot;</span><span class="p">:</span><span class="s2">&quot;thr1.perfsonar.net&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;dest&quot;</span><span class="p">:</span><span class="s2">&quot;thr2.perfsonar.net&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;source-node&quot;</span><span class="p">:</span><span class="s2">&quot;[fd89:b4d9:341a:8465::1]:8080&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;dest-node&quot;</span><span class="p">:</span><span class="s2">&quot;thr2.perfsonar.net&quot;</span>
-   <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre> {
+   &quot;type&quot;:&quot;throughput&quot;,
+   &quot;spec&quot;:{
+      &quot;source&quot;:&quot;thr1.perfsonar.net&quot;,
+      &quot;dest&quot;:&quot;thr2.perfsonar.net&quot;,
+      &quot;source-node&quot;:&quot;[fd89:b4d9:341a:8465::1]:8080&quot;,
+      &quot;dest-node&quot;:&quot;thr2.perfsonar.net&quot;
+   }
+}
 </pre></div>
 </div>
 </li>
 </ul>
-<p>Notice how <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">pscheduler_address[0]</span> <span class="pre">%}</span></code> expands to the <code class="docutils literal notranslate"><span class="pre">pscheduler-address</span></code> property of the first address, but for <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">pscheduler_address[1]</span> <span class="pre">%}</span></code> it falls back to the value of <code class="docutils literal notranslate"><span class="pre">address</span></code> since <code class="docutils literal notranslate"><span class="pre">pscheduler-address</span></code> is not set for the second address.</p>
+<p>Notice how <code class="docutils literal"><span class="pre">{%</span> <span class="pre">pscheduler_address[0]</span> <span class="pre">%}</span></code> expands to the <code class="docutils literal"><span class="pre">pscheduler-address</span></code> property of the first address, but for <code class="docutils literal"><span class="pre">{%</span> <span class="pre">pscheduler_address[1]</span> <span class="pre">%}</span></code> it falls back to the value of <code class="docutils literal"><span class="pre">address</span></code> since <code class="docutils literal"><span class="pre">pscheduler-address</span></code> is not set for the second address.</p>
 </div>
 </div>
 <div class="section" id="scheduled-by-address-variable">
-<span id="psconfig-templates-vars-scheduled-by-address"></span><h2><code class="docutils literal notranslate"><span class="pre">scheduled_by_address</span></code> Variable<a class="headerlink" href="#scheduled-by-address-variable" title="Permalink to this headline">¶</a></h2>
+<span id="psconfig-templates-vars-scheduled-by-address"></span><h2><code class="docutils literal"><span class="pre">scheduled_by_address</span></code> Variable<a class="headerlink" href="#scheduled-by-address-variable" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="psconfig-templates-vars-scheduled-by-address-description">
 <span id="id11"></span><h3>Description<a class="headerlink" href="#psconfig-templates-vars-scheduled-by-address-description" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">scheduled_by_address</span></code> variable expands to the <code class="docutils literal notranslate"><span class="pre">address</span></code> property of the <em>address</em> object responsible for creating this task. Responsibility is determined according to the following rules:</p>
+<p>The <code class="docutils literal"><span class="pre">scheduled_by_address</span></code> variable expands to the <code class="docutils literal"><span class="pre">address</span></code> property of the <em>address</em> object responsible for creating this task. Responsibility is determined according to the following rules:</p>
 <ol class="arabic simple">
-<li>If <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-tasks-scheduled-by"><span class="std std-ref">scheduled-by</span></a> is set in the <code class="docutils literal notranslate"><span class="pre">task</span></code>, then the generated <code class="docutils literal notranslate"><span class="pre">address</span></code> object at the index specified by that property is used unless it has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> enabled</li>
-<li>Otherwise, the first address in the generated list where <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> is disabled will be used.</li>
+<li>If <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-tasks-scheduled-by"><span>scheduled-by</span></a> is set in the <code class="docutils literal"><span class="pre">task</span></code>, then the generated <code class="docutils literal"><span class="pre">address</span></code> object at the index specified by that property is used unless it has <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> enabled</li>
+<li>Otherwise, the first address in the generated list where <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> is disabled will be used.</li>
 </ol>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">There will never be a task where all addresses have <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span class="std std-ref">no-agent</span></a> enabled. pSConfig skips those tests since by definition they cannot be created.</p>
+<p class="last">There will never be a task where all addresses have <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-noagent"><span>no-agent</span></a> enabled. pSConfig skips those tests since by definition they cannot be created.</p>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">scheduled_by_address</span></code> template variable takes the following form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">scheduled_by_address</span> <span class="o">%</span><span class="p">}</span>
+<p>The <code class="docutils literal"><span class="pre">scheduled_by_address</span></code> template variable takes the following form:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% scheduled_by_address %}
 </pre></div>
 </div>
 <p>This variable always returns a string and will take the form of an IP address or hostname.</p>
 </div>
 <div class="section" id="psconfig-templates-vars-scheduled-by-address-examples">
 <span id="id12"></span><h3>Examples<a class="headerlink" href="#psconfig-templates-vars-scheduled-by-address-examples" title="Permalink to this headline">¶</a></h3>
-<p>This is often used in both the <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">measurement-agent</span></code> fields for archives of type <em>esmond</em>. In the <code class="docutils literal notranslate"><span class="pre">url</span></code> it tells it to register the results to the host requesting the task. In the <code class="docutils literal notranslate"><span class="pre">measurement-agent</span></code> it explicitly defines the host that requested the measurement, which is the meaning of the <code class="docutils literal notranslate"><span class="pre">measurement-agent</span></code> field. Assuming the variable expands to 10.0.0.1, below is an example template and its expansion:</p>
+<p>This is often used in both the <code class="docutils literal"><span class="pre">url</span></code> and <code class="docutils literal"><span class="pre">measurement-agent</span></code> fields for archives of type <em>esmond</em>. In the <code class="docutils literal"><span class="pre">url</span></code> it tells it to register the results to the host requesting the task. In the <code class="docutils literal"><span class="pre">measurement-agent</span></code> it explicitly defines the host that requested the measurement, which is the meaning of the <code class="docutils literal"><span class="pre">measurement-agent</span></code> field. Assuming the variable expands to 10.0.0.1, below is an example template and its expansion:</p>
 <ul>
 <li><p class="first"><strong>Template</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;sched_by_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}/esmond/perfsonar/archive/&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span>
-     <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;sched_by_archive&quot;: {
+     &quot;archiver&quot;: &quot;esmond&quot;,
+     &quot;data&quot;: {
+         &quot;url&quot;: &quot;https://{% scheduled_by_address %}/esmond/perfsonar/archive/&quot;,
+         &quot;measurement-agent&quot;: &quot;{% scheduled_by_address %}&quot;
+     }
+}
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>Post-Expansion</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;sched_by_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://10.0.0.1/esmond/perfsonar/archive/&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.0.1&quot;</span>
-     <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>&quot;sched_by_archive&quot;: {
+     &quot;archiver&quot;: &quot;esmond&quot;,
+     &quot;data&quot;: {
+         &quot;url&quot;: &quot;https://10.0.0.1/esmond/perfsonar/archive/&quot;,
+         &quot;measurement-agent&quot;: &quot;10.0.0.1&quot;
+     }
+}
 </pre></div>
 </div>
 </li>
@@ -675,37 +682,37 @@
 <li><a class="reference internal" href="#placement-in-objects">Placement in Objects</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#address-variable"><code class="docutils literal notranslate"><span class="pre">address</span></code> Variable</a><ul>
+<li><a class="reference internal" href="#address-variable"><code class="docutils literal"><span class="pre">address</span></code> Variable</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#flip-variable"><code class="docutils literal notranslate"><span class="pre">flip</span></code> Variable</a><ul>
+<li><a class="reference internal" href="#flip-variable"><code class="docutils literal"><span class="pre">flip</span></code> Variable</a><ul>
 <li><a class="reference internal" href="#psconfig-templates-vars-flip-description">Description</a></li>
 <li><a class="reference internal" href="#psconfig-templates-vars-flip-examples">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#jq-variable"><code class="docutils literal notranslate"><span class="pre">jq</span></code> Variable</a><ul>
+<li><a class="reference internal" href="#jq-variable"><code class="docutils literal"><span class="pre">jq</span></code> Variable</a><ul>
 <li><a class="reference internal" href="#psconfig-templates-vars-jq-description">Description</a></li>
 <li><a class="reference internal" href="#psconfig-templates-vars-jq-examples">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#lead-bind-address-variable"><code class="docutils literal notranslate"><span class="pre">lead_bind_address</span></code> Variable</a><ul>
+<li><a class="reference internal" href="#lead-bind-address-variable"><code class="docutils literal"><span class="pre">lead_bind_address</span></code> Variable</a><ul>
 <li><a class="reference internal" href="#psconfig-templates-vars-lead-bind-address-description">Description</a></li>
 <li><a class="reference internal" href="#psconfig-templates-vars-lead-bind-address-examples">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#localhost-variable"><code class="docutils literal notranslate"><span class="pre">localhost</span></code> Variable</a><ul>
+<li><a class="reference internal" href="#localhost-variable"><code class="docutils literal"><span class="pre">localhost</span></code> Variable</a><ul>
 <li><a class="reference internal" href="#psconfig-templates-vars-localhost-description">Description</a></li>
 <li><a class="reference internal" href="#psconfig-templates-vars-localhost-examples">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#pscheduler-address-variable"><code class="docutils literal notranslate"><span class="pre">pscheduler_address</span></code> Variable</a><ul>
+<li><a class="reference internal" href="#pscheduler-address-variable"><code class="docutils literal"><span class="pre">pscheduler_address</span></code> Variable</a><ul>
 <li><a class="reference internal" href="#psconfig-templates-vars-pscheduler-address-description">Description</a></li>
 <li><a class="reference internal" href="#psconfig-templates-vars-pscheduler-address-examples">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#scheduled-by-address-variable"><code class="docutils literal notranslate"><span class="pre">scheduled_by_address</span></code> Variable</a><ul>
+<li><a class="reference internal" href="#scheduled-by-address-variable"><code class="docutils literal"><span class="pre">scheduled_by_address</span></code> Variable</a><ul>
 <li><a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address-description">Description</a></li>
 <li><a class="reference internal" href="#psconfig-templates-vars-scheduled-by-address-examples">Examples</a></li>
 </ul>
@@ -745,7 +752,7 @@
         <li class="right" >
           <a href="pwa_api.html" title="PWA API"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -786,8 +793,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+        &copy; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
