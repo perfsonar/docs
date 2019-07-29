@@ -90,7 +90,7 @@ In general, no configuration is needed of the registration component but for a g
 
 
 .. _owamp: http://github.com/perfsonar/owamp
-.. _twamp: http://github.com/perfsonar/twamp
+.. _twamp: http://github.com/perfsonar/owamp
 .. _iperf3: http://software.es.net/iperf
 .. _iperf2: https://sourceforge.net/projects/iperf2/
 .. _nuttcp: https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/nuttcp/
