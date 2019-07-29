@@ -239,11 +239,11 @@ After installing the perfsonar-toolkit bundle, you can refer to the general perf
 
 Keeping 4.1.x on Debian 8 and Ubuntu 14
 =======================================
-If you're running Debian 8 or Ubuntu 14, you need to know that perfSONAR 4.2 is not supported on these OS.  We recommend that you either do a fresh installation of perfSONAR on a supported OS (Debian 9 or Ubuntu 16 or 18) or plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2 to happen later. In all cases, you should follow the instructions bellow to prevent perfSONAR to automatically upgrade you to version 4.2.
+If you're running Debian 8 or Ubuntu 14, you need to know that perfSONAR 4.2 is not supported on these OS.  We recommend that you either do a fresh installation of perfSONAR on a supported OS (Debian 9 or Ubuntu 16 or 18) or plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2 to happen later. In all cases, you should follow the instructions bellow to prevent perfSONAR to automatically upgrade to version 4.2 once we release it.
 
 You nedd to replace the ``perfsonar-release`` repository with a plain ``perfsonar-4.1`` repository entry.  This is done in the ``/etc/apt/sources.list.d/perfsonar-release.list`` file, where you just replace **perfsonar-release** with **perfsonar-4.1** in the ``deb`` and ``deb-src`` lines.  Then run ``apt-get update``.
 
-From this moment, you'll be only receiving the upgrades to the 4.1.x release branch and nothing else.  Please then plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2. as described bellow.
+From this moment, you'll be only receiving the updates to the 4.1.x release branch (if there are any) and nothing else.  Then plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2. as described bellow.
 
 Upgrading from 4.1.x
 ====================

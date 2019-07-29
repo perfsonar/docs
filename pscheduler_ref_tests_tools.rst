@@ -79,6 +79,8 @@ Each test classified in one of four categories that determines what other tests 
     #. **Background-multi** - These are tests that can be run in parallel with any other test and produce multiple results that appear as separate runs. Example test type is *latencybg* that runs continuously.
 	
 You may visualize different types of tests using ``pscheduler plot-schedule`` command. See also :ref:`pscheduler_client_schedule-plot_schedule`.
+
+You can know which scheduling class a test belongs to by running the ``pscheduler plugins tests`` command.
     
 throughput Tests
 ================

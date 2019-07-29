@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Get branch
-GIT_URL=`git remote show origin | awk '/Push  URL/ { print $NF }'`
+GIT_URL=`LANG=C git remote show origin | awk '/Push  URL/ { print $NF }'`
 BRANCH=$1
 if [ -z "$BRANCH" ]; then
     echo "You must specify a branch to build"
