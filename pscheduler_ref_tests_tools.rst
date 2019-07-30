@@ -233,7 +233,7 @@ RTT tests support the following arguments::
   --protocol=PROTOCOL   Protocol used to measure round trip time
 
 
-The currently 2 supported protocols for RTT measurements are ICMP and TWAMP.
+The currently 2 supported protocols for RTT measurements are ``icmp`` and ``twamp``.  When using `twamp` you need to make sure that the destination (``-d``) is a TWAMP Server and Session-Reflector, see `RFC-5357 <https://tools.ietf.org/html/rfc5357>`_ for more details (TWAMP Light is currently not supported by perfSONAR).
 
 trace Tests
 ===========
