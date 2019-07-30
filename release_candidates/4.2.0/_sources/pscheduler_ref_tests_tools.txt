@@ -79,6 +79,8 @@ Each test classified in one of four categories that determines what other tests 
     #. **Background-multi** - These are tests that can be run in parallel with any other test and produce multiple results that appear as separate runs. Example test type is *latencybg* that runs continuously.
 	
 You may visualize different types of tests using ``pscheduler plot-schedule`` command. See also :ref:`pscheduler_client_schedule-plot_schedule`.
+
+You can know which scheduling class a test belongs to by running the ``pscheduler plugins tests`` command.
     
 throughput Tests
 ================
@@ -193,6 +195,8 @@ Latency tests support the following arguments::
                         substantially increase the size of a successful
                         result.
 
+The currently supported latency tools are *owping* (used by default) and *twping*.  When using *twping* the destination (``-d``) can be any network device acting as a TWAMP Server and Session-Reflector, see `RFC-5357 <https://tools.ietf.org/html/rfc5357>`_ for more details (TWAMP Light is currently not supported by perfSONAR).
+
 rtt Tests
 =====================
 
@@ -200,17 +204,22 @@ RTT tests support the following arguments::
 
  pscheduler task rtt --help
  Usage: task [task-options] rtt [test-options]
-  -h, --help            show this help message and exit
-  --count=COUNT         Test count
-  --dest=DEST           Destination host
+ -h, --help            show this help message and exit
+  -c COUNT, --count=COUNT
+                        Test count
+  -d DEST, --dest=DEST  Destination host
   --flow-label=FLOW_LABEL
                         Flow label
+  --fragment            Allow packet fragmentation
+  --no-fragment         Don't allow packet fragmentation
   --hostnames           Look up hostnames from IPs
   --no-hostnames        Don't look up hostnames from IPs
-  --interval=INTERVAL   Time to wait between packets sent
+  -i INTERVAL, --interval=INTERVAL
+                        Time to wait between packets sent
   --ip-version=IP_VERSION
                         IP version to use
-  --source=SOURCE       Source address or interface
+  -s SOURCE, --source=SOURCE
+                        Source address or interface
   --source-node=SOURCE_NODE
                         Source pScheduler node, if different
   --suppress-loopback   Suppress multicast loopback
@@ -221,10 +230,14 @@ RTT tests support the following arguments::
   --ttl=TTL             Time to live
   --deadline=DEADLINE   Deadline for all measurements to complete
   --timeout=TIMEOUT     Timeout for each round trip
+  --protocol=PROTOCOL   Protocol used to measure round trip time
+
+
+The currently 2 supported protocols for RTT measurements are ``icmp`` and ``twamp``.  When using `twamp` you need to make sure that the destination (``-d``) is a TWAMP Server and Session-Reflector, see `RFC-5357 <https://tools.ietf.org/html/rfc5357>`_ for more details (TWAMP Light is currently not supported by perfSONAR).
 
 trace Tests
 ===========
 
 The currently supported trace tools are *traceroute*, *tracepath*, *paris-traceroute*. *traceroute* is the default.
 
-..note: Please note that if you have a server that has more then one network interface the *tracepath* tool does not provide an option to select the outgoing source interface.
+.. note:: Please note that if you have a server that has more then one network interface the *tracepath* tool does not provide an option to select the outgoing source interface.
