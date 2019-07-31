@@ -67,7 +67,7 @@ You may install this source list as follows::
     
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-snapshot.gpg.key | apt-key add -
 
 These Debian packages should work on Debian 9, Ubuntu 16 and Ubuntu 18.
 
