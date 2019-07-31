@@ -31,7 +31,7 @@ MaDDash can be installed with the following commands::
 
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-release.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
     apt-get update
     apt-get install maddash
         
