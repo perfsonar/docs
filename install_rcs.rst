@@ -95,7 +95,7 @@ Testing Docker Installation
 Docker images are provided for the latest staging and nightly builds. Installation works exactly as described in :doc:`install_docker`, except with adding ":staging" to the commands referencing perfsonar/testpoint. For example::
 
     docker pull perfsonar/testpoint:staging
-    docker run --privileged -d -P --net=host -v "/var/run" perfsonar/testpoint:staging
+    docker run --privileged -d -P --net=host perfsonar/testpoint:staging
 
 Testing pSConfig Web Administrator Installation
 ================================================
