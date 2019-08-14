@@ -143,23 +143,13 @@ CentOS 6 Support Discontinued
 -----------------------------
 perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`. You may also choose to switch to a supported :doc:`Debian platform <install_debian>`. **Security updates for CentOS 6 perfSONAR packages will be discontinued on February 15, 2019**. Also see the `CentOS documentation <https://wiki.centos.org/About/Product>`_ for a schedule of when CentOS 6 will no longer be a supported operating system. 
 
-Debian packages upgrade
------------------------
-Due to package dependency changes, the Debian auto-updates will not bring you 4.1 automatically. Furthermore, our repository name changed to make it clearer that we now have a single repository for all the supported distributions.
+Debian 8 and Ubuntu 14 Support Discontinued
+-------------------------------------------
+perfSONAR 4.2 is NOT available for Debian 8 (and `Debian 8 is now only supported on a limited set of architectures <https://www.debian.org/releases/jessie/>`_ anyways). If you wish to migrate an existing Debian 8 (Jessie) host to Debian 9 (Stretch) you are advised to do it with the following steps:
 
-To upgrade from 4.0.x to 4.1 on Debian or Ubuntu, follow these commands::
-
-    cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-release.list
-    apt-get update
-    apt-get dist-upgrade
-
-Debian 7 Support Discontiuned
------------------------------
-perfSONAR 4.1 is NOT available for Debian 7 (and `Debian 7 is EOL <https://www.debian.org/News/2018/20180601>`_ anyways). If you wish to migrate an existing Debian 7 host to Debian 8 (Jessie) or Debian 9 (Stretch) you are advised to do it with the following steps:
-
-#. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
-#. Reboot (to get systemd running)
-#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-release``
-#. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_). Alternatively, you can just run ``apt-get udpate; apt-get dist-upgrade`` if you prefer to stay with Debian 8.
+#. Lock your system on perfsonar-4.1 packages by replacing the ``perfsonar-release`` repository with a plain ``perfsonar-4.1`` repository entry.  This is done in the ``/etc/apt/sources.list.d/perfsonar-release.list`` file, where you just replace **perfsonar-release** with **perfsonar-4.1** in the ``deb`` and ``deb-src`` lines.
+#. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_).
+#. Reactivate the ``perfsonar-release`` repository in your perfSONAR APT source file.
+#. Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
+#. Reboot your system one last time.
 
