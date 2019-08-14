@@ -216,8 +216,8 @@ Configuration Files
 pSConfig pScheduler Agent Configuration File
 ##############################################
 :Description: The pSConfig pScheduler Agent configuration file
-:CentOS: ``/etc/perfsonar/psconfig/pscheduler-agent.conf``
-:Debian: ``/etc/perfsonar/psconfig/pscheduler-agent.conf``
+:CentOS: ``/etc/perfsonar/psconfig/pscheduler-agent.json``
+:Debian: ``/etc/perfsonar/psconfig/pscheduler-agent.json``
 :Documentation: *N/A*
 
 .. _config_files-psconfig-conf-maddash:
@@ -225,8 +225,8 @@ pSConfig pScheduler Agent Configuration File
 pSConfig MaDDash Agent Configuration File
 ##############################################
 :Description: The pSConfig MaDDash Agent configuration file
-:CentOS: ``/etc/perfsonar/psconfig/maddash-agent.conf``
-:Debian: ``/etc/perfsonar/psconfig/maddash-agent.conf``
+:CentOS: ``/etc/perfsonar/psconfig/maddash-agent.json``
+:Debian: ``/etc/perfsonar/psconfig/maddash-agent.json``
 :Documentation: *N/A*
 
 .. _config_files-psconfig-conf-pscheduler-d:
@@ -274,7 +274,7 @@ pSConfig pScheduler Agent Start-up Script
 ############################################
 :Description: Scripts used to start|stop|restart the pSConfig pScheduler Agent
 :CentOS: ``systemctl start|stop|restart psconfig-pscheduler-agent``
-:Debian: ``sservice psconfig-pscheduler-agent start|stop|restart``
+:Debian: ``service psconfig-pscheduler-agent start|stop|restart``
 
 .. _config_files-psconfig-scripts-maddash-startup:
 
