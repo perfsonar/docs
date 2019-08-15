@@ -1,35 +1,28 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Configuring the MaDDash Server &mdash; perfSONAR Toolkit 4.2.0b1 documentation</title>
-    
+    <title>Configuring the MaDDash Server &#8212; perfSONAR Toolkit 4.2.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '4.2.0b1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.2.0b1 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Running and Managing the MaDDash Server" href="maddash_running.html" />
     <link rel="prev" title="MaDDash Installation" href="maddash_install.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -60,7 +53,7 @@
         <li class="right" >
           <a href="maddash_install.html" title="MaDDash Installation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -76,12 +69,12 @@
 <h1>Configuring the MaDDash Server<a class="headerlink" href="#configuring-the-maddash-server" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The primary way most users configure MaDDash is with the <a class="reference internal" href="psconfig_maddash_agent.html"><em>pSConfig MaDDash Agent</em></a>. The agent automatically fills in the values detailed below and most never need to touch any of the options listed. If you find you self in a situation where you do need to make manual configuration changes, then this document provides guidance.</p>
+<p class="last">The primary way most users configure MaDDash is with the <a class="reference internal" href="psconfig_maddash_agent.html"><span class="doc">pSConfig MaDDash Agent</span></a>. The agent automatically fills in the values detailed below and most never need to touch any of the options listed. If you find you self in a situation where you do need to make manual configuration changes, then this document provides guidance.</p>
 </div>
 <p>The main configuration file for the maddash-server component is located at <em>/etc/maddash/maddash-server/maddash.yaml</em></p>
 <p>The file is in <a class="reference external" href="http://www.yaml.org/">YAML</a> format. In this file you define the checks you want to run and how they are organized. You can also tweak setting for the embedded web server and various other aspects of the software. The configuration file is broken into the following primary sections:</p>
 <ul class="simple">
-<li><em>groups</em> - In general, this is the section where you define lists of hosts that you want to check. You can define any number of custom groups in this section. When you define <em>grids</em> these groups will be used to define what constitutes the rows and columns. In theory they don&#8217;t have to be hosts, but for the perfSONAR checks this is the common case because your dimensions are endpoints of a test.</li>
+<li><em>groups</em> - In general, this is the section where you define lists of hosts that you want to check. You can define any number of custom groups in this section. When you define <em>grids</em> these groups will be used to define what constitutes the rows and columns. In theory they don’t have to be hosts, but for the perfSONAR checks this is the common case because your dimensions are endpoints of a test.</li>
 <li><em>checks</em> - This is where you define how to run each check. For Nagios checks, this means defining the command-line script to run and arguments to pass it.</li>
 <li><em>grids</em>  - This is where you define how the groups will be applied to the checks. You define the <em>groups</em> that will compose the rows and columns, then define the type of check that will be run.</li>
 <li><em>dashboards</em> - This is where you group <em>grids</em> together.</li>
@@ -95,20 +88,20 @@
 <div class="section" id="groups">
 <h2>groups<a class="headerlink" href="#groups" title="Permalink to this headline">¶</a></h2>
 <p><strong>groups</strong> are used to define the resources that will compose the rows and columns of a grid. For the perfSONAR checks, this is often used to group the endpoints used in performance tests together (e.g. create a group for all the hosts running OWAMP tests and another for all the hosts running BWCTL tests). The names, members and number of groups is all customizable. <em>groups</em> take the following format:</p>
-<div class="highlight-python"><div class="highlight"><pre>groups:
-    groupName:
-        - &quot;member&quot;
-        - &quot;member&quot;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">groups</span><span class="p">:</span>
+    <span class="n">groupName</span><span class="p">:</span>
+        <span class="o">-</span> <span class="s2">&quot;member&quot;</span>
+        <span class="o">-</span> <span class="s2">&quot;member&quot;</span>
 </pre></div>
 </div>
-<p>All groups go under the <em>group</em> block. In the example above <em>groupName</em> can replaced with any alphanumeric string that does not contain whitespace. For example &#8220;myOwampHosts&#8221;, &#8220;campusHosts&#8221;, or any other string that meets the requirements. This name will be used later in the configuration, so its important to make note of it. In the above example, you should change <em>member</em> to the name of the host or other resource you want in the list.</p>
+<p>All groups go under the <em>group</em> block. In the example above <em>groupName</em> can replaced with any alphanumeric string that does not contain whitespace. For example “myOwampHosts”, “campusHosts”, or any other string that meets the requirements. This name will be used later in the configuration, so its important to make note of it. In the above example, you should change <em>member</em> to the name of the host or other resource you want in the list.</p>
 </div>
 <div class="section" id="groupmembers">
 <span id="group-member-props"></span><h2>groupMembers<a class="headerlink" href="#groupmembers" title="Permalink to this headline">¶</a></h2>
-<p><strong>groupMembers</strong> are  used to further describe members of a group. Any custom property may be added but only the values listed are understood by the default MaDDash interface. There is also a special <em>map</em> propert that can be used to dynamically set values based on the value of the opposing row/column. groupMembers take the following format where <em>&#8220;member&#8221;</em> is the name of the member referenced:</p>
-<div class="highlight-python"><div class="highlight"><pre>groupMembers:
-    - id: &quot;member&quot;
-      ...member properties...
+<p><strong>groupMembers</strong> are  used to further describe members of a group. Any custom property may be added but only the values listed are understood by the default MaDDash interface. There is also a special <em>map</em> propert that can be used to dynamically set values based on the value of the opposing row/column. groupMembers take the following format where <em>“member”</em> is the name of the member referenced:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">groupMembers</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;member&quot;</span>
+      <span class="o">...</span><span class="n">member</span> <span class="n">properties</span><span class="o">...</span>
 </pre></div>
 </div>
 <p>Below are the list of well-known properties:</p>
@@ -155,12 +148,12 @@
 <div class="section" id="general-parameters">
 <h3>General Parameters<a class="headerlink" href="#general-parameters" title="Permalink to this headline">¶</a></h3>
 <p><strong>checks</strong> are where you provide instructions as to how results should be obtained. Checks take the current format in the configuration file:</p>
-<div class="highlight-python"><div class="highlight"><pre>checks:
-    checkName :
-       ...check-parameters...
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">checks</span><span class="p">:</span>
+    <span class="n">checkName</span> <span class="p">:</span>
+       <span class="o">...</span><span class="n">check</span><span class="o">-</span><span class="n">parameters</span><span class="o">...</span>
 </pre></div>
 </div>
-<p>The <em>checkName</em> can be any alphanumeric string with no whitespace. It is used to identify the check later in the file, so you should note it. For example you could name it something like &#8220;owampLossCheck&#8221; or &#8220;bwctl100Gbps&#8221;. The following parameters are available for the check:</p>
+<p>The <em>checkName</em> can be any alphanumeric string with no whitespace. It is used to identify the check later in the file, so you should note it. For example you could name it something like “owampLossCheck” or “bwctl100Gbps”. The following parameters are available for the check:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="5%" />
@@ -194,7 +187,7 @@
 <tr class="row-odd"><td>params</td>
 <td>YAML Object</td>
 <td>Type dependent</td>
-<td>A YAML object containing parameters specific to the check. See the <a class="reference internal" href="#type-specific-params"><span>Type-specific Parameters</span></a> section.</td>
+<td>A YAML object containing parameters specific to the check. See the <a class="reference internal" href="#type-specific-params"><span class="std std-ref">Type-specific Parameters</span></a> section.</td>
 </tr>
 <tr class="row-even"><td>checkInterval</td>
 <td>int</td>
@@ -247,7 +240,7 @@
 <tr class="row-even"><td>command</td>
 <td>String or YAML Object</td>
 <td>Yes</td>
-<td>The full nagios command to run on the local system. It accepts the template variables and can also be a map where the outer key is the row and inner is the column (both can take special value &#8220;default&#8221;) allowing for deterministic setting of the command.</td>
+<td>The full nagios command to run on the local system. It accepts the template variables and can also be a map where the outer key is the row and inner is the column (both can take special value “default”) allowing for deterministic setting of the command.</td>
 </tr>
 </tbody>
 </table>
@@ -272,22 +265,22 @@
 <tr class="row-even"><td>command</td>
 <td>String or YAML Object</td>
 <td>Yes</td>
-<td>See <a class="reference internal" href="#nagios-check"><span>NagiosCheck</span></a></td>
+<td>See <a class="reference internal" href="#nagios-check"><span class="std std-ref">NagiosCheck</span></a></td>
 </tr>
 <tr class="row-odd"><td>maUrl</td>
 <td>YAML Object</td>
 <td>Yes</td>
-<td>The URL of the measurement archive where performance data related to this check may be retrieved. This accepts the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span>Nagios Check Template Variables</span></a> section. The object has one key that is called <em>default</em> which will be the default URL used for any cell in a grid. The remaining keys are members of groups assigned to the row. If default and a row key are specified, the row key is preferred for that row. The value of each key is a map where the key is a member of a group assigned to the column or you can use the <em>default</em> key to apply the URL to every column in the row. If default is specified and a specific value for a column, the specific value for the column is preferred. See the default configuration file for a full example.</td>
+<td>The URL of the measurement archive where performance data related to this check may be retrieved. This accepts the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span class="std std-ref">Nagios Check Template Variables</span></a> section. The object has one key that is called <em>default</em> which will be the default URL used for any cell in a grid. The remaining keys are members of groups assigned to the row. If default and a row key are specified, the row key is preferred for that row. The value of each key is a map where the key is a member of a group assigned to the column or you can use the <em>default</em> key to apply the URL to every column in the row. If default is specified and a specific value for a column, the specific value for the column is preferred. See the default configuration file for a full example.</td>
 </tr>
 <tr class="row-even"><td>graphUrl</td>
 <td>String</td>
 <td>Yes</td>
-<td>A URL where a graph of data related to the check can be retrieved. This accepts the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span>Nagios Check Template Variables</span></a> section.</td>
+<td>A URL where a graph of data related to the check can be retrieved. This accepts the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span class="std std-ref">Nagios Check Template Variables</span></a> section.</td>
 </tr>
 <tr class="row-odd"><td>metaDataKeyLookup</td>
 <td>String</td>
 <td>Yes</td>
-<td><em>DEPRECATED</em> A URL where metaDataKeys can be looked up for the data. These are often needed to generate the graph URL. This accepts some of the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span>Nagios Check Template Variables</span></a> section. <em>Note: Some variables it cannot accept because it is responsible for generating them.</em></td>
+<td><em>DEPRECATED</em> A URL where metaDataKeys can be looked up for the data. These are often needed to generate the graph URL. This accepts some of the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span class="std std-ref">Nagios Check Template Variables</span></a> section. <em>Note: Some variables it cannot accept because it is responsible for generating them.</em></td>
 </tr>
 </tbody>
 </table>
@@ -324,7 +317,7 @@
 <td>Custom properties defined in the groupMembers section that change depending on opposing row or column.</td>
 </tr>
 <tr class="row-even"><td>%maUrl</td>
-<td>The url of the measurement archive. You can&#8217;t use this in the maUrl parameters as this is generated from that template.</td>
+<td>The url of the measurement archive. You can’t use this in the maUrl parameters as this is generated from that template.</td>
 </tr>
 <tr class="row-odd"><td>%maKeyF</td>
 <td><strong>DEPRECATED</strong> A comma-separated list of the metaDataKeys for the forward direction of a test. This cannot be used in metaDataKeyLookup as it is generated after the URL that is called.</td>
@@ -423,12 +416,12 @@
 <tr class="row-odd"><td>excludeChecks</td>
 <td>YAML Object</td>
 <td>No</td>
-<td>This excludes individual checks based on the row and column. The structure is a map where the key is the name of the row where you want to exclude a check. It should match a member of the group assigned to the &#8220;rows&#8221; property of this grid or it can be the special key &#8216;default&#8217; that matches every row. The value is a list of columns that should not appear in the grid. An item in the list must be a member of the group assigned to the &#8220;columns&#8221; property of this grid or the special value &#8220;all&#8221; which removes all columns for a row. A full example is provided in the default configuration file.</td>
+<td>This excludes individual checks based on the row and column. The structure is a map where the key is the name of the row where you want to exclude a check. It should match a member of the group assigned to the “rows” property of this grid or it can be the special key ‘default’ that matches every row. The value is a list of columns that should not appear in the grid. An item in the list must be a member of the group assigned to the “columns” property of this grid or the special value “all” which removes all columns for a row. A full example is provided in the default configuration file.</td>
 </tr>
 <tr class="row-even"><td>columnAlgorithm</td>
 <td>boolean</td>
 <td>Yes</td>
-<td>Determines which checks will be run. Valid values are as follows: all - Run a check between every row and column; afterSelf - Run a check to every host that&#8217;s defined after the current row in the &#8216;rows&#8217; group; beforeSelf - Run a check to every host that&#8217;s defined before the current row in the &#8216;rows&#8217; group</td>
+<td>Determines which checks will be run. Valid values are as follows: all - Run a check between every row and column; afterSelf - Run a check to every host that’s defined after the current row in the ‘rows’ group; beforeSelf - Run a check to every host that’s defined before the current row in the ‘rows’ group</td>
 </tr>
 <tr class="row-odd"><td>reports</td>
 <td>String</td>
@@ -505,12 +498,12 @@
 <tr class="row-odd"><td>rule</td>
 <td>YAML Object</td>
 <td>Yes</td>
-<td>The parent rule object that defines that patterns to match and the &#8220;problem&#8221; it identifies</td>
+<td>The parent rule object that defines that patterns to match and the “problem” it identifies</td>
 </tr>
 <tr class="row-even"><td>rule.type</td>
 <td>String</td>
 <td>Yes</td>
-<td>The type of rule. See <a class="reference internal" href="#maddash-config-server-reports-rule-types"><span>Rule Types</span></a>.</td>
+<td>The type of rule. See <a class="reference internal" href="#maddash-config-server-reports-rule-types"><span class="std std-ref">Rule Types</span></a>.</td>
 </tr>
 <tr class="row-odd"><td>rule.selector</td>
 <td>YAML object</td>
@@ -540,7 +533,7 @@
 <tr class="row-even"><td>rule.selector.type</td>
 <td>String</td>
 <td>Yes</td>
-<td>The type of selector. See <a class="reference internal" href="#maddash-config-server-reports-selector-types"><span>Selector Types</span></a>.</td>
+<td>The type of selector. See <a class="reference internal" href="#maddash-config-server-reports-selector-types"><span class="std std-ref">Selector Types</span></a>.</td>
 </tr>
 <tr class="row-odd"><td>rule.selector.rowSite</td>
 <td>String</td>
@@ -565,7 +558,7 @@
 <tr class="row-odd"><td>rule.match.type</td>
 <td>String</td>
 <td>Yes</td>
-<td>The type of match. See <a class="reference internal" href="#maddash-config-server-reports-match-types"><span>Match Types</span></a>.</td>
+<td>The type of match. See <a class="reference internal" href="#maddash-config-server-reports-match-types"><span class="std std-ref">Match Types</span></a>.</td>
 </tr>
 <tr class="row-even"><td>rule.match.status</td>
 <td>Integers</td>
@@ -761,7 +754,7 @@
 <tr class="row-odd"><td>parameters</td>
 <td>YAML Object</td>
 <td>Yes</td>
-<td>Type specific parameters. See <a class="reference internal" href="#maddash-config-server-notifications-email"><span>Email Parameters</span></a> and <a class="reference internal" href="#maddash-config-server-notifications-servicenow"><span>ServiceNow Parameters</span></a>.</td>
+<td>Type specific parameters. See <a class="reference internal" href="#maddash-config-server-notifications-email"><span class="std std-ref">Email Parameters</span></a> and <a class="reference internal" href="#maddash-config-server-notifications-servicenow"><span class="std std-ref">ServiceNow Parameters</span></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -910,12 +903,12 @@
 <tr class="row-odd"><td>recordFields</td>
 <td>YAML Object</td>
 <td>Yes</td>
-<td>A YAML object with the fields to set on creation. This is highly dependent on your ServiceNow setup. The keys are the name of the fields. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span>ServiceNow Template Variables</span></a>.</td>
+<td>A YAML object with the fields to set on creation. This is highly dependent on your ServiceNow setup. The keys are the name of the fields. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span class="std std-ref">ServiceNow Template Variables</span></a>.</td>
 </tr>
 <tr class="row-even"><td>resolveFields</td>
 <td>YAML Object</td>
 <td>No</td>
-<td>A YAML object with the fields to set on resolve. This is highly dependent on your ServiceNow setup. The keys are the name of the fields. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span>ServiceNow Template Variables</span></a>.</td>
+<td>A YAML object with the fields to set on resolve. This is highly dependent on your ServiceNow setup. The keys are the name of the fields. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span class="std std-ref">ServiceNow Template Variables</span></a>.</td>
 </tr>
 <tr class="row-odd"><td>dashboardUrl</td>
 <td>String</td>
@@ -955,7 +948,7 @@
 <tr class="row-even"><td>duplicateRules.rules[N].updateFields</td>
 <td>YAML Object</td>
 <td>No</td>
-<td>The fields to update in the record and the values they should be given if this rule matches. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span>ServiceNow Template Variables</span></a>.</td>
+<td>The fields to update in the record and the values they should be given if this rule matches. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span class="std std-ref">ServiceNow Template Variables</span></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -1080,12 +1073,12 @@
 <tr class="row-odd"><td>http</td>
 <td>YAML Object</td>
 <td>Yes (unless https specified)</td>
-<td>Parameters related to http. See <a class="reference internal" href="#http-props"><span>http properties</span></a> section.</td>
+<td>Parameters related to http. See <a class="reference internal" href="#http-props"><span class="std std-ref">http properties</span></a> section.</td>
 </tr>
 <tr class="row-even"><td>https</td>
 <td>YAML Object</td>
 <td>Yes (unless http specified)</td>
-<td>Parameters related to https. See <a class="reference internal" href="#https-props"><span>https properties</span></a> section.</td>
+<td>Parameters related to https. See <a class="reference internal" href="#https-props"><span class="std std-ref">https properties</span></a> section.</td>
 </tr>
 </tbody>
 </table>
@@ -1114,7 +1107,7 @@
 <tr class="row-odd"><td>proxyMode</td>
 <td>String</td>
 <td>Yes</td>
-<td>Reserved for future use. Currently let&#8217;s the server know that if it is behind a proxy. This may be used in later implementation to extract headers that forward information related to authentication.</td>
+<td>Reserved for future use. Currently let’s the server know that if it is behind a proxy. This may be used in later implementation to extract headers that forward information related to authentication.</td>
 </tr>
 </tbody>
 </table>
@@ -1144,7 +1137,7 @@
 <tr class="row-odd"><td>keystore</td>
 <td>String</td>
 <td>Yes</td>
-<td>The keystore containing the key &#8216;mykey&#8217; to use as the ssl server certificate. It should also contain any trusted certificates if doing client authentication.</td>
+<td>The keystore containing the key ‘mykey’ to use as the ssl server certificate. It should also contain any trusted certificates if doing client authentication.</td>
 </tr>
 <tr class="row-even"><td>keystorePassword</td>
 <td>String</td>
@@ -1159,7 +1152,7 @@
 <tr class="row-even"><td>proxyMode</td>
 <td>String</td>
 <td>Yes</td>
-<td>Reserved for future use. Currently let&#8217;s the server know that if it is behind a proxy. This may be used in later implementation to extract headers that forward information related to authentication.</td>
+<td>Reserved for future use. Currently let’s the server know that if it is behind a proxy. This may be used in later implementation to extract headers that forward information related to authentication.</td>
 </tr>
 </tbody>
 </table>
@@ -1244,7 +1237,7 @@
         <li class="right" >
           <a href="maddash_install.html" title="MaDDash Installation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0b1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -1285,8 +1278,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2019, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
     </div>
   </body>
 </html>
