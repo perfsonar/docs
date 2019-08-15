@@ -24,13 +24,14 @@ Please note that the perfSONAR team is not formally endorsing any particular pro
 System Requirements
 ===================
 
-ARM-based devices seem to work best running Ubuntu, while the slightly larger, $200-class nodes will usually work with CentOS, Debian or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on CentOS 7 and Ubuntu 14/16/18, and Debian 8/9. We provide compatible Debian packages for 5 different hardware architectures:
+ARM-based devices seem to work best running Ubuntu, while the slightly larger, $200-class nodes will usually work with CentOS, Debian or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on CentOS 7 and Ubuntu 16/18, and Debian 9. We provide compatible Debian packages for 6 different hardware architectures:
 
   * 32-bit (i386)
   * 64-bit (amd64)
   * ARMv4t and up (armel) - not recommended for the full testpoint bundle
   * ARMv7 and up (armhf) - not recommended for the full testpoint bundle
   * ARM 64-bit (arm64)
+  * PPC 64-bit (ppc64el)
 
 
 
@@ -43,7 +44,7 @@ The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install e
 - :doc:`install_debian`
 
 Certain devices like the Liva use an EMMC drive that is only supported in the *deskop* version of Ubuntu. 
-If the standard server ISO installation doe not recognize the drive, it may be worth attempting installation using the desktop ISO such as `Ubuntu 14.04.05 Desktop <http://releases.ubuntu.com/trusty/ubuntu-14.04.5-desktop-amd64.iso>`_.
+If the standard server ISO installation doe not recognize the drive, it may be worth attempting installation using the desktop ISO such as `Ubuntu 18.04.3 Desktop <http://releases.ubuntu.com/18.04.3/ubuntu-18.04.3-desktop-amd64.iso>`_.
 
 Support
 =======

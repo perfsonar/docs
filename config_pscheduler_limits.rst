@@ -1353,23 +1353,17 @@ scripts used in the limit system.
 Scripts will have the following functions available to get additional
 information and make changes:
 
- - ``classifiers`` - Returns an array of the classifiers into which the
-node requesting the task were grouped (e.g., `[ "friendlies",
-"partners" ]`).
- - ``classifiers_has(value)`` - Returns a boolean indicating whether or
-not the string `value` is one of the classifiers.
+ - ``classifiers`` - Returns an array of the classifiers into which the node requesting the task were grouped (e.g., `[ "friendlies", "partners" ]`).
+ - ``classifiers_has(value)`` - Returns a boolean indicating whether or not the string `value` is one of the classifiers.
  - ``default`` - Returns the default priority, normally ``0``.
- - ``requested`` - Returns the requested priority or ``null`` if no
-   priority was requested.
+ - ``requested`` - Returns the requested priority or ``null`` if no priority was requested.
 
 The following functions can be used to make changes to the 
 
  - ``note(message)`` - Adds ``message`` to the diagnostics.
  - ``set(value; message)`` - Sets the priority to ``value`` and adds
    ``message`` to the diagnostics.
- - ``adjust(value; message)`` - Adjusts the priority by ``value``,
-   which can be positive or negative, and adds ``message`` to the
-   diagnostics.
+ - ``adjust(value; message)`` - Adjusts the priority by ``value``, which can be positive or negative, and adds ``message`` to the diagnostics.
 
 The priority in effect at the end of the script will be assigned to
 the run and any diagnostics produced will be stored.

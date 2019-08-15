@@ -211,7 +211,7 @@ The ``labels`` property of an *address* object gives an additional criteria on w
  * Only some have 10Gbps interfaces
  * One of the servers has two 10Gbps interfaces
  
- .. note:: Using separate address objects and optionally combining them with :doc:`address classes <psconfig_autoconfig>` is probably the cleanest way to build a template to meet this goal. The example that follows is a useful learning tool for demonstrating how ``labels`` work in pSConfig even if it is not the most efficient solution.
+ .. note:: Using separate address objects is probably the cleanest way to build a template to meet this goal. The example that follows is a useful learning tool for demonstrating how ``labels`` work in pSConfig even if it is not the most efficient solution.
  
  We could do the following where the 1Gbps interfaces is represented by the top-level ``address`` property and the 10Gbps interfaces are in labels::
 
@@ -442,7 +442,6 @@ Each address can only belong to one *host* object. Also a *host* object has no r
 
 * For information on setting a archives to be used anytime an *address* object belonging to a *host* is the :ref:`scheduled_by_address <psconfig_templates_vars-scheduled_by_address>` see :ref:`psconfig_templates_advanced-hosts-archives`
 * For information on disabling all the addresses belonging to a host, see :ref:`psconfig_templates_advanced-hosts-disabled`
-* For information on using tags and other properties of hosts to dynamically build groups see :doc:`psconfig_autoconfig`
 
 
 .. note:: See the `pSConfig Template JSON Schema <https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json>`_ for a full list of options supported by the *host* object.
@@ -645,8 +644,6 @@ It is worth noting the following about the template above:
 * The include files both contain only a ``groups`` and ``addresses`` section since there is no requirement they be a complete template
 * The base template MUST validate prior to merging the include files, so there are empty ``addresses`` and ``groups`` since those are required by the schema. 
 * Both include files contain an *address* object named ``thrlat1``. The address will only be included once. Since the latency include file is listed first in our ``includes`` section, that definition will be used.
-
-Include files like the above can be useful for organizing templates making them more readable. For further information on advanced use cases where include files can be used to make your templates more dynamic see :doc:`psconfig_autoconfig`.
 
 .. _psconfig_templates_advanced-contexts:
 

@@ -188,10 +188,6 @@ Q: How do I configure a pSConfig template to pace all TCP traffic to only 5Gbps,
 ========================================================================================================================================================================================
 **A:** Set the ``bandwidth`` property in a *test* object's ``spec``. It accepts bandwidth as an integer in bits per second.
 
-Q: I want to operate a "dynamic" template with hosts from a lookup service. Where do I start?
-========================================================================================================================================================================================
-**A:** You can find more information on this at :doc:`psconfig_autoconfig`.
-
 Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?
 ========================================================================================================================================================================================
 **A:** See https://fasterdata.es.net/performance-testing/troubleshooting/interface-speed-mismatch/

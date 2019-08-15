@@ -108,31 +108,24 @@ Special Upgrade Notes
 
 BWCTL Support
 -------------
-When perfSONAR 4.0 was released in April 2017, the perfSONAR project began the deprecation of BWCTL. pScheduler supports backward compatibility with BWCTL through the use of plug-ins that will only get chosen if pScheduler cannot be detected on the remote end.
+As of the perfSONAR 4.2 release in August 2019, all support for BWCTL tests is discontinued. When perfSONAR 4.0 was released in April 2017, the perfSONAR project began the deprecation of BWCTL. The timeline of events was that followed are below:
 
-In perfSONAR 4.1, the deprecation process will continue. The following actions will be taken with respect to BWCTL support in 4.1:
+* perfSONAR 4.0 was end-of-life on **February 15, 2019** (six months after the final release of perfSONAR 4.1). BWCTL was also end-of-life at this time meaning it stopped receiving security updates. 
+* perfSONAR 4.2.0 in August 2019 removes the BWCTL pScheduler plug-ins so pscheduler tests can no longer be run to hosts only running BWCTL. 
+* Security updates for the old BWCTL pScheduler plug-ins discontinue in February 2020 when perfSONAR 4.1 is end-of-life. There will be no updates unless any critical security patches arise. 
 
-* Brand new installs of 4.1 will not have BWCTL or the BWCTL backward compatibility pScheduler plug-ins by default. Users can install these separately by manually running ``yum install perfsonar-bwctl-compat`` or ``apt-get install perfsonar-bwctl-compat``
-* Systems upgrading to version 4.1 from a previous version of perfSONAR already have BWCTL and the plug-ins installed. The upgrade process will NOT remove these packages, so BWCTL and tests using the backward compatibility plug-ins will continue to operate. If you no longer wish to have the BWCTL packages, you will be able to safely remove all BWCTL related packages with ``yum remove bwctl-server bwctl-client`` (through dependencies, this will also remove the BWCTL pScheduler plug-ins).
+BWCTL is NOT forcibly removed from CentOS systems that already have it installed. You can remove it manually with ``yum remove bwctl-server bwctl-client``. Debian systems do have an auto-remove function that may remove BWCTL since no packages will be dependent on it once you upgrade to 4.1 or later. Exact behavior depends on how you have apt configured.
 
-.. note:: Debian systems do have an auto-remove function that may remove BWCTL since no packages will be dependent on it once you upgrade to 4.1. Exact behavior depends on how you have apt configured. If you find that BWCTL is removed you can run ``apt-get install perfsonar-bwctl-compat`` to restore the packages.
+With support discontinued, the following cases will no longer work:
 
-Below is the plan for support for releases beyond 4.1:
-
-* perfSONAR 4.0 will be end-of-life on **February 15, 2019** (six months after the final release of perfSONAR 4.1). BWCTL will also be end-of-life at this time meaning it will stop receiving security updates. 
-* The first major perfSONAR release after February 15, 2019 will remove BWCTL and the BWCTL pScheduler plug-ins. 
-* Security updates for the BWCTL pScheduler plug-ins will be supported as long as 4.1 is supported since they will still be part of a supported pScheduler codebase.
-
-All of this means that your BWCTL tests will continue to function in 4.1 but you likely have only a few months of BWCTL support left. BWCTL test are usually caused by the following:
-
-#. The remote end is running an unsupported 3.5 release. The remedy for this problem is for the remote end to update. 
+#. The remote end is running an unsupported 3.5.1 (released March 2016) or older release. The remedy for this problem is for the remote end to update. 
 #. A firewall is blocking port 443. This can be solved by opening port 443 or a non-standard pScheduler port. See :ref:`psconfig_templates_advanced-addresses-pscheduler_address` for more information.
 
-You can determine which of your tests are still using BWCTL by running the following command on a toolkit installation::
+If you are on a pre-4.2.0 release, you can determine which of your tests are still using BWCTL by running the following command on a toolkit installation::
 
-    /usr/lib/perfsonar/scripts/find_bwctl_tests
+    /usr/lib/perfsonar/scripts/find_bwctl_measurements
 
-This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See `/usr/lib/perfsonar/scripts/find_bwctl_tests --help` for information on command-line options to change the archive URL, time range fo data analyzed and other options. 
+This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See `/usr/lib/perfsonar/scripts/find_bwctl_measurements --help` for information on command-line options to change the archive URL, time range fo data analyzed and other options. Since in 4.2.0 these tests are not possible, a pure 4.2.0 host should return no recent results.
 
 pSConfig to MeshConfig Migration
 --------------------------------
@@ -143,23 +136,13 @@ CentOS 6 Support Discontinued
 -----------------------------
 perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`. You may also choose to switch to a supported :doc:`Debian platform <install_debian>`. **Security updates for CentOS 6 perfSONAR packages will be discontinued on February 15, 2019**. Also see the `CentOS documentation <https://wiki.centos.org/About/Product>`_ for a schedule of when CentOS 6 will no longer be a supported operating system. 
 
-Debian packages upgrade
------------------------
-Due to package dependency changes, the Debian auto-updates will not bring you 4.1 automatically. Furthermore, our repository name changed to make it clearer that we now have a single repository for all the supported distributions.
+Debian 8 and Ubuntu 14 Support Discontinued
+-------------------------------------------
+perfSONAR 4.2 is NOT available for Debian 8 (and `Debian 8 is now only supported on a limited set of architectures <https://www.debian.org/releases/jessie/>`_ anyways). If you wish to migrate an existing Debian 8 (Jessie) host to Debian 9 (Stretch) you are advised to do it with the following steps:
 
-To upgrade from 4.0.x to 4.1 on Debian or Ubuntu, follow these commands::
-
-    cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-release.list
-    apt-get update
-    apt-get dist-upgrade
-
-Debian 7 Support Discontiuned
------------------------------
-perfSONAR 4.1 is NOT available for Debian 7 (and `Debian 7 is EOL <https://www.debian.org/News/2018/20180601>`_ anyways). If you wish to migrate an existing Debian 7 host to Debian 8 (Jessie) or Debian 9 (Stretch) you are advised to do it with the following steps:
-
-#. Upgrade Debian 7 to Debian 8 (following Debian instructions, here are `Jessie upgrade notes for i386 architecture <https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html>`_)
-#. Reboot (to get systemd running)
-#. Change perfSONAR repository from ``perfsonar-wheezy-release`` to ``perfsonar-release``
-#. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_). Alternatively, you can just run ``apt-get udpate; apt-get dist-upgrade`` if you prefer to stay with Debian 8.
+#. Lock your system on perfsonar-4.1 packages by replacing the ``perfsonar-release`` repository with a plain ``perfsonar-4.1`` repository entry.  This is done in the ``/etc/apt/sources.list.d/perfsonar-release.list`` file, where you just replace **perfsonar-release** with **perfsonar-4.1** in the ``deb`` and ``deb-src`` lines.
+#. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_).
+#. Reactivate the ``perfsonar-release`` repository in your perfSONAR APT source file.
+#. Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
+#. Reboot your system one last time.
 
