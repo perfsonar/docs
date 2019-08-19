@@ -22,15 +22,9 @@ Minimum recommended resources:
 perfSONAR Repo
 ^^^^^^^^^^^^^^
 
-**TODO: UPDATE**
-
 You will need to have the main perfSONAR repo installed, if not already::
 
-    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.8-1.noarch.rpm
-
-Next, install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
-
-    yum install perfSONAR-repo-staging
+    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.9-1.noarch.rpm 
 
 Installing PWA from RPMs
 ^^^^^^^^^^^^^^^^^^^^^^^^
