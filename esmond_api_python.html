@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>esmond Python Client Libraries &mdash; perfSONAR Toolkit 4.1.6 documentation</title>
+    <title>esmond Python Client Libraries &mdash; perfSONAR Toolkit 4.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.1.6',
+        VERSION:     '4.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.1.6 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.0 documentation" href="index.html" />
     <link rel="up" title="esmond API Reference" href="esmond_api_rest.html" />
     <link rel="next" title="What is MaDDash?" href="maddash_intro.html" />
     <link rel="prev" title="esmond Perl Client Libraries" href="esmond_api_perl.html" /> 
@@ -61,7 +61,7 @@
         <li class="right" >
           <a href="esmond_api_perl.html" title="esmond Perl Client Libraries"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li>
           <li><a href="esmond_api_rest.html" accesskey="U">esmond API Reference</a> &raquo;</li> 
       </ul>
     </div>
@@ -116,9 +116,11 @@ getting around throttling restrictions, etc).</p>
 <span class="n">filters</span><span class="o">.</span><span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="mi">3600</span>
 <span class="n">filters</span><span class="o">.</span><span class="n">time_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">filters</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;198.129.254.30&#39;</span>
-<span class="n">filters</span><span class="o">.</span><span class="n">tool_name</span> <span class="o">=</span> <span class="s">&#39;bwctl/iperf3&#39;</span>
+<span class="n">filters</span><span class="o">.</span><span class="n">tool_name</span> <span class="o">=</span> <span class="s">&#39;pscheduler/iperf3&#39;</span>
+<span class="n">filters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">filters</span><span class="o">.</span><span class="n">ssl_verify</span> <span class="o">=</span> <span class="bp">False</span> <span class="c">#allows self-signed https certificate</span>
 
-<span class="n">conn</span> <span class="o">=</span> <span class="n">ApiConnect</span><span class="p">(</span><span class="s">&#39;http://localhost:8000/&#39;</span><span class="p">,</span> <span class="n">filters</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">ApiConnect</span><span class="p">(</span><span class="s">&#39;https://localhost/&#39;</span><span class="p">,</span> <span class="n">filters</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>NOTE: the default perfSONAR/esmond deployments use a WSGIScriptAlias of /esmond
@@ -250,7 +252,7 @@ optional (the commented key/val pairs in the arg dict are optional):</p>
     <span class="s">&quot;subject_type&quot;</span><span class="p">:</span> <span class="s">&quot;point-to-point&quot;</span><span class="p">,</span>
     <span class="s">&quot;source&quot;</span><span class="p">:</span> <span class="s">&quot;10.10.0.1&quot;</span><span class="p">,</span>
     <span class="s">&quot;destination&quot;</span><span class="p">:</span> <span class="s">&quot;10.10.0.2&quot;</span><span class="p">,</span>
-    <span class="s">&quot;tool_name&quot;</span><span class="p">:</span> <span class="s">&quot;bwctl/iperf3&quot;</span><span class="p">,</span>
+    <span class="s">&quot;tool_name&quot;</span><span class="p">:</span> <span class="s">&quot;pscheduler/iperf3&quot;</span><span class="p">,</span>
     <span class="s">&quot;measurement_agent&quot;</span><span class="p">:</span> <span class="s">&quot;10.10.0.2&quot;</span><span class="p">,</span>
     <span class="s">&quot;input_source&quot;</span><span class="p">:</span> <span class="s">&quot;host1&quot;</span><span class="p">,</span>
     <span class="s">&quot;input_destination&quot;</span><span class="p">:</span> <span class="s">&quot;host2&quot;</span><span class="p">,</span>
@@ -258,8 +260,9 @@ optional (the commented key/val pairs in the arg dict are optional):</p>
     <span class="c"># &quot;ip_transport_protocol&quot;: &quot;tcp&quot;</span>
 <span class="p">}</span>
 
-<span class="n">mp</span> <span class="o">=</span> <span class="n">MetadataPost</span><span class="p">(</span><span class="s">&#39;http://localhost:8000/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&#39;pS_user&#39;</span><span class="p">,</span>
-    <span class="n">api_key</span><span class="o">=</span><span class="s">&#39;api-key-generated-by-auth-database&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+<span class="n">mp</span> <span class="o">=</span> <span class="n">MetadataPost</span><span class="p">(</span><span class="s">&#39;https://localhost/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&#39;pS_user&#39;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s">&#39;api-key-generated-by-auth-database&#39;</span><span class="p">,</span>
+    <span class="n">ssl_verify</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This will create the basic data associated with this metadata.  Then add
@@ -278,14 +281,15 @@ new information:</p>
 associated &#8220;read only&#8221; Metadata object that was covered in the previous
 section.  This is mostly necessary to get the newly generated metadata_key
 property, it will be needed for other operations.</p>
-<p>Next data can be added to the assocaited event types - the process is similar
-for both numeric and histogram data.  Intialize an EventTypePost object
+<p>Next data can be added to the associated event types - the process is similar
+for both numeric and histogram data.  Initialize an EventTypePost object
 similarly to the MetadataPost object, but also using the appropriate
 metadata_key and event_type to add the data to:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">et</span> <span class="o">=</span> <span class="n">EventTypePost</span><span class="p">(</span><span class="s">&#39;http://localhost:8000/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&#39;pS_user&#39;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">et</span> <span class="o">=</span> <span class="n">EventTypePost</span><span class="p">(</span><span class="s">&#39;https://localhost/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&#39;pS_user&#39;</span><span class="p">,</span>
     <span class="n">api_key</span><span class="o">=</span><span class="s">&#39;api-key-generated-by-auth-database&#39;</span><span class="p">,</span>
     <span class="n">metadata_key</span><span class="o">=</span><span class="n">new_meta</span><span class="o">.</span><span class="n">metadata_key</span><span class="p">,</span>
-    <span class="n">event_type</span><span class="o">=</span><span class="s">&#39;throughput&#39;</span><span class="p">)</span>
+    <span class="n">event_type</span><span class="o">=</span><span class="s">&#39;throughput&#39;</span><span class="p">,</span>
+    <span class="n">ssl_verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Discrete data points can be added the process is similar for both numeric
@@ -305,9 +309,9 @@ et.post_data()
 <p>It is also possible to bulk post data for a variety of event types associated
 with a single metadata using the EventTypeBulkPost interface.  Intialize in
 a similar fashion minus the event_type arg:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">etb</span> <span class="o">=</span> <span class="n">EventTypeBulkPost</span><span class="p">(</span><span class="s">&#39;http://localhost:8000/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&#39;pS_user&#39;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">etb</span> <span class="o">=</span> <span class="n">EventTypeBulkPost</span><span class="p">(</span><span class="s">&#39;https://localhost/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&#39;pS_user&#39;</span><span class="p">,</span>
         <span class="n">api_key</span><span class="o">=</span><span class="s">&#39;api-key-generated-by-auth-database&#39;</span><span class="p">,</span>
-        <span class="n">metadata_key</span><span class="o">=</span><span class="n">new_meta</span><span class="o">.</span><span class="n">metadata_key</span><span class="p">)</span>
+        <span class="n">metadata_key</span><span class="o">=</span><span class="n">new_meta</span><span class="o">.</span><span class="n">metadata_key</span><span class="p">,</span> <span class="n">ssl_verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Add a mix of data points specified by event type and post:</p>
@@ -380,7 +384,7 @@ the same way with the POST interface.</p>
         <li class="right" >
           <a href="esmond_api_perl.html" title="esmond Perl Client Libraries"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li>
           <li><a href="esmond_api_rest.html" >esmond API Reference</a> &raquo;</li> 
       </ul>
     </div>

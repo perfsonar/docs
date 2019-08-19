@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Test and Tool Reference &mdash; perfSONAR Toolkit 4.1.6 documentation</title>
+    <title>Test and Tool Reference &mdash; perfSONAR Toolkit 4.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.1.6',
+        VERSION:     '4.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.1.6 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.0 documentation" href="index.html" />
     <link rel="next" title="Archiver Reference" href="pscheduler_ref_archivers.html" />
     <link rel="prev" title="Configuring pScheduler Limits" href="config_pscheduler_limits.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="config_pscheduler_limits.html" title="Configuring pScheduler Limits"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -201,6 +201,7 @@
 </ol>
 </div></blockquote>
 <p>You may visualize different types of tests using <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></tt> command. See also <a class="reference internal" href="pscheduler_client_schedule.html#pscheduler-client-schedule-plot-schedule"><em>Visualizing the Schedule with pscheduler plot-schedule</em></a>.</p>
+<p>You can know which scheduling class a test belongs to by running the <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">plugins</span> <span class="pre">tests</span></tt> command.</p>
 </div>
 <div class="section" id="throughput-tests">
 <h2>throughput Tests<a class="headerlink" href="#throughput-tests" title="Permalink to this headline">¶</a></h2>
@@ -333,23 +334,29 @@ Usage: task [task-options] latency [test-options]
                        result.
 </pre></div>
 </div>
+<p>The currently supported latency tools are <em>owping</em> (used by default) and <em>twping</em>.  When using <em>twping</em> the destination (<tt class="docutils literal"><span class="pre">-d</span></tt>) can be any network device acting as a TWAMP Server and Session-Reflector, see <a class="reference external" href="https://tools.ietf.org/html/rfc5357">RFC-5357</a> for more details (TWAMP Light is currently not supported by perfSONAR).</p>
 </div>
 <div class="section" id="rtt-tests">
 <h2>rtt Tests<a class="headerlink" href="#rtt-tests" title="Permalink to this headline">¶</a></h2>
 <p>RTT tests support the following arguments:</p>
 <div class="highlight-python"><div class="highlight"><pre>pscheduler task rtt --help
 Usage: task [task-options] rtt [test-options]
- -h, --help            show this help message and exit
- --count=COUNT         Test count
- --dest=DEST           Destination host
+-h, --help            show this help message and exit
+ -c COUNT, --count=COUNT
+                       Test count
+ -d DEST, --dest=DEST  Destination host
  --flow-label=FLOW_LABEL
                        Flow label
+ --fragment            Allow packet fragmentation
+ --no-fragment         Don&#39;t allow packet fragmentation
  --hostnames           Look up hostnames from IPs
  --no-hostnames        Don&#39;t look up hostnames from IPs
- --interval=INTERVAL   Time to wait between packets sent
+ -i INTERVAL, --interval=INTERVAL
+                       Time to wait between packets sent
  --ip-version=IP_VERSION
                        IP version to use
- --source=SOURCE       Source address or interface
+ -s SOURCE, --source=SOURCE
+                       Source address or interface
  --source-node=SOURCE_NODE
                        Source pScheduler node, if different
  --suppress-loopback   Suppress multicast loopback
@@ -360,13 +367,18 @@ Usage: task [task-options] rtt [test-options]
  --ttl=TTL             Time to live
  --deadline=DEADLINE   Deadline for all measurements to complete
  --timeout=TIMEOUT     Timeout for each round trip
+ --protocol=PROTOCOL   Protocol used to measure round trip time
 </pre></div>
 </div>
+<p>The currently 2 supported protocols for RTT measurements are <tt class="docutils literal"><span class="pre">icmp</span></tt> and <tt class="docutils literal"><span class="pre">twamp</span></tt>.  When using <cite>twamp</cite> you need to make sure that the destination (<tt class="docutils literal"><span class="pre">-d</span></tt>) is a TWAMP Server and Session-Reflector, see <a class="reference external" href="https://tools.ietf.org/html/rfc5357">RFC-5357</a> for more details (TWAMP Light is currently not supported by perfSONAR).</p>
 </div>
 <div class="section" id="trace-tests">
 <h2>trace Tests<a class="headerlink" href="#trace-tests" title="Permalink to this headline">¶</a></h2>
 <p>The currently supported trace tools are <em>traceroute</em>, <em>tracepath</em>, <em>paris-traceroute</em>. <em>traceroute</em> is the default.</p>
-<p>..note: Please note that if you have a server that has more then one network interface the <em>tracepath</em> tool does not provide an option to select the outgoing source interface.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please note that if you have a server that has more then one network interface the <em>tracepath</em> tool does not provide an option to select the outgoing source interface.</p>
+</div>
 </div>
 </div>
 
@@ -432,7 +444,7 @@ Usage: task [task-options] rtt [test-options]
         <li class="right" >
           <a href="config_pscheduler_limits.html" title="Configuring pScheduler Limits"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

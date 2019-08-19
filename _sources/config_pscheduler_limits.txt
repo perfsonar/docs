@@ -46,7 +46,8 @@ containing a single object with the pairs shown here::
         "classifications": [ ... ],
         "rewrite": [ ... ],
         "limits": [ ... ],
-        "applications": [ ... ]
+        "applications": [ ... ],
+        "priority": { ... }
     }
 
 Each pair is described in the sections below.
@@ -809,30 +810,46 @@ Limit Types
 ``jq`` - Use a jq Script to Make a Pass/Fail Decision
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-``jq`` - Use a jq Script to Make a Pass/Fail Decision
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 The ``jq`` limit hands the proposed task to a
 `jq <https://stedolan.github.io/jq>`_ script and passes or fails based
 on the script's return value.
 
-Input to the script is a single JSON object containing two or three pairs:
+Input to the script is a single JSON object containing the following
+pairs:
 
- * ``type`` - A string that names the type of test being proposed
- * ``spec`` - A JSON object containing the test's parameters
- * ``schedule`` - An optional JSON object containing an ISO8601 timestamp (`start`) and ISO8601 duration (`duration`) specifying when the run is proposed to start and how much time it will spend running.  (Note that the latter is usually greater than the test's `duration` parameter if it has one.)  This object will not be present if a new task is being evaluated but will be for evaluation of runs.
+ * ``test`` - A JSON object containing the proposed test with a
+   ``type`` (a string) and ``spec`` (a JSON object containing the test
+   specification).
+ * ``tool`` - A string that names the tool that was selected.
+ * ``schedule`` - A JSON object containing all schedule paramaters
+   submitted with the test (any of ``start``, ``repeat``,
+   ``max-runs``, ``until``, ``slip``, and ``sliprand``)
+
+ * ``run_schedule`` - An optional JSON object containing an ISO8601
+   timestamp (`start`) and ISO8601 duration (`duration`) specifying
+   when the run is proposed to start and how much time it will spend
+   running.  (Note that the latter is usually greater than the test's
+   `duration` parameter if it has one.)  This object will not be
+   present if a new task is being evaluated but will be for evaluation
+   of runs.
 
 For example::
 
     {
-        "type": "throughput",
-        "spec": {
-            "dest": "ps.example.com",
-            "bandwidth": "200M",
-            "duration": "PT1M"
+        "test": {
+            "type": "throughput",
+            "spec": {
+                "dest": "ps.example.com",
+                "bandwidth": "200M",
+                "duration": "PT1M"
+            },
         },
+        "tool": "iperf3",
         "schedule": {
+            "repeat": "PT10M",
+            "max-runs": 10,
+        },
+        "run_schedule": {
             "start": "2018-06-19T12:34:56",
             "duration": "PT1M8S"
         }
@@ -1016,6 +1033,9 @@ For example::
 ``test`` - Check Test Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+**NOTE:  This limit type is considered deprecated and will be removed
+in a future release.  Use the ``jq`` limit instead.** 
+
 The ``test`` limit compares the parameters of a proposed test against
 a template containing acceptable values.
 
@@ -1070,6 +1090,107 @@ For example::
         "type": "test-type",
         "data": {
             "types": [ "idle", "latency", "rtt", "trace" ]
+        }
+    }
+
+
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``url-fetch`` - Get a decision by fetching a URL
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``url-fetch`` limit asks an external HTTP(S) server for a
+pass/fail decision based on information passed in as parameters or
+part of the URL.
+
+If the ``success-only`` parameter is ``false``, the server must return
+an HTTP status of ``200`` and a document of type ``applicastion/json``
+containing an object with the following pairs:
+
+- ``passed`` - A boolean indicating whether or not this limit should
+  pass.
+- ``message`` - An string containing a message that the server thinks
+  is relevant about the transaction.  A simple ``OK`` is sufficient if
+  ``passed`` is ``true``.
+
+Any other HTTP status will be treated as an error.
+
+The limit's ``data`` is an object containing the following pairs:
+
+- ``url`` - The URL to be queried.  Note that this value is required
+  even if ``url-transform`` (below) is being used to produce the URL.
+  (An empty string is acceptable.)
+- ``url-transform`` - An optional jq transform to alter the contents
+  of the ``url`` parameter.  The returned value must be a string.  The
+  proposed task may be accessed with ``.task`` and server hints are
+  available by calling the ``hint($value)`` function.  The original
+  URL can be accessed as ``.url``.
+- ``bind`` - An optional string indicating the hostname or address to
+  which the system should bind when connecting.
+- ``verify-keys`` - An optional boolean indicating whether or not
+  HTTPS protocol should verify the server's keys as part of the
+  connection process.  If not provided, the default is ``true``.
+- ``follow-redirects`` - An optional boolean indicating whether or not
+  server-provided redirects should be followed.  If ``false``, a
+  redirection will be treated as an error.  If not provided, the
+  default is ``true``.
+- ``headers`` - An optional JSON object containing headers to be sent
+  to the server during the fetch.  If not provided, no headers will be
+  added.
+- ``headers-transform`` - An optional jq transform to alter the
+  contents of the ``headers`` parameter by modifying ``.headers`` in
+  place.  The transform should return everything provided as input.
+  The proposed task may be accessed in ``.task`` and server hints
+  are available by calling the ``hint($value)`` function.
+- ``params`` - An optional JSON object containing parameters to be added to the 
+- ``params-transform`` - An optional jq transform to alter the
+  contents of the ``params`` parameter by modifying ``.params`` in
+  place.  The transform should return everything provided as input.
+  The proposed task may be accessed in ``.task`` and server hints
+  are available by calling the ``hint($value)`` function.
+- ``timeout`` - An optional ISO 8601 duration that determines how much
+  time can elapse before the fetch is considered a failure and
+  aborted.  The default is ``PT3S``.
+- ``success-only`` - An optional boolean that, if ``true``, disregards
+  any content returned by the server and treats the limit as having
+  passed if the HTTP status is ``200`` or failed if it is ``404``.
+  Any other error is treated as a failure and will be handled
+  according to the state of ``fail-result``, described below.  If not
+  provided, the default is ``false``.
+- ``fail-result`` - An optional boolean that determines whether the
+  limit passes or fails when the fetch returns any HTTP status other
+  than ``200``.  If not provided, the default is ``false``.
+
+For example::
+
+    {
+        "name": "server-says-ok",
+        "description": "An external server approves of this task",
+        "type": "url-fetch",
+        "data": {
+            "url": "https://decider.example.org/is-okay",
+            "params": {
+                "check-type": "whatever"
+            },
+            "params-transform": {
+                "script": [
+                    "  .params.requester = hint(\"requester\")",
+                    "| .params.test  = .test.type"
+                ]
+            },
+            "headers": {
+                "Cache-Control": "no-cache"
+            },
+            "headers-transform": {
+                "script": [
+                    ".Authorizatiion = \"Basic \\($auth)\""
+                ],
+                "args": {
+                    "auth": "bXVtYmxlbXVtYmxlbXVtYmxlCg=="
+                }
+            }
+
         }
     }
 
@@ -1176,6 +1297,78 @@ Each limit requirement is a JSON object containing the following:
    limits passes.
  - ``all`` - Consider the requirement met only if all of the limits
    pass.
+
+
+
+.. _config_pscheduler_limits-priorities:
+
+*************************************************
+Priorities: *Which Runs Happen and Which Do Not?*
+*************************************************
+
+Once a run has been vetted by the limit system, it can be assigned a
+priority used in resolving conflicts with other runs scheduled at the
+same time.  This applies to tests like ``throughput``, which are given
+exclusive use of the system.  Tests which run in the background may be
+given priorities but will be unaffected.
+
+The priority value is an integer.  When comparing two or more runs,
+the one wit the highest priority value will be run.  Nominally, the
+dafault priority is ``0``, but any initial value can be configured.
+
+During scheduling, pScheduler will make two attempts to schedule each
+run within the allowed slip time.  The first is without regard to
+priority as a way to avoid conflicts by adjusting the start time
+within the allowed slip range.  If that fails, the second will be made
+with the priority and disregarding the presence of lower-priority
+runs, effectively preempting them.  If neither attempt succeeds, the
+run will be posted as a non-starter.
+
+Once a run is posted to the schedule, it remains there even if one
+with a higher priority is scheduled.  At the scheduled start time, the
+run will happen if there are no overlapping runs of higher priority.
+Otherwise, the lower-priority run will be considered preempted in
+favor of the higher-priority run.
+
+-------------------
+The Priority Script
+-------------------
+
+If the limit configuration contains a ``priority`` object, its
+contents will be a standard jq transform as used elsewhere in
+pScheduler.  If it does not, the priority system will be disabled and
+the default of ``0`` will be assigned to all runs scheduled.  Note
+that participants in multi-participant tests having a priority
+configuration may still prioritize runs.
+
+Input to the transform's script is a JSON object containing the
+contents of the task as it was submitted to the server.  The
+prioritizer adds a private pair for its own internal use (currently
+named `__PRIOIRITIZER_PRIVATE__`) which should not be examined or
+modified.
+
+The jq script is passed the task in the same format as other jq
+scripts used in the limit system.
+
+Scripts will have the following functions available to get additional
+information and make changes:
+
+ - ``classifiers`` - Returns an array of the classifiers into which the node requesting the task were grouped (e.g., `[ "friendlies", "partners" ]`).
+ - ``classifiers_has(value)`` - Returns a boolean indicating whether or not the string `value` is one of the classifiers.
+ - ``default`` - Returns the default priority, normally ``0``.
+ - ``requested`` - Returns the requested priority or ``null`` if no priority was requested.
+
+The following functions can be used to make changes to the 
+
+ - ``note(message)`` - Adds ``message`` to the diagnostics.
+ - ``set(value; message)`` - Sets the priority to ``value`` and adds
+   ``message`` to the diagnostics.
+ - ``adjust(value; message)`` - Adjusts the priority by ``value``, which can be positive or negative, and adds ``message`` to the diagnostics.
+
+The priority in effect at the end of the script will be assigned to
+the run and any diagnostics produced will be stored.
+
+
 
 
 .. _config_pscheduler_limits-check-validity:

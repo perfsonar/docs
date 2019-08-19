@@ -32,7 +32,7 @@ Testing CentOS Bundles Installation
 
 You can test CentOS bundle installation by first pointing your existing CentOS installation at the perfSONAR main yum repository (if not already)::
 
-    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/main/RPMS/perfSONAR-repo-0.8-1.noarch.rpm
+    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.8-1.noarch.rpm
     
 Next, install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
 
@@ -61,15 +61,17 @@ Testing Debian Installation
 
 The beta packages for Debian can be found in the source list below:
 
-* http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
+* http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
 
 You may install this source list as follows::
     
     cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-jessie-staging.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-snapshot.gpg.key | apt-key add -
+    wget http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
+    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-snapshot.gpg.key | apt-key add -
 
-These Debian packages should work on Debian 8, Debian 9, Ubuntu 14, Ubuntu 16 and Ubuntu 18.
+These Debian packages should work on Debian 9, Ubuntu 16 and Ubuntu 18.
+
+On Ubuntu you need to make you have the **universe** repository enabled, this is done with the command ``add-apt-repository universe``
 
 Once installed you may proceed to follow the steps in :doc:`install_debian` to complete the installation.
 
@@ -93,7 +95,7 @@ Testing Docker Installation
 Docker images are provided for the latest staging and nightly builds. Installation works exactly as described in :doc:`install_docker`, except with adding ":staging" to the commands referencing perfsonar/testpoint. For example::
 
     docker pull perfsonar/testpoint:staging
-    docker run --privileged -d -P --net=host -v "/var/run" perfsonar/testpoint:staging
+    docker run --privileged -d -P --net=host perfsonar/testpoint:staging
 
 Testing pSConfig Web Administrator Installation
 ================================================

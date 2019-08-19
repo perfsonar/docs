@@ -93,7 +93,7 @@ You can monitor realtime stats of each services via
 
     pm2 monit
 
-For more information on PM2, please see `PM2 <http://pm2.keymetrics.io/>`_
+For more information on PM2, please see the `PM2 main page <http://pm2.keymetrics.io/>`_
 
 
 PWA Conatiners

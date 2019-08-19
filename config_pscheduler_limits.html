@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuring pScheduler Limits &mdash; perfSONAR Toolkit 4.1.6 documentation</title>
+    <title>Configuring pScheduler Limits &mdash; perfSONAR Toolkit 4.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.1.6',
+        VERSION:     '4.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.1.6 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.0 documentation" href="index.html" />
     <link rel="next" title="OWAMP Server Configuration File" href="config_owamp.html" />
     <link rel="prev" title="Configuring pScheduler" href="config_pscheduler.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="config_pscheduler.html" title="Configuring pScheduler"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -99,15 +99,16 @@ the perfSONAR toolkit may be found <a class="reference external" href="https://g
 <h3>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h3>
 <p>The file is <a class="reference external" href="http://www.json.org">JavaScript Object Notation</a> (JSON)
 containing a single object with the pairs shown here:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&quot;#&quot;</span><span class="p">:</span> <span class="s">&quot;Skeletal pScheduler limit configuration&quot;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre>{
+    &quot;#&quot;: &quot;Skeletal pScheduler limit configuration&quot;,
 
-    <span class="s">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
-    <span class="s">&quot;classifications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
-    <span class="s">&quot;rewrite&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
-    <span class="s">&quot;limits&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">],</span>
-    <span class="s">&quot;applications&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
-<span class="p">}</span>
+    &quot;identifiers&quot;: [ ... ],
+    &quot;classifications&quot;: [ ... ],
+    &quot;rewrite&quot;: [ ... ],
+    &quot;limits&quot;: [ ... ],
+    &quot;applications&quot;: [ ... ],
+    &quot;priority&quot;: { ... }
+}
 </pre></div>
 </div>
 <p>Each pair is described in the sections below.</p>
@@ -782,29 +783,45 @@ would do the opposite).</li>
 <h3>Limit Types<a class="headerlink" href="#limit-types" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="jq-use-a-jq-script-to-make-a-pass-fail-decision">
 <h4><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Make a Pass/Fail Decision<a class="headerlink" href="#jq-use-a-jq-script-to-make-a-pass-fail-decision" title="Permalink to this headline">¶</a></h4>
-</div>
-<div class="section" id="id2">
-<h4><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Make a Pass/Fail Decision<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>The <tt class="docutils literal"><span class="pre">jq</span></tt> limit hands the proposed task to a
 <a class="reference external" href="https://stedolan.github.io/jq">jq</a> script and passes or fails based
 on the script&#8217;s return value.</p>
-<p>Input to the script is a single JSON object containing two or three pairs:</p>
+<p>Input to the script is a single JSON object containing the following
+pairs:</p>
 <blockquote>
 <div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">type</span></tt> - A string that names the type of test being proposed</li>
-<li><tt class="docutils literal"><span class="pre">spec</span></tt> - A JSON object containing the test&#8217;s parameters</li>
-<li><tt class="docutils literal"><span class="pre">schedule</span></tt> - An optional JSON object containing an ISO8601 timestamp (<cite>start</cite>) and ISO8601 duration (<cite>duration</cite>) specifying when the run is proposed to start and how much time it will spend running.  (Note that the latter is usually greater than the test&#8217;s <cite>duration</cite> parameter if it has one.)  This object will not be present if a new task is being evaluated but will be for evaluation of runs.</li>
+<li><tt class="docutils literal"><span class="pre">test</span></tt> - A JSON object containing the proposed test with a
+<tt class="docutils literal"><span class="pre">type</span></tt> (a string) and <tt class="docutils literal"><span class="pre">spec</span></tt> (a JSON object containing the test
+specification).</li>
+<li><tt class="docutils literal"><span class="pre">tool</span></tt> - A string that names the tool that was selected.</li>
+<li><tt class="docutils literal"><span class="pre">schedule</span></tt> - A JSON object containing all schedule paramaters
+submitted with the test (any of <tt class="docutils literal"><span class="pre">start</span></tt>, <tt class="docutils literal"><span class="pre">repeat</span></tt>,
+<tt class="docutils literal"><span class="pre">max-runs</span></tt>, <tt class="docutils literal"><span class="pre">until</span></tt>, <tt class="docutils literal"><span class="pre">slip</span></tt>, and <tt class="docutils literal"><span class="pre">sliprand</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">run_schedule</span></tt> - An optional JSON object containing an ISO8601
+timestamp (<cite>start</cite>) and ISO8601 duration (<cite>duration</cite>) specifying
+when the run is proposed to start and how much time it will spend
+running.  (Note that the latter is usually greater than the test&#8217;s
+<cite>duration</cite> parameter if it has one.)  This object will not be
+present if a new task is being evaluated but will be for evaluation
+of runs.</li>
 </ul>
 </div></blockquote>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;throughput&quot;</span><span class="p">,</span>
-    <span class="s">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;dest&quot;</span><span class="p">:</span> <span class="s">&quot;ps.example.com&quot;</span><span class="p">,</span>
-        <span class="s">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="s">&quot;200M&quot;</span><span class="p">,</span>
-        <span class="s">&quot;duration&quot;</span><span class="p">:</span> <span class="s">&quot;PT1M&quot;</span>
+    <span class="s">&quot;test&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;throughput&quot;</span><span class="p">,</span>
+        <span class="s">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;dest&quot;</span><span class="p">:</span> <span class="s">&quot;ps.example.com&quot;</span><span class="p">,</span>
+            <span class="s">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="s">&quot;200M&quot;</span><span class="p">,</span>
+            <span class="s">&quot;duration&quot;</span><span class="p">:</span> <span class="s">&quot;PT1M&quot;</span>
+        <span class="p">},</span>
     <span class="p">},</span>
+    <span class="s">&quot;tool&quot;</span><span class="p">:</span> <span class="s">&quot;iperf3&quot;</span><span class="p">,</span>
     <span class="s">&quot;schedule&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;repeat&quot;</span><span class="p">:</span> <span class="s">&quot;PT10M&quot;</span><span class="p">,</span>
+        <span class="s">&quot;max-runs&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;run_schedule&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;start&quot;</span><span class="p">:</span> <span class="s">&quot;2018-06-19T12:34:56&quot;</span><span class="p">,</span>
         <span class="s">&quot;duration&quot;</span><span class="p">:</span> <span class="s">&quot;PT1M8S&quot;</span>
     <span class="p">}</span>
@@ -969,6 +986,8 @@ allowed on the system.</p>
 </div>
 <div class="section" id="test-check-test-parameters">
 <h4><tt class="docutils literal"><span class="pre">test</span></tt> - Check Test Parameters<a class="headerlink" href="#test-check-test-parameters" title="Permalink to this headline">¶</a></h4>
+<p><strong>NOTE:  This limit type is considered deprecated and will be removed
+in a future release.  Use the ``jq`` limit instead.</strong></p>
 <p>The <tt class="docutils literal"><span class="pre">test</span></tt> limit compares the parameters of a proposed test against
 a template containing acceptable values.</p>
 <p>Its <tt class="docutils literal"><span class="pre">data</span></tt> is an object containing the following pairs:</p>
@@ -1016,6 +1035,101 @@ or not the limit passes.</li>
     <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;test-type&quot;</span><span class="p">,</span>
     <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;types&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s">&quot;idle&quot;</span><span class="p">,</span> <span class="s">&quot;latency&quot;</span><span class="p">,</span> <span class="s">&quot;rtt&quot;</span><span class="p">,</span> <span class="s">&quot;trace&quot;</span> <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="url-fetch-get-a-decision-by-fetching-a-url">
+<h4><tt class="docutils literal"><span class="pre">url-fetch</span></tt> - Get a decision by fetching a URL<a class="headerlink" href="#url-fetch-get-a-decision-by-fetching-a-url" title="Permalink to this headline">¶</a></h4>
+<p>The <tt class="docutils literal"><span class="pre">url-fetch</span></tt> limit asks an external HTTP(S) server for a
+pass/fail decision based on information passed in as parameters or
+part of the URL.</p>
+<p>If the <tt class="docutils literal"><span class="pre">success-only</span></tt> parameter is <tt class="docutils literal"><span class="pre">false</span></tt>, the server must return
+an HTTP status of <tt class="docutils literal"><span class="pre">200</span></tt> and a document of type <tt class="docutils literal"><span class="pre">applicastion/json</span></tt>
+containing an object with the following pairs:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">passed</span></tt> - A boolean indicating whether or not this limit should
+pass.</li>
+<li><tt class="docutils literal"><span class="pre">message</span></tt> - An string containing a message that the server thinks
+is relevant about the transaction.  A simple <tt class="docutils literal"><span class="pre">OK</span></tt> is sufficient if
+<tt class="docutils literal"><span class="pre">passed</span></tt> is <tt class="docutils literal"><span class="pre">true</span></tt>.</li>
+</ul>
+<p>Any other HTTP status will be treated as an error.</p>
+<p>The limit&#8217;s <tt class="docutils literal"><span class="pre">data</span></tt> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">url</span></tt> - The URL to be queried.  Note that this value is required
+even if <tt class="docutils literal"><span class="pre">url-transform</span></tt> (below) is being used to produce the URL.
+(An empty string is acceptable.)</li>
+<li><tt class="docutils literal"><span class="pre">url-transform</span></tt> - An optional jq transform to alter the contents
+of the <tt class="docutils literal"><span class="pre">url</span></tt> parameter.  The returned value must be a string.  The
+proposed task may be accessed with <tt class="docutils literal"><span class="pre">.task</span></tt> and server hints are
+available by calling the <tt class="docutils literal"><span class="pre">hint($value)</span></tt> function.  The original
+URL can be accessed as <tt class="docutils literal"><span class="pre">.url</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">bind</span></tt> - An optional string indicating the hostname or address to
+which the system should bind when connecting.</li>
+<li><tt class="docutils literal"><span class="pre">verify-keys</span></tt> - An optional boolean indicating whether or not
+HTTPS protocol should verify the server&#8217;s keys as part of the
+connection process.  If not provided, the default is <tt class="docutils literal"><span class="pre">true</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">follow-redirects</span></tt> - An optional boolean indicating whether or not
+server-provided redirects should be followed.  If <tt class="docutils literal"><span class="pre">false</span></tt>, a
+redirection will be treated as an error.  If not provided, the
+default is <tt class="docutils literal"><span class="pre">true</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">headers</span></tt> - An optional JSON object containing headers to be sent
+to the server during the fetch.  If not provided, no headers will be
+added.</li>
+<li><tt class="docutils literal"><span class="pre">headers-transform</span></tt> - An optional jq transform to alter the
+contents of the <tt class="docutils literal"><span class="pre">headers</span></tt> parameter by modifying <tt class="docutils literal"><span class="pre">.headers</span></tt> in
+place.  The transform should return everything provided as input.
+The proposed task may be accessed in <tt class="docutils literal"><span class="pre">.task</span></tt> and server hints
+are available by calling the <tt class="docutils literal"><span class="pre">hint($value)</span></tt> function.</li>
+<li><tt class="docutils literal"><span class="pre">params</span></tt> - An optional JSON object containing parameters to be added to the</li>
+<li><tt class="docutils literal"><span class="pre">params-transform</span></tt> - An optional jq transform to alter the
+contents of the <tt class="docutils literal"><span class="pre">params</span></tt> parameter by modifying <tt class="docutils literal"><span class="pre">.params</span></tt> in
+place.  The transform should return everything provided as input.
+The proposed task may be accessed in <tt class="docutils literal"><span class="pre">.task</span></tt> and server hints
+are available by calling the <tt class="docutils literal"><span class="pre">hint($value)</span></tt> function.</li>
+<li><tt class="docutils literal"><span class="pre">timeout</span></tt> - An optional ISO 8601 duration that determines how much
+time can elapse before the fetch is considered a failure and
+aborted.  The default is <tt class="docutils literal"><span class="pre">PT3S</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">success-only</span></tt> - An optional boolean that, if <tt class="docutils literal"><span class="pre">true</span></tt>, disregards
+any content returned by the server and treats the limit as having
+passed if the HTTP status is <tt class="docutils literal"><span class="pre">200</span></tt> or failed if it is <tt class="docutils literal"><span class="pre">404</span></tt>.
+Any other error is treated as a failure and will be handled
+according to the state of <tt class="docutils literal"><span class="pre">fail-result</span></tt>, described below.  If not
+provided, the default is <tt class="docutils literal"><span class="pre">false</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">fail-result</span></tt> - An optional boolean that determines whether the
+limit passes or fails when the fetch returns any HTTP status other
+than <tt class="docutils literal"><span class="pre">200</span></tt>.  If not provided, the default is <tt class="docutils literal"><span class="pre">false</span></tt>.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;server-says-ok&quot;</span><span class="p">,</span>
+    <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;An external server approves of this task&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;url-fetch&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="s">&quot;https://decider.example.org/is-okay&quot;</span><span class="p">,</span>
+        <span class="s">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;check-type&quot;</span><span class="p">:</span> <span class="s">&quot;whatever&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;params-transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s">&quot;  .params.requester = hint(</span><span class="se">\&quot;</span><span class="s">requester</span><span class="se">\&quot;</span><span class="s">)&quot;</span><span class="p">,</span>
+                <span class="s">&quot;| .params.test  = .test.type&quot;</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s">&quot;headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;Cache-Control&quot;</span><span class="p">:</span> <span class="s">&quot;no-cache&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;headers-transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s">&quot;.Authorizatiion = </span><span class="se">\&quot;</span><span class="s">Basic </span><span class="se">\\</span><span class="s">($auth)</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+            <span class="p">],</span>
+            <span class="s">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;auth&quot;</span><span class="p">:</span> <span class="s">&quot;bXVtYmxlbXVtYmxlbXVtYmxlCg==&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -1118,6 +1232,66 @@ limits passes.</li>
 pass.</li>
 </ul>
 </div></blockquote>
+</div>
+</div>
+<div class="section" id="priorities-which-runs-happen-and-which-do-not">
+<span id="config-pscheduler-limits-priorities"></span><h2>Priorities: <em>Which Runs Happen and Which Do Not?</em><a class="headerlink" href="#priorities-which-runs-happen-and-which-do-not" title="Permalink to this headline">¶</a></h2>
+<p>Once a run has been vetted by the limit system, it can be assigned a
+priority used in resolving conflicts with other runs scheduled at the
+same time.  This applies to tests like <tt class="docutils literal"><span class="pre">throughput</span></tt>, which are given
+exclusive use of the system.  Tests which run in the background may be
+given priorities but will be unaffected.</p>
+<p>The priority value is an integer.  When comparing two or more runs,
+the one wit the highest priority value will be run.  Nominally, the
+dafault priority is <tt class="docutils literal"><span class="pre">0</span></tt>, but any initial value can be configured.</p>
+<p>During scheduling, pScheduler will make two attempts to schedule each
+run within the allowed slip time.  The first is without regard to
+priority as a way to avoid conflicts by adjusting the start time
+within the allowed slip range.  If that fails, the second will be made
+with the priority and disregarding the presence of lower-priority
+runs, effectively preempting them.  If neither attempt succeeds, the
+run will be posted as a non-starter.</p>
+<p>Once a run is posted to the schedule, it remains there even if one
+with a higher priority is scheduled.  At the scheduled start time, the
+run will happen if there are no overlapping runs of higher priority.
+Otherwise, the lower-priority run will be considered preempted in
+favor of the higher-priority run.</p>
+<div class="section" id="the-priority-script">
+<h3>The Priority Script<a class="headerlink" href="#the-priority-script" title="Permalink to this headline">¶</a></h3>
+<p>If the limit configuration contains a <tt class="docutils literal"><span class="pre">priority</span></tt> object, its
+contents will be a standard jq transform as used elsewhere in
+pScheduler.  If it does not, the priority system will be disabled and
+the default of <tt class="docutils literal"><span class="pre">0</span></tt> will be assigned to all runs scheduled.  Note
+that participants in multi-participant tests having a priority
+configuration may still prioritize runs.</p>
+<p>Input to the transform&#8217;s script is a JSON object containing the
+contents of the task as it was submitted to the server.  The
+prioritizer adds a private pair for its own internal use (currently
+named <cite>__PRIOIRITIZER_PRIVATE__</cite>) which should not be examined or
+modified.</p>
+<p>The jq script is passed the task in the same format as other jq
+scripts used in the limit system.</p>
+<p>Scripts will have the following functions available to get additional
+information and make changes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">classifiers</span></tt> - Returns an array of the classifiers into which the node requesting the task were grouped (e.g., <cite>[ &#8220;friendlies&#8221;, &#8220;partners&#8221; ]</cite>).</li>
+<li><tt class="docutils literal"><span class="pre">classifiers_has(value)</span></tt> - Returns a boolean indicating whether or not the string <cite>value</cite> is one of the classifiers.</li>
+<li><tt class="docutils literal"><span class="pre">default</span></tt> - Returns the default priority, normally <tt class="docutils literal"><span class="pre">0</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">requested</span></tt> - Returns the requested priority or <tt class="docutils literal"><span class="pre">null</span></tt> if no priority was requested.</li>
+</ul>
+</div></blockquote>
+<p>The following functions can be used to make changes to the</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">note(message)</span></tt> - Adds <tt class="docutils literal"><span class="pre">message</span></tt> to the diagnostics.</li>
+<li><tt class="docutils literal"><span class="pre">set(value;</span> <span class="pre">message)</span></tt> - Sets the priority to <tt class="docutils literal"><span class="pre">value</span></tt> and adds
+<tt class="docutils literal"><span class="pre">message</span></tt> to the diagnostics.</li>
+<li><tt class="docutils literal"><span class="pre">adjust(value;</span> <span class="pre">message)</span></tt> - Adjusts the priority by <tt class="docutils literal"><span class="pre">value</span></tt>, which can be positive or negative, and adds <tt class="docutils literal"><span class="pre">message</span></tt> to the diagnostics.</li>
+</ul>
+</div></blockquote>
+<p>The priority in effect at the end of the script will be assigned to
+the run and any diagnostics produced will be stored.</p>
 </div>
 </div>
 <div class="section" id="checking-limit-configuration-files-for-validity">
@@ -1392,18 +1566,22 @@ be negated.</li>
 <li><a class="reference internal" href="#limits-what-are-the-restrictions">Limits:  <em>What Are the Restrictions?</em></a><ul>
 <li><a class="reference internal" href="#limit-types">Limit Types</a><ul>
 <li><a class="reference internal" href="#jq-use-a-jq-script-to-make-a-pass-fail-decision"><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Make a Pass/Fail Decision</a></li>
-<li><a class="reference internal" href="#id2"><tt class="docutils literal"><span class="pre">jq</span></tt> - Use a jq Script to Make a Pass/Fail Decision</a></li>
 <li><a class="reference internal" href="#pass-fail-explicitly-pass-or-fail"><tt class="docutils literal"><span class="pre">pass-fail</span></tt> - Explicitly Pass or Fail</a></li>
 <li><a class="reference internal" href="#run-daterange-check-run-times-against-a-range"><tt class="docutils literal"><span class="pre">run-daterange</span></tt> - Check Run Times Against a Range</a></li>
 <li><a class="reference internal" href="#run-schedule-check-attributes-of-the-run-time"><tt class="docutils literal"><span class="pre">run-schedule</span></tt> - Check Attributes of the Run Time</a></li>
 <li><a class="reference internal" href="#test-check-test-parameters"><tt class="docutils literal"><span class="pre">test</span></tt> - Check Test Parameters</a></li>
 <li><a class="reference internal" href="#test-type-check-test-type"><tt class="docutils literal"><span class="pre">test-type</span></tt> - Check Test Type</a></li>
+<li><a class="reference internal" href="#url-fetch-get-a-decision-by-fetching-a-url"><tt class="docutils literal"><span class="pre">url-fetch</span></tt> - Get a decision by fetching a URL</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a class="reference internal" href="#applications-to-whom-do-we-apply-the-limits">Applications: <em>To Whom do We Apply the Limits?</em></a><ul>
 <li><a class="reference internal" href="#applying-limit-requirements">Applying Limit Requirements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#priorities-which-runs-happen-and-which-do-not">Priorities: <em>Which Runs Happen and Which Do Not?</em></a><ul>
+<li><a class="reference internal" href="#the-priority-script">The Priority Script</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#checking-limit-configuration-files-for-validity">Checking Limit Configuration Files for Validity</a></li>
@@ -1460,7 +1638,7 @@ be negated.</li>
         <li class="right" >
           <a href="config_pscheduler.html" title="Configuring pScheduler"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

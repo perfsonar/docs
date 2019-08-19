@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pScheduler Disk-to-Disk Tests &mdash; perfSONAR Toolkit 4.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.2.0 documentation" href="index.html" />
+    <link rel="next" title="What is pSConfig?" href="psconfig_intro.html" />
+    <link rel="prev" title="BWCTL to pScheduler Command Reference" href="pscheduler_ref_bwctl.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="psconfig_intro.html" title="What is pSConfig?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_ref_bwctl.html" title="BWCTL to pScheduler Command Reference"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pscheduler-disk-to-disk-tests">
+<h1>pScheduler Disk-to-Disk Tests<a class="headerlink" href="#pscheduler-disk-to-disk-tests" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This document describes how to install the plug-in for perfSONAR disk-to-disk tests. This includes tools for standard curl tool as well as GridFTP using Globus. The sections below walk-through the following:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>How to setup your yum repositories to use the perfSONAR repo that contains the disk-to-disk test plugin and associated tools.</li>
+<li>Installing perfSONAR and the new plugins using yum</li>
+<li>Configuring Globus using provided Ansible roles</li>
+<li>Commands for performing disk-to-disk transfers with pScheduler</li>
+<li>Adding tests to pSConfig and MaDDash</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="configuring-yum-repositories">
+<h2>Configuring Yum Repositories<a class="headerlink" href="#configuring-yum-repositories" title="Permalink to this headline">¶</a></h2>
+<p>You can setup the yum repository with the commands below:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install epel-release
+yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.9-1.noarch.rpm
+yum clean all
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-perfsonar">
+<h2>Installing perfSONAR<a class="headerlink" href="#installing-perfsonar" title="Permalink to this headline">¶</a></h2>
+<p>Once the repository is configured you can install perfSONAR and the associated plug-ins using the commands below:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install perfsonar-testpoint pscheduler-test-disk-to-disk pscheduler-tool-curl pscheduler-tool-globus
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-globus">
+<h2>Configuring Globus<a class="headerlink" href="#configuring-globus" title="Permalink to this headline">¶</a></h2>
+<p>The perfSONAR project has a set of Ansible rules that help you install and configure <a class="reference external" href="https://www.globus.org/">Globus</a>. It will handle pointing at the Globus yum repos, install required RPMs and make necessary edits to the Globus configuration. First, make sure you have git and ansible installed on your system:</p>
+<div class="highlight-python"><div class="highlight"><pre>yum install ansible git
+</pre></div>
+</div>
+<p>Next clone the ansible rules and run the playbook:</p>
+<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/nathanShepherd/Playbook-setup-globus-server.git
+cd Playbook-setup-globus-server
+ansible-playbook main.yml --user root --ask-pass
+</pre></div>
+</div>
+<p>The last command will ask for three inputs:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>At the first prompt requesting an SSH password, just hit enter.</li>
+<li>Enter a name for your Globus endpoint. It is just an identifier used by Globus, the hostname is good choice if you need an idea for a name.</li>
+<li>Enter whether you want the host to be published publicly by Globus. Your answer will not affect your ability to test with pScheduler.</li>
+</ol>
+</div></blockquote>
+<p>After the prompts you will need to wait for the playbook to finish setup.</p>
+<p>Next, you will need to get a Globus ID if you do not already have one. You can get one by visiting <a class="reference external" href="http://globusid.org">http://globusid.org</a>. After you have a Globus ID run the following commands and enter your Globus ID when prompted (NOTE: you do not need to include the <em>&#64;globusid.org</em> portion of the username at the prompt):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">globus</span><span class="o">-</span><span class="n">connect</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">setup</span>
+</pre></div>
+</div>
+<p>After the command completes, you can verify Globus is running by looking at the process list and verifying you see at least one Globus process:</p>
+<div class="highlight-python"><div class="highlight"><pre>ps auxw | grep globus
+</pre></div>
+</div>
+<p>Next you can verify that you can perform a simple transfer with the <cite>globus-url-copy</cite> command directly with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>globus-url-copy -vb -fast ftp://sunn-dtn.es.net:2811/data1/10M.dat file:///tmp/manual-test.out
+</pre></div>
+</div>
+<p>Assuming all of the above work as expected, you are now ready to try transfers with pScheduler.</p>
+</div>
+<div class="section" id="running-disk-to-disk-transfers-with-pscheduler">
+<h2>Running Disk-to-Disk Transfers with pScheduler<a class="headerlink" href="#running-disk-to-disk-transfers-with-pscheduler" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="gridftp-test">
+<h3>GridFTP Test<a class="headerlink" href="#gridftp-test" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler task --tool globus disk-to-disk --source ftp://sunn-dtn.es.net:2811/data1/10M.dat --dest file:///tmp/test.out --timeout PT10S
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See <a class="reference external" href="https://fasterdata.es.net/performance-testing/DTNs/">https://fasterdata.es.net/performance-testing/DTNs/</a> for a list of GridFtp servers that can be used for testing*</p>
+</div>
+</div>
+<div class="section" id="standard-curl-test">
+<h3>Standard Curl Test<a class="headerlink" href="#standard-curl-test" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>pscheduler task --tool curl disk-to-disk --source ftp://speedtest.tele2.net/1KB.zip --dest /tmp/test.out --timeout PT5S
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See <cite>pscheduler task disk-to-disk &#8211;help</cite> for a full list of options</p>
+</div>
+</div>
+</div>
+<div class="section" id="configuring-psconfig-and-maddash">
+<h2>Configuring pSConfig and MaDDash<a class="headerlink" href="#configuring-psconfig-and-maddash" title="Permalink to this headline">¶</a></h2>
+<p>You can add <cite>disk-to-disk</cite> tests to a pSConfig template. There is a lot of flexibility in how you define your tests, but one example can be found here: <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json">https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json</a></p>
+<p>Once you have the test added to the pSConfig template and assuming you are storing them in esmond, then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash <a class="reference external" href="https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharing">quick install guide</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">pScheduler Disk-to-Disk Tests</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#configuring-yum-repositories">Configuring Yum Repositories</a></li>
+<li><a class="reference internal" href="#installing-perfsonar">Installing perfSONAR</a></li>
+<li><a class="reference internal" href="#configuring-globus">Configuring Globus</a></li>
+<li><a class="reference internal" href="#running-disk-to-disk-transfers-with-pscheduler">Running Disk-to-Disk Transfers with pScheduler</a><ul>
+<li><a class="reference internal" href="#gridftp-test">GridFTP Test</a></li>
+<li><a class="reference internal" href="#standard-curl-test">Standard Curl Test</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-psconfig-and-maddash">Configuring pSConfig and MaDDash</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pscheduler_ref_bwctl.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_ref_bwctl.html" title="previous chapter">BWCTL to pScheduler Command Reference</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="psconfig_intro.html">Next topic</a>
+                      <ul><li><a href="psconfig_intro.html" title="next chapter">What is pSConfig?</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="psconfig_intro.html" title="What is pSConfig?"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_ref_bwctl.html" title="BWCTL to pScheduler Command Reference"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

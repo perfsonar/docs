@@ -22,13 +22,19 @@ Archiving is accomplished by providing an *archive specification* in the form of
 
 ``data`` - A JSON object containing archiver-specific data to be used in deciding how to dispose of the result.
 
+``runs`` (Requires schema 2) - Which runs should be archived.  Valid values are ``succeeded`` for runs that produced a result, ``failed`` for those that did not and ``all`` for both.  This value is optional and will be treated as ``succeeded`` if not provided.
+
 ``ttl`` - The absolute amount of time after which the result should be discarded if not successfully archived, specified as an `ISO8601 duration <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.  This value is optional and will be treated as infinite if not provided.
+
+``uri-host`` (Requeres schema 2) - Host name and optional port to be used in URIs for the task and run provided to the archiver.  This value is optional and will default to the system's best estimate of its own fully-qualified domain name.
 
 For example (commentary is not part of the specification)::
 
     {
+        "schema": 2,                  Second schema, required for 'runs'
         "archiver": "bitbucket",      Send to the archiver that goes nowhere.
         "data": { },                  The "bitbucket" archiver takes no specific data.
+        "runs": "all",                Archive all runs.
         "ttl": "PT12H"                Give up after 12 hours if not successfully archived.
     }
 
@@ -270,8 +276,6 @@ Example
 
 The ``http`` archiver sends results to HTTP or HTTPS servers using the ``POST`` or ``PUT`` operation.
 
- provides the same archiving function as ``bitbucket`` but introduces failure and retries a random fraction of the time.  This archiver was developed for testing pScheduler and serves no useful function in a production setting.
-
 .. _pscheduler_ref_archivers-archivers-http-data:
 
 Archiver Data
@@ -311,6 +315,35 @@ Example
     }
 
 
+.. _pscheduler_ref_archivers-archivers-kafka:
+
+``kafka``
+-------------------------------------------
+
+The Kafka archiver sends the result of a pScheduler test as a message to a preexisting Apache Kafka message bus.
+
+.. _pscheduler_ref_archivers-archivers-kafka-data:
+
+Archiver Data
+++++++++++++++++++++++++++++++++++++++++++++++
+
+``topic`` - The topic under which the message should be posted on the message bus.
+
+``server`` - The address of the server hosting the Apache Kafka message bus.
+
+.. _pscheduler_ref_archivers-archivers-kafka-example:
+
+Example
+++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+    {
+    	"archiver": "kafka",
+    	"data": {
+        	"topic": "test",
+        	"server-address": "localhost:9092"
+    	}	
+    }
 
 
 
@@ -326,11 +359,29 @@ The ``rabbitmq`` archiver sends raw JSON results to `RabbitMQ <https://www.rabbi
 Archiver Data
 ++++++++++++++++++++++++++++++++++++++++++++++
 
-``_url`` - An ``amqp`` URL for the RabbitMQ instance which will receive the result.
+``_url`` - An ``amqp`` URL for the RabbitMQ instance which will
+receive the result.
 
-``routing-key`` - Optional.  The routing key to be used when queueing the message.
+``exchange`` (Optional) - The exchange to which the result will be
+sent.
 
-``retry-policy`` - Optional. Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.
+``routing-key`` (Optional) - The routing key to be used when queueing
+the message.  This can be a string or a standard pScheduler jq
+transform.  If the latter, the ``schema`` must be ``2``.  Note that
+this transform is provided with the same data that will go to the
+archiver, meaning that it is whatever resulted after any ``transform``
+in the archive specification.
+
+``connection-lifetime`` (Optional) - An ISO8601 duration recommending
+how long the connection to RabbitMQ for a given URL/exchange/key
+combination should be kept alive.  The default is to create a new
+connection for each result archived.  Note that a small value such as
+``P0D`` can be used to force an existing connection to expire.
+Requires ``schema`` of ``2`` or later.
+
+``retry-policy`` (Optional) - Describes how to retry failed attempts
+to submit the measurement to RabbitMQ before giving up.  The default
+behavior is to try once and then give up.
 
 .. _pscheduler_ref_archivers-archivers-rabbitmq-example:
 

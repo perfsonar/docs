@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Bundle Installation on Debian &mdash; perfSONAR Toolkit 4.1.6 documentation</title>
+    <title>Bundle Installation on Debian &mdash; perfSONAR Toolkit 4.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.1.6',
+        VERSION:     '4.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.1.6 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.0 documentation" href="index.html" />
     <link rel="next" title="Using perfSONAR with Docker" href="install_docker.html" />
     <link rel="prev" title="Bundle Installation on CentOS" href="install_centos.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="install_centos.html" title="Bundle Installation on CentOS"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -74,11 +74,9 @@
             
   <div class="section" id="bundle-installation-on-debian">
 <h1>Bundle Installation on Debian<a class="headerlink" href="#bundle-installation-on-debian" title="Permalink to this headline">¶</a></h1>
-<p>perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.0 we provide the whole perfSONAR toolkit as Debian packages for five different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:</p>
+<p>perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.2 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:</p>
 <ul class="simple">
-<li>Debian 8 Jessie</li>
 <li>Debian 9 Stretch</li>
-<li>Ubuntu 14 Trusty Tahr</li>
 <li>Ubuntu 16 Xenial Xerus</li>
 <li>Ubuntu 18 Bionic Beaver</li>
 </ul>
@@ -86,15 +84,16 @@
 <div class="section" id="system-requirements">
 <h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><strong>Architecture:</strong> We provide Debian packages for 5 different architectures:<ul>
+<li><strong>Architecture:</strong> We provide Debian packages for 6 different architectures:<ul>
 <li>32-bit (i386)</li>
 <li>64-bit (amd64)</li>
-<li>ARMv4t and up (armel)</li>
+<li>ARMv4t and up (armel) (only for Debian)</li>
 <li>ARMv7 and up (armhf)</li>
-<li>ARM64 (arm64) (only for Debian 8/9)</li>
+<li>ARM64 (arm64)</li>
+<li>PPC64 (ppc64el)</li>
 </ul>
 </li>
-<li><strong>Operating System:</strong>  Any system running a Debian 8, Debian 9, Ubuntu 14, Ubuntu 16 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 8/9 or Ubuntu 14/16/18 might work too but are not officially supported.</li>
+<li><strong>Operating System:</strong>  Any system running a Debian 9, Ubuntu 16 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 9 or Ubuntu 16/18 might work too but are not officially supported.</li>
 <li>See <a class="reference internal" href="install_hardware.html"><em>Hardware Requirements</em></a> for hardware requirements and more.</li>
 </ul>
 <div class="admonition note">
@@ -109,7 +108,7 @@
 <p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. <strong>You will need to follow the steps below as privileged user</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
 wget http://downloads.perfsonar.net/debian/perfsonar-release.list
-wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.key | apt-key add -
+wget -qO - http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
 </pre></div>
 </div>
 <ul>
@@ -160,7 +159,7 @@ wget -qO - http://downloads.perfsonar.net/debian/perfsonar-debian-official.gpg.k
 </ul>
 <div class="section" id="optional-packages">
 <h4>Optional Packages<a class="headerlink" href="#optional-packages" title="Permalink to this headline">¶</a></h4>
-<p>In addition to any of the bundles above you may also <strong>optionnally</strong> choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):</p>
+<p>In addition to any of the bundles above you may also <strong>optionally</strong> choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):</p>
 <blockquote>
 <div><ul class="simple">
 <li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></tt> - Automatically detects closest NTP servers and sets them in ntp.conf</li>
@@ -296,47 +295,50 @@ service perfsonar-lsregistrationdaemon start
 <p>After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from <a class="reference internal" href="install_config_first_time.html"><em>Configuring the Toolkit for the First Time</em></a>.</p>
 </div>
 </div>
-<div class="section" id="upgrading-from-4-0-2">
-<h2>Upgrading from 4.0.2<a class="headerlink" href="#upgrading-from-4-0-2" title="Permalink to this headline">¶</a></h2>
-<p>If you had installed a perfSONAR 4.0.2 bundle and you now want to upgrade to perfSONAR 4.1, you&#8217;ll have to follow the instructions here below.</p>
-<div class="section" id="add-the-4-1-apt-sources">
-<h3>Add the 4.1 APT sources<a class="headerlink" href="#add-the-4-1-apt-sources" title="Permalink to this headline">¶</a></h3>
-<p>The perfSONAR Debian repository name has changed for this release, we support all Debian and Ubuntu releases through a single repository.  But this means you need to add our new repository to your system with the following commands:</p>
-<div class="highlight-python"><div class="highlight"><pre>cd /etc/apt/sources.list.d/
-wget http://downloads.perfsonar.net/debian/perfsonar-release.list
-</pre></div>
+<div class="section" id="keeping-4-1-x-on-debian-8-and-ubuntu-14">
+<h2>Keeping 4.1.x on Debian 8 and Ubuntu 14<a class="headerlink" href="#keeping-4-1-x-on-debian-8-and-ubuntu-14" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re running Debian 8 or Ubuntu 14, you need to know that perfSONAR 4.2 is not supported on these OS.  We recommend that you either do a fresh installation of perfSONAR on a supported OS (Debian 9 or Ubuntu 16 or 18) or plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2 to happen later. In all cases, you should follow the instructions bellow to prevent perfSONAR to automatically upgrade to version 4.2 once we release it.</p>
+<p>You nedd to replace the <tt class="docutils literal"><span class="pre">perfsonar-release</span></tt> repository with a plain <tt class="docutils literal"><span class="pre">perfsonar-4.1</span></tt> repository entry.  This is done in the <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d/perfsonar-release.list</span></tt> file, where you just replace <strong>perfsonar-release</strong> with <strong>perfsonar-4.1</strong> in the <tt class="docutils literal"><span class="pre">deb</span></tt> and <tt class="docutils literal"><span class="pre">deb-src</span></tt> lines.  Alternatively, you can delete the <tt class="docutils literal"><span class="pre">perfsonar-release.list</span></tt> file and replace it with the one coming from <a class="reference external" href="http://downloads.perfsonar.net/debian/perfsonar-4.1.list">http://downloads.perfsonar.net/debian/perfsonar-4.1.list</a>  Then run <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">update</span></tt>.</p>
+<p>From this moment, you&#8217;ll be only receiving the updates to the 4.1.x release branch (if there are any) and nothing else.  Then plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2. as described bellow.</p>
 </div>
-<p>Then refresh the packages list so APT knows about the perfSONAR packages:</p>
-<div class="highlight-python"><div class="highlight"><pre>apt-get update
-</pre></div>
-</div>
-</div>
+<div class="section" id="upgrading-from-4-1-x">
+<h2>Upgrading from 4.1.x<a class="headerlink" href="#upgrading-from-4-1-x" title="Permalink to this headline">¶</a></h2>
+<p>If you had installed a perfSONAR 4.1.x bundle and you now want to upgrade to perfSONAR 4.2, you&#8217;ll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Ubuntu 16 and Ubuntu 18.  For Debian 8 and Ubuntu 14, you should first lock your system on 4.1.x, then upgrade the OS and finally perfSONAR (as described above).</p>
 <div class="section" id="upgrade-the-perfsonar-installation">
 <h3>Upgrade the perfSONAR installation<a class="headerlink" href="#upgrade-the-perfsonar-installation" title="Permalink to this headline">¶</a></h3>
-<p>To upgrade your perfsonar installation, you just need to run:</p>
-<div class="highlight-python"><div class="highlight"><pre>apt-get dist-upgrade
+<p>If you have auto-update enabled and already using the perfsonar-release.list APT source file (as was instructed when install 4.1), you should receive the 4.2 upgrade automatically.</p>
+<p>If you don&#8217;t use the auto-update feature, to upgrade your perfsonar installation, you just need to run:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get update
+apt-get upgrade
 </pre></div>
 </div>
-<p>The measurements and the measurement archives that you already have defined in your 4.0.2 installation will be migrated to the 4.1 tools automatically.</p>
+<p>The measurements and the measurement archives that you already have defined in your 4.1.x installation will be migrated to the 4.1 tools automatically.</p>
 </div>
 <div class="section" id="upgrade-to-another-bundle">
 <h3>Upgrade to another bundle<a class="headerlink" href="#upgrade-to-another-bundle" title="Permalink to this headline">¶</a></h3>
 <p>If you want to move from the <cite>perfsonar-testpoint</cite> bundle to another bundle that we provide for Debian, you can do so by following the instructions above from <a class="reference internal" href="#install-debian-step2"><em>Step 2: Install a Bundle</em></a>.</p>
 </div>
-<div class="section" id="upgrade-from-debian-7-to-debian-8-or-9">
-<h3>Upgrade from Debian 7 to Debian 8 or 9<a class="headerlink" href="#upgrade-from-debian-7-to-debian-8-or-9" title="Permalink to this headline">¶</a></h3>
-<p>If you have a perfSONAR host running Debian 7 and you want to upgrade it to Debian 8 (Jessie) or 9 (Stretch), we recommend you to follow the following steps:</p>
+<div class="section" id="upgrade-from-debian-8-to-debian-9">
+<h3>Upgrade from Debian 8 to Debian 9<a class="headerlink" href="#upgrade-from-debian-8-to-debian-9" title="Permalink to this headline">¶</a></h3>
+<p>If you have a perfSONAR host running Debian 8 and you want to upgrade it to 9 (Stretch), we recommend you to follow the following steps:</p>
 <ol class="arabic simple">
-<li>Upgrade Debian 7 to Debian 8 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/jessie/i386/release-notes/ch-upgrading.en.html">Jessie upgrade notes for i386 architecture</a>)</li>
-<li>Reboot (to get systemd running)</li>
-<li>Change perfSONAR repository from <tt class="docutils literal"><span class="pre">perfsonar-wheezy-release</span></tt> to <tt class="docutils literal"><span class="pre">perfsonar-release</span></tt></li>
 <li>Upgrade Debian 8 to Debian 9 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html">Stretch upgrade notes for i386 architecture</a>)</li>
+<li>Reboot your system unless already done in previous step.</li>
+<li>Change perfSONAR repository from <tt class="docutils literal"><span class="pre">perfsonar-4.1</span></tt> to <tt class="docutils literal"><span class="pre">perfsonar-release</span></tt> (if you changed it as a temporary measure as described above)</li>
+<li>Run <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">update;</span> <span class="pre">apt-get</span> <span class="pre">dist-upgrade</span></tt> to get the latest version of perfSONAR.</li>
+<li>Reboot your system one last time.</li>
 </ol>
-<blockquote>
-<div><ul class="simple">
-<li>Alternatively, you can just run <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">udpate;</span> <span class="pre">apt-get</span> <span class="pre">dist-upgrade</span></tt> if you prefer to stay with Debian 8.</li>
-</ul>
-</div></blockquote>
+</div>
+<div class="section" id="upgrade-from-ubuntu-14-to-ubuntu-16-or-18">
+<h3>Upgrade from Ubuntu 14 to Ubuntu 16 (or 18)<a class="headerlink" href="#upgrade-from-ubuntu-14-to-ubuntu-16-or-18" title="Permalink to this headline">¶</a></h3>
+<p>If you have a perfSONAR host running Ubuntu 14 and you want to upgrade it to 16, we recommend you to follow the following steps:</p>
+<ol class="arabic simple">
+<li>Upgrade Ubuntu 14 to Ubuntu 16 (following official instructions, here are <a class="reference external" href="https://help.ubuntu.com/community/XenialUpgrades">Xenial Upgrades notes</a>)</li>
+<li>Reboot your system unless already done in previous step.</li>
+<li>Change perfSONAR repository from <tt class="docutils literal"><span class="pre">perfsonar-4.1</span></tt> to <tt class="docutils literal"><span class="pre">perfsonar-release</span></tt> (if you changed it as a temporary measure as described above)</li>
+<li>Run <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">update;</span> <span class="pre">apt-get</span> <span class="pre">dist-upgrade</span></tt> to get the latest version of perfSONAR.</li>
+<li>Reboot your system one last time.</li>
+</ol>
 </div>
 </div>
 </div>
@@ -372,11 +374,12 @@ wget http://downloads.perfsonar.net/debian/perfsonar-release.list
 <li><a class="reference internal" href="#configuring-perfsonar-through-the-web-interface">Configuring perfSONAR through the web interface</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#upgrading-from-4-0-2">Upgrading from 4.0.2</a><ul>
-<li><a class="reference internal" href="#add-the-4-1-apt-sources">Add the 4.1 APT sources</a></li>
+<li><a class="reference internal" href="#keeping-4-1-x-on-debian-8-and-ubuntu-14">Keeping 4.1.x on Debian 8 and Ubuntu 14</a></li>
+<li><a class="reference internal" href="#upgrading-from-4-1-x">Upgrading from 4.1.x</a><ul>
 <li><a class="reference internal" href="#upgrade-the-perfsonar-installation">Upgrade the perfSONAR installation</a></li>
 <li><a class="reference internal" href="#upgrade-to-another-bundle">Upgrade to another bundle</a></li>
-<li><a class="reference internal" href="#upgrade-from-debian-7-to-debian-8-or-9">Upgrade from Debian 7 to Debian 8 or 9</a></li>
+<li><a class="reference internal" href="#upgrade-from-debian-8-to-debian-9">Upgrade from Debian 8 to Debian 9</a></li>
+<li><a class="reference internal" href="#upgrade-from-ubuntu-14-to-ubuntu-16-or-18">Upgrade from Ubuntu 14 to Ubuntu 16 (or 18)</a></li>
 </ul>
 </li>
 </ul>
@@ -414,7 +417,7 @@ wget http://downloads.perfsonar.net/debian/perfsonar-release.list
         <li class="right" >
           <a href="install_centos.html" title="Bundle Installation on CentOS"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

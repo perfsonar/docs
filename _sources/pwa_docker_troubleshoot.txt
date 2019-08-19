@@ -23,7 +23,7 @@ Note: sometimes, docker containers will initially not have connectivity to the o
 
 
 Troubleshooting Containers
---------
+---------------------------
 
 Use the ``docker logs`` command to see logs for a container. Adjust ``--tail`` to change how many logs are displayed. Add the ``-f`` flag to watch the logs as new records come in (like ``tail``)
 
@@ -42,7 +42,7 @@ Use the ``docker logs`` command to see logs for a container. Adjust ``--tail`` t
     3|ui             | [Tue Feb 12 2019 21:51:56 GMT+0000 (UTC)] "GET /" "undefined"
 
 Interacting with containers
---------
+----------------------------
 
 You can enter an interactive ``bash`` shell within a container like this:
 
