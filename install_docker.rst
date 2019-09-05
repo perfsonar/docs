@@ -62,7 +62,7 @@ First, pull down the latest Docker image::
 
 This will download the latest built image of the perfsonar testpoint bundle. It includes a base CentOS7 install and the perfsonar-testpoint packages. Once the image is downloaded and extracted, start up the container by doing::
 
-  # docker run --privileged -d -P --net=hostperfsonar/testpoint
+  # docker run --privileged -d -P --net=host perfsonar/testpoint
 
 Verify that the container is running::
 
