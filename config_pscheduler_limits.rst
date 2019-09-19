@@ -419,9 +419,7 @@ is a better choice for this example.) ::
         "description": "One IP we really, really dislike.",
         "type": "jq",
         "data": {
-            "transform": {
-                "script": ".requester == \"198.51.100.86\"",
-            }
+            "script": ".requester == \"198.51.100.86\"",
         }
     }
 
@@ -433,11 +431,9 @@ one of the management interfaces: ::
         "description": "Requests not arriving on a management interface(s)",
         "type": "jq",
         "data": {
-            "transform": {
-                "script": "[.server == $management_ips[]] | any | not",
-                "args": {
-                    "management_ips": ["127.0.0.1", "198.51.100.46"]
-                }
+            "script": "[.server == $management_ips[]] | any | not",
+            "args": {
+                "management_ips": ["127.0.0.1", "198.51.100.46"]
             }
         }
     }
@@ -873,13 +869,11 @@ Limit the `length` parameter of any test to 256::
         "description": "Limit packet size for all tests",
         "type": "jq",
         "data": {
-            "transform": {
-                "script": "256 as $max_length
-                           | if .spec.length > $max_length
-                             then \"Packets are limited to \\($max_length) bytes\"
-                             else true
-                             end"
-            }
+            "script": "256 as $max_length
+                       | if .spec.length > $max_length
+                         then \"Packets are limited to \\($max_length) bytes\"
+                         else true
+                         end"
         }
     }
 
@@ -891,13 +885,11 @@ Limit any the number of hops in a `trace` test to 20::
         "description": "Limit trace hops",
         "type": "jq",
         "data": {
-            "transform": {
-                "script": "20 as $max_hops
-                           | if .type == \"trace\" and .spec.hops > $max_hops
-                             then \"No more than \\($max_hops) hops allowed.\"
-                             else true
-                             end"
-            }
+            "script": "20 as $max_hops
+                       | if .type == \"trace\" and .spec.hops > $max_hops
+                         then \"No more than \\($max_hops) hops allowed.\"
+                         else true
+                         end"
         }
     }
 
@@ -908,15 +900,13 @@ Limit the bandwidth of `throughput` tests to 500 Mb/s::
         "description": "Limit throughput test bandwidth",
         "type": "jq",
         "data": {
-            "transform": {
-                "script": "import \"pscheduler/si\" as si;
-                           "500M" as $max_bandwidth
-                           | if .type == \"throughput\"
-                               and si::as_integer(.spec.bandwidth) > si::as_integer($max_bandwidth)
-                             then \"Bandwidth is limited to \\($max_bandwidth)\"
-                             else true
-                             end"
-            }
+            "script": "import \"pscheduler/si\" as si;
+                       "500M" as $max_bandwidth
+                       | if .type == \"throughput\"
+                             and si::as_integer(.spec.bandwidth) > si::as_integer($max_bandwidth)
+                         then \"Bandwidth is limited to \\($max_bandwidth)\"
+                         else true
+                         end"
         }
     }
 
