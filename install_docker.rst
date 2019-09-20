@@ -62,7 +62,7 @@ First, pull down the latest Docker image::
 
 This will download the latest built image of the perfsonar testpoint bundle. It includes a base CentOS7 install and the perfsonar-testpoint packages. Once the image is downloaded and extracted, start up the container by doing::
 
-  # docker run --privileged -d -P --net=host perfsonar/testpoint
+  # docker run -d --net=host perfsonar/testpoint
 
 Verify that the container is running::
 
@@ -126,7 +126,7 @@ Once the container ID is known, have docker shut it down::
 
 And now start up the new one. This process is the same as the first time it was started, but now with the newer image it will start up the new version::
 
-  # docker run --privileged -d -P --net=host perfsonar/testpoint
+  # docker run -d --net=host perfsonar/testpoint
 
 Connect to the docker instance again and verify that you are running the version expected::
 
