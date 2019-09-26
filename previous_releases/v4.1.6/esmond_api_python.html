@@ -1,0 +1,421 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>esmond Python Client Libraries &#8212; perfSONAR Toolkit 4.1.6 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="What is MaDDash?" href="maddash_intro.html" />
+    <link rel="prev" title="esmond Perl Client Libraries" href="esmond_api_perl.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maddash_intro.html" title="What is MaDDash?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="esmond_api_perl.html" title="esmond Perl Client Libraries"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="esmond_api_rest.html" accesskey="U">esmond API Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="esmond-python-client-libraries">
+<h1>esmond Python Client Libraries<a class="headerlink" href="#esmond-python-client-libraries" title="Permalink to this headline">¶</a></h1>
+<p>The pS data can be queried, retrieved and posted to the esmond/cassandra backend
+via a REST interface.  This is streamlined by the following libraries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">esmond</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">query</span>
+<span class="n">esmond</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">post</span>
+</pre></div>
+</div>
+<div class="section" id="initializing-the-query-interface">
+<h2>Initializing the query interface<a class="headerlink" href="#initializing-the-query-interface" title="Permalink to this headline">¶</a></h2>
+<p>The query libarary has two main “top level” classes: ApiFilters and ApiConnect.
+ApiFilters lets the user, through a series of properties, set the primary query
+criteria like time ranges, source, destination, etc.  The following criteria
+properties can be set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">destination</span>
+<span class="n">input_destination</span>
+<span class="n">input_source</span>
+<span class="n">measurement_agent</span>
+<span class="n">source</span>
+<span class="n">tool_name</span>
+<span class="n">time</span>
+<span class="n">time_start</span>
+<span class="n">time_end</span>
+<span class="n">time_range</span>
+<span class="n">verbose</span> <span class="p">(</span><span class="k">for</span> <span class="n">debugging</span><span class="o">/</span><span class="n">extended</span> <span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After the query criteria have been set in the ApiFilters object, that is passed
+to the ApiConnect object as one of the args.</p>
+<p>The ApiConnect object takes the url of the REST interface as an argument, along
+with the filters object, and optional username and api_key arguments if the user
+is accessing restricted functionality of the REST interface (non-public data,
+getting around throttling restrictions, etc).</p>
+<p>A complete example of setting this up:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">esmond.api.client.perfsonar.query</span> <span class="k">import</span> <span class="n">ApiConnect</span><span class="p">,</span> <span class="n">ApiFilters</span>
+
+<span class="n">filters</span> <span class="o">=</span> <span class="n">ApiFilters</span><span class="p">()</span>
+
+<span class="n">filters</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">filters</span><span class="o">.</span><span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="mi">3600</span>
+<span class="n">filters</span><span class="o">.</span><span class="n">time_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">filters</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;198.129.254.30&#39;</span>
+<span class="n">filters</span><span class="o">.</span><span class="n">tool_name</span> <span class="o">=</span> <span class="s1">&#39;bwctl/iperf3&#39;</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">ApiConnect</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/&#39;</span><span class="p">,</span> <span class="n">filters</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>NOTE: the default perfSONAR/esmond deployments use a WSGIScriptAlias of /esmond
+prefixing the URI - this is set in Apache.  The client libraries default to
+using this.  But if one is doing development against the django runserver dev
+server, or if this has been set up differently, then the optional kwarg
+“script_alias” will need to be set as well.  Against the dev server, it can
+be set to script_alias=None since the Apache directive is not in place.</p>
+</div>
+<div class="section" id="retrieving-the-data">
+<h2>Retrieving the data<a class="headerlink" href="#retrieving-the-data" title="Permalink to this headline">¶</a></h2>
+<p>The basic design of the returned data is a hierarchy of encapsulation objects
+that return additioanl objects objects, etc.  All of the returned objects
+have informative __repr__ methods defined, that might help when doing
+initial development.</p>
+<p>The top level call to the ApiConnect object is get_metadata().  This is an
+iterator that will return a series of Metadata objects matching the criteria
+given in the ApiFilters object.  At the top level, the Metadata object exposes
+a series of properties giving additional information about the returned
+metadata.  Example of this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">md</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">():</span>
+    <span class="nb">print</span> <span class="n">md</span> <span class="c1"># debug info in __repr__</span>
+    <span class="nb">print</span> <span class="n">md</span><span class="o">.</span><span class="n">destination</span>
+    <span class="nb">print</span> <span class="n">md</span><span class="o">.</span><span class="n">ip_packet_interval</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>The following top-level properties are exposed by the Metadata object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">destination</span>
+<span class="n">event_types</span> <span class="p">(</span><span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">event</span> <span class="nb">type</span> <span class="n">names</span> <span class="o">-</span> <span class="n">more</span> <span class="n">on</span> <span class="n">this</span><span class="p">)</span>
+<span class="n">input_destination</span>
+<span class="n">input_source</span>
+<span class="n">ip_packet_interval</span>
+<span class="n">measurement_agent</span>
+<span class="n">metadata_key</span>
+<span class="n">sample_bucket_width</span>
+<span class="n">source</span>
+<span class="n">subject_type</span>
+<span class="n">time_duration</span>
+<span class="n">tool_name</span>
+<span class="n">uri</span>
+</pre></div>
+</div>
+<p>The next in the data object hierarchy is fetching the event types that are
+associated with the metadata.  This can be done by either using an interator
+to access all of the event types:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">et</span> <span class="ow">in</span> <span class="n">md</span><span class="o">.</span><span class="n">get_all_event_types</span><span class="p">():</span>
+    <span class="nb">print</span> <span class="n">et</span><span class="o">.</span><span class="n">event_type</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>or fetching a single one by name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">et</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">get_event_type</span><span class="p">(</span><span class="s1">&#39;histogram-owdelay&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The top-level property “event_types” will return a list of valid event types
+that can be passed as the argument to get_event_type.</p>
+<p>The EventType objects expose the following top-level properties:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">base_uri</span>
+<span class="n">event_type</span>
+<span class="n">data_type</span>
+<span class="n">summaries</span> <span class="p">(</span><span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">associated</span> <span class="n">summaries</span> <span class="o">-</span> <span class="n">more</span> <span class="n">on</span> <span class="n">this</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The the actual underlying data are retrieved from the EventType objects by a call to the get_data() method, which returns a DataPayload object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dpay</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The DataPayload object expose the following top-level properties:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_type</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+<p>The data_type property returns the underlying data_type in the payload, and
+the data property returns a list of DataPoint or DataHistogram objects as
+is appropriate.  Both the DataPoint and DataHistogram objects expose the
+following properties:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="p">(</span><span class="n">measurement</span> <span class="n">timestamp</span> <span class="k">as</span> <span class="n">a</span> <span class="n">UTC</span> <span class="n">python</span> <span class="n">datetime</span> <span class="nb">object</span><span class="p">)</span>
+<span class="n">val</span> <span class="p">(</span><span class="n">the</span> <span class="n">measurement</span> <span class="ow">or</span> <span class="n">hisogram</span> <span class="nb">dict</span><span class="p">)</span>
+<span class="n">ts_epoch</span> <span class="p">(</span><span class="n">the</span> <span class="n">ts</span> <span class="nb">object</span> <span class="n">expressed</span> <span class="k">as</span> <span class="n">UNIX</span> <span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Putting it all together, to iterate throught all of the returned data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">et</span> <span class="ow">in</span> <span class="n">md</span><span class="o">.</span><span class="n">get_all_event_types</span><span class="p">():</span>
+    <span class="n">dpay</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">dpay</span><span class="o">.</span><span class="n">data_type</span>
+    <span class="k">for</span> <span class="n">dp</span> <span class="ow">in</span> <span class="n">dpay</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">dp</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">dp</span><span class="o">.</span><span class="n">val</span>
+</pre></div>
+</div>
+<p>Some event types have aggregated summaries associated with them.  Retrieving
+the summaries from an EventType object is very similar to pulling event types
+from a Metadata object.  The following properties/methods are analogous to the
+ones that exist in the Metadata object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">summaries</span>
+</pre></div>
+</div>
+<p>This returns a list of two-element tuples: (summary-type, summary-window). The
+window is the time duration of the aggregation rollups.</p>
+<p>The summary data can be retrieved by either using an iterator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">summ</span> <span class="ow">in</span> <span class="n">et</span><span class="o">.</span><span class="n">get_all_summaries</span><span class="p">():</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Or a single type can be fetched:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">summ</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">get_summary</span><span class="p">(</span><span class="n">summary</span><span class="o">-</span><span class="nb">type</span><span class="p">,</span> <span class="n">summary</span><span class="o">-</span><span class="n">window</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Like with the EventType object, the underlying data can be retrieved by
+calling get_data() to get a DataPayload object and call the data property
+on that to get a list of DataPoint objects.</p>
+</div>
+<div class="section" id="writing-data-to-ps-esmond-backend">
+<h2>Writing data to pS esmond/backend<a class="headerlink" href="#writing-data-to-ps-esmond-backend" title="Permalink to this headline">¶</a></h2>
+<p>The REST interface also supports adding metadata, event types and data if
+the user is properly authenticated using a username and api_key that has
+been generated by the admin of the system.  The following are presented as
+an ordered process, but any single step of this can be done independently.
+The functionality for POSTing date can be found in the following libarary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">esmond.api.client.perfsonar.post</span> <span class="k">import</span> <span class="n">MetadataPost</span><span class="p">,</span> \
+    <span class="n">EventTypePost</span><span class="p">,</span> <span class="n">EventTypeBulkPost</span>
+</pre></div>
+</div>
+<p>First one needs to create a new metadata entry - this is accomplished
+using the MetadataPost object.  It is initialized with a REST url,
+username, api_key and a series of associated data - most required, a few
+optional (the commented key/val pairs in the arg dict are optional):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;subject_type&quot;</span><span class="p">:</span> <span class="s2">&quot;point-to-point&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;10.10.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;10.10.0.2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tool_name&quot;</span><span class="p">:</span> <span class="s2">&quot;bwctl/iperf3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;measurement_agent&quot;</span><span class="p">:</span> <span class="s2">&quot;10.10.0.2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;input_source&quot;</span><span class="p">:</span> <span class="s2">&quot;host1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;input_destination&quot;</span><span class="p">:</span> <span class="s2">&quot;host2&quot;</span><span class="p">,</span>
+    <span class="c1"># &quot;time_duration&quot;: 30,</span>
+    <span class="c1"># &quot;ip_transport_protocol&quot;: &quot;tcp&quot;</span>
+<span class="p">}</span>
+
+<span class="n">mp</span> <span class="o">=</span> <span class="n">MetadataPost</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s1">&#39;pS_user&#39;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s1">&#39;api-key-generated-by-auth-database&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will create the basic data associated with this metadata.  Then add
+the event types and summaries associated with this metadata and post the
+new information:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mp</span><span class="o">.</span><span class="n">add_event_type</span><span class="p">(</span><span class="s1">&#39;throughput&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">add_event_type</span><span class="p">(</span><span class="s1">&#39;time-error-estimates&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">add_event_type</span><span class="p">(</span><span class="s1">&#39;histogram-ttl&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">add_event_type</span><span class="p">(</span><span class="s1">&#39;packet-loss-rate&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">add_summary_type</span><span class="p">(</span><span class="s1">&#39;packet-count-sent&#39;</span><span class="p">,</span> <span class="s1">&#39;aggregation&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">3600</span><span class="p">,</span> <span class="mi">86400</span><span class="p">])</span>
+
+<span class="n">new_meta</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">post_metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This writes the metadata information to the back end and returns the
+associated “read only” Metadata object that was covered in the previous
+section.  This is mostly necessary to get the newly generated metadata_key
+property, it will be needed for other operations.</p>
+<p>Next data can be added to the assocaited event types - the process is similar
+for both numeric and histogram data.  Intialize an EventTypePost object
+similarly to the MetadataPost object, but also using the appropriate
+metadata_key and event_type to add the data to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">et</span> <span class="o">=</span> <span class="n">EventTypePost</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s1">&#39;pS_user&#39;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s1">&#39;api-key-generated-by-auth-database&#39;</span><span class="p">,</span>
+    <span class="n">metadata_key</span><span class="o">=</span><span class="n">new_meta</span><span class="o">.</span><span class="n">metadata_key</span><span class="p">,</span>
+    <span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;throughput&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Discrete data points can be added the process is similar for both numeric
+data and histogram data - first arg is an integer timestamp in seconds and
+the second is the value - and post it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">et</span><span class="o">.</span><span class="n">add_data_point</span><span class="p">(</span><span class="mi">1397075053</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
+<span class="n">et</span><span class="o">.</span><span class="n">add_data_point</span><span class="p">(</span><span class="mi">1397075113</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
+
+<span class="p">(</span><span class="ow">or</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">case</span> <span class="n">of</span> <span class="n">histograms</span><span class="p">)</span>
+
+<span class="n">et</span><span class="o">.</span><span class="n">add_data_point</span><span class="p">(</span><span class="mi">1397075053</span><span class="p">,</span> <span class="p">{</span><span class="mi">28</span><span class="p">:</span> <span class="mi">33</span><span class="p">})</span>
+<span class="n">et</span><span class="o">.</span><span class="n">add_data_point</span><span class="p">(</span><span class="mi">1397075113</span><span class="p">,</span> <span class="p">{</span><span class="mi">9</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+
+<span class="n">et</span><span class="o">.</span><span class="n">post_data</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It is also possible to bulk post data for a variety of event types associated
+with a single metadata using the EventTypeBulkPost interface.  Intialize in
+a similar fashion minus the event_type arg:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">etb</span> <span class="o">=</span> <span class="n">EventTypeBulkPost</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s1">&#39;pS_user&#39;</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="s1">&#39;api-key-generated-by-auth-database&#39;</span><span class="p">,</span>
+        <span class="n">metadata_key</span><span class="o">=</span><span class="n">new_meta</span><span class="o">.</span><span class="n">metadata_key</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add a mix of data points specified by event type and post:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">etb</span><span class="o">.</span><span class="n">add_data_point</span><span class="p">(</span><span class="s1">&#39;time-error-estimates&#39;</span><span class="p">,</span> <span class="mi">1397075053</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
+<span class="n">etb</span><span class="o">.</span><span class="n">add_data_point</span><span class="p">(</span><span class="s1">&#39;packet-loss-rate&#39;</span><span class="p">,</span> <span class="mi">1397075053</span><span class="p">,</span>
+    <span class="p">{</span><span class="s1">&#39;numerator&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;denominator&#39;</span><span class="p">:</span> <span class="mi">33</span><span class="p">})</span>
+
+<span class="n">etb</span><span class="o">.</span><span class="n">add_data_point</span><span class="p">(</span><span class="s1">&#39;time-error-estimates&#39;</span><span class="p">,</span> <span class="mi">1397075113</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
+<span class="n">etb</span><span class="o">.</span><span class="n">add_data_point</span><span class="p">(</span><span class="s1">&#39;packet-loss-rate&#39;</span><span class="p">,</span> <span class="mi">1397075113</span><span class="p">,</span>
+    <span class="p">{</span><span class="s1">&#39;numerator&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;denominator&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">})</span>
+
+<span class="n">etb</span><span class="o">.</span><span class="n">post_data</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>NOTE: as noted in the previous section, the optional script_alias kwarg works
+the same way with the POST interface.</p>
+</div>
+<div class="section" id="additional-notes">
+<h2>Additional notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h2>
+<p>TBA</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">esmond Python Client Libraries</a><ul>
+<li><a class="reference internal" href="#initializing-the-query-interface">Initializing the query interface</a></li>
+<li><a class="reference internal" href="#retrieving-the-data">Retrieving the data</a></li>
+<li><a class="reference internal" href="#writing-data-to-ps-esmond-backend">Writing data to pS esmond/backend</a></li>
+<li><a class="reference internal" href="#additional-notes">Additional notes</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="esmond_api_perl.html">Previous topic</a>
+                  <ul><li><a href="esmond_api_perl.html" title="previous chapter">esmond Perl Client Libraries</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="maddash_intro.html">Next topic</a>
+                      <ul><li><a href="maddash_intro.html" title="next chapter">What is MaDDash?</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maddash_intro.html" title="What is MaDDash?"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="esmond_api_perl.html" title="esmond Perl Client Libraries"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="esmond_api_rest.html" >esmond API Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

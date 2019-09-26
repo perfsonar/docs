@@ -1,0 +1,283 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Dashboards &#8212; perfSONAR Toolkit 4.1.6 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Grids" href="maddash_api_grids.html" />
+    <link rel="prev" title="MaDDash API Reference" href="maddash_api_intro.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maddash_api_grids.html" title="Grids"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="maddash_api_intro.html" title="MaDDash API Reference"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="maddash_api_intro.html" accesskey="U">MaDDash API Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dashboards">
+<h1>Dashboards<a class="headerlink" href="#dashboards" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="retrieving-the-list-of-dashboards">
+<h2>Retrieving the list of dashboards<a class="headerlink" href="#retrieving-the-list-of-dashboards" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="request">
+<h3>Request<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h3>
+<p>The request is a HTTP GET to the dashboards URL. There are currently no parameters to this request. See below for full summary.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>URL</em></td>
+<td>/maddash/dashboards</td>
+</tr>
+<tr class="row-even"><td><em>HTTP Method</em></td>
+<td>GET</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="response">
+<h3>Response<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h3>
+<p><strong>Type:</strong> application/json</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="14%" />
+<col width="8%" />
+<col width="53%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>dashboards</em></td>
+<td>array of objects</td>
+<td>Yes</td>
+<td>The list of dashboards available</td>
+</tr>
+<tr class="row-odd"><td><em>dashboards[n].name</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The name of the dashboard</td>
+</tr>
+<tr class="row-even"><td><em>dashboards[n].grids</em></td>
+<td>array of strings</td>
+<td>Yes</td>
+<td>A list of URIs that indicate which grids belong to this dashboard</td>
+</tr>
+<tr class="row-odd"><td><em>dashboards[n].grids[n].name</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The name of the grid</td>
+</tr>
+<tr class="row-even"><td><em>dashboards[n].grids[n].uri</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The URI of the grid</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;dashboards&quot;</span><span class="p">:[</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;DICE&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;grids&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+               <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ESnet to GEANT BWCTL Tests&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;uri&quot;</span><span class="p">:</span><span class="s2">&quot;/maddash/grids/ESnet+to+GEANT+BWCTL+Tests&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+               <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ESnet to GEANT OWAMP Tests&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;uri&quot;</span><span class="p">:</span><span class="s2">&quot;/maddash/grids/ESnet+to+GEANT+OWAMP+Tests&quot;</span>
+            <span class="p">}</span>
+         <span class="p">]</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ESnet BWCTL&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;grids&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+               <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ESnet BWCTL Tests - Large Sites&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;uri&quot;</span><span class="p">:</span><span class="s2">&quot;/maddash/grids/ESnet+BWCTL+Tests+-+Large+Sites&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+               <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ESnet BWCTL Tests - Other Sites&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;uri&quot;</span><span class="p">:</span><span class="s2">&quot;/maddash/grids/ESnet+BWCTL+Tests+-+Other+Sites&quot;</span>
+            <span class="p">}</span>
+         <span class="p">]</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ESnet OWAMP&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;grids&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+               <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ESnet OWAMP Tests&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;uri&quot;</span><span class="p">:</span><span class="s2">&quot;/maddash/grids/ESnet+OWAMP+Tests&quot;</span>
+            <span class="p">}</span>
+         <span class="p">]</span>
+      <span class="p">}</span>
+   <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Dashboards</a><ul>
+<li><a class="reference internal" href="#retrieving-the-list-of-dashboards">Retrieving the list of dashboards</a><ul>
+<li><a class="reference internal" href="#request">Request</a></li>
+<li><a class="reference internal" href="#response">Response</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="maddash_api_intro.html">Previous topic</a>
+                  <ul><li><a href="maddash_api_intro.html" title="previous chapter">MaDDash API Reference</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="maddash_api_grids.html">Next topic</a>
+                      <ul><li><a href="maddash_api_grids.html" title="next chapter">Grids</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maddash_api_grids.html" title="Grids"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="maddash_api_intro.html" title="MaDDash API Reference"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="maddash_api_intro.html" >MaDDash API Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

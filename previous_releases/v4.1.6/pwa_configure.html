@@ -1,0 +1,388 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuration &#8212; perfSONAR Toolkit 4.1.6 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Creating Docker containers" href="pwa_docker_create.html" />
+    <link rel="prev" title="Installation" href="pwa_install.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pwa_docker_create.html" title="Creating Docker containers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pwa_install.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>This guide assumes you have already pulled down the sample PWA config and extracted it like this (you should have done this during the Install step; if not, do it now:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget https://github.com/perfsonar/psconfig-web/raw/master/deploy/docker/pwa.sample.tar.gz
+sudo tar -C /etc -xvf pwa.sample.tar.gz pwa <span class="o">&amp;&amp;</span> sudo tar -C /usr/local/sbin --strip-components<span class="o">=</span><span class="m">1</span> -xvf pwa.sample.tar.gz scripts
+</pre></div>
+</div>
+<p>Most of the configuration files for PWA can be found in the <code class="docutils literal notranslate"><span class="pre">/etc/pwa</span></code> directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.</p>
+<p><strong>Interaction with other web applications:</strong> If you want to run PWA on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See <a class="reference external" href="pwa_running_alongside">Running alongside other web applications</a></p>
+<p><strong>Upgrading:</strong> If you are upgrading from an old MCA instance, view the docs on <a class="reference external" href="pwa_upgrading_from_mca">Upgrading from MCA to PWA</a></p>
+<p>When you update <code class="docutils literal notranslate"><span class="pre">/etc/pwa/index.js</span></code>, all PWA services will automatically restart. Please monitor logs by doing  <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></code></p>
+<div class="section" id="hostname">
+<h2>Hostname<a class="headerlink" href="#hostname" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Update the publisher URL with the hostname of your PWA instance. Most likely, this will be the full hostname of your Docker host. Replace <code class="docutils literal notranslate"><span class="pre">&lt;pwa_hostname&gt;</span></code> with your full hostname, like this.</li>
+</ul>
+<p>If your hostname is <code class="docutils literal notranslate"><span class="pre">pwa.example.com</span></code>,</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://&lt;pwa_hostname&gt;/pub/&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>becomes</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://pwa.example.com/pub/&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="database">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
+<p>The database is also configured in <code class="docutils literal notranslate"><span class="pre">/etc/pwa/index.js</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exports</span><span class="o">.</span><span class="n">mongodb</span> <span class="o">=</span> <span class="s2">&quot;mongodb://mongo/pwa&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-sources">
+<h2>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/pwa/index.js</span></code> lists the Global Lookup Service and any private LSes that host information is pulled from.</p>
+<p>In most cases, you won’t need to change the LS configuration.</p>
+<div class="section" id="global-sls">
+<h3>Global SLS<a class="headerlink" href="#global-sls" title="Permalink to this headline">¶</a></h3>
+<p>A sample datasource entry for the Global SLS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;gls&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">label</span><span class="p">:</span> <span class="s1">&#39;GLS&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="s1">&#39;global-sls&#39;</span><span class="p">,</span>
+    <span class="n">activehosts_url</span><span class="p">:</span> <span class="s1">&#39;http://ps1.es.net:8096/lookup/activehosts.json&#39;</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="s1">&#39;?type=service&#39;</span><span class="p">,</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>“gls” is used as internal key to identify this datasource. Pick one that’s unique.</li>
+<li>label: is used to show the datasource name in the web UI</li>
+<li>type: needs to be “global-sls” for Global SLS datasource.</li>
+<li>activehosts_url: should always point to <a class="reference external" href="http://ps1.es.net:8096/lookup/activehosts.json">http://ps1.es.net:8096/lookup/activehosts.json</a> unless you know a different global registry.</li>
+<li>query: This query is passed to all sLS instances that are member of the global registry. You will always want <code class="docutils literal notranslate"><span class="pre">?type=service</span></code>, at the very least. For more detail on sLS query, see below.</li>
+</ul>
+</div>
+<div class="section" id="global-sls-filtered">
+<h3>Global SLS, filtered<a class="headerlink" href="#global-sls-filtered" title="Permalink to this headline">¶</a></h3>
+<p>You can define a query for the SLS instance, so if you want host datasources set differently depending on what communities they are in (or other parameters), you can do so.</p>
+<p>A sample of filtered Global SLS datasource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;osg&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">label</span><span class="p">:</span> <span class="s1">&#39;OSG&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="s1">&#39;global-sls&#39;</span><span class="p">,</span>
+    <span class="n">activehosts_url</span><span class="p">:</span> <span class="s1">&#39;http://ps1.es.net:8096/lookup/activehosts.json&#39;</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="s1">&#39;?type=service&amp;group-communities=OSG&#39;</span><span class="p">,</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>“osg” is used as internal key to identify this datasource. Pick one that’s unique.</li>
+<li>label: is used to show the datasource name in the web UI</li>
+<li>type: needs to be “global-sls” for Global SLS datasource.</li>
+<li>activehosts_url: should always point to <a class="reference external" href="http://ps1.es.net:8096/lookup/activehosts.json">http://ps1.es.net:8096/lookup/activehosts.json</a> unless you know a different global registry.</li>
+<li>query: This query is passed to all sLS instances that are member of the global registry. For more detail on sLS query, please refer to <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/APISpec#query">sLS API Spec</a></li>
+</ul>
+<p>So, the above sample datasource entry instructs mca-cache service to pull all service records (used to construct “hosts” for PWA) from the global lookup service (ps1.es.net) with community registered to “OSG”. If you don’t want any hosts from OSG, simply remove this section, or update the label and group-communities to something other than OSG.</p>
+<p>As you may find in the default <code class="docutils literal notranslate"><span class="pre">/etc/pwa/index.js</span></code>, you can list as many datasources as you want. Make sure to use a unique key, and label.</p>
+</div>
+<div class="section" id="sls">
+<h3>sLS<a class="headerlink" href="#sls" title="Permalink to this headline">¶</a></h3>
+<p>If you have a private sLS instance, enter something like following, replacing <code class="docutils literal notranslate"><span class="pre">sls_hostname</span></code> with your sLS hostname:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;wlcg&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">label</span><span class="p">:</span> <span class="s1">&#39;WLCG&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="s1">&#39;sls&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="s1">&#39;https://sls_hostname/sls/lookup/records/?type=service&amp;group-communities=WLCG&#39;</span><span class="p">,</span>
+    <span class="n">cache</span><span class="p">:</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="o">//</span><span class="n">refresh</span> <span class="n">every</span> <span class="mi">5</span> <span class="n">minutes</span> <span class="p">(</span><span class="n">default</span> <span class="mi">30</span> <span class="n">minutes</span><span class="p">)</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>“wlcg” is used as internal key to identify this datasource. Pick one that’s unique</li>
+<li>label: is used to show the datasource name in the web UI</li>
+<li>type: needs to be ‘sls’</li>
+<li>url: URL for your private sLS instance. For type off queries, please refer to <a class="reference external" href="https://github.com/esnet/simple-lookup-service/wiki/APISpec#query">sLS API Spec</a></li>
+<li>cache: refrequency of polling from this sLS in msec.</li>
+</ul>
+<p>When you update this file, all PWA services will automatically restart. Please monitor logs by doing <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></code></p>
+</div>
+</div>
+<div class="section" id="test-spec-default-parameters">
+<h2>Test Spec Default parameters<a class="headerlink" href="#test-spec-default-parameters" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">index.js</span></code> contains default values for various test specification. Update this to your liking (please send us comments if we should be using a different default).</p>
+<p>When you update this file, all meshconfig services will automatically restarts. Please monitor logs by doing <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">pwa-admin1</span> <span class="pre">pm2</span> <span class="pre">logs</span></code></p>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">index.js</span></code> also contains logging related configuration. It’s unlikely you need to change this, but if you want to  enable debug logging, for instance, you would change:</p>
+<p><code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">'info',</span></code></p>
+<p>to</p>
+<p><code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">'debug',</span></code></p>
+<p>PWA uses Winston for logging. Please see <a class="reference external" href="https://github.com/winstonjs/winston">Winston</a> for more detail.</p>
+<div class="section" id="others">
+<h3>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">index.js</span></code> contains all other configuration such as ports and host names to bind PWA server and PWA publisher. It also contain information such as the location of JWT public key to verify token issued by SCA authentication service.</p>
+</div>
+</div>
+<div class="section" id="nginx-web-server">
+<h2>Nginx (web server)<a class="headerlink" href="#nginx-web-server" title="Permalink to this headline">¶</a></h2>
+<p>Nginx will expose various functionalities provides by various containers to the actual users. The default configuration should work, but if you need to modify the configuration, edit:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/etc/pwa/nginx
+</pre></div>
+</div>
+<p><strong>Host Certificates</strong></p>
+<p>You will need SSL certificates for https access.</p>
+<p>If you want to generate self-signed certs, you can run this script (you may wish to edit it if you are using custom file paths):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo /usr/local/sbin/generate_nginx_cert.sh
+</pre></div>
+</div>
+<p>If you want to provide your own certs, place them in <code class="docutils literal notranslate"><span class="pre">/etc/pwa/nginx/certs</span></code> with these names:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cert.pem
+key.pem
+</pre></div>
+</div>
+<p>If you are enabling x509 authentication, then you will also need <code class="docutils literal notranslate"><span class="pre">trusted.pem</span></code>; This file contains list of all CAs that you trust and grant access to PWA. You will have to adapt the nginx config in <code class="docutils literal notranslate"><span class="pre">/etc/pwa/nginx/conf.d/pwa.conf</span></code> as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssl_client_certificate /etc/nginx/certs/trusted.pem
+ssl_verify_client on
+</pre></div>
+</div>
+<p>Unlike Apache, Nginx uses a single CA file for better performance.. so you have to join all .pem into a single <code class="docutils literal notranslate"><span class="pre">trusted.pem</span> <span class="pre">file</span></code></p>
+</div>
+<div class="section" id="authentication-service-sca-auth">
+<h2>Authentication Service (sca-auth)<a class="headerlink" href="#authentication-service-sca-auth" title="Permalink to this headline">¶</a></h2>
+<p>PWA uses authentication microservices originally developed by SCA (Scalable Computing Archive) group at IU. You can enable / disable various authentication methods provided by sca-auth by modifying the config file.</p>
+<p>Edit the auth config file:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/pwa/auth/index.js</span></code></p>
+<ul>
+<li><p class="first">Update the hostname in the config by performing a search and replace in this file. Replace <code class="docutils literal notranslate"><span class="pre">&lt;pwa_hostname&gt;</span></code> with the hostname (FQDN) of your Docker host (remove the brackets).</p>
+</li>
+<li><p class="first">Update <code class="docutils literal notranslate"><span class="pre">from</span></code> address to administrator’s email address used to send email to confirmation new user accounts. You can do this by doing a search and replace in the file, replacing <code class="docutils literal notranslate"><span class="pre">&lt;email_address&gt;</span></code> with the full e-mail address you want to use (remove the brackets).</p>
+</li>
+<li><p class="first">If you’d like to skip email confirmation when user signup, simply comment out the whole <code class="docutils literal notranslate"><span class="pre">email_confirmation</span></code> section.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">exports</span><span class="p">.</span><span class="nx">email_confirmation</span> <span class="o">=</span> <span class="p">{</span>
+<span class="nx">subject</span><span class="o">:</span> <span class="s1">&#39;psConfig Web Admin Account Confirmation&#39;</span><span class="p">,</span>
+<span class="nx">from</span><span class="o">:</span> <span class="s1">&#39;&lt;email_address&gt;&#39;</span>  <span class="c1">//most mail server will reject if this is not replyable address</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="section" id="authentication-service-mail-server-configuration">
+<h3>Authentication service mail server configuration<a class="headerlink" href="#authentication-service-mail-server-configuration" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Now update the <code class="docutils literal notranslate"><span class="pre">mailer</span></code> section depending on whether you are using a separate docker container running postfix, or specifying an SMTP server.</p>
+<p><strong>Using a separate postfix docker container</strong></p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">postfix</span></code> with the actual name of the postfix container, if you are running it under a different name.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">mailer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;postfix&#39;</span><span class="p">,</span>
+    <span class="nx">secure</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">port</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nx">tls</span><span class="o">:</span> <span class="p">{</span>
+            <span class="c1">// do not fail on invalid certs</span>
+            <span class="nx">rejectUnauthorized</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>OR</strong></p>
+<p><strong>Using external SMTP server</strong></p>
+<blockquote>
+<div><div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// example config with SMTP server; make sure the pass path exists, or things will break</span>
+<span class="c1">// alternatively, hard-code the password if this is acceptable in your environment</span>
+<span class="nx">mailer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;mail-relay.domain.com&#39;</span><span class="p">,</span>
+    <span class="nx">secure</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">user</span><span class="o">:</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
+        <span class="nx">pass</span><span class="o">:</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">__dirname</span><span class="o">+</span><span class="s1">&#39;/smtp.password&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">encoding</span><span class="o">:</span> <span class="s1">&#39;ascii&#39;</span><span class="p">}).</span><span class="nx">trim</span><span class="p">(),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="user-management">
+<h2>User Management<a class="headerlink" href="#user-management" title="Permalink to this headline">¶</a></h2>
+<p>By default, signup is disabled and no users exist. You will need either manually create users once the docker containers have been created (see the next page for details), and/or allow signups.</p>
+<p>To enable user signup (registration through the web form), set these values in the following files:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/pwa/auth/index.js</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">allow_signup</span><span class="p">:</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/pwa/shared/auth.ui.js</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">signup</span><span class="p">:</span> <span class="n">true</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#hostname">Hostname</a></li>
+<li><a class="reference internal" href="#database">Database</a></li>
+<li><a class="reference internal" href="#data-sources">Data Sources</a><ul>
+<li><a class="reference internal" href="#global-sls">Global SLS</a></li>
+<li><a class="reference internal" href="#global-sls-filtered">Global SLS, filtered</a></li>
+<li><a class="reference internal" href="#sls">sLS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test-spec-default-parameters">Test Spec Default parameters</a></li>
+<li><a class="reference internal" href="#logging">Logging</a><ul>
+<li><a class="reference internal" href="#others">Others</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nginx-web-server">Nginx (web server)</a></li>
+<li><a class="reference internal" href="#authentication-service-sca-auth">Authentication Service (sca-auth)</a><ul>
+<li><a class="reference internal" href="#authentication-service-mail-server-configuration">Authentication service mail server configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#user-management">User Management</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pwa_install.html">Previous topic</a>
+                  <ul><li><a href="pwa_install.html" title="previous chapter">Installation</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pwa_docker_create.html">Next topic</a>
+                      <ul><li><a href="pwa_docker_create.html" title="next chapter">Creating Docker containers</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pwa_docker_create.html" title="Creating Docker containers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pwa_install.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.1.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>
