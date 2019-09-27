@@ -438,9 +438,7 @@ is a better choice for this example.)</p>
     <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;One IP we really, really dislike.&quot;</span><span class="p">,</span>
     <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;jq&quot;</span><span class="p">,</span>
     <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="s">&quot;.requester == </span><span class="se">\&quot;</span><span class="s">198.51.100.86</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="s">&quot;.requester == </span><span class="se">\&quot;</span><span class="s">198.51.100.86</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -452,11 +450,9 @@ one of the management interfaces:</p>
     <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests not arriving on a management interface(s)&quot;</span><span class="p">,</span>
     <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;jq&quot;</span><span class="p">,</span>
     <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="s">&quot;[.server == $management_ips[]] | any | not&quot;</span><span class="p">,</span>
-            <span class="s">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s">&quot;management_ips&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="s">&quot;198.51.100.46&quot;</span><span class="p">]</span>
-            <span class="p">}</span>
+        <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="s">&quot;[.server == $management_ips[]] | any | not&quot;</span><span class="p">,</span>
+        <span class="s">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;management_ips&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="s">&quot;198.51.100.46&quot;</span><span class="p">]</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -844,13 +840,11 @@ of runs.</li>
     &quot;description&quot;: &quot;Limit packet size for all tests&quot;,
     &quot;type&quot;: &quot;jq&quot;,
     &quot;data&quot;: {
-        &quot;transform&quot;: {
-            &quot;script&quot;: &quot;256 as $max_length
-                       | if .spec.length &gt; $max_length
-                         then \&quot;Packets are limited to \\($max_length) bytes\&quot;
-                         else true
-                         end&quot;
-        }
+        &quot;script&quot;: &quot;256 as $max_length
+                   | if .spec.length &gt; $max_length
+                     then \&quot;Packets are limited to \\($max_length) bytes\&quot;
+                     else true
+                     end&quot;
     }
 }
 </pre></div>
@@ -861,13 +855,11 @@ of runs.</li>
     &quot;description&quot;: &quot;Limit trace hops&quot;,
     &quot;type&quot;: &quot;jq&quot;,
     &quot;data&quot;: {
-        &quot;transform&quot;: {
-            &quot;script&quot;: &quot;20 as $max_hops
-                       | if .type == \&quot;trace\&quot; and .spec.hops &gt; $max_hops
-                         then \&quot;No more than \\($max_hops) hops allowed.\&quot;
-                         else true
-                         end&quot;
-        }
+        &quot;script&quot;: &quot;20 as $max_hops
+                   | if .type == \&quot;trace\&quot; and .spec.hops &gt; $max_hops
+                     then \&quot;No more than \\($max_hops) hops allowed.\&quot;
+                     else true
+                     end&quot;
     }
 }
 </pre></div>
@@ -878,15 +870,13 @@ of runs.</li>
     &quot;description&quot;: &quot;Limit throughput test bandwidth&quot;,
     &quot;type&quot;: &quot;jq&quot;,
     &quot;data&quot;: {
-        &quot;transform&quot;: {
-            &quot;script&quot;: &quot;import \&quot;pscheduler/si\&quot; as si;
-                       &quot;500M&quot; as $max_bandwidth
-                       | if .type == \&quot;throughput\&quot;
-                           and si::as_integer(.spec.bandwidth) &gt; si::as_integer($max_bandwidth)
-                         then \&quot;Bandwidth is limited to \\($max_bandwidth)\&quot;
-                         else true
-                         end&quot;
-        }
+        &quot;script&quot;: &quot;import \&quot;pscheduler/si\&quot; as si;
+                   &quot;500M&quot; as $max_bandwidth
+                   | if .type == \&quot;throughput\&quot;
+                         and si::as_integer(.spec.bandwidth) &gt; si::as_integer($max_bandwidth)
+                     then \&quot;Bandwidth is limited to \\($max_bandwidth)\&quot;
+                     else true
+                     end&quot;
     }
 }
 </pre></div>

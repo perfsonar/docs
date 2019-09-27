@@ -6,7 +6,7 @@ Once everything is configured, you should now be able to access PWA by accessing
 
 PWA reports the current health status via following API endpoint (for pwa-admin and pwa-cache)
 
-``https://<hostname>/api/pwa/health``
+``https://<hostname>/pwa/api/pwa/health``
 
 .. code-block:: javascript
 
@@ -21,7 +21,7 @@ PWA reports the current health status via following API endpoint (for pwa-admin 
 
 You can configure your monitoring systems (Sensu, Nagios, etc..) to check for ``status`` and make sure it's set to 'ok'. 
 
-For pwa-pub instances, you should run separate test at ``http://<hostname>/pub/health`` (not https://)
+For pwa-pub instances, you should run separate test at ``http://<hostname>/pwa/pub/health`` (not https://)
 
 .. code-block:: javascript
 
@@ -36,7 +36,7 @@ For pwa-pub instances, you should run separate test at ``http://<hostname>/pub/h
 
 You should also monitor the authentication service status
 
-``https://<hostname>/api/auth/health``
+``https://<hostname>/pwa/api/auth/health``
 
 .. code-block:: javascript
 

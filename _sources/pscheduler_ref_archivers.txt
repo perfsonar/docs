@@ -457,6 +457,9 @@ As part of an archive specification, pScheduler may be instructed to pre-process
 
 The ``script`` is a string containing a valid script for the `jq JSON processor <https://stedolan.github.io/jq>`_ version 1.5.  There is a `tutorial on jq and pScheduler <https://www.youtube.com/watch?v=FrT6R75M3BE>`_ available on the `perfSONAR project's YouTube channel <https://www.youtube.com/perfSONARProject>`_.  The value returned by the script should be JSON or plain text (see ``raw-output``, below).
 
+The transform is fed a single JSON object containing everything pScheduler knows about the task and the run.  A fully-populated example can be found below.
+
+
 If the script returns a JSON value of ``null``, pScheduler will discard the result and not pass it to the plugin.  Because the transformation happens within pScheduler before any plugin code is invoked, this mechanism is a very efficient way to filter results and is preferred over writing custom plugins.
 
 If ``raw-output`` is present and ``true``, the output will be treated as plain text instead of JSON.
@@ -538,4 +541,704 @@ Alternate JSON with Trace Hop List
 
     "transform": {
         "script": "if (.test.type == \"trace\") then { \"test\": .test.type, \"from\": .participants[0], \"to\": .test.spec.dest,  \"id\": .id, \"start\": .schedule.start, \"ips\": [ .result.paths[0] | .[].ip ] } else null end"
+    }
+
+
+.. _pscheduler_ref_archivers-transforms-input-example:
+
+Transform Input Example
+-------------------------------------------
+
+This is an example of a throughput test result as it would be passed to a transform::
+
+    {
+      "task": {
+        "test": {
+          "type": "throughput",
+          "spec": {
+            "dest": "ps2.example.net",
+            "source": "ps1.example.net",
+            "schema": 1
+          }
+        },
+        "tool": "iperf3",
+        "href": "https://ps1.example.net/pscheduler/tasks/07e0d165-c79f-4786-b382-15cf8438c5c0",
+        "detail": {
+          "exclusive": true,
+          "runs": 1,
+          "added": "2019-09-10T14:55:22Z",
+          "participant": 0,
+          "cli": [
+            "--duration", "PT5S",
+            "--source", "ps1.example.net",
+            "--dest", "ps2.example.net",
+            "--reverse"
+          ],
+          "start": null,
+          "enabled": true,
+          "anytime": false,
+          "diags": " ... Deleted for brevity ... ",
+          "participants": [ "ps1.example.net", "ps2.example.net" ],
+          "spec-limits-passed": [],
+          "slip": "PT5M",
+          "multi-result": false,
+          "duration": "PT14S",
+          "post": "P0D",
+          "runs-started": 1
+        },
+        "schedule": {
+          "slip": "PT5M"
+        }
+      },
+      "run": {
+        "priority": 5,
+        "added": "2019-09-10T14:55:26Z",
+        "start-time": "2019-09-10T14:55:35Z",
+        "href": "https://ps1.example.net/pscheduler/tasks/07e0d165-c79f-4786-b382-15cf8438c5c0/runs/a44e447a-4cd0-429c-8937-cdcef742cc82",
+        "result-merged": {
+          "diags": " ... Deleted for brevity ...",
+          "intervals": [ ...
+            {
+              "streams": [
+                {
+                  "throughput-bytes": 150503672,
+                  "tcp-window-size": 211408,
+                  "end": 1.00015,
+                  "stream-id": 5,
+                  "omitted": false,
+                  "rtt": 1044,
+                  "retransmits": 93,
+                  "throughput-bits": 1203848840.4640322,
+                  "start": 0
+                }
+              ],
+              "summary": {
+                "throughput-bytes": 150503672,
+                "end": 1.00015,
+                "omitted": false,
+                "start": 0,
+                "retransmits": 93,
+                "throughput-bits": 1203848840.4640322
+              }
+            },
+            {
+              "streams": [
+                {
+                  "throughput-bytes": 170774448,
+                  "tcp-window-size": 238920,
+                  "end": 2.000195,
+                  "stream-id": 5,
+                  "omitted": false,
+                  "rtt": 856,
+                  "retransmits": 196,
+                  "throughput-bits": 1366134187.3310146,
+                  "start": 1.00015
+                }
+              ],
+              "summary": {
+                "throughput-bytes": 170774448,
+                "end": 2.000195,
+                "omitted": false,
+                "start": 1.00015,
+                "retransmits": 196,
+                "throughput-bits": 1366134187.3310146
+              }
+            },
+            {
+              "streams": [
+                {
+                  "throughput-bytes": 202712760,
+                  "tcp-window-size": 282360,
+                  "end": 3.00016,
+                  "stream-id": 5,
+                  "omitted": false,
+                  "rtt": 1045,
+                  "retransmits": 217,
+                  "throughput-bits": 1621758821.9784367,
+                  "start": 2.000195
+                }
+              ],
+              "summary": {
+                "throughput-bytes": 202712760,
+                "end": 3.00016,
+                "omitted": false,
+                "start": 2.000195,
+                "retransmits": 217,
+                "throughput-bits": 1621758821.9784367
+              }
+            },
+            {
+              "streams": [
+                {
+                  "throughput-bytes": 198281880,
+                  "tcp-window-size": 246160,
+                  "end": 4.000345,
+                  "stream-id": 5,
+                  "omitted": false,
+                  "rtt": 994,
+                  "retransmits": 229,
+                  "throughput-bits": 1585961616.7730198,
+                  "start": 3.00016
+                }
+              ],
+              "summary": {
+                "throughput-bytes": 198281880,
+                "end": 4.000345,
+                "omitted": false,
+                "start": 3.00016,
+                "retransmits": 229,
+                "throughput-bits": 1585961616.7730198
+              }
+            },
+            {
+              "streams": [
+                {
+                  "throughput-bytes": 195038920,
+                  "tcp-window-size": 282360,
+                  "end": 5.002724,
+                  "stream-id": 5,
+                  "omitted": false,
+                  "rtt": 1084,
+                  "retransmits": 239,
+                  "throughput-bits": 1556608281.3886986,
+                  "start": 4.000345
+                }
+              ],
+              "summary": {
+                "throughput-bytes": 195038920,
+                "end": 5.002724,
+                "omitted": false,
+                "start": 4.000345,
+                "retransmits": 239,
+                "throughput-bits": 1556608281.3886986
+              }
+            },
+            {
+              "streams": [
+                {
+                  "throughput-bytes": 9628640,
+                  "tcp-window-size": 309872,
+                  "end": 5.040158,
+                  "stream-id": 5,
+                  "omitted": false,
+                  "rtt": 1276,
+                  "retransmits": 0,
+                  "throughput-bits": 2057731445.3724828,
+                  "start": 5.002724
+                }
+              ],
+              "summary": {
+                "throughput-bytes": 9628640,
+                "end": 5.040158,
+                "omitted": false,
+                "start": 5.002724,
+                "retransmits": 0,
+                "throughput-bits": 2057731445.3724828
+              }
+            }
+          ],
+          "succeeded": true,
+          "summary": {
+            "streams": [
+              {
+                "end": 5.040158,
+                "stream-id": 5,
+                "throughput-bytes": 926940320,
+                "rtt": 1049,
+                "retransmits": 974,
+                "throughput-bits": 1471287717.5675843,
+                "start": 0
+              }
+            ],
+            "summary": {
+              "throughput-bits": 1471287717.5675843,
+              "start": 0,
+              "end": 5.040158,
+              "throughput-bytes": 926940320,
+              "retransmits": 974
+            }
+          }
+        },
+        "participants": [ "ps1.example.net", "ps2.example.net" ],
+        "state-display": "Finished",
+        "result-full": [
+          {
+            "diags": " ... Deleted for brevity ... ",
+            "intervals": [
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 155000464,
+                    "end": 1.000821,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "start": 0,
+                    "throughput-bits": 1238986511.0410876
+                  }
+                ],
+                "summary": {
+                  "throughput-bits": 1238986511.0410876,
+                  "start": 0,
+                  "end": 1.000821,
+                  "throughput-bytes": 155000464,
+                  "omitted": false
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 171620776,
+                    "end": 2.000132,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "start": 1.000821,
+                    "throughput-bits": 1373912874.7671387
+                  }
+                ],
+                "summary": {
+                  "throughput-bits": 1373912874.7671387,
+                  "start": 1.000821,
+                  "end": 2.000132,
+                  "throughput-bytes": 171620776,
+                  "omitted": false
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 204081120,
+                    "end": 3.000043,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "start": 2.000132,
+                    "throughput-bits": 1632794261.9281065
+                  }
+                ],
+                "summary": {
+                  "throughput-bits": 1632794261.9281065,
+                  "start": 2.000132,
+                  "end": 3.000043,
+                  "throughput-bytes": 204081120,
+                  "omitted": false
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 197905400,
+                    "end": 4.000156,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "start": 3.000043,
+                    "throughput-bits": 1583064297.2602603
+                  }
+                ],
+                "summary": {
+                  "throughput-bits": 1583064297.2602603,
+                  "start": 3.000043,
+                  "end": 4.000156,
+                  "throughput-bytes": 197905400,
+                  "omitted": false
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 196106984,
+                    "end": 5.000101,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "start": 4.000156,
+                    "throughput-bits": 1568942187.4911432
+                  }
+                ],
+                "summary": {
+                  "throughput-bits": 1568942187.4911432,
+                  "start": 4.000156,
+                  "end": 5.000101,
+                  "throughput-bytes": 196106984,
+                  "omitted": false
+                }
+              }
+            ],
+            "succeeded": true,
+            "summary": {
+              "streams": [
+                {
+                  "end": 5.040158,
+                  "stream-id": 5,
+                  "throughput-bytes": 926940320,
+                  "rtt": 0,
+                  "retransmits": 974,
+                  "throughput-bits": 1471287717.5675843,
+                  "start": 0
+                }
+              ],
+              "summary": {
+                "throughput-bits": 1471287717.5675843,
+                "start": 0,
+                "end": 5.040158,
+                "throughput-bytes": 926940320,
+                "retransmits": 974
+              }
+            }
+          },
+          {
+            "diags": " ... Deleted for brevity ....",
+            "intervals": [
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 150503672,
+                    "tcp-window-size": 211408,
+                    "end": 1.00015,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "rtt": 1044,
+                    "retransmits": 93,
+                    "throughput-bits": 1203848840.4640322,
+                    "start": 0
+                  }
+                ],
+                "summary": {
+                  "throughput-bytes": 150503672,
+                  "end": 1.00015,
+                  "omitted": false,
+                  "start": 0,
+                  "retransmits": 93,
+                  "throughput-bits": 1203848840.4640322
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 170774448,
+                    "tcp-window-size": 238920,
+                    "end": 2.000195,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "rtt": 856,
+                    "retransmits": 196,
+                    "throughput-bits": 1366134187.3310146,
+                    "start": 1.00015
+                  }
+                ],
+                "summary": {
+                  "throughput-bytes": 170774448,
+                  "end": 2.000195,
+                  "omitted": false,
+                  "start": 1.00015,
+                  "retransmits": 196,
+                  "throughput-bits": 1366134187.3310146
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 202712760,
+                    "tcp-window-size": 282360,
+                    "end": 3.00016,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "rtt": 1045,
+                    "retransmits": 217,
+                    "throughput-bits": 1621758821.9784367,
+                    "start": 2.000195
+                  }
+                ],
+                "summary": {
+                  "throughput-bytes": 202712760,
+                  "end": 3.00016,
+                  "omitted": false,
+                  "start": 2.000195,
+                  "retransmits": 217,
+                  "throughput-bits": 1621758821.9784367
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 198281880,
+                    "tcp-window-size": 246160,
+                    "end": 4.000345,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "rtt": 994,
+                    "retransmits": 229,
+                    "throughput-bits": 1585961616.7730198,
+                    "start": 3.00016
+                  }
+                ],
+                "summary": {
+                  "throughput-bytes": 198281880,
+                  "end": 4.000345,
+                  "omitted": false,
+                  "start": 3.00016,
+                  "retransmits": 229,
+                  "throughput-bits": 1585961616.7730198
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 195038920,
+                    "tcp-window-size": 282360,
+                    "end": 5.002724,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "rtt": 1084,
+                    "retransmits": 239,
+                    "throughput-bits": 1556608281.3886986,
+                    "start": 4.000345
+                  }
+                ],
+                "summary": {
+                  "throughput-bytes": 195038920,
+                  "end": 5.002724,
+                  "omitted": false,
+                  "start": 4.000345,
+                  "retransmits": 239,
+                  "throughput-bits": 1556608281.3886986
+                }
+              },
+              {
+                "streams": [
+                  {
+                    "throughput-bytes": 9628640,
+                    "tcp-window-size": 309872,
+                    "end": 5.040158,
+                    "stream-id": 5,
+                    "omitted": false,
+                    "rtt": 1276,
+                    "retransmits": 0,
+                    "throughput-bits": 2057731445.3724828,
+                    "start": 5.002724
+                  }
+                ],
+                "summary": {
+                  "throughput-bytes": 9628640,
+                  "end": 5.040158,
+                  "omitted": false,
+                  "start": 5.002724,
+                  "retransmits": 0,
+                  "throughput-bits": 2057731445.3724828
+                }
+              }
+            ],
+            "succeeded": true,
+            "summary": {
+              "streams": [
+                {
+                  "end": 5.040158,
+                  "stream-id": 5,
+                  "throughput-bytes": 926940320,
+                  "rtt": 1049,
+                  "retransmits": 974,
+                  "throughput-bits": 1471287717.5675843,
+                  "start": 0
+                }
+              ],
+              "summary": {
+                "throughput-bits": 1471287717.5675843,
+                "start": 0,
+                "end": 5.040158,
+                "throughput-bytes": 926940320,
+                "retransmits": 974
+              }
+            }
+          }
+        ],
+        "state": "finished",
+        "errors": null,
+        "limit-diags": " ... Deleted for brevity ...",
+        "task-href": "https://ps1.example.net/pscheduler/tasks/07e0d165-c79f-4786-b382-15cf8438c5c0",
+        "duration": "PT14S",
+        "participant": 0,
+        "end-time": "2019-09-10T14:55:49Z"
+      },
+      "reference": null,
+      "schedule": {
+        "duration": "PT14S",
+        "start": "2019-09-10T14:55:35Z"
+      },
+      "tool": {
+        "version": "1.0",
+        "name": "iperf3"
+      },
+      "participants": [ "ps1.example.net", "ps2.example.net" ],
+      "result": {
+        "diags": " ... Deleted for brevity ...",
+        "intervals": [
+          {
+            "streams": [
+              {
+                "throughput-bytes": 150503672,
+                "tcp-window-size": 211408,
+                "end": 1.00015,
+                "stream-id": 5,
+                "omitted": false,
+                "rtt": 1044,
+                "retransmits": 93,
+                "throughput-bits": 1203848840.4640322,
+                "start": 0
+              }
+            ],
+            "summary": {
+              "throughput-bytes": 150503672,
+              "end": 1.00015,
+              "omitted": false,
+              "start": 0,
+              "retransmits": 93,
+              "throughput-bits": 1203848840.4640322
+            }
+          },
+          {
+            "streams": [
+              {
+                "throughput-bytes": 170774448,
+                "tcp-window-size": 238920,
+                "end": 2.000195,
+                "stream-id": 5,
+                "omitted": false,
+                "rtt": 856,
+                "retransmits": 196,
+                "throughput-bits": 1366134187.3310146,
+                "start": 1.00015
+              }
+            ],
+            "summary": {
+              "throughput-bytes": 170774448,
+              "end": 2.000195,
+              "omitted": false,
+              "start": 1.00015,
+              "retransmits": 196,
+              "throughput-bits": 1366134187.3310146
+            }
+          },
+          {
+            "streams": [
+              {
+                "throughput-bytes": 202712760,
+                "tcp-window-size": 282360,
+                "end": 3.00016,
+                "stream-id": 5,
+                "omitted": false,
+                "rtt": 1045,
+                "retransmits": 217,
+                "throughput-bits": 1621758821.9784367,
+                "start": 2.000195
+              }
+            ],
+            "summary": {
+              "throughput-bytes": 202712760,
+              "end": 3.00016,
+              "omitted": false,
+              "start": 2.000195,
+              "retransmits": 217,
+              "throughput-bits": 1621758821.9784367
+            }
+          },
+          {
+            "streams": [
+              {
+                "throughput-bytes": 198281880,
+                "tcp-window-size": 246160,
+                "end": 4.000345,
+                "stream-id": 5,
+                "omitted": false,
+                "rtt": 994,
+                "retransmits": 229,
+                "throughput-bits": 1585961616.7730198,
+                "start": 3.00016
+              }
+            ],
+            "summary": {
+              "throughput-bytes": 198281880,
+              "end": 4.000345,
+              "omitted": false,
+              "start": 3.00016,
+              "retransmits": 229,
+              "throughput-bits": 1585961616.7730198
+            }
+          },
+          {
+            "streams": [
+              {
+                "throughput-bytes": 195038920,
+                "tcp-window-size": 282360,
+                "end": 5.002724,
+                "stream-id": 5,
+                "omitted": false,
+                "rtt": 1084,
+                "retransmits": 239,
+                "throughput-bits": 1556608281.3886986,
+                "start": 4.000345
+              }
+            ],
+            "summary": {
+              "throughput-bytes": 195038920,
+              "end": 5.002724,
+              "omitted": false,
+              "start": 4.000345,
+              "retransmits": 239,
+              "throughput-bits": 1556608281.3886986
+            }
+          },
+          {
+            "streams": [
+              {
+                "throughput-bytes": 9628640,
+                "tcp-window-size": 309872,
+                "end": 5.040158,
+                "stream-id": 5,
+                "omitted": false,
+                "rtt": 1276,
+                "retransmits": 0,
+                "throughput-bits": 2057731445.3724828,
+                "start": 5.002724
+              }
+            ],
+            "summary": {
+              "throughput-bytes": 9628640,
+              "end": 5.040158,
+              "omitted": false,
+              "start": 5.002724,
+              "retransmits": 0,
+              "throughput-bits": 2057731445.3724828
+            }
+          }
+        ],
+        "succeeded": true,
+        "summary": {
+          "streams": [
+            {
+              "end": 5.040158,
+              "stream-id": 5,
+              "throughput-bytes": 926940320,
+              "rtt": 1049,
+              "retransmits": 974,
+              "throughput-bits": 1471287717.5675843,
+              "start": 0
+            }
+          ],
+          "summary": {
+            "throughput-bits": 1471287717.5675843,
+            "start": 0,
+            "end": 5.040158,
+            "throughput-bytes": 926940320,
+            "retransmits": 974
+          }
+        }
+      },
+      "test": {
+        "type": "throughput",
+        "spec": {
+          "dest": "ps2.example.net",
+          "source": "ps1.example.net",
+          "duration": "PT5S",
+          "reverse": true,
+          "schema": 1
+        }
+      },
+      "id": "a44e447a-4cd0-429c-8937-cdcef742cc82"
     }

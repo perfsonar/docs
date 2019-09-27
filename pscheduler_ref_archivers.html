@@ -421,6 +421,7 @@ behavior is to try once and then give up.</p>
 </pre></div>
 </div>
 <p>The <tt class="docutils literal"><span class="pre">script</span></tt> is a string containing a valid script for the <a class="reference external" href="https://stedolan.github.io/jq">jq JSON processor</a> version 1.5.  There is a <a class="reference external" href="https://www.youtube.com/watch?v=FrT6R75M3BE">tutorial on jq and pScheduler</a> available on the <a class="reference external" href="https://www.youtube.com/perfSONARProject">perfSONAR project&#8217;s YouTube channel</a>.  The value returned by the script should be JSON or plain text (see <tt class="docutils literal"><span class="pre">raw-output</span></tt>, below).</p>
+<p>The transform is fed a single JSON object containing everything pScheduler knows about the task and the run.  A fully-populated example can be found below.</p>
 <p>If the script returns a JSON value of <tt class="docutils literal"><span class="pre">null</span></tt>, pScheduler will discard the result and not pass it to the plugin.  Because the transformation happens within pScheduler before any plugin code is invoked, this mechanism is a very efficient way to filter results and is preferred over writing custom plugins.</p>
 <p>If <tt class="docutils literal"><span class="pre">raw-output</span></tt> is present and <tt class="docutils literal"><span class="pre">true</span></tt>, the output will be treated as plain text instead of JSON.</p>
 <p>Note that some archiver plugins, notably <tt class="docutils literal"><span class="pre">esmond</span></tt>, may expect the input to be in the un-transformed format produced by pScheduler.  Using a transform in this case is not recommended.</p>
@@ -482,6 +483,703 @@ behavior is to try once and then give up.</p>
 }
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="transform-input-example">
+<span id="pscheduler-ref-archivers-transforms-input-example"></span><h3>Transform Input Example<a class="headerlink" href="#transform-input-example" title="Permalink to this headline">¶</a></h3>
+<p>This is an example of a throughput test result as it would be passed to a transform:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+  &quot;task&quot;: {
+    &quot;test&quot;: {
+      &quot;type&quot;: &quot;throughput&quot;,
+      &quot;spec&quot;: {
+        &quot;dest&quot;: &quot;ps2.example.net&quot;,
+        &quot;source&quot;: &quot;ps1.example.net&quot;,
+        &quot;schema&quot;: 1
+      }
+    },
+    &quot;tool&quot;: &quot;iperf3&quot;,
+    &quot;href&quot;: &quot;https://ps1.example.net/pscheduler/tasks/07e0d165-c79f-4786-b382-15cf8438c5c0&quot;,
+    &quot;detail&quot;: {
+      &quot;exclusive&quot;: true,
+      &quot;runs&quot;: 1,
+      &quot;added&quot;: &quot;2019-09-10T14:55:22Z&quot;,
+      &quot;participant&quot;: 0,
+      &quot;cli&quot;: [
+        &quot;--duration&quot;, &quot;PT5S&quot;,
+        &quot;--source&quot;, &quot;ps1.example.net&quot;,
+        &quot;--dest&quot;, &quot;ps2.example.net&quot;,
+        &quot;--reverse&quot;
+      ],
+      &quot;start&quot;: null,
+      &quot;enabled&quot;: true,
+      &quot;anytime&quot;: false,
+      &quot;diags&quot;: &quot; ... Deleted for brevity ... &quot;,
+      &quot;participants&quot;: [ &quot;ps1.example.net&quot;, &quot;ps2.example.net&quot; ],
+      &quot;spec-limits-passed&quot;: [],
+      &quot;slip&quot;: &quot;PT5M&quot;,
+      &quot;multi-result&quot;: false,
+      &quot;duration&quot;: &quot;PT14S&quot;,
+      &quot;post&quot;: &quot;P0D&quot;,
+      &quot;runs-started&quot;: 1
+    },
+    &quot;schedule&quot;: {
+      &quot;slip&quot;: &quot;PT5M&quot;
+    }
+  },
+  &quot;run&quot;: {
+    &quot;priority&quot;: 5,
+    &quot;added&quot;: &quot;2019-09-10T14:55:26Z&quot;,
+    &quot;start-time&quot;: &quot;2019-09-10T14:55:35Z&quot;,
+    &quot;href&quot;: &quot;https://ps1.example.net/pscheduler/tasks/07e0d165-c79f-4786-b382-15cf8438c5c0/runs/a44e447a-4cd0-429c-8937-cdcef742cc82&quot;,
+    &quot;result-merged&quot;: {
+      &quot;diags&quot;: &quot; ... Deleted for brevity ...&quot;,
+      &quot;intervals&quot;: [ ...
+        {
+          &quot;streams&quot;: [
+            {
+              &quot;throughput-bytes&quot;: 150503672,
+              &quot;tcp-window-size&quot;: 211408,
+              &quot;end&quot;: 1.00015,
+              &quot;stream-id&quot;: 5,
+              &quot;omitted&quot;: false,
+              &quot;rtt&quot;: 1044,
+              &quot;retransmits&quot;: 93,
+              &quot;throughput-bits&quot;: 1203848840.4640322,
+              &quot;start&quot;: 0
+            }
+          ],
+          &quot;summary&quot;: {
+            &quot;throughput-bytes&quot;: 150503672,
+            &quot;end&quot;: 1.00015,
+            &quot;omitted&quot;: false,
+            &quot;start&quot;: 0,
+            &quot;retransmits&quot;: 93,
+            &quot;throughput-bits&quot;: 1203848840.4640322
+          }
+        },
+        {
+          &quot;streams&quot;: [
+            {
+              &quot;throughput-bytes&quot;: 170774448,
+              &quot;tcp-window-size&quot;: 238920,
+              &quot;end&quot;: 2.000195,
+              &quot;stream-id&quot;: 5,
+              &quot;omitted&quot;: false,
+              &quot;rtt&quot;: 856,
+              &quot;retransmits&quot;: 196,
+              &quot;throughput-bits&quot;: 1366134187.3310146,
+              &quot;start&quot;: 1.00015
+            }
+          ],
+          &quot;summary&quot;: {
+            &quot;throughput-bytes&quot;: 170774448,
+            &quot;end&quot;: 2.000195,
+            &quot;omitted&quot;: false,
+            &quot;start&quot;: 1.00015,
+            &quot;retransmits&quot;: 196,
+            &quot;throughput-bits&quot;: 1366134187.3310146
+          }
+        },
+        {
+          &quot;streams&quot;: [
+            {
+              &quot;throughput-bytes&quot;: 202712760,
+              &quot;tcp-window-size&quot;: 282360,
+              &quot;end&quot;: 3.00016,
+              &quot;stream-id&quot;: 5,
+              &quot;omitted&quot;: false,
+              &quot;rtt&quot;: 1045,
+              &quot;retransmits&quot;: 217,
+              &quot;throughput-bits&quot;: 1621758821.9784367,
+              &quot;start&quot;: 2.000195
+            }
+          ],
+          &quot;summary&quot;: {
+            &quot;throughput-bytes&quot;: 202712760,
+            &quot;end&quot;: 3.00016,
+            &quot;omitted&quot;: false,
+            &quot;start&quot;: 2.000195,
+            &quot;retransmits&quot;: 217,
+            &quot;throughput-bits&quot;: 1621758821.9784367
+          }
+        },
+        {
+          &quot;streams&quot;: [
+            {
+              &quot;throughput-bytes&quot;: 198281880,
+              &quot;tcp-window-size&quot;: 246160,
+              &quot;end&quot;: 4.000345,
+              &quot;stream-id&quot;: 5,
+              &quot;omitted&quot;: false,
+              &quot;rtt&quot;: 994,
+              &quot;retransmits&quot;: 229,
+              &quot;throughput-bits&quot;: 1585961616.7730198,
+              &quot;start&quot;: 3.00016
+            }
+          ],
+          &quot;summary&quot;: {
+            &quot;throughput-bytes&quot;: 198281880,
+            &quot;end&quot;: 4.000345,
+            &quot;omitted&quot;: false,
+            &quot;start&quot;: 3.00016,
+            &quot;retransmits&quot;: 229,
+            &quot;throughput-bits&quot;: 1585961616.7730198
+          }
+        },
+        {
+          &quot;streams&quot;: [
+            {
+              &quot;throughput-bytes&quot;: 195038920,
+              &quot;tcp-window-size&quot;: 282360,
+              &quot;end&quot;: 5.002724,
+              &quot;stream-id&quot;: 5,
+              &quot;omitted&quot;: false,
+              &quot;rtt&quot;: 1084,
+              &quot;retransmits&quot;: 239,
+              &quot;throughput-bits&quot;: 1556608281.3886986,
+              &quot;start&quot;: 4.000345
+            }
+          ],
+          &quot;summary&quot;: {
+            &quot;throughput-bytes&quot;: 195038920,
+            &quot;end&quot;: 5.002724,
+            &quot;omitted&quot;: false,
+            &quot;start&quot;: 4.000345,
+            &quot;retransmits&quot;: 239,
+            &quot;throughput-bits&quot;: 1556608281.3886986
+          }
+        },
+        {
+          &quot;streams&quot;: [
+            {
+              &quot;throughput-bytes&quot;: 9628640,
+              &quot;tcp-window-size&quot;: 309872,
+              &quot;end&quot;: 5.040158,
+              &quot;stream-id&quot;: 5,
+              &quot;omitted&quot;: false,
+              &quot;rtt&quot;: 1276,
+              &quot;retransmits&quot;: 0,
+              &quot;throughput-bits&quot;: 2057731445.3724828,
+              &quot;start&quot;: 5.002724
+            }
+          ],
+          &quot;summary&quot;: {
+            &quot;throughput-bytes&quot;: 9628640,
+            &quot;end&quot;: 5.040158,
+            &quot;omitted&quot;: false,
+            &quot;start&quot;: 5.002724,
+            &quot;retransmits&quot;: 0,
+            &quot;throughput-bits&quot;: 2057731445.3724828
+          }
+        }
+      ],
+      &quot;succeeded&quot;: true,
+      &quot;summary&quot;: {
+        &quot;streams&quot;: [
+          {
+            &quot;end&quot;: 5.040158,
+            &quot;stream-id&quot;: 5,
+            &quot;throughput-bytes&quot;: 926940320,
+            &quot;rtt&quot;: 1049,
+            &quot;retransmits&quot;: 974,
+            &quot;throughput-bits&quot;: 1471287717.5675843,
+            &quot;start&quot;: 0
+          }
+        ],
+        &quot;summary&quot;: {
+          &quot;throughput-bits&quot;: 1471287717.5675843,
+          &quot;start&quot;: 0,
+          &quot;end&quot;: 5.040158,
+          &quot;throughput-bytes&quot;: 926940320,
+          &quot;retransmits&quot;: 974
+        }
+      }
+    },
+    &quot;participants&quot;: [ &quot;ps1.example.net&quot;, &quot;ps2.example.net&quot; ],
+    &quot;state-display&quot;: &quot;Finished&quot;,
+    &quot;result-full&quot;: [
+      {
+        &quot;diags&quot;: &quot; ... Deleted for brevity ... &quot;,
+        &quot;intervals&quot;: [
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 155000464,
+                &quot;end&quot;: 1.000821,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;start&quot;: 0,
+                &quot;throughput-bits&quot;: 1238986511.0410876
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bits&quot;: 1238986511.0410876,
+              &quot;start&quot;: 0,
+              &quot;end&quot;: 1.000821,
+              &quot;throughput-bytes&quot;: 155000464,
+              &quot;omitted&quot;: false
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 171620776,
+                &quot;end&quot;: 2.000132,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;start&quot;: 1.000821,
+                &quot;throughput-bits&quot;: 1373912874.7671387
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bits&quot;: 1373912874.7671387,
+              &quot;start&quot;: 1.000821,
+              &quot;end&quot;: 2.000132,
+              &quot;throughput-bytes&quot;: 171620776,
+              &quot;omitted&quot;: false
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 204081120,
+                &quot;end&quot;: 3.000043,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;start&quot;: 2.000132,
+                &quot;throughput-bits&quot;: 1632794261.9281065
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bits&quot;: 1632794261.9281065,
+              &quot;start&quot;: 2.000132,
+              &quot;end&quot;: 3.000043,
+              &quot;throughput-bytes&quot;: 204081120,
+              &quot;omitted&quot;: false
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 197905400,
+                &quot;end&quot;: 4.000156,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;start&quot;: 3.000043,
+                &quot;throughput-bits&quot;: 1583064297.2602603
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bits&quot;: 1583064297.2602603,
+              &quot;start&quot;: 3.000043,
+              &quot;end&quot;: 4.000156,
+              &quot;throughput-bytes&quot;: 197905400,
+              &quot;omitted&quot;: false
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 196106984,
+                &quot;end&quot;: 5.000101,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;start&quot;: 4.000156,
+                &quot;throughput-bits&quot;: 1568942187.4911432
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bits&quot;: 1568942187.4911432,
+              &quot;start&quot;: 4.000156,
+              &quot;end&quot;: 5.000101,
+              &quot;throughput-bytes&quot;: 196106984,
+              &quot;omitted&quot;: false
+            }
+          }
+        ],
+        &quot;succeeded&quot;: true,
+        &quot;summary&quot;: {
+          &quot;streams&quot;: [
+            {
+              &quot;end&quot;: 5.040158,
+              &quot;stream-id&quot;: 5,
+              &quot;throughput-bytes&quot;: 926940320,
+              &quot;rtt&quot;: 0,
+              &quot;retransmits&quot;: 974,
+              &quot;throughput-bits&quot;: 1471287717.5675843,
+              &quot;start&quot;: 0
+            }
+          ],
+          &quot;summary&quot;: {
+            &quot;throughput-bits&quot;: 1471287717.5675843,
+            &quot;start&quot;: 0,
+            &quot;end&quot;: 5.040158,
+            &quot;throughput-bytes&quot;: 926940320,
+            &quot;retransmits&quot;: 974
+          }
+        }
+      },
+      {
+        &quot;diags&quot;: &quot; ... Deleted for brevity ....&quot;,
+        &quot;intervals&quot;: [
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 150503672,
+                &quot;tcp-window-size&quot;: 211408,
+                &quot;end&quot;: 1.00015,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;rtt&quot;: 1044,
+                &quot;retransmits&quot;: 93,
+                &quot;throughput-bits&quot;: 1203848840.4640322,
+                &quot;start&quot;: 0
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bytes&quot;: 150503672,
+              &quot;end&quot;: 1.00015,
+              &quot;omitted&quot;: false,
+              &quot;start&quot;: 0,
+              &quot;retransmits&quot;: 93,
+              &quot;throughput-bits&quot;: 1203848840.4640322
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 170774448,
+                &quot;tcp-window-size&quot;: 238920,
+                &quot;end&quot;: 2.000195,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;rtt&quot;: 856,
+                &quot;retransmits&quot;: 196,
+                &quot;throughput-bits&quot;: 1366134187.3310146,
+                &quot;start&quot;: 1.00015
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bytes&quot;: 170774448,
+              &quot;end&quot;: 2.000195,
+              &quot;omitted&quot;: false,
+              &quot;start&quot;: 1.00015,
+              &quot;retransmits&quot;: 196,
+              &quot;throughput-bits&quot;: 1366134187.3310146
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 202712760,
+                &quot;tcp-window-size&quot;: 282360,
+                &quot;end&quot;: 3.00016,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;rtt&quot;: 1045,
+                &quot;retransmits&quot;: 217,
+                &quot;throughput-bits&quot;: 1621758821.9784367,
+                &quot;start&quot;: 2.000195
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bytes&quot;: 202712760,
+              &quot;end&quot;: 3.00016,
+              &quot;omitted&quot;: false,
+              &quot;start&quot;: 2.000195,
+              &quot;retransmits&quot;: 217,
+              &quot;throughput-bits&quot;: 1621758821.9784367
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 198281880,
+                &quot;tcp-window-size&quot;: 246160,
+                &quot;end&quot;: 4.000345,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;rtt&quot;: 994,
+                &quot;retransmits&quot;: 229,
+                &quot;throughput-bits&quot;: 1585961616.7730198,
+                &quot;start&quot;: 3.00016
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bytes&quot;: 198281880,
+              &quot;end&quot;: 4.000345,
+              &quot;omitted&quot;: false,
+              &quot;start&quot;: 3.00016,
+              &quot;retransmits&quot;: 229,
+              &quot;throughput-bits&quot;: 1585961616.7730198
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 195038920,
+                &quot;tcp-window-size&quot;: 282360,
+                &quot;end&quot;: 5.002724,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;rtt&quot;: 1084,
+                &quot;retransmits&quot;: 239,
+                &quot;throughput-bits&quot;: 1556608281.3886986,
+                &quot;start&quot;: 4.000345
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bytes&quot;: 195038920,
+              &quot;end&quot;: 5.002724,
+              &quot;omitted&quot;: false,
+              &quot;start&quot;: 4.000345,
+              &quot;retransmits&quot;: 239,
+              &quot;throughput-bits&quot;: 1556608281.3886986
+            }
+          },
+          {
+            &quot;streams&quot;: [
+              {
+                &quot;throughput-bytes&quot;: 9628640,
+                &quot;tcp-window-size&quot;: 309872,
+                &quot;end&quot;: 5.040158,
+                &quot;stream-id&quot;: 5,
+                &quot;omitted&quot;: false,
+                &quot;rtt&quot;: 1276,
+                &quot;retransmits&quot;: 0,
+                &quot;throughput-bits&quot;: 2057731445.3724828,
+                &quot;start&quot;: 5.002724
+              }
+            ],
+            &quot;summary&quot;: {
+              &quot;throughput-bytes&quot;: 9628640,
+              &quot;end&quot;: 5.040158,
+              &quot;omitted&quot;: false,
+              &quot;start&quot;: 5.002724,
+              &quot;retransmits&quot;: 0,
+              &quot;throughput-bits&quot;: 2057731445.3724828
+            }
+          }
+        ],
+        &quot;succeeded&quot;: true,
+        &quot;summary&quot;: {
+          &quot;streams&quot;: [
+            {
+              &quot;end&quot;: 5.040158,
+              &quot;stream-id&quot;: 5,
+              &quot;throughput-bytes&quot;: 926940320,
+              &quot;rtt&quot;: 1049,
+              &quot;retransmits&quot;: 974,
+              &quot;throughput-bits&quot;: 1471287717.5675843,
+              &quot;start&quot;: 0
+            }
+          ],
+          &quot;summary&quot;: {
+            &quot;throughput-bits&quot;: 1471287717.5675843,
+            &quot;start&quot;: 0,
+            &quot;end&quot;: 5.040158,
+            &quot;throughput-bytes&quot;: 926940320,
+            &quot;retransmits&quot;: 974
+          }
+        }
+      }
+    ],
+    &quot;state&quot;: &quot;finished&quot;,
+    &quot;errors&quot;: null,
+    &quot;limit-diags&quot;: &quot; ... Deleted for brevity ...&quot;,
+    &quot;task-href&quot;: &quot;https://ps1.example.net/pscheduler/tasks/07e0d165-c79f-4786-b382-15cf8438c5c0&quot;,
+    &quot;duration&quot;: &quot;PT14S&quot;,
+    &quot;participant&quot;: 0,
+    &quot;end-time&quot;: &quot;2019-09-10T14:55:49Z&quot;
+  },
+  &quot;reference&quot;: null,
+  &quot;schedule&quot;: {
+    &quot;duration&quot;: &quot;PT14S&quot;,
+    &quot;start&quot;: &quot;2019-09-10T14:55:35Z&quot;
+  },
+  &quot;tool&quot;: {
+    &quot;version&quot;: &quot;1.0&quot;,
+    &quot;name&quot;: &quot;iperf3&quot;
+  },
+  &quot;participants&quot;: [ &quot;ps1.example.net&quot;, &quot;ps2.example.net&quot; ],
+  &quot;result&quot;: {
+    &quot;diags&quot;: &quot; ... Deleted for brevity ...&quot;,
+    &quot;intervals&quot;: [
+      {
+        &quot;streams&quot;: [
+          {
+            &quot;throughput-bytes&quot;: 150503672,
+            &quot;tcp-window-size&quot;: 211408,
+            &quot;end&quot;: 1.00015,
+            &quot;stream-id&quot;: 5,
+            &quot;omitted&quot;: false,
+            &quot;rtt&quot;: 1044,
+            &quot;retransmits&quot;: 93,
+            &quot;throughput-bits&quot;: 1203848840.4640322,
+            &quot;start&quot;: 0
+          }
+        ],
+        &quot;summary&quot;: {
+          &quot;throughput-bytes&quot;: 150503672,
+          &quot;end&quot;: 1.00015,
+          &quot;omitted&quot;: false,
+          &quot;start&quot;: 0,
+          &quot;retransmits&quot;: 93,
+          &quot;throughput-bits&quot;: 1203848840.4640322
+        }
+      },
+      {
+        &quot;streams&quot;: [
+          {
+            &quot;throughput-bytes&quot;: 170774448,
+            &quot;tcp-window-size&quot;: 238920,
+            &quot;end&quot;: 2.000195,
+            &quot;stream-id&quot;: 5,
+            &quot;omitted&quot;: false,
+            &quot;rtt&quot;: 856,
+            &quot;retransmits&quot;: 196,
+            &quot;throughput-bits&quot;: 1366134187.3310146,
+            &quot;start&quot;: 1.00015
+          }
+        ],
+        &quot;summary&quot;: {
+          &quot;throughput-bytes&quot;: 170774448,
+          &quot;end&quot;: 2.000195,
+          &quot;omitted&quot;: false,
+          &quot;start&quot;: 1.00015,
+          &quot;retransmits&quot;: 196,
+          &quot;throughput-bits&quot;: 1366134187.3310146
+        }
+      },
+      {
+        &quot;streams&quot;: [
+          {
+            &quot;throughput-bytes&quot;: 202712760,
+            &quot;tcp-window-size&quot;: 282360,
+            &quot;end&quot;: 3.00016,
+            &quot;stream-id&quot;: 5,
+            &quot;omitted&quot;: false,
+            &quot;rtt&quot;: 1045,
+            &quot;retransmits&quot;: 217,
+            &quot;throughput-bits&quot;: 1621758821.9784367,
+            &quot;start&quot;: 2.000195
+          }
+        ],
+        &quot;summary&quot;: {
+          &quot;throughput-bytes&quot;: 202712760,
+          &quot;end&quot;: 3.00016,
+          &quot;omitted&quot;: false,
+          &quot;start&quot;: 2.000195,
+          &quot;retransmits&quot;: 217,
+          &quot;throughput-bits&quot;: 1621758821.9784367
+        }
+      },
+      {
+        &quot;streams&quot;: [
+          {
+            &quot;throughput-bytes&quot;: 198281880,
+            &quot;tcp-window-size&quot;: 246160,
+            &quot;end&quot;: 4.000345,
+            &quot;stream-id&quot;: 5,
+            &quot;omitted&quot;: false,
+            &quot;rtt&quot;: 994,
+            &quot;retransmits&quot;: 229,
+            &quot;throughput-bits&quot;: 1585961616.7730198,
+            &quot;start&quot;: 3.00016
+          }
+        ],
+        &quot;summary&quot;: {
+          &quot;throughput-bytes&quot;: 198281880,
+          &quot;end&quot;: 4.000345,
+          &quot;omitted&quot;: false,
+          &quot;start&quot;: 3.00016,
+          &quot;retransmits&quot;: 229,
+          &quot;throughput-bits&quot;: 1585961616.7730198
+        }
+      },
+      {
+        &quot;streams&quot;: [
+          {
+            &quot;throughput-bytes&quot;: 195038920,
+            &quot;tcp-window-size&quot;: 282360,
+            &quot;end&quot;: 5.002724,
+            &quot;stream-id&quot;: 5,
+            &quot;omitted&quot;: false,
+            &quot;rtt&quot;: 1084,
+            &quot;retransmits&quot;: 239,
+            &quot;throughput-bits&quot;: 1556608281.3886986,
+            &quot;start&quot;: 4.000345
+          }
+        ],
+        &quot;summary&quot;: {
+          &quot;throughput-bytes&quot;: 195038920,
+          &quot;end&quot;: 5.002724,
+          &quot;omitted&quot;: false,
+          &quot;start&quot;: 4.000345,
+          &quot;retransmits&quot;: 239,
+          &quot;throughput-bits&quot;: 1556608281.3886986
+        }
+      },
+      {
+        &quot;streams&quot;: [
+          {
+            &quot;throughput-bytes&quot;: 9628640,
+            &quot;tcp-window-size&quot;: 309872,
+            &quot;end&quot;: 5.040158,
+            &quot;stream-id&quot;: 5,
+            &quot;omitted&quot;: false,
+            &quot;rtt&quot;: 1276,
+            &quot;retransmits&quot;: 0,
+            &quot;throughput-bits&quot;: 2057731445.3724828,
+            &quot;start&quot;: 5.002724
+          }
+        ],
+        &quot;summary&quot;: {
+          &quot;throughput-bytes&quot;: 9628640,
+          &quot;end&quot;: 5.040158,
+          &quot;omitted&quot;: false,
+          &quot;start&quot;: 5.002724,
+          &quot;retransmits&quot;: 0,
+          &quot;throughput-bits&quot;: 2057731445.3724828
+        }
+      }
+    ],
+    &quot;succeeded&quot;: true,
+    &quot;summary&quot;: {
+      &quot;streams&quot;: [
+        {
+          &quot;end&quot;: 5.040158,
+          &quot;stream-id&quot;: 5,
+          &quot;throughput-bytes&quot;: 926940320,
+          &quot;rtt&quot;: 1049,
+          &quot;retransmits&quot;: 974,
+          &quot;throughput-bits&quot;: 1471287717.5675843,
+          &quot;start&quot;: 0
+        }
+      ],
+      &quot;summary&quot;: {
+        &quot;throughput-bits&quot;: 1471287717.5675843,
+        &quot;start&quot;: 0,
+        &quot;end&quot;: 5.040158,
+        &quot;throughput-bytes&quot;: 926940320,
+        &quot;retransmits&quot;: 974
+      }
+    }
+  },
+  &quot;test&quot;: {
+    &quot;type&quot;: &quot;throughput&quot;,
+    &quot;spec&quot;: {
+      &quot;dest&quot;: &quot;ps2.example.net&quot;,
+      &quot;source&quot;: &quot;ps1.example.net&quot;,
+      &quot;duration&quot;: &quot;PT5S&quot;,
+      &quot;reverse&quot;: true,
+      &quot;schema&quot;: 1
+    }
+  },
+  &quot;id&quot;: &quot;a44e447a-4cd0-429c-8937-cdcef742cc82&quot;
+}
+</pre></div>
 </div>
 </div>
 </div>
@@ -560,6 +1258,7 @@ behavior is to try once and then give up.</p>
 <li><a class="reference internal" href="#alternate-json-with-trace-hop-list">Alternate JSON with Trace Hop List</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#transform-input-example">Transform Input Example</a></li>
 </ul>
 </li>
 </ul>
