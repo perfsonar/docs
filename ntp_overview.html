@@ -1,26 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>NTP Overview &#8212; perfSONAR Toolkit 4.2.1 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <title>NTP Overview &mdash; perfSONAR Toolkit 4.2.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-  </head><body>
+    <link rel="top" title="perfSONAR Toolkit 4.2.1 documentation" href="index.html" /> 
+  </head>
+  <body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -39,13 +46,13 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.1 documentation</a> &#187;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -55,7 +62,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <div class="section" id="ntp-overview">
 <h1>NTP Overview<a class="headerlink" href="#ntp-overview" title="Permalink to this headline">¶</a></h1>
@@ -72,7 +79,7 @@
 <li>Not from the NTP pool.  The default configuration for NTP is to use regional pool servers (e.g. some located in North America, or Europe, etc.).  Pool servers work well if there is not a critical need for time accuracy in the range of a few milliseconds.  For measurement needs, accessing time consistently, from well known and trusted servers, is a requirement.</li>
 <li>Located topologically close to the server.  In general they should be no more than 20ms away.  Selecting a server that is far away makes the time subject to the increased latency, adding to a higher possible error.</li>
 <li>Located on divergent network paths.  The reasoning for this requirement is to prevent a catastrophic network failure from impacting all time servers that are synchronized against.  For example, if 4 servers are selected, all located and operated by a peer network, and this peer suffered a network outage, time updates may not be available.</li>
-<li>Of the same ‘stratum’. Stratum is defined to be the distance away from a true time source.  For example, if a host has a CDMA clock attached to it, it is a stratum 1 server (the CDMA itself is stratum 0).  Setting server choices to be all of the same stratum will aide the NTP algorithm selection process.  In general try to synchronize against clocks that are stratum 1, 2, or 3.  Higher stratum servers can impart additional error into measurement calculations.</li>
+<li>Of the same &#8216;stratum&#8217;. Stratum is defined to be the distance away from a true time source.  For example, if a host has a CDMA clock attached to it, it is a stratum 1 server (the CDMA itself is stratum 0).  Setting server choices to be all of the same stratum will aide the NTP algorithm selection process.  In general try to synchronize against clocks that are stratum 1, 2, or 3.  Higher stratum servers can impart additional error into measurement calculations.</li>
 </ul>
 </div></blockquote>
 <ul class="simple">
@@ -83,7 +90,7 @@
 <div class="section" id="viewing-ntp-status">
 <h2>Viewing NTP Status<a class="headerlink" href="#viewing-ntp-status" title="Permalink to this headline">¶</a></h2>
 <p>NTP can be queried on a machine using the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[user@host ~]$ /usr/sbin/ntpq -p -c rv
+<div class="highlight-python"><div class="highlight"><pre>[user@host ~]$ /usr/sbin/ntpq -p -c rv
     remote           refid      st t when poll reach   delay   offset  jitter
 ==============================================================================
 *GPS_PALISADE(1) .CDMA.           0 l   13   16  377    0.000    0.007   0.000
@@ -103,7 +110,7 @@ clk_jitter=0.000, clk_wander=0.000
 </pre></div>
 </div>
 <p>Additional statistics can be found using this command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[user@host ~]$ ntpstat
+<div class="highlight-python"><div class="highlight"><pre>[user@host ~]$ ntpstat
 synchronised to NTP server (198.124.252.126) at stratum 2
   time correct to within 38 ms
   polling server every 1024 s
@@ -153,13 +160,13 @@ synchronised to NTP server (198.124.252.126) at stratum 2
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.1 documentation</a> &#187;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -199,9 +206,9 @@ synchronised to NTP server (198.124.252.126) at stratum 2
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    <div class="footer">
+        &copy; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

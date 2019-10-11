@@ -1,28 +1,35 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Host Tuning &#8212; perfSONAR Toolkit 4.2.1 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <title>Host Tuning &mdash; perfSONAR Toolkit 4.2.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.1 documentation" href="index.html" />
     <link rel="next" title="Configuring a Host with Multiple Interfaces" href="manage_dual_xface.html" />
     <link rel="prev" title="Managing Users" href="manage_users.html" /> 
-  </head><body>
+  </head>
+  <body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -41,7 +48,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -53,7 +60,7 @@
         <li class="right" >
           <a href="manage_users.html" title="Managing Users"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.1 documentation</a> &#187;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -63,13 +70,13 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <div class="section" id="host-tuning">
 <h1>Host Tuning<a class="headerlink" href="#host-tuning" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="default-tuning-settings">
 <h2>Default Tuning Settings<a class="headerlink" href="#default-tuning-settings" title="Permalink to this headline">¶</a></h2>
-<p>By default, the perfSONAR Toolkit installation follows the advice of ESnet’s “fasterdata” knowledge base for test and measurement hosts:</p>
+<p>By default, the perfSONAR Toolkit installation follows the advice of ESnet&#8217;s &#8220;fasterdata&#8221; knowledge base for test and measurement hosts:</p>
 <p><a class="reference external" href="http://fasterdata.es.net/host-tuning/linux/test-measurement-host-tuning/">http://fasterdata.es.net/host-tuning/linux/test-measurement-host-tuning/</a></p>
 <p>These tuning settings should be fine for most uses of perfSONAR, but there are a couple of cases where you might want to adjust these.</p>
 <blockquote>
@@ -80,7 +87,7 @@
 </div></blockquote>
 <p>For such cases, you may want to increase the max buffer settings in /etc/sysctl.conf, for example:</p>
 <blockquote>
-<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#allow hand tuning up to 256MB buffers
+<div><div class="highlight-none"><div class="highlight"><pre>#allow hand tuning up to 256MB buffers
 net.core.rmem_max = 268435456
 net.core.wmem_max = 268435456
 # allow auto-tuning up to 128MB buffers
@@ -93,20 +100,20 @@ net.ipv4.tcp_wmem = 4096 65536 134217728
 </div>
 <div class="section" id="manually-enabling-tuning-settings">
 <h2>Manually Enabling Tuning Settings<a class="headerlink" href="#manually-enabling-tuning-settings" title="Permalink to this headline">¶</a></h2>
-<p>In case you didn’t use toolkit installation an optional <em>perfsonar-toolkit-sysctl</em> package is available that configures the system with perfSONAR settings. For more information on optional script installation see <a class="reference internal" href="install_centos.html#install-centos-installation"><span class="std std-ref">Installation</span></a>.</p>
+<p>In case you didn&#8217;t use toolkit installation an optional <em>perfsonar-toolkit-sysctl</em> package is available that configures the system with perfSONAR settings. For more information on optional script installation see <a class="reference internal" href="install_centos.html#install-centos-installation"><em>Installation</em></a>.</p>
 </div>
 <div class="section" id="packet-pacing">
 <h2>Packet Pacing<a class="headerlink" href="#packet-pacing" title="Permalink to this headline">¶</a></h2>
-<p>CentOS7 and Debian now support “Fair Queuing” and kernel-level packet pacing. Pacing can be done on a per socket basis, or you can set a global maximum rate for each NIC on the host.</p>
+<p>CentOS7 and Debian now support &#8220;Fair Queuing&#8221; and kernel-level packet pacing. Pacing can be done on a per socket basis, or you can set a global maximum rate for each NIC on the host.</p>
 <p>This can be very helpful for cases where you want to ensure that your perfSONAR host never uses all of your bandwidth.
 For example, to ensure your 10G host never exceeds 7Gbps, run this command:</p>
 <blockquote>
-<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>tc qdisc add dev $ETH root fq maxrate 7gbit
+<div><div class="highlight-none"><div class="highlight"><pre>tc qdisc add dev $ETH root fq maxrate 7gbit
 </pre></div>
 </div>
 </div></blockquote>
 <p>Where $ETH is the name of your host NIC. Add that command to /etc/rc.local to run at system boot time.</p>
-<p>You can also configure your tasks to tell iperf3 to reduce it’s bandwidth as well by using the <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code> property in a <em>test</em> object’s <code class="docutils literal notranslate"><span class="pre">spec</span></code> field.</p>
+<p>You can also configure your tasks to tell iperf3 to reduce it&#8217;s bandwidth as well by using the <tt class="docutils literal"><span class="pre">bandwidth</span></tt> property in a <em>test</em> object&#8217;s <tt class="docutils literal"><span class="pre">spec</span></tt> field.</p>
 <p>More details on host pacing are available at:
 <a class="reference external" href="https://fasterdata.es.net/host-tuning/packet-pacing/">https://fasterdata.es.net/host-tuning/packet-pacing/</a></p>
 </div>
@@ -148,7 +155,7 @@ For example, to ensure your 10G host never exceeds 7Gbps, run this command:</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -160,7 +167,7 @@ For example, to ensure your 10G host never exceeds 7Gbps, run this command:</p>
         <li class="right" >
           <a href="manage_users.html" title="Managing Users"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.1 documentation</a> &#187;</li> 
+        <li><a href="index.html">perfSONAR Toolkit 4.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -200,9 +207,9 @@ For example, to ensure your 10G host never exceeds 7Gbps, run this command:</p>
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    <div class="footer">
+        &copy; Copyright 2019, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>
