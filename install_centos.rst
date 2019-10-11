@@ -191,6 +191,8 @@ If they are not running you may start them with appropriate init commands as a r
     systemctl start perfsonar-lsregistrationdaemon
     systemctl start owamp-server
 
+In order to find more information about services running in perfSONAR bundles visit :doc:`manage_daemons`.
+
 Configuring Central Management
 -------------------------------
 If you installed the perfsonar-centralmanagement bundle see the following documents:
