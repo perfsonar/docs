@@ -127,15 +127,6 @@ If you are on a pre-4.2.0 release, you can determine which of your tests are sti
 
 This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See `/usr/lib/perfsonar/scripts/find_bwctl_measurements --help` for information on command-line options to change the archive URL, time range fo data analyzed and other options. Since in 4.2.0 these tests are not possible, a pure 4.2.0 host should return no recent results.
 
-pSConfig to MeshConfig Migration
---------------------------------
-See :doc:`psconfig_meshconfig_migrate` for information on the upgrade of the former MeshConfig component to the new pSConfig component.
-
-
-CentOS 6 Support Discontinued
------------------------------
-perfSONAR 4.1 is NOT available for CentOS 6. If you wish to migrate an existing CentOS 6 host to CentOS 7 see the instructions at :doc:`install_migrate_centos7`. You may also choose to switch to a supported :doc:`Debian platform <install_debian>`. **Security updates for CentOS 6 perfSONAR packages will be discontinued on February 15, 2019**. Also see the `CentOS documentation <https://wiki.centos.org/About/Product>`_ for a schedule of when CentOS 6 will no longer be a supported operating system. 
-
 Debian 8 and Ubuntu 14 Support Discontinued
 -------------------------------------------
 perfSONAR 4.2 is NOT available for Debian 8 (and `Debian 8 is now only supported on a limited set of architectures <https://www.debian.org/releases/jessie/>`_ anyways). If you wish to migrate an existing Debian 8 (Jessie) host to Debian 9 (Stretch) you are advised to do it with the following steps:
