@@ -880,8 +880,8 @@ pSConfig allows you to define a reference object to be passed to pScheduler as s
             "schedule": "every_4_hours",
             "reference": {
                 "production-measurement": true,
-                "source_ifspeed": "{% jq addresses[0]._meta.ifspeed %}",
-                "dest_ifspeed": "{% jq addresses[1]._meta.ifspeed %}"
+                "source_ifspeed": "{% jq .addresses[0]._meta.ifspeed %}",
+                "dest_ifspeed": "{% jq .addresses[1]._meta.ifspeed %}"
             }
         }
     }
