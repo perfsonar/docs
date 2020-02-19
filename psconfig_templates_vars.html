@@ -287,12 +287,12 @@
 </div>
 <p>The <em>SCRIPT</em> is the jq to be executed. The JSON object on which the jq operates is a special form of the template itself, including only those elements relating to the individual task being generated. Specifically, the JSON being queried has the following sections:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">addresses</span></tt> which is an array of the <em>address</em> object for this particular task. This means a variable like <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[0].address</span> <span class="pre">%}</span></tt> is the exact equivalent of the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">address[0]</span> <span class="pre">%}</span></tt> template variable (see <a class="reference internal" href="#psconfig-templates-vars-address"><em>address Variable</em></a>).</li>
-<li><tt class="docutils literal"><span class="pre">archives</span></tt> is an array of the <em>archive</em> objects to be used for this task. A query such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">archives[0].archiver</span> <span class="pre">%}</span></tt> returns the type of the first archiver in the list. The order is not guaranteed, so plan scripts accordingly if using more than one archiver for a task.</li>
-<li><tt class="docutils literal"><span class="pre">contexts</span></tt> is a two-dimensional array of the <em>context</em> objects to be used for this task. The index at the first level of the array corresponds with the index of the <em>address</em> object that is associated with the <em>context</em> objects in the list at the second level. A query such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">contexts[0]</span> <span class="pre">%}</span></tt> returns an array of all the <em>context</em> objects associated with the first <em>address</em> object. The order within the second level of the context list is not guaranteed, so plan scripts accordingly if using more than one context for an address. If an address has no contexts, then the array will be empty.</li>
-<li><tt class="docutils literal"><span class="pre">hosts</span></tt> is an array of the <em>host</em> objects to be used for this task. The index of a host maps to the address to which that host belongs. If an address does not belong to a host, an empty object will be at that position. A script such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">host[0].tags</span> <span class="pre">%}</span></tt> returns the tags of the host associated with the first address.</li>
-<li><tt class="docutils literal"><span class="pre">task</span></tt> is the <em>task</em> object exactly as defined in the template.  A script such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">task.tools</span> <span class="pre">%}</span></tt> returns the <tt class="docutils literal"><span class="pre">tools</span></tt> array of the task.</li>
-<li><tt class="docutils literal"><span class="pre">test</span></tt> is the <em>test</em> object exactly as defined in the template.  A script such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">test.type</span> <span class="pre">%}</span></tt> returns the <tt class="docutils literal"><span class="pre">type</span></tt> of the task.</li>
+<li><tt class="docutils literal"><span class="pre">addresses</span></tt> which is an array of the <em>address</em> object for this particular task. This means a variable like <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">.addresses[0].address</span> <span class="pre">%}</span></tt> is the exact equivalent of the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">address[0]</span> <span class="pre">%}</span></tt> template variable (see <a class="reference internal" href="#psconfig-templates-vars-address"><em>address Variable</em></a>).</li>
+<li><tt class="docutils literal"><span class="pre">archives</span></tt> is an array of the <em>archive</em> objects to be used for this task. A query such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">.archives[0].archiver</span> <span class="pre">%}</span></tt> returns the type of the first archiver in the list. The order is not guaranteed, so plan scripts accordingly if using more than one archiver for a task.</li>
+<li><tt class="docutils literal"><span class="pre">contexts</span></tt> is a two-dimensional array of the <em>context</em> objects to be used for this task. The index at the first level of the array corresponds with the index of the <em>address</em> object that is associated with the <em>context</em> objects in the list at the second level. A query such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">.contexts[0]</span> <span class="pre">%}</span></tt> returns an array of all the <em>context</em> objects associated with the first <em>address</em> object. The order within the second level of the context list is not guaranteed, so plan scripts accordingly if using more than one context for an address. If an address has no contexts, then the array will be empty.</li>
+<li><tt class="docutils literal"><span class="pre">hosts</span></tt> is an array of the <em>host</em> objects to be used for this task. The index of a host maps to the address to which that host belongs. If an address does not belong to a host, an empty object will be at that position. A script such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">.host[0].tags</span> <span class="pre">%}</span></tt> returns the tags of the host associated with the first address.</li>
+<li><tt class="docutils literal"><span class="pre">task</span></tt> is the <em>task</em> object exactly as defined in the template.  A script such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">.task.tools</span> <span class="pre">%}</span></tt> returns the <tt class="docutils literal"><span class="pre">tools</span></tt> array of the task.</li>
+<li><tt class="docutils literal"><span class="pre">test</span></tt> is the <em>test</em> object exactly as defined in the template.  A script such as <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">.test.type</span> <span class="pre">%}</span></tt> returns the <tt class="docutils literal"><span class="pre">type</span></tt> of the task.</li>
 </ul>
 <p>The JSON type returned by <tt class="docutils literal"><span class="pre">jq</span></tt> template variables depends on your query. It is important to keep this in mind when using these variables because the cost of the extra flexibility means unexpected things can happen if one is not careful.</p>
 </div>
@@ -337,8 +337,8 @@
             <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
             <span class="s">&quot;test&quot;</span><span class="p">:</span> <span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
             <span class="s">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span> <span class="s">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
-                <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span> <span class="s">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
+                <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span> <span class="s">&quot;{% jq .addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
+                <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span> <span class="s">&quot;{% jq .addresses[1]._meta.ifspeed %}&quot;</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -381,14 +381,14 @@
       <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
       <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
       <span class="s">&quot;reference&quot;</span><span class="p">:{</span>
-         <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
-         <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
+         <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq .addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
+         <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq .addresses[1]._meta.ifspeed %}&quot;</span>
       <span class="p">}</span>
    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Our variables <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[0]._meta.ifspeed</span> <span class="pre">%}</span></tt> and <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">addresses[1]._meta.ifspeed</span> <span class="pre">%}</span></tt> are standalone queries selecting a JSON integer from each of the address object in the list. That means the quotes will get dropped in the result. This yields the following expanded task:</p>
+<p>Our variables <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">.addresses[0]._meta.ifspeed</span> <span class="pre">%}</span></tt> and <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">jq</span> <span class="pre">.addresses[1]._meta.ifspeed</span> <span class="pre">%}</span></tt> are standalone queries selecting a JSON integer from each of the address object in the list. That means the quotes will get dropped in the result. This yields the following expanded task:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
     <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
@@ -429,8 +429,8 @@
       <span class="s">&quot;group&quot;</span><span class="p">:</span><span class="s">&quot;throughput_group&quot;</span><span class="p">,</span>
       <span class="s">&quot;test&quot;</span><span class="p">:</span><span class="s">&quot;throughput_test&quot;</span><span class="p">,</span>
       <span class="s">&quot;reference&quot;</span><span class="p">:{</span>
-         <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
-         <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq addresses[1]._meta.ifspeed %}&quot;</span>
+         <span class="s">&quot;source_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq .addresses[0]._meta.ifspeed %}&quot;</span><span class="p">,</span>
+         <span class="s">&quot;dest_ifspeed&quot;</span><span class="p">:</span><span class="s">&quot;{% jq ,addresses[1]._meta.ifspeed %}&quot;</span>
       <span class="p">}</span>
    <span class="p">}</span>
 <span class="p">}</span>
@@ -793,7 +793,7 @@
     </footer>
     
     <div class="footer">
-        &copy; Copyright 2019, perfSONAR Project.
+        &copy; Copyright 2020, perfSONAR Project.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
