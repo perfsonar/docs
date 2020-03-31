@@ -24,7 +24,7 @@ Runs also have a status depending on whether they have already run or are still 
     
     * **Pending** - This run is scheduled to execute at some point in the future
     * **On Deck** - This run is scheduled to execute and will begin execution very soon
-    * **Running** - This run is in the middle of execution
+    * **Running** - This run is on the verge of executing or has started execution
     * **Cleanup** - This run completed execution and is doing some final operations
     * **Finished** - The run has already executed and finished successfully
     * **Overdue** - The run was scheduled to execute at a certain time in the past but did not. It may get executed soon if it is not beyond a certain threshold.
