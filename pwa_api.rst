@@ -27,7 +27,7 @@ You can now use most of the PWA REST APIs as documented here.
 
 ..
 
-   https://hostname/apidoc/
+   https://hostname/pwa/apidoc/
 
 
 For example, to query for the hostgroups, you can do something like
@@ -38,7 +38,7 @@ For example, to query for the hostgroups, you can do something like
    curl -k \
        -H "Authorization: Bearer $jwt" \
        -H "Content-Type: application/json" \
-       -X POST https://<hostname>/api/pwa/hostgroup?limit=1
+       -X POST https://<hostname>/pwa/api/pwa/hostgroup?limit=1
 
 .. code-block:: json
 

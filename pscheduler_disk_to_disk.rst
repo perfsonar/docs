@@ -6,7 +6,7 @@ Overview
 ---------
 This document describes how to install the plug-in for perfSONAR disk-to-disk tests. This includes tools for standard curl tool as well as GridFTP using Globus. The sections below walk-through the following:
  
- #. How to setup your yum repositories to use the *staging* perfSONAR repo that contains the disk-to-disk test plugin and associated tools.
+ #. How to setup your yum repositories to use the perfSONAR repo that contains the disk-to-disk test plugin and associated tools.
  #. Installing perfSONAR and the new plugins using yum
  #. Configuring Globus using provided Ansible roles
  #. Commands for performing disk-to-disk transfers with pScheduler
@@ -14,15 +14,15 @@ This document describes how to install the plug-in for perfSONAR disk-to-disk te
 
 Configuring Yum Repositories
 ------------------------------------
-You need to use the perfSONAR staging yum repository to get the plug-ins. **It is NOT recommended you do this on a production host** as the staging repository contains software still under active development. You can setup the repository with the commands below::
+You can setup the yum repository with the commands below::
  
     yum install epel-release
-    yum install https://perfsonar-dev3.grnoc.iu.edu/staging/el/7/x86_64/perfsonar/latest/packages/perfSONAR-repo-staging-0.9-1.noarch.rpm
+    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.9-1.noarch.rpm
     yum clean all
 
 Installing perfSONAR
 ------------------------------------
-Once the staging repository is configured you can install perfSONAR and the associated plug-ins using the commands below::
+Once the repository is configured you can install perfSONAR and the associated plug-ins using the commands below::
 
     yum install perfsonar-testpoint pscheduler-test-disk-to-disk pscheduler-tool-curl pscheduler-tool-globus
 

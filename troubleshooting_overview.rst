@@ -8,20 +8,10 @@ This page contains some hints on how to troubleshoot perfSONAR 4.0 and later. Yo
 System
 ******
 
--------
-SELinux
--------
-If you are unable to open perfSONAR Toolkit Web interface make sure if SELinux is disabled. In order to check if SELinux is disabled or in permissive mode issue the following command::
-
-    getenforce
-
-If SELinux is in Enforcing mode, change it to permissive and make the change permanent::
-
-    setenforce Permissive
-    sed -i -e 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
-
-
-
+**********
+Logs
+**********
+Check the logs using the information :doc:`here <manage_logs>`.
 
 **********
 pScheduler

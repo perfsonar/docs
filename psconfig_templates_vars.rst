@@ -223,12 +223,12 @@ The ``jq`` template variable takes the following form::
 
 The *SCRIPT* is the jq to be executed. The JSON object on which the jq operates is a special form of the template itself, including only those elements relating to the individual task being generated. Specifically, the JSON being queried has the following sections:
 
-* ``addresses`` which is an array of the *address* object for this particular task. This means a variable like ``{% jq addresses[0].address %}`` is the exact equivalent of the ``{% address[0] %}`` template variable (see :ref:`psconfig_templates_vars-address`).
-* ``archives`` is an array of the *archive* objects to be used for this task. A query such as ``{% jq archives[0].archiver %}`` returns the type of the first archiver in the list. The order is not guaranteed, so plan scripts accordingly if using more than one archiver for a task.
-*  ``contexts`` is a two-dimensional array of the *context* objects to be used for this task. The index at the first level of the array corresponds with the index of the *address* object that is associated with the *context* objects in the list at the second level. A query such as ``{% jq contexts[0] %}`` returns an array of all the *context* objects associated with the first *address* object. The order within the second level of the context list is not guaranteed, so plan scripts accordingly if using more than one context for an address. If an address has no contexts, then the array will be empty.
-*  ``hosts`` is an array of the *host* objects to be used for this task. The index of a host maps to the address to which that host belongs. If an address does not belong to a host, an empty object will be at that position. A script such as ``{% jq host[0].tags %}`` returns the tags of the host associated with the first address.
-*  ``task`` is the *task* object exactly as defined in the template.  A script such as ``{% jq task.tools %}`` returns the ``tools`` array of the task.
-*  ``test`` is the *test* object exactly as defined in the template.  A script such as ``{% jq test.type %}`` returns the ``type`` of the task.
+* ``addresses`` which is an array of the *address* object for this particular task. This means a variable like ``{% jq .addresses[0].address %}`` is the exact equivalent of the ``{% address[0] %}`` template variable (see :ref:`psconfig_templates_vars-address`).
+* ``archives`` is an array of the *archive* objects to be used for this task. A query such as ``{% jq .archives[0].archiver %}`` returns the type of the first archiver in the list. The order is not guaranteed, so plan scripts accordingly if using more than one archiver for a task.
+*  ``contexts`` is a two-dimensional array of the *context* objects to be used for this task. The index at the first level of the array corresponds with the index of the *address* object that is associated with the *context* objects in the list at the second level. A query such as ``{% jq .contexts[0] %}`` returns an array of all the *context* objects associated with the first *address* object. The order within the second level of the context list is not guaranteed, so plan scripts accordingly if using more than one context for an address. If an address has no contexts, then the array will be empty.
+*  ``hosts`` is an array of the *host* objects to be used for this task. The index of a host maps to the address to which that host belongs. If an address does not belong to a host, an empty object will be at that position. A script such as ``{% jq .host[0].tags %}`` returns the tags of the host associated with the first address.
+*  ``task`` is the *task* object exactly as defined in the template.  A script such as ``{% jq .task.tools %}`` returns the ``tools`` array of the task.
+*  ``test`` is the *test* object exactly as defined in the template.  A script such as ``{% jq .test.type %}`` returns the ``type`` of the task.
 
 The JSON type returned by ``jq`` template variables depends on your query. It is important to keep this in mind when using these variables because the cost of the extra flexibility means unexpected things can happen if one is not careful.
 
@@ -276,8 +276,8 @@ Let's take a look at an example where we have the following template using the `
                 "group": "throughput_group",
                 "test": "throughput_test",
                 "reference": {
-                    "source_ifspeed": "{% jq addresses[0]._meta.ifspeed %}",
-                    "dest_ifspeed": "{% jq addresses[1]._meta.ifspeed %}"
+                    "source_ifspeed": "{% jq .addresses[0]._meta.ifspeed %}",
+                    "dest_ifspeed": "{% jq .addresses[1]._meta.ifspeed %}"
                 }
             }
         }
@@ -321,13 +321,13 @@ For the first address pair, the JSON generated against which we can run our jq s
           "group":"throughput_group",
           "test":"throughput_test",
           "reference":{
-             "source_ifspeed":"{% jq addresses[0]._meta.ifspeed %}",
-             "dest_ifspeed":"{% jq addresses[1]._meta.ifspeed %}"
+             "source_ifspeed":"{% jq .addresses[0]._meta.ifspeed %}",
+             "dest_ifspeed":"{% jq .addresses[1]._meta.ifspeed %}"
           }
        }
     }
 
-Our variables ``{% jq addresses[0]._meta.ifspeed %}`` and ``{% jq addresses[1]._meta.ifspeed %}`` are standalone queries selecting a JSON integer from each of the address object in the list. That means the quotes will get dropped in the result. This yields the following expanded task::
+Our variables ``{% jq .addresses[0]._meta.ifspeed %}`` and ``{% jq .addresses[1]._meta.ifspeed %}`` are standalone queries selecting a JSON integer from each of the address object in the list. That means the quotes will get dropped in the result. This yields the following expanded task::
 
     {
         "group":"throughput_group",
@@ -369,8 +369,8 @@ For the second address pair, we get the following JSON against which we can run 
           "group":"throughput_group",
           "test":"throughput_test",
           "reference":{
-             "source_ifspeed":"{% jq addresses[0]._meta.ifspeed %}",
-             "dest_ifspeed":"{% jq addresses[1]._meta.ifspeed %}"
+             "source_ifspeed":"{% jq .addresses[0]._meta.ifspeed %}",
+             "dest_ifspeed":"{% jq ,addresses[1]._meta.ifspeed %}"
           }
        }
     }

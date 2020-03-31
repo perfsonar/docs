@@ -9,7 +9,7 @@ Container   Description
 pwa-admin   PWA UI and API
 pwa-pub     Publisher, used for publishing Configs defined in PWA
 sca-auth    Authentication module used by the GUI
-nigninx     Web server, used as a proxy to access the PWA and SCA components
+ngninx      Web server, used as a proxy to access the PWA and SCA components
 mongodb     MongoDB, used by pwa-admin and pwa-pub
 postfix     Optional, if you want to run a mail server in another docker container, install this
 =========   ===========

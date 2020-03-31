@@ -24,7 +24,7 @@ Config Parameters
 
 When adding or editing a Config, these parameters are available.
 
-* URL: Trailing URL for this Config. For example, if you enter ``foo``, you will be able to download this Config via ``http://<hostname>/pub/config/foo``
+* URL: Trailing URL for this Config. For example, if you enter ``foo``, you will be able to download this Config via ``http://<hostname>/pwa/pub/config/foo``
 
 * Config Name: Name of the Config; also used as description for the Config.
 
@@ -61,7 +61,7 @@ The output should look something like this:
 If you want to browse JSON files formatted in a human readable way, you can install the `JSONView <https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?utm_source=chrome-app-launcher-info-dialog>`_ extension for Chrome, or similar plugins for other browsers.
 
 
-Auto Config
+Auto Configs
 ----------------------------------
 
 .. image:: images/pwa/autoconfig.png
@@ -70,8 +70,15 @@ Under "Configs" tab, you immediately see "Auto Config". Auto Config a special Co
 
 To generate Auto config, simply choose a hostname from the hostname dropdown list.
 
-Here is an example of Auto Config URL
+Here is an example of Auto Config URL:
 
-``http://<pwahostname>/pub/auto/<endpointhostname>``
+``http://<pwahostname>/pwa/pub/auto/<endpointhostname>``
 
 You can modify the trailing hostname to create a different auto-URL.
+
+Listing all configs
+----------------------------------
+
+You can also list all configs available by visiting the following URL:
+
+``http://<pwahostname>/pwa/pub/config``

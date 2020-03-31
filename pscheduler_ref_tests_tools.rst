@@ -32,10 +32,20 @@ clock
 :Description: Measure the clock difference between hosts
 :Tools: psclock
 
+disk-to-disk
+#################
+:Description: Network testing of throughput and Read/Write speeds
+:Tools: curl, globus
+
 dns
 ############
 :Description: Measure DNS transaction time
 :Tools: dnspy
+
+http
+############
+:Description: Measure HTTP response time
+:Tools: psurl
 
 latency
 ############
@@ -75,7 +85,7 @@ Each test classified in one of four categories that determines what other tests 
 
     #. **Exclusive** - These are tests that cannot run at the same time as any other exclusive or normal test. An example is a *throughput* test. If you have very frequent tests in this category then you may have difficulty finding a timeslot for new tests.
     #. **Normal** - These are tests that can run at the same time as other normal and background tests, but cannot run at the same time as exclusive tests. An example is a task with a test type of *latency*.
-    #. **Background** - These are tests that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include *rtt* and *trace* or *clock*. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.
+    #. **Background** - These are tests that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include *rtt*, *trace*, *http*, *dns* or *clock*. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.
     #. **Background-multi** - These are tests that can be run in parallel with any other test and produce multiple results that appear as separate runs. Example test type is *latencybg* that runs continuously.
 	
 You may visualize different types of tests using ``pscheduler plot-schedule`` command. See also :ref:`pscheduler_client_schedule-plot_schedule`.
@@ -238,6 +248,64 @@ The currently 2 supported protocols for RTT measurements are ``icmp`` and ``twam
 trace Tests
 ===========
 
+Trace tests support the following arguments::
+
+  pscheduler task trace --help
+  Usage: task [task-options] trace [test-options]
+
+  -h, --help                  show this help message and exit
+  --algorithm=ALGORITHM       Trace algorithm
+  --as                        Find AS for each hop
+  --no-as                     Don't find AS for each hop
+  -d DEST, --dest=DEST        Destination host
+  --ip-version=IPVERSION      IP Version
+  --length=LENGTH             Packet length
+  --probe-type=PROBETYPE      Probe type
+  --fragment                  Allow fragmentation
+  --no-fragment               Don't allow fragmentation
+  --first-ttl=FIRSTTTL        First TTL value
+  -s SOURCE, --source=SOURCE  Source address
+  --source-node=SOURCE_NODE   Source address
+  --hops=HOPS                 Maximum number of hops
+  --queries=QUERIES           Queries sent per hop
+  --hostnames                 Resolve IPs to host names
+  --no-hostnames              Don't resolve IPs to host names
+  --dest-port=DESTPORT        Destination port
+  --wait=WAIT                 Wait time
+  --sendwait=SENDWAIT         Wait time between probes
+  --ip-tos=IP_TOS             IP type-of-service octet (integer)
+
 The currently supported trace tools are *traceroute*, *tracepath*, *paris-traceroute*. *traceroute* is the default.
 
 .. note:: Please note that if you have a server that has more then one network interface the *tracepath* tool does not provide an option to select the outgoing source interface.
+
+http Tests
+==========
+
+HTTP tests support the following arguments::
+
+  pscheduler task http --help
+  Usage: task [task-options] http [test-options]
+  
+  -h, --help             show this help message and exit
+  --url=URL              URL to query
+  --parse=PARSE          String to parse for
+  --host=HOST            Host to run the test
+  --host-node=HOST_NODE  Host to run the test
+  --timeout=TIMEOUT      Timeout for each query attempt
+  
+dns Tests
+==========
+
+DNS tests support the following arguments::
+
+  pscheduler task dns --help
+  Usage: task [task-options] dns [test-options]
+  
+  -h, --help               show this help message and exit
+  --host=HOST              Host to run the test
+  --host-node=HOST_NODE    Host to run the test
+  --nameserver=NAMESERVER  Nameserver to query
+  --record=RECORD          Record type to query  (One of a, aaaa, ns, cname, soa, ptr, mx and txt)
+  --query=QUERY            String to query
+  --timeout=TIMEOUT        Timeout for each query attempt

@@ -32,7 +32,7 @@ The process configures yum to point at the necessary repositories to get package
 
 #. Install the perfSONAR-repo RPM::
 
-    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.8-1.noarch.rpm
+    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.9-1.noarch.rpm
 
 #. Refresh yum's cache so it detects the new RPMS::
 
@@ -190,6 +190,8 @@ If they are not running you may start them with appropriate init commands as a r
     systemctl start psconfig-pscheduler-agent
     systemctl start perfsonar-lsregistrationdaemon
     systemctl start owamp-server
+
+In order to find more information about services running in perfSONAR bundles visit :doc:`manage_daemons`.
 
 Configuring Central Management
 -------------------------------
