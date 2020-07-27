@@ -24,6 +24,8 @@ Everything in pScheduler begins with requesting a :term:`test` which in turn wil
 
 .. note:: This document highlights the list of test types and tools installed by default when installing pScheduler with perfSONAR. It is possible for others to write their own test and tool plug-ins so this list may not be exhaustive of all tests and tools available.
 
+.. _pscheduler_ref_tests_tools-test_types:
+
 Test Types
 ===========
 
