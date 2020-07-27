@@ -184,6 +184,7 @@ For example::
     {
         "name": "internal",
         "description": "Requests arriving on our internal-facing interface",
+        "type": "hint",
         "data": {
             "hint": "server",
             "match": {
@@ -485,6 +486,12 @@ array of *classifier objects*, each containing the following pairs:
 - ``description`` - A human-readable string describing the classifier.
 - ``identifiers`` - An array of strings indicating what identifiers
   should be part of the classifier.
+- ``require`` - A string specifying how many of the listed identifiers
+  must be present for the requester to meet the requested
+  classification.  Valid values are ``none``, ``one``, ``any`` and
+  ``all``.  If not provided, the default behavior will be ``any``.
+  (Use of this parameter requires a ``schema`` of ``4`` or higher.)
+
 
 For example::
 
@@ -505,6 +512,12 @@ For example::
                 "name": "neutrals",
                 "description": "Requesters we neither like nor dislike",
                 "identifiers": [ "everybody" ]
+            },
+            {
+                "name": "r-and-e-partners",
+                "description": "Partners from research and education"
+                "identifiers": [ "partners", "r-and-e" ],
+		"require": "all"
             },
         ...
     }
