@@ -146,6 +146,25 @@ Test parameters may be changed on the fly by adding them to the command line aft
     pscheduler task --import mytask.json throughput --dest somewhere.else
 
 
+
+.. _pscheduler_client_tasks-substitutions:
+
+Substituting Files for Test Parameters
+--------------------------------------
+
+All test parameters (i.e., those after the test type) may have their
+values read from a file by preceding the path to the file with an
+at sign (``@``)::
+
+    pscheduler task throughput --dest @~/mystuff/destination.txt --duration PT1M
+
+For arguments that need to begin with a literal ``@``, this feature
+can be disabled by escaping the first character with a backslash::
+
+    pscheduler task idle --starting-comment '\@keep-this-argument-as-is' --duration PT2S
+
+
+
 .. _pscheduler_client_tasks-canceling:
  
 Canceling Tasks
