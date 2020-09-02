@@ -1,35 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Creating and Managing Tasks &mdash; perfSONAR Toolkit 4.2.4 documentation</title>
-    
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <meta charset="utf-8" />
+    <title>Creating and Managing Tasks &#8212; perfSONAR Toolkit 4.2.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '4.2.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.2.4 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Viewing the Schedule" href="pscheduler_client_schedule.html" />
     <link rel="prev" title="What is pScheduler?" href="pscheduler_intro.html" /> 
-  </head>
-  <body>
+  </head><body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +39,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +51,7 @@
         <li class="right" >
           <a href="pscheduler_intro.html" title="What is pScheduler?"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -70,136 +61,136 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="creating-and-managing-tasks">
 <h1>Creating and Managing Tasks<a class="headerlink" href="#creating-and-managing-tasks" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="the-task-command">
 <span id="pscheduler-client-tasks-taskcmd"></span><h2>The <cite>task</cite> command<a class="headerlink" href="#the-task-command" title="Permalink to this headline">¶</a></h2>
-<p>The <cite>pscheduler task</cite> command is the primary way from the command-line to create new pScheduler <a class="reference internal" href="pscheduler_intro.html#term-task"><em class="xref std std-term">tasks</em></a>. It takes the following form:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task [ TASK_OPTIONS ] TEST_TYPE TEST_OPTIONS
+<p>The <cite>pscheduler task</cite> command is the primary way from the command-line to create new pScheduler <a class="reference internal" href="pscheduler_intro.html#term-task"><span class="xref std std-term">tasks</span></a>. It takes the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="p">[</span> <span class="n">TASK_OPTIONS</span> <span class="p">]</span> <span class="n">TEST_TYPE</span> <span class="n">TEST_OPTIONS</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="the-basics">
 <span id="pscheduler-client-tasks-basics"></span><h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h2>
 <p>The simplest task that can be run is a one-shot test with no special options, such as this one which conducts a round-trip time (<em>rtt</em>) test between the local host and <em>www.perfsonar.net</em>, then displays the results:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task rtt --dest www.perfsonar.net
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-<p>Note that the <tt class="docutils literal"><span class="pre">--dest</span></tt> option following <tt class="docutils literal"><span class="pre">rtt</span></tt> is a <a class="reference internal" href="pscheduler_intro.html#term-test"><em class="xref std std-term">test</em></a> option specific to the test type being requested.  Each test has its own set of options, so what follows the test type will vary.  Most tests that have an option in common that serves the same purpose have consistent names between them.  For example, many tests that involve sending data to another host (<em>rtt</em>, <em>trace</em>, <em>throughput</em>, <em>latency</em>) will specify the other hosts using the <tt class="docutils literal"><span class="pre">--dest</span></tt> option.</p>
-<p>The <tt class="docutils literal"><span class="pre">task</span></tt> command has a set of its own options that go before the test type.  These options are related to how the task is run rather than what test is being conducted.  For example, the <tt class="docutils literal"><span class="pre">--quiet</span></tt> switch suppresses the diagnostic information that is usually produced:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --quiet rtt --dest www.perfsonar.net
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">--dest</span></code> option following <code class="docutils literal notranslate"><span class="pre">rtt</span></code> is a <a class="reference internal" href="pscheduler_intro.html#term-test"><span class="xref std std-term">test</span></a> option specific to the test type being requested.  Each test has its own set of options, so what follows the test type will vary.  Most tests that have an option in common that serves the same purpose have consistent names between them.  For example, many tests that involve sending data to another host (<em>rtt</em>, <em>trace</em>, <em>throughput</em>, <em>latency</em>) will specify the other hosts using the <code class="docutils literal notranslate"><span class="pre">--dest</span></code> option.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">task</span></code> command has a set of its own options that go before the test type.  These options are related to how the task is run rather than what test is being conducted.  For example, the <code class="docutils literal notranslate"><span class="pre">--quiet</span></code> switch suppresses the diagnostic information that is usually produced:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">quiet</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You can get a full listing of supported task options by running <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span> <span class="pre">--help</span></tt>. Likewise you can get a full listing of test-specific options by running <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span> <span class="pre">TEST_TYPE</span> <span class="pre">--help</span></tt> where <tt class="docutils literal"><span class="pre">TEST_TYPE</span></tt> is replaced with the type of test you want to run.</p>
+<p class="admonition-title">Note</p>
+<p>You can get a full listing of supported task options by running <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">task</span> <span class="pre">--help</span></code>. Likewise you can get a full listing of test-specific options by running <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">task</span> <span class="pre">TEST_TYPE</span> <span class="pre">--help</span></code> where <code class="docutils literal notranslate"><span class="pre">TEST_TYPE</span></code> is replaced with the type of test you want to run.</p>
 </div>
 </div>
 <div class="section" id="running-tests-from-other-hosts">
 <span id="pscheduler-client-tasks-otherhosts"></span><h2>Running Tests from Other Hosts<a class="headerlink" href="#running-tests-from-other-hosts" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler determines where to submits a task based on the test parameters. Where a task needs to be submitted is called the <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><em class="xref std std-term">lead participant</em></a>. For many tests run by perfSONAR, a <tt class="docutils literal"><span class="pre">--source</span></tt> switch which specifies where the test should originate and is also the <em>lead participant</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task throughput --source host2 --dest host3
+<p>pScheduler determines where to submits a task based on the test parameters. Where a task needs to be submitted is called the <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><span class="xref std std-term">lead participant</span></a>. For many tests run by perfSONAR, a <code class="docutils literal notranslate"><span class="pre">--source</span></code> switch which specifies where the test should originate and is also the <em>lead participant</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">source</span> <span class="n">host2</span> <span class="o">--</span><span class="n">dest</span> <span class="n">host3</span>
 </pre></div>
 </div>
 <p>If the example command above is run on <em>host1</em>, then the client will submit the task to <em>host2</em> and the test will be run between <em>host2</em> and <em>host3</em>.</p>
-<p>Not all tests use the source to calculate the lead participant and determining it can get complicated when dealing with things like BWCTL backward compatibility, etc. Luckily, each test plug-in installed on a pScheduler server has the logic required to calculate the lead in the face of this complexity. This does mean though, that the <tt class="docutils literal"><span class="pre">pscheduler</span></tt> command needs to be able to ask a pScheduler server, called the <a class="reference internal" href="pscheduler_intro.html#term-assist-server"><em class="xref std std-term">assist server</em></a>, where a task needs to be submitted.</p>
-<p>By default, the <tt class="docutils literal"><span class="pre">pscheduler</span></tt> command will assume there is a pScheduler server running on the local host and try to contact that as the default assist server. If there is NOT a pScheduler server on the local host, then you need to use the <tt class="docutils literal"><span class="pre">--assist</span></tt> flag. For example, say we run the following on <em>host4</em> and it does not have a pScheduler server but we know that <em>host1</em> does. Our command could be as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --assist host1 throughput --source host2 --dest host3
+<p>Not all tests use the source to calculate the lead participant and determining it can get complicated when dealing with things like BWCTL backward compatibility, etc. Luckily, each test plug-in installed on a pScheduler server has the logic required to calculate the lead in the face of this complexity. This does mean though, that the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command needs to be able to ask a pScheduler server, called the <a class="reference internal" href="pscheduler_intro.html#term-assist-server"><span class="xref std std-term">assist server</span></a>, where a task needs to be submitted.</p>
+<p>By default, the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command will assume there is a pScheduler server running on the local host and try to contact that as the default assist server. If there is NOT a pScheduler server on the local host, then you need to use the <code class="docutils literal notranslate"><span class="pre">--assist</span></code> flag. For example, say we run the following on <em>host4</em> and it does not have a pScheduler server but we know that <em>host1</em> does. Our command could be as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">assist</span> <span class="n">host1</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">source</span> <span class="n">host2</span> <span class="o">--</span><span class="n">dest</span> <span class="n">host3</span>
 </pre></div>
 </div>
-<p>The assist server could just as easily be <tt class="docutils literal"><span class="pre">host2</span></tt> or <tt class="docutils literal"><span class="pre">host3</span></tt> if they are also running pScheduler servers. It does not matter where the assist server is as long as it a) has a pScheduler server and b) has the test plugin installed for the type of test you want to run.</p>
+<p>The assist server could just as easily be <code class="docutils literal notranslate"><span class="pre">host2</span></code> or <code class="docutils literal notranslate"><span class="pre">host3</span></code> if they are also running pScheduler servers. It does not matter where the assist server is as long as it a) has a pScheduler server and b) has the test plugin installed for the type of test you want to run.</p>
 </div>
 <div class="section" id="selecting-tool-s-for-tasks">
 <span id="pscheduler-client-tasks-tools"></span><h2>Selecting Tool(s) for Tasks<a class="headerlink" href="#selecting-tool-s-for-tasks" title="Permalink to this headline">¶</a></h2>
 <p>By default, pScheduler will automatically select a tool for a task based on three factors:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Availability of tools on each of the participating nodes that can conduct the type of test requested.</li>
-<li>The ability of those tools to carry out the test according to the parameters.  Not all tools are capable of making good on all of the parameters.  For example, <em>traceroute</em> is capable of setting the number of hops allowed by adjusting the time to live but <em>tracepath</em> is not.  In a <em>trace</em> test where this is requested, <em>traceroute</em> will list itself as able to participate but <em>tracepath</em> will not.</li>
-<li>A preference value hard-wired into each tool by its authors.  If multiple tools can carry out a task as requested, pScheduler will select one with the highest preference value or, in the event of a tie, the one that is alphabetically first.  The preference value is used to promote the use of newer, better tools while still keeping older, deprecated tools available for situations where they&#8217;re required.</li>
+<li><p>Availability of tools on each of the participating nodes that can conduct the type of test requested.</p></li>
+<li><p>The ability of those tools to carry out the test according to the parameters.  Not all tools are capable of making good on all of the parameters.  For example, <em>traceroute</em> is capable of setting the number of hops allowed by adjusting the time to live but <em>tracepath</em> is not.  In a <em>trace</em> test where this is requested, <em>traceroute</em> will list itself as able to participate but <em>tracepath</em> will not.</p></li>
+<li><p>A preference value hard-wired into each tool by its authors.  If multiple tools can carry out a task as requested, pScheduler will select one with the highest preference value or, in the event of a tie, the one that is alphabetically first.  The preference value is used to promote the use of newer, better tools while still keeping older, deprecated tools available for situations where they’re required.</p></li>
 </ol>
 </div></blockquote>
-<p>Using the <tt class="docutils literal"><span class="pre">--tool</span></tt> switch, the user can control what tool(s) pScheduler selects for a task:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --tool tracepath trace --dest www.perfsonar.net
+<p>Using the <code class="docutils literal notranslate"><span class="pre">--tool</span></code> switch, the user can control what tool(s) pScheduler selects for a task:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">tool</span> <span class="n">tracepath</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-<p>This will specify that the <tt class="docutils literal"><span class="pre">tracepath</span></tt> tool should be used for running the test.  Similarly, repeating the switch forms a list of acceptable tools with those specified earlier being preferred over those specified later.  For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --tool tracepath --tool paris-traceroute trace --dest www.perfsonar.net
+<p>This will specify that the <code class="docutils literal notranslate"><span class="pre">tracepath</span></code> tool should be used for running the test.  Similarly, repeating the switch forms a list of acceptable tools with those specified earlier being preferred over those specified later.  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">tool</span> <span class="n">tracepath</span> <span class="o">--</span><span class="n">tool</span> <span class="n">paris</span><span class="o">-</span><span class="n">traceroute</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
 <p>Whether or not tools are specified, a task where no available tool is capable of making the measurement will be rejected.</p>
 </div>
 <div class="section" id="repeating-tasks">
 <span id="pscheduler-client-tasks-repeating"></span><h2>Repeating Tasks<a class="headerlink" href="#repeating-tasks" title="Permalink to this headline">¶</a></h2>
-<p>Any pScheduler task can be configured to run repeatedly by adding options to the <tt class="docutils literal"><span class="pre">task</span></tt> command:</p>
+<p>Any pScheduler task can be configured to run repeatedly by adding options to the <code class="docutils literal notranslate"><span class="pre">task</span></code> command:</p>
 <blockquote>
 <div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">--start</span> <span class="pre">TIMESTAMP</span></tt> - Run the first iteration of the task at _timestamp_.</li>
-<li><tt class="docutils literal"><span class="pre">--repeat</span> <span class="pre">DURATION</span></tt> - Repeat runs at intervals of <tt class="docutils literal"><span class="pre">DURATION</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">--max-runs</span> <span class="pre">N</span></tt> - Allow the task to run up to <tt class="docutils literal"><span class="pre">N</span></tt> times.</li>
-<li><tt class="docutils literal"><span class="pre">--until</span> <span class="pre">TIMESTAMP</span></tt> - Repeat runs of the task until <tt class="docutils literal"><span class="pre">TIMESTAMP</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">--slip</span> <span class="pre">DURATION</span></tt> - Allow the start of each run to be as much as <tt class="docutils literal"><span class="pre">DURATION</span></tt> later than their ideal scheduled time.  If the environment variable <em>PSCHEDULER_SLIP</em> is present, its value will be used as a default, and.  Failing that, the default will be <tt class="docutils literal"><span class="pre">PT5M</span></tt>.  (Note that the slip value also applies to non-repeating tasks.)</li>
-<li><tt class="docutils literal"><span class="pre">--sliprand</span></tt> - Randomly choose a timeslot within the allowed slip instead of choosing earliest available</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--start</span> <span class="pre">TIMESTAMP</span></code> - Run the first iteration of the task at _timestamp_.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--repeat</span> <span class="pre">DURATION</span></code> - Repeat runs at intervals of <code class="docutils literal notranslate"><span class="pre">DURATION</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max-runs</span> <span class="pre">N</span></code> - Allow the task to run up to <code class="docutils literal notranslate"><span class="pre">N</span></code> times.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--until</span> <span class="pre">TIMESTAMP</span></code> - Repeat runs of the task until <code class="docutils literal notranslate"><span class="pre">TIMESTAMP</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--slip</span> <span class="pre">DURATION</span></code> - Allow the start of each run to be as much as <code class="docutils literal notranslate"><span class="pre">DURATION</span></code> later than their ideal scheduled time.  If the environment variable <em>PSCHEDULER_SLIP</em> is present, its value will be used as a default, and.  Failing that, the default will be <code class="docutils literal notranslate"><span class="pre">PT5M</span></code>.  (Note that the slip value also applies to non-repeating tasks.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--sliprand</span></code> - Randomly choose a timeslot within the allowed slip instead of choosing earliest available</p></li>
 </ul>
 </div></blockquote>
 <p>For example, to measure round-trip time 50 times once per hour:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --repeat PT1H --max-runs 50 rtt --dest www.perfsonar.net
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">repeat</span> <span class="n">PT1H</span> <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">runs</span> <span class="mi">50</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
 <p>It is strongly recommended that repeating tasks apply as much slip as is tolerable to allow pScheduler to work around scheduling conflicts.  Larger slip values will will give tasks a better chance of executing.  For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --repeat PT1H --slip PT30M rtt --dest www.perfsonar.net
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">repeat</span> <span class="n">PT1H</span> <span class="o">--</span><span class="n">slip</span> <span class="n">PT30M</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-<p>Repeating tasks can be stopped using the <tt class="docutils literal"><span class="pre">cancel</span></tt> command.</p>
+<p>Repeating tasks can be stopped using the <code class="docutils literal notranslate"><span class="pre">cancel</span></code> command.</p>
 </div>
 <div class="section" id="archiving-tasks">
 <span id="pscheduler-client-tasks-archiving"></span><h2>Archiving Tasks<a class="headerlink" href="#archiving-tasks" title="Permalink to this headline">¶</a></h2>
-<p>You can tell the <tt class="docutils literal"><span class="pre">pscheduler</span></tt> command to send results to an <a class="reference internal" href="pscheduler_intro.html#term-archiver"><em class="xref std std-term">archiver</em></a> using the <tt class="docutils literal"><span class="pre">--archive</span></tt> switch. The definition you give the archiver can take two forms:</p>
+<p>You can tell the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command to send results to an <a class="reference internal" href="pscheduler_intro.html#term-archiver"><span class="xref std std-term">archiver</span></a> using the <code class="docutils literal notranslate"><span class="pre">--archive</span></code> switch. The definition you give the archiver can take two forms:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>A filename starting with the &#64; symbol that points at a file containing a JSON archiver specification.</li>
-<li>A string literal of the JSON archiver specification</li>
+<li><p>A filename starting with the &#64; symbol that points at a file containing a JSON archiver specification.</p></li>
+<li><p>A string literal of the JSON archiver specification</p></li>
 </ol>
 </div></blockquote>
 <p>For example, the <em>perfsonar-core</em> and <em>perfsonar-toolkit</em> bundles install a special file at <em>/usr/share/pscheduler/psc-archiver-esmond.json</em> with an archiver specification for writing to the locally running esmond instance. You could then use that file to publish a <em>trace</em> test (or any other test) to the local MA instance with the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --archive @/usr/share/pscheduler/psc-archiver-esmond.json trace --dest www.perfsonar.net
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">archive</span> <span class="o">@/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">/</span><span class="n">psc</span><span class="o">-</span><span class="n">archiver</span><span class="o">-</span><span class="n">esmond</span><span class="o">.</span><span class="n">json</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-<p>Alternatively, you could use a JSON string to accomplish the same as follows (replacing <tt class="docutils literal"><span class="pre">abc123</span></tt> with the API key used for your esmond instance)</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --archive &#39;{&quot;archiver&quot;: &quot;esmond&quot;,&quot;data&quot;:{&quot;url&quot;:&quot;http://localhost/esmond/perfsonar/archive/&quot;,&quot;_auth-token&quot;: &quot;abc123&quot;}}&#39; trace --dest www.perfsonar.net
+<p>Alternatively, you could use a JSON string to accomplish the same as follows (replacing <code class="docutils literal notranslate"><span class="pre">abc123</span></code> with the API key used for your esmond instance)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">archive</span> <span class="s1">&#39;{&quot;archiver&quot;: &quot;esmond&quot;,&quot;data&quot;:{&quot;url&quot;:&quot;http://localhost/esmond/perfsonar/archive/&quot;,&quot;_auth-token&quot;: &quot;abc123&quot;}}&#39;</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-<p>For more information on different archivers and their specifications, see <a class="reference internal" href="pscheduler_ref_archivers.html"><em>Archiver Reference</em></a>.</p>
+<p>For more information on different archivers and their specifications, see <a class="reference internal" href="pscheduler_ref_archivers.html"><span class="doc">Archiver Reference</span></a>.</p>
 </div>
 <div class="section" id="exporting-tasks-to-json">
 <span id="pscheduler-client-tasks-exporting"></span><h2>Exporting tasks to JSON<a class="headerlink" href="#exporting-tasks-to-json" title="Permalink to this headline">¶</a></h2>
-<p>The JSON version of a task specification can be sent to the standard output without scheduling using the <tt class="docutils literal"><span class="pre">--export</span></tt> switch:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --export throughput --dest wherever --udp --ip-version 6 &gt; mytask.json
+<p>The JSON version of a task specification can be sent to the standard output without scheduling using the <code class="docutils literal notranslate"><span class="pre">--export</span></code> switch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">export</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">dest</span> <span class="n">wherever</span> <span class="o">--</span><span class="n">udp</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">version</span> <span class="mi">6</span> <span class="o">&gt;</span> <span class="n">mytask</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 <p><strong>NOTE:</strong>  Tasks are not validated until submitted for scheduling, so it is possible to export invalid tasks.</p>
 </div>
 <div class="section" id="importing-tasks-from-json">
 <span id="pscheduler-client-tasks-importing"></span><h2>Importing tasks from JSON<a class="headerlink" href="#importing-tasks-from-json" title="Permalink to this headline">¶</a></h2>
-<p>A JSON file that was previously exported or generated elsewhere can be imported using the <tt class="docutils literal"><span class="pre">--import</span></tt> switch:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --import mytask.json throughput
+<p>A JSON file that was previously exported or generated elsewhere can be imported using the <code class="docutils literal notranslate"><span class="pre">--import</span></code> switch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="kn">import</span> <span class="nn">mytask.json</span> <span class="n">throughput</span>
 </pre></div>
 </div>
 <p>Test parameters may be changed on the fly by adding them to the command line after the test type:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler task --import mytask.json throughput --dest somewhere.else
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="kn">import</span> <span class="nn">mytask.json</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">dest</span> <span class="n">somewhere</span><span class="o">.</span><span class="k">else</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="canceling-tasks">
 <span id="pscheduler-client-tasks-canceling"></span><h2>Canceling Tasks<a class="headerlink" href="#canceling-tasks" title="Permalink to this headline">¶</a></h2>
-<p>You may cancel a task with the <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">cancel</span></tt> command which takes the following form:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler cancel TASK_URL
+<p>You may cancel a task with the <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">cancel</span></code> command which takes the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">cancel</span> <span class="n">TASK_URL</span>
 </pre></div>
 </div>
-<p>The <tt class="docutils literal"><span class="pre">TASK_URL</span></tt> is the full URL of the task to be canceled and should have been output by the <tt class="docutils literal"><span class="pre">pscheduler</span> <span class="pre">task</span></tt> command when a task was submitted. This command cancels any future runs of the task specified. The task itself plus all runs prior to the time of the transaction remain intact. Any run of the task which is underway will continue to completion. The task will still be in the database but will be marked as disabled. This means you will still be able to query results of runs completed prior to cancellation but no new results will be generated. A full example of the command is shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre>pscheduler cancel https://ps.example.org/pscheduler/tasks/f1fc3a56-080c-46ec-a777-91c26460a233
+<p>The <code class="docutils literal notranslate"><span class="pre">TASK_URL</span></code> is the full URL of the task to be canceled and should have been output by the <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">task</span></code> command when a task was submitted. This command cancels any future runs of the task specified. The task itself plus all runs prior to the time of the transaction remain intact. Any run of the task which is underway will continue to completion. The task will still be in the database but will be marked as disabled. This means you will still be able to query results of runs completed prior to cancellation but no new results will be generated. A full example of the command is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">cancel</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ps</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">/</span><span class="n">tasks</span><span class="o">/</span><span class="n">f1fc3a56</span><span class="o">-</span><span class="mi">080</span><span class="n">c</span><span class="o">-</span><span class="mi">46</span><span class="n">ec</span><span class="o">-</span><span class="n">a777</span><span class="o">-</span><span class="mi">91</span><span class="n">c26460a233</span>
 </pre></div>
 </div>
 </div>
@@ -247,7 +238,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -259,7 +250,7 @@
         <li class="right" >
           <a href="pscheduler_intro.html" title="What is pScheduler?"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -299,9 +290,9 @@
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
-        &copy; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

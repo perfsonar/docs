@@ -1,35 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Firewalls and Security Software &mdash; perfSONAR Toolkit 4.2.4 documentation</title>
-    
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <meta charset="utf-8" />
+    <title>Firewalls and Security Software &#8212; perfSONAR Toolkit 4.2.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '4.2.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.2.4 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Limiting Tests to R&amp;E Networks Only" href="manage_limits.html" />
     <link rel="prev" title="Configuring a Host with Multiple Interfaces" href="manage_dual_xface.html" /> 
-  </head>
-  <body>
+  </head><body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -48,7 +39,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,7 +51,7 @@
         <li class="right" >
           <a href="manage_dual_xface.html" title="Configuring a Host with Multiple Interfaces"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -70,174 +61,174 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="firewalls-and-security-software">
 <h1>Firewalls and Security Software<a class="headerlink" href="#firewalls-and-security-software" title="Permalink to this headline">¶</a></h1>
 <p>The perfSONAR Toolkit utilizes a number of tools the help protect against attacks on the system. Some of these tools include:</p>
 <blockquote>
 <div><ul class="simple">
-<li>A default set of <em>iptables</em> and <em>ip6tables</em> (for CentOS6) or <em>firewalld</em> (for CentOS7) rules that only allow connections to ports required by perfSONAR tools.</li>
-<li>Inclusion of the <a class="reference external" href="http://www.fail2ban.org">fail2ban</a> intrusion detection system (IDS) to log suspicious activity such as brute-force SSH attacks</li>
+<li><p>A default set of <em>iptables</em> and <em>ip6tables</em> (for CentOS6) or <em>firewalld</em> (for CentOS7) rules that only allow connections to ports required by perfSONAR tools.</p></li>
+<li><p>Inclusion of the <a class="reference external" href="http://www.fail2ban.org">fail2ban</a> intrusion detection system (IDS) to log suspicious activity such as brute-force SSH attacks</p></li>
 </ul>
 </div></blockquote>
-<p>None of these solutions will protect your host from all kinds of attacks so best common practices and good sense should be used when administering your host. In addition to tools like above it&#8217;s important <a class="reference internal" href="manage_update.html"><em>update your host</em></a> with the latest packages and to watch the <a class="reference external" href="http://www.perfsonar.net/about/getting-help/">mailing lists</a> for important security announcements.</p>
+<p>None of these solutions will protect your host from all kinds of attacks so best common practices and good sense should be used when administering your host. In addition to tools like above it’s important <a class="reference internal" href="manage_update.html"><span class="doc">update your host</span></a> with the latest packages and to watch the <a class="reference external" href="http://www.perfsonar.net/about/getting-help/">mailing lists</a> for important security announcements.</p>
 <div class="section" id="default-firewall-rules-and-perfsonar-port-requirements">
 <span id="manage-security-firewall"></span><h2>Default Firewall Rules and perfSONAR port requirements<a class="headerlink" href="#default-firewall-rules-and-perfsonar-port-requirements" title="Permalink to this headline">¶</a></h2>
-<p>The perfSONAR Toolkit uses <em>iptables</em> and <em>ip6tables</em> to implement IPv4 and IPv6 firewall rules respectively. The default configurations for <em>iptabel</em> are in <tt class="docutils literal"><span class="pre">/etc/sysconfig/iptables</span></tt> and <tt class="docutils literal"><span class="pre">/etc/sysconfig/ip6tables</span></tt>. Also see <tt class="docutils literal"><span class="pre">/usr/lib/firewalld/services</span></tt> and <tt class="docutils literal"><span class="pre">/etc/perfsonar/toolkit/perfsonar_firewalld_settings.conf</span></tt> for <em>firewalld</em> settings on CentOS7.</p>
-<p>The current perfSONAR release uses the following ports (used by a Tool when requesting a test. See also <a class="reference internal" href="pscheduler_ref_tests_tools.html"><em>Test and Tool Reference</em></a>) by default:</p>
-<table border="1" class="docutils">
+<p>The perfSONAR Toolkit uses <em>iptables</em> and <em>ip6tables</em> to implement IPv4 and IPv6 firewall rules respectively. The default configurations for <em>iptabel</em> are in <code class="docutils literal notranslate"><span class="pre">/etc/sysconfig/iptables</span></code> and <code class="docutils literal notranslate"><span class="pre">/etc/sysconfig/ip6tables</span></code>. Also see <code class="docutils literal notranslate"><span class="pre">/usr/lib/firewalld/services</span></code> and <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/toolkit/perfsonar_firewalld_settings.conf</span></code> for <em>firewalld</em> settings on CentOS7.</p>
+<p>The current perfSONAR release uses the following ports (used by a Tool when requesting a test. See also <a class="reference internal" href="pscheduler_ref_tests_tools.html"><span class="doc">Test and Tool Reference</span></a>) by default:</p>
+<table class="docutils align-default">
 <colgroup>
-<col width="40%" />
-<col width="31%" />
-<col width="29%" />
+<col style="width: 40%" />
+<col style="width: 31%" />
+<col style="width: 29%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head" colspan="3">perfSONAR Tools Ports</th>
+<thead>
+<tr class="row-odd"><th class="head" colspan="3"><p>perfSONAR Tools Ports</p></th>
 </tr>
-<tr class="row-even"><th class="head">Tool</th>
-<th class="head">TCP ports</th>
-<th class="head">UDP Ports</th>
+<tr class="row-even"><th class="head"><p>Tool</p></th>
+<th class="head"><p>TCP ports</p></th>
+<th class="head"><p>UDP Ports</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-odd"><td>owamp (control)</td>
-<td>861</td>
-<td>&nbsp;</td>
+<tbody>
+<tr class="row-odd"><td><p>owamp (control)</p></td>
+<td><p>861</p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td>owamp (test)</td>
-<td>8760-9960</td>
-<td>8760-9960</td>
+<tr class="row-even"><td><p>owamp (test)</p></td>
+<td><p>8760-9960</p></td>
+<td><p>8760-9960</p></td>
 </tr>
-<tr class="row-odd"><td>twamp (control)</td>
-<td>862</td>
-<td>&nbsp;</td>
+<tr class="row-odd"><td><p>twamp (control)</p></td>
+<td><p>862</p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td>twamp (test)</td>
-<td>18760-19960</td>
-<td>18760-19960</td>
+<tr class="row-even"><td><p>twamp (test)</p></td>
+<td><p>18760-19960</p></td>
+<td><p>18760-19960</p></td>
 </tr>
-<tr class="row-odd"><td>pscheduler</td>
-<td>443</td>
-<td>&nbsp;</td>
+<tr class="row-odd"><td><p>pscheduler</p></td>
+<td><p>443</p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td>traceroute</td>
-<td>&nbsp;</td>
-<td>33434-33634</td>
+<tr class="row-even"><td><p>traceroute</p></td>
+<td></td>
+<td><p>33434-33634</p></td>
 </tr>
-<tr class="row-odd"><td>simplestream</td>
-<td>5890-5900</td>
-<td>&nbsp;</td>
+<tr class="row-odd"><td><p>simplestream</p></td>
+<td><p>5890-5900</p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td>nuttcp</td>
-<td>5000, 5101</td>
-<td>&nbsp;</td>
+<tr class="row-even"><td><p>nuttcp</p></td>
+<td><p>5000, 5101</p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td>iperf3</td>
-<td>5201</td>
-<td>&nbsp;</td>
+<tr class="row-odd"><td><p>iperf3</p></td>
+<td><p>5201</p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td>iperf2</td>
-<td>5001</td>
-<td>&nbsp;</td>
+<tr class="row-even"><td><p>iperf2</p></td>
+<td><p>5001</p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td>ntp</td>
-<td>&nbsp;</td>
-<td>123</td>
+<tr class="row-odd"><td><p>ntp</p></td>
+<td></td>
+<td><p>123</p></td>
 </tr>
 </tbody>
 </table>
 <p>Depending on operating system version used and how your perfSONAR host is customized with additional software (e.g. NDT, BWCTL) additional ports may be applied to the firewall:</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Some tools are deprecated in the latest perfSONAR version but their ports are still left open for those wishing to run them.</p>
+<p class="admonition-title">Note</p>
+<p>Some tools are deprecated in the latest perfSONAR version but their ports are still left open for those wishing to run them.</p>
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="40%" />
-<col width="31%" />
-<col width="29%" />
+<col style="width: 40%" />
+<col style="width: 31%" />
+<col style="width: 29%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head" colspan="3">perfSONAR Tools Ports</th>
+<thead>
+<tr class="row-odd"><th class="head" colspan="3"><p>perfSONAR Tools Ports</p></th>
 </tr>
-<tr class="row-even"><th class="head">Tool</th>
-<th class="head">TCP ports</th>
-<th class="head">UDP Ports</th>
+<tr class="row-even"><th class="head"><p>Tool</p></th>
+<th class="head"><p>TCP ports</p></th>
+<th class="head"><p>UDP Ports</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-odd"><td>bwctl (control)</td>
-<td>4823</td>
-<td>&nbsp;</td>
+<tbody>
+<tr class="row-odd"><td><p>bwctl (control)</p></td>
+<td><p>4823</p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td>bwctl (peer)</td>
-<td>6001-6200</td>
-<td>6001-6200</td>
+<tr class="row-even"><td><p>bwctl (peer)</p></td>
+<td><p>6001-6200</p></td>
+<td><p>6001-6200</p></td>
 </tr>
-<tr class="row-odd"><td>bwctl (test)</td>
-<td>5001-5900</td>
-<td>5001-5900</td>
+<tr class="row-odd"><td><p>bwctl (test)</p></td>
+<td><p>5001-5900</p></td>
+<td><p>5001-5900</p></td>
 </tr>
-<tr class="row-even"><td>ndt (control)</td>
-<td>7123</td>
-<td>&nbsp;</td>
+<tr class="row-even"><td><p>ndt (control)</p></td>
+<td><p>7123</p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td>ndt (test)</td>
-<td>3001-3003</td>
-<td>&nbsp;</td>
+<tr class="row-odd"><td><p>ndt (test)</p></td>
+<td><p>3001-3003</p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td>ndt (flash)</td>
-<td>843</td>
-<td>&nbsp;</td>
+<tr class="row-even"><td><p>ndt (flash)</p></td>
+<td><p>843</p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td>DHCPv6</td>
-<td>&nbsp;</td>
-<td>546, 547</td>
+<tr class="row-odd"><td><p>DHCPv6</p></td>
+<td></td>
+<td><p>546, 547</p></td>
 </tr>
 </tbody>
 </table>
 <p>Some ports are also used to access the perfSOANR Toolkit management interfaces:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="72%" />
-<col width="28%" />
+<col style="width: 72%" />
+<col style="width: 28%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head" colspan="2">perfSONAR Toolkit Ports</th>
+<thead>
+<tr class="row-odd"><th class="head" colspan="2"><p>perfSONAR Toolkit Ports</p></th>
 </tr>
-<tr class="row-even"><th class="head">Tool</th>
-<th class="head">TCP ports</th>
+<tr class="row-even"><th class="head"><p>Tool</p></th>
+<th class="head"><p>TCP ports</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="2">management interface</td>
-<td rowspan="2">80, 443</td>
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>management interface</p></td>
+<td rowspan="2"><p>80, 443</p></td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td rowspan="2">esmond</td>
-<td rowspan="2">80, 443</td>
+<tr class="row-odd"><td rowspan="2"><p>esmond</p></td>
+<td rowspan="2"><p>80, 443</p></td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td rowspan="2">Lookup Service</td>
-<td rowspan="2">8090</td>
+<tr class="row-odd"><td rowspan="2"><p>Lookup Service</p></td>
+<td rowspan="2"><p>8090</p></td>
 </tr>
 <tr class="row-even"></tr>
 </tbody>
 </table>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">ICMP also needs to be open</p>
+<p class="admonition-title">Note</p>
+<p>ICMP also needs to be open</p>
 </div>
 </div>
 <div class="section" id="adding-your-own-firewall-rules">
 <span id="manage-security-custom"></span><h2>Adding Your Own Firewall Rules<a class="headerlink" href="#adding-your-own-firewall-rules" title="Permalink to this headline">¶</a></h2>
 <p>For operating systems using <em>iptables</em>, the rules added by the perfSONAR Toolkit are contained within a special perfSONAR chain of <em>iptables</em> (and <em>ip6tables</em>). You may add rules to the other chains, such as the INPUT chain, just as you would any other firewall rule. It is NOT recommended you change the perfSONAR chain as any changes you make could be overwritten by a software update.</p>
-<p>For operating systems using firewalld (e.g. CentOS 7) it organizes the rules into &#8220;zones&#8221; and makes it more difficult to distinguish perfSONAR rules from custom rules. If you add a standard service to the zone it will get overwritten next time <em>perfsonar-toolkit-security</em> upgrades. We recommend looking at firewalld <a class="reference external" href="https://fedoraproject.org/wiki/Features/FirewalldRichLanguage">rich rules</a> for adding custom rules.</p>
+<p>For operating systems using firewalld (e.g. CentOS 7) it organizes the rules into “zones” and makes it more difficult to distinguish perfSONAR rules from custom rules. If you add a standard service to the zone it will get overwritten next time <em>perfsonar-toolkit-security</em> upgrades. We recommend looking at firewalld <a class="reference external" href="https://fedoraproject.org/wiki/Features/FirewalldRichLanguage">rich rules</a> for adding custom rules.</p>
 <p>For more information see:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://wiki.centos.org/HowTos/Network/IPTables">https://wiki.centos.org/HowTos/Network/IPTables</a></li>
-<li><a class="reference external" href="http://www.firewalld.org/documentation/">http://www.firewalld.org/documentation/</a></li>
+<li><p><a class="reference external" href="https://wiki.centos.org/HowTos/Network/IPTables">https://wiki.centos.org/HowTos/Network/IPTables</a></p></li>
+<li><p><a class="reference external" href="http://www.firewalld.org/documentation/">http://www.firewalld.org/documentation/</a></p></li>
 </ul>
 </div>
 <div class="section" id="fail2ban-intrusion-detection-system">
@@ -246,14 +237,14 @@
 </div>
 <div class="section" id="limiting-tests-to-research-and-education-networks-only">
 <span id="manage-security-ren"></span><h2>Limiting tests to Research and Education Networks Only<a class="headerlink" href="#limiting-tests-to-research-and-education-networks-only" title="Permalink to this headline">¶</a></h2>
-<p>ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page <a class="reference internal" href="manage_limits.html"><em>Limiting Tests to R&amp;E Networks Only</em></a>.</p>
+<p>ESnet provides a file containing all R&amp;E subnets, which is updated nightly. Instructions on how to download this file and configure pScheduler to use it are described on the page <a class="reference internal" href="manage_limits.html"><span class="doc">Limiting Tests to R&amp;E Networks Only</span></a>.</p>
 </div>
 <div class="section" id="managing-login-access">
 <h2>Managing Login Access<a class="headerlink" href="#managing-login-access" title="Permalink to this headline">¶</a></h2>
 <p>perfSONAR nodes are meant to be used, both by local users and the public at large, to perform a variety of network tests.  The open access policy is at odds with ways to mitigate the risk of exposing functionality to those that would cause harm.  The following is a possible approach for managing access to the host:</p>
 <ul class="simple">
-<li>SSHD can be turned off completely if remote access to the machine via the terminal is not need (e.g. in cases where console access is available either directly, or indirectly)</li>
-<li>If SSHD is turned on, consider using a jump host setup wherein access to the perfSONAR node can only be accomplished through a single (or set) of trusted hosts.  This type of restriction can be implemented in IPTables.</li>
+<li><p>SSHD can be turned off completely if remote access to the machine via the terminal is not need (e.g. in cases where console access is available either directly, or indirectly)</p></li>
+<li><p>If SSHD is turned on, consider using a jump host setup wherein access to the perfSONAR node can only be accomplished through a single (or set) of trusted hosts.  This type of restriction can be implemented in IPTables.</p></li>
 </ul>
 </div>
 </div>
@@ -296,7 +287,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -308,7 +299,7 @@
         <li class="right" >
           <a href="manage_dual_xface.html" title="Configuring a Host with Multiple Interfaces"
              >previous</a> |</li>
-        <li><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -348,9 +339,9 @@
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer">
-        &copy; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
