@@ -1,0 +1,751 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Checks &#8212; perfSONAR Toolkit 4.3.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Events" href="maddash_api_events.html" />
+    <link rel="prev" title="Cells" href="maddash_api_cells.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maddash_api_events.html" title="Events"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="maddash_api_cells.html" title="Cells"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="maddash_api_intro.html" accesskey="U">MaDDash API Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="checks">
+<h1>Checks<a class="headerlink" href="#checks" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="retrieving-a-single-check">
+<h2>Retrieving a single check<a class="headerlink" href="#retrieving-a-single-check" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="request">
+<h3>Request<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h3>
+<p>The request is a HTTP GET to the check URL. See below for full summary:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>URL</em></td>
+<td>/maddash/grids/&lt;grid-name&gt;/&lt;row-name&gt;/&lt;column-name&gt;/&lt;check-name&gt;</td>
+</tr>
+<tr class="row-even"><td><em>HTTP Method</em></td>
+<td>GET</td>
+</tr>
+</tbody>
+</table>
+<p><em>URL Parameters</em></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>resultsPerPage</em></td>
+<td>The maximum number of results to return in the history object. Defaults to 10.</td>
+</tr>
+<tr class="row-odd"><td><em>page</em></td>
+<td>The page of results to display. It will start with the result at numResults <cite>*</cite> page (starting with 0 and ordered from newest to oldest check result). Defaults to 0.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="response">
+<h3>Response<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h3>
+<p><em>Type:</em> application/json</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="18%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>gridName</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The name of the grid that contains this check</td>
+</tr>
+<tr class="row-odd"><td><em>rowName</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The name of the row that contains this check</td>
+</tr>
+<tr class="row-even"><td><em>colName</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The name of the column that contains this check</td>
+</tr>
+<tr class="row-odd"><td><em>checkName</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The name of the check</td>
+</tr>
+<tr class="row-even"><td><em>description</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>A description of the check</td>
+</tr>
+<tr class="row-odd"><td><em>prevCheckTime</em></td>
+<td>long</td>
+<td>Yes</td>
+<td>A Unix timestamp (in seconds) when the check previously ran</td>
+</tr>
+<tr class="row-even"><td><em>nextCheckTime</em></td>
+<td>long</td>
+<td>Yes</td>
+<td>A Unix timestamp (in seconds) when the check will run next</td>
+</tr>
+<tr class="row-odd"><td><em>status</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The current status of the check. See the <a class="reference internal" href="maddash_api_grids.html#status-codes"><span class="std std-ref">Status-Codes</span></a> table for values.</td>
+</tr>
+<tr class="row-even"><td><em>returnCode</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The current status of the check. See the <a class="reference internal" href="maddash_api_grids.html#status-codes"><span class="std std-ref">Status-Codes</span></a> table for values.</td>
+</tr>
+<tr class="row-odd"><td><em>message</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The last message returned by the check</td>
+</tr>
+<tr class="row-even"><td><em>type</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The type of check</td>
+</tr>
+<tr class="row-odd"><td><em>params</em></td>
+<td>Object</td>
+<td>Yes</td>
+<td>Type specific check configuration parameters</td>
+</tr>
+<tr class="row-even"><td><em>returnCodeCount</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The number of times a the returnCode was seen if its different than the current status. 0 if same as status.</td>
+</tr>
+<tr class="row-odd"><td><em>checkInterval</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The time in between checks if the returnCode and status are the same</td>
+</tr>
+<tr class="row-even"><td><em>retryInterval</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The time in between checks if the status and returnCode are different</td>
+</tr>
+<tr class="row-odd"><td><em>retryAttempts</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The number of times a returnCode different than the status must be seen before changing the status</td>
+</tr>
+<tr class="row-even"><td><em>globalReport</em></td>
+<td><a class="reference internal" href="maddash_api_reports.html#api-reports-report-object"><span class="std std-ref">Report Object</span></a></td>
+<td>No</td>
+<td>A report of any problems affecting the parent grid of this check</td>
+</tr>
+<tr class="row-odd"><td><em>rowReport</em></td>
+<td><a class="reference internal" href="maddash_api_reports.html#api-reports-report-object"><span class="std std-ref">Report Object</span></a></td>
+<td>No</td>
+<td>A report of any problems affecting the row of this check</td>
+</tr>
+<tr class="row-even"><td><em>collReport</em></td>
+<td><a class="reference internal" href="maddash_api_reports.html#api-reports-report-object"><span class="std std-ref">Report Object</span></a></td>
+<td>No</td>
+<td>A report of any problems affecting the column of this check</td>
+</tr>
+<tr class="row-odd"><td><em>historyPageCount</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The number of pages available for the history. Assumes the current result set size.</td>
+</tr>
+<tr class="row-even"><td><em>historyResultsPerPage</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The maximum number of results per page. Echos the resultsPerPage URL parameter.</td>
+</tr>
+<tr class="row-odd"><td><em>history</em></td>
+<td>array of objects</td>
+<td>Yes</td>
+<td>An array of previous results for this check. If page is 0 then teh first check is the most recent check run</td>
+</tr>
+<tr class="row-even"><td><em>history[n].time</em></td>
+<td>long</td>
+<td>Yes</td>
+<td>A Unix timestamp (seconds) when the check was run.</td>
+</tr>
+<tr class="row-odd"><td><em>history[n].returnCode</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The return code of this check. See the <a class="reference internal" href="maddash_api_grids.html#status-codes"><span class="std std-ref">Status-Codes</span></a> table for values.</td>
+</tr>
+<tr class="row-even"><td><em>history[n].message</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>The message returned by this check</td>
+</tr>
+<tr class="row-odd"><td><em>history[n].returnParams</em></td>
+<td>object</td>
+<td>Yes</td>
+<td>Type specific parameters returned by this check</td>
+</tr>
+<tr class="row-even"><td><em>history[n].returnCodeCount</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The number of times this return code was seen, if different than the status. 0 if same as status.</td>
+</tr>
+<tr class="row-odd"><td><em>history[n].status</em></td>
+<td>int</td>
+<td>Yes</td>
+<td>The status of the check at the time this check was run</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;gridName&quot;</span><span class="p">:</span><span class="s2">&quot;ESnet - 100G ESnet Hub to 100G ESnet Hub Throughput Testing&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;rowName&quot;</span><span class="p">:</span><span class="s2">&quot;denv-pt1.es.net&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;colName&quot;</span><span class="p">:</span><span class="s2">&quot;chic-pt1.es.net&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;checkName&quot;</span><span class="p">:</span><span class="s2">&quot;Throughput Reverse&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;Throughput from chic-pt1.es.net to denv-pt1.es.net&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;prevCheckTime&quot;</span><span class="p">:</span><span class="mi">1468945283</span><span class="p">,</span>
+   <span class="s2">&quot;nextCheckTime&quot;</span><span class="p">:</span><span class="mi">1468959683</span><span class="p">,</span>
+   <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+   <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+   <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 9.066Gbps &quot;</span><span class="p">,</span>
+   <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+   <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;net.es.maddash.checks.PSNagiosCheck&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;params&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="s2">&quot;/usr/lib64/nagios/plugins/check_throughput.pl -u %maUrl -w 5: -c 1: -r 86400 -s </span><span class="si">%c</span><span class="s2">ol -d </span><span class="si">%r</span><span class="s2">ow -p tcp&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;checkInterval&quot;</span><span class="p">:</span><span class="mi">14400</span><span class="p">,</span>
+   <span class="s2">&quot;retryInterval&quot;</span><span class="p">:</span><span class="mi">600</span><span class="p">,</span>
+   <span class="s2">&quot;retryAttempts&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+   <span class="s2">&quot;statusShortName&quot;</span><span class="p">:</span><span class="s2">&quot;OK&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;historyPageCount&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span>
+   <span class="s2">&quot;historyResultPerPage&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
+   <span class="s2">&quot;history&quot;</span><span class="p">:[</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468945283</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 9.066Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.618572&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;0.511447234967904&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;9.06594433333333&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;8.609269&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468929262</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 8.278Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.917373&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;2.2768582559265&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;8.278238&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;4.967738&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468914842</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 8.278Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.917373&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;2.2768582559265&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;8.278238&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;4.967738&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468900420</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 7.947Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.917373&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;2.10691941712745&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;7.947076&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;4.967738&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468886003</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 8.198Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.917373&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;1.90889560344947&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;8.1978948&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;4.967738&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468871580</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 8.443Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.917373&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;2.04820449942671&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;8.4426554&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;4.967738&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468857174</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 9.008Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.917373&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;0.939671374584643&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;9.0076434&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;7.792678&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468842761</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 8.780Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.833072&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;0.912399626892372&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;8.780211&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;7.792678&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468828338</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 8.841Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.833072&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;0.801737163872799&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;8.8409196&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;7.792678&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="mi">1468813920</span><span class="p">,</span>
+         <span class="s2">&quot;returnCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot; Average throughput is 9.169Gbps &quot;</span><span class="p">,</span>
+         <span class="s2">&quot;returnParams&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="s2">&quot;5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;graphUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ps-dashboard.es.net/perfsonar-graphs/graphWidget.cgi?url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.141&amp;source=198.129.252.45&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.254.14&amp;url=http://chic-pt1.es.net:8085/esmond/perfsonar/archive&amp;dest=198.124.252.154&amp;source=198.129.252.45&amp;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Max&quot;</span><span class="p">:</span><span class="s2">&quot;9.933079&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Standard_Deviation&quot;</span><span class="p">:</span><span class="s2">&quot;0.85547823840283&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Average&quot;</span><span class="p">:</span><span class="s2">&quot;9.1687506&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://chic-pt1.es.net:8085/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Min&quot;</span><span class="p">:</span><span class="s2">&quot;7.792678&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;returnCodeCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="mi">0</span>
+      <span class="p">}</span>
+   <span class="p">],</span>
+   <span class="s2">&quot;globalReport&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;stats&quot;</span><span class="p">:[</span>
+         <span class="mi">96</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span>
+      <span class="p">],</span>
+      <span class="s2">&quot;severity&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+      <span class="s2">&quot;problems&quot;</span><span class="p">:[</span>
+         <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Entire grid has OK status.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;severity&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;PERFORMANCE&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;solutions&quot;</span><span class="p">:[]</span>
+         <span class="p">}</span>
+      <span class="p">]</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;rowReport&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;stats&quot;</span><span class="p">:[</span>
+         <span class="mi">8</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span>
+      <span class="p">],</span>
+      <span class="s2">&quot;severity&quot;</span><span class="p">:</span><span class="mi">0</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;colReport&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;stats&quot;</span><span class="p">:[</span>
+         <span class="mi">24</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span><span class="p">,</span>
+         <span class="mi">0</span>
+      <span class="p">],</span>
+      <span class="s2">&quot;severity&quot;</span><span class="p">:</span><span class="mi">0</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="rescheduling-checks">
+<h2>Rescheduling checks<a class="headerlink" href="#rescheduling-checks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Request<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>The request is a HTTP POST that must be authenticated using HTTP BASIC authentication:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>URL</em></td>
+<td>/maddash/admin/schedule</td>
+</tr>
+<tr class="row-even"><td><em>HTTP Method</em></td>
+<td>POST</td>
+</tr>
+</tbody>
+</table>
+<p><em>JSON Parameters</em></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="11%" />
+<col width="6%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head" colspan="2">Type                 | Required</th>
+<th class="head">Value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>checkFilters</em></td>
+<td>JSON Object</td>
+<td>Yes</td>
+<td>A JSON object with filters that select which  checks will be rescheduled</td>
+</tr>
+<tr class="row-odd"><td><em>checkFilters.gridName</em></td>
+<td>JSON Array or String</td>
+<td>No</td>
+<td>A JSON array with the list of grids to select. Undefined or the string <cite>*</cite> means to match every thing.</td>
+</tr>
+<tr class="row-even"><td><em>checkFilters.rowName</em></td>
+<td>JSON Array or String</td>
+<td>No</td>
+<td>A JSON array with the list of rows to select. Undefined or the string <cite>*</cite> means to match every thing.</td>
+</tr>
+<tr class="row-odd"><td><em>checkFilters.columnName</em></td>
+<td>JSON Array or String</td>
+<td>No</td>
+<td>A JSON array with the list of columns to select. Undefined or the string <cite>*</cite> means to match every thing.</td>
+</tr>
+<tr class="row-even"><td><em>checkFilters.checkName</em></td>
+<td>JSON Array or String</td>
+<td>No</td>
+<td>A JSON array with the list of checks to select. Undefined or the string <cite>*</cite> means to match every thing.</td>
+</tr>
+<tr class="row-odd"><td><em>checkFilters.dimensionName</em></td>
+<td>JSON Array or String</td>
+<td>No</td>
+<td>A JSON array with the list of columns or rows to select. Undefined or the string <cite>*</cite> means to match every thing.</td>
+</tr>
+<tr class="row-even"><td><em>nextCheckTime</em></td>
+<td>UNIX timestamp</td>
+<td>No</td>
+<td>A UNIX timestamp indicating when the check should next run</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id2">
+<h4>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;checkFilters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;gridName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;BWCTL&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;rowName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;chic-pt1.es.net&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;columnName&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;checkName&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;nextCheckTime&quot;</span><span class="p">:</span> <span class="mi">1421864236</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Response<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><em>Type:</em> application/json</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="11%" />
+<col width="5%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>status</em></td>
+<td>integer</td>
+<td>Yes</td>
+<td>A value of 0 means the operation succeeded. Non-zero means an error occurred.</td>
+</tr>
+<tr class="row-odd"><td><em>checkUpdateCount</em></td>
+<td>integer</td>
+<td>Yes</td>
+<td>The number of checks updated by this operation</td>
+</tr>
+<tr class="row-even"><td><em>message</em></td>
+<td>string</td>
+<td>Yes</td>
+<td>A message describing the result of the operation</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id4">
+<h4>Example<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;checkUpdateCount&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Successfully updated 12 checks&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Checks</a><ul>
+<li><a class="reference internal" href="#retrieving-a-single-check">Retrieving a single check</a><ul>
+<li><a class="reference internal" href="#request">Request</a></li>
+<li><a class="reference internal" href="#response">Response</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rescheduling-checks">Rescheduling checks</a><ul>
+<li><a class="reference internal" href="#id1">Request</a><ul>
+<li><a class="reference internal" href="#id2">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">Response</a><ul>
+<li><a class="reference internal" href="#id4">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="maddash_api_cells.html">Previous topic</a>
+                  <ul><li><a href="maddash_api_cells.html" title="previous chapter">Cells</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="maddash_api_events.html">Next topic</a>
+                      <ul><li><a href="maddash_api_events.html" title="next chapter">Events</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maddash_api_events.html" title="Events"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="maddash_api_cells.html" title="Cells"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="maddash_api_intro.html" >MaDDash API Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

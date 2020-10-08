@@ -1,0 +1,233 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>perfSONAR Installation Options &#8212; perfSONAR Toolkit 4.3.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Hardware Requirements" href="install_hardware.html" />
+    <link rel="prev" title="What is perfSONAR?" href="intro_about.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_hardware.html" title="Hardware Requirements"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro_about.html" title="What is perfSONAR?"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="perfsonar-installation-options">
+<h1>perfSONAR Installation Options<a class="headerlink" href="#perfsonar-installation-options" title="Permalink to this headline">¶</a></h1>
+<p>perfSONAR has historically been packaged as the <strong>perfSONAR Toolkit</strong>: an ISO containing a custom distribution of the CentOS operating system with all of the perfSONAR tools and services (including the software required to automatically run tests on a regular schedule, participate in a centrally managed set of tests, publish the existence of a measurement node, archive used to store results and web interface). The <strong>perfSONAR Toolkit ISO</strong> is probably the best distribution for you if at least one or more of the following hold true:</p>
+<ul class="simple">
+<li>You are new to perfSONAR</li>
+<li>You plan to only deploy a small number of perfSONAR nodes</li>
+<li>You plan to use the CentOS operating system</li>
+<li>You do NOT wish to install perfSONAR on a host with the operating system already installed</li>
+</ul>
+<p>There are several other installation options as well for certain versions of both <strong>CentOS</strong> and <strong>Debian/Ubuntu</strong>:</p>
+<ol class="arabic">
+<li><p class="first"><strong>perfsonar-tools:</strong> This bundle includes just the command-line clients needed to run on-demand measurements such as iperf, iperf3 and owamp. This bundle is generally best for hosts that aren’t dedicated measurement nodes but want the command-line utilities available for troubleshooting as the need arises.</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>perfsonar-testpoint:</strong> This bundle includes everything from the perfsonar-tools bundle as well as the software required to:</dt>
+<dd><blockquote class="first">
+<div><ul class="simple">
+<li>Automatically run tests on a regular schedule</li>
+<li>Participate in a centrally managed set of tests</li>
+<li>Publish the existence of a measurement node</li>
+</ul>
+</div></blockquote>
+<p class="last">This bundle does NOT contain the software required to store measurements locally in an archive; the archive must be remote. This is best for dedicated testers running on lightweight hardware platforms that have a remote location in which to publish results.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>perfsonar-core:</strong> The perfsonar-core bundle install includes everything in the perfsonar-testpoint bundle install plus the esmond measurement archive used to store results. This is ideal for dedicated measurement hosts that want to store results locally, but do not want a perfSONAR Toolkit install. In other words, they do not want to use a web interface and want the flexibility to choose default security and tuning settings.</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>perfsonar-toolkit:</strong> This bundle includes everything in perfsonar-core bundle plus:</dt>
+<dd><ul class="first simple">
+<li>The web interface used to manage tests</li>
+<li>Scripts used to apply system-wide default tuning and security settings</li>
+</ul>
+<p class="last">This bundle is for those that wish to install the full suite of tools included on the perfSONAR Toolkit ISO but on an existing Linux system.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>perfsonar-centralmanagement:</strong> The perfsonar-centralmanagement bundle is independent from the bundles above and installs tools needed to centrally manage a large number of hosts and display their results. This includes the esmond measurement archive, tools for publishing task templates, and dashboard software for displaying results (MaDDash).</p>
+</li>
+</ol>
+<img alt="_images/install_options-bundle_tree.png" src="_images/install_options-bundle_tree.png" />
+<p>This flowchart was created to help pick the correct option:</p>
+<img alt="_images/bundle_flowchart.png" src="_images/bundle_flowchart.png" />
+<p>In addition to the above, pieces of perfSONAR can also be run inside of the Docker ecosystem. This allows for perfSONAR to be run in otherwise unsupported environments, including Mac OSX and Windows. Note that there are some limitations while running in those environments. For more information, see <a class="reference internal" href="install_docker.html"><span class="doc">Using perfSONAR with Docker</span></a>.</p>
+<div class="section" id="centos-toolkit-iso-installation">
+<h2>CentOS Toolkit ISO Installation<a class="headerlink" href="#centos-toolkit-iso-installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>See <a class="reference internal" href="install_getting.html"><span class="doc">Getting the Software</span></a></li>
+</ul>
+</div>
+<div class="section" id="centos-bundle-installation">
+<h2>CentOS Bundle Installation<a class="headerlink" href="#centos-bundle-installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>See <a class="reference internal" href="install_centos.html"><span class="doc">Bundle Installation on CentOS</span></a></li>
+</ul>
+</div>
+<div class="section" id="debian-bundle-installation">
+<h2>Debian Bundle Installation<a class="headerlink" href="#debian-bundle-installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>See <a class="reference internal" href="install_debian.html"><span class="doc">Bundle Installation on Debian</span></a></li>
+</ul>
+</div>
+<div class="section" id="docker-installation">
+<h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>See <a class="reference internal" href="install_docker.html"><span class="doc">Using perfSONAR with Docker</span></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">perfSONAR Installation Options</a><ul>
+<li><a class="reference internal" href="#centos-toolkit-iso-installation">CentOS Toolkit ISO Installation</a></li>
+<li><a class="reference internal" href="#centos-bundle-installation">CentOS Bundle Installation</a></li>
+<li><a class="reference internal" href="#debian-bundle-installation">Debian Bundle Installation</a></li>
+<li><a class="reference internal" href="#docker-installation">Docker Installation</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="intro_about.html">Previous topic</a>
+                  <ul><li><a href="intro_about.html" title="previous chapter">What is perfSONAR?</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="install_hardware.html">Next topic</a>
+                      <ul><li><a href="install_hardware.html" title="next chapter">Hardware Requirements</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_hardware.html" title="Hardware Requirements"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro_about.html" title="What is perfSONAR?"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

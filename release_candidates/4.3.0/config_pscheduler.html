@@ -1,0 +1,214 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuring pScheduler &#8212; perfSONAR Toolkit 4.3.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="OWAMP Server Configuration File" href="config_owamp.html" />
+    <link rel="prev" title="Lookup Service Registration Daemon Configuration File" href="config_ls_registration.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="config_owamp.html" title="OWAMP Server Configuration File"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="config_ls_registration.html" title="Lookup Service Registration Daemon Configuration File"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuring-pscheduler">
+<h1>Configuring pScheduler<a class="headerlink" href="#configuring-pscheduler" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This document describes the configuration files available for
+pScheduler.  All are located in <code class="docutils literal notranslate"><span class="pre">/etc/pscheduler</span></code> or a
+subdirectory.</p>
+</div>
+<div class="section" id="daemons-daemon-options">
+<h2><code class="docutils literal notranslate"><span class="pre">daemons</span></code> - Daemon Options<a class="headerlink" href="#daemons-daemon-options" title="Permalink to this headline">¶</a></h2>
+<p>This directory holds files containing additional command-line switches
+to be provided to the four pScheduler daemons at startup.</p>
+<p><strong>There should be no need to alter these files under most circumstances.  Please consult the development team before doing  so.</strong></p>
+</div>
+<div class="section" id="database-database-authentication">
+<h2><code class="docutils literal notranslate"><span class="pre">database</span></code> - Database Authentication<a class="headerlink" href="#database-database-authentication" title="Permalink to this headline">¶</a></h2>
+<p>This directory contains files containing authentication information
+for the PostgreSQL database used by the daemons to store persistent
+data.  These are generated randomly when the pScheduler server is
+installed and during upgrades.</p>
+<p><strong>There should be no need to alter these files, and doing so will cause pScheduler to malfunction.</strong></p>
+</div>
+<div class="section" id="default-archives-system-wide-default-archivers">
+<h2><code class="docutils literal notranslate"><span class="pre">default-archives</span></code> - System-Wide Default Archivers<a class="headerlink" href="#default-archives-system-wide-default-archivers" title="Permalink to this headline">¶</a></h2>
+<p>This directory contains archive specifications, one per file, that are
+applied to every measurement led by this system.  These archives are
+performed in addition to any specified in a task.</p>
+<p>See the pScheduler <a class="reference external" href="https://github.com/perfsonar/pscheduler/wiki/Archivers">Archivers page</a> for details
+on content.</p>
+</div>
+<div class="section" id="limits-conf-limit-configuration">
+<h2><code class="docutils literal notranslate"><span class="pre">limits.conf</span></code> - Limit Configuration<a class="headerlink" href="#limits-conf-limit-configuration" title="Permalink to this headline">¶</a></h2>
+<p>This file determines the restrictions pScheduler will place on
+incoming task requests and scheduling.</p>
+<p>See <em>Configuring pScheduler Limits</em> (in a separate document) for
+details on the format and contents.</p>
+</div>
+<div class="section" id="tool-tool-configurations">
+<h2><code class="docutils literal notranslate"><span class="pre">tool</span></code> - Tool Configurations<a class="headerlink" href="#tool-tool-configurations" title="Permalink to this headline">¶</a></h2>
+<p>This directory contains files with configuration parameters for the
+tools installed on the system.  Any tool which has a configuration
+file will install a file here; the lack of one for a tool means the
+tool is not configurable.</p>
+<p>The content of the files will vary on a per-tool basis, and each will
+contain commentary explaining the purpose and format of each
+configurable item.</p>
+<p><strong>There should be no need to alter these files under most circumstances.</strong></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Configuring pScheduler</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#daemons-daemon-options"><code class="docutils literal notranslate"><span class="pre">daemons</span></code> - Daemon Options</a></li>
+<li><a class="reference internal" href="#database-database-authentication"><code class="docutils literal notranslate"><span class="pre">database</span></code> - Database Authentication</a></li>
+<li><a class="reference internal" href="#default-archives-system-wide-default-archivers"><code class="docutils literal notranslate"><span class="pre">default-archives</span></code> - System-Wide Default Archivers</a></li>
+<li><a class="reference internal" href="#limits-conf-limit-configuration"><code class="docutils literal notranslate"><span class="pre">limits.conf</span></code> - Limit Configuration</a></li>
+<li><a class="reference internal" href="#tool-tool-configurations"><code class="docutils literal notranslate"><span class="pre">tool</span></code> - Tool Configurations</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="config_ls_registration.html">Previous topic</a>
+                  <ul><li><a href="config_ls_registration.html" title="previous chapter">Lookup Service Registration Daemon Configuration File</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="config_owamp.html">Next topic</a>
+                      <ul><li><a href="config_owamp.html" title="next chapter">OWAMP Server Configuration File</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="config_owamp.html" title="OWAMP Server Configuration File"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="config_ls_registration.html" title="Lookup Service Registration Daemon Configuration File"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>
