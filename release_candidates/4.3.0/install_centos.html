@@ -1,21 +1,20 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bundle Installation on CentOS &#8212; perfSONAR Toolkit 4.3.0b1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -53,7 +52,8 @@
         <li class="right" >
           <a href="install_config_first_time.html" title="Configuring the Toolkit for the First Time"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bundle Installation on CentOS</a></li> 
       </ul>
     </div>
     </div>
@@ -71,15 +71,16 @@
 <div class="section" id="system-requirements">
 <h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><strong>Operating System:</strong><ul>
-<li><strong>CentOS 7</strong> x86_64 installations are supported. Other RedHat-based operating systems may work, but are not officially supported at this time.</li>
-<li>See <a class="reference internal" href="install_hardware.html"><span class="doc">Hardware Requirements</span></a> for hardware requirements and more.</li>
+<li><p><strong>Operating System:</strong></p>
+<ul>
+<li><p><strong>CentOS 7</strong> x86_64 installations are supported. Other RedHat-based operating systems may work, but are not officially supported at this time.</p></li>
+<li><p>See <a class="reference internal" href="install_hardware.html"><span class="doc">Hardware Requirements</span></a> for hardware requirements and more.</p></li>
 </ul>
 </li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.</p>
+<p class="admonition-title">Note</p>
+<p>Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.</p>
 </div>
 </div>
 <div class="section" id="installation">
@@ -87,22 +88,22 @@
 <div class="section" id="step-1-configure-yum">
 <span id="install-centos-step1"></span><h3>Step 1: Configure Yum<a class="headerlink" href="#step-1-configure-yum" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If your system is using yum priorities make sure that repositories required for perfSONAR are higher priority than anything else to avoid conflicts with older versions. Please note that yum maintainers do not recommend using priorities.</p>
+<p class="admonition-title">Note</p>
+<p>If your system is using yum priorities make sure that repositories required for perfSONAR are higher priority than anything else to avoid conflicts with older versions. Please note that yum maintainers do not recommend using priorities.</p>
 </div>
 <p>The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. <strong>You will need to follow the steps below as privileged user</strong>:</p>
 <ol class="arabic">
-<li><p class="first">Install the EPEL RPM:</p>
+<li><p>Install the EPEL RPM:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">epel</span><span class="o">-</span><span class="n">release</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Install the perfSONAR-repo RPM:</p>
+<li><p>Install the perfSONAR-repo RPM:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">internet2</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">rpms</span><span class="o">/</span><span class="n">el7</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfSONAR</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="mf">0.9</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Refresh yum’s cache so it detects the new RPMS:</p>
+<li><p>Refresh yum’s cache so it detects the new RPMS:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">clean</span> <span class="nb">all</span>
 </pre></div>
 </div>
@@ -113,27 +114,27 @@
 <span id="install-centos-step2"></span><h3>Step 2: Install a Bundle<a class="headerlink" href="#step-2-install-a-bundle" title="Permalink to this headline">¶</a></h3>
 <p><strong>CHOOSE ONE</strong> of the following bundles and see <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR Installation Options</span></a> page for more information about what these bundles are.</p>
 <ul>
-<li><p class="first"><strong>perfSONAR Tools</strong>:</p>
+<li><p><strong>perfSONAR Tools</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">tools</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>perfSONAR Test Point</strong>:</p>
+<li><p><strong>perfSONAR Test Point</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">testpoint</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>perfSONAR Core</strong>:</p>
+<li><p><strong>perfSONAR Core</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">core</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>perfSONAR Central Management</strong>:</p>
+<li><p><strong>perfSONAR Central Management</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">centralmanagement</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>perfSONAR Toolkit</strong>:</p>
+<li><p><strong>perfSONAR Toolkit</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">toolkit</span>
 </pre></div>
 </div>
@@ -144,11 +145,11 @@
 <p>In addition to any of the bundles above you may also <strong>optionnally</strong> choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></code> - Automatically detects closest NTP servers and sets them in ntp.conf</li>
-<li><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></code> - Adds default firewall rules and installs fail2ban</li>
-<li><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-servicewatcher</span></code> - Adds a cron job that checks if services are still running.</li>
-<li><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-sysctl</span></code> - Adds default sysctl tuning settings</li>
-<li><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-systemenv-testpoint</span></code> - Configures auto-update and set some default logging locations</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-ntp</span></code> - Automatically detects closest NTP servers and sets them in ntp.conf</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-security</span></code> - Adds default firewall rules and installs fail2ban</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-servicewatcher</span></code> - Adds a cron job that checks if services are still running.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-sysctl</span></code> - Adds default sysctl tuning settings</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">perfsonar-toolkit-systemenv-testpoint</span></code> - Configures auto-update and set some default logging locations</p></li>
 </ul>
 </div></blockquote>
 <p>You may also run the command below to get everything listed above on <strong>perfsonar-testpoint</strong> and <strong>perfsonar-core</strong> bundles:</p>
@@ -156,8 +157,8 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">On a <strong>perfsonar-centralmanagement</strong> system you probably only want the optional <strong>perfsonar-toolkit-servicewatcher</strong> package to be installed.</p>
+<p class="admonition-title">Note</p>
+<p>On a <strong>perfsonar-centralmanagement</strong> system you probably only want the optional <strong>perfsonar-toolkit-servicewatcher</strong> package to be installed.</p>
 </div>
 </div>
 </div>
@@ -165,9 +166,9 @@
 <span id="install-centos-step3"></span><h3>Step 3: Verify NTP and Tuning Parameters<a class="headerlink" href="#step-3-verify-ntp-and-tuning-parameters" title="Permalink to this headline">¶</a></h3>
 <p><em>Step 3 can be ignored for perfsonar-toolkit package installation as its instructions are included and run automatically</em></p>
 <ul>
-<li><p class="first"><strong>NTP Tuning</strong></p>
+<li><p><strong>NTP Tuning</strong></p>
 <ul>
-<li><p class="first"><strong>Auto-select NTP servers based on proximity</strong></p>
+<li><p><strong>Auto-select NTP servers based on proximity</strong></p>
 <p>The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Measurements will not give accurate results unless NTP is configured. If an optional package was installed, then run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">configure_ntpd</span> <span class="n">new</span>
 <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">ntpd</span>
@@ -180,16 +181,16 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>System Tuning</strong></p>
+<li><p><strong>System Tuning</strong></p>
 <p>It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.</p>
 <ul>
-<li><p class="first"><strong>Configure perfSONAR sysctl settings</strong></p>
+<li><p><strong>Configure perfSONAR sysctl settings</strong></p>
 <p>If the optional package was installed, then run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">configure_sysctl</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>Advanced Manual Tuning</strong></p>
+<li><p><strong>Advanced Manual Tuning</strong></p>
 <p>For more information please refer to <cite>http://fasterdata.es.net/host-tuning/linux/</cite></p>
 </li>
 </ul>
@@ -213,8 +214,8 @@ ESnet provides a file containing all R&amp;E subnets, which is updated nightly. 
 <span id="install-centos-step5"></span><h3>Step 5: Auto updates<a class="headerlink" href="#step-5-auto-updates" title="Permalink to this headline">¶</a></h3>
 <p>You can also enable yum ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this follow the steps in <a class="reference internal" href="manage_update.html#manage-update-auto-cli"><span class="std std-ref">Managing Automatic Updates from the Command-Line</span></a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Automatic updates are enabled by default in the perfSONAR Toolkit.</p>
+<p class="admonition-title">Note</p>
+<p>Automatic updates are enabled by default in the perfSONAR Toolkit.</p>
 </div>
 </div>
 <div class="section" id="step-6-service-watcher">
@@ -260,10 +261,10 @@ See <a class="reference internal" href="manage_admin_info.html"><span class="doc
 <h3>Configuring Central Management<a class="headerlink" href="#configuring-central-management" title="Permalink to this headline">¶</a></h3>
 <p>If you installed the perfsonar-centralmanagement bundle see the following documents:</p>
 <ul class="simple">
-<li><a class="reference internal" href="multi_ma_install.html"><span class="doc">Deploying a Central Measurement Archive</span></a></li>
-<li><a class="reference internal" href="psconfig_publish.html"><span class="doc">Publishing a pSConfig Template</span></a></li>
-<li><a class="reference internal" href="psconfig_maddash_agent.html"><span class="doc">Running the pSConfig MaDDash Agent</span></a></li>
-<li><a class="reference internal" href="maddash_intro.html"><span class="doc">What is MaDDash?</span></a></li>
+<li><p><a class="reference internal" href="multi_ma_install.html"><span class="doc">Deploying a Central Measurement Archive</span></a></p></li>
+<li><p><a class="reference internal" href="psconfig_publish.html"><span class="doc">Publishing a pSConfig Template</span></a></p></li>
+<li><p><a class="reference internal" href="psconfig_maddash_agent.html"><span class="doc">Running the pSConfig MaDDash Agent</span></a></p></li>
+<li><p><a class="reference internal" href="maddash_intro.html"><span class="doc">What is MaDDash?</span></a></p></li>
 </ul>
 </div>
 <div class="section" id="configuring-perfsonar-through-the-web-interface">
@@ -280,6 +281,7 @@ you’ll probably need to disable SELinux to gain access to the web interface. T
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -341,7 +343,8 @@ you’ll probably need to disable SELinux to gain access to the web interface. T
         <li class="right" >
           <a href="install_config_first_time.html" title="Configuring the Toolkit for the First Time"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bundle Installation on CentOS</a></li> 
       </ul>
     </div>
     <footer id="fat">
@@ -383,7 +386,7 @@ you’ll probably need to disable SELinux to gain access to the web interface. T
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

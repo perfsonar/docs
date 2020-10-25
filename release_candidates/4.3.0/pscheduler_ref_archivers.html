@@ -1,21 +1,20 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Archiver Reference &#8212; perfSONAR Toolkit 4.3.0b1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -53,7 +52,8 @@
         <li class="right" >
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Archiver Reference</a></li> 
       </ul>
     </div>
     </div>
@@ -69,7 +69,7 @@
 <h1>Archiver Reference<a class="headerlink" href="#archiver-reference" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <span id="pscheduler-ref-archivers-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler’s architecture features the concept of <a class="reference internal" href="pscheduler_intro.html#term-archiver"><span class="xref std std-term">archivers</span></a>, which send completed measurement results elsewhere for storage or processing.  Archivers are plugins, which means the set of destinations available for use with pScheduler can be easily expanded.</p>
+<p>pScheduler’s architecture features the concept of <a class="reference internal" href="pscheduler_intro.html#term-Archiver"><span class="xref std std-term">archivers</span></a>, which send completed measurement results elsewhere for storage or processing.  Archivers are plugins, which means the set of destinations available for use with pScheduler can be easily expanded.</p>
 <p>Archiving in pScheduler is reliable.  After each attempt to dispose of the result, the archiver plugin will tell pScheduler whether it succeeded and, if not, whether or not to try again and how long to wait before the next attempt.</p>
 </div>
 <div class="section" id="basic-json-syntax">
@@ -161,8 +161,8 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">.</span></code> in the command above is a placeholder for the test type, which is imported from <code class="docutils literal notranslate"><span class="pre">mytask.json</span></code>.)</p>
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.</span></code> in the command above is a placeholder for the test type, which is imported from <code class="docutils literal notranslate"><span class="pre">mytask.json</span></code>.)</p>
 </div>
 </div>
 </div>
@@ -192,8 +192,8 @@
 <span id="pscheduler-ref-archivers-archivers"></span><h2>Archivers<a class="headerlink" href="#archivers" title="Permalink to this headline">¶</a></h2>
 <p>The archivers listed below are supplied as part of the standard distribution of pScheduler.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">All items listed in each <em>Archiver Data</em> subsection are required unless otherwise noted.</p>
+<p class="admonition-title">Note</p>
+<p>All items listed in each <em>Archiver Data</em> subsection are required unless otherwise noted.</p>
 </div>
 <div class="section" id="bitbucket">
 <span id="pscheduler-ref-archivers-archivers-bitbucket"></span><h3><code class="docutils literal notranslate"><span class="pre">bitbucket</span></code><a class="headerlink" href="#bitbucket" title="Permalink to this headline">¶</a></h3>
@@ -221,13 +221,12 @@
 <p><code class="docutils literal notranslate"><span class="pre">_auth-token</span></code> - Optional. The authorization token to be used when submitting the result.  Note that the <code class="docutils literal notranslate"><span class="pre">_</span></code> prefix indicates that this value is considered a secret and will not be supplied if the task specification is retrieved from pScheduler via its REST API.  If not specified, IP authentication is assumed.</p>
 <p><code class="docutils literal notranslate"><span class="pre">measurement-agent</span></code> - Optional. The name of the pScheduler host that produced the result. If not specified, defaults to the endpoint pscheduler deemed the lead.</p>
 <p><code class="docutils literal notranslate"><span class="pre">retry-policy</span></code> - Optional. Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">data-formatting-policy</span></code> - Optional.  Indicates how the record should be stored.  Valid values are:</dt>
-<dd><ul class="first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">prefer-mapped</span></code> - This is the default. It means that if test is type <code class="docutils literal notranslate"><span class="pre">throughput</span></code>, <code class="docutils literal notranslate"><span class="pre">latency</span></code>, <code class="docutils literal notranslate"><span class="pre">trace</span></code> and <code class="docutils literal notranslate"><span class="pre">rtt</span></code> than store using the traditional metadata and event types. If it does not recognize the result it will store as a <code class="docutils literal notranslate"><span class="pre">pscheduler-raw</span></code> record.</li>
-<li><code class="docutils literal notranslate"><span class="pre">mapped-and-raw</span></code> - Store both a mapped type and a raw record.  Will not store either if not a recognized type that can be mapped.</li>
-<li><code class="docutils literal notranslate"><span class="pre">mapped-only</span></code> - Only store a mapped type and do not store anything if it is not a known type</li>
-<li><code class="docutils literal notranslate"><span class="pre">raw-only</span></code> - Only store a <code class="docutils literal notranslate"><span class="pre">pscheduler-raw</span></code> record regardless of test type.</li>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">data-formatting-policy</span></code> - Optional.  Indicates how the record should be stored.  Valid values are:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prefer-mapped</span></code> - This is the default. It means that if test is type <code class="docutils literal notranslate"><span class="pre">throughput</span></code>, <code class="docutils literal notranslate"><span class="pre">latency</span></code>, <code class="docutils literal notranslate"><span class="pre">trace</span></code> and <code class="docutils literal notranslate"><span class="pre">rtt</span></code> than store using the traditional metadata and event types. If it does not recognize the result it will store as a <code class="docutils literal notranslate"><span class="pre">pscheduler-raw</span></code> record.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mapped-and-raw</span></code> - Store both a mapped type and a raw record.  Will not store either if not a recognized type that can be mapped.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mapped-only</span></code> - Only store a mapped type and do not store anything if it is not a known type</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">raw-only</span></code> - Only store a <code class="docutils literal notranslate"><span class="pre">pscheduler-raw</span></code> record regardless of test type.</p></li>
 </ul>
 </dd>
 </dl>
@@ -284,8 +283,8 @@
 <p><code class="docutils literal notranslate"><span class="pre">headers</span></code> - Optional, available in schema 2 and later.  A JSON object consisting of pairs whose values are strings, numeric types or <code class="docutils literal notranslate"><span class="pre">null</span></code>.  Each pair except those whose values are <code class="docutils literal notranslate"><span class="pre">null</span></code> will be passed to the HTTP server as a header.  The archiver gives special treatment to the following headers:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> - If not provided, the archiver will provide one of <code class="docutils literal notranslate"><span class="pre">text/plain</span></code> if the data to be archived is a string or <code class="docutils literal notranslate"><span class="pre">application/json</span></code> for any other JSON-representable type.  To force strings into JSON format, provide a <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> of <code class="docutils literal notranslate"><span class="pre">application/json</span></code>.  This behavior can be disabled by providing a <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header with the desired type or <code class="docutils literal notranslate"><span class="pre">null</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">Content-Length</span></code> - If not provided (which should be the usual case), the archiver will calculate and supply the length of the content.  This behavior can be disabled by providing a <code class="docutils literal notranslate"><span class="pre">Content-Length</span></code> of <code class="docutils literal notranslate"><span class="pre">null</span></code>.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> - If not provided, the archiver will provide one of <code class="docutils literal notranslate"><span class="pre">text/plain</span></code> if the data to be archived is a string or <code class="docutils literal notranslate"><span class="pre">application/json</span></code> for any other JSON-representable type.  To force strings into JSON format, provide a <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> of <code class="docutils literal notranslate"><span class="pre">application/json</span></code>.  This behavior can be disabled by providing a <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header with the desired type or <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Content-Length</span></code> - If not provided (which should be the usual case), the archiver will calculate and supply the length of the content.  This behavior can be disabled by providing a <code class="docutils literal notranslate"><span class="pre">Content-Length</span></code> of <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
 </ul>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">bind</span></code> - Optional.  The address on the host to which the HTTP client should bind when making the request.</p>
@@ -1179,6 +1178,7 @@ behavior is to try once and then give up.</p>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -1289,7 +1289,8 @@ behavior is to try once and then give up.</p>
         <li class="right" >
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Archiver Reference</a></li> 
       </ul>
     </div>
     <footer id="fat">
@@ -1331,7 +1332,7 @@ behavior is to try once and then give up.</p>
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

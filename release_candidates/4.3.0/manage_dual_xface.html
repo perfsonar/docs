@@ -1,21 +1,20 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configuring a Host with Multiple Interfaces &#8212; perfSONAR Toolkit 4.3.0b1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -53,7 +52,8 @@
         <li class="right" >
           <a href="manage_tuning.html" title="Host Tuning"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Configuring a Host with Multiple Interfaces</a></li> 
       </ul>
     </div>
     </div>
@@ -70,9 +70,9 @@
 <p>You may run the perfSONAR Toolkit on a host with multiple interfaces. The most common reason to do this is to run throughput and latency tests on separate physical interfaces to prevent interference between the test types. Additional configuration is required to ensure this type of testing works properly. You will need to do the following:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Decide what IP addresses you are going to assign each interface. See <a class="reference internal" href="#multixface-addressing"><span class="std std-ref">IP Addressing Strategy</span></a> for a discussion on choosing subnets and other relevant decision points.</li>
-<li>Setup routing rules that ensure when a source IP address is selected for a test, that  the operating system honors that IP address by sending it out the desired interface. A script is provided for this purpose and is detailed in the section <a class="reference internal" href="#multixface-route"><span class="std std-ref">Host Routing Table Configuration</span></a></li>
-<li>When defining your tests either through the <a class="reference internal" href="manage_regular_tests.html"><span class="doc">configuration GUI</span></a> or <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">pSConfig template</span></a>, you need to select the desired interface. See the individual pages for a description on how to make this selection.</li>
+<li><p>Decide what IP addresses you are going to assign each interface. See <a class="reference internal" href="#multixface-addressing"><span class="std std-ref">IP Addressing Strategy</span></a> for a discussion on choosing subnets and other relevant decision points.</p></li>
+<li><p>Setup routing rules that ensure when a source IP address is selected for a test, that  the operating system honors that IP address by sending it out the desired interface. A script is provided for this purpose and is detailed in the section <a class="reference internal" href="#multixface-route"><span class="std std-ref">Host Routing Table Configuration</span></a></p></li>
+<li><p>When defining your tests either through the <a class="reference internal" href="manage_regular_tests.html"><span class="doc">configuration GUI</span></a> or <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">pSConfig template</span></a>, you need to select the desired interface. See the individual pages for a description on how to make this selection.</p></li>
 </ol>
 </div></blockquote>
 <div class="section" id="ip-addressing-strategy">
@@ -94,45 +94,45 @@
 <p>In order to avoid this situation, you need to run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at <em>/usr/lib/perfsonar/scripts/mod_interface_route</em>. For <strong>each interface on the host</strong> you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:</p>
 <blockquote>
 <div><ul class="simple">
-<li><dl class="first docutils">
-<dt>Interface 1</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Interface Name:</th><td class="field-body">eth0</td>
-</tr>
-<tr class="field-even field"><th class="field-name">IPv4 Address:</th><td class="field-body">10.0.0.2</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">IPv4 Gateway:</th><td class="field-body">10.0.0.1</td>
-</tr>
-<tr class="field-even field"><th class="field-name">IPv6 Address:</th><td class="field-body">fde1:40ff:e1a3:d50e::2</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">IPv6 Gateway:</th><td class="field-body">fde1:40ff:e1a3:d50e::1</td>
-</tr>
-</tbody>
-</table>
+<li><dl class="simple">
+<dt>Interface 1</dt><dd><dl class="field-list simple">
+<dt class="field-odd">Interface Name</dt>
+<dd class="field-odd"><p>eth0</p>
+</dd>
+<dt class="field-even">IPv4 Address</dt>
+<dd class="field-even"><p>10.0.0.2</p>
+</dd>
+<dt class="field-odd">IPv4 Gateway</dt>
+<dd class="field-odd"><p>10.0.0.1</p>
+</dd>
+<dt class="field-even">IPv6 Address</dt>
+<dd class="field-even"><p>fde1:40ff:e1a3:d50e::2</p>
+</dd>
+<dt class="field-odd">IPv6 Gateway</dt>
+<dd class="field-odd"><p>fde1:40ff:e1a3:d50e::1</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Interface 2</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Interface Name:</th><td class="field-body">eth1</td>
-</tr>
-<tr class="field-even field"><th class="field-name">IPv4 Address:</th><td class="field-body">10.1.1.2</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">IPv4 Gateway:</th><td class="field-body">10.1.1.1</td>
-</tr>
-<tr class="field-even field"><th class="field-name">IPv6 Address:</th><td class="field-body">fd7d:3189:ed46:2736::2</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">IPv6 Gateway:</th><td class="field-body">fd7d:3189:ed46:2736::1</td>
-</tr>
-</tbody>
-</table>
+<li><dl class="simple">
+<dt>Interface 2</dt><dd><dl class="field-list simple">
+<dt class="field-odd">Interface Name</dt>
+<dd class="field-odd"><p>eth1</p>
+</dd>
+<dt class="field-even">IPv4 Address</dt>
+<dd class="field-even"><p>10.1.1.2</p>
+</dd>
+<dt class="field-odd">IPv4 Gateway</dt>
+<dd class="field-odd"><p>10.1.1.1</p>
+</dd>
+<dt class="field-even">IPv6 Address</dt>
+<dd class="field-even"><p>fd7d:3189:ed46:2736::2</p>
+</dd>
+<dt class="field-odd">IPv6 Gateway</dt>
+<dd class="field-odd"><p>fd7d:3189:ed46:2736::1</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </li>
@@ -202,6 +202,7 @@ fi
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -253,7 +254,8 @@ fi
         <li class="right" >
           <a href="manage_tuning.html" title="Host Tuning"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Configuring a Host with Multiple Interfaces</a></li> 
       </ul>
     </div>
     <footer id="fat">
@@ -295,7 +297,7 @@ fi
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

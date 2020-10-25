@@ -1,21 +1,20 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Creating Docker containers &#8212; perfSONAR Toolkit 4.3.0b1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/perfsonar.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -54,7 +53,8 @@
           <a href="pwa_configure.html" title="Configuration"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Creating Docker containers</a></li> 
       </ul>
     </div>
     </div>
@@ -94,17 +94,17 @@
 <h2>Manually creating containers<a class="headerlink" href="#manually-creating-containers" title="Permalink to this headline">¶</a></h2>
 <p>If you want a custom setup, or if you are trying to troubleshoot the containers, you may want to manually create the containers.</p>
 <ol class="arabic">
-<li><p class="first">First, create the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory:</p>
+<li><p>First, create the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir -p /usr/local/data
 </pre></div>
 </div>
 </li>
-<li><p class="first">Next, create a docker network to group all PWA containers</p>
+<li><p>Next, create a docker network to group all PWA containers</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker network create pwa
 </pre></div>
 </div>
 </li>
-<li><p class="first">Create mongoDB container. Use -v to persist data on host directory (/usr/local/data/mongo)</p>
+<li><p>Create mongoDB container. Use -v to persist data on host directory (/usr/local/data/mongo)</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir -p /usr/local/data
 docker run <span class="se">\</span>
         --restart<span class="o">=</span>always <span class="se">\</span>
@@ -115,7 +115,7 @@ docker run <span class="se">\</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Create SCA authentication service container. This service handles user authentication / account/user group management.</p>
+<li><p>Create SCA authentication service container. This service handles user authentication / account/user group management.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
     --restart<span class="o">=</span>always <span class="se">\</span>
     --net pwa <span class="se">\</span>
@@ -130,7 +130,7 @@ docker run <span class="se">\</span>
 The user account DB is stored in <code class="docutils literal notranslate"><span class="pre">/usr/local/data/auth</span></code>.</p>
 </div></blockquote>
 </li>
-<li><p class="first">Create PWA’s main UI/API container.</p>
+<li><p>Create PWA’s main UI/API container.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
     --restart<span class="o">=</span>always <span class="se">\</span>
     --net pwa <span class="se">\</span>
@@ -140,7 +140,7 @@ The user account DB is stored in <code class="docutils literal notranslate"><spa
 </pre></div>
 </div>
 </li>
-<li><p class="first">Create meshconfig publishers.</p>
+<li><p>Create meshconfig publishers.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>   docker run <span class="se">\</span>
        --restart<span class="o">=</span>always <span class="se">\</span>
        --net pwa <span class="se">\</span>
@@ -162,7 +162,7 @@ If you use more than <span class="m">1</span> instance, please edit <span class=
 </pre></div>
 </div>
 </li>
-<li><p class="first">Finally, we install nginx to expose these container via 80/443/9443</p>
+<li><p>Finally, we install nginx to expose these container via 80/443/9443</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
     --restart<span class="o">=</span>always <span class="se">\</span>
     --net pwa <span class="se">\</span>
@@ -177,7 +177,7 @@ If you use more than <span class="m">1</span> instance, please edit <span class=
 </pre></div>
 </div>
 </li>
-<li><p class="first">Start the <code class="docutils literal notranslate"><span class="pre">postfix</span></code> container (optional)</p>
+<li><p>Start the <code class="docutils literal notranslate"><span class="pre">postfix</span></code> container (optional)</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">sca-auth</span></code> service sometimes needs to send e-mails to users, as part of the registration process, or for password resets, etc. It can be configured to use an external SMTP server, or you can run a separate docker container that runs postfix, in which case PWA will send its e-mail notices through that.</p>
 <p>If you are not using an external SMTP server, install a postfix docker container. This one has been tested and appears to work well, but it is not maintained by the perfSONAR project:</p>
 <p><a class="reference external" href="https://hub.docker.com/r/yorkshirekev/postfix/">Docker-postfix</a></p>
@@ -217,6 +217,7 @@ docker rm sca-auth
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -266,7 +267,8 @@ docker rm sca-auth
           <a href="pwa_configure.html" title="Configuration"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0b1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Creating Docker containers</a></li> 
       </ul>
     </div>
     <footer id="fat">
@@ -308,7 +310,7 @@ docker rm sca-auth
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>
