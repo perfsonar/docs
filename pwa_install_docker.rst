@@ -23,13 +23,15 @@ Minimum resource requirements are..
 Docker Engine
 ^^^^^^^^^^^^^
 
-Read the official `docker installation doc <https://docs.docker.com/engine/installation/>`_ for more information. For CentOS 7, the Docker version from the CentOS Extras repo will work. For CentOS 6, the CentOS version might work, or you might need to try the version from the Docker repo.
+For CentOS 7, the Docker version from the CentOS Extras repo will work.
 
 For CentOS7 as root:
 
 .. code-block:: bash
 
    yum install -y docker
+
+If that doesn't work, or if you want a newer Docker version, or if on another platform, read the official `docker installation doc <https://docs.docker.com/engine/installation/>`_ for more information. PWA will work fine with the newer Docker versions, as well.
 
 Before you start the docker engine, you might want to add any VM specific configuration. For example, your VM might be using /usr/local as a primary partition for your VM. If so, you should have something like following..
 
@@ -76,8 +78,8 @@ This guide assumes you have already pulled down the sample PWA config and extrac
 
 .. code-block:: bash
 
-   wget https://github.com/perfsonar/psconfig-web/raw/master/deploy/docker/psconfig-web.sample.tar.gz
-   sudo tar -C /etc -xvf psconfig-web.sample.tar.gz psconfig-web && sudo tar -C /usr/local/sbin --strip-components=1 -xvf psconfig-web.sample.tar.gz scripts
+   wget https://github.com/perfsonar/psconfig-web/raw/master/deploy/docker/pwa.sample.tar.gz
+   sudo tar -C /etc -xvf pwa.sample.tar.gz pwa && sudo tar -C /etc/pwa -xvf pwa.sample.tar.gz scripts
 
 
 
