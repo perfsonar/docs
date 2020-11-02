@@ -129,7 +129,7 @@ This will contact the measurement archive on the local machine and return any BW
 
 Debian 8 and Ubuntu 14 Support Discontinued
 -------------------------------------------
-perfSONAR 4.2 is NOT available for Debian 8 (and `Debian 8 is now only supported on a limited set of architectures <https://www.debian.org/releases/jessie/>`_ anyways). If you wish to migrate an existing Debian 8 (Jessie) host to Debian 9 (Stretch) you are advised to do it with the following steps:
+perfSONAR 4.2 and later is NOT available for Debian 8 (and `Debian 8 is now only supported on a limited set of architectures <https://www.debian.org/releases/jessie/>`_ anyways). If you wish to migrate an existing Debian 8 (Jessie) host to Debian 9 (Stretch) you are advised to do it with the following steps:
 
 #. Lock your system on perfsonar-4.1 packages by replacing the ``perfsonar-release`` repository with a plain ``perfsonar-4.1`` repository entry.  This is done in the ``/etc/apt/sources.list.d/perfsonar-release.list`` file, where you just replace **perfsonar-release** with **perfsonar-4.1** in the ``deb`` and ``deb-src`` lines.
 #. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_).
