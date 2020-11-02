@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Creating and Managing Tasks &#8212; perfSONAR Toolkit 4.2.4 documentation</title>
+    <title>Creating and Managing Tasks &#8212; perfSONAR Toolkit 4.3.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -51,7 +51,7 @@
         <li class="right" >
           <a href="pscheduler_intro.html" title="What is pScheduler?"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -129,6 +129,7 @@
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--start</span> <span class="pre">TIMESTAMP</span></code> - Run the first iteration of the task at _timestamp_.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--repeat</span> <span class="pre">DURATION</span></code> - Repeat runs at intervals of <code class="docutils literal notranslate"><span class="pre">DURATION</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--repeat-cron</span> <span class="pre">CRONSPEC</span></code> - Repeat runs cron(8)-style according to <code class="docutils literal notranslate"><span class="pre">CRONSPEC</span></code>.  <code class="docutils literal notranslate"><span class="pre">CRONSPEC</span></code> is a <a class="reference external" href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html">POSIX-standard cron entry specification</a>  without a shell command attached (e.g., <a href="#id1"><span class="problematic" id="id2">``</span></a>0,20,40 * * * 1-5`).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--max-runs</span> <span class="pre">N</span></code> - Allow the task to run up to <code class="docutils literal notranslate"><span class="pre">N</span></code> times.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--until</span> <span class="pre">TIMESTAMP</span></code> - Repeat runs of the task until <code class="docutils literal notranslate"><span class="pre">TIMESTAMP</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--slip</span> <span class="pre">DURATION</span></code> - Allow the start of each run to be as much as <code class="docutils literal notranslate"><span class="pre">DURATION</span></code> later than their ideal scheduled time.  If the environment variable <em>PSCHEDULER_SLIP</em> is present, its value will be used as a default, and.  Failing that, the default will be <code class="docutils literal notranslate"><span class="pre">PT5M</span></code>.  (Note that the slip value also applies to non-repeating tasks.)</p></li>
@@ -139,6 +140,11 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">repeat</span> <span class="n">PT1H</span> <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">runs</span> <span class="mi">50</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
+<p>For example, to measure round-trip time at zero, 20 and 40 minutes past the top of each hour on weekdays:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">repeat</span><span class="o">-</span><span class="n">cron</span> <span class="s2">&quot;0,20,40 * * * 1-5&quot;</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">--repeat</span></code> and <code class="docutils literal notranslate"><span class="pre">--repeat-cron</span></code> may be used in the same task but their behavior together will be complex hard to predict easily.  Use of both at the same time is not recommended.</p>
 <p>It is strongly recommended that repeating tasks apply as much slip as is tolerable to allow pScheduler to work around scheduling conflicts.  Larger slip values will will give tasks a better chance of executing.  For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">repeat</span> <span class="n">PT1H</span> <span class="o">--</span><span class="n">slip</span> <span class="n">PT30M</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
@@ -183,6 +189,20 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="substituting-files-for-test-parameters">
+<span id="pscheduler-client-tasks-substitutions"></span><h2>Substituting Files for Test Parameters<a class="headerlink" href="#substituting-files-for-test-parameters" title="Permalink to this headline">¶</a></h2>
+<p>All test parameters (i.e., those after the test type) may have their
+values read from a file by preceding the path to the file with an
+at sign (<code class="docutils literal notranslate"><span class="pre">&#64;</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">dest</span> <span class="o">@~/</span><span class="n">mystuff</span><span class="o">/</span><span class="n">destination</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">duration</span> <span class="n">PT1M</span>
+</pre></div>
+</div>
+<p>For arguments that need to begin with a literal <code class="docutils literal notranslate"><span class="pre">&#64;</span></code>, this feature
+can be disabled by escaping the first character with a backslash:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">idle</span> <span class="o">--</span><span class="n">starting</span><span class="o">-</span><span class="n">comment</span> <span class="s1">&#39;\@keep-this-argument-as-is&#39;</span> <span class="o">--</span><span class="n">duration</span> <span class="n">PT2S</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="canceling-tasks">
 <span id="pscheduler-client-tasks-canceling"></span><h2>Canceling Tasks<a class="headerlink" href="#canceling-tasks" title="Permalink to this headline">¶</a></h2>
 <p>You may cancel a task with the <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">cancel</span></code> command which takes the following form:</p>
@@ -214,6 +234,7 @@
 <li><a class="reference internal" href="#archiving-tasks">Archiving Tasks</a></li>
 <li><a class="reference internal" href="#exporting-tasks-to-json">Exporting tasks to JSON</a></li>
 <li><a class="reference internal" href="#importing-tasks-from-json">Importing tasks from JSON</a></li>
+<li><a class="reference internal" href="#substituting-files-for-test-parameters">Substituting Files for Test Parameters</a></li>
 <li><a class="reference internal" href="#canceling-tasks">Canceling Tasks</a></li>
 </ul>
 </li>
@@ -250,7 +271,7 @@
         <li class="right" >
           <a href="pscheduler_intro.html" title="What is pScheduler?"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">

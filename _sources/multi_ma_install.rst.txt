@@ -37,6 +37,9 @@ The remainder of this section describes how to setup both type of accounts.
 
 .. warning:: It is **highly recommended** you run your measurement archive server with HTTPS. This encrypts transfers and protects the API key (if applicable) from being exposed in plain text since it is just in the HTTP header. See the Apache HTTPD documentation for information on how to configure HTTPS.
 
+
+.. _multi_ma_install-intro:
+
 Authenticating by API Key
 --------------------------------------
 

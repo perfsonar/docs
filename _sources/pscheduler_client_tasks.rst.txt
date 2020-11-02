@@ -78,6 +78,7 @@ Any pScheduler task can be configured to run repeatedly by adding options to the
 
     * ``--start TIMESTAMP`` - Run the first iteration of the task at _timestamp_.
     * ``--repeat DURATION`` - Repeat runs at intervals of ``DURATION``.
+    * ``--repeat-cron CRONSPEC`` - Repeat runs cron(8)-style according to ``CRONSPEC``.  ``CRONSPEC`` is a `POSIX-standard cron entry specification <https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html>`_  without a shell command attached (e.g., ``0,20,40 * * * 1-5`).
     * ``--max-runs N`` - Allow the task to run up to ``N`` times.
     * ``--until TIMESTAMP`` - Repeat runs of the task until ``TIMESTAMP``.
     * ``--slip DURATION`` - Allow the start of each run to be as much as ``DURATION`` later than their ideal scheduled time.  If the environment variable *PSCHEDULER_SLIP* is present, its value will be used as a default, and.  Failing that, the default will be ``PT5M``.  (Note that the slip value also applies to non-repeating tasks.)
@@ -86,6 +87,14 @@ Any pScheduler task can be configured to run repeatedly by adding options to the
 For example, to measure round-trip time 50 times once per hour::
 
     pscheduler task --repeat PT1H --max-runs 50 rtt --dest www.perfsonar.net
+
+For example, to measure round-trip time at zero, 20 and 40 minutes past the top of each hour on weekdays::
+
+    pscheduler task --repeat-cron "0,20,40 * * * 1-5" rtt --dest www.perfsonar.net
+
+
+Note that ``--repeat`` and ``--repeat-cron`` may be used in the same task but their behavior together will be complex hard to predict easily.  Use of both at the same time is not recommended.
+
 
 It is strongly recommended that repeating tasks apply as much slip as is tolerable to allow pScheduler to work around scheduling conflicts.  Larger slip values will will give tasks a better chance of executing.  For example::
   
@@ -135,6 +144,25 @@ A JSON file that was previously exported or generated elsewhere can be imported 
 Test parameters may be changed on the fly by adding them to the command line after the test type::
 
     pscheduler task --import mytask.json throughput --dest somewhere.else
+
+
+
+.. _pscheduler_client_tasks-substitutions:
+
+Substituting Files for Test Parameters
+--------------------------------------
+
+All test parameters (i.e., those after the test type) may have their
+values read from a file by preceding the path to the file with an
+at sign (``@``)::
+
+    pscheduler task throughput --dest @~/mystuff/destination.txt --duration PT1M
+
+For arguments that need to begin with a literal ``@``, this feature
+can be disabled by escaping the first character with a backslash::
+
+    pscheduler task idle --starting-comment '\@keep-this-argument-as-is' --duration PT2S
+
 
 
 .. _pscheduler_client_tasks-canceling:

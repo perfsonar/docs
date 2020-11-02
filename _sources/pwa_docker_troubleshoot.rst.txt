@@ -1,6 +1,8 @@
 Troubleshooting Docker Containers
 ==================================
 
+**If you are not using Docker, SKIP THIS PAGE**
+
 Use the ``docker ps`` command to list the running containers.
 
 You should see all 5-6 containers running (again, ``postfix`` is optional).

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Configuring pScheduler Limits &#8212; perfSONAR Toolkit 4.2.4 documentation</title>
+    <title>Configuring pScheduler Limits &#8212; perfSONAR Toolkit 4.3.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Test and Tool Reference" href="pscheduler_ref_tests_tools.html" />
-    <link rel="prev" title="Running a pScheduler Server" href="pscheduler_server_running.html" /> 
+    <link rel="prev" title="Batch Processing" href="pscheduler_batch.html" /> 
   </head><body>
     <header>
         <div class="headerContents">
@@ -49,9 +49,9 @@
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
+          <a href="pscheduler_batch.html" title="Batch Processing"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -223,6 +223,7 @@ arrived.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;internal&quot;</span><span class="p">,</span>
     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requests arriving on our internal-facing interface&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;hint&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;hint&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span>
         <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -485,6 +486,11 @@ names do not overlap.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - A human-readable string describing the classifier.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">identifiers</span></code> - An array of strings indicating what identifiers
 should be part of the classifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">require</span></code> - A string specifying how many of the listed identifiers
+must be present for the requester to meet the requested
+classification.  Valid values are <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">one</span></code>, <code class="docutils literal notranslate"><span class="pre">any</span></code> and
+<code class="docutils literal notranslate"><span class="pre">all</span></code>.  If not provided, the default behavior will be <code class="docutils literal notranslate"><span class="pre">any</span></code>.
+(Use of this parameter requires a <code class="docutils literal notranslate"><span class="pre">schema</span></code> of <code class="docutils literal notranslate"><span class="pre">4</span></code> or higher.)</p></li>
 </ul>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -504,6 +510,12 @@ should be part of the classifier.</p></li>
             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;neutrals&quot;</span><span class="p">,</span>
             <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Requesters we neither like nor dislike&quot;</span><span class="p">,</span>
             <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;everybody&quot;</span> <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;r-and-e-partners&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Partners from research and education&quot;</span>
+            <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;partners&quot;</span><span class="p">,</span> <span class="s2">&quot;r-and-e&quot;</span> <span class="p">],</span>
+            <span class="s2">&quot;require&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span>
         <span class="p">},</span>
     <span class="o">...</span>
 <span class="p">}</span>
@@ -780,7 +792,7 @@ pairs:</p>
 specification).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tool</span></code> - A string that names the tool that was selected.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">schedule</span></code> - A JSON object containing all schedule paramaters
-submitted with the test (any of <code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">repeat</span></code>,
+submitted with the test (any of <code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">repeat</span></code>, <code class="docutils literal notranslate"><span class="pre">repeat-cron</span></code>,
 <code class="docutils literal notranslate"><span class="pre">max-runs</span></code>, <code class="docutils literal notranslate"><span class="pre">until</span></code>, <code class="docutils literal notranslate"><span class="pre">slip</span></code>, and <code class="docutils literal notranslate"><span class="pre">sliprand</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">run_schedule</span></code> - An optional JSON object containing an ISO8601
 timestamp (<cite>start</cite>) and ISO8601 duration (<cite>duration</cite>) specifying
@@ -1588,8 +1600,8 @@ be negated.</p></li>
 
                 <ul>
                   <li>
-                  <a href="pscheduler_server_running.html">Previous topic</a>
-                  <ul><li><a href="pscheduler_server_running.html" title="previous chapter">Running a pScheduler Server</a></li></ul>
+                  <a href="pscheduler_batch.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_batch.html" title="previous chapter">Batch Processing</a></li></ul>
                   </li>
                 </ul>
                   <ul>
@@ -1615,9 +1627,9 @@ be negated.</p></li>
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              >next</a> |</li>
         <li class="right" >
-          <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
+          <a href="pscheduler_batch.html" title="Batch Processing"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
