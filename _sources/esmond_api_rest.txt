@@ -1017,7 +1017,7 @@ See the remainder of this section for more details one each of these steps.
 
 Authentication and Authorization 
 --------------------------------- 
-Writing data generally requires some form of authentication and authorization. Currently the measurement archive supports the use of the HTTP Authorization header with an authorization string the form of ``Token <api-key>`` where ``<api-key>`` is the authentication credential. It is also recommended all requests be sent over HTTPS since otherwise these credentials will be sent in plain text.
+Writing data generally requires some form of authentication and authorization. IP authentication is one option that does not require any modification to the message. The measurement archive supports the use of the HTTP Authorization header with an authorization string the form of ``Token <api-key>`` where ``<api-key>`` is the authentication credential. It is also recommended all requests be sent over HTTPS since otherwise these credentials will be sent in plain text. More information on obtaining an API key can be found :ref:`here <multi_ma_install-intro>`.
 
 Publishing the Measurement Description 
 --------------------------------------- 

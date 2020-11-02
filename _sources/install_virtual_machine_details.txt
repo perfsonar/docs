@@ -7,7 +7,7 @@ Detailed Information on perfSONAR on Virtual Machines
 VM Tuning
 ----------
 
-See: https://fasterdata.es.net/host-tuning/virtual-machines/
+See: https://fasterdata.es.net/host-tuning/linux/virtual-machines/
 
 VM Considerations
 -----------------

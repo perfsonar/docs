@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuring pScheduler Limits &mdash; perfSONAR Toolkit 4.2.4 documentation</title>
+    <title>Configuring pScheduler Limits &mdash; perfSONAR Toolkit 4.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.2.4',
+        VERSION:     '4.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.2.4 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.3.0 documentation" href="index.html" />
     <link rel="next" title="OWAMP Server Configuration File" href="config_owamp.html" />
     <link rel="prev" title="Configuring pScheduler" href="config_pscheduler.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="config_pscheduler.html" title="Configuring pScheduler"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -234,6 +234,7 @@ arrived.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
     <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;internal&quot;</span><span class="p">,</span>
     <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Requests arriving on our internal-facing interface&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;hint&quot;</span><span class="p">,</span>
     <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;hint&quot;</span><span class="p">:</span> <span class="s">&quot;server&quot;</span><span class="p">,</span>
         <span class="s">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -496,6 +497,11 @@ names do not overlap.</li>
 <li><code class="docutils literal"><span class="pre">description</span></code> - A human-readable string describing the classifier.</li>
 <li><code class="docutils literal"><span class="pre">identifiers</span></code> - An array of strings indicating what identifiers
 should be part of the classifier.</li>
+<li><code class="docutils literal"><span class="pre">require</span></code> - A string specifying how many of the listed identifiers
+must be present for the requester to meet the requested
+classification.  Valid values are <code class="docutils literal"><span class="pre">none</span></code>, <code class="docutils literal"><span class="pre">one</span></code>, <code class="docutils literal"><span class="pre">any</span></code> and
+<code class="docutils literal"><span class="pre">all</span></code>.  If not provided, the default behavior will be <code class="docutils literal"><span class="pre">any</span></code>.
+(Use of this parameter requires a <code class="docutils literal"><span class="pre">schema</span></code> of <code class="docutils literal"><span class="pre">4</span></code> or higher.)</li>
 </ul>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre>{
@@ -515,6 +521,12 @@ should be part of the classifier.</li>
             &quot;name&quot;: &quot;neutrals&quot;,
             &quot;description&quot;: &quot;Requesters we neither like nor dislike&quot;,
             &quot;identifiers&quot;: [ &quot;everybody&quot; ]
+        },
+        {
+            &quot;name&quot;: &quot;r-and-e-partners&quot;,
+            &quot;description&quot;: &quot;Partners from research and education&quot;
+            &quot;identifiers&quot;: [ &quot;partners&quot;, &quot;r-and-e&quot; ],
+            &quot;require&quot;: &quot;all&quot;
         },
     ...
 }
@@ -791,7 +803,7 @@ pairs:</p>
 specification).</li>
 <li><code class="docutils literal"><span class="pre">tool</span></code> - A string that names the tool that was selected.</li>
 <li><code class="docutils literal"><span class="pre">schedule</span></code> - A JSON object containing all schedule paramaters
-submitted with the test (any of <code class="docutils literal"><span class="pre">start</span></code>, <code class="docutils literal"><span class="pre">repeat</span></code>,
+submitted with the test (any of <code class="docutils literal"><span class="pre">start</span></code>, <code class="docutils literal"><span class="pre">repeat</span></code>, <code class="docutils literal"><span class="pre">repeat-cron</span></code>,
 <code class="docutils literal"><span class="pre">max-runs</span></code>, <code class="docutils literal"><span class="pre">until</span></code>, <code class="docutils literal"><span class="pre">slip</span></code>, and <code class="docutils literal"><span class="pre">sliprand</span></code>)</li>
 <li><code class="docutils literal"><span class="pre">run_schedule</span></code> - An optional JSON object containing an ISO8601
 timestamp (<cite>start</cite>) and ISO8601 duration (<cite>duration</cite>) specifying
@@ -1628,7 +1640,7 @@ be negated.</li>
         <li class="right" >
           <a href="config_pscheduler.html" title="Configuring pScheduler"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">

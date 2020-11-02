@@ -372,7 +372,7 @@ this transform is provided with the same data that will go to the
 archiver, meaning that it is whatever resulted after any ``transform``
 in the archive specification.
 
-``connection-lifetime`` (Optional) - An ISO8601 duration recommending
+``connection-expires`` (Optional) - An ISO8601 duration recommending
 how long the connection to RabbitMQ for a given URL/exchange/key
 combination should be kept alive.  The default is to create a new
 connection for each result archived.  Note that a small value such as

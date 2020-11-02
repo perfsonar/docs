@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>perfSONAR Frequently Asked Questions (FAQs) &mdash; perfSONAR Toolkit 4.2.4 documentation</title>
+    <title>perfSONAR Frequently Asked Questions (FAQs) &mdash; perfSONAR Toolkit 4.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.2.4',
+        VERSION:     '4.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.2.4 documentation" href="index.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.3.0 documentation" href="index.html" />
     <link rel="next" title="perfSONAR Client Tools" href="client_tools.html" />
     <link rel="prev" title="Troubleshooting perfSONAR" href="troubleshooting_overview.html" /> 
   </head>
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="troubleshooting_overview.html" title="Troubleshooting perfSONAR"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -264,6 +264,14 @@ The user of a network may not have a machine that is as tuned as a perfSONAR nod
 <div class="section" id="q-is-there-a-way-to-visualize-gridftp-results-in-maddash">
 <h3>Q: Is there a way to visualize GridFTP results in MaDDash?<a class="headerlink" href="#q-is-there-a-way-to-visualize-gridftp-results-in-maddash" title="Permalink to this headline">¶</a></h3>
 <p><strong>A:</strong> Please see documentation at <a class="reference internal" href="esmond_gridftp.html"><em>Registering GridFTP Results to Esmond</em></a></p>
+</div>
+<div class="section" id="q-when-i-visit-a-maddash-page-my-dashboards-don-t-load-and-i-see-an-error-connections-could-not-be-acquired-from-the-underlying-database-how-do-i-fix-this">
+<h3>Q: When I visit a MaDDash page my dashboards don&#8217;t load and I see an error &#8220;Connections could not be acquired from the underlying database!&#8221;. How do I fix this?<a class="headerlink" href="#q-when-i-visit-a-maddash-page-my-dashboards-don-t-load-and-i-see-an-error-connections-could-not-be-acquired-from-the-underlying-database-how-do-i-fix-this" title="Permalink to this headline">¶</a></h3>
+<p><strong>A:</strong> When you see this behavior it means there is some type of corruption in the embedded database MaDDash uses to track the status of alerts. The most common cause is that your disk is full. The database itself is pretty small, so mostly likely something else on the system is using the space. Once you free-up space, you can restart MaDDash with <em>systemctl restart maddash-server</em> and the error may be corrected. If you still see this error the database may have gotten corrupted when the disk was filled. You can clear out the database (this is just the last 7 days of alert history and not your measurements) by running the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>rm -rf /var/lib/maddash/*
+systemctl restart maddash-server
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="host-and-network-administration-questions">
@@ -618,6 +626,7 @@ systemctl restart httpd
 <li><a class="reference internal" href="#q-why-do-i-get-such-weird-results-when-i-test-from-a-10g-connected-host-to-1g-connected-host">Q: Why do I get such weird results when I test from a 10G connected host to 1G connected host?</a></li>
 <li><a class="reference internal" href="#q-my-perfsonar-results-show-consistent-line-rate-performance-but-a-researcher-at-my-site-is-reporting-really-poor-performance-what-gives">Q: My perfSONAR results show consistent line-rate performance, but a researcher at my site is reporting really poor performance, what gives?</a></li>
 <li><a class="reference internal" href="#q-is-there-a-way-to-visualize-gridftp-results-in-maddash">Q: Is there a way to visualize GridFTP results in MaDDash?</a></li>
+<li><a class="reference internal" href="#q-when-i-visit-a-maddash-page-my-dashboards-don-t-load-and-i-see-an-error-connections-could-not-be-acquired-from-the-underlying-database-how-do-i-fix-this">Q: When I visit a MaDDash page my dashboards don&#8217;t load and I see an error &#8220;Connections could not be acquired from the underlying database!&#8221;. How do I fix this?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#host-and-network-administration-questions">Host and Network Administration Questions</a><ul>
@@ -702,7 +711,7 @@ systemctl restart httpd
         <li class="right" >
           <a href="troubleshooting_overview.html" title="Troubleshooting perfSONAR"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
