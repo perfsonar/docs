@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Central Configuration Overview &mdash; perfSONAR Toolkit 4.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0.2 documentation" href="index.html" />
+    <link rel="next" title="Publishing a Central Configuration File with MeshConfig" href="multi_mesh_server_config.html" />
+    <link rel="prev" title="BWCTL to pScheduler Command Reference" href="pscheduler_ref_bwctl.html" /> 
+  </head>
+  <body role="document">
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="multi_mesh_server_config.html" title="Publishing a Central Configuration File with MeshConfig"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_ref_bwctl.html" title="BWCTL to pScheduler Command Reference"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="central-configuration-overview">
+<h1>Central Configuration Overview<a class="headerlink" href="#central-configuration-overview" title="Permalink to this headline">¶</a></h1>
+<p>If you manage more than one perfSONAR host for your organization or participate in a distributed community of perfSONAR measurement hosts, it can quickly become unwieldy to manually configure the tests you want to run for each host. perfSONAR provides some additional tools that make it easier to manage multiple toolkits and ensure each deployment gets the correct set of tests. It also provides ways to store and visualize the results from multiple hosts. See the sections that follow for important information on each of these topics.</p>
+<div class="section" id="defining-tests-for-multiple-hosts">
+<h2>Defining Tests for Multiple Hosts<a class="headerlink" href="#defining-tests-for-multiple-hosts" title="Permalink to this headline">¶</a></h2>
+<p>One of the most important parts about managing multiple hosts is maintaining the proper set of regular tests. It can be a challenge to not only accurately setup the tests for the first time, but to update these tests as members come and go or test parameters change. In order to make this easier, perfSONAR has the concept of the <strong>Mesh Configuration (MeshConfig)</strong> software. The basic idea is that an administrator defines the desired tests in a central file, publishes this file to the web and the individual hosts download the file and use it to build their test configuration. A diagram of this process is shown below:</p>
+<img alt="_images/multi-overview.png" src="_images/multi-overview.png" />
+<p>You can find information on each of the steps outlined by the diagram in the following sections:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Step 1</strong> of defining the configuration file and <strong>step 2</strong> of publishing the configuration to the web are covered in <a class="reference internal" href="multi_mesh_server_config.html"><em>Publishing a Central Configuration File  with MeshConfig</em></a>. This will be beneficial to administrators planning to run a central configuration file. It is not required reading if you only plan to consume a central configuration file.</li>
+<li><strong>Step 3</strong> of downloading the configuration file is covered in <a class="reference internal" href="multi_mesh_agent_config.html"><em>Reading a Central Configuration File with MeshConfig</em></a>. This describes what needs to be done to a perfSONAR host to participate in a mesh configuration and will be beneficial if you have one or more hosts that need to consume one or more central configuration files.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="storing-your-measurements">
+<h2>Storing Your Measurements<a class="headerlink" href="#storing-your-measurements" title="Permalink to this headline">¶</a></h2>
+<p>Measurement results are stored in a component called the measurement archive (MA). If you are running the perfSONAR Toolkit, then your results will be stored in an MA on your local Toolkit node by default. It is possible to configure multiple perfSONAR hosts to write to the same remote MA. This may be especially desirable if your hosts that are performing measurements do not have powerful hardware and do not want to waste resources hosting a measurement archive. For more information on running a central MA see <a class="reference internal" href="multi_ma_install.html"><em>Deploying a Central Measurement Archive</em></a>.</p>
+</div>
+<div class="section" id="visualizing-the-results">
+<h2>Visualizing the Results<a class="headerlink" href="#visualizing-the-results" title="Permalink to this headline">¶</a></h2>
+<p>Visualizing the measurement results for multiple hosts is another desirable aspect of central configuration and management. Currently there is an <a class="reference internal" href="manage_extra_tools.html"><em>additional tool</em></a> called <a class="reference external" href="http://software.es.net/maddash/">MaDDash</a> developed in conjunction with the perfSONAR project that organizes tests from multiple hosts into grids. It is even capable of <a class="reference external" href="http://software.es.net/maddash/mesh_config.html">integrating with the perfSONAR mesh configuration tools</a> to generate a display based on your central configuration file. The full set of MaDDash options and features is beyond the scope of this guide, but see the <a class="reference external" href="http://software.es.net/maddash/">MaDDash documentation</a> for more details.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Central Configuration Overview</a><ul>
+<li><a class="reference internal" href="#defining-tests-for-multiple-hosts">Defining Tests for Multiple Hosts</a></li>
+<li><a class="reference internal" href="#storing-your-measurements">Storing Your Measurements</a></li>
+<li><a class="reference internal" href="#visualizing-the-results">Visualizing the Results</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pscheduler_ref_bwctl.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_ref_bwctl.html" title="previous chapter">BWCTL to pScheduler Command Reference</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="multi_mesh_server_config.html">Next topic</a>
+                      <ul><li><a href="multi_mesh_server_config.html" title="next chapter">Publishing a Central Configuration File  with MeshConfig</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="multi_mesh_server_config.html" title="Publishing a Central Configuration File with MeshConfig"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_ref_bwctl.html" title="BWCTL to pScheduler Command Reference"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

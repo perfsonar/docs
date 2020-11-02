@@ -1,26 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <title>Managing Users &#8212; perfSONAR Toolkit 4.3.0 documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Managing Users &mdash; perfSONAR Toolkit 4.2.4 documentation</title>
+    
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.2.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.4 documentation" href="index.html" />
     <link rel="next" title="Host Tuning" href="manage_tuning.html" />
-    <link rel="prev" title="Reading Log Files" href="manage_logs.html" /> 
-  </head><body>
+    <link rel="prev" title="Updating perfSONAR" href="manage_update.html" /> 
+  </head>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -49,9 +58,9 @@
           <a href="manage_tuning.html" title="Host Tuning"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="manage_logs.html" title="Reading Log Files"
+          <a href="manage_update.html" title="Updating perfSONAR"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -67,150 +76,157 @@
 <h1>Managing Users<a class="headerlink" href="#managing-users" title="Permalink to this headline">¶</a></h1>
 <p>The perfSONAR Toolkit provides utilities for adding, deleting and modifying users that have permissions to access the web interface. All of these tasks could be done through the standard *NIX command-line tools and the tools provided are mainly for convenience.</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You will also be prompted to create a user and password that can be used to administer the host through the web interface during the first command line root login to the server. See also <a class="reference internal" href="install_config_first_time.html"><span class="doc">Configuring the Toolkit for the First Time</span></a>.</p>
+<p class="first admonition-title">Note</p>
+<p class="last">You will also be prompted to create a user and password that can be used to administer the host through the web interface during the first command line root login to the server. See also <a class="reference internal" href="install_config_first_time.html"><em>Configuring the Toolkit for the First Time</em></a>.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The perfSONAR Toolkit does not provide any special utilities to create superusers after it is already installed. You will need to use built-in utilities like <em>visudo</em> to create privileged users and add them to <strong>pssudo</strong> group (<strong>pssudo</strong> group is installed by perfSONAR Toolkit and allows anyone in pssudo group to have sudo on the machine). Note that any users in the wheel group will NOT be allowed access to the web interface.</p>
+<p class="first admonition-title">Note</p>
+<p class="last">The perfSONAR Toolkit does not provide any special utilities to create superusers after it is already installed. You will need to use built-in utilities like <em>visudo</em> to create privileged users and add them to <strong>pssudo</strong> group (<strong>pssudo</strong> group is installed by perfSONAR Toolkit and allows anyone in pssudo group to have sudo on the machine). Note that any users in the wheel group will NOT be allowed access to the web interface.</p>
 </div>
 <div class="section" id="adding-a-web-user">
 <span id="manage-users-add-web-user"></span><h2>Adding a Web User<a class="headerlink" href="#adding-a-web-user" title="Permalink to this headline">¶</a></h2>
 <p>When adding users to the Toolkit that you want to access the web interface, it is recommended you use the provided script <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>. To add web users with that script run the following:</p>
 <ol class="arabic">
-<li><p>Login to the system as a root user</p></li>
-<li><p>Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">nptoolkit</span><span class="o">-</span><span class="n">configure</span><span class="o">.</span><span class="n">py</span>
+<li><p class="first">Login to the system as a root user</p>
+</li>
+<li><p class="first">Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/nptoolkit-configure.py
 </pre></div>
 </div>
 </li>
-<li><p>At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">customization</span> <span class="n">script</span>
+<li><p class="first">At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
 
-<span class="mf">1.</span> <span class="n">Change</span> <span class="n">Timezone</span>
-<span class="mf">2.</span> <span class="n">Manage</span> <span class="n">Web</span> <span class="n">Users</span>
-<span class="mf">0.</span> <span class="n">exit</span>
+1. Change Timezone
+2. Manage Web Users
+0. exit
 
-<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span> <span class="mi">2</span>
+Make a selection: 2
 </pre></div>
 </div>
 </li>
-<li><p>Select option <strong>1. Add a new user</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">user</span> <span class="n">administration</span> <span class="n">program</span><span class="o">.</span>
-<span class="n">This</span> <span class="n">program</span> <span class="n">will</span> <span class="n">help</span> <span class="n">you</span> <span class="n">administer</span> <span class="n">users</span><span class="o">.</span>
-<span class="n">You</span> <span class="n">may</span> <span class="n">configure</span> <span class="nb">any</span> <span class="n">of</span> <span class="n">the</span> <span class="n">options</span> <span class="n">below</span> <span class="k">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">:</span>
-    <span class="mf">1.</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">user</span>
-    <span class="mf">2.</span> <span class="n">Delete</span> <span class="n">a</span> <span class="n">user</span>
-    <span class="mf">3.</span> <span class="n">Change</span> <span class="n">a</span> <span class="n">user</span><span class="s1">&#39;s password</span>
-    <span class="mf">0.</span> <span class="n">exit</span>
-<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span>  <span class="mi">1</span>
+<li><p class="first">Select option <strong>1. Add a new user</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>Welcome to the perfSONAR Toolkit user administration program.
+This program will help you administer users.
+You may configure any of the options below with this program:
+    1. Add a new user
+    2. Delete a user
+    3. Change a user&#39;s password
+    0. exit
+Make a selection:  1
 </pre></div>
 </div>
 </li>
-<li><p>Enter the name of the user you would like to add and hit <strong>Enter</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Enter</span> <span class="n">the</span> <span class="n">user</span> <span class="n">whose</span> <span class="n">account</span> <span class="n">you</span><span class="s1">&#39;d like to add. Just hit enter to exit: myuser</span>
+<li><p class="first">Enter the name of the user you would like to add and hit <strong>Enter</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>Enter the user whose account you&#39;d like to add. Just hit enter to exit: myuser
 </pre></div>
 </div>
 </li>
-<li><p>Next enter and confirm the password for the new user:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">New</span> <span class="n">password</span><span class="p">:</span>
-<span class="n">Re</span><span class="o">-</span><span class="nb">type</span> <span class="n">new</span> <span class="n">password</span><span class="p">:</span>
-<span class="n">Adding</span> <span class="n">password</span> <span class="k">for</span> <span class="n">user</span> <span class="n">myuser</span>
+<li><p class="first">Next enter and confirm the password for the new user:</p>
+<div class="highlight-python"><div class="highlight"><pre>New password:
+Re-type new password:
+Adding password for user myuser
 </pre></div>
 </div>
 </li>
-<li><p>The new user is added. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p></li>
+<li><p class="first">The new user is added. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p>
+</li>
 </ol>
 </div>
 <div class="section" id="deleting-a-web-user">
 <h2>Deleting a Web User<a class="headerlink" href="#deleting-a-web-user" title="Permalink to this headline">¶</a></h2>
 <p>You may delete a Web user with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
 <ol class="arabic">
-<li><p>Login to the system as a root user.</p></li>
-<li><p>Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">nptoolkit</span><span class="o">-</span><span class="n">configure</span><span class="o">.</span><span class="n">py</span>
+<li><p class="first">Login to the system as a root user.</p>
+</li>
+<li><p class="first">Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/nptoolkit-configure.py
 </pre></div>
 </div>
 </li>
-<li><p>At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">customization</span> <span class="n">script</span>
+<li><p class="first">At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
 
-<span class="mf">1.</span> <span class="n">Change</span> <span class="n">Timezone</span>
-<span class="mf">2.</span> <span class="n">Manage</span> <span class="n">Web</span> <span class="n">Users</span>
-<span class="mf">0.</span> <span class="n">exit</span>
+1. Change Timezone
+2. Manage Web Users
+0. exit
 
-<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span> <span class="mi">2</span>
+Make a selection: 2
 </pre></div>
 </div>
 </li>
-<li><p>Select option <strong>2. Delete a user</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">user</span> <span class="n">administration</span> <span class="n">program</span><span class="o">.</span>
-<span class="n">This</span> <span class="n">program</span> <span class="n">will</span> <span class="n">help</span> <span class="n">you</span> <span class="n">administer</span> <span class="n">users</span><span class="o">.</span>
-<span class="n">You</span> <span class="n">may</span> <span class="n">configure</span> <span class="nb">any</span> <span class="n">of</span> <span class="n">the</span> <span class="n">options</span> <span class="n">below</span> <span class="k">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">:</span>
-    <span class="mf">1.</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">user</span>
-    <span class="mf">2.</span> <span class="n">Delete</span> <span class="n">a</span> <span class="n">user</span>
-    <span class="mf">3.</span> <span class="n">Change</span> <span class="n">a</span> <span class="n">user</span><span class="s1">&#39;s password</span>
-    <span class="mf">0.</span> <span class="n">exit</span>
-<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span>  <span class="mi">2</span>
+<li><p class="first">Select option <strong>2. Delete a user</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>Welcome to the perfSONAR Toolkit user administration program.
+This program will help you administer users.
+You may configure any of the options below with this program:
+    1. Add a new user
+    2. Delete a user
+    3. Change a user&#39;s password
+    0. exit
+Make a selection:  2
 </pre></div>
 </div>
 </li>
-<li><p>Type the name of the user you would like to delete and confirm:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Enter</span> <span class="n">the</span> <span class="n">user</span> <span class="n">whose</span> <span class="n">account</span> <span class="n">you</span><span class="s1">&#39;d like to remove. Just hit enter to exit: myuser</span>
+<li><p class="first">Type the name of the user you would like to delete and confirm:</p>
+<div class="highlight-python"><div class="highlight"><pre>Enter the user whose account you&#39;d like to remove. Just hit enter to exit: myuser
 </pre></div>
 </div>
 </li>
-<li><p>The user is deleted. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p></li>
+<li><p class="first">The user is deleted. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p>
+</li>
 </ol>
 </div>
 <div class="section" id="changing-a-web-user-s-password">
-<h2>Changing a Web User’s Password<a class="headerlink" href="#changing-a-web-user-s-password" title="Permalink to this headline">¶</a></h2>
-<p>You may change a web user’s password with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
+<h2>Changing a Web User&#8217;s Password<a class="headerlink" href="#changing-a-web-user-s-password" title="Permalink to this headline">¶</a></h2>
+<p>You may change a web user&#8217;s password with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
 <ol class="arabic">
-<li><p>Login to the system as a root user.</p></li>
-<li><p>Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">nptoolkit</span><span class="o">-</span><span class="n">configure</span><span class="o">.</span><span class="n">py</span>
+<li><p class="first">Login to the system as a root user.</p>
+</li>
+<li><p class="first">Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/lib/perfsonar/scripts/nptoolkit-configure.py
 </pre></div>
 </div>
 </li>
-<li><p>At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">customization</span> <span class="n">script</span>
+<li><p class="first">At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>perfSONAR Toolkit customization script
 
-<span class="mf">1.</span> <span class="n">Change</span> <span class="n">Timezone</span>
-<span class="mf">2.</span> <span class="n">Manage</span> <span class="n">Web</span> <span class="n">Users</span>
-<span class="mf">0.</span> <span class="n">exit</span>
+1. Change Timezone
+2. Manage Web Users
+0. exit
 
-<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span> <span class="mi">2</span>
+Make a selection: 2
 </pre></div>
 </div>
 </li>
-<li><p>Select option <strong>3. Change a user’s password</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">user</span> <span class="n">administration</span> <span class="n">program</span><span class="o">.</span>
-<span class="n">This</span> <span class="n">program</span> <span class="n">will</span> <span class="n">help</span> <span class="n">you</span> <span class="n">administer</span> <span class="n">users</span><span class="o">.</span>
-<span class="n">You</span> <span class="n">may</span> <span class="n">configure</span> <span class="nb">any</span> <span class="n">of</span> <span class="n">the</span> <span class="n">options</span> <span class="n">below</span> <span class="k">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">:</span>
-    <span class="mf">1.</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">user</span>
-    <span class="mf">2.</span> <span class="n">Delete</span> <span class="n">a</span> <span class="n">user</span>
-    <span class="mf">3.</span> <span class="n">Change</span> <span class="n">a</span> <span class="n">user</span><span class="s1">&#39;s password</span>
-    <span class="mf">0.</span> <span class="n">exit</span>
-<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span>  <span class="mi">3</span>
+<li><p class="first">Select option <strong>3. Change a user&#8217;s password</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>Welcome to the perfSONAR Toolkit user administration program.
+This program will help you administer users.
+You may configure any of the options below with this program:
+    1. Add a new user
+    2. Delete a user
+    3. Change a user&#39;s password
+    0. exit
+Make a selection:  3
 </pre></div>
 </div>
 </li>
-<li><p>Type the name of the user with the password you would like to change:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Enter</span> <span class="n">the</span> <span class="n">user</span> <span class="n">whose</span> <span class="n">password</span> <span class="n">you</span><span class="s1">&#39;d like to change. Just hit enter to exit: myuser</span>
+<li><p class="first">Type the name of the user with the password you would like to change:</p>
+<div class="highlight-python"><div class="highlight"><pre>Enter the user whose password you&#39;d like to change. Just hit enter to exit: myuser
 </pre></div>
 </div>
 </li>
-<li><p>Type and confirm the new password:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Please</span> <span class="n">specify</span> <span class="n">a</span> <span class="n">password</span> <span class="k">for</span> <span class="n">the</span> <span class="n">myuser</span> <span class="n">account</span><span class="o">.</span>
-    <span class="n">New</span> <span class="n">password</span><span class="p">:</span>
-    <span class="n">Re</span><span class="o">-</span><span class="nb">type</span> <span class="n">new</span> <span class="n">password</span><span class="p">:</span>
-    <span class="n">Updating</span> <span class="n">password</span> <span class="k">for</span> <span class="n">user</span> <span class="n">myuser</span>
+<li><p class="first">Type and confirm the new password:</p>
+<div class="highlight-python"><div class="highlight"><pre>Please specify a password for the myuser account.
+    New password:
+    Re-type new password:
+    Updating password for user myuser
 </pre></div>
 </div>
 </li>
-<li><p>Normal precautions should be taken to protect the password as it can be used to access the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8. It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.</p></li>
-<li><p>The user’s password is now changed. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p></li>
+<li><p class="first">Normal precautions should be taken to protect the password as it can be used to access the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8. It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.</p>
+</li>
+<li><p class="first">The user&#8217;s password is now changed. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p>
+</li>
 </ol>
 </div>
 </div>
@@ -227,15 +243,15 @@
 <li><a class="reference internal" href="#">Managing Users</a><ul>
 <li><a class="reference internal" href="#adding-a-web-user">Adding a Web User</a></li>
 <li><a class="reference internal" href="#deleting-a-web-user">Deleting a Web User</a></li>
-<li><a class="reference internal" href="#changing-a-web-user-s-password">Changing a Web User’s Password</a></li>
+<li><a class="reference internal" href="#changing-a-web-user-s-password">Changing a Web User&#8217;s Password</a></li>
 </ul>
 </li>
 </ul>
 
                 <ul>
                   <li>
-                  <a href="manage_logs.html">Previous topic</a>
-                  <ul><li><a href="manage_logs.html" title="previous chapter">Reading Log Files</a></li></ul>
+                  <a href="manage_update.html">Previous topic</a>
+                  <ul><li><a href="manage_update.html" title="previous chapter">Updating perfSONAR</a></li></ul>
                   </li>
                 </ul>
                   <ul>
@@ -261,9 +277,9 @@
           <a href="manage_tuning.html" title="Host Tuning"
              >next</a> |</li>
         <li class="right" >
-          <a href="manage_logs.html" title="Reading Log Files"
+          <a href="manage_update.html" title="Updating perfSONAR"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -304,8 +320,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+        &copy; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

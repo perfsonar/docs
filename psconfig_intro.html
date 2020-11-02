@@ -1,26 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <title>What is pSConfig? &#8212; perfSONAR Toolkit 4.3.0 documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>What is pSConfig? &mdash; perfSONAR Toolkit 4.2.4 documentation</title>
+    
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.2.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.4 documentation" href="index.html" />
     <link rel="next" title="pSConfig Quickstart Guide" href="psconfig_quickstart.html" />
     <link rel="prev" title="pScheduler Disk-to-Disk Tests" href="pscheduler_disk_to_disk.html" /> 
-  </head><body>
+  </head>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -51,7 +60,7 @@
         <li class="right" >
           <a href="pscheduler_disk_to_disk.html" title="pScheduler Disk-to-Disk Tests"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -70,22 +79,22 @@
 <p><strong>pSConfig</strong> is a <em>template</em> framework for describing and configuring a <em>topology</em> of <em>tasks</em>. If you manage more than one perfSONAR host (or participate in a distributed community of perfSONAR measurement hosts), the following configuration tasks can quickly become unwieldy:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p><strong>Scheduling the tasks</strong> you want to run at each location.</p></li>
-<li><p><strong>Maintaining visualization components</strong> to display results of the measurements from multiple hosts</p></li>
+<li><strong>Scheduling the tasks</strong> you want to run at each location.</li>
+<li><strong>Maintaining visualization components</strong> to display results of the measurements from multiple hosts</li>
 </ol>
 </div></blockquote>
 <p>pSConfig assists with these challenges by providing tools to automate each of the configuration tasks listed above.</p>
 </div>
 <div class="section" id="concepts-and-terminology">
 <h2>Concepts and Terminology<a class="headerlink" href="#concepts-and-terminology" title="Permalink to this headline">¶</a></h2>
-<p>It is helpful to understand a few basic terms when discussing pSConfig. Starting at the most fundamental level, a <strong>task</strong> in the context of pSConfig is a job to do consisting of a test to be carried out, scheduling information and other options. In fact, a task in pSConfig means the same thing as a task in <a class="reference internal" href="pscheduler_intro.html"><span class="doc">pScheduler</span></a>.</p>
-<p>Beyond individual tasks, pSConfig is also concerned with how the tasks are interrelated and arranged, known as the task <strong>topology</strong>. Many tasks have common parameters or are related in some way, so it’s important to be able to look at the tasks as more than just a set of independent jobs. pSConfig cares about these relationships so it can be used as input to visualization components such as <a class="reference internal" href="maddash_intro.html"><span class="doc">MaDDash</span></a> to relate the results in meaningful ways.</p>
+<p>It is helpful to understand a few basic terms when discussing pSConfig. Starting at the most fundamental level, a <strong>task</strong> in the context of pSConfig is a job to do consisting of a test to be carried out, scheduling information and other options. In fact, a task in pSConfig means the same thing as a task in <a class="reference internal" href="pscheduler_intro.html"><em>pScheduler</em></a>.</p>
+<p>Beyond individual tasks, pSConfig is also concerned with how the tasks are interrelated and arranged, known as the task <strong>topology</strong>. Many tasks have common parameters or are related in some way, so it&#8217;s important to be able to look at the tasks as more than just a set of independent jobs. pSConfig cares about these relationships so it can be used as input to visualization components such as <a class="reference internal" href="maddash_intro.html"><em>MaDDash</em></a> to relate the results in meaningful ways.</p>
 <p>A pSConfig <strong>template</strong> is a description of the task topology in a machine readable format. pSConfig templates are expressed in JSON files. The templates are designed to be highly expressive and extensible so that new capabilities can easily be supported. pSConfig templates by themselves are just files, and they only become useful when something reads them and is able to perform action based on their content.</p>
 <p>An <strong>agent</strong> is software that reads one or more pSConfig templates and uses the information to perform a specific function. There are currently two agents in perfSONAR:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p><strong>pscheduler-agent</strong> - An agent that parses one or more template(s) for measurements to be run and submits them to <a class="reference internal" href="pscheduler_intro.html"><span class="doc">pScheduler</span></a></p></li>
-<li><p><strong>maddash-agent</strong> - An agent that reads one or more template(s) and creates a <a class="reference internal" href="maddash_intro.html"><span class="doc">MaDDash</span></a> dashboard to display the results</p></li>
+<li><strong>pscheduler-agent</strong> - An agent that parses one or more template(s) for measurements to be run and submits them to <a class="reference internal" href="pscheduler_intro.html"><em>pScheduler</em></a></li>
+<li><strong>maddash-agent</strong> - An agent that reads one or more template(s) and creates a <a class="reference internal" href="maddash_intro.html"><em>MaDDash</em></a> dashboard to display the results</li>
 </ol>
 </div></blockquote>
 <p>With the fundamentals out of the way, we can now bring them together to demonstrate the basic workflow of how pSConfig can be used to configure a perfSONAR deployment.</p>
@@ -94,12 +103,12 @@
 <h2>The pSConfig Workflow<a class="headerlink" href="#the-psconfig-workflow" title="Permalink to this headline">¶</a></h2>
 <p>The basic workflow of pSConfig is outlined in the diagram below:</p>
 <img alt="_images/psconfig_intro-workflow.png" src="_images/psconfig_intro-workflow.png" />
-<p>If you think you’re ready to jump right into this workflow you can see <a class="reference internal" href="psconfig_quickstart.html"><span class="doc">pSConfig Quickstart Guide</span></a>. Otherwise, you can find more detailed information on the steps outlined by the diagram in the following sections:</p>
+<p>If you think you&#8217;re ready to jump right into this workflow you can see <a class="reference internal" href="psconfig_quickstart.html"><em>pSConfig Quickstart Guide</em></a>. Otherwise, you can find more detailed information on the steps outlined by the diagram in the following sections:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>Step 1</strong> consists of building a JSON template. A primer on this topic can be found in <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">Introduction to pSConfig Templates</span></a></p></li>
-<li><p><strong>Step 2</strong> is the process of taking the generated template and publishing it to the web. This process is detailed in <a class="reference internal" href="psconfig_publish.html"><span class="doc">Publishing a pSConfig Template</span></a></p></li>
-<li><p><strong>Step 3</strong>  involves configuring agents to read your published templates. perfSONAR currently provides two agents: information on the pScheduler agent used to create tasks can be found in <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">Running the pSConfig pScheduler Agent</span></a> and information on using the MaDDash agent to configure dashboards can be found in <a class="reference internal" href="psconfig_maddash_agent.html"><span class="doc">Running the pSConfig MaDDash Agent</span></a>.</p></li>
+<li><strong>Step 1</strong> consists of building a JSON template. A primer on this topic can be found in <a class="reference internal" href="psconfig_templates_intro.html"><em>Introduction to pSConfig Templates</em></a></li>
+<li><strong>Step 2</strong> is the process of taking the generated template and publishing it to the web. This process is detailed in <a class="reference internal" href="psconfig_publish.html"><em>Publishing a pSConfig Template</em></a></li>
+<li><strong>Step 3</strong>  involves configuring agents to read your published templates. perfSONAR currently provides two agents: information on the pScheduler agent used to create tasks can be found in <a class="reference internal" href="psconfig_pscheduler_agent.html"><em>Running the pSConfig pScheduler Agent</em></a> and information on using the MaDDash agent to configure dashboards can be found in <a class="reference internal" href="psconfig_maddash_agent.html"><em>Running the pSConfig MaDDash Agent</em></a>.</li>
 </ul>
 </div></blockquote>
 </div>
@@ -153,7 +162,7 @@
         <li class="right" >
           <a href="pscheduler_disk_to_disk.html" title="pScheduler Disk-to-Disk Tests"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -194,8 +203,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+        &copy; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

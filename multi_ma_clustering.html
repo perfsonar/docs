@@ -1,26 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <title>Clustering a Measurement Archive &#8212; perfSONAR Toolkit 4.3.0 documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Clustering a Measurement Archive &mdash; perfSONAR Toolkit 4.2.4 documentation</title>
+    
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.2.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="perfSONAR Toolkit 4.2.4 documentation" href="index.html" />
     <link rel="next" title="Managing Measurement Archive Data" href="multi_ma_backups.html" />
     <link rel="prev" title="Deploying a Central Measurement Archive" href="multi_ma_install.html" /> 
-  </head><body>
+  </head>
+  <body role="document">
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -51,7 +60,7 @@
         <li class="right" >
           <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -67,14 +76,14 @@
 <h1>Clustering a Measurement Archive<a class="headerlink" href="#clustering-a-measurement-archive" title="Permalink to this headline">¶</a></h1>
 <p>The perfSONAR Measurement Archive software esmond is built-on a number of technologies that allow you to run the service across a collection of servers. A collection of servers configured in such a manner is often referred to as a <em>cluster</em>. In general, the primary motivation behind running the measurement archive on a cluster is for one or more of the reasons below:</p>
 <ol class="arabic simple">
-<li><p><em>High availability</em> - If you are running your archive on one server and a component of the software goes down, such as a database, your archive will not be able to service any requests. Clustering can be used to configure things like data replication across servers and fail over to another dataset if a host goes down.</p></li>
-<li><p><em>Load balancing</em> - If your measurement archive is servicing a large number of requests, you may want to create a cluster so multiple servers can share the load. There are number of strategies for doing this such as round-robing requests or splitting read and write operations.</p></li>
+<li><em>High availability</em> - If you are running your archive on one server and a component of the software goes down, such as a database, your archive will not be able to service any requests. Clustering can be used to configure things like data replication across servers and fail over to another dataset if a host goes down.</li>
+<li><em>Load balancing</em> - If your measurement archive is servicing a large number of requests, you may want to create a cluster so multiple servers can share the load. There are number of strategies for doing this such as round-robing requests or splitting read and write operations.</li>
 </ol>
 <p>The esmond software is built on three primary components all capable of being configured in a cluster. The components are:</p>
 <ol class="arabic simple">
-<li><p><a class="reference external" href="https://cassandra.apache.org">Cassandra</a> - This is the database that stores the results of a measurement. Cassandra was designed with <em>horizontal scaling</em> in mind and as such provides a number of options for data replication, fail over, load balancing and adding/removing/replacing nodes over time. See <a class="reference internal" href="#multi-ma-clustering-cassandra"><span class="std std-ref">Clustering Cassandra</span></a> for more details.</p></li>
-<li><p><a class="reference external" href="http://www.postgresql.org">PostgreSQL</a> - This is the database that stores measurement metadata (description about the tests run such as the type of test and the parameters used). It also stores the usernames, API keys and/or authorized IP addresses that are used to add new information to esmond. PostgreSQL supports a number of data replication options and tools exist to support fail-overs and load balancing. See <a class="reference internal" href="#multi-ma-clustering-postgresql"><span class="std std-ref">Clustering PostgreSQL</span></a></p></li>
-<li><p><a class="reference external" href="http://www.postgresql.org">Apache httpd</a> - Esmond runs on the Apache HTTPD web server. Apache has a number of options for handling fail-overs and load balancing that are detailed in <a class="reference internal" href="#multi-ma-clustering-httpd"><span class="std std-ref">Clustering Apache httpd</span></a>.</p></li>
+<li><a class="reference external" href="https://cassandra.apache.org">Cassandra</a> - This is the database that stores the results of a measurement. Cassandra was designed with <em>horizontal scaling</em> in mind and as such provides a number of options for data replication, fail over, load balancing and adding/removing/replacing nodes over time. See <a class="reference internal" href="#multi-ma-clustering-cassandra"><span>Clustering Cassandra</span></a> for more details.</li>
+<li><a class="reference external" href="http://www.postgresql.org">PostgreSQL</a> - This is the database that stores measurement metadata (description about the tests run such as the type of test and the parameters used). It also stores the usernames, API keys and/or authorized IP addresses that are used to add new information to esmond. PostgreSQL supports a number of data replication options and tools exist to support fail-overs and load balancing. See <a class="reference internal" href="#multi-ma-clustering-postgresql"><span>Clustering PostgreSQL</span></a></li>
+<li><a class="reference external" href="http://www.postgresql.org">Apache httpd</a> - Esmond runs on the Apache HTTPD web server. Apache has a number of options for handling fail-overs and load balancing that are detailed in <a class="reference internal" href="#multi-ma-clustering-httpd"><span>Clustering Apache httpd</span></a>.</li>
 </ol>
 <p>You may cluster some or all of the components if you so choose. For example, you could have a Cassandra cluster but run PostgreSQL and Apache on a single server. It should also be noted that all of these components have been around for a number of years and the documentation that exists on clustering them is extensive. This document will do its best to identify key features and common configurations but is by no means an exhaustive list. It is highly recommended you consult each components documentation before embarking on an attempt to create a clustered configuration.</p>
 <div class="section" id="clustering-cassandra">
@@ -83,67 +92,70 @@
 <h3>Basics of Cassandra Clustering<a class="headerlink" href="#basics-of-cassandra-clustering" title="Permalink to this headline">¶</a></h3>
 <p>Cassandra is the component that holds all of the measurement results. Cassandra was designed with running on multiple nodes in mind, and is probably more commonly run on multiple nodes than a single node. The ability to implement high availability and load balancing do not require any additional software. The distribution of your data, how many copies exist and the number of nodes that can go down without causing an interruption are primarily determined by the following two variables:</p>
 <ol class="arabic simple">
-<li><p>The number of nodes in your cluster</p></li>
-<li><p>The replication_factor of your dataset</p></li>
+<li>The number of nodes in your cluster</li>
+<li>The replication_factor of your dataset</li>
 </ol>
-<p>There are of course other factors, but these are fundamental to getting a basic cluster working. The replication_factor is the total number of complete copies of the data that live in the cluster. For example, let’s say we have two nodes and the replication_factor is 1. In this case there is 1 copy of data distributed between the two nodes. Cassandra organizes itself in a token ring, and evenly distributes data amongst each host. In this case that means each node has roughly 50% of the data at a given time. That also means, if one of the nodes goes down, we lose half our data and Cassandra cannot run.</p>
-<p>As another example, let’s say we still have two nodes but the replication factor is increased to 2. This means that our cluster will keep 2 copies of the data distributed evenly among the nodes. Each node has 100% of the data, so 1 node may go down and our archive can still access the complete set of data.  The main takeaway from this example is that <strong>increasing the replication factor has increased the number of nodes we can tolerate as down</strong>.</p>
-<p>As a final example, let’s say we keep the replication_factor fixed at 2 but increase to 10 nodes. How many nodes can go down without affecting the cluster? The answer is still only 1. The reason is that adding more nodes further distributes the data amongst the host, with each having roughly 20% of the data (2 replicas divided by 10 hosts = 20% each) but does not increase the number of copies. Thus if we lose 2 nodes, we have no way guaranteeing they didn’t overlap in the data they contained. In general, you can only support (replication_factor - 1) hosts going down regardless the number of nodes. In other words, <strong>increasing the number of nodes increases data distribution, but does not increase fault tolerance unless there is a corresponding increase in the replication_factor</strong>.</p>
+<p>There are of course other factors, but these are fundamental to getting a basic cluster working. The replication_factor is the total number of complete copies of the data that live in the cluster. For example, let&#8217;s say we have two nodes and the replication_factor is 1. In this case there is 1 copy of data distributed between the two nodes. Cassandra organizes itself in a token ring, and evenly distributes data amongst each host. In this case that means each node has roughly 50% of the data at a given time. That also means, if one of the nodes goes down, we lose half our data and Cassandra cannot run.</p>
+<p>As another example, let&#8217;s say we still have two nodes but the replication factor is increased to 2. This means that our cluster will keep 2 copies of the data distributed evenly among the nodes. Each node has 100% of the data, so 1 node may go down and our archive can still access the complete set of data.  The main takeaway from this example is that <strong>increasing the replication factor has increased the number of nodes we can tolerate as down</strong>.</p>
+<p>As a final example, let&#8217;s say we keep the replication_factor fixed at 2 but increase to 10 nodes. How many nodes can go down without affecting the cluster? The answer is still only 1. The reason is that adding more nodes further distributes the data amongst the host, with each having roughly 20% of the data (2 replicas divided by 10 hosts = 20% each) but does not increase the number of copies. Thus if we lose 2 nodes, we have no way guaranteeing they didn&#8217;t overlap in the data they contained. In general, you can only support (replication_factor - 1) hosts going down regardless the number of nodes. In other words, <strong>increasing the number of nodes increases data distribution, but does not increase fault tolerance unless there is a corresponding increase in the replication_factor</strong>.</p>
 <p>Those are the basic ideas but there are lots more details published if you are interested. For more information on how Cassandra distributes data see the <a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/architecture/architectureDataDistributeAbout_c.html">Datastax Cassandra Documentation</a>.</p>
 </div>
 <div class="section" id="initializing-the-cluster">
 <h3>Initializing the Cluster<a class="headerlink" href="#initializing-the-cluster" title="Permalink to this headline">¶</a></h3>
 <p>Assuming you have read about clustering Cassandra, decided it is the best course and identified an initial set of nodes to use in your cluster, you are ready to start configuring your cluster. It is highly recommended you read the <a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/initialize/initializeTOC.html">Datastax Cluster Initialization</a> page for specifics on how build your cluster. We will go through a simple two node example in this document to give a general idea of the process, but for more information it is highly recommended you see the official documentation.</p>
-<p>Now, Let’s assume we have a two node cluster we wish to initialize. Our nodes have IP addresses 10.0.1.35 and 10.0.1.36 respectively. The steps to configure these into a cluster are as follows:</p>
+<p>Now, Let&#8217;s assume we have a two node cluster we wish to initialize. Our nodes have IP addresses 10.0.1.35 and 10.0.1.36 respectively. The steps to configure these into a cluster are as follows:</p>
 <ol class="arabic">
-<li><p><a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/install/install_cassandraTOC.html">Install cassandra</a> on each node</p></li>
-<li><dl>
-<dt>On each node you will need to open the following firewall ports:</dt><dd><ul class="simple">
-<li><p><strong>TCP ports 7000 and 7001</strong> are needed for internode communication. These are only used between cassandra servers so you only need to allow the other hosts in the cluster to connect to these ports.</p></li>
-<li><p><strong>TCP port 9160</strong> is needed so esmond can communicate with the Cassandra servers. You may firewall this port so only the host(s) with the esmond package installed may reach this port.</p></li>
-<li><p>You will also want <strong>TCP port 7199</strong> open <strong>FOR LOCALHOST ONLY</strong> so that you may run the <code class="docutils literal notranslate"><span class="pre">nodetool</span></code> command to get the status of and perform various administrator tasks on the cluster.</p></li>
+<li><p class="first"><a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/install/install_cassandraTOC.html">Install cassandra</a> on each node</p>
+</li>
+<li><dl class="first docutils">
+<dt>On each node you will need to open the following firewall ports:</dt>
+<dd><ul class="first simple">
+<li><strong>TCP ports 7000 and 7001</strong> are needed for internode communication. These are only used between cassandra servers so you only need to allow the other hosts in the cluster to connect to these ports.</li>
+<li><strong>TCP port 9160</strong> is needed so esmond can communicate with the Cassandra servers. You may firewall this port so only the host(s) with the esmond package installed may reach this port.</li>
+<li>You will also want <strong>TCP port 7199</strong> open <strong>FOR LOCALHOST ONLY</strong> so that you may run the <code class="docutils literal"><span class="pre">nodetool</span></code> command to get the status of and perform various administrator tasks on the cluster.</li>
 </ul>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>See the <a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/security/secureFireWall_r.html">Datastax Firewall Documentation</a> for more details.</p>
+<div class="last admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See the <a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/security/secureFireWall_r.html">Datastax Firewall Documentation</a> for more details.</p>
 </div>
 </dd>
 </dl>
 </li>
-<li><p>Next we need to name our cluster. In this example we will name it “Esmond Cluster”. On each node open <em>/etc/cassandra/conf/cassandra.yaml</em> (or <em>/etc/cassandra/cassandra.yaml</em> on Debian) and change <code class="docutils literal notranslate"><span class="pre">cluster_name</span></code> to this value:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cluster_name</span><span class="p">:</span> <span class="s1">&#39;Esmond Cluster&#39;</span>
+<li><p class="first">Next we need to name our cluster. In this example we will name it &#8220;Esmond Cluster&#8221;. On each node open <em>/etc/cassandra/conf/cassandra.yaml</em> (or <em>/etc/cassandra/cassandra.yaml</em> on Debian) and change <code class="docutils literal"><span class="pre">cluster_name</span></code> to this value:</p>
+<div class="highlight-python"><div class="highlight"><pre>cluster_name: &#39;Esmond Cluster&#39;
 </pre></div>
 </div>
 </li>
-<li><p>Next we need to choose a seed node. This node is only used the first time a node comes up to bootstrap itself into the ring. If it goes down it will not affect the nodes that have already been bootstrapped, however you will not be able to add new nodes to a cluster. If you are frequently adding new nodes, you may want to specify multiple seed nodes to prevent this. For our simple two node cluster, one seed node will suffice so we’ll choose 10.0.1.35. We set this on both hosts in <em>/etc/cassandra/conf/cassandra.yaml</em> under the seed_provider property as shown below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">seed_provider</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">class_name</span><span class="p">:</span> <span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">cassandra</span><span class="o">.</span><span class="n">locator</span><span class="o">.</span><span class="n">SimpleSeedProvider</span>
-  <span class="n">parameters</span><span class="p">:</span>
-      <span class="o">-</span> <span class="n">seeds</span><span class="p">:</span> <span class="s2">&quot;10.0.1.35&quot;</span>
+<li><p class="first">Next we need to choose a seed node. This node is only used the first time a node comes up to bootstrap itself into the ring. If it goes down it will not affect the nodes that have already been bootstrapped, however you will not be able to add new nodes to a cluster. If you are frequently adding new nodes, you may want to specify multiple seed nodes to prevent this. For our simple two node cluster, one seed node will suffice so we&#8217;ll choose 10.0.1.35. We set this on both hosts in <em>/etc/cassandra/conf/cassandra.yaml</em> under the seed_provider property as shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>seed_provider:
+- class_name: org.apache.cassandra.locator.SimpleSeedProvider
+  parameters:
+      - seeds: &quot;10.0.1.35&quot;
 </pre></div>
 </div>
 </li>
-<li><p>The final <em>/etc/cassandra/conf/cassandra.yaml</em> properties we must set is the _listen_address_ and _rpc_address_. The _listen_address_ tells cassandra the interface on which to listen for communication from other cassandra nodes. The _rpc_address_ tells it on which interface it can accept connections from esmond. In our example, each host only has one interface, so the first node will set both of these to 10.0.1.35 and the second node will set them to 10.0.1.36.</p></li>
-<li><p>Clear any data on both nodes you may have from old configurations or cassandra inadvertently starting, etc. Note that this does NOT clear out any existing perfSONAR data.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">system</span><span class="o">/*</span>
+<li><p class="first">The final <em>/etc/cassandra/conf/cassandra.yaml</em> properties we must set is the _listen_address_ and _rpc_address_. The _listen_address_ tells cassandra the interface on which to listen for communication from other cassandra nodes. The _rpc_address_ tells it on which interface it can accept connections from esmond. In our example, each host only has one interface, so the first node will set both of these to 10.0.1.35 and the second node will set them to 10.0.1.36.</p>
+</li>
+<li><p class="first">Clear any data on both nodes you may have from old configurations or cassandra inadvertently starting, etc. Note that this does NOT clear out any existing perfSONAR data.:</p>
+<div class="highlight-python"><div class="highlight"><pre>rm -rf /var/lib/cassandra/data/system/*
 </pre></div>
 </div>
 </li>
-<li><p>Restart cassandra on each node:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">cassandra</span> <span class="n">restart</span>
+<li><p class="first">Restart cassandra on each node:</p>
+<div class="highlight-python"><div class="highlight"><pre>service cassandra restart
 </pre></div>
 </div>
 </li>
-<li><p>Our two node cluster should be running. We can verify this with the <code class="docutils literal notranslate"><span class="pre">nodetool</span> <span class="pre">status</span></code> command on either host:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># nodetool status</span>
-<span class="n">Note</span><span class="p">:</span> <span class="n">Ownership</span> <span class="n">information</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">include</span> <span class="n">topology</span><span class="p">;</span> <span class="k">for</span> <span class="n">complete</span> <span class="n">information</span><span class="p">,</span> <span class="n">specify</span> <span class="n">a</span> <span class="n">keyspace</span>
-<span class="n">Datacenter</span><span class="p">:</span> <span class="n">datacenter1</span>
-<span class="o">=======================</span>
-<span class="n">Status</span><span class="o">=</span><span class="n">Up</span><span class="o">/</span><span class="n">Down</span>
-<span class="o">|/</span> <span class="n">State</span><span class="o">=</span><span class="n">Normal</span><span class="o">/</span><span class="n">Leaving</span><span class="o">/</span><span class="n">Joining</span><span class="o">/</span><span class="n">Moving</span>
-<span class="o">--</span>  <span class="n">Address</span>    <span class="n">Load</span>       <span class="n">Tokens</span>  <span class="n">Owns</span>   <span class="n">Host</span> <span class="n">ID</span>                               <span class="n">Rack</span>
-<span class="n">UN</span>  <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.35</span>  <span class="mf">5.91</span> <span class="n">MB</span>    <span class="mi">256</span>     <span class="mf">51.0</span><span class="o">%</span>  <span class="n">ccdab562</span><span class="o">-</span><span class="n">b2a2</span><span class="o">-</span><span class="mf">459e-9</span><span class="n">a14</span><span class="o">-</span><span class="mi">6</span><span class="n">b9758a827fd</span>  <span class="n">rack1</span>
-<span class="n">UN</span>  <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.36</span>  <span class="mf">3.07</span> <span class="n">MB</span>    <span class="mi">256</span>     <span class="mf">49.0</span><span class="o">%</span>  <span class="mi">7</span><span class="n">a2be11f</span><span class="o">-</span><span class="mi">02</span><span class="n">c5</span><span class="o">-</span><span class="mi">4997</span><span class="o">-</span><span class="mi">926</span><span class="n">a</span><span class="o">-</span><span class="mi">817960</span><span class="n">c71e18</span>  <span class="n">rack1</span>
+<li><p class="first">Our two node cluster should be running. We can verify this with the <code class="docutils literal"><span class="pre">nodetool</span> <span class="pre">status</span></code> command on either host:</p>
+<div class="highlight-python"><div class="highlight"><pre># nodetool status
+Note: Ownership information does not include topology; for complete information, specify a keyspace
+Datacenter: datacenter1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address    Load       Tokens  Owns   Host ID                               Rack
+UN  10.0.1.35  5.91 MB    256     51.0%  ccdab562-b2a2-459e-9a14-6b9758a827fd  rack1
+UN  10.0.1.36  3.07 MB    256     49.0%  7a2be11f-02c5-4997-926a-817960c71e18  rack1
 </pre></div>
 </div>
 </li>
@@ -152,42 +164,42 @@
 <div class="section" id="configuring-esmond-to-use-the-cluster">
 <h3>Configuring Esmond to use the Cluster<a class="headerlink" href="#configuring-esmond-to-use-the-cluster" title="Permalink to this headline">¶</a></h3>
 <p>Once the cluster has been initialized, we must configure esmond to use the cluster. This requires setting <em>cassandra_servers</em> in <em>/etc/esmond/esmond.conf</em> to the list of nodes in our cluster:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cassandra_servers</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.35</span><span class="p">:</span><span class="mi">9160</span><span class="p">,</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">1.36</span><span class="p">:</span><span class="mi">9160</span>
+<div class="highlight-python"><div class="highlight"><pre>cassandra_servers = 10.0.1.35:9160,10.0.1.36:9160
 </pre></div>
 </div>
 <p>We list all of the nodes because any of them can coordinate the request. Esmond will randomly contact one of the nodes and (assuming we set our replication factor high enough relative to the number of down nodes) will fallback to another node if it tries to contact one that is unreachable.</p>
 <p>You may also want to set <em>cassandra_replicas</em> to the replication_factor on which you decided. If left unset the default value will be 1. An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cassandra_replicas</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cassandra_replicas</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="changing-the-replication-factor">
 <h3>Changing the replication_factor<a class="headerlink" href="#changing-the-replication-factor" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<div><p>You may want to change he replication_factor as you add more nodes, requirements change or if you started esmond before deciding on the value. If you would like to change this do the following:</p>
-</div></blockquote>
+<div>You may want to change he replication_factor as you add more nodes, requirements change or if you started esmond before deciding on the value. If you would like to change this do the following:</div></blockquote>
 <ol class="arabic">
-<li><p>On your esmond node(s), open <em>/etc/esmond/esmond.conf</em> ant set the property <em>cassandra_replicas</em> to the new value: For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cassandra_replicas</span> <span class="o">=</span> <span class="mi">2</span>
+<li><p class="first">On your esmond node(s), open <em>/etc/esmond/esmond.conf</em> ant set the property <em>cassandra_replicas</em> to the new value: For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cassandra_replicas</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </li>
-<li><p>On any <strong>single</strong> cassandra node run the following (replacing <em>10.0.1.35</em> with your host and <em>2</em> with the replication factor you desire):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cqlsh</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.35</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;ALTER KEYSPACE esmond WITH REPLICATION = { &#39;class&#39; : &#39;SimpleStrategy&#39;, &#39;replication_factor&#39; : 2 };&quot;</span>
+<li><p class="first">On any <strong>single</strong> cassandra node run the following (replacing <em>10.0.1.35</em> with your host and <em>2</em> with the replication factor you desire):</p>
+<div class="highlight-python"><div class="highlight"><pre>cqlsh 10.0.1.35 -e &quot;ALTER KEYSPACE esmond WITH REPLICATION = { &#39;class&#39; : &#39;SimpleStrategy&#39;, &#39;replication_factor&#39; : 2 };&quot;
 </pre></div>
 </div>
 </li>
-<li><p>On <strong>every</strong> cassandra node, run <code class="docutils literal notranslate"><span class="pre">nodetool</span> <span class="pre">repair</span></code>. Do not run in parallel, wait for the command to complete before moving on to the next node. Note that running this command may take awhile depending on the amount of data.</p></li>
+<li><p class="first">On <strong>every</strong> cassandra node, run <code class="docutils literal"><span class="pre">nodetool</span> <span class="pre">repair</span></code>. Do not run in parallel, wait for the command to complete before moving on to the next node. Note that running this command may take awhile depending on the amount of data.</p>
+</li>
 </ol>
 </div>
 </div>
 <div class="section" id="clustering-postgresql">
 <span id="multi-ma-clustering-postgresql"></span><h2>Clustering PostgreSQL<a class="headerlink" href="#clustering-postgresql" title="Permalink to this headline">¶</a></h2>
-<p>PostgreSQL provides a number of options for high availability, data replication, and load balancing. It actually has too many options to realistically cover in this document. The <a class="reference external" href="http://www.postgresql.org/docs/current/interactive/high-availability.html">PostgreSQL High Availability, Load Balancing and Replication</a> page does a thorough job of comparing and contrasting the various alternatives. It also directs you how to get started on the various options, so there isn’t need to rehash that here. If you have clustered Postgres or another relational database before, many of the considerations and strategies should be familiar. A few important pieces of information specific to esmond that may be useful for deciding on and configuring the proposed method:</p>
+<p>PostgreSQL provides a number of options for high availability, data replication, and load balancing. It actually has too many options to realistically cover in this document. The <a class="reference external" href="http://www.postgresql.org/docs/current/interactive/high-availability.html">PostgreSQL High Availability, Load Balancing and Replication</a> page does a thorough job of comparing and contrasting the various alternatives. It also directs you how to get started on the various options, so there isn&#8217;t need to rehash that here. If you have clustered Postgres or another relational database before, many of the considerations and strategies should be familiar. A few important pieces of information specific to esmond that may be useful for deciding on and configuring the proposed method:</p>
 <ul class="simple">
-<li><p>The name of the database where the esmond information is kept is <em>esmond</em></p></li>
-<li><p>You can change the PostgreSQL username, password and host that esmond uses in <em>/etc/esmond/esmond.conf</em> by changing  <em>sql_db_user</em>, <em>sql_db_password</em>, and <em>sql_db_host</em> respectively</p></li>
-<li><p>Often when choosing a replication strategy it is important to understand the write profile of a database. Esmond will only insert new rows into PostgreSQL if you add new tests to be run or change the parameters of an existing test. For example, changing the parameters of a throughput test to run for 30 seconds instead of 20 seconds. Esmond also executes an update on a single column every time it adds new data to Cassandra so that it can keep track of when data was last updated. This means that there will likely be lots of small updates but very few inserts of new data.</p></li>
+<li>The name of the database where the esmond information is kept is <em>esmond</em></li>
+<li>You can change the PostgreSQL username, password and host that esmond uses in <em>/etc/esmond/esmond.conf</em> by changing  <em>sql_db_user</em>, <em>sql_db_password</em>, and <em>sql_db_host</em> respectively</li>
+<li>Often when choosing a replication strategy it is important to understand the write profile of a database. Esmond will only insert new rows into PostgreSQL if you add new tests to be run or change the parameters of an existing test. For example, changing the parameters of a throughput test to run for 30 seconds instead of 20 seconds. Esmond also executes an update on a single column every time it adds new data to Cassandra so that it can keep track of when data was last updated. This means that there will likely be lots of small updates but very few inserts of new data.</li>
 </ul>
 </div>
 <div class="section" id="clustering-apache-httpd">
@@ -196,9 +208,9 @@
 <h3>Basics of Cassandra Clustering<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>It is possible to cluster your Apache httpd instances running esmond. Each esmond installation will point at the same Cassandra and PostgreSQL instances/clusters. Clustering Apache will allow incoming requests to be load-balanced and/or failover if one of your Apache instances goes down. This section highlights some of the common load balancing and failover techniques such as:</p>
 <ul class="simple">
-<li><p><strong>DNS Round-Robin</strong> - This approach involves registering a set of IP addresses in DNS and allowing that protocol to round-robin requests between the servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-dns"><span class="std std-ref">DNS Round Robin</span></a> for more details.</p></li>
-<li><p><strong>mod_proxy_balancer</strong> - This approach uses a common Apache module to distribute requests between a set of configured servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-modproxy"><span class="std std-ref">mod-proxy-balancer</span></a> for more details.</p></li>
-<li><p><strong>HAProxy and keepalived</strong> - <a class="reference external" href="http://www.haproxy.org">HAProxy</a>  and <a class="reference external" href="http://www.keepalived.org">keepalived</a> are popular open source tools for handling load balancing for a large number of requests while also providing a robust failover mechanism. See <a class="reference internal" href="#multi-ma-clustering-httpd-haproxy"><span class="std std-ref">HAProxy and keepalived</span></a> for more details.</p></li>
+<li><strong>DNS Round-Robin</strong> - This approach involves registering a set of IP addresses in DNS and allowing that protocol to round-robin requests between the servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-dns"><span>DNS Round Robin</span></a> for more details.</li>
+<li><strong>mod_proxy_balancer</strong> - This approach uses a common Apache module to distribute requests between a set of configured servers. See <a class="reference internal" href="#multi-ma-clustering-httpd-modproxy"><span>mod-proxy-balancer</span></a> for more details.</li>
+<li><strong>HAProxy and keepalived</strong> - <a class="reference external" href="http://www.haproxy.org">HAProxy</a>  and <a class="reference external" href="http://www.keepalived.org">keepalived</a> are popular open source tools for handling load balancing for a large number of requests while also providing a robust failover mechanism. See <a class="reference internal" href="#multi-ma-clustering-httpd-haproxy"><span>HAProxy and keepalived</span></a> for more details.</li>
 </ul>
 <p>This is by no means an exhaustive list of all your options. Scaling Apache is a topic that has been around for several years now, so there is no shortage of literature on the subject. The sections below will hopefully give you an idea of some of your options, but you should not heistate to do your own research in deciding the best solution for you and/or your organization.</p>
 </div>
@@ -206,9 +218,9 @@
 <span id="multi-ma-clustering-httpd-dns"></span><h3>DNS Round Robin<a class="headerlink" href="#dns-round-robin" title="Permalink to this headline">¶</a></h3>
 <p>DNS Round Robin is an approach that involves configuring your Domain Name System (DNS) servers to map a hostname to <em>a list</em> of IP addresses. DNS will then alternate the address returned when a lookup is performed. Note that this provides load balancing only and no health checks are performed by DNS. Therefore if one of the servers at an individual IP goes down, a percentage of your users will get a failure when trying to contact your web server since the failing servers IP will not be removed from the round-robin automatically. If load-balancing is your sole concern, this may be an adequate solution. Otherwise pursuing this load balancing solution will require additional measures if one wishes to handle failures as well. The best way to configure DNS Round Robin is to contact your local network administrator if you think this is the right approach for your  organization. In summary, DNS Round Robin MAY be a good approach if all of the following hold true:</p>
 <ul class="simple">
-<li><p>You have the ability (either personally or with the help of your friendly neighborhood network administrator) to update DNS with the required changes.</p></li>
-<li><p>You only care about load-balancing and not failovers OR you have an independent failover mechanism in mind you plan to use in conjunction with the DNS round robin</p></li>
-<li><p>You are happy with a simple round robin algorithm for load balancing</p></li>
+<li>You have the ability (either personally or with the help of your friendly neighborhood network administrator) to update DNS with the required changes.</li>
+<li>You only care about load-balancing and not failovers OR you have an independent failover mechanism in mind you plan to use in conjunction with the DNS round robin</li>
+<li>You are happy with a simple round robin algorithm for load balancing</li>
 </ul>
 <p>If one or more of the above do not hold true, likely pursuing another option would be recommended.</p>
 </div>
@@ -216,32 +228,32 @@
 <span id="multi-ma-clustering-httpd-modproxy"></span><h3>mod-proxy-balancer<a class="headerlink" href="#mod-proxy-balancer" title="Permalink to this headline">¶</a></h3>
 <p>The Apache module <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_proxy_balancer.html">mod_proxy_balancer</a> allows one to use an apache server to load balance requests amongst other Apache servers. If you are familiar with configuring Apache this may be a desirable load balancing solution. It also supports multiple load-balancing algorithms in contrast to DNS Round Robin. Again, there are no health checks performed, so it does not handle failovers. In fact, if you create only a single load balancer server, that load balancer can become a single point of failure. With all this in mind, mod_proxy_balancer MAY be a good approach if all of the following hold true:</p>
 <ul class="simple">
-<li><p>You are comfortable with Apache configuration</p></li>
-<li><p>You prefer to have more balancing options than the traditional round-robin</p></li>
-<li><p>Automatic failover is not a concern OR you have an independent failover mechanism in mind you plan to use in conjunction with mod_proxy_balancer</p></li>
+<li>You are comfortable with Apache configuration</li>
+<li>You prefer to have more balancing options than the traditional round-robin</li>
+<li>Automatic failover is not a concern OR you have an independent failover mechanism in mind you plan to use in conjunction with mod_proxy_balancer</li>
 </ul>
 <p>See the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_proxy_balancer.html">mod_proxy_balancer documentation</a> for details on installing and configuring.</p>
 </div>
 <div class="section" id="haproxy-and-keepalived">
 <span id="multi-ma-clustering-httpd-haproxy"></span><h3>HAProxy and keepalived<a class="headerlink" href="#haproxy-and-keepalived" title="Permalink to this headline">¶</a></h3>
-<p>This approach is the most flexible and robust of the solutions covered. It also comes with the cost of slightly more complexity (but maybe not as much as you’d expect).  It involves two components:</p>
+<p>This approach is the most flexible and robust of the solutions covered. It also comes with the cost of slightly more complexity (but maybe not as much as you&#8217;d expect).  It involves two components:</p>
 <ol class="arabic simple">
-<li><p><a class="reference external" href="http://www.haproxy.org">HAProxy</a>, an open source load balancing software designed to handle large volumes of TCP and HTTP traffic. Additionally, it performs regular health checks of your web servers and removes them from the pool if it finds an issue. Since it’s not limited to HTTP, it can also be used with services like PostgreSQL to load balance read-only slaves of the database.</p></li>
-<li><p><a class="reference external" href="http://www.keepalived.org">keepalived</a>, is routing software that uses <a class="reference external" href="http://www.linux-vs.org">Linux Virtual Servers</a> to migrate IP addresses to a backup server if a failure is detected at the master. In this context, keepalived runs on each load balancer and can be used to detect failures if one of the HAproxy nodes goes down. This prevents your HAProxy node from becoming a single point of failure.</p></li>
+<li><a class="reference external" href="http://www.haproxy.org">HAProxy</a>, an open source load balancing software designed to handle large volumes of TCP and HTTP traffic. Additionally, it performs regular health checks of your web servers and removes them from the pool if it finds an issue. Since it&#8217;s not limited to HTTP, it can also be used with services like PostgreSQL to load balance read-only slaves of the database.</li>
+<li><a class="reference external" href="http://www.keepalived.org">keepalived</a>, is routing software that uses <a class="reference external" href="http://www.linux-vs.org">Linux Virtual Servers</a> to migrate IP addresses to a backup server if a failure is detected at the master. In this context, keepalived runs on each load balancer and can be used to detect failures if one of the HAproxy nodes goes down. This prevents your HAProxy node from becoming a single point of failure.</li>
 </ol>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>keepalived is not required to run HAProxy or vice versa. They are commonly paired together in practice hence the joint discussion here. It is also possible to use keepalived with solutions such as mod_proxy_balancer.</p>
+<p class="first admonition-title">Note</p>
+<p class="last">keepalived is not required to run HAProxy or vice versa. They are commonly paired together in practice hence the joint discussion here. It is also possible to use keepalived with solutions such as mod_proxy_balancer.</p>
 </div>
 <p>Using HAProxy and keepalived is a good approach if any of the following holds true:</p>
 <ul class="simple">
-<li><p>You expect a lot of requests (which you probably do or you wouldn’t be load balancing) and want a highly scalable solution.</p></li>
-<li><p>You want to automatically remove servers from the load balancing pool if they go down</p></li>
-<li><p>You want to have automatic fail-overs if a load balancer goes down</p></li>
-<li><p>You would like a load balancer that works with more than just HTTPD, such as PostgreSQL</p></li>
-<li><p>You are familiar with the tools or are willing to learn something new</p></li>
+<li>You expect a lot of requests (which you probably do or you wouldn&#8217;t be load balancing) and want a highly scalable solution.</li>
+<li>You want to automatically remove servers from the load balancing pool if they go down</li>
+<li>You want to have automatic fail-overs if a load balancer goes down</li>
+<li>You would like a load balancer that works with more than just HTTPD, such as PostgreSQL</li>
+<li>You are familiar with the tools or are willing to learn something new</li>
 </ul>
-<p>Both HAProxy and keepalived are available in most major Linux distribution’s packaging systems (such as yum and apt). For more information on configuring these tools see the <a class="reference external" href="http://www.haproxy.org">HAProxy</a> and <a class="reference external" href="http://www.keepalived.org">keepalived</a> web pages.</p>
+<p>Both HAProxy and keepalived are available in most major Linux distribution&#8217;s packaging systems (such as yum and apt). For more information on configuring these tools see the <a class="reference external" href="http://www.haproxy.org">HAProxy</a> and <a class="reference external" href="http://www.keepalived.org">keepalived</a> web pages.</p>
 </div>
 </div>
 </div>
@@ -306,7 +318,7 @@
         <li class="right" >
           <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -347,8 +359,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+        &copy; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
