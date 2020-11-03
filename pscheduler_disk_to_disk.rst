@@ -17,7 +17,7 @@ Configuring Yum Repositories
 You can setup the yum repository with the commands below::
  
     yum install epel-release
-    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.9-1.noarch.rpm
+    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.10-1.noarch.rpm
     yum clean all
 
 Installing perfSONAR

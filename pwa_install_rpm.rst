@@ -24,7 +24,7 @@ perfSONAR Repo
 
 You will need to have the main perfSONAR repo installed, if not already::
 
-    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.9-1.noarch.rpm 
+    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.10-1.noarch.rpm 
 
 Installing PWA from RPMs
 ^^^^^^^^^^^^^^^^^^^^^^^^
