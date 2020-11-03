@@ -1,35 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Introduction to pSConfig Templates &mdash; perfSONAR Toolkit 4.3.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <title>Introduction to pSConfig Templates &#8212; perfSONAR Toolkit 4.3.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '4.3.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="perfSONAR Toolkit 4.3.0 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Publishing a pSConfig Template" href="psconfig_publish.html" />
     <link rel="prev" title="pSConfig Quickstart Guide" href="psconfig_quickstart.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -60,7 +51,7 @@
         <li class="right" >
           <a href="psconfig_quickstart.html" title="pSConfig Quickstart Guide"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -76,308 +67,308 @@
 <h1>Introduction to pSConfig Templates<a class="headerlink" href="#introduction-to-psconfig-templates" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <span id="psconfig-templates-intro-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>As detailed in <a class="reference internal" href="psconfig_intro.html"><em>What is pSConfig?</em></a>, pSConfig&#8217;s workflow centers around <em>templates</em> that describe a topology of tasks. The concepts behind these templates and the format in which they are expressed are the primary focus of this document.</p>
+<p>As detailed in <a class="reference internal" href="psconfig_intro.html"><span class="doc">What is pSConfig?</span></a>, pSConfig’s workflow centers around <em>templates</em> that describe a topology of tasks. The concepts behind these templates and the format in which they are expressed are the primary focus of this document.</p>
 <p>The templates themselves are in JSON format. You have a number of options for constructing the JSON including:</p>
 <ul class="simple">
-<li>Manually building the JSON in a text editor</li>
-<li>Using <a class="reference internal" href="pwa.html"><em>pSConfig WebAdmin</em></a></li>
+<li><p>Manually building the JSON in a text editor</p></li>
+<li><p>Using <a class="reference internal" href="pwa.html"><span class="doc">pSConfig WebAdmin</span></a></p></li>
 </ul>
 <p>Regardless of how you build your template, the ideas described in this document are useful in understanding how pSConfig works. This document further provides the necessary foundation you need if you are building your templates manually or trying to understand the JSON of an existing file. After reading this document, you should be able to construct and understand a pSConfig template file.</p>
 </div>
 <div class="section" id="basic-concepts">
 <span id="psconfig-templates-intro-concepts"></span><h2>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h2>
-<p>Before diving into the actual JSON format of a pSConfig template, it&#8217;s helpful to first take a look at the basic concepts. This section describes some of the ideas behind templates in abstract terms. By the end of this section you should have an understanding of a template&#8217;s fundamental structure and be ready to translate that into the JSON format described in the <a class="reference internal" href="#psconfig-templates-intro-json-basics"><span>next section</span></a>.</p>
+<p>Before diving into the actual JSON format of a pSConfig template, it’s helpful to first take a look at the basic concepts. This section describes some of the ideas behind templates in abstract terms. By the end of this section you should have an understanding of a template’s fundamental structure and be ready to translate that into the JSON format described in the <a class="reference internal" href="#psconfig-templates-intro-json-basics"><span class="std std-ref">next section</span></a>.</p>
 <div class="section" id="addresses">
 <span id="psconfig-templates-intro-concepts-addresses"></span><h3>Addresses<a class="headerlink" href="#addresses" title="Permalink to this headline">¶</a></h3>
-<p>The most basic unit of a template is an <strong>address</strong>. An address is a collection of properties that act as the unit of input to a task. Despite the name and the fact that pSConfig&#8217;s primary use case is in networking, an address is not necessarily connected to an interface or host. It is simply an object with properties. If it helps, think of each of the shapes in the diagram below as a pSConfig <em>address</em>:</p>
+<p>The most basic unit of a template is an <strong>address</strong>. An address is a collection of properties that act as the unit of input to a task. Despite the name and the fact that pSConfig’s primary use case is in networking, an address is not necessarily connected to an interface or host. It is simply an object with properties. If it helps, think of each of the shapes in the diagram below as a pSConfig <em>address</em>:</p>
 <div class="figure align-center" id="id12">
 <img alt="_images/psconfig_templates_intro-concepts-addrs.png" src="_images/psconfig_templates_intro-concepts-addrs.png" />
-<p class="caption"><span class="caption-text"><em>An abstract representation of three addresses as colored shapes.</em></span></p>
+<p class="caption"><span class="caption-text"><em>An abstract representation of three addresses as colored shapes.</em></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </div>
-<p>Each of the shapes has certain properties such as they are all round and each is a particular color. In pSConfig terms, these properties can be used when constructing a task. Now let&#8217;s take a closer look at how we bring these properties together in <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span>groups</span></a>.</p>
+<p>Each of the shapes has certain properties such as they are all round and each is a particular color. In pSConfig terms, these properties can be used when constructing a task. Now let’s take a closer look at how we bring these properties together in <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span class="std std-ref">groups</span></a>.</p>
 </div>
 <div class="section" id="groups">
 <span id="psconfig-templates-intro-concepts-groups"></span><h3>Groups<a class="headerlink" href="#groups" title="Permalink to this headline">¶</a></h3>
 <p>A <strong>group</strong> is a description of how to combine addresses when building the list of tasks. All groups have a <em>type</em> that provides the base for how addresses are combined. Most types also provide type-specific options to customize that combination such as excluding specific pairs, directionality etc. Currently, pSConfig support three group types.</p>
-<p>The first group type is <strong>mesh</strong>. A group of type mesh pairs every address with every other address in the group. Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span>addresses</span></a> example, if we add them all to a group of type mesh, we will get the pairs shown on the right of the diagram below:</p>
+<p>The first group type is <strong>mesh</strong>. A group of type mesh pairs every address with every other address in the group. Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">addresses</span></a> example, if we add them all to a group of type mesh, we will get the pairs shown on the right of the diagram below:</p>
 <div class="figure align-center" id="id13">
 <img alt="_images/psconfig_templates_intro-concepts-mesh.png" src="_images/psconfig_templates_intro-concepts-mesh.png" />
-<p class="caption"><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type mesh.</em></span></p>
+<p class="caption"><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type mesh.</em></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </div>
-<p>The second group type is <strong>disjoint</strong>. A group of type disjoint pairs every address in one group (Group A) with every address in another group (Group B). Both groups can have one or more addresses. Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span>addresses</span></a> example, if we add them all to a disjoint group we will get the pairs shown on the right of the diagram below:</p>
+<p>The second group type is <strong>disjoint</strong>. A group of type disjoint pairs every address in one group (Group A) with every address in another group (Group B). Both groups can have one or more addresses. Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">addresses</span></a> example, if we add them all to a disjoint group we will get the pairs shown on the right of the diagram below:</p>
 <div class="figure align-center" id="id14">
 <img alt="_images/psconfig_templates_intro-concepts-disjoint.png" src="_images/psconfig_templates_intro-concepts-disjoint.png" />
-<p class="caption"><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type disjoint.</em></span></p>
+<p class="caption"><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type disjoint.</em></span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </div>
-<p>The final group type is <strong>list</strong>. A group of type list returns each address independently. It is the only current type that does not pair addresses. Instead, it just generates a one-dimensional <em>list</em> of addresses (hence the name). Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span>addresses</span></a> example, if we add them all to a list group we will get the items shown on the right of the diagram below:</p>
+<p>The final group type is <strong>list</strong>. A group of type list returns each address independently. It is the only current type that does not pair addresses. Instead, it just generates a one-dimensional <em>list</em> of addresses (hence the name). Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">addresses</span></a> example, if we add them all to a list group we will get the items shown on the right of the diagram below:</p>
 <div class="figure align-center" id="id15">
 <img alt="_images/psconfig_templates_intro-concepts-list.png" src="_images/psconfig_templates_intro-concepts-list.png" />
-<p class="caption"><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type list.</em></span></p>
+<p class="caption"><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type list.</em></span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </div>
-<p>No matter which group type is used, we now have the basis for generating our task list. Let&#8217;s now explore how we can pull properties out of the generated pairs and <a class="reference internal" href="#psconfig-templates-intro-concepts-tasks"><span>construct a task</span></a></p>
+<p>No matter which group type is used, we now have the basis for generating our task list. Let’s now explore how we can pull properties out of the generated pairs and <a class="reference internal" href="#psconfig-templates-intro-concepts-tasks"><span class="std std-ref">construct a task</span></a></p>
 </div>
 <div class="section" id="tasks">
 <span id="psconfig-templates-intro-concepts-tasks"></span><h3>Tasks<a class="headerlink" href="#tasks" title="Permalink to this headline">¶</a></h3>
-<p>As defined in <a class="reference internal" href="psconfig_intro.html"><em>What is pSConfig?</em></a>, a <strong>task</strong> is a job to do and consists of multiple components including:</p>
+<p>As defined in <a class="reference internal" href="psconfig_intro.html"><span class="doc">What is pSConfig?</span></a>, a <strong>task</strong> is a job to do and consists of multiple components including:</p>
 <ul class="simple">
-<li>An input set of addresses as determined by the <em>group</em> (see <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span>previous section</span></a>)</li>
-<li>A <em>test</em> that contains the set of parameters required to perform the job of the task</li>
-<li>An optional <em>schedule</em> that defines when the task should run</li>
-<li>Zero or more <em>archives</em> that describe how to store the task results each time it runs</li>
+<li><p>An input set of addresses as determined by the <em>group</em> (see <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span class="std std-ref">previous section</span></a>)</p></li>
+<li><p>A <em>test</em> that contains the set of parameters required to perform the job of the task</p></li>
+<li><p>An optional <em>schedule</em> that defines when the task should run</p></li>
+<li><p>Zero or more <em>archives</em> that describe how to store the task results each time it runs</p></li>
 </ul>
 <p><strong>Template variables</strong> allow pSConfig to access properties of the task components listed above to connect the various pieces of the task together. A visual representation of a task definiton is shown in the following diagram:</p>
 <div class="figure align-center" id="id16">
 <img alt="_images/psconfig_templates_intro-concepts-task.png" src="_images/psconfig_templates_intro-concepts-task.png" />
-<p class="caption"><span class="caption-text"><em>An abstract example of a task with a test using two template variables, an archive, and a schedule</em></span></p>
+<p class="caption"><span class="caption-text"><em>An abstract example of a task with a test using two template variables, an archive, and a schedule</em></span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </div>
 <p>In the above example, there is a test defined that extracts the color of the first address object using a template variable and does the same for a second input address.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The above definition is assuming this task is associated with a group that generates a pair of addresses. If it were used with a group of type <em>list</em> you would get an error since that group type only provides one address.</p>
+<p class="admonition-title">Note</p>
+<p>The above definition is assuming this task is associated with a group that generates a pair of addresses. If it were used with a group of type <em>list</em> you would get an error since that group type only provides one address.</p>
 </div>
 <p>It also has a fixed schedule and archive definition. We could also use template variables in the definition of these components, but for the sake of this example that is not shown.</p>
-<p>Now that we have our task defined let&#8217;s put together our group and our task to see the final result in the <a class="reference internal" href="#psconfig-templates-intro-concepts-conclusion"><span>next section</span></a>.</p>
+<p>Now that we have our task defined let’s put together our group and our task to see the final result in the <a class="reference internal" href="#psconfig-templates-intro-concepts-conclusion"><span class="std std-ref">next section</span></a>.</p>
 </div>
 <div class="section" id="putting-it-all-together">
 <span id="psconfig-templates-intro-concepts-conclusion"></span><h3>Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h3>
-<p>The diagram below shows the output when we associate our <em>group</em> of type <em>mesh</em> with the task definition from the <a class="reference internal" href="#psconfig-templates-intro-concepts-tasks"><span>previous section</span></a>:</p>
+<p>The diagram below shows the output when we associate our <em>group</em> of type <em>mesh</em> with the task definition from the <a class="reference internal" href="#psconfig-templates-intro-concepts-tasks"><span class="std std-ref">previous section</span></a>:</p>
 <div class="figure align-center" id="id17">
 <img alt="_images/psconfig_templates_intro-concepts-conclusion.png" src="_images/psconfig_templates_intro-concepts-conclusion.png" />
-<p class="caption"><span class="caption-text"><em>The combination a group of type mesh and task definition yields a task for each address pair that contains the colors of both addresses in the the test portion of the task</em></span></p>
+<p class="caption"><span class="caption-text"><em>The combination a group of type mesh and task definition yields a task for each address pair that contains the colors of both addresses in the the test portion of the task</em></span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </div>
 <p>As shown in the diagram, for each pair in the group, we generate a task to be run using properties of the input addresses. Notice that the color of each address in the generated pair is used in the test component.</p>
-<p>This concludes our abstract look at pSConfig templates, now let&#8217;s take a look at how we build actual templates <a class="reference internal" href="#psconfig-templates-intro-json-basics"><span>using JSON</span></a>.</p>
+<p>This concludes our abstract look at pSConfig templates, now let’s take a look at how we build actual templates <a class="reference internal" href="#psconfig-templates-intro-json-basics"><span class="std std-ref">using JSON</span></a>.</p>
 </div>
 </div>
 <div class="section" id="json-basics">
 <span id="psconfig-templates-intro-json-basics"></span><h2>JSON Basics<a class="headerlink" href="#json-basics" title="Permalink to this headline">¶</a></h2>
-<p>pSConfig templates are formatted as <a class="reference external" href="https://www.json.org">JSON</a>. The abstract concepts outlined in the <a class="reference internal" href="#psconfig-templates-intro-concepts"><span>previous section</span></a> are all represented in the JSON. We will continue with our abstract examples from the previous section to highlight the basic structure of the JSON.</p>
+<p>pSConfig templates are formatted as <a class="reference external" href="https://www.json.org">JSON</a>. The abstract concepts outlined in the <a class="reference internal" href="#psconfig-templates-intro-concepts"><span class="std std-ref">previous section</span></a> are all represented in the JSON. We will continue with our abstract examples from the previous section to highlight the basic structure of the JSON.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you are more interested in an example closer to real-world applications, you may want to skip to the section <a class="reference internal" href="#psconfig-templates-intro-example"><span>Real-World Example</span></a>.</p>
+<p class="admonition-title">Note</p>
+<p>If you are more interested in an example closer to real-world applications, you may want to skip to the section <a class="reference internal" href="#psconfig-templates-intro-example"><span class="std std-ref">Real-World Example</span></a>.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">pSConfig template syntax is defined by our <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json">JSON Schema document</a>. It is almost impossible to list all the properties and combinations of things that can be expressed in a template within the confines of this documentation page, so for any questions the absolute source of truth is the <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json">JSON schema file</a>.</p>
+<p class="admonition-title">Note</p>
+<p>pSConfig template syntax is defined by our <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json">JSON Schema document</a>. It is almost impossible to list all the properties and combinations of things that can be expressed in a template within the confines of this documentation page, so for any questions the absolute source of truth is the <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json">JSON schema file</a>.</p>
 </div>
 <div class="section" id="psconfig-templates-intro-json-basics-addresses">
-<span id="id1"></span><h3><code class="docutils literal"><span class="pre">addresses</span></code><a class="headerlink" href="#psconfig-templates-intro-json-basics-addresses" title="Permalink to this headline">¶</a></h3>
-<p>pSConfig templates represent the <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span>concept of addresses</span></a> as JSON objects. Each address <em>object</em> has a single required <code class="docutils literal"><span class="pre">address</span></code> property as shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;circle1.perfsonar.net&quot;</span>
+<span id="id1"></span><h3><code class="docutils literal notranslate"><span class="pre">addresses</span></code><a class="headerlink" href="#psconfig-templates-intro-json-basics-addresses" title="Permalink to this headline">¶</a></h3>
+<p>pSConfig templates represent the <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">concept of addresses</span></a> as JSON objects. Each address <em>object</em> has a single required <code class="docutils literal notranslate"><span class="pre">address</span></code> property as shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;circle1.perfsonar.net&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>In that example the <code class="docutils literal"><span class="pre">address</span></code> property is set to <code class="docutils literal"><span class="pre">circle1.perfsonar.net</span></code>. The <code class="docutils literal"><span class="pre">address</span></code> property MUST be in the format of an IP address or hostname. This is done primarily for the benefit of agents trying to determine the addresses for which they are responsible (for example, see <a class="reference internal" href="psconfig_pscheduler_agent.html"><em>Running the pSConfig pScheduler Agent</em></a>). Keep in mind, there is no strict requirement the <code class="docutils literal"><span class="pre">address</span></code> property be used in the generated task at all, so think of it more an an identifier that happens to look like an IP or hostname.</p>
-<p>The true power of addresses is revealed through the use of the <code class="docutils literal"><span class="pre">_meta</span></code> property. The <code class="docutils literal"><span class="pre">_meta</span></code> property is an optional arbitrary JSON object that can contain custom properties. Continuing with the <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span>circle example</span></a> we can describe the shape and color in JSON as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;circle1.perfsonar.net&quot;</span><span class="p">,</span>
-    <span class="s">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;shape&quot;</span><span class="p">:</span> <span class="s">&quot;circle&quot;</span><span class="p">,</span>
-        <span class="s">&quot;color&quot;</span><span class="p">:</span> <span class="s">&quot;blue&quot;</span>
+<p>In that example the <code class="docutils literal notranslate"><span class="pre">address</span></code> property is set to <code class="docutils literal notranslate"><span class="pre">circle1.perfsonar.net</span></code>. The <code class="docutils literal notranslate"><span class="pre">address</span></code> property MUST be in the format of an IP address or hostname. This is done primarily for the benefit of agents trying to determine the addresses for which they are responsible (for example, see <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">Running the pSConfig pScheduler Agent</span></a>). Keep in mind, there is no strict requirement the <code class="docutils literal notranslate"><span class="pre">address</span></code> property be used in the generated task at all, so think of it more an an identifier that happens to look like an IP or hostname.</p>
+<p>The true power of addresses is revealed through the use of the <code class="docutils literal notranslate"><span class="pre">_meta</span></code> property. The <code class="docutils literal notranslate"><span class="pre">_meta</span></code> property is an optional arbitrary JSON object that can contain custom properties. Continuing with the <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">circle example</span></a> we can describe the shape and color in JSON as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;circle1.perfsonar.net&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Note that almost all objects in pSConfig have a <code class="docutils literal"><span class="pre">_meta</span></code> property that can be used to describe custom parameters, not just <em>address</em> object. It is useful not only for building tasks, but also providing additional information to agents reading the templates, such as names to display for a particular object.</p>
-<p>Address objects live in the <code class="docutils literal"><span class="pre">addresses</span></code> section at the top-level of a pSConfig template. Each address object has a name that is used to references this object in other sections of the template. This name is just a string and can contain letters, numbers, colons (:), periods (.), underscores (_) or hyphens(-). In the example below, we take our current object and add it to the <code class="docutils literal"><span class="pre">addresses</span></code> section with the name <em>circle1</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;addresses&quot;: {
-    &quot;circle1&quot;: {
-        &quot;address&quot;: &quot;circle1.perfsonar.net&quot;,
-        &quot;_meta&quot;: {
-            &quot;shape&quot;: &quot;circle&quot;,
-            &quot;color&quot;: &quot;blue&quot;
-        }
-}
+<p>Note that almost all objects in pSConfig have a <code class="docutils literal notranslate"><span class="pre">_meta</span></code> property that can be used to describe custom parameters, not just <em>address</em> object. It is useful not only for building tasks, but also providing additional information to agents reading the templates, such as names to display for a particular object.</p>
+<p>Address objects live in the <code class="docutils literal notranslate"><span class="pre">addresses</span></code> section at the top-level of a pSConfig template. Each address object has a name that is used to references this object in other sections of the template. This name is just a string and can contain letters, numbers, colons (:), periods (.), underscores (_) or hyphens(-). In the example below, we take our current object and add it to the <code class="docutils literal notranslate"><span class="pre">addresses</span></code> section with the name <em>circle1</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;circle1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;circle1.perfsonar.net&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>Finally to round out the example, we can add the JSON representation of the other two circles from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span>earlier example</span></a>, noting that the <code class="docutils literal"><span class="pre">color</span></code> property changes in each <code class="docutils literal"><span class="pre">_meta</span></code> object:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;addresses&quot;: {
-    &quot;circle1&quot;: {
-        &quot;address&quot;: &quot;circle1.perfsonar.net&quot;,
-        &quot;_meta&quot;: {
-            &quot;shape&quot;: &quot;circle&quot;,
-            &quot;color&quot;: &quot;blue&quot;
-        }
-    },
-    &quot;circle2&quot;: {
-        &quot;address&quot;: &quot;circle2.perfsonar.net&quot;,
-        &quot;_meta&quot;: {
-            &quot;shape&quot;: &quot;circle&quot;,
-            &quot;color&quot;: &quot;red&quot;
-        }
-    },
-    &quot;circle3&quot;: {
-        &quot;address&quot;: &quot;circle3.perfsonar.net&quot;,
-        &quot;_meta&quot;: {
-            &quot;shape&quot;: &quot;circle&quot;,
-            &quot;color&quot;: &quot;green&quot;
-        }
-    }
-}
+<p>Finally to round out the example, we can add the JSON representation of the other two circles from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">earlier example</span></a>, noting that the <code class="docutils literal notranslate"><span class="pre">color</span></code> property changes in each <code class="docutils literal notranslate"><span class="pre">_meta</span></code> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;circle1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;circle1.perfsonar.net&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;circle2&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;circle2.perfsonar.net&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;circle3&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;circle3.perfsonar.net&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="psconfig-templates-intro-json-basics-groups">
-<span id="id2"></span><h3><code class="docutils literal"><span class="pre">groups</span></code><a class="headerlink" href="#psconfig-templates-intro-json-basics-groups" title="Permalink to this headline">¶</a></h3>
-<p>pSConfig templates represent the <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span>concept of groups</span></a> as JSON objects. A <em>group</em> object has a required <code class="docutils literal"><span class="pre">type</span></code> property that indicates whether is is of type <em>mesh</em>, <em>disjoint</em> or <em>list</em>. Based on the type, there are additional required properties used to indicate which addresses belong in the group.</p>
-<p>Groups of type <em>mesh</em> have one required property: <code class="docutils literal"><span class="pre">addresses</span></code>. An example is below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;mesh&quot;</span><span class="p">,</span>
-    <span class="s">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle1&quot;</span><span class="p">},</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle2&quot;</span><span class="p">},</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle3&quot;</span><span class="p">}</span>
+<span id="id2"></span><h3><code class="docutils literal notranslate"><span class="pre">groups</span></code><a class="headerlink" href="#psconfig-templates-intro-json-basics-groups" title="Permalink to this headline">¶</a></h3>
+<p>pSConfig templates represent the <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span class="std std-ref">concept of groups</span></a> as JSON objects. A <em>group</em> object has a required <code class="docutils literal notranslate"><span class="pre">type</span></code> property that indicates whether is is of type <em>mesh</em>, <em>disjoint</em> or <em>list</em>. Based on the type, there are additional required properties used to indicate which addresses belong in the group.</p>
+<p>Groups of type <em>mesh</em> have one required property: <code class="docutils literal notranslate"><span class="pre">addresses</span></code>. An example is below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle1&quot;</span><span class="p">},</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle2&quot;</span><span class="p">},</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle3&quot;</span><span class="p">}</span>
      <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">addresses</span></code> property is an array of <em>address selector</em> objects. These selectors describe which <em>address</em> objects to use from the <code class="docutils literal"><span class="pre">addresses</span></code> section of the template. The most common way to select is by name, as is done in the example above. This group will combine all of the addresses selected into pairs with all the other selected addresses.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">addresses</span></code> property is an array of <em>address selector</em> objects. These selectors describe which <em>address</em> objects to use from the <code class="docutils literal notranslate"><span class="pre">addresses</span></code> section of the template. The most common way to select is by name, as is done in the example above. This group will combine all of the addresses selected into pairs with all the other selected addresses.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Other types of address selectors are outside of the scope of this document but are detailed in <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-labels"><span>Labeling Address Properties</span></a>.</p>
+<p class="admonition-title">Note</p>
+<p>Other types of address selectors are outside of the scope of this document but are detailed in <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-addresses-labels"><span class="std std-ref">Labeling Address Properties</span></a>.</p>
 </div>
-<p>Groups of type <em>disjoint</em> have two required properties: <code class="docutils literal"><span class="pre">a-addresses</span></code> and <code class="docutils literal"><span class="pre">b-addresses</span></code>. An example is below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;disjoint&quot;</span><span class="p">,</span>
-    <span class="s">&quot;a-addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle1&quot;</span><span class="p">}</span>
+<p>Groups of type <em>disjoint</em> have two required properties: <code class="docutils literal notranslate"><span class="pre">a-addresses</span></code> and <code class="docutils literal notranslate"><span class="pre">b-addresses</span></code>. An example is below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;disjoint&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a-addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle1&quot;</span><span class="p">}</span>
      <span class="p">],</span>
-     <span class="s">&quot;b-addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle2&quot;</span><span class="p">},</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle3&quot;</span><span class="p">}</span>
+     <span class="s2">&quot;b-addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle2&quot;</span><span class="p">},</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle3&quot;</span><span class="p">}</span>
      <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Again, each is a list of <em>address selector</em> objects and this example selects by name. Just as in the <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span>abstract example</span></a> of disjoint, the resulting group will combine <em>circle1</em> in <code class="docutils literal"><span class="pre">a-addresses</span></code> into pairs with the two circles in <code class="docutils literal"><span class="pre">b-addresses</span></code>.</p>
-<p>Finally, we could also define a group of type <em>list</em>, and it only requires an <code class="docutils literal"><span class="pre">addresses</span></code> property be set which is (not-surprisingly) a list of address selectors:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;list&quot;</span><span class="p">,</span>
-    <span class="s">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle1&quot;</span><span class="p">},</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle2&quot;</span><span class="p">},</span>
-         <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;circle3&quot;</span><span class="p">}</span>
+<p>Again, each is a list of <em>address selector</em> objects and this example selects by name. Just as in the <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span class="std std-ref">abstract example</span></a> of disjoint, the resulting group will combine <em>circle1</em> in <code class="docutils literal notranslate"><span class="pre">a-addresses</span></code> into pairs with the two circles in <code class="docutils literal notranslate"><span class="pre">b-addresses</span></code>.</p>
+<p>Finally, we could also define a group of type <em>list</em>, and it only requires an <code class="docutils literal notranslate"><span class="pre">addresses</span></code> property be set which is (not-surprisingly) a list of address selectors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle1&quot;</span><span class="p">},</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle2&quot;</span><span class="p">},</span>
+         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle3&quot;</span><span class="p">}</span>
      <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>The above example would generate a one-dimensional list containing each selected address object.</p>
-<p>All of the <em>group</em> objects live in the <code class="docutils literal"><span class="pre">groups</span></code> section of a template. Each object is given a name just like in the <code class="docutils literal"><span class="pre">addresses</span></code> section. The name is used to references this object in other sections of the template and is a string that can contain letters, numbers, colons (:), periods (.), underscores (_) or hyphens(-). For our example, we are only going to use the mesh group, so it looks as follows with one group named <em>colors_mesh</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;groups&quot;: {
-    &quot;colors_mesh&quot;: {
-        &quot;type&quot;: &quot;mesh&quot;,
-        &quot;addresses&quot;: [
-             {&quot;name&quot;: &quot;circle1&quot;},
-             {&quot;name&quot;: &quot;circle2&quot;},
-             {&quot;name&quot;: &quot;circle3&quot;}
-         ]
-    }
-}
+<p>All of the <em>group</em> objects live in the <code class="docutils literal notranslate"><span class="pre">groups</span></code> section of a template. Each object is given a name just like in the <code class="docutils literal notranslate"><span class="pre">addresses</span></code> section. The name is used to references this object in other sections of the template and is a string that can contain letters, numbers, colons (:), periods (.), underscores (_) or hyphens(-). For our example, we are only going to use the mesh group, so it looks as follows with one group named <em>colors_mesh</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;colors_mesh&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+             <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle1&quot;</span><span class="p">},</span>
+             <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle2&quot;</span><span class="p">},</span>
+             <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;circle3&quot;</span><span class="p">}</span>
+         <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="tests">
-<span id="psconfig-templates-intro-json-basics-tests"></span><h3><code class="docutils literal"><span class="pre">tests</span></code><a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h3>
-<p><em>Test</em> objects define the parameters of the job to be carried out by the task. A test object has a required <code class="docutils literal"><span class="pre">type</span></code> and <code class="docutils literal"><span class="pre">spec</span></code> property. The values of these properties, however, are completely opaque to pSConfig. Instead it relies on <a class="reference internal" href="pscheduler_intro.html"><em>pScheduler</em></a> to interpret the values. This is advantageous because as new plug-ins are installed into pScheduler, no corresponding changes are needed to the pSConfig source code. This means there are no pScheduler plug-ins out of reach for pSConfig.</p>
+<span id="psconfig-templates-intro-json-basics-tests"></span><h3><code class="docutils literal notranslate"><span class="pre">tests</span></code><a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h3>
+<p><em>Test</em> objects define the parameters of the job to be carried out by the task. A test object has a required <code class="docutils literal notranslate"><span class="pre">type</span></code> and <code class="docutils literal notranslate"><span class="pre">spec</span></code> property. The values of these properties, however, are completely opaque to pSConfig. Instead it relies on <a class="reference internal" href="pscheduler_intro.html"><span class="doc">pScheduler</span></a> to interpret the values. This is advantageous because as new plug-ins are installed into pScheduler, no corresponding changes are needed to the pSConfig source code. This means there are no pScheduler plug-ins out of reach for pSConfig.</p>
 <p>Below is an example of a fictional <em>colors</em> test that assumes pScheduler supports a plug-in called <em>colors</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;tests&quot;: {
-    &quot;colors_test&quot;: {
-        &quot;type&quot;: &quot;colors&quot;,
-        &quot;spec&quot;: {
-            &quot;color1&quot;: &quot;{% jq addresses[0]._meta.color %}&quot;,
-            &quot;color2&quot;: &quot;{% jq addresses[1]._meta.color %}&quot;
-        }
-    }
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;tests&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;colors_test&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;colors&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;color1&quot;</span><span class="p">:</span> <span class="s2">&quot;{% jq addresses[0]._meta.color %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;color2&quot;</span><span class="p">:</span> <span class="s2">&quot;{% jq addresses[1]._meta.color %}&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>We&#8217;ll notice this fictitious plug-in supports a <code class="docutils literal"><span class="pre">spec</span></code> with two parameters called <code class="docutils literal"><span class="pre">color1</span></code> and <code class="docutils literal"><span class="pre">color2</span></code>. Those strange looking strings in the value are <em>template variables</em>, which we&#8217;ll take a closer look at in the <a class="reference internal" href="#psconfig-templates-intro-json-basics-vars"><span>next section</span></a>.</p>
+<p>We’ll notice this fictitious plug-in supports a <code class="docutils literal notranslate"><span class="pre">spec</span></code> with two parameters called <code class="docutils literal notranslate"><span class="pre">color1</span></code> and <code class="docutils literal notranslate"><span class="pre">color2</span></code>. Those strange looking strings in the value are <em>template variables</em>, which we’ll take a closer look at in the <a class="reference internal" href="#psconfig-templates-intro-json-basics-vars"><span class="std std-ref">next section</span></a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">For more information on valid pScheduler test specs, see <a class="reference internal" href="pscheduler_ref_tests_tools.html"><em>Test and Tool Reference</em></a>, the documentation of the test plug-in you are using or the documentation of the tool you are using to generate the JSON.</p>
+<p class="admonition-title">Note</p>
+<p>For more information on valid pScheduler test specs, see <a class="reference internal" href="pscheduler_ref_tests_tools.html"><span class="doc">Test and Tool Reference</span></a>, the documentation of the test plug-in you are using or the documentation of the tool you are using to generate the JSON.</p>
 </div>
 </div>
 <div class="section" id="template-variables">
 <span id="psconfig-templates-intro-json-basics-vars"></span><h3>Template Variables<a class="headerlink" href="#template-variables" title="Permalink to this headline">¶</a></h3>
 <p>Template variables are how we access properties of task components to connect them to other components. They can be included in strings of certain JSON objects and take the form of:</p>
-<div class="highlight-python"><div class="highlight"><pre>{% VARIABLE %}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">VARIABLE</span> <span class="o">%</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>In our <a class="reference internal" href="#psconfig-templates-intro-json-basics-tests"><span>tests example</span></a> we saw use of the <code class="docutils literal"><span class="pre">jq</span></code> template variable. This variable uses the <a class="reference external" href="https://stedolan.github.io/jq/">jq processor</a> to select portions of the JSON. The first variable looks like the following:</p>
-<div class="highlight-python"><div class="highlight"><pre>{% jq addresses[0]._meta.color %}
+<p>In our <a class="reference internal" href="#psconfig-templates-intro-json-basics-tests"><span class="std std-ref">tests example</span></a> we saw use of the <code class="docutils literal notranslate"><span class="pre">jq</span></code> template variable. This variable uses the <a class="reference external" href="https://stedolan.github.io/jq/">jq processor</a> to select portions of the JSON. The first variable looks like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">jq</span> <span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">color</span> <span class="o">%</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>Let&#8217;s break this variable down:</p>
+<p>Let’s break this variable down:</p>
 <ul class="simple">
-<li>The <code class="docutils literal"><span class="pre">jq</span></code> portion is simply the name of the variable.</li>
-<li>The <code class="docutils literal"><span class="pre">addresses[0]</span></code> portion selects the first address in the pair generated by the group (as indicated by index 0 in between the square brackets)</li>
-<li>the <code class="docutils literal"><span class="pre">._meta</span></code> portion selects the <code class="docutils literal"><span class="pre">_meta</span></code> object of that address</li>
-<li>The <code class="docutils literal"><span class="pre">.color</span></code> portion selects the color property</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">jq</span></code> portion is simply the name of the variable.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">addresses[0]</span></code> portion selects the first address in the pair generated by the group (as indicated by index 0 in between the square brackets)</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">._meta</span></code> portion selects the <code class="docutils literal notranslate"><span class="pre">_meta</span></code> object of that address</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">.color</span></code> portion selects the color property</p></li>
 </ul>
 <p>Likewise, the second variable looks as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>{% jq addresses[1]._meta.color %}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">jq</span> <span class="n">addresses</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">color</span> <span class="o">%</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>It is the same as the first except for the <code class="docutils literal"><span class="pre">address[1]</span></code> portion that indicates to use the second address (as indicated by index 1 in between the square brackets) from the input pair. As a result, <code class="docutils literal"><span class="pre">color1</span></code> receives the value of the <code class="docutils literal"><span class="pre">color</span></code> property from the first address in the pair and <code class="docutils literal"><span class="pre">color2</span></code> receives the <code class="docutils literal"><span class="pre">color</span></code> of the second.</p>
-<p>There are many other template variables and listing them all is beyond the scope of this document. For more information on other template variables please see <a class="reference internal" href="psconfig_templates_vars.html"><em>pSConfig Template Variables</em></a>.</p>
+<p>It is the same as the first except for the <code class="docutils literal notranslate"><span class="pre">address[1]</span></code> portion that indicates to use the second address (as indicated by index 1 in between the square brackets) from the input pair. As a result, <code class="docutils literal notranslate"><span class="pre">color1</span></code> receives the value of the <code class="docutils literal notranslate"><span class="pre">color</span></code> property from the first address in the pair and <code class="docutils literal notranslate"><span class="pre">color2</span></code> receives the <code class="docutils literal notranslate"><span class="pre">color</span></code> of the second.</p>
+<p>There are many other template variables and listing them all is beyond the scope of this document. For more information on other template variables please see <a class="reference internal" href="psconfig_templates_vars.html"><span class="doc">pSConfig Template Variables</span></a>.</p>
 </div>
 <div class="section" id="archives">
-<span id="psconfig-templates-intro-json-basics-archives"></span><h3><code class="docutils literal"><span class="pre">archives</span></code><a class="headerlink" href="#archives" title="Permalink to this headline">¶</a></h3>
-<p><em>Archive</em> objects are optional components of the template that tell agents where the results of the described tasks are to be stored. <em>Archive</em> objects at a minimum have an <code class="docutils literal"><span class="pre">archiver</span></code> field that indicates the type of archive and a <code class="docutils literal"><span class="pre">data</span></code> field containing archive-specific parameters. <em>Archive</em> objects in pSConfig are taken directly from <a class="reference internal" href="pscheduler_intro.html"><em>pScheduler</em></a>. The only pSConfig-specific field in this object is the optional <code class="docutils literal"><span class="pre">_meta</span></code> tag that can be used for custom properties. Beyond that, pSConfig has no idea how to interpret the fields within an <code class="docutils literal"><span class="pre">archive</span></code> object. This is intentional as it does not require any changes to pSConfig when new archiver plug-ins are installed in pScheduler.</p>
+<span id="psconfig-templates-intro-json-basics-archives"></span><h3><code class="docutils literal notranslate"><span class="pre">archives</span></code><a class="headerlink" href="#archives" title="Permalink to this headline">¶</a></h3>
+<p><em>Archive</em> objects are optional components of the template that tell agents where the results of the described tasks are to be stored. <em>Archive</em> objects at a minimum have an <code class="docutils literal notranslate"><span class="pre">archiver</span></code> field that indicates the type of archive and a <code class="docutils literal notranslate"><span class="pre">data</span></code> field containing archive-specific parameters. <em>Archive</em> objects in pSConfig are taken directly from <a class="reference internal" href="pscheduler_intro.html"><span class="doc">pScheduler</span></a>. The only pSConfig-specific field in this object is the optional <code class="docutils literal notranslate"><span class="pre">_meta</span></code> tag that can be used for custom properties. Beyond that, pSConfig has no idea how to interpret the fields within an <code class="docutils literal notranslate"><span class="pre">archive</span></code> object. This is intentional as it does not require any changes to pSConfig when new archiver plug-ins are installed in pScheduler.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">For valid specifications of these objects it is recommended you see the <a class="reference internal" href="pscheduler_ref_archivers.html"><em>pScheduler archiver reference</em></a>, the documentation for a specific plug-in or the documentation for the tool you are using to generate the JSON.</p>
+<p class="admonition-title">Note</p>
+<p>For valid specifications of these objects it is recommended you see the <a class="reference internal" href="pscheduler_ref_archivers.html"><span class="doc">pScheduler archiver reference</span></a>, the documentation for a specific plug-in or the documentation for the tool you are using to generate the JSON.</p>
 </div>
-<p>Below is an example of an <code class="docutils literal"><span class="pre">archivers</span></code> section we define that uses an <em>esmond</em> archiver:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;archives&quot;: {
-     &quot;colors_archive&quot;: {
-          &quot;archiver&quot;: &quot;esmond&quot;,
-          &quot;data&quot;: {
-              &quot;url&quot;: &quot;https://{% scheduled_by_address %}/esmond/perfsonar/archive/&quot;,
-              &quot;measurement-agent&quot;: &quot;{% scheduled_by_address %}&quot;
-          }
-     }
- }
+<p>Below is an example of an <code class="docutils literal notranslate"><span class="pre">archivers</span></code> section we define that uses an <em>esmond</em> archiver:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span>
+     <span class="s2">&quot;colors_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}/esmond/perfsonar/archive/&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span>
+          <span class="p">}</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
 </pre></div>
 </div>
-<p>As we&#8217;ve seen in the other template sections, it is given a name <em>colors_archive</em> that can be referenced in other areas of this document. This definition also uses the template variable <code class="docutils literal"><span class="pre">{%</span> <span class="pre">scheduled_by_address</span> <span class="pre">%}</span></code> in two places. This variable is replaced with <code class="docutils literal"><span class="pre">address</span></code> property associated with the address object representing the agent that will schedule the task. More information on this property can be found in <a class="reference internal" href="psconfig_templates_vars.html"><em>pSConfig Template Variables</em></a>. For the sake of this example, what&#8217;s perhaps more important than the variable meaning  is how it&#8217;s used. Notice that in the <code class="docutils literal"><span class="pre">url</span></code> property we have embedded the variable within text. pSConfig is able to expand this while leaving the surrounding text intact so we can dynamically build things like URLs. No matter how deep you embed a variable in an object, pSConfig will be able to expand it.</p>
+<p>As we’ve seen in the other template sections, it is given a name <em>colors_archive</em> that can be referenced in other areas of this document. This definition also uses the template variable <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">scheduled_by_address</span> <span class="pre">%}</span></code> in two places. This variable is replaced with <code class="docutils literal notranslate"><span class="pre">address</span></code> property associated with the address object representing the agent that will schedule the task. More information on this property can be found in <a class="reference internal" href="psconfig_templates_vars.html"><span class="doc">pSConfig Template Variables</span></a>. For the sake of this example, what’s perhaps more important than the variable meaning  is how it’s used. Notice that in the <code class="docutils literal notranslate"><span class="pre">url</span></code> property we have embedded the variable within text. pSConfig is able to expand this while leaving the surrounding text intact so we can dynamically build things like URLs. No matter how deep you embed a variable in an object, pSConfig will be able to expand it.</p>
 </div>
 <div class="section" id="schedules">
-<span id="psconfig-templates-intro-json-basics-schedules"></span><h3><code class="docutils literal"><span class="pre">schedules</span></code><a class="headerlink" href="#schedules" title="Permalink to this headline">¶</a></h3>
-<p><em>Schedule</em> objects are optional components of the template that tell agents how often to run a task. They are optional because you don&#8217;t need them for tasks that run continuously, but for periodic tasks they are needed if you want the task to run more than once. Schedule objects are borrowed directly from <a class="reference internal" href="pscheduler_intro.html"><em>pScheduler</em></a>. See the
+<span id="psconfig-templates-intro-json-basics-schedules"></span><h3><code class="docutils literal notranslate"><span class="pre">schedules</span></code><a class="headerlink" href="#schedules" title="Permalink to this headline">¶</a></h3>
+<p><em>Schedule</em> objects are optional components of the template that tell agents how often to run a task. They are optional because you don’t need them for tasks that run continuously, but for periodic tasks they are needed if you want the task to run more than once. Schedule objects are borrowed directly from <a class="reference internal" href="pscheduler_intro.html"><span class="doc">pScheduler</span></a>. See the
 <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json">schema file</a> for a full list of properties, but some of the more common ones are shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;schedules&quot;: {
-    &quot;colors_schedule&quot;: {
-        &quot;repeat&quot;: &quot;PT1H&quot;,
-        &quot;slip&quot;: &quot;PT1H&quot;,
-        &quot;sliprand&quot;: true
-    }
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;schedules&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;colors_schedule&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;slip&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sliprand&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>We define one schedule named <em>colors_schedule</em> which will tell a task using it to run on a random interval between every 1-2 hours. The <code class="docutils literal"><span class="pre">repeat</span></code> property is an ISO8601 duration telling a task that uses it to repeat at least every hour. The <code class="docutils literal"><span class="pre">slip</span></code> says that it can run up to 1 hour later than that (i.e. 2 hours). Finally, <code class="docutils literal"><span class="pre">sliprand</span></code> tells it to randomly choose an interval between those two values for each run. This is commonly done to prevent tests from bunching together at the beginning of a time interval. As stated earlier, you may use more or less options according to the schema, but the combination of these three is a common case.</p>
+<p>We define one schedule named <em>colors_schedule</em> which will tell a task using it to run on a random interval between every 1-2 hours. The <code class="docutils literal notranslate"><span class="pre">repeat</span></code> property is an ISO8601 duration telling a task that uses it to repeat at least every hour. The <code class="docutils literal notranslate"><span class="pre">slip</span></code> says that it can run up to 1 hour later than that (i.e. 2 hours). Finally, <code class="docutils literal notranslate"><span class="pre">sliprand</span></code> tells it to randomly choose an interval between those two values for each run. This is commonly done to prevent tests from bunching together at the beginning of a time interval. As stated earlier, you may use more or less options according to the schema, but the combination of these three is a common case.</p>
 </div>
 <div class="section" id="psconfig-templates-intro-json-basics-tasks">
-<span id="id3"></span><h3><code class="docutils literal"><span class="pre">tasks</span></code><a class="headerlink" href="#psconfig-templates-intro-json-basics-tasks" title="Permalink to this headline">¶</a></h3>
+<span id="id3"></span><h3><code class="docutils literal notranslate"><span class="pre">tasks</span></code><a class="headerlink" href="#psconfig-templates-intro-json-basics-tasks" title="Permalink to this headline">¶</a></h3>
 <p>After building all of the components, we are finally ready to build our task. This is actually just a matter of referencing the names of the components we built above. Below is an example using the group, test, archive and schedule objects we defined, respectively:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;tasks&quot;: {
-    &quot;colors_task&quot;: {
-        &quot;group&quot;: &quot;colors_group&quot;,
-        &quot;test&quot;: &quot;colors_test&quot;,
-        &quot;schedule&quot;: &quot;colors_schedule&quot;,
-        &quot;archives&quot;: [
-             &quot;colors_archive&quot;
-         ]
-    }
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;colors_task&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;colors_group&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;colors_test&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;colors_schedule&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span>
+             <span class="s2">&quot;colors_archive&quot;</span>
+         <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>Note that when building a task the only strictly required fields are <code class="docutils literal"><span class="pre">group</span></code> and <code class="docutils literal"><span class="pre">test</span></code>. Others like <code class="docutils literal"><span class="pre">schedule</span></code> and <code class="docutils literal"><span class="pre">archives</span></code> are not strictly required, but are commonly used since one generally needs to run a test more than once and store the results. There are additional fields that control the tool used, set the task priority and more but they are beyond the scope of this document.</p>
+<p>Note that when building a task the only strictly required fields are <code class="docutils literal notranslate"><span class="pre">group</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code>. Others like <code class="docutils literal notranslate"><span class="pre">schedule</span></code> and <code class="docutils literal notranslate"><span class="pre">archives</span></code> are not strictly required, but are commonly used since one generally needs to run a test more than once and store the results. There are additional fields that control the tool used, set the task priority and more but they are beyond the scope of this document.</p>
 </div>
 <div class="section" id="psconfig-templates-intro-json-basics-conclusion">
 <span id="id4"></span><h3>Putting it all together<a class="headerlink" href="#psconfig-templates-intro-json-basics-conclusion" title="Permalink to this headline">¶</a></h3>
-<p>You can download a full example of the JSON file described in this section <a class="reference download internal" href="_downloads/psconfig_templates_intro-colors.json"><code class="xref download docutils literal"><span class="pre">here</span></code></a>.</p>
+<p>You can download a full example of the JSON file described in this section <a class="reference download internal" download="" href="_downloads/89be185f6dd8483b976c450e102643d8/psconfig_templates_intro-colors.json"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="real-world-example">
@@ -385,181 +376,181 @@
 <p>With the basic concepts behind us, we will now move away from the abstract and into an example with foundations closer to reality. The basic setup of the example is described by the diagram below:</p>
 <div class="figure align-center" id="id18">
 <img alt="_images/psconfig_templates_intro-example-network.png" src="_images/psconfig_templates_intro-example-network.png" />
-<p class="caption"><span class="caption-text"><em>Example set of hosts we want to run tests between each other and publish to a central archive</em></span></p>
+<p class="caption"><span class="caption-text"><em>Example set of hosts we want to run tests between each other and publish to a central archive</em></span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
 </div>
 <p>In the diagram, hosts are represented by the images of blade servers. We have four hosts that we want to run latency and/or throughput tasks and a fifth host that does not schedule any tasks but instead stores the results of the others in a central archive. Under each server image is one or more hostnames of network interfaces attached to that host. The diagram color-codes the interface hostnames, but working counter-clockwise around the diagram each host has interfaces with the following role:</p>
 <ul class="simple">
-<li>The host at the top with the <em>esmond.archive.perfsonar.net</em> interface will not perform any tests and will be running an <a class="reference internal" href="multi_ma_install.html"><em>esmond</em></a> archive.</li>
-<li>The host with a single interface addressed <em>lat1.perfsonar.net</em> will only run latency tests.</li>
-<li>The host with a single interface addressed <em>thr1.perfsonar.net</em> will only run throughput tests.</li>
-<li>The host with a single interface addressed <em>thrlat1.perfsonar.net</em> will run both latency and throughput tests on the same interface.</li>
-<li>The host furthest to the right has two interfaces. The interface addressed <em>lat2.perfsonar.net</em> will run latency tests and the interface addressed <em>thr2.perfsonar.net</em> will run throughput tests.</li>
+<li><p>The host at the top with the <em>esmond.archive.perfsonar.net</em> interface will not perform any tests and will be running an <a class="reference internal" href="multi_ma_install.html"><span class="doc">esmond</span></a> archive.</p></li>
+<li><p>The host with a single interface addressed <em>lat1.perfsonar.net</em> will only run latency tests.</p></li>
+<li><p>The host with a single interface addressed <em>thr1.perfsonar.net</em> will only run throughput tests.</p></li>
+<li><p>The host with a single interface addressed <em>thrlat1.perfsonar.net</em> will run both latency and throughput tests on the same interface.</p></li>
+<li><p>The host furthest to the right has two interfaces. The interface addressed <em>lat2.perfsonar.net</em> will run latency tests and the interface addressed <em>thr2.perfsonar.net</em> will run throughput tests.</p></li>
 </ul>
-<p>For our example, we want every latency interface to test to every other interface capable of running latency tests. Likewise we want every interface capable to running a throughput test to run to all the others that support throughput tests. Given this desired task topology, let&#8217;s walkthrough how we construct the JSON of a pSConfig template.</p>
+<p>For our example, we want every latency interface to test to every other interface capable of running latency tests. Likewise we want every interface capable to running a throughput test to run to all the others that support throughput tests. Given this desired task topology, let’s walkthrough how we construct the JSON of a pSConfig template.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The approach shown in this section is not the only way to express a template for the task topology described, it is simply one way. pSConfig is highly flexible and expressive so there is no one correct answer when building a template as long as the resulting task topology meets your goals.</p>
+<p class="admonition-title">Note</p>
+<p>The approach shown in this section is not the only way to express a template for the task topology described, it is simply one way. pSConfig is highly flexible and expressive so there is no one correct answer when building a template as long as the resulting task topology meets your goals.</p>
 </div>
 <div class="section" id="psconfig-templates-intro-example-addresses">
-<span id="id5"></span><h3><code class="docutils literal"><span class="pre">addresses</span></code><a class="headerlink" href="#psconfig-templates-intro-example-addresses" title="Permalink to this headline">¶</a></h3>
-<p>First we need to build our <code class="docutils literal"><span class="pre">addresses</span></code> section. Our <em>address</em> objects will correspond to the interfaces of the hosts in our diagram as shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;addresses&quot;: {
-    &quot;lat1&quot;: {
-        &quot;address&quot;: &quot;lat1.perfsonar.net&quot;
-    },
-    &quot;thr1&quot;: {
-        &quot;address&quot;: &quot;thr1.perfsonar.net&quot;
-    },
-   &quot;thrlat1&quot;: {
-        &quot;address&quot;: &quot;thrlat1.perfsonar.net&quot;
-    },
-    &quot;lat2&quot;: {
-        &quot;address&quot;: &quot;lat2.perfsonar.net&quot;
-    },
-    &quot;thr2&quot;: {
-        &quot;address&quot;: &quot;thr2.perfsonar.net&quot;
-    }
-}
+<span id="id5"></span><h3><code class="docutils literal notranslate"><span class="pre">addresses</span></code><a class="headerlink" href="#psconfig-templates-intro-example-addresses" title="Permalink to this headline">¶</a></h3>
+<p>First we need to build our <code class="docutils literal notranslate"><span class="pre">addresses</span></code> section. Our <em>address</em> objects will correspond to the interfaces of the hosts in our diagram as shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;lat1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;lat1.perfsonar.net&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;thr1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;thr1.perfsonar.net&quot;</span>
+    <span class="p">},</span>
+   <span class="s2">&quot;thrlat1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;thrlat1.perfsonar.net&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;lat2&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;lat2.perfsonar.net&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;thr2&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;thr2.perfsonar.net&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>Notice that each has a name by which to reference it within the template and the required <code class="docutils literal"><span class="pre">address</span></code> property. It does not have any further fields such as <code class="docutils literal"><span class="pre">_meta</span></code> because we do not need them for the tests we are trying to build. Often these are the only fields you need, so it is not necessary to set any further information.</p>
+<p>Notice that each has a name by which to reference it within the template and the required <code class="docutils literal notranslate"><span class="pre">address</span></code> property. It does not have any further fields such as <code class="docutils literal notranslate"><span class="pre">_meta</span></code> because we do not need them for the tests we are trying to build. Often these are the only fields you need, so it is not necessary to set any further information.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The addresses labelled <code class="docutils literal"><span class="pre">lat2</span></code> and <code class="docutils literal"><span class="pre">thr2</span></code> are separate <em>address</em> objects even though they are on the same physical host. From the perspective of the tasks we want to create, it doesn&#8217;t really matter that they are on the same host. If it did matter, pSConfig does provide a <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-hosts"><span>host object</span></a> that groups addresses. For the sake of keeping things concise though, we did not use it in this example since it is extraneous information for our desired task topology.</p>
+<p class="admonition-title">Note</p>
+<p>The addresses labelled <code class="docutils literal notranslate"><span class="pre">lat2</span></code> and <code class="docutils literal notranslate"><span class="pre">thr2</span></code> are separate <em>address</em> objects even though they are on the same physical host. From the perspective of the tasks we want to create, it doesn’t really matter that they are on the same host. If it did matter, pSConfig does provide a <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-hosts"><span class="std std-ref">host object</span></a> that groups addresses. For the sake of keeping things concise though, we did not use it in this example since it is extraneous information for our desired task topology.</p>
 </div>
 </div>
 <div class="section" id="psconfig-templates-intro-example-groups">
-<span id="id6"></span><h3><code class="docutils literal"><span class="pre">groups</span></code><a class="headerlink" href="#psconfig-templates-intro-example-groups" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3><code class="docutils literal notranslate"><span class="pre">groups</span></code><a class="headerlink" href="#psconfig-templates-intro-example-groups" title="Permalink to this headline">¶</a></h3>
 <p>We combine the addresses into two groups of type <em>mesh</em>: one for latency tests and one for throughput tests:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;groups&quot;: {
-       &quot;latency_group&quot;: {
-           &quot;type&quot;: &quot;mesh&quot;,
-           &quot;addresses&quot;: [
-                {&quot;name&quot;: &quot;lat1&quot;},
-                {&quot;name&quot;: &quot;thrlat1&quot;},
-                {&quot;name&quot;: &quot;lat2&quot;}
-            ]
-       },
-       &quot;throughput_group&quot;: {
-           &quot;type&quot;: &quot;mesh&quot;,
-           &quot;addresses&quot;: [
-                {&quot;name&quot;: &quot;thr1&quot;},
-                {&quot;name&quot;: &quot;thrlat1&quot;},
-                {&quot;name&quot;: &quot;thr2&quot;}
-            ]
-       }
-   }
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;latency_group&quot;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;lat1&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;thrlat1&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;lat2&quot;</span><span class="p">}</span>
+            <span class="p">]</span>
+       <span class="p">},</span>
+       <span class="s2">&quot;throughput_group&quot;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;thr1&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;thrlat1&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;thr2&quot;</span><span class="p">}</span>
+            <span class="p">]</span>
+       <span class="p">}</span>
+   <span class="p">}</span>
 </pre></div>
 </div>
-<p>Each group selects only those address objects that are marked in our diagram for latency tests and throughput tests, respectively. The only common member of each is the address with name <code class="docutils literal"><span class="pre">thrlat1</span></code> since it runs both types of tests. Since we are using the type <em>mesh</em>, every member address will run a test to every other member within the group. This matches our stated task topology.</p>
+<p>Each group selects only those address objects that are marked in our diagram for latency tests and throughput tests, respectively. The only common member of each is the address with name <code class="docutils literal notranslate"><span class="pre">thrlat1</span></code> since it runs both types of tests. Since we are using the type <em>mesh</em>, every member address will run a test to every other member within the group. This matches our stated task topology.</p>
 </div>
 <div class="section" id="psconfig-templates-intro-example-tests">
-<span id="id7"></span><h3><code class="docutils literal"><span class="pre">tests</span></code><a class="headerlink" href="#psconfig-templates-intro-example-tests" title="Permalink to this headline">¶</a></h3>
-<p>We can now define the parameters of the two types of tests we want run in the <code class="docutils literal"><span class="pre">tests</span></code> section:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;tests&quot;: {
-    &quot;latency_test&quot;: {
-        &quot;type&quot;: &quot;latencybg&quot;,
-        &quot;spec&quot;: {
-            &quot;source&quot;: &quot;{% address[0] %}&quot;,
-            &quot;dest&quot;: &quot;{% address[1] %}&quot;,
-            &quot;packet-interval&quot;: 0.1,
-            &quot;packet-count&quot;: 600
-        }
-    },
-    &quot;throughput_test&quot;: {
-        &quot;type&quot;: &quot;throughput&quot;,
-        &quot;spec&quot;: {
-            &quot;source&quot;: &quot;{% address[0] %}&quot;,
-            &quot;dest&quot;: &quot;{% address[1] %}&quot;,
-            &quot;duration&quot;: &quot;PT30S&quot;
-        }
-    }
-}
+<span id="id7"></span><h3><code class="docutils literal notranslate"><span class="pre">tests</span></code><a class="headerlink" href="#psconfig-templates-intro-example-tests" title="Permalink to this headline">¶</a></h3>
+<p>We can now define the parameters of the two types of tests we want run in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;tests&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;latency_test&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;latencybg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;packet-interval&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;packet-count&quot;</span><span class="p">:</span> <span class="mi">600</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;throughput_test&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;PT30S&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>Our first test, named <code class="docutils literal"><span class="pre">latency_test</span></code>, defines a test of type <code class="docutils literal"><span class="pre">latencybg</span></code>. The type must always correspond to a pScheduler plug-in since pSConfig has no knowledge of how to interpret tests. The <code class="docutils literal"><span class="pre">latencybg</span></code> type creates a test that continuously runs latency measurements. We have given it the following parameters in the <code class="docutils literal"><span class="pre">spec</span></code>:</p>
+<p>Our first test, named <code class="docutils literal notranslate"><span class="pre">latency_test</span></code>, defines a test of type <code class="docutils literal notranslate"><span class="pre">latencybg</span></code>. The type must always correspond to a pScheduler plug-in since pSConfig has no knowledge of how to interpret tests. The <code class="docutils literal notranslate"><span class="pre">latencybg</span></code> type creates a test that continuously runs latency measurements. We have given it the following parameters in the <code class="docutils literal notranslate"><span class="pre">spec</span></code>:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">source</span></code> is a hostname or IP indicating the <em>sender</em> of data in the test. We set it to the special template variable <code class="docutils literal"><span class="pre">{%</span> <span class="pre">address[0]</span> <span class="pre">%}</span></code>. This variable means take the <code class="docutils literal"><span class="pre">address</span></code> property of the <em>first address</em> object in the pair generated by the parent task&#8217;s group. Since the <code class="docutils literal"><span class="pre">address</span></code> property must be a hostname or IP by definition, using this template variable also meets the requirements of <code class="docutils literal"><span class="pre">source</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">dest</span></code> is a hostname or IP indicating the <em>receiver</em> of data in the test. We set it to the special template variable <code class="docutils literal"><span class="pre">{%</span> <span class="pre">address[1]</span> <span class="pre">%}</span></code>. This variable means take the <code class="docutils literal"><span class="pre">address</span></code> property of the <em>second address</em> object in the pair generated by the parent task&#8217;s group. Since the <code class="docutils literal"><span class="pre">address</span></code> property must be a hostname or IP by definition, using this template variable also meets the requirements of <code class="docutils literal"><span class="pre">dest</span></code>.</li>
-<li>The <code class="docutils literal"><span class="pre">packet-interval</span></code> is the time in seconds in between sending individual packets. A value of <code class="docutils literal"><span class="pre">0.1</span></code> indicates to send 10 packets per second.</li>
-<li>The <code class="docutils literal"><span class="pre">packet-count</span></code> is the number of packets to send before reporting a result. A value of <code class="docutils literal"><span class="pre">600</span></code> indicates to send 600 packets before generating a summary and reporting a result. Combined with our <code class="docutils literal"><span class="pre">packet-interval</span></code> and the fact that this type of test runs continuously, there will be a result reported every 60 seconds.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code> is a hostname or IP indicating the <em>sender</em> of data in the test. We set it to the special template variable <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">address[0]</span> <span class="pre">%}</span></code>. This variable means take the <code class="docutils literal notranslate"><span class="pre">address</span></code> property of the <em>first address</em> object in the pair generated by the parent task’s group. Since the <code class="docutils literal notranslate"><span class="pre">address</span></code> property must be a hostname or IP by definition, using this template variable also meets the requirements of <code class="docutils literal notranslate"><span class="pre">source</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dest</span></code> is a hostname or IP indicating the <em>receiver</em> of data in the test. We set it to the special template variable <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">address[1]</span> <span class="pre">%}</span></code>. This variable means take the <code class="docutils literal notranslate"><span class="pre">address</span></code> property of the <em>second address</em> object in the pair generated by the parent task’s group. Since the <code class="docutils literal notranslate"><span class="pre">address</span></code> property must be a hostname or IP by definition, using this template variable also meets the requirements of <code class="docutils literal notranslate"><span class="pre">dest</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">packet-interval</span></code> is the time in seconds in between sending individual packets. A value of <code class="docutils literal notranslate"><span class="pre">0.1</span></code> indicates to send 10 packets per second.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">packet-count</span></code> is the number of packets to send before reporting a result. A value of <code class="docutils literal notranslate"><span class="pre">600</span></code> indicates to send 600 packets before generating a summary and reporting a result. Combined with our <code class="docutils literal notranslate"><span class="pre">packet-interval</span></code> and the fact that this type of test runs continuously, there will be a result reported every 60 seconds.</p></li>
 </ul>
-<p>The second test, named <cite>throughput_test</cite>, defines a test of type <code class="docutils literal"><span class="pre">throughput</span></code>. This creates a test that periodically runs a measurement of network throughput. Our <code class="docutils literal"><span class="pre">spec</span></code> defines the following:</p>
+<p>The second test, named <cite>throughput_test</cite>, defines a test of type <code class="docutils literal notranslate"><span class="pre">throughput</span></code>. This creates a test that periodically runs a measurement of network throughput. Our <code class="docutils literal notranslate"><span class="pre">spec</span></code> defines the following:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">source</span></code> is a hostname or IP indicating the <em>sender</em> of data in the test. Just as in our <code class="docutils literal"><span class="pre">latencybg</span></code> test we set the value to the template variable <code class="docutils literal"><span class="pre">{%</span> <span class="pre">address[0]</span> <span class="pre">%}</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">dest</span></code> is a hostname or IP indicating the <em>receiver</em> of data in the test. Again, just as in our <code class="docutils literal"><span class="pre">latencybg</span></code> test we set the value to the template variable <code class="docutils literal"><span class="pre">{%</span> <span class="pre">address[1]</span> <span class="pre">%}</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">duration</span></code> indicates the length of time to run the test as an ISO8601 duration. In our example the test will run for 30 seconds.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code> is a hostname or IP indicating the <em>sender</em> of data in the test. Just as in our <code class="docutils literal notranslate"><span class="pre">latencybg</span></code> test we set the value to the template variable <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">address[0]</span> <span class="pre">%}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dest</span></code> is a hostname or IP indicating the <em>receiver</em> of data in the test. Again, just as in our <code class="docutils literal notranslate"><span class="pre">latencybg</span></code> test we set the value to the template variable <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">address[1]</span> <span class="pre">%}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">duration</span></code> indicates the length of time to run the test as an ISO8601 duration. In our example the test will run for 30 seconds.</p></li>
 </ul>
 </div>
 <div class="section" id="psconfig-templates-intro-example-archives">
-<span id="id8"></span><h3><code class="docutils literal"><span class="pre">archives</span></code><a class="headerlink" href="#psconfig-templates-intro-example-archives" title="Permalink to this headline">¶</a></h3>
-<p>We have a single host dedicated to archiving the results from all the others. It is defined in the following <code class="docutils literal"><span class="pre">archives</span></code> section:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;archives&quot;: {
-   &quot;esmond_archive&quot;: {
-        &quot;archiver&quot;: &quot;esmond&quot;,
-        &quot;data&quot;: {
-            &quot;url&quot;: &quot;https://esmond.archive.perfsonar.net/esmond/perfsonar/archive&quot;,
-            &quot;measurement-agent&quot;: &quot;{% scheduled_by_address %}&quot;
-        }
-    }
-}
+<span id="id8"></span><h3><code class="docutils literal notranslate"><span class="pre">archives</span></code><a class="headerlink" href="#psconfig-templates-intro-example-archives" title="Permalink to this headline">¶</a></h3>
+<p>We have a single host dedicated to archiving the results from all the others. It is defined in the following <code class="docutils literal notranslate"><span class="pre">archives</span></code> section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;esmond_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://esmond.archive.perfsonar.net/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>As stated before, it is running esmond, so we use the <code class="docutils literal"><span class="pre">archiver</span></code> of type <code class="docutils literal"><span class="pre">esmond</span></code>. For the <code class="docutils literal"><span class="pre">data</span></code> section we have two fields:</p>
+<p>As stated before, it is running esmond, so we use the <code class="docutils literal notranslate"><span class="pre">archiver</span></code> of type <code class="docutils literal notranslate"><span class="pre">esmond</span></code>. For the <code class="docutils literal notranslate"><span class="pre">data</span></code> section we have two fields:</p>
 <ul class="simple">
-<li>The <code class="docutils literal"><span class="pre">url</span></code> is a fixed URL pointing at <em>esmond.archive.perfsonar.net</em> as listed in our diagram. Since all the measurements will get registered to the same place, no template variables are needed for the <code class="docutils literal"><span class="pre">url</span></code>.</li>
-<li>The <code class="docutils literal"><span class="pre">measurement-agent</span></code> is a field esmond uses to keep track of the host that requested the original measurement. Here we can use the <code class="docutils literal"><span class="pre">{%</span> <span class="pre">scheduled_by_address</span> <span class="pre">%}</span></code> template variable to have the agent automatically fill-in the value since it will depend on where the agent is running that creates the task.</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">url</span></code> is a fixed URL pointing at <em>esmond.archive.perfsonar.net</em> as listed in our diagram. Since all the measurements will get registered to the same place, no template variables are needed for the <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">measurement-agent</span></code> is a field esmond uses to keep track of the host that requested the original measurement. Here we can use the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">scheduled_by_address</span> <span class="pre">%}</span></code> template variable to have the agent automatically fill-in the value since it will depend on where the agent is running that creates the task.</p></li>
 </ul>
 </div>
 <div class="section" id="psconfig-templates-intro-example-schedules">
-<span id="id9"></span><h3><code class="docutils literal"><span class="pre">schedules</span></code><a class="headerlink" href="#psconfig-templates-intro-example-schedules" title="Permalink to this headline">¶</a></h3>
+<span id="id9"></span><h3><code class="docutils literal notranslate"><span class="pre">schedules</span></code><a class="headerlink" href="#psconfig-templates-intro-example-schedules" title="Permalink to this headline">¶</a></h3>
 <p>Our throughput test will need a schedule so we create one below that will randomly run the test every 4-8 hours:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;schedules&quot;: {
-   &quot;every_4_hours&quot;: {
-        &quot;repeat&quot;: &quot;PT4H&quot;,
-        &quot;slip&quot;: &quot;PT4H&quot;,
-        &quot;sliprand&quot;: true
-    }
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;schedules&quot;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;every_4_hours&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span> <span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;slip&quot;</span><span class="p">:</span> <span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sliprand&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal"><span class="pre">latencybg</span></code> tests run continuously, so they do not need an explicit schedule.</p>
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">latencybg</span></code> tests run continuously, so they do not need an explicit schedule.</p>
 </div>
 </div>
 <div class="section" id="psconfig-templates-intro-example-tasks">
-<span id="id10"></span><h3><code class="docutils literal"><span class="pre">tasks</span></code><a class="headerlink" href="#psconfig-templates-intro-example-tasks" title="Permalink to this headline">¶</a></h3>
+<span id="id10"></span><h3><code class="docutils literal notranslate"><span class="pre">tasks</span></code><a class="headerlink" href="#psconfig-templates-intro-example-tasks" title="Permalink to this headline">¶</a></h3>
 <p>Now that all our components have been created, we can finally create our task definitions:</p>
-<div class="highlight-python"><div class="highlight"><pre>&quot;tasks&quot;: {
-    &quot;latency_task&quot;: {
-        &quot;group&quot;: &quot;latency_group&quot;,
-        &quot;test&quot;: &quot;latency_test&quot;,
-        &quot;archives&quot;: [&quot;esmond_archive&quot;]
-    },
-    &quot;throughput_task&quot;: {
-        &quot;group&quot;: &quot;throughput_group&quot;,
-        &quot;test&quot;: &quot;throughput_test&quot;,
-        &quot;archives&quot;: [&quot;esmond_archive&quot;],
-        &quot;schedule&quot;: &quot;every_4_hours&quot;
-    }
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;latency_task&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;latency_group&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;latency_test&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;throughput_task&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;every_4_hours&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>As expected there are two tasks: one for latency measurements and another for throughput measurements. Notice that <code class="docutils literal"><span class="pre">latency_task</span></code> does not reference a schedule whereas <code class="docutils literal"><span class="pre">throughput_task</span></code> does. This is because <code class="docutils literal"><span class="pre">latency_task</span></code> runs continuously whereas <code class="docutils literal"><span class="pre">throughput_task</span></code> is on a periodic schedule. Beyond that, the task references the other components by name. With this final piece in place, we now have a complete template that describes our originally stated task topology.</p>
+<p>As expected there are two tasks: one for latency measurements and another for throughput measurements. Notice that <code class="docutils literal notranslate"><span class="pre">latency_task</span></code> does not reference a schedule whereas <code class="docutils literal notranslate"><span class="pre">throughput_task</span></code> does. This is because <code class="docutils literal notranslate"><span class="pre">latency_task</span></code> runs continuously whereas <code class="docutils literal notranslate"><span class="pre">throughput_task</span></code> is on a periodic schedule. Beyond that, the task references the other components by name. With this final piece in place, we now have a complete template that describes our originally stated task topology.</p>
 </div>
 <div class="section" id="psconfig-templates-intro-conclusion">
 <span id="id11"></span><h3>Putting it all together<a class="headerlink" href="#psconfig-templates-intro-conclusion" title="Permalink to this headline">¶</a></h3>
-<p>You can download a full example of the JSON file described in this section <a class="reference download internal" href="_downloads/psconfig_templates_intro-network1.json"><code class="xref download docutils literal"><span class="pre">here</span></code></a>.</p>
-<p>For more example templates see the directory <code class="docutils literal"><span class="pre">/usr/share/doc/perfsonar/psconfig</span></code> on any host with a pSConfig package installed. In particular see <code class="docutils literal"><span class="pre">/usr/share/doc/perfsonar/psconfig/skeleton.json</span></code> for a good starting point of building your own template.</p>
+<p>You can download a full example of the JSON file described in this section <a class="reference download internal" download="" href="_downloads/8869a9a155c5a08b2aa00e6bd4ab57cd/psconfig_templates_intro-network.json"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>.</p>
+<p>For more example templates see the directory <code class="docutils literal notranslate"><span class="pre">/usr/share/doc/perfsonar/psconfig</span></code> on any host with a pSConfig package installed. In particular see <code class="docutils literal notranslate"><span class="pre">/usr/share/doc/perfsonar/psconfig/skeleton.json</span></code> for a good starting point of building your own template.</p>
 </div>
 </div>
 <div class="section" id="further-reading">
 <h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json">pSConfig Template JSON Schema</a></li>
-<li><a class="reference internal" href="psconfig_templates_vars.html"><em>pSConfig Template Variables</em></a></li>
-<li><a class="reference internal" href="psconfig_templates_advanced.html"><em>Advanced pSConfig Templates</em></a></li>
+<li><p><a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/master/doc/psconfig-schema.json">pSConfig Template JSON Schema</a></p></li>
+<li><p><a class="reference internal" href="psconfig_templates_vars.html"><span class="doc">pSConfig Template Variables</span></a></p></li>
+<li><p><a class="reference internal" href="psconfig_templates_advanced.html"><span class="doc">Advanced pSConfig Templates</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -583,23 +574,23 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#json-basics">JSON Basics</a><ul>
-<li><a class="reference internal" href="#psconfig-templates-intro-json-basics-addresses"><code class="docutils literal"><span class="pre">addresses</span></code></a></li>
-<li><a class="reference internal" href="#psconfig-templates-intro-json-basics-groups"><code class="docutils literal"><span class="pre">groups</span></code></a></li>
-<li><a class="reference internal" href="#tests"><code class="docutils literal"><span class="pre">tests</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-json-basics-addresses"><code class="docutils literal notranslate"><span class="pre">addresses</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-json-basics-groups"><code class="docutils literal notranslate"><span class="pre">groups</span></code></a></li>
+<li><a class="reference internal" href="#tests"><code class="docutils literal notranslate"><span class="pre">tests</span></code></a></li>
 <li><a class="reference internal" href="#template-variables">Template Variables</a></li>
-<li><a class="reference internal" href="#archives"><code class="docutils literal"><span class="pre">archives</span></code></a></li>
-<li><a class="reference internal" href="#schedules"><code class="docutils literal"><span class="pre">schedules</span></code></a></li>
-<li><a class="reference internal" href="#psconfig-templates-intro-json-basics-tasks"><code class="docutils literal"><span class="pre">tasks</span></code></a></li>
+<li><a class="reference internal" href="#archives"><code class="docutils literal notranslate"><span class="pre">archives</span></code></a></li>
+<li><a class="reference internal" href="#schedules"><code class="docutils literal notranslate"><span class="pre">schedules</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-json-basics-tasks"><code class="docutils literal notranslate"><span class="pre">tasks</span></code></a></li>
 <li><a class="reference internal" href="#psconfig-templates-intro-json-basics-conclusion">Putting it all together</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#real-world-example">Real-World Example</a><ul>
-<li><a class="reference internal" href="#psconfig-templates-intro-example-addresses"><code class="docutils literal"><span class="pre">addresses</span></code></a></li>
-<li><a class="reference internal" href="#psconfig-templates-intro-example-groups"><code class="docutils literal"><span class="pre">groups</span></code></a></li>
-<li><a class="reference internal" href="#psconfig-templates-intro-example-tests"><code class="docutils literal"><span class="pre">tests</span></code></a></li>
-<li><a class="reference internal" href="#psconfig-templates-intro-example-archives"><code class="docutils literal"><span class="pre">archives</span></code></a></li>
-<li><a class="reference internal" href="#psconfig-templates-intro-example-schedules"><code class="docutils literal"><span class="pre">schedules</span></code></a></li>
-<li><a class="reference internal" href="#psconfig-templates-intro-example-tasks"><code class="docutils literal"><span class="pre">tasks</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-example-addresses"><code class="docutils literal notranslate"><span class="pre">addresses</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-example-groups"><code class="docutils literal notranslate"><span class="pre">groups</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-example-tests"><code class="docutils literal notranslate"><span class="pre">tests</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-example-archives"><code class="docutils literal notranslate"><span class="pre">archives</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-example-schedules"><code class="docutils literal notranslate"><span class="pre">schedules</span></code></a></li>
+<li><a class="reference internal" href="#psconfig-templates-intro-example-tasks"><code class="docutils literal notranslate"><span class="pre">tasks</span></code></a></li>
 <li><a class="reference internal" href="#psconfig-templates-intro-conclusion">Putting it all together</a></li>
 </ul>
 </li>
@@ -639,7 +630,7 @@
         <li class="right" >
           <a href="psconfig_quickstart.html" title="pSConfig Quickstart Guide"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -680,8 +671,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2020, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
