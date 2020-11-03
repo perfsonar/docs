@@ -16,7 +16,7 @@ if [ -n "$GIT_NAME" ]; then
   git config --global user.name "$GIT_NAME"
 fi
 
-GIT_URL=`git remote show origin | awk '/Push  URL/ { print $NF }'`
+GIT_URL=`git config --get remote.origin.url`
 DEPLOY_DIR=/tmp/deploy.$$
 mkdir ${DEPLOY_DIR}
 (cd ${DEPLOY_DIR} ; \

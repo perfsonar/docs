@@ -2,7 +2,7 @@
 Bundle Installation on Debian
 ***********************************
 
-perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.2 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
+perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.3 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
 * Debian 9 Stretch
 * Ubuntu 16 Xenial Xerus
@@ -239,26 +239,26 @@ After installing the perfsonar-toolkit bundle, you can refer to the general perf
 
 Keeping 4.1.x on Debian 8 and Ubuntu 14
 =======================================
-If you're running Debian 8 or Ubuntu 14, you need to know that perfSONAR 4.2 is not supported on these OS.  We recommend that you either do a fresh installation of perfSONAR on a supported OS (Debian 9 or Ubuntu 16 or 18) or plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2 to happen later. In all cases, you should follow the instructions bellow to prevent perfSONAR to automatically upgrade to version 4.2 once we release it.
+If you're running Debian 8 or Ubuntu 14, you need to know that perfSONAR 4.3 is not supported on these OS.  We recommend that you either do a fresh installation of perfSONAR on a supported OS (Debian 9 or Ubuntu 16 or 18) or plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.3 to happen later. In all cases, you should follow the instructions bellow to prevent perfSONAR to automatically upgrade to version 4.3 once we release it.
 
 You nedd to replace the ``perfsonar-release`` repository with a plain ``perfsonar-4.1`` repository entry.  This is done in the ``/etc/apt/sources.list.d/perfsonar-release.list`` file, where you just replace **perfsonar-release** with **perfsonar-4.1** in the ``deb`` and ``deb-src`` lines.  Alternatively, you can delete the ``perfsonar-release.list`` file and replace it with the one coming from http://downloads.perfsonar.net/debian/perfsonar-4.1.list  Then run ``apt-get update``.
 
-From this moment, you'll be only receiving the updates to the 4.1.x release branch (if there are any) and nothing else.  Then plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.2. as described bellow.
+From this moment, you'll be only receiving the updates to the 4.1.x release branch (if there are any) and nothing else.  Then plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.3. as described bellow.
 
-Upgrading from 4.1.x
-====================
-If you had installed a perfSONAR 4.1.x bundle and you now want to upgrade to perfSONAR 4.2, you'll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Ubuntu 16 and Ubuntu 18.  For Debian 8 and Ubuntu 14, you should first lock your system on 4.1.x, then upgrade the OS and finally perfSONAR (as described above).
+Upgrading from 4.2.x (or 4.1.x)
+===============================
+If you had installed a perfSONAR 4.2.x (4.1.x) bundle and you now want to upgrade to perfSONAR 4.3, you'll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Ubuntu 16 and Ubuntu 18.  For Debian 8 and Ubuntu 14, you should first lock your system on 4.1.x, then upgrade the OS and finally perfSONAR (as described above).
 
 Upgrade the perfSONAR installation
 ----------------------------------
-If you have auto-update enabled and already using the perfsonar-release.list APT source file (as was instructed when install 4.1), you should receive the 4.2 upgrade automatically.
+If you have auto-update enabled and already using the perfsonar-release.list APT source file (as was instructed when installing 4.2 or 4.1), you should receive the 4.3 upgrade automatically. However, because of some dependency changes introduces by the move to Python3, the full upgrade need to be done manually.
 
-If you don't use the auto-update feature, to upgrade your perfsonar installation, you just need to run::
+If you use or don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
 
    apt-get update
-   apt-get upgrade
+   apt-get dist-upgrade
 
-The measurements and the measurement archives that you already have defined in your 4.1.x installation will be migrated to the 4.1 tools automatically.
+The measurements and the measurement archives that you already have defined in your 4.2.x (or 4.1.x) installation will be migrated to the 4.3 toolkit automatically.
 
 Upgrade to another bundle
 -------------------------
