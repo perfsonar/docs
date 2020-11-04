@@ -32,7 +32,7 @@ The process configures yum to point at the necessary repositories to get package
 
 #. Install the perfSONAR-repo RPM::
 
-    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-10-1.noarch.rpm
+    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.10-1.noarch.rpm
 
 #. Refresh yum's cache so it detects the new RPMS::
 
