@@ -251,12 +251,14 @@ If you had installed a perfSONAR 4.2.x (4.1.x) bundle and you now want to upgrad
 
 Upgrade the perfSONAR installation
 ----------------------------------
-If you have auto-update enabled and already using the perfsonar-release.list APT source file (as was instructed when installing 4.2 or 4.1), you should receive the 4.3 upgrade automatically. However, because of some dependency changes introduces by the move to Python3, the full upgrade need to be done manually.
+If you have auto-update enabled and already using the perfsonar-release.list APT source file (as was instructed when installing 4.2 or 4.1), you should receive the 4.3 upgrade automatically. However, because of some dependency changes introduced by the move to Python3, the full upgrade need to be done manually.
 
 If you use or don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
 
    apt-get update
    apt-get dist-upgrade
+
+You might be prompted by ``apt`` or ``apt-get`` to accept the change of Version and Codename for the perfsonar-release repository, changing from 4.2 to 4.3. You need to approve this change before being able to move on to the ``dist-upgrade`` command.
 
 The measurements and the measurement archives that you already have defined in your 4.2.x (or 4.1.x) installation will be migrated to the 4.3 toolkit automatically.
 
