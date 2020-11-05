@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Customizing the MaDDash Web Interface &#8212; perfSONAR Toolkit 4.2.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MaDDash Administrator Web Interface" href="maddash_admin_ui.html" />
+    <link rel="prev" title="Running and Managing the MaDDash Server" href="maddash_running.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maddash_admin_ui.html" title="MaDDash Administrator Web Interface"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="maddash_running.html" title="Running and Managing the MaDDash Server"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="customizing-the-maddash-web-interface">
+<h1>Customizing the MaDDash Web Interface<a class="headerlink" href="#customizing-the-maddash-web-interface" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="web-server">
+<h2>Web Server<a class="headerlink" href="#web-server" title="Permalink to this headline">¶</a></h2>
+<p>The maddash-webui is a web application that runs under Apache. The web scripts and resources are installed in <em>/usr/lib/maddash/maddash-webui</em>. In addition, an Apache configuration file is installed at <em>/etc/httpd/conf.d/apache-maddash.conf</em> that sets-up the <em>/maddash-webui</em> URL. It also creates a reverse proxy for request to the URL <em>/maddash</em> to localhost port 8881. If you modify the server port for maddash, you will also need to update this configuration.</p>
+</div>
+<div class="section" id="visual-customizations">
+<span id="config-webui-vizcustom"></span><h2>Visual Customizations<a class="headerlink" href="#visual-customizations" title="Permalink to this headline">¶</a></h2>
+<p>The interface provides some customization options in the JSON config file <em>/etc/maddash/maddash-webui/config.json</em>. It provides the following options:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>title</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The title displayed at the very top of the web page</p></td>
+</tr>
+<tr class="row-odd"><td><p>defaultDashboard</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The name of the default dashboard to display when someone visits /maddash-webui. It MUST match the name of a dashboard defined in your maddash-server.yaml file.</p></td>
+</tr>
+<tr class="row-even"><td><p>colors</p></td>
+<td><p>JSON object</p></td>
+<td><p>No</p></td>
+<td><p>The default color profile for grids. See <a class="reference internal" href="#config-webui-vizcustom-colors"><span class="std std-ref">Customizing Dashboard Colors</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>alternateColors</p></td>
+<td><p>JSON object array</p></td>
+<td><p>No</p></td>
+<td><p>A list of color profile objects describing alternate color options that are seletcable under the <em>Settings &gt; Colors</em> menu. See <a class="reference internal" href="#config-webui-vizcustom-colors"><span class="std std-ref">Customizing Dashboard Colors</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>enableAdminUI</p></td>
+<td><p>Boolean</p></td>
+<td><p>No</p></td>
+<td><p>A ‘true’ or ‘false’ value indicating you want <em>Server Settings…</em> to appear in the <em>Settings</em> menu of the web interface. Note this does NOT disable direct access to the administrator UI, just removes it from the menu.</p></td>
+</tr>
+<tr class="row-odd"><td><p>addNodeURL</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>A URL where users may find more information about adding a node to your dashboard(s). If populated an extra item will be added to the menu bar displayed for users.</p></td>
+</tr>
+<tr class="row-even"><td><p>externalLinksMenu</p></td>
+<td><p>JSON object</p></td>
+<td><p>No</p></td>
+<td><p>See <a class="reference internal" href="#config-webui-vizcustom-extlinks"><span class="std std-ref">Adding a Custom List of External Links</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>privacyPolicyLink</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>Sets the URL used in the “Privacy Policy” link at the bottom of each page. Default is the perfSONAR project privacy policy.</p></td>
+</tr>
+<tr class="row-even"><td><p>grids</p></td>
+<td><p>JSON object</p></td>
+<td><p>No</p></td>
+<td><p>Custom layout features for individual grids. See <a class="reference internal" href="#grids-props"><span class="std std-ref">grids properties</span></a> section.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="customizing-dashboard-colors">
+<span id="config-webui-vizcustom-colors"></span><h3>Customizing Dashboard Colors<a class="headerlink" href="#customizing-dashboard-colors" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="customizing-the-default-color-profile">
+<h4>Customizing the Default Color Profile<a class="headerlink" href="#customizing-the-default-color-profile" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Color customization was added in version 1.2 of MaDDash and not supported in previous versions.</p>
+</div>
+<p>You may customize the colors used by the dashboards for each check state using the <em>colors</em> option. This option takes the form of an object consisting of key/value pairs. The key is the state value and the value is the color to be displayed for that state value.  See <a class="reference internal" href="maddash_api_grids.html#status-codes"><span class="std std-ref">Status-Codes</span></a> for a complete listing of status codes and their meanings.  The value is the color as a CSS color name (e.g. black) or hexadecimal (e.g. #000000). For example, the default value looks like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;#009E73&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;#F0E442&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;#CC79A7&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;#E69F00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;#56B4E9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you wanted to change everything in the UNKNOWN state to be shade of gray instead of orange you could provide something like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;#009E73&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;#F0E442&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;#CC79A7&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;#A2A2A2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;#56B4E9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It should be noted you must define states 0-5 every time you provide the colors. It is not enough to just define the subset you want to change. In addition, some checks may have custom states greater than 5. You may optionally include any states greater than five  in the configuration, but 0-5 are always required. See documentation for a specific check if you are unsure if it has any custom states.</p>
+</div>
+</div>
+<div class="section" id="customizing-user-selectable-color-profiles">
+<h4>Customizing User Selectable Color Profiles<a class="headerlink" href="#customizing-user-selectable-color-profiles" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>User selectable color profiles were added in version 2.0 of MaDDash and not supported in previous versions.</p>
+</div>
+<p>You can also add a list of color options from which users can select via the <em>Settings &gt; Colors</em> menu. Selecting an item from this menu will set a cookie that saves the choice for future visits as well. An example configuration is show below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;alternateColors&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Classic&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;gray&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Gray Unknown&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;#009E73&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;#F0E442&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;#CC79A7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;#A2A2A2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;#56B4E9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Forest Rain&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;#33a02c&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;#b2df8a&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;#1f78b4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;#a6cee3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Heatwave&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;#fecc5c&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;#fd8d3c&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;#e31a1c&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;#ffffb2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Old Movie&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;#cccccc&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;#969696&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;#525252&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;#f7f7f7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Pastel&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;#8dd3c7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;#ffffb3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;#fb8072&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;#bebada&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sea Breeze&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;#bae4bc&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;#7bccc4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;#2b8cbe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;#f0f9e8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+ <span class="p">]</span>
+</pre></div>
+</div>
+<p>In the example each object has a <em>name</em> and a <em>colors</em> array. The name is how the profile will be displayed in the <em>Colors</em> menu. The colors is exactly the same form as when you define the color set, essentially an object mapping states to CSS color names or hexadecimal colors values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If no alternateColors are listed then the <em>Colors</em> menu will not be displayed under the <em>Settings</em> menu</p>
+</div>
+</div>
+</div>
+<div class="section" id="adding-a-custom-list-of-external-links">
+<span id="config-webui-vizcustom-extlinks"></span><h3>Adding a Custom List of External Links<a class="headerlink" href="#adding-a-custom-list-of-external-links" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The External Links menu was added in version 1.2 of MaDDash and not supported in previous versions.</p>
+</div>
+<p>You may define a list of links that will appear in the top navigation menu of all MaDDash pages. You may add links to anything with a URL including items such as your organization’s homepage, links to other MaDDash instances or other monitoring tools. The block contains a list of objects with a label and a URL. The label is the text displayed in the drop-down menu and the URL is the hyperlink to be opened when that text is clicked. An example of the configuration block is below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;externalLinksMenu&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;menuLinks&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+           <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;ESnet&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.es.net&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+           <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;perfSONAR&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.perfsonar.net&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>By default the dopdown appear as <em>External Links” in the top menu. If you would like to change this you can customize the label with the **menuLabel*</em> property:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;externalLinksMenu&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;menuLabel&quot;</span><span class="p">:</span> <span class="s2">&quot;Other Resources&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;menuLinks&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+           <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;ESnet&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.es.net&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+           <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;perfSONAR&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.perfsonar.net&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A table with a full listing of the properties detailed above can be seen below:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>menuLabel</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>Optional label that appears in menu bar for external links menu. Default is “External Links”</p></td>
+</tr>
+<tr class="row-odd"><td><p>menuLinks</p></td>
+<td><p>Array</p></td>
+<td><p>Yes</p></td>
+<td><p>Array of objects describing each link you want displayed in the menu.</p></td>
+</tr>
+<tr class="row-even"><td><p>menuLinks[n].label</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The text to appear in the menu for an individual link</p></td>
+</tr>
+<tr class="row-odd"><td><p>menuLinks[n].url</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The URL to open when a link is clicked</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="grids-properties">
+<span id="grids-props"></span><h3>grids properties<a class="headerlink" href="#grids-properties" title="Permalink to this headline">¶</a></h3>
+<p>grids are specified as follows (where <em>gridName</em> is the name of the grid you want to adjust):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;grids&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;gridName&quot;</span><span class="p">:{</span>
+            <span class="o">...</span><span class="n">properties</span><span class="o">...</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>The following properties are available:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cellSize</p></td>
+<td><p>Integer</p></td>
+<td><p>No</p></td>
+<td><p>The height and width in pixels of one cell in the grid</p></td>
+</tr>
+<tr class="row-odd"><td><p>cellPadding</p></td>
+<td><p>Integer</p></td>
+<td><p>No</p></td>
+<td><p>The space between cells of the grid</p></td>
+</tr>
+<tr class="row-even"><td><p>textBlockSize</p></td>
+<td><p>Integer</p></td>
+<td><p>No</p></td>
+<td><p><strong>NO LONGER SUPPORTED in 2.0</strong> This option as been obsoleted by auto-sizing and is ignored</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Customizing the MaDDash Web Interface</a><ul>
+<li><a class="reference internal" href="#web-server">Web Server</a></li>
+<li><a class="reference internal" href="#visual-customizations">Visual Customizations</a><ul>
+<li><a class="reference internal" href="#customizing-dashboard-colors">Customizing Dashboard Colors</a><ul>
+<li><a class="reference internal" href="#customizing-the-default-color-profile">Customizing the Default Color Profile</a></li>
+<li><a class="reference internal" href="#customizing-user-selectable-color-profiles">Customizing User Selectable Color Profiles</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-a-custom-list-of-external-links">Adding a Custom List of External Links</a></li>
+<li><a class="reference internal" href="#grids-properties">grids properties</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="maddash_running.html">Previous topic</a>
+                  <ul><li><a href="maddash_running.html" title="previous chapter">Running and Managing the MaDDash Server</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="maddash_admin_ui.html">Next topic</a>
+                      <ul><li><a href="maddash_admin_ui.html" title="next chapter">MaDDash Administrator Web Interface</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maddash_admin_ui.html" title="MaDDash Administrator Web Interface"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="maddash_running.html" title="Running and Managing the MaDDash Server"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

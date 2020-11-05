@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>What is perfSONAR? &#8212; perfSONAR Toolkit 4.2.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="perfSONAR Installation Options" href="install_options.html" />
+    <link rel="prev" title="User Guide for perfSONAR 4.2.4" href="index.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_options.html" title="perfSONAR Installation Options"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="User Guide for perfSONAR 4.2.4"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="what-is-perfsonar">
+<h1>What is perfSONAR?<a class="headerlink" href="#what-is-perfsonar" title="Permalink to this headline">¶</a></h1>
+<p>perfSONAR is a collection of open source software for performing and sharing end-to-end network measurements. It consists of multiple tools brought together in a manner best illustrated in the diagram below:</p>
+<a class="reference external image-reference" href="_images/intro_about-arch.png"><img alt="_images/intro_about-arch.png" src="_images/intro_about-arch.png" /></a>
+<p>Your deployment may install some or all of the components depending on your goals. See <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR Installation Options</span></a> for a discussion on how to choose a deployment strategy that best suits your needs.</p>
+<p>The sections that follow provide a brief in overview of the components at each layer and provide links to more detail where applicable.</p>
+<div class="section" id="tools">
+<span id="intro-about-tools"></span><h2>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h2>
+<p>perfSONAR includes numerous utilities responsible for carrying out the actual network measurements and form the foundational layer of perfSONAR. In general, you will not invoke these tools directly but instead use the <a class="reference internal" href="pscheduler_intro.html"><span class="doc">pscheduler</span></a> command from the <a class="reference internal" href="#intro-about-scheduling"><span class="std std-ref">scheduling</span></a> layer to execute them. The default tools that come with perfSONAR include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="http://github.com/perfsonar/owamp">owamp</a> - A set of tools primarily used for measuring packet loss and one-way delay. It includes the command <em>owping</em> for single short-lived tests and the <em>powstream</em> command for long-running background tests.</p></li>
+<li><p><a class="reference external" href="http://github.com/perfsonar/owamp">twamp</a> - A tool primarily used for measuring packet loss and two-way delay. It has increased accuracy over tools like ping without the same clock synchronization requirements as OWAMP. The client tool is named <em>twping</em> and can be used to run against TWAMP servers. You can use the provided <em>twampd</em> server or many routers also come with vendor implementation of TWAMP servers that can be tested against.</p></li>
+<li><p><a class="reference external" href="http://software.es.net/iperf">iperf3</a> - A rewrite of the classic iperf tool used to measure network throughput and associated metrics.</p></li>
+<li><p><a class="reference external" href="https://sourceforge.net/projects/iperf2/">iperf2</a> - Also known as just <em>iperf</em>, a common tool used to measure network throughput that has been around for many years.</p></li>
+<li><p><a class="reference external" href="https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/nuttcp/">nuttcp</a> - Another throughput tool with some useful options not found in other tools.</p></li>
+<li><p><a class="reference external" href="https://linux.die.net/man/8/traceroute">traceroute</a> - The classic packet trace tool used in identifying  network paths</p></li>
+<li><p><a class="reference external" href="https://linux.die.net/man/8/tracepath">tracepath</a> - Another path trace tool that also measures path MTU</p></li>
+<li><p><a class="reference external" href="http://manpages.ubuntu.com/manpages/trusty/man8/paris-traceroute.8.html">paris-traceroute</a> - A packet trace tool that attempts to identify paths in the presence of load balancers</p></li>
+<li><p><a class="reference external" href="https://linux.die.net/man/8/ping">ping</a> - The classic utility for determining reachability, round-trip time (RTT) and basic packet loss.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="scheduling">
+<span id="intro-about-scheduling"></span><h2>Scheduling<a class="headerlink" href="#scheduling" title="Permalink to this headline">¶</a></h2>
+<p>The scheduling layer consists of a single tool named <a class="reference internal" href="pscheduler_intro.html"><span class="doc">pScheduler</span></a> and is responsible for:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Finding time-slots to run the <a class="reference internal" href="#intro-about-tools"><span class="std std-ref">tools</span></a> while avoiding scheduling conflicts that would negatively impact results</p></li>
+<li><p>Executing the tools and gathering results</p></li>
+<li><p>Sending to the results to the <a class="reference internal" href="#intro-about-archiving"><span class="std std-ref">archiving</span></a> layer (if needed)</p></li>
+</ol>
+</div></blockquote>
+<p>More information on using the pScheduler can be found in the section <a class="reference internal" href="index.html#index-pscheduler"><span class="std std-ref">Running Measurements with pScheduler</span></a>.</p>
+</div>
+<div class="section" id="archiving">
+<span id="intro-about-archiving"></span><h2>Archiving<a class="headerlink" href="#archiving" title="Permalink to this headline">¶</a></h2>
+<p>The archiving layer currently consists a single component named esmond that stores measurement information as time-series data. It is often referred to as the <em>measurement archive (MA)</em> and the term is used interchangeably with <em>esmond</em>. It can be installed on each measurement host if they meet hardware requirements or a single central instance may store results from multiple measurement hosts. For more information on esmond see <a class="reference internal" href="multi_ma_install.html"><span class="doc">Deploying a Central Measurement Archive</span></a>. For information on running a central measurement archive see <a class="reference internal" href="multi_ma_install.html"><span class="doc">Deploying a Central Measurement Archive</span></a>.</p>
+</div>
+<div class="section" id="configuration">
+<span id="intro-about-configuration"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The configuration layer is where desired measurements are defined along with instructions on where to store them. The primary component at this layer is called <em>pSConfig</em>. pSConfig is a <em>template</em> framework for describing and configuring a <em>topology</em> of <em>tasks</em>. If you manage more than one perfSONAR host (or participate in a distributed community of perfSONAR measurement hosts), the following configuration tasks can quickly become unwieldy:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><strong>Scheduling the tasks</strong> you want to run at each location.</p></li>
+<li><p><strong>Maintaining visualization components</strong> to display results of the measurements from multiple hosts</p></li>
+</ol>
+</div></blockquote>
+<p>pSConfig assists with these challenges by providing agents to automate each of the configuration tasks listed above. This includes:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><strong>pSconfig pScheduler Agent</strong> - The agent responsible for reading a template and configuring the tasks defined in pScheduler. See <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">Running the pSConfig pScheduler Agent</span></a> for more details on this agent.</p></li>
+<li><p><strong>pSConfig MaDDash Agent</strong> - The agent responsible for reading a template and configuring MaDDash to display the results of defined tasks in a dashboard. See <a class="reference internal" href="psconfig_maddash_agent.html"><span class="doc">Running the pSConfig MaDDash Agent</span></a> for more details on this agent.</p></li>
+</ol>
+</div></blockquote>
+<p>For complete information on pSConfig start with <a class="reference internal" href="psconfig_intro.html"><span class="doc">What is pSConfig?</span></a> for more details on pSConfig basic concepts/terminology.</p>
+</div>
+<div class="section" id="visualization">
+<span id="intro-about-visualization"></span><h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h2>
+<p>perfSONAR also includes components for visualizing the data. These components provide a window into the data and are the primary way most operators analyze and identify network issues.  The primary tools provided by the main perfSONAR project are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Graphs</strong> - The perfSONAR graphs package provides a set of graphs that display the various measurements over time and provide useful information about the hosts involved. See <a class="reference internal" href="using_graphs.html"><span class="doc">Test Results Graphs</span></a> for more detail.</p></li>
+<li><p><strong>MaDDash</strong> - This component queries the <a class="reference internal" href="#intro-about-archiving"><span class="std std-ref">archiving layer</span></a> periodically for measurements and displays a dashboard indicating the performance of each relative to a set of defined thresholds. It can also send alerts based on patterns in the dashboard. See the <a class="reference internal" href="maddash_intro.html"><span class="doc">MaDDash documentation</span></a> for more details.</p></li>
+</ul>
+</div></blockquote>
+<p>In addition to displaying results, there are also graphical interfaces available for configuring perfSONAR components:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Toolkit GUI</strong> - This ships with every perfSONAR Toolkit and allows defining tasks for the local pSConfig pScheduler agent. See <a class="reference internal" href="manage_regular_tests.html"><span class="doc">Configuring Regular Tests</span></a> for more details.</p></li>
+<li><p><strong>pSConfig Web Admin</strong> - This is a web-based application for defining remote templates that can be read by the pSConfig Agents. See <a class="reference internal" href="pwa.html"><span class="doc">pSConfig Web Admin</span></a> for more details.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="discovery">
+<span id="intro-about-discovery"></span><h2>Discovery<a class="headerlink" href="#discovery" title="Permalink to this headline">¶</a></h2>
+<p>Each perfSONAR node can run a component called the <strong>Lookup Service (LS) Registration Daemon</strong> that registers its existence in a public and/or private <a class="reference external" href="http://software.es.net/simple-lookup-service/">lookup service</a>. The registration daemon gathers information about each perfSONAR layer as well as the host on which it runs. This information is then used in multiple places to help debug problems and find hosts with which to test when building new configurations.</p>
+<p>In general, no configuration is needed of the registration component but for a guide of the options available see <a class="reference internal" href="config_ls_registration.html"><span class="doc">Lookup Service Registration Daemon Configuration File</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">What is perfSONAR?</a><ul>
+<li><a class="reference internal" href="#tools">Tools</a></li>
+<li><a class="reference internal" href="#scheduling">Scheduling</a></li>
+<li><a class="reference internal" href="#archiving">Archiving</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#visualization">Visualization</a></li>
+<li><a class="reference internal" href="#discovery">Discovery</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="index.html">Previous topic</a>
+                  <ul><li><a href="index.html" title="previous chapter">User Guide for perfSONAR 4.2.4</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="install_options.html">Next topic</a>
+                      <ul><li><a href="install_options.html" title="next chapter">perfSONAR Installation Options</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_options.html" title="perfSONAR Installation Options"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="User Guide for perfSONAR 4.2.4"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.2.4 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>
