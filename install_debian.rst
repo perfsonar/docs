@@ -8,6 +8,10 @@ perfSONAR combines various sets of measurement tools and services. For perfSONAR
 * Ubuntu 16 Xenial Xerus
 * Ubuntu 18 Bionic Beaver
 
+Preliminary and partial support of perfSONAR, i.e. only ``perfsonar-testpoint`` bundle at the moment, is also available on the following distributions:
+
+* Debian 10 Buster
+
 Debian meta packages are available to install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
 
@@ -86,6 +90,8 @@ Step 2: Install a Bundle
     apt-get install perfsonar-toolkit
 
   During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
+
+.. note:: On Debian 10, only the ``perfsonar-tools`` and the ``perfsonar-testpoint`` bundles are supported at the moment.
 
 Optional Packages
 ++++++++++++++++++

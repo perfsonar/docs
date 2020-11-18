@@ -53,9 +53,9 @@ copyright = u'%s, perfSONAR Project' % now.year
 # built documents.
 #
 # The short X.Y version.
-version = '4.3.0'
+version = '4.3.2'
 # The full version, including alpha/beta/rc tags.
-release = '4.3.0'
+release = '4.3.2'
 # The date the ISOs were built
 iso_netinstall_build_date = '2020Oct30'
 iso_fullinstall_build_date = '2020Oct30'
