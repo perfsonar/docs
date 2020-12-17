@@ -436,6 +436,122 @@ Example
         }
     }
 
+
+
+.. _pscheduler_ref_archivers-archivers-tcp:
+
+``tcp``
+-------------------------------------------
+
+The ``tcp`` archiver connects to a listening TCP socket, sends the raw
+JSON result and disconnects.
+
+
+.. _pscheduler_ref_archivers-archivers-tcp-data:
+
+Archiver Data
+++++++++++++++++++++++++++++++++++++++++++++++
+
+``host`` - The host where the data should be sent.
+
+``port`` - The TCP port on the host used for the connection.
+
+``bind`` - Optional.  The local address to bind to when connecting to
+``host``.
+
+``ip-version`` - Optional.  The version of the IP protocol to use,
+``4`` or ``6``.  If not provided, the archiver will attempt to guess
+it by querying DNS for an ``AAAA`` or ``A`` record, in that order.
+
+``retry-policy`` - Optional. Describes how to retry failed attempts to
+submit the measurement to esmond before giving up.  The default
+behavior is to try once and then give up.
+
+
+.. _pscheduler_ref_archivers-archivers-tcp-example:
+
+Example
+++++++++++++++++++++++++++++++++++++++++++++++
+::
+  
+    {
+        "archiver": "tcp",
+        "data": {
+            "host": "sockets.example.net",
+            "port": 6264
+        }
+    }
+
+.. _pscheduler_ref_archivers-transforms:
+
+.. _pscheduler_ref_archivers-archivers-tcp:
+
+``tcp``
+-------------------------------------------
+
+The ``tcp`` archiver connects to a listening TCP socket, sends the raw
+JSON result and disconnects.
+
+
+.. _pscheduler_ref_archivers-archivers-tcp-data:
+
+Archiver Data
+++++++++++++++++++++++++++++++++++++++++++++++
+
+``host`` - The host 
+
+
+.. _pscheduler_ref_archivers-archivers-tcp-example:
+
+Example
+++++++++++++++++++++++++++++++++++++++++++++++
+::
+  
+    {
+        "archiver": "tcp",
+        "data": {
+            "ident": "mytests",
+            "facility": "local3",
+            "priority": "warning"
+        }
+    }
+
+
+
+.. _pscheduler_ref_archivers-archivers-tcp:
+
+``tcp``
+-------------------------------------------
+
+The ``tcp`` archiver connects to a listening TCP socket, sends the raw
+JSON result and disconnects.
+
+
+.. _pscheduler_ref_archivers-archivers-tcp-data:
+
+Archiver Data
+++++++++++++++++++++++++++++++++++++++++++++++
+
+``host`` - The host 
+
+
+.. _pscheduler_ref_archivers-archivers-tcp-example:
+
+Example
+++++++++++++++++++++++++++++++++++++++++++++++
+::
+  
+    {
+        "archiver": "tcp",
+        "data": {
+            "ident": "mytests",
+            "facility": "local3",
+            "priority": "warning"
+        }
+    }
+
+
+
 .. _pscheduler_ref_archivers-transforms:
 
 Transforms
