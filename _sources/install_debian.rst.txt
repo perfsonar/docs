@@ -261,10 +261,10 @@ If you have auto-update enabled and already using the perfsonar-release.list APT
 
 If you use or don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
 
-   apt-get update
-   apt-get dist-upgrade
+   apt update
+   apt dist-upgrade
 
-You might be prompted by ``apt`` or ``apt-get`` to accept the change of Version and Codename for the perfsonar-release repository, changing from 4.2 to 4.3. You need to approve this change before being able to move on to the ``dist-upgrade`` command.
+You might be prompted by ``apt`` to accept the change of Version and Codename for the perfsonar-release repository, changing from 4.2 to 4.3. You need to approve this change before being able to move on to the ``dist-upgrade`` command.
 
 The measurements and the measurement archives that you already have defined in your 4.2.x (or 4.1.x) installation will be migrated to the 4.3 toolkit automatically.
 
