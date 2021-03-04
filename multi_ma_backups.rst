@@ -237,21 +237,17 @@ Deleting Old Data
 You may want to remove old data over time to conserve disk space or to clear out measurements you no longer want displayed. Currently perfSONAR comes with a script named `clean_esmond_db.sh` that uses esmond's tool named `ps_remove_data.py` capable of deleting data based on age in both in Cassandra and PostgreSQL. This section details usage of that script.
 
 Using `clean_esmond_db.sh`
--------------------------
-`clean_esmond_db.sh` sets the environment and then invokes `ps_remove_data.py` with optional parameters that uses a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The script is installed by default with esmond, used to run a cron job and can be found at:
+--------------------------
+`clean_esmond_db.sh` sets the environment and then invokes `ps_remove_data.py` with optional parameters that uses a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The script is installed by default with esmond, used to run as a cron job, and can be found at:
 
 * /usr/lib/prefsonar/scripts/clean_esmond_db.sh
 
 `ps_remove_data.py` itself is located in */usr/lib/esmond/util/*. This script accepts the following arguments:
 
 * **-c <conf-file>**: Optional parameter to set the location of the config file. Defaults to `/usr/lib/esmond/util/ps_remove_data.conf`. `clean_esmond_db.sh` sets this path to `/etc/perfsonar/toolkit/clean_esmond_db.conf` that contains the default retention policy after installing esmond. If you need to use another path modify it in `clean_esmond_db.sh`.
-* **-s DATESTRING**: Date string with time in past to start looking for expired data. Default
-is current time. e.g. "2017-01-01 00:00:00"
-* **-t SECONDS**: Number of seconds of data to query at a time. Querying the full range causes 
-timeouts. Default is 86400 (1 day).
-* **-m NUMBER**: Number of queries that don't return data before giving up on looking for more.
-If -t is 1 day and this value is 50, that means it will need to say 50 days without data 
-before determining there is nothing left to delete. Default is 50.
+* **-s DATESTRING**: Date string with time in past to start looking for expired data. Default is current time. e.g. "2017-01-01 00:00:00"
+* **-t SECONDS**: Number of seconds of data to query at a time. Querying the full range causes timeouts. Default is 86400 (1 day).
+* **-m NUMBER**: Number of queries that don't return data before giving up on looking for more. If -t is 1 day and this value is 50, that means it will need to say 50 days without data before determining there is nothing left to delete. Default is 50.
 
 The configuration file is in JSON format and defines data retention policies for your data. It allows you to match on three values: 
 
