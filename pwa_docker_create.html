@@ -67,6 +67,37 @@
   <div class="section" id="creating-docker-containers">
 <h1>Creating Docker containers<a class="headerlink" href="#creating-docker-containers" title="Permalink to this headline">¶</a></h1>
 <p><strong>If you are not using Docker, SKIP THIS PAGE</strong></p>
+<div class="section" id="creating-containers-using-docker-compose">
+<h2>Creating containers using <cite>docker-compose</cite><a class="headerlink" href="#creating-containers-using-docker-compose" title="Permalink to this headline">¶</a></h2>
+<p><em>Note</em> make sure you have extracted the sample configs here:</p>
+<p><a class="reference internal" href="pwa_install_docker.html"><span class="doc">Docker Installation</span></a></p>
+<p>Run this script to create your nginx certs, if you don’t already have them:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/etc/pwa/scripts/generate_nginx_cert.sh
+</pre></div>
+</div>
+<p>Download the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file from here:</p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig-web/master/deploy/docker/docker-compose.yml">https://raw.githubusercontent.com/perfsonar/psconfig-web/master/deploy/docker/docker-compose.yml</a></p>
+<p>Bring up the application:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker-compose up -d
+</pre></div>
+</div>
+<p>Make sure the containers are running:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose ps</span>
+
+      Name                      Command               State                             Ports
+------------------------------------------------------------------------------------------------------------------------
+docker_mongo_1        docker-entrypoint.sh mongod      Up      <span class="m">27017</span>/tcp
+docker_nginx_1        /docker-entrypoint.sh ngin ...   Up      <span class="m">0</span>.0.0.0:443-&gt;443/tcp, <span class="m">0</span>.0.0.0:80-&gt;80/tcp,
+                                                               <span class="m">0</span>.0.0.0:9443-&gt;9443/tcp
+docker_pwa-admin1_1   docker-entrypoint.sh /start.sh   Up      <span class="m">80</span>/tcp, <span class="m">8080</span>/tcp
+docker_pwa-pub1_1     node /app/api/pwapub.js          Up      <span class="m">8080</span>/tcp
+docker_sca-auth_1     docker-entrypoint.sh /app/ ...   Up      <span class="m">80</span>/tcp, <span class="m">8080</span>/tcp
+</pre></div>
+</div>
+<p>If not everything is running, try <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">logs</span></code> to troubleshoot.</p>
+<p>Docker Compose documentation can be found here:</p>
+<p><a class="reference external" href="https://docs.docker.com/compose/">https://docs.docker.com/compose/</a></p>
+</div>
 <div class="section" id="creating-containers-using-a-script">
 <h2>Creating containers using a script<a class="headerlink" href="#creating-containers-using-a-script" title="Permalink to this headline">¶</a></h2>
 <p>Now we have all configuration files necessary to start installing PWA services.</p>
@@ -224,6 +255,7 @@ docker rm sca-auth
                 
                 <ul>
 <li><a class="reference internal" href="#">Creating Docker containers</a><ul>
+<li><a class="reference internal" href="#creating-containers-using-docker-compose">Creating containers using <cite>docker-compose</cite></a></li>
 <li><a class="reference internal" href="#creating-containers-using-a-script">Creating containers using a script</a></li>
 <li><a class="reference internal" href="#updating-containers-with-a-script">Updating containers with a script</a></li>
 <li><a class="reference internal" href="#manually-creating-containers">Manually creating containers</a></li>

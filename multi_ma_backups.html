@@ -313,18 +313,21 @@
 </div>
 <div class="section" id="deleting-old-data">
 <span id="multi-ma-backups-delete"></span><h2>Deleting Old Data<a class="headerlink" href="#deleting-old-data" title="Permalink to this headline">¶</a></h2>
-<p>You may want to remove old data over time to conserve disk space or to clear out measurements you no longer want displayed. Currently esmond comes with a tool named <cite>ps_remove_data.py</cite> capable of deleting data based on age in both in Cassandra and PostgreSQL. This section details usage of that tool.</p>
-<div class="section" id="using-ps-remove-data-py">
-<h3>Using <cite>ps_remove_data.py</cite><a class="headerlink" href="#using-ps-remove-data-py" title="Permalink to this headline">¶</a></h3>
-<p><cite>ps_remove_data.py</cite> allows you to specify a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The command is installed by default with esmond and can be found at:</p>
+<p>You may want to remove old data over time to conserve disk space or to clear out measurements you no longer want displayed. Currently perfSONAR comes with a script named <cite>clean_esmond_db.sh</cite> that uses esmond’s tool named <cite>ps_remove_data.py</cite> capable of deleting data based on age in both in Cassandra and PostgreSQL. This section details usage of that script.</p>
+<div class="section" id="using-clean-esmond-db-sh">
+<h3>Using <cite>clean_esmond_db.sh</cite><a class="headerlink" href="#using-clean-esmond-db-sh" title="Permalink to this headline">¶</a></h3>
+<p><cite>clean_esmond_db.sh</cite> sets the environment and then invokes <cite>ps_remove_data.py</cite> with optional parameters that uses a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The script is installed by default with esmond, used to run a cron job and can be found at:</p>
 <ul class="simple">
-<li><p>/usr/lib/esmond/util/ps_remove_data.py</p></li>
+<li><p>/usr/lib/prefsonar/scripts/clean_esmond_db.sh</p></li>
 </ul>
-<p>This script accepts the following arguments:</p>
+<p><cite>ps_remove_data.py</cite> itself is located in <em>/usr/lib/esmond/util/</em>. This script accepts the following arguments:</p>
 <ul class="simple">
-<li><p><strong>-c &lt;conf-file&gt;</strong>: Optional parameter to set the location of the config file. Defaults to <em>./ps_remove_data.conf</em>.</p></li>
+<li><p><strong>-c &lt;conf-file&gt;</strong>: Optional parameter to set the location of the config file. Defaults to <cite>/usr/lib/esmond/util/ps_remove_data.conf</cite>. <cite>clean_esmond_db.sh</cite> sets this path to <cite>/etc/perfsonar/toolkit/clean_esmond_db.conf</cite> that contains the default retention policy after installing esmond. If you need to use another path modify it in <cite>clean_esmond_db.sh</cite>.</p></li>
+<li><p><strong>-s DATESTRING</strong>: Date string with time in past to start looking for expired data. Default is current time. e.g. “2017-01-01 00:00:00”</p></li>
+<li><p><strong>-t SECONDS</strong>: Number of seconds of data to query at a time. Querying the full range causes timeouts. Default is 86400 (1 day).</p></li>
+<li><p><strong>-m NUMBER</strong>: Number of queries that don’t return data before giving up on looking for more. If -t is 1 day and this value is 50, that means it will need to say 50 days without data before determining there is nothing left to delete. Default is 50.</p></li>
 </ul>
-<p>The config file is in JSON format and defines data retention policies for your data. It allows you to match on three values:</p>
+<p>The configuration file is in JSON format and defines data retention policies for your data. It allows you to match on three values:</p>
 <ul class="simple">
 <li><p><strong>event_type</strong> - The type of data for which this policy applies. A valid list can be found in the esmond <a class="reference internal" href="esmond_api_rest.html#psclient-rest-eventtypes"><span class="std std-ref">API documentation</span></a>. You may also pass <code class="docutils literal notranslate"><span class="pre">*</span></code> to match any value.</p></li>
 <li><p><strong>summary_type</strong> - The type of summary to which this policy applies. Valid values are <em>base</em> for unsummarized data and any value from the list found in <cite>this discussion &lt;psclient-rest-basevsumm&gt;</cite>. You may also pass <code class="docutils literal notranslate"><span class="pre">*</span></code> to match any value.</p></li>
@@ -332,7 +335,7 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you are curious about the summary types and summary windows being used, look in the <em>measurement_archive</em> blocks of you /etc/perfsonar/regulartesting.conf files on your testing nodes.</p>
+<p>If you are curious about the summary types and summary windows being used, look for pscheduler archiver reference.</p>
 </div>
 <p>In addition to the matching fields you must also set the following:</p>
 <ul class="simple">
@@ -432,14 +435,19 @@ order of event_type, summary_type and then summary_window. For example, assume a
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>The example above  can also be found in <em>/usr/lib/esmond/util/ps_remove_data.conf</em> of the system where esmond is installed</p>
+<p>The example above can be found in <cite>/usr/lib/esmond/util/ps_remove_data.conf</cite> of the system where esmond is installed</p>
 </div>
 <p>The example contains several policies. The order of the policies is NOT significant. The first policy is a catch-all that removes anything older than 365 days if it does not match any other policies. This policy has a <code class="docutils literal notranslate"><span class="pre">*</span></code> for every value and is the least specific of a match possible. That means if any part of the other policies match, they will override the expiration of this policy. The second policy, matches all 24 hour (86400 seconds) summaries and keeps them for 5 years. Notice that it extends the life of these types of data from the default policy. The remaining policies match a specific event type and a summary window of 0 (which means unsummarized data) and expires it after 180 days (roughly 6 months). The event types all match that registered by the OWAMP tool, which writes new data every minute. Given the amount of data, this policy deletes it sooner that it would other (presumably less frequently written) data.</p>
 <blockquote>
 <div><p><em>CentOS/RedHat:</em>:</p>
-<p>You can run the tool as follows (replacing -c with your policy file):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span> <span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
-<span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">c</span> <span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">conf</span>
+<p>It’s best to run <cite>clean_esmond_db.sh</cite> with it’s default settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">prefsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">clean_esmond_db</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>If you want to run the removal script with another policy file then enter the following commands (-c points to your specific policy file):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
+<span class="o">.</span> <span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">python</span> <span class="o">./</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">conf</span>
 </pre></div>
 </div>
 <p><em>Debian/Ubuntu:</em>:</p>
@@ -450,10 +458,9 @@ order of event_type, summary_type and then summary_window. For example, assume a
 </pre></div>
 </div>
 </div></blockquote>
-<p>You may consider adding the commands above to a shell script called by cron to regularly clean out the old data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If running your measurement archive on a perfSONAR Toolkit then a cronjob with a default policy will be setup and run nightly automatically. If you are running a standalone MA, you need to do this yourself.</p>
+<p>If running your measurement archive on a perfSONAR Toolkit or <em>core</em> or <em>centralmanagement</em> bundles then a cronjob under <em>/etc/cron.d/</em> with a default policy will be setup and run nightly automatically.</p>
 </div>
 <p>Finally, though this tool can be useful it has several limitations that are important to be aware of:</p>
 <ul class="simple">
@@ -498,7 +505,7 @@ order of event_type, summary_type and then summary_window. For example, assume a
 </ul>
 </li>
 <li><a class="reference internal" href="#deleting-old-data">Deleting Old Data</a><ul>
-<li><a class="reference internal" href="#using-ps-remove-data-py">Using <cite>ps_remove_data.py</cite></a></li>
+<li><a class="reference internal" href="#using-clean-esmond-db-sh">Using <cite>clean_esmond_db.sh</cite></a></li>
 </ul>
 </li>
 </ul>

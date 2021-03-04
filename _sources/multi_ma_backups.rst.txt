@@ -234,25 +234,28 @@ You can then restore the data as follows:
 Deleting Old Data
 =================
 
-You may want to remove old data over time to conserve disk space or to clear out measurements you no longer want displayed. Currently esmond comes with a tool named `ps_remove_data.py` capable of deleting data based on age in both in Cassandra and PostgreSQL. This section details usage of that tool. 
+You may want to remove old data over time to conserve disk space or to clear out measurements you no longer want displayed. Currently perfSONAR comes with a script named `clean_esmond_db.sh` that uses esmond's tool named `ps_remove_data.py` capable of deleting data based on age in both in Cassandra and PostgreSQL. This section details usage of that script.
 
-Using `ps_remove_data.py`
--------------------------
-`ps_remove_data.py` allows you to specify a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The command is installed by default with esmond and can be found at:
+Using `clean_esmond_db.sh`
+--------------------------
+`clean_esmond_db.sh` sets the environment and then invokes `ps_remove_data.py` with optional parameters that uses a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The script is installed by default with esmond, used to run a cron job and can be found at:
 
-* /usr/lib/esmond/util/ps_remove_data.py
+* /usr/lib/prefsonar/scripts/clean_esmond_db.sh
 
-This script accepts the following arguments:
+`ps_remove_data.py` itself is located in */usr/lib/esmond/util/*. This script accepts the following arguments:
 
-* **-c <conf-file>**: Optional parameter to set the location of the config file. Defaults to *./ps_remove_data.conf*.
+* **-c <conf-file>**: Optional parameter to set the location of the config file. Defaults to `/usr/lib/esmond/util/ps_remove_data.conf`. `clean_esmond_db.sh` sets this path to `/etc/perfsonar/toolkit/clean_esmond_db.conf` that contains the default retention policy after installing esmond. If you need to use another path modify it in `clean_esmond_db.sh`.
+* **-s DATESTRING**: Date string with time in past to start looking for expired data. Default is current time. e.g. "2017-01-01 00:00:00"
+* **-t SECONDS**: Number of seconds of data to query at a time. Querying the full range causes timeouts. Default is 86400 (1 day).
+* **-m NUMBER**: Number of queries that don't return data before giving up on looking for more. If -t is 1 day and this value is 50, that means it will need to say 50 days without data before determining there is nothing left to delete. Default is 50.
 
-The config file is in JSON format and defines data retention policies for your data. It allows you to match on three values: 
+The configuration file is in JSON format and defines data retention policies for your data. It allows you to match on three values: 
 
 * **event_type** - The type of data for which this policy applies. A valid list can be found in the esmond :ref:`API documentation <psclient-rest-eventtypes>`. You may also pass ``*`` to match any value.
 * **summary_type** - The type of summary to which this policy applies. Valid values are *base* for unsummarized data and any value from the list found in `this discussion <psclient-rest-basevsumm>`. You may also pass ``*`` to match any value.
 * **summary_window** - An integer indicating the summary window to match (in seconds). A value of 0 means unsummarized (a.k.a base) data. You may also pass ``*`` to match any value. 
 
-.. note:: If you are curious about the summary types and summary windows being used, look in the *measurement_archive* blocks of you /etc/perfsonar/regulartesting.conf files on your testing nodes.
+.. note:: If you are curious about the summary types and summary windows being used, look for pscheduler archiver reference.
 
 In addition to the matching fields you must also set the following:
 
@@ -351,16 +354,21 @@ A full example of a configuration file can be found below::
     ]
     }
 
-.. seealso:: The example above  can also be found in */usr/lib/esmond/util/ps_remove_data.conf* of the system where esmond is installed
+.. seealso:: The example above can be found in `/usr/lib/esmond/util/ps_remove_data.conf` of the system where esmond is installed
 
 The example contains several policies. The order of the policies is NOT significant. The first policy is a catch-all that removes anything older than 365 days if it does not match any other policies. This policy has a ``*`` for every value and is the least specific of a match possible. That means if any part of the other policies match, they will override the expiration of this policy. The second policy, matches all 24 hour (86400 seconds) summaries and keeps them for 5 years. Notice that it extends the life of these types of data from the default policy. The remaining policies match a specific event type and a summary window of 0 (which means unsummarized data) and expires it after 180 days (roughly 6 months). The event types all match that registered by the OWAMP tool, which writes new data every minute. Given the amount of data, this policy deletes it sooner that it would other (presumably less frequently written) data. 
 
   *CentOS/RedHat:*:
+  
+  It's best to run `clean_esmond_db.sh` with it's default settings::
+  
+    /usr/lib/prefsonar/scripts/clean_esmond_db.sh
 
-  You can run the tool as follows (replacing -c with your policy file)::
+  If you want to run the removal script with another policy file then enter the following commands (-c points to your specific policy file)::
 
+    cd /usr/lib/esmond
     . bin/activate
-    python /usr/lib/esmond/util/ps_remove_data.py -c usr/lib/esmond/util/ps_remove_data.conf
+    python ./util/ps_remove_data.py -c /usr/lib/esmond/util/ps_remove_data.conf
 
   *Debian/Ubuntu:*::
 
@@ -369,9 +377,7 @@ The example contains several policies. The order of the policies is NOT signific
     export DJANGO_SETTINGS_MODULE=esmond.settings
     python /usr/share/esmond/util/ps_remove_data.py -c /usr/share/esmond/util/ps_remove_data.conf
 
-You may consider adding the commands above to a shell script called by cron to regularly clean out the old data.
-
-.. note:: If running your measurement archive on a perfSONAR Toolkit then a cronjob with a default policy will be setup and run nightly automatically. If you are running a standalone MA, you need to do this yourself. 
+.. note:: If running your measurement archive on a perfSONAR Toolkit or *core* or *centralmanagement* bundles then a cronjob under */etc/cron.d/* with a default policy will be setup and run nightly automatically.
 
 Finally, though this tool can be useful it has several limitations that are important to be aware of:
 

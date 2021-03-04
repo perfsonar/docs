@@ -39,6 +39,7 @@ Installation
    install_centos
    install_debian
    install_docker
+   install_ansible
    install_migrate_centos7
    manage_update
 
