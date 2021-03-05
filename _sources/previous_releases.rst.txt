@@ -10,4 +10,4 @@ This is an archive of documentation for our previous releases of the software. P
 * `3.5.1 </previous_releases/3.5.1>`_
 * `3.4.2 </previous_releases/3.4.2>`_
 
-More historical release notes can be found in our `Project Homepage <https://www.perfsonar.net/release-notes/>`_
+More detailed release notes on perfSONAR software can be found in our `Project Homepage <https://www.perfsonar.net/release-notes/>`_

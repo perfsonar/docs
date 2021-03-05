@@ -328,7 +328,11 @@ As we've seen in the other template sections, it is given a name *colors_archive
         }
     }
 
-We define one schedule named *colors_schedule* which will tell a task using it to run on a random interval between every 1-2 hours. The ``repeat`` property is an ISO8601 duration telling a task that uses it to repeat at least every hour. The ``slip`` says that it can run up to 1 hour later than that (i.e. 2 hours). Finally, ``sliprand`` tells it to randomly choose an interval between those two values for each run. This is commonly done to prevent tests from bunching together at the beginning of a time interval. As stated earlier, you may use more or less options according to the schema, but the combination of these three is a common case. 
+We define one schedule named *colors_schedule* which will tell a task using it to run on a random interval between every 1-2 hours. The ``repeat`` property is an ISO8601 duration telling a task that uses it to repeat at least every hour. The ``slip`` says that it can run up to 1 hour later than that (i.e. 2 hours).
+
+.. note:: When running a `pscheduler` task on the CLI, a default ``slip`` of 5 minutes (``PT5M``) is introduced if not present with the command. This is not the case when defining a schedule through pSconfig template and no slip will be added if there is none in the ``schedules`` object definition.
+
+Finally, ``sliprand`` tells it to randomly choose an interval between those two values for each run. This is commonly done to prevent tests from bunching together at the beginning of a time interval. As stated earlier, you may use more or less options according to the schema, but the combination of these three is a common case. 
 
 .. _psconfig_templates_intro-json_basics-tasks:
 

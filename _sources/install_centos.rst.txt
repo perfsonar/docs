@@ -102,7 +102,7 @@ Step 3: Verify NTP and Tuning Parameters
 
 * **System Tuning**
   
-  It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest.  
+  It is important to make sure that your host is properly tuned for maximum TCP performance on the WAN. You should verify that htcp, not reno, is the default TCP congestion control algorithm, and that the maximum TCP buffers are big enough for your paths of interest. You can also re-run this script any time you need e.g. when host interface speed changes. 
 
   - **Configure perfSONAR sysctl settings**
     
