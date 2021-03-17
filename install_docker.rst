@@ -154,14 +154,14 @@ If you bring the container back-up you should be able to see your pSConfig chang
   # docker-compose exec testpoint psconfig remote list
 
 
-Running the Systemd based image
-===============================
+Running the Systemd Image
+==========================
 
 The container image adopted in the previous steps makes use of `supervisord <http://supervisord.org/>`_ to manage system processes. In addition to that, perfSONAR also provides an image based on `systemd <https://systemd.io/>`_.
 
-As systemd is the system and service manager adopted by most linux distributions, both installation and management of services are done in the same way inside the container as in a bare metal host, which facilitates the container maintenance and automation. Also, in scenarios where the testpoint container is expected to run for long periods without stopping, systemd guarantees better stability.
+As systemd is the system and service manager adopted by most Linux distributions, both installation and management of services are done in the same way inside the container as in a bare metal host. This facilitates the container maintenance and automation. Also, in scenarios where the testpoint container is expected to run for long periods without stopping, systemd guarantees better stability.
 
-On the other hand, to run a docker container with systemd, additional parameters are needed and because of that, a dedicated `docker-compose <https://docs.docker.com/compose/>`_ YAML file was provided to assist in this process.
+On the other hand, to run a Docker container with systemd, additional parameters are needed. Because of that, a dedicated `docker-compose <https://docs.docker.com/compose/>`_ YAML file was provided to assist in this process.
 
 Build the image locally::
 
