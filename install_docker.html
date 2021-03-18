@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Using perfSONAR with Docker &#8212; perfSONAR Toolkit 4.3.3 documentation</title>
+    <title>Using perfSONAR with Docker &#8212; perfSONAR Toolkit 4.3.4 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -51,7 +51,7 @@
         <li class="right" >
           <a href="install_debian.html" title="Bundle Installation on Debian"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -219,6 +219,37 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="running-the-systemd-image">
+<h2>Running the Systemd Image<a class="headerlink" href="#running-the-systemd-image" title="Permalink to this headline">¶</a></h2>
+<p>The container image adopted in the previous steps makes use of <a class="reference external" href="http://supervisord.org/">supervisord</a> to manage system processes. In addition to that, perfSONAR also provides an image based on <a class="reference external" href="https://systemd.io/">systemd</a>.</p>
+<p>As systemd is the system and service manager adopted by most Linux distributions, both installation and management of services are done in the same way inside the container as in a bare metal host. This facilitates the container maintenance and automation. Also, in scenarios where the testpoint container is expected to run for long periods without stopping, systemd guarantees better stability.</p>
+<p>On the other hand, to run a Docker container with systemd, additional parameters are needed. Because of that, a dedicated <a class="reference external" href="https://docs.docker.com/compose/">docker-compose</a> YAML file was provided to assist in this process.</p>
+<p>Build the image locally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml build</span>
+</pre></div>
+</div>
+<p>Start the container in the background:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml up -d</span>
+</pre></div>
+</div>
+<p>Your container is now running. You can enter the container, verify it is working and add a remote pSConfig file that will be persisted in the <cite>./compose/psconfig</cite> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml exec testpoint bash</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># systemctl status</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># pscheduler troubleshoot</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># psconfig remote add URL # replace URL with your pSConfig JSON file URL</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># exit</span>
+</pre></div>
+</div>
+<p>You can stop your container at any time with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml down</span>
+</pre></div>
+</div>
+<p>If you bring the container back-up you should be able to see your pSConfig changes still:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml up -d</span>
+<span class="c1"># docker-compose -f docker-compose.systemd.yml exec testpoint psconfig remote list</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -240,6 +271,7 @@
 <li><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
 <li><a class="reference internal" href="#managing-upgrades">Managing Upgrades</a></li>
 <li><a class="reference internal" href="#running-with-docker-compose">Running with <cite>docker-compose</cite></a></li>
+<li><a class="reference internal" href="#running-the-systemd-image">Running the Systemd Image</a></li>
 </ul>
 </li>
 </ul>
@@ -275,7 +307,7 @@
         <li class="right" >
           <a href="install_debian.html" title="Bundle Installation on Debian"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
