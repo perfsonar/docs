@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Running a pScheduler Server &#8212; perfSONAR Toolkit 4.3.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Batch Processing" href="pscheduler_batch.html" />
+    <link rel="prev" title="Viewing the Schedule" href="pscheduler_client_schedule.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pscheduler_batch.html" title="Batch Processing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_client_schedule.html" title="Viewing the Schedule"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running a pScheduler Server</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="running-a-pscheduler-server">
+<h1>Running a pScheduler Server<a class="headerlink" href="#running-a-pscheduler-server" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The pScheduler server is the component that does the heavy-lifting of scheduling and managing tasks.  It consists of multiple daemon processes and makes extensive use of <a class="reference external" href="https://www.postgresql.org">PostgreSQL</a>. This document describes basic usage of the server.</p>
+</div>
+<div class="section" id="daemons">
+<h2>Daemons<a class="headerlink" href="#daemons" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler consists for four daemon processes that run as separate services. The four services are:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><strong>pscheduler-scheduler</strong> - This process is what puts new runs on the schedule or marks a run as a non-starter if it can not find an available slot.</p></li>
+<li><p><strong>pscheduler-runner</strong> - This process is what executes runs on the schedule using the selected tool</p></li>
+<li><p><strong>pscheduler-archiver</strong> - This process executes archiver plug-ins using the results of runs. Archivers generally send results to long-term storage or to applications for further processing.</p></li>
+<li><p><strong>pscheduler-ticker</strong> - This process handles basic maintenance of pScheduler</p></li>
+</ol>
+</div></blockquote>
+<p>These services can be started/stopped with <code class="docutils literal notranslate"><span class="pre">systemctl</span></code> or the <code class="docutils literal notranslate"><span class="pre">service</span></code> command depending on the operating system. For example:</p>
+<blockquote>
+<div><ul>
+<li><p>Using systemctl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">scheduler</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">runner</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">archiver</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">ticker</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>In addition to these processes, it also requires Apache HTTPD and PostgreSQL daemons to be running. Apache provides the web server where pScheduler accepts REST API requests and PostgreSQL is where the schedule is stored. The name of these processes is dependent on the operating system:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>CentOS (all versions)</strong>: <code class="docutils literal notranslate"><span class="pre">httpd</span></code> and <code class="docutils literal notranslate"><span class="pre">postgresql-9.5</span></code></p></li>
+<li><p><strong>Debian (all versions)</strong>: <code class="docutils literal notranslate"><span class="pre">apache2</span></code> and <code class="docutils literal notranslate"><span class="pre">postgresql</span></code></p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
+<p>By default pScheduler logs to syslog facility <strong>local4</strong>. It sets-up rsyslogd to redirect all logging to the following file:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>/var/log/pscheduler/pscheduler.log</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are using an alternative syslog implementation to rsyslogd then you will need to configure it to redirect local4 manually</p>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler has regular configuration files for configuring various aspects of the server. It also has a file for managing <a class="reference internal" href="pscheduler_intro.html#term-Limits"><span class="xref std std-term">limits</span></a> of the server. For more information on both of these topics, see the pages below:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="config_pscheduler.html"><span class="doc">Configuring pScheduler</span></a></p></li>
+<li><p><a class="reference internal" href="config_pscheduler_limits.html"><span class="doc">Configuring pScheduler Limits</span></a></p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="pausing-and-resuming">
+<h2>Pausing and Resuming<a class="headerlink" href="#pausing-and-resuming" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler can be directed to stop running tasks using the <code class="docutils literal notranslate"><span class="pre">pause</span></code>
+command.  With no arguments, the pause will last indefinitely; with an
+ISO 8601 duration (e.g., <code class="docutils literal notranslate"><span class="pre">PT2H</span></code>), the pause will last for the amount
+of time specified.  Note that any runs in progress when this command
+is executed will be allowed to run to completion.  Runs scheduled
+while the system is paused will fail with a <code class="docutils literal notranslate"><span class="pre">missed</span></code> status.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">resume</span></code> command will start runing tasks with the next one on
+the schedule.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Running a pScheduler Server</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#daemons">Daemons</a></li>
+<li><a class="reference internal" href="#logging">Logging</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#pausing-and-resuming">Pausing and Resuming</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pscheduler_client_schedule.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_client_schedule.html" title="previous chapter">Viewing the Schedule</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pscheduler_batch.html">Next topic</a>
+                      <ul><li><a href="pscheduler_batch.html" title="next chapter">Batch Processing</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pscheduler_batch.html" title="Batch Processing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_client_schedule.html" title="Viewing the Schedule"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running a pScheduler Server</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

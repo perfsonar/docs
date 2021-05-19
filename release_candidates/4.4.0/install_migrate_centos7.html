@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Migrating from CentOS 6 to CentOS 7 &#8212; perfSONAR Toolkit 4.3.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Updating perfSONAR" href="manage_update.html" />
+    <link rel="prev" title="Using perfSONAR with Ansible" href="install_ansible.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_update.html" title="Updating perfSONAR"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_ansible.html" title="Using perfSONAR with Ansible"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Migrating from CentOS 6 to CentOS 7</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="migrating-from-centos-6-to-centos-7">
+<h1>Migrating from CentOS 6 to CentOS 7<a class="headerlink" href="#migrating-from-centos-6-to-centos-7" title="Permalink to this headline">¶</a></h1>
+<p>This page describes the migration procedure for moving a perfSONAR installation from a CentOS 6 to a CentOS 7 host. It assumes both hosts have the same <a class="reference internal" href="install_options.html"><span class="doc">bundle</span></a> installed (e.g. both run the Toolkit bundle). If you do not wish to keep any existing data or configuration from the CentOS 6 host you may ignore this section and do a normal clean installation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These steps can also be used to migrate an existing host to new hardware even if both systems are running the same OS version. There is nothing specific to CentOS 6 or CentOS 7 in this procedure. It is only labelled as such for convenience since for the time-being this is likely the most common type of migration to be performed by perfSONAR users.</p>
+</div>
+<div class="section" id="migration-process">
+<h2>Migration Process<a class="headerlink" href="#migration-process" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Login in to your CentOS 6 host via SSH or the terminal. You must do so as a user that has superuser privileges or is allowed to run the <cite>sudo</cite> command. <strong>All commands in this section require superuser privileges.</strong></p></li>
+<li><p>Run <strong>one</strong> of the commands below to create a backup of all relevant files in <cite>~/ps-backup.tgz</cite>. The option you choose depends on whether you also want to preserve your measurement archive data:</p>
+<blockquote>
+<div><ul>
+<li><p><em>Option 1:</em> Ignore measurement archive data (quicker since measurement archive data may be large):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ps</span><span class="o">-</span><span class="n">migrate</span><span class="o">-</span><span class="n">backup</span><span class="o">.</span><span class="n">sh</span> <span class="o">~/</span><span class="n">ps</span><span class="o">-</span><span class="n">backup</span><span class="o">.</span><span class="n">tgz</span>
+</pre></div>
+</div>
+</li>
+<li><dl>
+<dt><em>Option 2:</em> Alternatively, if you also wish to migrate the measurement archive databases add the <cite>–data</cite> parameter:</dt><dd><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You MUST first prepare your cassandra environment for the transfer by following the steps in the section titled <a class="reference internal" href="multi_ma_backups.html#multi-ma-backups-snapshots-cassandra-prep"><span class="std std-ref">Preparing Your Environment</span></a> located <a class="reference internal" href="multi_ma_backups.html#multi-ma-backups-snapshots-cassandra-prep"><span class="std std-ref">here</span></a></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This may take several minutes to several hours depending on the amount of data in your measurement archive.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ps</span><span class="o">-</span><span class="n">migrate</span><span class="o">-</span><span class="n">backup</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">data</span> <span class="o">~/</span><span class="n">ps</span><span class="o">-</span><span class="n">backup</span><span class="o">.</span><span class="n">tgz</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Copy the backup file <cite>~/ps-backup.tgz</cite> from your CentOS 6 host to a safe location. This will need to be copied to the new installation later. If you will be overwriting the CentOS 6 host with the new installation, make sure this file is stored safely on another system, so it can be copied to the new installation later.</p></li>
+<li><p>Logout of the CentOS 6 host</p></li>
+<li><p>Perform a clean installation of the perfSONAR on a CentOS 7 host using the same perfSONAR bundle and version that was installed on the CentOS 6 host. You may choose to install on the existing CentOS 6 hardware or a completely new host. If it is the former, make sure you have downloaded your CentOS 6 backup file to a safe location.</p></li>
+<li><p>Copy the file <cite>~/ps-backup.tgz</cite> from the location chosen in step 3 to your new system. The exact command to do this will depend on where you placed the file (e.g. use scp).</p></li>
+<li><p>Login to your new CentOS 7 Toolkit installation via SSH or the terminal</p></li>
+<li><p>Run <strong>one</strong> of the commands below to restore your configuration. The option you choose will be dependent on whether you wish to restore your measurement archive data:</p>
+<blockquote>
+<div><ul>
+<li><p><em>Option 1:</em> Ignore measurement archive data (quicker since measurement archive data may be large):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ps</span><span class="o">-</span><span class="n">migrate</span><span class="o">-</span><span class="n">restore</span><span class="o">.</span><span class="n">sh</span> <span class="o">~/</span><span class="n">ps</span><span class="o">-</span><span class="n">backup</span><span class="o">.</span><span class="n">tgz</span>
+</pre></div>
+</div>
+</li>
+<li><p><em>Option 2:</em> Alternatively, to also restore the measurements databases add the <cite>–data</cite> paremeter. Please note, <strong>this may take several minutes to several hours depending on the amount of data in your measurement archive</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ps</span><span class="o">-</span><span class="n">migrate</span><span class="o">-</span><span class="n">restore</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">data</span> <span class="o">~/</span><span class="n">ps</span><span class="o">-</span><span class="n">backup</span><span class="o">.</span><span class="n">tgz</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Reboot your host:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reboot</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Your host should now be migrated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to differences in the way users and groups are stored between operating systems, these scripts no longer attempt to migrate system users accounts. You will need to recreate any system users manually.</p>
+</div>
+</div>
+<div class="section" id="changing-ip-address-hostname">
+<h2>Changing IP Address/Hostname<a class="headerlink" href="#changing-ip-address-hostname" title="Permalink to this headline">¶</a></h2>
+<p>When migrating an installation, there is no requirement to change IP or hostname, in fact its likely simpler if you do not. You may stop reading if you wish to keep the address the same.</p>
+<p>If for your own purposes you need/desire to use a new address on a host you should be to do so with little to no additional configuration changes. It’s largely dependent on your perfSONAR setup. Below are some notes to help you determine if any further configuration changes are needed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If you are running the toolkit, everywhere your address is displayed is dynamically generated. There are no configuration files that need to be changed to display the new address. If you are still seeing the old address, check your network configuration or verify that DNS has been properly updated.</p></li>
+<li><p>By default, perfSONAR does not insert the local address in any files, but there are a number of advanced options that may contain it if manually set. If you are unsure, it may be a good idea to run <cite>grep -r OLDADDRESS /etc/perfsonar</cite> where <cite>OLDADDRESS</cite> is the previous IP address, hostname or interface you are looking to replace. Generally you should be safe to manually update any references you find.</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Migrating from CentOS 6 to CentOS 7</a><ul>
+<li><a class="reference internal" href="#migration-process">Migration Process</a></li>
+<li><a class="reference internal" href="#changing-ip-address-hostname">Changing IP Address/Hostname</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_ansible.html">Previous topic</a>
+                  <ul><li><a href="install_ansible.html" title="previous chapter">Using perfSONAR with Ansible</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_update.html">Next topic</a>
+                      <ul><li><a href="manage_update.html" title="next chapter">Updating perfSONAR</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_update.html" title="Updating perfSONAR"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_ansible.html" title="Using perfSONAR with Ansible"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Migrating from CentOS 6 to CentOS 7</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

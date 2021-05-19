@@ -1,0 +1,109 @@
+*******************************
+Publishing a pSConfig Template
+*******************************
+
+Introduction
+==============================
+After you have :doc:`created a template<psconfig_templates_intro>` you will need to publish your template so that it can be downloaded by agents. You have a number of options for doing so including choosing one of the following:
+
+* **Option 1: Using the pSConfig publisher command-line tools.** This is a set of simple command line tools provided by pSConfig that validate the JSON and save a version of it in a standard location under an Apache web server. More details on this method can be found below in the section :ref:`psconfig_publish-cli`.
+* **Option 2: Use pSConfig WebAdmin.** This tool has its own method for publishing templates, see that tool's :doc:`documentation<pwa>` for more details.
+* **Option 3: Manually copy the template file to a web server.** If you don't want to use the above tools you may also manually copy the file to a web server on your own. The exact steps for doing this will depend on your web server's setup, but at the end of the day pSConfig templates can be published just like any other file.
+* **Option 4: Put the template on the local filesystem of the agent.** You may either point at it directly or use an agent's template include directory. See the :doc:`psconfig_pscheduler_agent` and :doc:`psconfig_maddash_agent` documents for information on how to do so for individual agents. 
+
+This document with only cover *option 1*. If you already have a template, are not using the :doc:`WebAdmin<pwa>` and aren't sure which of the options to use, then the pSConfig publisher command-line tools are the recommended choice.
+
+
+.. _psconfig_publish-cli:
+    
+pSConfig Publisher Command-Line Tools
+=====================================
+Installing
+-----------
+The pSConfig publisher command-line tools can be installed separately or part of a perfSONAR bundle. The tools are included by default in the following bundles:
+
+* *perfsonar-toolkit*
+* *perfsonar-centralmanagement*
+
+If you are running one of these bundles then you already have the tools installed. If not you can install the *perfsonar-psconfig-publisher* package using your operating system's package manager as follows:
+
+    *CentOS*::
+    
+        yum install perfsonar-psconfig-publisher
+
+    *Debian/Ubuntu*::
+    
+        apt-get install perfsonar-psconfig-publisher
+
+This will install the basic psconfig command-line interface and libraries required to use them. It will also install Apache and setup a directory */usr/lib/perfsonar/web-psconfig* where template files will be stored. Files under this directory can be accessed via the web at URL *https://HOSTNAME/psconfig/TEMPLATE.json* where *HOSTNAME* is the name of your host and *TEMPLATE.json* is the template file. 
+
+.. warning:: Indexes are not enabled on that directory so attempting to visit https://HOSTNAME/psconfig will return a *403 Forbidden* error. This is expected and done for security purposes. Once you copy your templates you will not get any such errors when accessing the template file directly.
+
+.. note:: You may also use http:// in your URL but https:// is recommended. All of the documentation and the command output use https in the displayed URLs.
+
+
+Publishing a File with ``psconfig publish``
+--------------------------------------------
+
+.. note:: You need to run this command as a **sudo** user since the web directory used by this tool is owned by the *perfsonar* user and group
+
+The ``psconfig publish`` command accepts a parameter with the location of a pSConfig template file either on the local filesystem or at an http(s) URL. As an example::
+
+    psconfig publish example.json
+
+The command performs the following actions:
+
+#. If required, automatically detects and translates the given file from legacy MeshConfig format to the new pSConfig format. See :doc:`psconfig_meshconfig_migrate` for details on what this means. 
+#. Validates the input file syntax against the pSConfig template schema. You may skip this step by providing the ``--skip-validate`` option.
+#. Adds a ``psconfig-publisher`` field to the template ``_meta`` object indicating this file was published by the CLI and he time at which this command ran. You may skip this step by providing the ``--skip-meta`` option.
+#. Saves the file to */usr/lib/perfsonar/web-psconfig* with the same name as the provided file. The output of the file will remove extraneous whitespace in an attempt to be more compact for downloading agents. If you would like the file in a more human-readable format you can specify the ``--pretty`` option.
+#. It will output to standard output the location of the saved file as well as the URL and command that can be used to add it to an agent. If you would like to suppress this output you can use the ``--quiet`` option.
+
+.. note:: None of the changes made to the file are strictly required. The addition of metadata and formatting of the JSON are simply done for convenience. The overall structure of the JSON is unchanged from the original input.
+
+An example of successful output is::
+
+    Success! File saved to /usr/lib/perfsonar/web-psconfig/example.json
+
+    Published file can be accessed at https://HOSTNAME/psconfig/example.json
+
+    Execute the following on a host running an agent to use this file:
+
+        psconfig remote add "https://HOSTNAME/psconfig/example.json"
+
+If there are any errors reading, validating or saving the file, then they will instead be printed to the screen.
+
+If you need to update a published file, simply run ``psconfig publish`` against the same file and it will overwrite the existing file.
+
+.. warning:: Note that ``psconfig publish`` does not maintain a file history, so once you overwrite a file it is permanently gone. 
+
+If you have any further questions about the supported options you may run the following::
+
+    psconfig publish --help
+
+
+Viewing Published Files with ``psconfig published``
+---------------------------------------------------
+
+.. note:: You need to run this command as a **sudo** user since the web directory used by this tool is owned by the *perfsonar* user and group
+
+The ``psconfig published`` command lists the location and URL of all the files that are currently published. It supports no additional options. An example command is::
+
+    psconfig published
+    
+An example of the output is as follows::
+
+    [example.json]
+        Local File: /usr/lib/perfsonar/web-psconfig/example.json
+        Web URL: https://HOSTNAME/psconfig/example.json
+        
+If no files are published output will be as follows::
+    
+    No files currently published
+
+
+Removing Published Files
+------------------------
+There is no special tool for unpublishing files. You may do so by removing the file directly from the published directory. If you need help determining the location you may use the ``psconfig published`` command. An example of how to delete a file is as follows::
+
+    rm /usr/lib/perfsonar/web-psconfig/example.json

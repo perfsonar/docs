@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pSConfig Quickstart Guide &#8212; perfSONAR Toolkit 4.3.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction to pSConfig Templates" href="psconfig_templates_intro.html" />
+    <link rel="prev" title="What is pSConfig?" href="psconfig_intro.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="psconfig_templates_intro.html" title="Introduction to pSConfig Templates"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_intro.html" title="What is pSConfig?"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pSConfig Quickstart Guide</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="psconfig-quickstart-guide">
+<h1>pSConfig Quickstart Guide<a class="headerlink" href="#psconfig-quickstart-guide" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page contains a quick set of commands for publishing a pSConfig template and configuring the pScheduler and MaDDash agents to use them. As the <em>Quickstart</em> in the title implies, this is not intended to be a comprehensive guid, for that see the rest of the <a class="reference internal" href="psconfig_intro.html"><span class="doc">pSConfig documentation</span></a>.</p>
+</div>
+<div class="section" id="on-the-host-where-the-template-is-to-be-published">
+<h2>On the host where the template is to be published…<a class="headerlink" href="#on-the-host-where-the-template-is-to-be-published" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Make sure the <code class="docutils literal notranslate"><span class="pre">perfsonar-psconfig-publisher</span></code> package is installed:</p>
+<blockquote>
+<div><p><em>CentOS</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">publisher</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">publisher</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Create a pSConfig template.</p></li>
+<li><p>Publish the template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">publish</span> <span class="n">template</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="on-each-host-running-measurements">
+<h2>On each host running measurements…<a class="headerlink" href="#on-each-host-running-measurements" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Make sure the <code class="docutils literal notranslate"><span class="pre">perfsonar-psconfig-pscheduler</span></code> package is installed:</p>
+<blockquote>
+<div><p><em>CentOS</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">pscheduler</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">pscheduler</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Run the following command to point the agent at the template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">MYHOST</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="on-your-maddash-host">
+<h2>On your MaDDash host…<a class="headerlink" href="#on-your-maddash-host" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Make sure the <code class="docutils literal notranslate"><span class="pre">perfsonar-psconfig-maddash</span></code> package is installed:</p>
+<blockquote>
+<div><p><em>CentOS</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">maddash</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Run the following command to point the agent at the template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">MYHOST</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">pSConfig Quickstart Guide</a><ul>
+<li><a class="reference internal" href="#on-the-host-where-the-template-is-to-be-published">On the host where the template is to be published…</a></li>
+<li><a class="reference internal" href="#on-each-host-running-measurements">On each host running measurements…</a></li>
+<li><a class="reference internal" href="#on-your-maddash-host">On your MaDDash host…</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="psconfig_intro.html">Previous topic</a>
+                  <ul><li><a href="psconfig_intro.html" title="previous chapter">What is pSConfig?</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="psconfig_templates_intro.html">Next topic</a>
+                      <ul><li><a href="psconfig_templates_intro.html" title="next chapter">Introduction to pSConfig Templates</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="psconfig_templates_intro.html" title="Introduction to pSConfig Templates"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_intro.html" title="What is pSConfig?"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pSConfig Quickstart Guide</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

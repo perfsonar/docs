@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MaDDash API Reference &#8212; perfSONAR Toolkit 4.3.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dashboards" href="maddash_api_dashboards.html" />
+    <link rel="prev" title="MaDDash Administrator Web Interface" href="maddash_admin_ui.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maddash_api_dashboards.html" title="Dashboards"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="maddash_admin_ui.html" title="MaDDash Administrator Web Interface"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MaDDash API Reference</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="maddash-api-reference">
+<h1>MaDDash API Reference<a class="headerlink" href="#maddash-api-reference" title="Permalink to this headline">¶</a></h1>
+<p>This page describes the Monitoring and Debugging Dashboard (MaDDash) API. The API uses a JSON data format and attempts to adhere closely to principles of REST. The interface provides access to the following types of resources:</p>
+<ul class="simple">
+<li><p><em>Dashboard:</em> A collection of one or more <em>grid</em> resources. The grouping of <em>grids</em> into a dashboard as defined by the creator of the <em>dashboard</em> resource.</p></li>
+<li><p><em>Grid:</em> A two-dimensional representation of one or more <em>rows</em> and <em>columns</em> of <em>checks</em> that measure some value between entities represented by the column value (x) and row value (y).</p></li>
+<li><p><em>Check:</em> The output of a task performed using the column value (x) and the row value (y) as input.</p></li>
+<li><p><em>Column:</em> A collection of checks that share a common x value.</p></li>
+<li><p><em>Row:</em> A collection of checks that share a common y value</p></li>
+<li><p><em>Cell:</em> A collection of checks that share a common x and y value</p></li>
+</ul>
+<p>A visual representation of these resources is provided in the figure below:</p>
+<img alt="_images/maddash-resources.png" src="_images/maddash-resources.png" />
+<div class="section" id="api-guide">
+<h2>API Guide<a class="headerlink" href="#api-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_dashboards.html">Dashboards</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_dashboards.html#retrieving-the-list-of-dashboards">Retrieving the list of dashboards</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_grids.html">Grids</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_grids.html#retrieving-the-list-of-grids">Retrieving the list of grids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_grids.html#retrieving-a-single-grid">Retrieving a single grid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_rows.html">Rows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_rows.html#retrieving-a-row">Retrieving a row</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_cells.html">Cells</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_cells.html#retrieving-a-cell">Retrieving a cell</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_checks.html">Checks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_checks.html#retrieving-a-single-check">Retrieving a single check</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_checks.html#rescheduling-checks">Rescheduling checks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_events.html">Events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_events.html#retrieving-a-list-of-events">Retrieving a list of events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_events.html#retrieving-a-single-event">Retrieving a single event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_events.html#creating-an-event">Creating an Event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_events.html#deleting-an-event">Deleting an Event</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_reports.html">Reports</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_reports.html#retrieving-a-report">Retrieving a report</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_type_params.html">Appendix: Check Type Specific Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_type_params.html#nagios-check">Nagios Check</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_type_params.html#perfsonar-nagios-check">perfSONAR Nagios Check</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maddash_api_misc.html">Miscellaneous Operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_misc.html#listing-all-the-unique-row-names">Listing all the unique row names</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_misc.html#listing-all-the-unique-column-names">Listing all the unique column names</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maddash_api_misc.html#listing-all-the-unique-check-names">Listing all the unique check names</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">MaDDash API Reference</a><ul>
+<li><a class="reference internal" href="#api-guide">API Guide</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="maddash_admin_ui.html">Previous topic</a>
+                  <ul><li><a href="maddash_admin_ui.html" title="previous chapter">MaDDash Administrator Web Interface</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="maddash_api_dashboards.html">Next topic</a>
+                      <ul><li><a href="maddash_api_dashboards.html" title="next chapter">Dashboards</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maddash_api_dashboards.html" title="Dashboards"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="maddash_admin_ui.html" title="MaDDash Administrator Web Interface"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MaDDash API Reference</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

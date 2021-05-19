@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PWA Docker Deployment Architecture &#8212; perfSONAR Toolkit 4.3.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Install Options" href="pwa_install.html" />
+    <link rel="prev" title="pSConfig Web Admin" href="pwa.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pwa_install.html" title="Install Options"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pwa.html" title="pSConfig Web Admin"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PWA Docker Deployment Architecture</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pwa-docker-deployment-architecture">
+<h1>PWA Docker Deployment Architecture<a class="headerlink" href="#pwa-docker-deployment-architecture" title="Permalink to this headline">¶</a></h1>
+<p>PWA is deployed using a series of docker containers; some are PWA-specific and provided by the perfSONAR project, and there are a couple of third-party containers involved, as well.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Container</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pwa-admin</p></td>
+<td><p>PWA UI and API</p></td>
+</tr>
+<tr class="row-odd"><td><p>pwa-pub</p></td>
+<td><p>Publisher, used for publishing Configs defined in PWA</p></td>
+</tr>
+<tr class="row-even"><td><p>sca-auth</p></td>
+<td><p>Authentication module used by the GUI</p></td>
+</tr>
+<tr class="row-odd"><td><p>ngninx</p></td>
+<td><p>Web server, used as a proxy to access the PWA and SCA components</p></td>
+</tr>
+<tr class="row-even"><td><p>mongodb</p></td>
+<td><p>MongoDB, used by pwa-admin and pwa-pub</p></td>
+</tr>
+<tr class="row-odd"><td><p>postfix</p></td>
+<td><p>Optional, if you want to run a mail server in another docker container, install this</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="architecture-overview">
+<h2>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">¶</a></h2>
+<p>This example architecture assumes you name your instances like pwa-admin1, pwa-pub1, pwa-pub2, etc. You can name them differently if you like. You can increase the number of publishers to improve publisher performance, if needed.</p>
+<a class="reference external image-reference" href="./_images/pwa_docker_architecture.png"><img alt="PWA Docker Architecture screenshot" src="_images/pwa_docker_architecture_600.png" style="width: 600px;" /></a>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">PWA Docker Deployment Architecture</a><ul>
+<li><a class="reference internal" href="#architecture-overview">Architecture Overview</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pwa.html">Previous topic</a>
+                  <ul><li><a href="pwa.html" title="previous chapter">pSConfig Web Admin</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pwa_install.html">Next topic</a>
+                      <ul><li><a href="pwa_install.html" title="next chapter">Install Options</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pwa_install.html" title="Install Options"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pwa.html" title="pSConfig Web Admin"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PWA Docker Deployment Architecture</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
