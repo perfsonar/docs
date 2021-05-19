@@ -145,11 +145,11 @@ For example, this file will use the HTTP archiver to post the results of all thr
         "archiver": "http",
         "data": {
             "_url": "https://host.example.com/place/to/post",
-            "op": "post",
+            "op": "post"
         },
         "transform": {
-            "script": ""if (.test.type == \"throughput\") then . else null end""
-        }
+            "script": "if (.test.type == \"throughput\") then . else null end"
+        },
         "ttl": "PT5M"
     }
 

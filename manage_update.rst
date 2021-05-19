@@ -14,10 +14,12 @@ Anytime you want to manually update your host, simply run the following
     
 *Debian*::
 
-    apt-get update
-    apt-get dist-upgrade
+    apt update
+    apt dist-upgrade
     
 The *yum* package manager is used by RedHat-based operating systems like CentOS to update packages, *apt-get* is used by Debian-based OS. Running the command above will download the latest perfSONAR packages as well as any operating system packages available.
+
+.. note:: When upgrading a Debian based host to a new minor version (X.Y.Z with X or Y changing), you'll be asked by APT to accept the change in Version and Codename of the perfsonar-release repository.
 
 .. _manage_update-auto:
 

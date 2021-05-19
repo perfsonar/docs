@@ -8,6 +8,10 @@ perfSONAR combines various sets of measurement tools and services. For perfSONAR
 * Ubuntu 16 Xenial Xerus
 * Ubuntu 18 Bionic Beaver
 
+Preliminary and partial support of perfSONAR, i.e. only ``perfsonar-testpoint`` bundle at the moment, is also available on the following distributions:
+
+* Debian 10 Buster
+
 Debian meta packages are available to install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
 
@@ -86,6 +90,8 @@ Step 2: Install a Bundle
     apt-get install perfsonar-toolkit
 
   During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
+
+.. note:: On Debian 10, only the ``perfsonar-tools`` and the ``perfsonar-testpoint`` bundles are supported at the moment.
 
 Optional Packages
 ++++++++++++++++++
@@ -251,12 +257,14 @@ If you had installed a perfSONAR 4.2.x (4.1.x) bundle and you now want to upgrad
 
 Upgrade the perfSONAR installation
 ----------------------------------
-If you have auto-update enabled and already using the perfsonar-release.list APT source file (as was instructed when installing 4.2 or 4.1), you should receive the 4.3 upgrade automatically. However, because of some dependency changes introduces by the move to Python3, the full upgrade need to be done manually.
+If you have auto-update enabled and already using the perfsonar-release.list APT source file (as was instructed when installing 4.2 or 4.1), you should receive the 4.3 upgrade automatically. However, because of some dependency changes introduced by the move to Python3, the full upgrade need to be done manually.
 
 If you use or don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
 
-   apt-get update
-   apt-get dist-upgrade
+   apt update
+   apt dist-upgrade
+
+You might be prompted by ``apt`` to accept the change of Version and Codename for the perfsonar-release repository, changing from 4.2 to 4.3. You need to approve this change before being able to move on to the ``dist-upgrade`` command.
 
 The measurements and the measurement archives that you already have defined in your 4.2.x (or 4.1.x) installation will be migrated to the 4.3 toolkit automatically.
 

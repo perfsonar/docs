@@ -25,7 +25,7 @@ if [ -z "$TAG" ]; then
 fi
 
 #checkout tag
-TAG_DIR=$(mktemp -d /tmp/tag.XXXX)
+TAG_DIR=$(mktemp -d /tmp/tag.XXXXXX)
 cd $TAG_DIR
 
 git clone $GIT_URL .
@@ -51,7 +51,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #checkout gh-pages
-GH_PAGES_DIR=$(mktemp -d /tmp/ghpages.XXXX)
+GH_PAGES_DIR=$(mktemp -d /tmp/ghpages.XXXXXX)
 cd $GH_PAGES_DIR
 
 git clone $GIT_URL .

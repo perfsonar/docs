@@ -32,7 +32,7 @@ Testing CentOS Bundles Installation
 
 You can test CentOS bundle installation by first pointing your existing CentOS installation at the perfSONAR main yum repository (if not already)::
 
-    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.9-1.noarch.rpm
+    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.10-1.noarch.rpm
     
 Next, install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
 

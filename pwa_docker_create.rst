@@ -3,6 +3,52 @@ Creating Docker containers
 
 **If you are not using Docker, SKIP THIS PAGE**
 
+Creating containers using `docker-compose`
+-----------------------------------------------
+
+
+*Note* make sure you have extracted the sample configs here:
+
+:doc:`pwa_install_docker`
+
+Run this script to create your nginx certs, if you don't already have them:
+
+.. code-block:: shell
+
+    /etc/pwa/scripts/generate_nginx_cert.sh
+
+Download the ``docker-compose.yml`` file from here:
+
+https://raw.githubusercontent.com/perfsonar/psconfig-web/master/deploy/docker/docker-compose.yml
+
+Bring up the application:
+
+.. code-block:: shell
+
+    docker-compose up -d
+
+Make sure the containers are running:
+
+
+.. code-block:: shell
+
+    # docker-compose ps
+
+          Name                      Command               State                             Ports
+    ------------------------------------------------------------------------------------------------------------------------
+    docker_mongo_1        docker-entrypoint.sh mongod      Up      27017/tcp
+    docker_nginx_1        /docker-entrypoint.sh ngin ...   Up      0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp,
+                                                                   0.0.0.0:9443->9443/tcp
+    docker_pwa-admin1_1   docker-entrypoint.sh /start.sh   Up      80/tcp, 8080/tcp
+    docker_pwa-pub1_1     node /app/api/pwapub.js          Up      8080/tcp
+    docker_sca-auth_1     docker-entrypoint.sh /app/ ...   Up      80/tcp, 8080/tcp
+
+If not everything is running, try ``docker-compose logs`` to troubleshoot.
+
+Docker Compose documentation can be found here:
+
+https://docs.docker.com/compose/
+
 Creating containers using a script
 -----------------------------------------------
 

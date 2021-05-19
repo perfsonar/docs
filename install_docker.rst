@@ -152,3 +152,38 @@ If you bring the container back-up you should be able to see your pSConfig chang
 
   # docker-compose up -d
   # docker-compose exec testpoint psconfig remote list
+
+
+Running the Systemd Image
+==========================
+
+The container image adopted in the previous steps makes use of `supervisord <http://supervisord.org/>`_ to manage system processes. In addition to that, perfSONAR also provides an image based on `systemd <https://systemd.io/>`_.
+
+As systemd is the system and service manager adopted by most Linux distributions, both installation and management of services are done in the same way inside the container as in a bare metal host. This facilitates the container maintenance and automation. Also, in scenarios where the testpoint container is expected to run for long periods without stopping, systemd guarantees better stability.
+
+On the other hand, to run a Docker container with systemd, additional parameters are needed. Because of that, a dedicated `docker-compose <https://docs.docker.com/compose/>`_ YAML file was provided to assist in this process.
+
+Build the image locally::
+
+  # docker-compose -f docker-compose.systemd.yml build
+
+Start the container in the background::
+
+  # docker-compose -f docker-compose.systemd.yml up -d
+
+Your container is now running. You can enter the container, verify it is working and add a remote pSConfig file that will be persisted in the `./compose/psconfig` directory::
+
+  # docker-compose -f docker-compose.systemd.yml exec testpoint bash
+  [docker-desktop /]# systemctl status
+  [docker-desktop /]# pscheduler troubleshoot
+  [docker-desktop /]# psconfig remote add URL # replace URL with your pSConfig JSON file URL
+  [docker-desktop /]# exit
+
+You can stop your container at any time with the following::
+
+  # docker-compose -f docker-compose.systemd.yml down
+
+If you bring the container back-up you should be able to see your pSConfig changes still::
+
+  # docker-compose -f docker-compose.systemd.yml up -d
+  # docker-compose -f docker-compose.systemd.yml exec testpoint psconfig remote list
