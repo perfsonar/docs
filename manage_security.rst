@@ -127,4 +127,4 @@ perfSONAR nodes are meant to be used, both by local users and the public at larg
 
 Managing Archive Whitelist for Graphs
 ======================================
-The perfSONAR graphs have the ability to reach out to external measurement archives. If you would like to limit the hosts that the graphs can reach, you can edit the file */usr/lib/perfsonar/graphs/etc/graphs.json*. The *url_whitelist* parameter can be unocommented (remove the #) and the names of the host you want to allow can be added to the list. Any address not in the list will result in an error. This change affects both the line graphs and the traceroute viewer.
+The perfSONAR graphs have the ability to reach out to external measurement archives. If you would like to limit the hosts that the graphs can reach, you can edit the file */usr/lib/perfsonar/graphs/etc/graphs.json*. The *url_whitelist* parameter can be uncommented (remove the #) and the names of the host you want to allow can be added to the list. Any address not in the list will result in an error. This change affects both the line graphs and the traceroute viewer.
