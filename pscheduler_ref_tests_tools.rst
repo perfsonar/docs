@@ -74,6 +74,11 @@ throughput
 :Description: A test to measure the observed speed of a data transfer and associated statistics between two endpoints
 :Tools: iperf3, iperf2, nuttcp
 
+s3throughput
+############
+:Description: A test to measure the throughput of S3 web service storage
+:Tools: s3-benchmark
+
 trace
 ############
 :Description: Trace the path between IP hosts
@@ -85,10 +90,12 @@ Test Classifications
 ======================
 Each test classified in one of four categories that determines what other tests can be run in parallel:
 
-    #. **Exclusive** - These are tests that cannot run at the same time as any other exclusive or normal test. An example is a *throughput* test. If you have very frequent tests in this category then you may have difficulty finding a timeslot for new tests.
-    #. **Normal** - These are tests that can run at the same time as other normal and background tests, but cannot run at the same time as exclusive tests. An example is a task with a test type of *latency*.
-    #. **Background** - These are tests that can be run in parallel with any other test including exclusive, normal and other background tests. Example test types include *rtt*, *trace*, *http*, *dns* or *clock*. Since these runs do not prevent other runs from executing though, they should not limit your ability to schedule new tests.
-    #. **Background-multi** - These are tests that can be run in parallel with any other test and produce multiple results that appear as separate runs. Example test type is *latencybg* that runs continuously.
+    #. **Exclusive** - An example is a *throughput* task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests. These test can run in parallel only with background tests.
+    #. **Normal** - An example is a task with a test type of *latency*.
+    #. **Background Single-Result** - Background tests that produce single result. Example test types include *rtt* and *trace* or *clock*. These tests can run in parallel with anything else.
+    #. **Background Multi-Result** - Background tests that produce multiple (streaming) results. Example test type is *latencybg*. It is not uncommon to have this column look almost entirely solid if you have *latencybg* tasks since they run continuously. These tests can run in parallel with anything else.
+    #. **Non-Starting** - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a :term:`schedule horizon` so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.
+    #. **Preempted** - These runs were preempted by another with higher priority.
 	
 You may visualize different types of tests using ``pscheduler plot-schedule`` command. See also :ref:`pscheduler_client_schedule-plot_schedule`.
 
