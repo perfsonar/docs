@@ -139,7 +139,7 @@
 </div>
 </li>
 <li><p>One day in the future:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="n">PT1D</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="n">P1D</span>
 </pre></div>
 </div>
 </li>
@@ -189,11 +189,12 @@
 <p>The vertical axis is the time that the test ran or is scheduled to run. The green boxes are <a class="reference internal" href="pscheduler_intro.html#term-run"><span class="xref std std-term">runs</span></a> of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of five classifications listed at the top:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p><strong>Exclusive</strong> - An example is a <em>throughput</em> task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.</p></li>
+<li><p><strong>Exclusive</strong> - An example is a <em>throughput</em> task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests. These test can run in parallel only with background tests.</p></li>
 <li><p><strong>Normal</strong> - An example is a task with a test type of <em>latency</em>.</p></li>
-<li><p><strong>Background</strong> - Example test types include <em>rtt</em> and <em>trace</em> or <em>clock</em>.</p></li>
-<li><p><strong>Background-multi</strong> - Example test type is <em>latencybg</em>. It is not uncommon to have this column look almost entirely solid if you have <em>latencybg</em> tasks since they run continuously.</p></li>
-<li><p><strong>Non-Start</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><span class="xref std std-term">schedule horizon</span></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</p></li>
+<li><p><strong>Background Single-Result</strong> - Background tests that produce single result. Example test types include <em>rtt</em> and <em>trace</em> or <em>clock</em>. These tests can run in parallel with anything else.</p></li>
+<li><p><strong>Background Multi-Result</strong> - Background tests that produce multiple (streaming) results. Example test type is <em>latencybg</em>. It is not uncommon to have this column look almost entirely solid if you have <em>latencybg</em> tasks since they run continuously. These tests can run in parallel with anything else.</p></li>
+<li><p><strong>Non-Starting</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><span class="xref std std-term">schedule horizon</span></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</p></li>
+<li><p><strong>Preempted</strong> - These runs were preempted by another with higher priority.</p></li>
 </ol>
 </div></blockquote>
 <p>For more detailed information about test classifications see <a class="reference internal" href="pscheduler_ref_tests_tools.html#pscheduler-ref-tests-tools-test-classifications"><span class="std std-ref">Test Classifications</span></a>.</p>
@@ -210,7 +211,7 @@
 </div>
 </li>
 <li><p>One day in the future:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="n">PT1D</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="n">P1D</span>
 </pre></div>
 </div>
 </li>

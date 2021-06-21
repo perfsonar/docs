@@ -79,7 +79,7 @@ With one (delta) argument, the schedule between now and some point in the past o
     
     * One day in the future::
     
-        pscheduler schedule PT1D
+        pscheduler schedule P1D
         
 With two (start and end) arguments, the schedule within a range of times will be shown. Either argument can be a delta as described above (e.g. -P2D) or a ISO 8601 timestamp (e.g., 2016-09-04T12:34:56+0400). Examples:
 
@@ -124,11 +124,12 @@ You always redirect the output to a file and the program will return an error be
 
 The vertical axis is the time that the test ran or is scheduled to run. The green boxes are :term:`runs<run>` of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of five classifications listed at the top:
 
-    #. **Exclusive** - An example is a *throughput* task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests.
+    #. **Exclusive** - An example is a *throughput* task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests. These test can run in parallel only with background tests.
     #. **Normal** - An example is a task with a test type of *latency*.
-    #. **Background** - Example test types include *rtt* and *trace* or *clock*.
-    #. **Background-multi** - Example test type is *latencybg*. It is not uncommon to have this column look almost entirely solid if you have *latencybg* tasks since they run continuously.
-    #. **Non-Start** - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a :term:`schedule horizon` so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.
+    #. **Background Single-Result** - Background tests that produce single result. Example test types include *rtt* and *trace* or *clock*. These tests can run in parallel with anything else.
+    #. **Background Multi-Result** - Background tests that produce multiple (streaming) results. Example test type is *latencybg*. It is not uncommon to have this column look almost entirely solid if you have *latencybg* tasks since they run continuously. These tests can run in parallel with anything else.
+    #. **Non-Starting** - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a :term:`schedule horizon` so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.
+    #. **Preempted** - These runs were preempted by another with higher priority.
 	
 For more detailed information about test classifications see :ref:`pscheduler_ref_tests_tools-test_classifications`.
     
@@ -144,7 +145,7 @@ With one (delta) argument, the schedule between now and some point in the past o
     
     * One day in the future::
     
-        pscheduler plot-schedule PT1D
+        pscheduler plot-schedule P1D
         
 With two (start and end) arguments, the schedule within a range of times will be shown. Either argument can be a delta as described above (e.g. -P2D) or a ISO 8601 timestamp (e.g., 2016-09-04T12:34:56+0400). Examples:
 
