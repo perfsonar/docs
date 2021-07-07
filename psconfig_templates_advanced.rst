@@ -673,11 +673,9 @@ pSConfig allows you to define *context* objects in the ``contexts`` section of a
         }
     }
     
-In the current form of pSConfig's context usage, you need to be careful when using contexts not to unintentionally create invalid pScheduler tasks. In particular, since pSConfig does not know which tests are single participant tests vs. multi-participant in pScheduler terms, then it blindly creates context definitions for any *address* involved in a task. This can cause invalid pScheduler task specifications, particularly in single participant tests that need a single context. It also assumes the context of the first address in a pair is the first participant, that of the second is the second participant and so forth. If this is not how you arranged your test it can cause unexpected results. 
+Note that a pScheduler assist server is required to determine the number of participants requiring contexts. This is particularly important when using the MaDDash agent which is typically not on a server running pScheduler. You either need to run pScheduler locally or set the *pscheduler_assist_server* configuration option.
 
-This means that the current pSConfig support of contexts is only for multi-participant tests, i.e. only :ref:`throughput and simplestream tests <pscheduler_ref_tests_tools-test_types>`.
-
-You need to be very selective where you use contexts and may consider using a construct such as :ref:`address labels <psconfig_templates_advanced-addresses-labels>` to allow explicit selection of a version of an *address* object with or without contexts. An example that defines the default version of an address with no ``contexts`` and a label that does have ``contexts`` is shown below::
+If you need to be selective where you use contexts then you  may consider using a construct such as :ref:`address labels <psconfig_templates_advanced-addresses-labels>` to allow explicit selection of a version of an *address* object with or without contexts. An example that defines the default version of an address with no ``contexts`` and a label that does have ``contexts`` is shown below::
 
     
         "addresses": {
