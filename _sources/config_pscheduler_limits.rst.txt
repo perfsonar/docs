@@ -347,6 +347,53 @@ cannot be found::
 
 
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``ip-cymru-asn`` - Identify Requesters by ASN
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``ip-cymru-asn`` identifier uses `Team Cymru's IP to ASN service
+<https://team-cymru.com/community-services/ip-asn-mapping/#dns>`_ to
+determine whether or not the requester's address is part of an
+autonomous system number (ASN) or is peered with one in a provided
+list.
+
+Its ``data`` is an object containing the following pairs:
+
+- ``asns`` - A list containing the ASNs to be checked, each as an
+  integer.
+- ``peers`` - A boolean indicating whether the list of peers for the
+  IP's AS should be checked.  Note that the nature of routing makes
+  this is an inexact science, so this option should be used with care.
+- ``timeout`` - An ISO 8601 duration indicating how long the
+  identifier should try to get an answer before giving up.
+- ``fail-result`` - A boolean value indicating whether or not the
+  identifer should identify all requesters as bogons when a
+  definitive answer cannot be found.
+
+
+Note that this identifier uses the `Domain Name Service
+<http://www.team-cymru.org/asn-reference-dns.html>`_ to check
+whether or not an address is in the list, and therefore its use
+requires that the host be able to resolve hosts on the public
+Internet.  This system works with caching DNS servers, so direct
+access to the internet is not required.
+
+For example, this identifier checks that the requester's address is
+within ANs 123, 456 or 789::
+
+    {
+        "name": "friendly-asns",
+        "description": "ASNs we like"
+        "type": "ip-cymru-asn",
+        "data": {
+            "asns": [ 123, 456, 789 ],
+            "timeout": "PT3S",
+            "fail-result": false
+        }
+    }
+
+
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ``ip-reverse-dns`` - Identify Requesters By Host Name
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

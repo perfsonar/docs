@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Configuring pScheduler Limits &#8212; perfSONAR Toolkit 4.3.4 documentation</title>
+    <title>Configuring pScheduler Limits &#8212; perfSONAR Toolkit 4.4.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -51,7 +51,7 @@
         <li class="right" >
           <a href="pscheduler_batch.html" title="Batch Processing"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -364,6 +364,45 @@ cannot be found:</p>
             <span class="s2">&quot;192.168.99.0/24&quot;</span>
         <span class="p">],</span>
         <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1S&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fail-result&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ip-cymru-asn-identify-requesters-by-asn">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-cymru-asn</span></code> - Identify Requesters by ASN<a class="headerlink" href="#ip-cymru-asn-identify-requesters-by-asn" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">ip-cymru-asn</span></code> identifier uses <a class="reference external" href="https://team-cymru.com/community-services/ip-asn-mapping/#dns">Team Cymru’s IP to ASN service</a> to
+determine whether or not the requester’s address is part of an
+autonomous system number (ASN) or is peered with one in a provided
+list.</p>
+<p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">asns</span></code> - A list containing the ASNs to be checked, each as an
+integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">peers</span></code> - A boolean indicating whether the list of peers for the
+IP’s AS should be checked.  Note that the nature of routing makes
+this is an inexact science, so this option should be used with care.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> - An ISO 8601 duration indicating how long the
+identifier should try to get an answer before giving up.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fail-result</span></code> - A boolean value indicating whether or not the
+identifer should identify all requesters as bogons when a
+definitive answer cannot be found.</p></li>
+</ul>
+<p>Note that this identifier uses the <a class="reference external" href="http://www.team-cymru.org/asn-reference-dns.html">Domain Name Service</a> to check
+whether or not an address is in the list, and therefore its use
+requires that the host be able to resolve hosts on the public
+Internet.  This system works with caching DNS servers, so direct
+access to the internet is not required.</p>
+<p>For example, this identifier checks that the requester’s address is
+within ANs 123, 456 or 789:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;friendly-asns&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;ASNs we like&quot;</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ip-cymru-asn&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;asns&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">456</span><span class="p">,</span> <span class="mi">789</span> <span class="p">],</span>
+        <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="s2">&quot;PT3S&quot;</span><span class="p">,</span>
         <span class="s2">&quot;fail-result&quot;</span><span class="p">:</span> <span class="n">false</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -1545,6 +1584,7 @@ be negated.</p></li>
 <li><a class="reference internal" href="#ip-cidr-list-identify-by-requesting-ip-address"><code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> - Identify By Requesting IP Address</a></li>
 <li><a class="reference internal" href="#ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list"><code class="docutils literal notranslate"><span class="pre">ip-cidr-list-url</span></code> - Identify By Requesting IP Address with Downloaded List</a></li>
 <li><a class="reference internal" href="#ip-cymru-bogon-identify-bogon-addresses"><code class="docutils literal notranslate"><span class="pre">ip-cymru-bogon</span></code> - Identify Bogon Addresses</a></li>
+<li><a class="reference internal" href="#ip-cymru-asn-identify-requesters-by-asn"><code class="docutils literal notranslate"><span class="pre">ip-cymru-asn</span></code> - Identify Requesters by ASN</a></li>
 <li><a class="reference internal" href="#ip-reverse-dns-identify-requesters-by-host-name"><code class="docutils literal notranslate"><span class="pre">ip-reverse-dns</span></code> - Identify Requesters By Host Name</a></li>
 <li><a class="reference internal" href="#jq-use-a-jq-script-to-identify-requesters"><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Identify Requesters</a></li>
 <li><a class="reference internal" href="#localif-identify-requesters-on-local-interfaces"><code class="docutils literal notranslate"><span class="pre">localif</span></code> - Identify Requesters On Local Interfaces</a></li>
@@ -1629,7 +1669,7 @@ be negated.</p></li>
         <li class="right" >
           <a href="pscheduler_batch.html" title="Batch Processing"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.3.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
