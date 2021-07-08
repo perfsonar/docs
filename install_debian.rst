@@ -12,7 +12,7 @@ Partial support of perfSONAR, i.e. only ``perfsonar-testpoint`` bundle at the mo
 
 * Debian 10 Buster
 
-Debian meta packages are available to install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
+Debian meta packages are available to install the bundles described in :doc:`install_options`. The remaining sections of this document detail the steps required for installing these bundles.
 
 
 System Requirements
@@ -45,8 +45,8 @@ Step 1: Configure APT
 All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. **You will need to follow the steps below as privileged user**::
 
     cd /etc/apt/sources.list.d/
-    wget http://downloads.perfsonar.net/debian/perfsonar-release.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
+    curl -o perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
+    curl http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
    
 * **Ubuntu only**. Additionnaly, if you're running a stripped down Ubuntu installation, you might need to enable the universe repository.  This is done with the following command::
 
@@ -54,7 +54,7 @@ All you need to do is to configure the perfSONAR Debian repository source, along
 
 Then refresh the packages list so APT knows about the perfSONAR packages::
 
-    apt-get update
+    apt update
 
 
 .. _install_debian_step2:
@@ -65,29 +65,29 @@ Step 2: Install a Bundle
 
 * **perfSONAR Tools**::
 
-    apt-get install perfsonar-tools
+    apt install perfsonar-tools
 
 * **perfSONAR Test Point**::
 
-    apt-get install perfsonar-testpoint  
+    apt install perfsonar-testpoint  
 
   During the installation process, you'll be asked to choose a password for the pscheduler database.
 
 * **perfSONAR Core**::
 
-    apt-get install perfsonar-core
+    apt install perfsonar-core
 
   During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
 
 * **perfSONAR Central Management**::
 
-    apt-get install perfsonar-centralmanagement
+    apt install perfsonar-centralmanagement
 
   During the installation process, you'll be asked to choose a password for the esmond database.
 
 * **perfSONAR Toolkit**::
 
-    apt-get install perfsonar-toolkit
+    apt install perfsonar-toolkit
 
   During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
 
@@ -97,11 +97,11 @@ Optional Packages
 ++++++++++++++++++
 In addition to any of the bundles above you may also **optionally** choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):
 
-     * ``apt-get install perfsonar-toolkit-ntp`` - Automatically detects closest NTP servers and sets them in ntp.conf
-     * ``apt-get install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
-     * ``apt-get install perfsonar-toolkit-servicewatcher`` - Adds a cron job that checks if services are still running
-     * ``apt-get install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
-     * ``apt-get install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
+     * ``apt install perfsonar-toolkit-ntp`` - Automatically detects closest NTP servers and sets them in ntp.conf
+     * ``apt install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
+     * ``apt install perfsonar-toolkit-servicewatcher`` - Adds a cron job that checks if services are still running
+     * ``apt install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
+     * ``apt install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
 You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
 
@@ -111,7 +111,7 @@ You may also run the command below to get everything listed above on **perfsonar
 
 Reducing installation size
 ++++++++++++++++++++++++++
-If you want to reduce the perfSONAR installation size as much as possible, you can call ``apt-get`` with the ``--no-install-recommends`` option.  This will prevent Debian recommended packages to be automatically installed (you can also configure this globaly in the APT configuration files with the statement ``APT::Install-Recommends "0";``).  This can become useful when you want to install the perfsonar-testpoint bundle with the less overhead possible.
+If you want to reduce the perfSONAR installation size as much as possible, you can call ``apt`` with the ``--no-install-recommends`` option.  This will prevent Debian recommended packages to be automatically installed (you can also configure this globaly in the APT configuration files with the statement ``APT::Install-Recommends "0";``).  This can become useful when you want to install the perfsonar-testpoint bundle with the less overhead possible.
 
 
 .. _install_debian_step3:
@@ -170,7 +170,7 @@ If you have installed the `perfsonar-toolkit-systemenv-testpoint` package, then 
 To ensure you always have the most current and hopefully most secure packages you can install ``unattended-upgrades``. You’ll need to configure it to actually install the available updates with the following commands:
 ::
 
-    apt-get install unattended-upgrades
+    apt install unattended-upgrades
     echo 'APT::Periodic::Update-Package-Lists "1";' > /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
     echo 'APT::Periodic::Unattended-Upgrade "1";' >> /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
     echo 'APT::Periodic::AutocleanInterval "31";' >> /etc/apt/apt.conf.d/60unattended-upgrades-perfsonar
@@ -243,52 +243,26 @@ Configuring perfSONAR through the web interface
 ------------------------------------------------
 After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
 
-Keeping 4.1.x on Debian 8 and Ubuntu 14
-=======================================
-If you're running Debian 8 or Ubuntu 14, you need to know that perfSONAR 4.4 is not supported on these OS.  We recommend that you either do a fresh installation of perfSONAR on a supported OS (Debian 9 or Ubuntu 16 or 18) or plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.4 to happen later. In all cases, you should follow the instructions bellow to prevent perfSONAR to automatically upgrade to version 4.4 once we release it.
-
-You nedd to replace the ``perfsonar-release`` repository with a plain ``perfsonar-4.1`` repository entry.  This is done in the ``/etc/apt/sources.list.d/perfsonar-release.list`` file, where you just replace **perfsonar-release** with **perfsonar-4.1** in the ``deb`` and ``deb-src`` lines.  Alternatively, you can delete the ``perfsonar-release.list`` file and replace it with the one coming from http://downloads.perfsonar.net/debian/perfsonar-4.1.list  Then run ``apt-get update``.
-
-From this moment, you'll be only receiving the updates to the 4.1.x release branch (if there are any) and nothing else.  Then plan your upgrade to Debian 9 or Ubuntu 16 and perfSONAR 4.4. as described bellow.
-
-Upgrading from 4.3.x (or 4.2.x or 4.1.x)
+Upgrading from 4.3.x (or 4.2.x)
 ========================================
-If you had installed a perfSONAR 4.3.x (4.2.x or 4.1.x) bundle and you now want to upgrade to perfSONAR 4.4, you'll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Debian 10, Ubuntu 16 and Ubuntu 18.  For Debian 8 and Ubuntu 14, you should first lock your system on 4.1.x, then upgrade the OS and finally perfSONAR (as described above).
+If you had installed a perfSONAR 4.3.x (or 4.2.x) bundle and you now want to upgrade to perfSONAR 4.4, you'll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Debian 10, Ubuntu 16 and Ubuntu 18.
 
 Upgrade the perfSONAR installation
 ----------------------------------
-If you have auto-update enabled and already using the perfsonar-release.list APT source file (as was instructed when installing 4.3 or 4.2 or 4.1), you should receive the 4.3 upgrade automatically. However, because of some dependency changes introduced by the move to Python3, the full upgrade need to be done manually.
+If you have auto-update enabled and already using the ``perfsonar-release.list`` APT source file (as was instructed when installing 4.3 or 4.2), you should receive the 4.4 upgrade automatically. However, because of some dependency changes and repository name change, the full upgrade need to be done manually.
 
-If you use or don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
+If you don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
 
    apt update
-   apt dist-upgrade
+   apt upgrade
 
-You might be prompted by ``apt`` to accept the change of Version and Codename for the perfsonar-release repository, changing from 4.3 (or 4.2) to 4.4. You need to approve this change before being able to move on to the ``dist-upgrade`` command.
+The measurements and the measurement archives that you already have defined in your 4.3.x (or 4.2.x) installation will be migrated to the 4.4 toolkit automatically.
 
-The measurements and the measurement archives that you already have defined in your 4.3.x (or 4.2.x or 4.1.x) installation will be migrated to the 4.4 toolkit automatically.
+If you are upgrading from 4.2, you'll need to run the command ``apt dist-upgrade`` because of a change in the depencies created by the move to Python 3.
+
+.. note:: You might see ``apt`` issuing a warning about conflicting distribution with a message like ``W: Conflicting distribution: http://downloads.perfsonar.net/debian perfsonar-release InRelease (expected perfsonar-4.3 but got perfsonar-4.4)``  This is expected and can be ignored because you indeed are upgrading from 4.3 to 4.4.
 
 Upgrade to another bundle
 -------------------------
 If you want to move from the `perfsonar-testpoint` bundle to another bundle that we provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
-
-Upgrade from Debian 8 to Debian 9
----------------------------------
-If you have a perfSONAR host running Debian 8 and you want to upgrade it to 9 (Stretch), we recommend you to follow the following steps:
-
-#. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_)
-#. Reboot your system unless already done in previous step.
-#. Change perfSONAR repository from ``perfsonar-4.1`` to ``perfsonar-release`` (if you changed it as a temporary measure as described above)
-#. Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
-#. Reboot your system one last time.
-
-Upgrade from Ubuntu 14 to Ubuntu 16 (or 18)
--------------------------------------------
-If you have a perfSONAR host running Ubuntu 14 and you want to upgrade it to 16, we recommend you to follow the following steps:
-
-#. Upgrade Ubuntu 14 to Ubuntu 16 (following official instructions, here are `Xenial Upgrades notes <https://help.ubuntu.com/community/XenialUpgrades>`_)
-#. Reboot your system unless already done in previous step.
-#. Change perfSONAR repository from ``perfsonar-4.1`` to ``perfsonar-release`` (if you changed it as a temporary measure as described above)
-#. Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
-#. Reboot your system one last time.
 
