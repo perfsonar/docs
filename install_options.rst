@@ -43,8 +43,8 @@ CentOS Bundle Installation
 ==========================
 * See :doc:`install_centos`
 
-Debian Bundle Installation 
-==========================
+Debian/Ubuntu Bundle Installation
+=================================
 * See :doc:`install_debian` 
 
 Docker Installation 
