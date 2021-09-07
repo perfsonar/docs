@@ -4,19 +4,18 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>pScheduler Disk-to-Disk Tests &#8212; perfSONAR Toolkit 4.4.1 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="What is pSConfig?" href="psconfig_intro.html" />
@@ -65,9 +64,9 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pscheduler-disk-to-disk-tests">
+  <section id="pscheduler-disk-to-disk-tests">
 <h1>pScheduler Disk-to-Disk Tests<a class="headerlink" href="#pscheduler-disk-to-disk-tests" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
+<section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This document describes how to install the plug-in for perfSONAR disk-to-disk tests. This includes tools for standard curl tool as well as GridFTP using Globus. The sections below walk-through the following:</p>
 <blockquote>
@@ -79,8 +78,8 @@
 <li><p>Adding tests to pSConfig and MaDDash</p></li>
 </ol>
 </div></blockquote>
-</div>
-<div class="section" id="configuring-yum-repositories">
+</section>
+<section id="configuring-yum-repositories">
 <h2>Configuring Yum Repositories<a class="headerlink" href="#configuring-yum-repositories" title="Permalink to this headline">¶</a></h2>
 <p>You can setup the yum repository with the commands below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">epel</span><span class="o">-</span><span class="n">release</span>
@@ -88,15 +87,15 @@
 <span class="n">yum</span> <span class="n">clean</span> <span class="nb">all</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="installing-perfsonar">
+</section>
+<section id="installing-perfsonar">
 <h2>Installing perfSONAR<a class="headerlink" href="#installing-perfsonar" title="Permalink to this headline">¶</a></h2>
 <p>Once the repository is configured you can install perfSONAR and the associated plug-ins using the commands below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">testpoint</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">disk</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">disk</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">tool</span><span class="o">-</span><span class="n">curl</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">tool</span><span class="o">-</span><span class="n">globus</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="configuring-globus">
+</section>
+<section id="configuring-globus">
 <h2>Configuring Globus<a class="headerlink" href="#configuring-globus" title="Permalink to this headline">¶</a></h2>
 <p>The perfSONAR project has a set of Ansible rules that help you install and configure <a class="reference external" href="https://www.globus.org/">Globus</a>. It will handle pointing at the Globus yum repos, install required RPMs and make necessary edits to the Globus configuration. First, make sure you have git and ansible installed on your system:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">ansible</span> <span class="n">git</span>
@@ -130,10 +129,10 @@
 </pre></div>
 </div>
 <p>Assuming all of the above work as expected, you are now ready to try transfers with pScheduler.</p>
-</div>
-<div class="section" id="running-disk-to-disk-transfers-with-pscheduler">
+</section>
+<section id="running-disk-to-disk-transfers-with-pscheduler">
 <h2>Running Disk-to-Disk Transfers with pScheduler<a class="headerlink" href="#running-disk-to-disk-transfers-with-pscheduler" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="gridftp-test">
+<section id="gridftp-test">
 <h3>GridFTP Test<a class="headerlink" href="#gridftp-test" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">tool</span> <span class="n">globus</span> <span class="n">disk</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">disk</span> <span class="o">--</span><span class="n">source</span> <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">sunn</span><span class="o">-</span><span class="n">dtn</span><span class="o">.</span><span class="n">es</span><span class="o">.</span><span class="n">net</span><span class="p">:</span><span class="mi">2811</span><span class="o">/</span><span class="n">data1</span><span class="o">/</span><span class="mi">10</span><span class="n">M</span><span class="o">.</span><span class="n">dat</span> <span class="o">--</span><span class="n">dest</span> <span class="n">file</span><span class="p">:</span><span class="o">///</span><span class="n">tmp</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">out</span> <span class="o">--</span><span class="n">timeout</span> <span class="n">PT10S</span>
 </pre></div>
@@ -142,8 +141,8 @@
 <p class="admonition-title">Note</p>
 <p>See <a class="reference external" href="https://fasterdata.es.net/performance-testing/DTNs/">https://fasterdata.es.net/performance-testing/DTNs/</a> for a list of GridFtp servers that can be used for testing*</p>
 </div>
-</div>
-<div class="section" id="standard-curl-test">
+</section>
+<section id="standard-curl-test">
 <h3>Standard Curl Test<a class="headerlink" href="#standard-curl-test" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">tool</span> <span class="n">curl</span> <span class="n">disk</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">disk</span> <span class="o">--</span><span class="n">source</span> <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">speedtest</span><span class="o">.</span><span class="n">tele2</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="mi">1</span><span class="n">KB</span><span class="o">.</span><span class="n">zip</span> <span class="o">--</span><span class="n">dest</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">out</span> <span class="o">--</span><span class="n">timeout</span> <span class="n">PT5S</span>
 </pre></div>
@@ -152,14 +151,14 @@
 <p class="admonition-title">Note</p>
 <p>See <cite>pscheduler task disk-to-disk –help</cite> for a full list of options</p>
 </div>
-</div>
-</div>
-<div class="section" id="configuring-psconfig-and-maddash">
+</section>
+</section>
+<section id="configuring-psconfig-and-maddash">
 <h2>Configuring pSConfig and MaDDash<a class="headerlink" href="#configuring-psconfig-and-maddash" title="Permalink to this headline">¶</a></h2>
 <p>You can add <cite>disk-to-disk</cite> tests to a pSConfig template. There is a lot of flexibility in how you define your tests, but one example can be found here: <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json">https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json</a></p>
 <p>Once you have the test added to the pSConfig template and assuming you are storing them in esmond, then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash <a class="reference external" href="https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharing">quick install guide</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -263,7 +262,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
     </div>
   </body>
 </html>

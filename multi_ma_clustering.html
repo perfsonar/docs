@@ -4,19 +4,18 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Clustering a Measurement Archive &#8212; perfSONAR Toolkit 4.4.1 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Managing Measurement Archive Data" href="multi_ma_backups.html" />
@@ -65,7 +64,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="clustering-a-measurement-archive">
+  <section id="clustering-a-measurement-archive">
 <h1>Clustering a Measurement Archive<a class="headerlink" href="#clustering-a-measurement-archive" title="Permalink to this headline">¶</a></h1>
 <p>The perfSONAR Measurement Archive software esmond is built-on a number of technologies that allow you to run the service across a collection of servers. A collection of servers configured in such a manner is often referred to as a <em>cluster</em>. In general, the primary motivation behind running the measurement archive on a cluster is for one or more of the reasons below:</p>
 <ol class="arabic simple">
@@ -79,9 +78,9 @@
 <li><p><a class="reference external" href="http://www.postgresql.org">Apache httpd</a> - Esmond runs on the Apache HTTPD web server. Apache has a number of options for handling fail-overs and load balancing that are detailed in <a class="reference internal" href="#multi-ma-clustering-httpd"><span class="std std-ref">Clustering Apache httpd</span></a>.</p></li>
 </ol>
 <p>You may cluster some or all of the components if you so choose. For example, you could have a Cassandra cluster but run PostgreSQL and Apache on a single server. It should also be noted that all of these components have been around for a number of years and the documentation that exists on clustering them is extensive. This document will do its best to identify key features and common configurations but is by no means an exhaustive list. It is highly recommended you consult each components documentation before embarking on an attempt to create a clustered configuration.</p>
-<div class="section" id="clustering-cassandra">
+<section id="clustering-cassandra">
 <span id="multi-ma-clustering-cassandra"></span><h2>Clustering Cassandra<a class="headerlink" href="#clustering-cassandra" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="basics-of-cassandra-clustering">
+<section id="basics-of-cassandra-clustering">
 <h3>Basics of Cassandra Clustering<a class="headerlink" href="#basics-of-cassandra-clustering" title="Permalink to this headline">¶</a></h3>
 <p>Cassandra is the component that holds all of the measurement results. Cassandra was designed with running on multiple nodes in mind, and is probably more commonly run on multiple nodes than a single node. The ability to implement high availability and load balancing do not require any additional software. The distribution of your data, how many copies exist and the number of nodes that can go down without causing an interruption are primarily determined by the following two variables:</p>
 <ol class="arabic simple">
@@ -92,8 +91,8 @@
 <p>As another example, let’s say we still have two nodes but the replication factor is increased to 2. This means that our cluster will keep 2 copies of the data distributed evenly among the nodes. Each node has 100% of the data, so 1 node may go down and our archive can still access the complete set of data.  The main takeaway from this example is that <strong>increasing the replication factor has increased the number of nodes we can tolerate as down</strong>.</p>
 <p>As a final example, let’s say we keep the replication_factor fixed at 2 but increase to 10 nodes. How many nodes can go down without affecting the cluster? The answer is still only 1. The reason is that adding more nodes further distributes the data amongst the host, with each having roughly 20% of the data (2 replicas divided by 10 hosts = 20% each) but does not increase the number of copies. Thus if we lose 2 nodes, we have no way guaranteeing they didn’t overlap in the data they contained. In general, you can only support (replication_factor - 1) hosts going down regardless the number of nodes. In other words, <strong>increasing the number of nodes increases data distribution, but does not increase fault tolerance unless there is a corresponding increase in the replication_factor</strong>.</p>
 <p>Those are the basic ideas but there are lots more details published if you are interested. For more information on how Cassandra distributes data see the <a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/architecture/architectureDataDistributeAbout_c.html">Datastax Cassandra Documentation</a>.</p>
-</div>
-<div class="section" id="initializing-the-cluster">
+</section>
+<section id="initializing-the-cluster">
 <h3>Initializing the Cluster<a class="headerlink" href="#initializing-the-cluster" title="Permalink to this headline">¶</a></h3>
 <p>Assuming you have read about clustering Cassandra, decided it is the best course and identified an initial set of nodes to use in your cluster, you are ready to start configuring your cluster. It is highly recommended you read the <a class="reference external" href="http://docs.datastax.com/en/cassandra/2.0/cassandra/initialize/initializeTOC.html">Datastax Cluster Initialization</a> page for specifics on how build your cluster. We will go through a simple two node example in this document to give a general idea of the process, but for more information it is highly recommended you see the official documentation.</p>
 <p>Now, Let’s assume we have a two node cluster we wish to initialize. Our nodes have IP addresses 10.0.1.35 and 10.0.1.36 respectively. The steps to configure these into a cluster are as follows:</p>
@@ -144,17 +143,17 @@
 <span class="n">Status</span><span class="o">=</span><span class="n">Up</span><span class="o">/</span><span class="n">Down</span>
 <span class="o">|/</span> <span class="n">State</span><span class="o">=</span><span class="n">Normal</span><span class="o">/</span><span class="n">Leaving</span><span class="o">/</span><span class="n">Joining</span><span class="o">/</span><span class="n">Moving</span>
 <span class="o">--</span>  <span class="n">Address</span>    <span class="n">Load</span>       <span class="n">Tokens</span>  <span class="n">Owns</span>   <span class="n">Host</span> <span class="n">ID</span>                               <span class="n">Rack</span>
-<span class="n">UN</span>  <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.35</span>  <span class="mf">5.91</span> <span class="n">MB</span>    <span class="mi">256</span>     <span class="mf">51.0</span><span class="o">%</span>  <span class="n">ccdab562</span><span class="o">-</span><span class="n">b2a2</span><span class="o">-</span><span class="mf">459e-9</span><span class="n">a14</span><span class="o">-</span><span class="mi">6</span><span class="n">b9758a827fd</span>  <span class="n">rack1</span>
-<span class="n">UN</span>  <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.36</span>  <span class="mf">3.07</span> <span class="n">MB</span>    <span class="mi">256</span>     <span class="mf">49.0</span><span class="o">%</span>  <span class="mi">7</span><span class="n">a2be11f</span><span class="o">-</span><span class="mi">02</span><span class="n">c5</span><span class="o">-</span><span class="mi">4997</span><span class="o">-</span><span class="mi">926</span><span class="n">a</span><span class="o">-</span><span class="mi">817960</span><span class="n">c71e18</span>  <span class="n">rack1</span>
+<span class="n">UN</span>  <span class="mf">10.0.1.35</span>  <span class="mf">5.91</span> <span class="n">MB</span>    <span class="mi">256</span>     <span class="mf">51.0</span><span class="o">%</span>  <span class="n">ccdab562</span><span class="o">-</span><span class="n">b2a2</span><span class="o">-</span><span class="mf">459e-9</span><span class="n">a14</span><span class="o">-</span><span class="mi">6</span><span class="n">b9758a827fd</span>  <span class="n">rack1</span>
+<span class="n">UN</span>  <span class="mf">10.0.1.36</span>  <span class="mf">3.07</span> <span class="n">MB</span>    <span class="mi">256</span>     <span class="mf">49.0</span><span class="o">%</span>  <span class="mi">7</span><span class="n">a2be11f</span><span class="o">-</span><span class="mi">02</span><span class="n">c5</span><span class="o">-</span><span class="mi">4997</span><span class="o">-</span><span class="mi">926</span><span class="n">a</span><span class="o">-</span><span class="mi">817960</span><span class="n">c71e18</span>  <span class="n">rack1</span>
 </pre></div>
 </div>
 </li>
 </ol>
-</div>
-<div class="section" id="configuring-esmond-to-use-the-cluster">
+</section>
+<section id="configuring-esmond-to-use-the-cluster">
 <h3>Configuring Esmond to use the Cluster<a class="headerlink" href="#configuring-esmond-to-use-the-cluster" title="Permalink to this headline">¶</a></h3>
 <p>Once the cluster has been initialized, we must configure esmond to use the cluster. This requires setting <em>cassandra_servers</em> in <em>/etc/esmond/esmond.conf</em> to the list of nodes in our cluster:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cassandra_servers</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.35</span><span class="p">:</span><span class="mi">9160</span><span class="p">,</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">1.36</span><span class="p">:</span><span class="mi">9160</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cassandra_servers</span> <span class="o">=</span> <span class="mf">10.0.1.35</span><span class="p">:</span><span class="mi">9160</span><span class="p">,</span><span class="mf">10.0.1.36</span><span class="p">:</span><span class="mi">9160</span>
 </pre></div>
 </div>
 <p>We list all of the nodes because any of them can coordinate the request. Esmond will randomly contact one of the nodes and (assuming we set our replication factor high enough relative to the number of down nodes) will fallback to another node if it tries to contact one that is unreachable.</p>
@@ -162,8 +161,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cassandra_replicas</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="changing-the-replication-factor">
+</section>
+<section id="changing-the-replication-factor">
 <h3>Changing the replication_factor<a class="headerlink" href="#changing-the-replication-factor" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><p>You may want to change he replication_factor as you add more nodes, requirements change or if you started esmond before deciding on the value. If you would like to change this do the following:</p>
@@ -175,15 +174,15 @@
 </div>
 </li>
 <li><p>On any <strong>single</strong> cassandra node run the following (replacing <em>10.0.1.35</em> with your host and <em>2</em> with the replication factor you desire):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cqlsh</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.35</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;ALTER KEYSPACE esmond WITH REPLICATION = { &#39;class&#39; : &#39;SimpleStrategy&#39;, &#39;replication_factor&#39; : 2 };&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cqlsh</span> <span class="mf">10.0.1.35</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;ALTER KEYSPACE esmond WITH REPLICATION = { &#39;class&#39; : &#39;SimpleStrategy&#39;, &#39;replication_factor&#39; : 2 };&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>On <strong>every</strong> cassandra node, run <code class="docutils literal notranslate"><span class="pre">nodetool</span> <span class="pre">repair</span></code>. Do not run in parallel, wait for the command to complete before moving on to the next node. Note that running this command may take awhile depending on the amount of data.</p></li>
 </ol>
-</div>
-</div>
-<div class="section" id="clustering-postgresql">
+</section>
+</section>
+<section id="clustering-postgresql">
 <span id="multi-ma-clustering-postgresql"></span><h2>Clustering PostgreSQL<a class="headerlink" href="#clustering-postgresql" title="Permalink to this headline">¶</a></h2>
 <p>PostgreSQL provides a number of options for high availability, data replication, and load balancing. It actually has too many options to realistically cover in this document. The <a class="reference external" href="http://www.postgresql.org/docs/current/interactive/high-availability.html">PostgreSQL High Availability, Load Balancing and Replication</a> page does a thorough job of comparing and contrasting the various alternatives. It also directs you how to get started on the various options, so there isn’t need to rehash that here. If you have clustered Postgres or another relational database before, many of the considerations and strategies should be familiar. A few important pieces of information specific to esmond that may be useful for deciding on and configuring the proposed method:</p>
 <ul class="simple">
@@ -191,10 +190,10 @@
 <li><p>You can change the PostgreSQL username, password and host that esmond uses in <em>/etc/esmond/esmond.conf</em> by changing  <em>sql_db_user</em>, <em>sql_db_password</em>, and <em>sql_db_host</em> respectively</p></li>
 <li><p>Often when choosing a replication strategy it is important to understand the write profile of a database. Esmond will only insert new rows into PostgreSQL if you add new tests to be run or change the parameters of an existing test. For example, changing the parameters of a throughput test to run for 30 seconds instead of 20 seconds. Esmond also executes an update on a single column every time it adds new data to Cassandra so that it can keep track of when data was last updated. This means that there will likely be lots of small updates but very few inserts of new data.</p></li>
 </ul>
-</div>
-<div class="section" id="clustering-apache-httpd">
+</section>
+<section id="clustering-apache-httpd">
 <span id="multi-ma-clustering-httpd"></span><h2>Clustering Apache httpd<a class="headerlink" href="#clustering-apache-httpd" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Basics of Cassandra Clustering<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>It is possible to cluster your Apache httpd instances running esmond. Each esmond installation will point at the same Cassandra and PostgreSQL instances/clusters. Clustering Apache will allow incoming requests to be load-balanced and/or failover if one of your Apache instances goes down. This section highlights some of the common load balancing and failover techniques such as:</p>
 <ul class="simple">
@@ -203,8 +202,8 @@
 <li><p><strong>HAProxy and keepalived</strong> - <a class="reference external" href="http://www.haproxy.org">HAProxy</a>  and <a class="reference external" href="http://www.keepalived.org">keepalived</a> are popular open source tools for handling load balancing for a large number of requests while also providing a robust failover mechanism. See <a class="reference internal" href="#multi-ma-clustering-httpd-haproxy"><span class="std std-ref">HAProxy and keepalived</span></a> for more details.</p></li>
 </ul>
 <p>This is by no means an exhaustive list of all your options. Scaling Apache is a topic that has been around for several years now, so there is no shortage of literature on the subject. The sections below will hopefully give you an idea of some of your options, but you should not heistate to do your own research in deciding the best solution for you and/or your organization.</p>
-</div>
-<div class="section" id="dns-round-robin">
+</section>
+<section id="dns-round-robin">
 <span id="multi-ma-clustering-httpd-dns"></span><h3>DNS Round Robin<a class="headerlink" href="#dns-round-robin" title="Permalink to this headline">¶</a></h3>
 <p>DNS Round Robin is an approach that involves configuring your Domain Name System (DNS) servers to map a hostname to <em>a list</em> of IP addresses. DNS will then alternate the address returned when a lookup is performed. Note that this provides load balancing only and no health checks are performed by DNS. Therefore if one of the servers at an individual IP goes down, a percentage of your users will get a failure when trying to contact your web server since the failing servers IP will not be removed from the round-robin automatically. If load-balancing is your sole concern, this may be an adequate solution. Otherwise pursuing this load balancing solution will require additional measures if one wishes to handle failures as well. The best way to configure DNS Round Robin is to contact your local network administrator if you think this is the right approach for your  organization. In summary, DNS Round Robin MAY be a good approach if all of the following hold true:</p>
 <ul class="simple">
@@ -213,8 +212,8 @@
 <li><p>You are happy with a simple round robin algorithm for load balancing</p></li>
 </ul>
 <p>If one or more of the above do not hold true, likely pursuing another option would be recommended.</p>
-</div>
-<div class="section" id="mod-proxy-balancer">
+</section>
+<section id="mod-proxy-balancer">
 <span id="multi-ma-clustering-httpd-modproxy"></span><h3>mod-proxy-balancer<a class="headerlink" href="#mod-proxy-balancer" title="Permalink to this headline">¶</a></h3>
 <p>The Apache module <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_proxy_balancer.html">mod_proxy_balancer</a> allows one to use an apache server to load balance requests amongst other Apache servers. If you are familiar with configuring Apache this may be a desirable load balancing solution. It also supports multiple load-balancing algorithms in contrast to DNS Round Robin. Again, there are no health checks performed, so it does not handle failovers. In fact, if you create only a single load balancer server, that load balancer can become a single point of failure. With all this in mind, mod_proxy_balancer MAY be a good approach if all of the following hold true:</p>
 <ul class="simple">
@@ -223,8 +222,8 @@
 <li><p>Automatic failover is not a concern OR you have an independent failover mechanism in mind you plan to use in conjunction with mod_proxy_balancer</p></li>
 </ul>
 <p>See the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_proxy_balancer.html">mod_proxy_balancer documentation</a> for details on installing and configuring.</p>
-</div>
-<div class="section" id="haproxy-and-keepalived">
+</section>
+<section id="haproxy-and-keepalived">
 <span id="multi-ma-clustering-httpd-haproxy"></span><h3>HAProxy and keepalived<a class="headerlink" href="#haproxy-and-keepalived" title="Permalink to this headline">¶</a></h3>
 <p>This approach is the most flexible and robust of the solutions covered. It also comes with the cost of slightly more complexity (but maybe not as much as you’d expect).  It involves two components:</p>
 <ol class="arabic simple">
@@ -244,9 +243,9 @@
 <li><p>You are familiar with the tools or are willing to learn something new</p></li>
 </ul>
 <p>Both HAProxy and keepalived are available in most major Linux distribution’s packaging systems (such as yum and apt). For more information on configuring these tools see the <a class="reference external" href="http://www.haproxy.org">HAProxy</a> and <a class="reference external" href="http://www.keepalived.org">keepalived</a> web pages.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -355,7 +354,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
     </div>
   </body>
 </html>
