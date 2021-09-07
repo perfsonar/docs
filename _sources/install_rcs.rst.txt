@@ -85,8 +85,8 @@ Testing Debian Upgrades
 
 You may test upgrades of perfSONAR Debian packages by following the steps to setup the Debian repository in the :ref:`previous section <install_rcs-clean-debian>`. Once completed run the following to upgrade::
 
-    apt-get update
-    apt-get dist-upgrade
+    apt update
+    apt upgrade
 
 
 Testing Docker Installation

@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>What is pScheduler? &#8212; perfSONAR Toolkit 4.4.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What is pScheduler? &#8212; perfSONAR Toolkit 4.4.1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -51,7 +52,8 @@
         <li class="right" >
           <a href="using_ext_tools.html" title="External Tools"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">What is pScheduler?</a></li> 
       </ul>
     </div>
     </div>
@@ -67,40 +69,40 @@
 <h1>What is pScheduler?<a class="headerlink" href="#what-is-pscheduler" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler is responsible for managing the execution of network measurements, or more generally <a class="reference internal" href="#term-task"><span class="xref std std-term">tasks</span></a>, in perfSONAR. When you want to run a network measurement on perfSONAR you ask a pScheduler server, either through the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command-line client or through the pScheduler API.</p>
+<p>pScheduler is responsible for managing the execution of network measurements, or more generally <a class="reference internal" href="#term-Task"><span class="xref std std-term">tasks</span></a>, in perfSONAR. When you want to run a network measurement on perfSONAR you ask a pScheduler server, either through the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command-line client or through the pScheduler API.</p>
 </div>
 <div class="section" id="terminology">
 <h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
 <dl class="glossary simple">
-<dt id="term-archiver">Archiver</dt><dd><p>Software that transfers <a class="reference internal" href="#term-result"><span class="xref std std-term">results</span></a> to long-term storage or elsewhere for further processing.</p>
+<dt id="term-Archiver">Archiver</dt><dd><p>Software that transfers <a class="reference internal" href="#term-Result"><span class="xref std std-term">results</span></a> to long-term storage or elsewhere for further processing.</p>
 </dd>
-<dt id="term-assist-server">Assist Server</dt><dd><p>A pScheduler server that accepts a test specification and can return the <a class="reference internal" href="#term-lead-participant"><span class="xref std std-term">lead participant</span></a>. The assist server may or may not be involved in the test specified, it’s role is simply to tell you the lead where the task should be submitted. By default the assist server is always the local host.</p>
+<dt id="term-Assist-Server">Assist Server</dt><dd><p>A pScheduler server that accepts a test specification and can return the <a class="reference internal" href="#term-Lead-Participant"><span class="xref std std-term">lead participant</span></a>. The assist server may or may not be involved in the test specified, it’s role is simply to tell you the lead where the task should be submitted. By default the assist server is always the local host.</p>
 </dd>
-<dt id="term-context">Context</dt><dd><p>A construct that allows certain user-specified changes to the execution environment prior to the execution of a <a class="reference internal" href="#term-tool"><span class="xref std std-term">tool</span></a> running a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>.</p>
+<dt id="term-Context">Context</dt><dd><p>A construct that allows certain user-specified changes to the execution environment prior to the execution of a <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tool</span></a> running a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a>.</p>
 </dd>
-<dt id="term-lead-participant">Lead Participant</dt><dd><p>The pScheduler server where a task should be submitted. It will become responsible for contacting other participants, making scheduling decisions based on gathered information and archiving results.</p>
+<dt id="term-Lead-Participant">Lead Participant</dt><dd><p>The pScheduler server where a task should be submitted. It will become responsible for contacting other participants, making scheduling decisions based on gathered information and archiving results.</p>
 </dd>
-<dt id="term-limits">Limits</dt><dd><p>Rules that define who is allowed to run what type of tests</p>
+<dt id="term-Limits">Limits</dt><dd><p>Rules that define who is allowed to run what type of tests</p>
 </dd>
-<dt id="term-participant">Participant</dt><dd><p>A node that runs pScheduler and handles some facet of conducting a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>.</p>
+<dt id="term-Participant">Participant</dt><dd><p>A node that runs pScheduler and handles some facet of conducting a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a>.</p>
 </dd>
-<dt id="term-result">Result</dt><dd><p>The observation produced by a <a class="reference internal" href="#term-tool"><span class="xref std std-term">tool</span></a> conducting a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>. For example, after conducting a throughput test, the iperf3 tool might generate a result that says “throughput from A to B was 3.4 Gb/s.”</p>
+<dt id="term-Result">Result</dt><dd><p>The observation produced by a <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tool</span></a> conducting a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a>. For example, after conducting a throughput test, the iperf3 tool might generate a result that says “throughput from A to B was 3.4 Gb/s.”</p>
 </dd>
-<dt id="term-run">Run</dt><dd><p>The act of conducting a <a class="reference internal" href="#term-task"><span class="xref std std-term">task</span></a> one time and producing a <a class="reference internal" href="#term-result"><span class="xref std std-term">result</span></a>.</p>
+<dt id="term-Run">Run</dt><dd><p>The act of conducting a <a class="reference internal" href="#term-Task"><span class="xref std std-term">task</span></a> one time and producing a <a class="reference internal" href="#term-Result"><span class="xref std std-term">result</span></a>.</p>
 </dd>
-<dt id="term-schedule-horizon">Schedule Horizon</dt><dd><p>The amount ahead of time that pScheduler puts a run on the schedule.</p>
+<dt id="term-Schedule-Horizon">Schedule Horizon</dt><dd><p>The amount ahead of time that pScheduler puts a run on the schedule.</p>
 </dd>
-<dt id="term-task">Task</dt><dd><p>A job for pScheduler to do, consisting of a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a> to be carried out, scheduling information and other options.</p>
+<dt id="term-Task">Task</dt><dd><p>A job for pScheduler to do, consisting of a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a> to be carried out, scheduling information and other options.</p>
 </dd>
-<dt id="term-test">Test</dt><dd><p>A set of the parameters required to perform a unit of work. A unit of work is usually a network measurement in perfSONAR, but could be any type of operation. Tests are generally named in terms of what is being produced, not what does the producing. As an example, if what is being produced is a report of the speed of a data transfer, then the test name is <em>throughput</em> NOT a <a class="reference internal" href="#term-tool"><span class="xref std std-term">tool</span></a> name like <em>iperf</em>.</p>
+<dt id="term-Test">Test</dt><dd><p>A set of the parameters required to perform a unit of work. A unit of work is usually a network measurement in perfSONAR, but could be any type of operation. Tests are generally named in terms of what is being produced, not what does the producing. As an example, if what is being produced is a report of the speed of a data transfer, then the test name is <em>throughput</em> NOT a <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tool</span></a> name like <em>iperf</em>.</p>
 </dd>
-<dt id="term-tool">Tool</dt><dd><p>A program executed during a <a class="reference internal" href="#term-run"><span class="xref std std-term">run</span></a> of a <a class="reference internal" href="#term-task"><span class="xref std std-term">task</span></a> to carry out a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>. For example, the <em>iperf3</em> tool conducts throughput tests and the <em>traceroute</em> and <em>tracepath</em> tools conduct trace tests.</p>
+<dt id="term-Tool">Tool</dt><dd><p>A program executed during a <a class="reference internal" href="#term-Run"><span class="xref std std-term">run</span></a> of a <a class="reference internal" href="#term-Task"><span class="xref std std-term">task</span></a> to carry out a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a>. For example, the <em>iperf3</em> tool conducts throughput tests and the <em>traceroute</em> and <em>tracepath</em> tools conduct trace tests.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="benefits">
 <h2>Benefits<a class="headerlink" href="#benefits" title="Permalink to this headline">¶</a></h2>
-<p>The pScheduler server will handle the coordination, execution and optionally storage of the task requested. Many of the <a class="reference internal" href="#term-tool"><span class="xref std std-term">tools</span></a> pScheduler executes could be run independently of pScheduler, but the added value provided by pScheduler is significant to perfSONAR hosts for the following reasons:</p>
+<p>The pScheduler server will handle the coordination, execution and optionally storage of the task requested. Many of the <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tools</span></a> pScheduler executes could be run independently of pScheduler, but the added value provided by pScheduler is significant to perfSONAR hosts for the following reasons:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>Measurement Integrity</strong> - pScheduler maintains a schedule of all measurements to be run and will not allow any measurements it knowns about to run simultaneously if doing so would adversely affect the result in a significant way. For example, it will not run two throughput tests at the same time as the competition for resources could affect the results of each. In contrast it will run latency tests in the background as the low resource consumption does not significantly affect results of parallel tests.</p></li>
@@ -142,7 +144,7 @@
 <p>pScheduler was introduced in perfSONAR version 4.0 and replaced a component called BWCTL. pScheduler is a completely new codebase and protocol. It does NOT speak the BWCTL protocol natively but it does provide a backward compatibility strategy with BWCTL. This strategy does have limitations though and works as follows:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>For tests from a host running pScheduler to a host with only BWCTL</strong> - For <em>throughput</em>, <em>rtt</em> and <em>trace</em> tests, pScheduler will automatically detect the lack of pScheduler on the remote-end and the presence of BWCTL. It will then choose a pScheduler <a class="reference internal" href="#term-tool"><span class="xref std std-term">tool</span></a> that  executes the <em>bwctl</em>, <em>bwping</em> or <em>bwctraceroute</em> command instead of the underlying tool directly. For <em>throughput</em> tests, this has the side effect of requiring more time on the pScheduler schedule since BWCTL may not run the test immediately. <em>If the BWCTL test does not start within 60 seconds of the start time assigned by pScheduler, the test will fail</em>.</p></li>
+<li><p><strong>For tests from a host running pScheduler to a host with only BWCTL</strong> - For <em>throughput</em>, <em>rtt</em> and <em>trace</em> tests, pScheduler will automatically detect the lack of pScheduler on the remote-end and the presence of BWCTL. It will then choose a pScheduler <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tool</span></a> that  executes the <em>bwctl</em>, <em>bwping</em> or <em>bwctraceroute</em> command instead of the underlying tool directly. For <em>throughput</em> tests, this has the side effect of requiring more time on the pScheduler schedule since BWCTL may not run the test immediately. <em>If the BWCTL test does not start within 60 seconds of the start time assigned by pScheduler, the test will fail</em>.</p></li>
 <li><p><strong>For tests from a host running BWCTL to a host with only pScheduler</strong> - perfSONAR 4.0 still runs the BWCTL server to support this use case. The pScheduler server knows nothing about the BWCTL server’s schedule and vice versa, <em>so it is possible tests could collide</em>. Depending on how many remote sites initiates tests to you via BWCTL, the risk of this collision may be relatively low.</p></li>
 </ul>
 </div></blockquote>
@@ -162,6 +164,7 @@
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -213,7 +216,8 @@
         <li class="right" >
           <a href="using_ext_tools.html" title="External Tools"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">What is pScheduler?</a></li> 
       </ul>
     </div>
     <footer id="fat">
@@ -258,7 +262,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>
