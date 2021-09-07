@@ -5,7 +5,6 @@ Bundle Installation on Debian
 perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.4 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
 * Debian 9 Stretch
-* Ubuntu 16 Xenial Xerus
 * Ubuntu 18 Bionic Beaver
 
 Partial support of perfSONAR, i.e. only ``perfsonar-testpoint`` bundle at the moment, is also available on the following distributions:
@@ -27,7 +26,7 @@ System Requirements
   * ARM64 (arm64)
   * PPC64 (ppc64el)
 
-* **Operating System:**  Any system running a Debian 9, Ubuntu 16 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 9 or Ubuntu 16/18 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 9 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 9 or Ubuntu 18 might work too but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
@@ -245,7 +244,7 @@ After installing the perfsonar-toolkit bundle, you can refer to the general perf
 
 Upgrading from 4.3.x (or 4.2.x)
 ========================================
-If you had installed a perfSONAR 4.3.x (or 4.2.x) bundle and you now want to upgrade to perfSONAR 4.4, you'll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Debian 10, Ubuntu 16 and Ubuntu 18.
+If you had installed a perfSONAR 4.3.x (or 4.2.x) bundle and you now want to upgrade to perfSONAR 4.4, you'll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Debian 10 and Ubuntu 18.
 
 Upgrade the perfSONAR installation
 ----------------------------------
@@ -265,4 +264,15 @@ If you are upgrading from 4.2, you'll need to run the command ``apt dist-upgrade
 Upgrade to another bundle
 -------------------------
 If you want to move from the `perfsonar-testpoint` bundle to another bundle that we provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
+
+Upgrade from Ubuntu 16 to Ubuntu 18
+-----------------------------------
+If you have a perfSONAR host running Ubuntu 16 and you want to upgrade it to 18, we recommend you to follow the following steps:
+
+* Upgrade Ubuntu 16 to Ubuntu 18 (following official instructions, here are `Bionic Upgrades notes <https://help.ubuntu.com/community/BionicUpgrades>`_)
+* Reboot your system unless already done in previous step.
+* Run apt-get update; apt-get dist-upgrade to get the latest version of perfSONAR.
+* Reboot your system one last time.
+
+Alternatively, do a fresh installation of perfSONAR on Ubuntu 18.
 
