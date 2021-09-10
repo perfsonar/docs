@@ -158,6 +158,43 @@ calculated based on the iteration::
         }
     }
 
+``continue-if`` - A jq transform that determines, based on the results
+of a job, whether the batch processor should continue to the next job
+or abort the batch.  The input given to the transform is the same as
+the value of the ``results`` pair in the output as described below.
+For example::
+
+    [
+      {
+        "task": { ,,, },
+        "runs": [
+          {
+            "application/json": {
+              "schema": 1,
+              "duration": "PT2S",
+              "succeeded": true
+            },
+            "text/plain": " ... ",
+            "text/html": " ... "
+          }
+        ]
+      }
+    ]
+
+The transform should return ```true`` for the batch to continue with
+the next job or ``false`` to abort the batch without processing any
+subsequent jobs.  Any other value is treated as an error and
+the batch will be aborted with no results.
+
+A ``continue-if`` that decides whether to continue based on the
+success or failure of the first run in a job would look like this::
+
+    {
+        "task": { ... },
+        "continue-if": {
+            "script": ".[0].runs[0].\"application/json\".succeeded"
+        }
+     }
 
 
 .. _pscheduler_batch_output:
