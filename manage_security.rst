@@ -70,7 +70,7 @@ Depending on operating system version used and how your perfSONAR host is custom
 | DHCPv6          |             | 546, 547   |
 +-----------------+-------------+------------+
 
-Some ports are also used to access the perfSOANR Toolkit management interfaces:
+Some ports are also used to access the perfSONAR Toolkit management interfaces:
 
 +--------------------------------------------+
 | perfSONAR Toolkit Ports                    | 
