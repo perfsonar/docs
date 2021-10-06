@@ -1013,9 +1013,8 @@ Its ``data`` is an object containing the following pairs:
   if the run's time range overlaps the specified range but does not
   fall completely within it.
 
-Note that limits of this type are not evaluated and will be
-considered to have passed when determining whether a task will be
-allowed on the system.
+Note that limits of this type are only evaluated when scheduling runs
+and will be considered having passed when a task is submitted.
 
 For example::
 
@@ -1034,7 +1033,7 @@ For example::
 ``run-schedule`` - Check Attributes of the Run Time
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``run-daterange`` limit tests to see whether attributes the time
+The ``run-schedule`` limit tests to see whether attributes of the time
 range for a run matches those specified.
 
 Its ``data`` is an object containing the following pairs.  The format
@@ -1059,9 +1058,8 @@ following pairs:
 - ``lower`` - An integer specifying the lower end of the range.
 - ``upper`` - An integer specifying the upper end of the range.
 
-Note that this limits of this type are not evaluated and will be
-considered to have passed when determining whether a task will be
-allowed on the system.
+Note that limits of this type are only evaluated when scheduling runs
+and will be considered having passed when a task is submitted.
 
 For example::
 
