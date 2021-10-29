@@ -78,7 +78,7 @@ Any pScheduler task can be configured to run repeatedly by adding options to the
 
     * ``--start TIMESTAMP`` - Run the first iteration of the task at _timestamp_.
     * ``--repeat DURATION`` - Repeat runs at intervals of ``DURATION``.
-    * ``--repeat-cron CRONSPEC`` - Repeat runs cron(8)-style according to ``CRONSPEC``.  ``CRONSPEC`` is a `POSIX-standard cron entry specification <https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html>`_  without a shell command attached (e.g., ``0,20,40 * * * 1-5`).
+    * ``--repeat-cron CRONSPEC`` - Repeat runs cron(8)-style according to ``CRONSPEC``.  ``CRONSPEC`` is a `POSIX-standard cron entry specification <https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html>`_  without a shell command attached (e.g., ``0,20,40 * * * 1-5``).
     * ``--max-runs N`` - Allow the task to run up to ``N`` times.
     * ``--until TIMESTAMP`` - Repeat runs of the task until ``TIMESTAMP``.
     * ``--slip DURATION`` - Allow the start of each run to be as much as ``DURATION`` later than their ideal scheduled time.  If the environment variable *PSCHEDULER_SLIP* is present, its value will be used as a default, and.  Failing that, the default will be ``PT5M``.  (Note that the slip value also applies to non-repeating tasks.)
