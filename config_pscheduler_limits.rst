@@ -1047,7 +1047,7 @@ of the pairs is described below.
   ISO 8601.
 - ``hour`` - The hours in which the run will happen, numbered from ``0`` to ``23``
 - ``minute`` - The minutes in which the run will happen, numbered from ``0`` to ``59``.
-- ``minute`` - The seconds in which the run will happen, numbered from ``0`` to ``59``.
+- ``second`` - The seconds in which the run will happen, numbered from ``0`` to ``59``.
 
 All pairs are optional.
 
