@@ -4,18 +4,19 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Troubleshooting Docker Containers &#8212; perfSONAR Toolkit 4.4.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Troubleshooting Docker Containers &#8212; perfSONAR Toolkit 4.4.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="User Management" href="pwa_user_management.html" />
@@ -51,7 +52,7 @@
         <li class="right" >
           <a href="pwa_docker_create.html" title="Creating Docker containers"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Troubleshooting Docker Containers</a></li> 
       </ul>
@@ -65,7 +66,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="troubleshooting-docker-containers">
+  <div class="section" id="troubleshooting-docker-containers">
 <h1>Troubleshooting Docker Containers<a class="headerlink" href="#troubleshooting-docker-containers" title="Permalink to this headline">¶</a></h1>
 <p><strong>If you are not using Docker, SKIP THIS PAGE</strong></p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> command to list the running containers.</p>
@@ -82,13 +83,13 @@ c10b07ae72cc        nginx                  <span class="s2">&quot;nginx -g &#39;
 </div>
 <p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
 <p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
-<section id="troubleshooting-containers">
+<div class="section" id="troubleshooting-containers">
 <h2>Troubleshooting Containers<a class="headerlink" href="#troubleshooting-containers" title="Permalink to this headline">¶</a></h2>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span></code> command to see logs for a container. Adjust <code class="docutils literal notranslate"><span class="pre">--tail</span></code> to change how many logs are displayed. Add the <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag to watch the logs as new records come in (like <code class="docutils literal notranslate"><span class="pre">tail</span></code>)</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker logs pwa-admin1 --tail 10</span>
 <span class="m">1</span><span class="p">|</span>pwaadmin       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:41:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: HTTP POST /health/pwacache <span class="nv">statusCode</span><span class="o">=</span><span class="m">200</span>, <span class="nv">url</span><span class="o">=</span>/health/pwacache, <span class="nv">host</span><span class="o">=</span><span class="m">0</span>.0.0.0:8080, <span class="nv">accept</span><span class="o">=</span>application/json, content-type<span class="o">=</span>application/json, content-length<span class="o">=</span><span class="m">14</span>, <span class="nv">connection</span><span class="o">=</span>close, <span class="nv">method</span><span class="o">=</span>POST, <span class="nv">httpVersion</span><span class="o">=</span><span class="m">1</span>.1, <span class="nv">originalUrl</span><span class="o">=</span>/health/pwacache, , <span class="nv">responseTime</span><span class="o">=</span><span class="m">1</span>
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: Host found <span class="k">in</span> hostgroup<span class="p">;</span> not expiring  5b05d426f895e94f17bef826 em-4.of-proxy.newy32aoa.net.internet2.edu
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: Host found <span class="k">in</span> hostgroup<span class="p">;</span> not expiring  5b05d42af895e94f17bf0216 perfsonar.cbio.uct.ac.za
+<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: Host found in hostgroup<span class="p">;</span> not expiring  5b05d426f895e94f17bef826 em-4.of-proxy.newy32aoa.net.internet2.edu
+<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: Host found in hostgroup<span class="p">;</span> not expiring  5b05d42af895e94f17bf0216 perfsonar.cbio.uct.ac.za
 <span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: All hosts have been processed successfully
 <span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: successfully deleted hosts
 <span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: processing datasource <span class="k">for</span> expiration/duplication prevention:gls ................................................................................
@@ -98,8 +99,8 @@ c10b07ae72cc        nginx                  <span class="s2">&quot;nginx -g &#39;
 <span class="m">3</span><span class="p">|</span>ui             <span class="p">|</span> <span class="o">[</span>Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:51:56 GMT+0000 <span class="o">(</span>UTC<span class="o">)]</span> <span class="s2">&quot;GET /&quot;</span> <span class="s2">&quot;undefined&quot;</span>
 </pre></div>
 </div>
-</section>
-<section id="interacting-with-containers">
+</div>
+<div class="section" id="interacting-with-containers">
 <h2>Interacting with containers<a class="headerlink" href="#interacting-with-containers" title="Permalink to this headline">¶</a></h2>
 <p>You can enter an interactive <code class="docutils literal notranslate"><span class="pre">bash</span></code> shell within a container like this:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@hostname ~<span class="o">]</span><span class="c1"># docker exec -it pwa-admin1 bash</span>
@@ -118,8 +119,8 @@ drwxrwxr-x <span class="m">2</span> <span class="m">11264</span> <span class="m"
 auth  index.js  nginx  shared
 </pre></div>
 </div>
-</section>
-<section id="firewall">
+</div>
+<div class="section" id="firewall">
 <h2>Firewall<a class="headerlink" href="#firewall" title="Permalink to this headline">¶</a></h2>
 <p>Docker will take care of its own firewall rules, so you don’t have to worry about opening ports manually.</p>
 <p>By default, following are the ports used by nginx container:</p>
@@ -128,8 +129,8 @@ auth  index.js  nginx  shared
 <li><p>80 (For PWA configuration publisher)</p></li>
 <li><p>9443 (For x509 authentication to PWA administrative GUI)</p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
 
             <div class="clearer"></div>
@@ -180,7 +181,7 @@ auth  index.js  nginx  shared
         <li class="right" >
           <a href="pwa_docker_create.html" title="Creating Docker containers"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Troubleshooting Docker Containers</a></li> 
       </ul>
@@ -226,8 +227,8 @@ auth  index.js  nginx  shared
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
+        &#169; Copyright 2022, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

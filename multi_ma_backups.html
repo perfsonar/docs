@@ -4,18 +4,19 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Managing Measurement Archive Data &#8212; perfSONAR Toolkit 4.4.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Managing Measurement Archive Data &#8212; perfSONAR Toolkit 4.4.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="esmond API Reference" href="esmond_api_rest.html" />
@@ -51,7 +52,7 @@
         <li class="right" >
           <a href="multi_ma_clustering.html" title="Clustering a Measurement Archive"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Managing Measurement Archive Data</a></li> 
       </ul>
     </div>
@@ -64,7 +65,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="managing-measurement-archive-data">
+  <div class="section" id="managing-measurement-archive-data">
 <h1>Managing Measurement Archive Data<a class="headerlink" href="#managing-measurement-archive-data" title="Permalink to this headline">¶</a></h1>
 <p>As you collect measurements over time, there are some common tasks you may wish to perform such as:</p>
 <ul class="simple">
@@ -73,16 +74,16 @@
 <li><p>Deleting old data</p></li>
 </ul>
 <p>The measurement archive software, esmond, keeps data in two databases: <a class="reference external" href="https://cassandra.apache.org">Cassandra</a> and <a class="reference external" href="http://www.postgresql.org">PostgreSQL</a>. Both of these databases need to be considered when performing any of the operations listed above. The remainder of this document covers the options and steps needed to perform each of these data management tasks.</p>
-<section id="backing-up-and-restoring-data">
+<div class="section" id="backing-up-and-restoring-data">
 <h2>Backing-up and Restoring Data<a class="headerlink" href="#backing-up-and-restoring-data" title="Permalink to this headline">¶</a></h2>
 <p>You may want to back-up data in case of a failure. Both Cassandra and PostgreSQL offer multiple options for backing-up and restoring data. A few common options are:</p>
 <ul class="simple">
 <li><p><strong>Using built-in replication features of each database</strong> - See <a class="reference internal" href="multi_ma_clustering.html"><span class="doc">Clustering a Measurement Archive</span></a> for more details</p></li>
 <li><p><strong>Using existing tools to create snapshots</strong> - The remainder of this section discusses how to do this for both Cassandra and PostgreSQL</p></li>
 </ul>
-<section id="cassandra-snapshots-with-nodetool">
+<div class="section" id="cassandra-snapshots-with-nodetool">
 <span id="multi-ma-backups-snapshots-cassandra"></span><h3>Cassandra Snapshots with <cite>nodetool</cite><a class="headerlink" href="#cassandra-snapshots-with-nodetool" title="Permalink to this headline">¶</a></h3>
-<section id="preparing-your-environment">
+<div class="section" id="preparing-your-environment">
 <span id="multi-ma-backups-snapshots-cassandra-prep"></span><h4>Preparing Your Environment<a class="headerlink" href="#preparing-your-environment" title="Permalink to this headline">¶</a></h4>
 <p>Cassandra comes with a command called <em>nodetool</em> that is capable of performing a number of administrative operations. One such operation is creating and restoring snapshots of the data. In order to make sure your cassandra server can use nodetool, login to your cassandra host(s) and do the following:</p>
 <ol class="arabic">
@@ -107,8 +108,8 @@
 </div>
 </li>
 </ol>
-</section>
-<section id="creating-the-snapshot">
+</div>
+<div class="section" id="creating-the-snapshot">
 <h4>Creating the Snapshot<a class="headerlink" href="#creating-the-snapshot" title="Permalink to this headline">¶</a></h4>
 <p>You can create a snapshot of the esmond data with the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nodetool</span> <span class="n">snapshot</span> <span class="n">esmond</span> <span class="o">-</span><span class="n">t</span> <span class="n">esmond_snapshot</span>
@@ -122,8 +123,8 @@
 <li><p>/var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot</p></li>
 </ul>
 <p>Note that the directories above contain hard links to the original files, so they should not take a large amount of space on the existing disk. This also means you cannot delete the original files until these are removed.</p>
-</section>
-<section id="moving-snapshots-to-a-remote-server">
+</div>
+<div class="section" id="moving-snapshots-to-a-remote-server">
 <h4>Moving Snapshots to a Remote Server<a class="headerlink" href="#moving-snapshots-to-a-remote-server" title="Permalink to this headline">¶</a></h4>
 <p>You may optionally want to move your back-ups to a remote server. The steps to do so are as follows:</p>
 <ol class="arabic">
@@ -141,8 +142,8 @@
 </div>
 </li>
 </ol>
-</section>
-<section id="restoring-snapshots">
+</div>
+<div class="section" id="restoring-snapshots">
 <h4>Restoring Snapshots<a class="headerlink" href="#restoring-snapshots" title="Permalink to this headline">¶</a></h4>
 <p>You may restore you files, either on a new or existing host, with the following steps:</p>
 <ol class="arabic">
@@ -183,8 +184,8 @@
 </div>
 </li>
 </ol>
-</section>
-<section id="clearing-snapshots">
+</div>
+<div class="section" id="clearing-snapshots">
 <h4>Clearing snapshots<a class="headerlink" href="#clearing-snapshots" title="Permalink to this headline">¶</a></h4>
 <p>You may want to clear a snapshot because it’s too old to be useful, you’d like to delete data to which it is linked or you mistakenly created a snapshot testing the commands in the previous section. Rather than removing all the files by hand you can use a nodetool command to do so. Below is an example of how to remove the snapshot labelled esmond_snapshot in the esmond keyspace:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nodetool</span> <span class="n">clearsnapshot</span> <span class="o">-</span><span class="n">t</span> <span class="n">esmond_snapshot</span> <span class="o">--</span> <span class="n">esmond</span>
@@ -194,11 +195,11 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nodetool</span> <span class="n">clearsnapshot</span> <span class="o">--</span> <span class="n">esmond</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="postgresql-snapshots-with-pg-dump-and-pg-restore">
+</div>
+</div>
+<div class="section" id="postgresql-snapshots-with-pg-dump-and-pg-restore">
 <span id="multi-ma-backups-snapshots-postgresql"></span><h3>PostgreSQL Snapshots with <cite>pg_dump</cite> and <cite>pg_restore</cite><a class="headerlink" href="#postgresql-snapshots-with-pg-dump-and-pg-restore" title="Permalink to this headline">¶</a></h3>
-<section id="id1">
+<div class="section" id="id1">
 <h4>Creating the Snapshot<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>You may create a snapshot of your database with the following command:</p>
 <blockquote>
@@ -216,15 +217,15 @@
 <p class="admonition-title">Note</p>
 <p>If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/etc/esmond/esmond.conf</em></p>
 </div>
-</section>
-<section id="moving-the-snapshot-to-a-remote-server">
+</div>
+<div class="section" id="moving-the-snapshot-to-a-remote-server">
 <h4>Moving the Snapshot to a Remote Server<a class="headerlink" href="#moving-the-snapshot-to-a-remote-server" title="Permalink to this headline">¶</a></h4>
 <p>Moving the snapshot to a different server is as simple using your favorite remote copy tool to move the tarball to another server. For example, using <em>scp</em>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="n">esmond</span><span class="o">.</span><span class="n">tar</span> <span class="n">user</span><span class="nd">@remote</span><span class="o">-</span><span class="n">host</span><span class="p">:</span>
 </pre></div>
 </div>
-</section>
-<section id="restoring-the-snapshot">
+</div>
+<div class="section" id="restoring-the-snapshot">
 <h4>Restoring the Snapshot<a class="headerlink" href="#restoring-the-snapshot" title="Permalink to this headline">¶</a></h4>
 <p>You may restore the snapshot with the following command:</p>
 <blockquote>
@@ -242,13 +243,13 @@
 <p>If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/etc/esmond/esmond.conf</em></p>
 </div>
 <p>This will delete any existing data and replace it with the backup. See the pg_restore documentation for more details.</p>
-</section>
-</section>
-</section>
-<section id="migrating-data">
+</div>
+</div>
+</div>
+<div class="section" id="migrating-data">
 <h2>Migrating Data<a class="headerlink" href="#migrating-data" title="Permalink to this headline">¶</a></h2>
 <p>All hardware is eventually retired and when this happens you may want to move your data to a new server. This section covers how to migrate both the Cassandra and PostgreSQL data.</p>
-<section id="migrating-cassandra-data">
+<div class="section" id="migrating-cassandra-data">
 <h3>Migrating Cassandra Data<a class="headerlink" href="#migrating-cassandra-data" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -271,8 +272,8 @@
 <p class="admonition-title">Note</p>
 <p>If you are running on a cluster you may also need to run <em>nodetool repair</em></p>
 </div>
-</section>
-<section id="migrating-postgresql-data">
+</div>
+<div class="section" id="migrating-postgresql-data">
 <h3>Migrating PostgreSQL Data<a class="headerlink" href="#migrating-postgresql-data" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -310,12 +311,12 @@
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-</section>
-<section id="deleting-old-data">
+</div>
+</div>
+<div class="section" id="deleting-old-data">
 <span id="multi-ma-backups-delete"></span><h2>Deleting Old Data<a class="headerlink" href="#deleting-old-data" title="Permalink to this headline">¶</a></h2>
 <p>You may want to remove old data over time to conserve disk space or to clear out measurements you no longer want displayed. Currently perfSONAR comes with a script named <cite>clean_esmond_db.sh</cite> that uses esmond’s tool named <cite>ps_remove_data.py</cite> capable of deleting data based on age in both in Cassandra and PostgreSQL. This section details usage of that script.</p>
-<section id="using-clean-esmond-db-sh">
+<div class="section" id="using-clean-esmond-db-sh">
 <h3>Using <cite>clean_esmond_db.sh</cite><a class="headerlink" href="#using-clean-esmond-db-sh" title="Permalink to this headline">¶</a></h3>
 <p><cite>clean_esmond_db.sh</cite> sets the environment and then invokes <cite>ps_remove_data.py</cite> with optional parameters that uses a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The script is installed by default with esmond, used to run as a cron job, and can be found at:</p>
 <ul class="simple">
@@ -469,9 +470,9 @@ order of event_type, summary_type and then summary_window. For example, assume a
 <li><p>This tool may perform slowly for large deployments with lots of data and/or clustered databases.</p></li>
 </ul>
 <p>These limitations will be addressed in future versions of the software.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
             <div class="clearer"></div>
@@ -545,7 +546,7 @@ order of event_type, summary_type and then summary_window. For example, assume a
         <li class="right" >
           <a href="multi_ma_clustering.html" title="Clustering a Measurement Archive"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Managing Measurement Archive Data</a></li> 
       </ul>
     </div>
@@ -590,8 +591,8 @@ order of event_type, summary_type and then summary_window. For example, assume a
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
+        &#169; Copyright 2022, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

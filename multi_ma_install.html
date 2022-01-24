@@ -4,18 +4,19 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Deploying a Central Measurement Archive &#8212; perfSONAR Toolkit 4.4.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deploying a Central Measurement Archive &#8212; perfSONAR Toolkit 4.4.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Clustering a Measurement Archive" href="multi_ma_clustering.html" />
@@ -51,7 +52,7 @@
         <li class="right" >
           <a href="psconfig_meshconfig_migrate.html" title="MeshConfig to pSConfig Migration Guide"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Deploying a Central Measurement Archive</a></li> 
       </ul>
     </div>
@@ -64,7 +65,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="deploying-a-central-measurement-archive">
+  <div class="section" id="deploying-a-central-measurement-archive">
 <h1>Deploying a Central Measurement Archive<a class="headerlink" href="#deploying-a-central-measurement-archive" title="Permalink to this headline">¶</a></h1>
 <p>Measurement results from your regular tests are stored in a <strong>measurement archive (MA)</strong>. This leads to the definition of two categories of hosts:</p>
 <ol class="arabic simple">
@@ -79,15 +80,15 @@
 <li><p>You want to store results in multiple places. For example, you may store your results locally but also store them in a central archive where complex analysis tools operate on all the data from multiple hosts in one location.</p></li>
 </ul>
 <p>Those are just a few examples. If you think a central measurement archive is right for your measurement strategy, then read the remainder of this document for instructions on how to configure both your archive host and measurement hosts.</p>
-<section id="installing-the-measurement-archive-software">
+<div class="section" id="installing-the-measurement-archive-software">
 <h2>Installing the Measurement Archive Software<a class="headerlink" href="#installing-the-measurement-archive-software" title="Permalink to this headline">¶</a></h2>
 <p>The measurement archive is implemented using a software package named <em>esmond</em>. The following installation options are available for installing esmond:</p>
 <ol class="arabic simple">
 <li><p>As part of the perfSONAR <em>core</em>, <em>toolkit</em> or <em>centralmanagement</em> bundles. See <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR Installation Options</span></a> for more information.</p></li>
 <li><p>As a standalone package on any perfSONAR supported operating system (e.g. <code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">esmond</span></code>, <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">esmond</span></code>)</p></li>
 </ol>
-</section>
-<section id="authenticating-measurement-hosts">
+</div>
+<div class="section" id="authenticating-measurement-hosts">
 <h2>Authenticating Measurement Hosts<a class="headerlink" href="#authenticating-measurement-hosts" title="Permalink to this headline">¶</a></h2>
 <p>Measurement hosts need to authenticate to the measurement archive when they register data. This is implemented in esmond using one of two methods:</p>
 <ol class="arabic simple">
@@ -103,7 +104,7 @@
 <p class="admonition-title">Warning</p>
 <p>It is <strong>highly recommended</strong> you run your measurement archive server with HTTPS. This encrypts transfers and protects the API key (if applicable) from being exposed in plain text since it is just in the HTTP header. See the Apache HTTPD documentation for information on how to configure HTTPS.</p>
 </div>
-<section id="authenticating-by-api-key">
+<div class="section" id="authenticating-by-api-key">
 <span id="multi-ma-install-intro"></span><h3>Authenticating by API Key<a class="headerlink" href="#authenticating-by-api-key" title="Permalink to this headline">¶</a></h3>
 <p>As an archive administrator you may create a username, generate an API key, and assign the needed permissions to register data with the commands below:</p>
 <ol class="arabic">
@@ -124,20 +125,20 @@
 <p class="admonition-title">Note</p>
 <p>There is no technical limitation preventing multiple measurement hosts from sharing an API key. It is up to you as an archive administrator to make a decision about whether you will share accounts between multiple measurement hosts or require unique accounts for each. It is the responsibility of both you and the measurement host administrator to follow best commons security practices and common sense in preventing unwanted parties from obtaining these credentials.</p>
 </div>
-</section>
-<section id="authenticating-by-ip-address">
+</div>
+<div class="section" id="authenticating-by-ip-address">
 <span id="multi-ma-install-auth-ip"></span><h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this headline">¶</a></h3>
 <p>As an archive administrator you may create an account that authenticates based on IP address. You may specify an IP mask so that multiple addresses may authenticate. This can be particularly useful in large deployments of measurement hosts in a small set of subnets as it does not require a password (API key) to be defined for each host in their tasks file. As such, automated configuration is made easier by this authentication method. The commands for adding an account that authenticates based on IP are as follows:</p>
 <ol class="arabic">
 <li><p>As priviledged user run the commands below to create the account. You must provide a username (replacing <em>example_user</em>) as the first argument. This is simply used internally to identify the set of permissions associated with the IP addresses. After that may be one or more IP addresses in the form of <em>X.X.X.X</em> or <em>X.X.X.X/Y</em> where <em>X</em> is each octet and <em>Y</em> is the subnet. If Y is not specified it defaults to 32 (i.e. only the exact IP address provided matches). The example below will allow the host <em>10.0.1.1</em> or any host in the <em>10.0.2.0/24</em> subnet to register data to esmond:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">esmond_manage</span> <span class="n">add_user_ip_address</span> <span class="n">example_user</span> <span class="mf">10.0.1.1</span> <span class="mf">10.0.2.0</span><span class="o">/</span><span class="mi">24</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">esmond_manage</span> <span class="n">add_user_ip_address</span> <span class="n">example_user</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">1.1</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">2.0</span><span class="o">/</span><span class="mi">24</span>
 </pre></div>
 </div>
 </li>
 </ol>
-</section>
-</section>
-<section id="configuring-measurement-hosts">
+</div>
+</div>
+<div class="section" id="configuring-measurement-hosts">
 <h2>Configuring Measurement Hosts<a class="headerlink" href="#configuring-measurement-hosts" title="Permalink to this headline">¶</a></h2>
 <p>Each measurement host must be configured to register its data to the central archive. This is done by configuring the <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">pSConfig pScheduler Agent</span></a> to use the archive. The exact approach depends largely with how you are reading your template and which tasks you want to send to the central archive.</p>
 <p>One approach is to define the archive in the pSConfig template being used. In that case, the pSConfig template is going to need a section similar to the following:</p>
@@ -174,8 +175,8 @@
 </pre></div>
 </div>
 <p>If the option is not included then the archive will be ignored.</p>
-</section>
-</section>
+</div>
+</div>
 
 
             <div class="clearer"></div>
@@ -230,7 +231,7 @@
         <li class="right" >
           <a href="psconfig_meshconfig_migrate.html" title="MeshConfig to pSConfig Migration Guide"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Deploying a Central Measurement Archive</a></li> 
       </ul>
     </div>
@@ -275,8 +276,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
+        &#169; Copyright 2022, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>
