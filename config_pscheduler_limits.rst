@@ -36,8 +36,15 @@ pScheduler server automatically detect changes to the limit configuration and pu
 Content
 -------
 
-The file is `JavaScript Object Notation <http://www.json.org>`_ (JSON)
-containing a single object with the pairs shown here::
+The contents of the limit file can be either a URL with a scheme
+(e.g., ``https://...``) or `JavaScript Object Notation
+<http://www.json.org>`_ (JSON).
+
+If the file contains a URL, the content at that location will be
+fetched and its contents will be parsed as shown below.
+
+Whether read directly or fetched, the limit file contains a single
+JSON object with the pairs shown here::
 
     {
         "#": "Skeletal pScheduler limit configuration",
