@@ -251,8 +251,8 @@ Below is an example of a fictional *colors* test that assumes pScheduler support
         "colors_test": {
             "type": "colors",
             "spec": {
-                "color1": "{% jq .addresses[0]._meta.color %}",
-                "color2": "{% jq .addresses[1]._meta.color %}"
+                "color1": "{% jq addresses[0]._meta.color %}",
+                "color2": "{% jq addresses[1]._meta.color %}"
             }
         }
     }
@@ -272,7 +272,7 @@ Template variables are how we access properties of task components to connect th
     
 In our :ref:`tests example <psconfig_templates_intro-json_basics-tests>` we saw use of the ``jq`` template variable. This variable uses the `jq processor <https://stedolan.github.io/jq/>`_ to select portions of the JSON. The first variable looks like the following::
 
-    {% jq .addresses[0]._meta.color %}
+    {% jq addresses[0]._meta.color %}
     
 Let's break this variable down:
 
@@ -283,7 +283,7 @@ Let's break this variable down:
 
 Likewise, the second variable looks as follows::
 
-    {% jq .addresses[1]._meta.color %}
+    {% jq addresses[1]._meta.color %}
 
 It is the same as the first except for the ``address[1]`` portion that indicates to use the second address (as indicated by index 1 in between the square brackets) from the input pair. As a result, ``color1`` receives the value of the ``color`` property from the first address in the pair and ``color2`` receives the ``color`` of the second.
 
