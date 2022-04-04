@@ -370,7 +370,7 @@ For the second address pair, we get the following JSON against which we can run 
           "test":"throughput_test",
           "reference":{
              "source_ifspeed":"{% jq .addresses[0]._meta.ifspeed %}",
-             "dest_ifspeed":"{% jq .addresses[1]._meta.ifspeed %}"
+             "dest_ifspeed":"{% jq ,addresses[1]._meta.ifspeed %}"
           }
        }
     }
