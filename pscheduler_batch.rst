@@ -96,7 +96,11 @@ debugging output.
 ``enabled`` (Boolean) - Determines whether or not the job is run.
 Defaults to ``true``.
 
-``iterations`` (Number) - The number of times to run the specified task.
+``iterations`` (Number or JQ Transform) - The number of times to run
+the specified task.  If a JQ transform is provided, the script should
+calculate and return the number of iterations as an integer.  Input to
+the transform is ``null``; any external data required should be
+accessed via ``$global``.
 
 ``parallel`` (Boolean) - Whether or not the job's iterations should be
 run in parallel.  This defaults to ``false`` and implies ``sync-start``
@@ -121,10 +125,13 @@ restrictions on being run at the same time will not necessarily start
 in sync (or at all if no ``slip`` is allowed as part of the task's
 ``schedule`` section.
 
-``task`` (Object) - A pScheduler task specification as would be
-produced using the ``task`` command's ``--export`` switch.  Note that
-if the specification contains a ``schedule``, those parameters will be
-ignored.
+``task`` (Object or Array of Objects) - A pScheduler task
+specification as would be produced using the ``task`` command's
+``--export`` switch.  Note that if the specification contains a
+``schedule``, those parameters will be ignored.  If the value is an
+array, the contents of the array will be treated as a set of tasks and
+the number of iterations will be set to its length.  This overrides
+the contents of ``iterations``.
 
 ``task-transform`` - A jq transform that operates on the ``task``'s
 value for each iteration to make iteration-specific changes.  The
