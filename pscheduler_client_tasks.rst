@@ -120,6 +120,14 @@ Alternatively, you could use a JSON string to accomplish the same as follows (re
     pscheduler task --archive '{"archiver": "esmond","data":{"url":"http://localhost/esmond/perfsonar/archive/","_auth-token": "abc123"}}' trace --dest www.perfsonar.net
  
 For more information on different archivers and their specifications, see :doc:`pscheduler_ref_archivers`.
+
+If a task has archives specified, the `--keep-after-archive` parameter
+may be added to force runs to be removed from the system after the
+specified amount of time to save space.  For example::
+
+    pscheduler task --archive '...' --keep-after-archive PT30S trace --dest www.perfsonar.net
+    
+
  
 .. _pscheduler_client_tasks-exporting:
 
