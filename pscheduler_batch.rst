@@ -2,8 +2,6 @@
 Batch Processing
 ****************
 
-**NOTE:**  In release 4.3.0, this is a beta feature.
-
 pScheduler can be used to run a series of tasks, called a *batch*,
 from the command line and return the results for further processing by
 other programs.
@@ -23,13 +21,6 @@ The batch processor is started using a ``pscheduler`` command::
 
     pscheduler batch [ OPTIONS ] [ INPUT-FILE ]
 
-
-**NOTE:** The batch processor has a safety mechanism to prevent
- accidental use in production until it is no longer a beta feature.
- To invoke it in this version, set the environment variable ``BETA``
- to any value, e.g.::
-
-    BETA=1 pscheduler batch [ OPTIONS ] [ INPUT-FILE ]
 
 The ``OPTIONS`` control the batch processor's behavior and can be listed
 using the ``--help`` option.
