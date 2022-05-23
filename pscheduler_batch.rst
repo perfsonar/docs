@@ -179,7 +179,7 @@ For example::
 
     [
       {
-        "task": { ,,, },
+        "task": { ... },
         "runs": [
           {
             "application/json": {
