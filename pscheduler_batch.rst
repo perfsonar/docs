@@ -51,7 +51,12 @@ Input
 -----
 
 Input to the batch processor is JSON in the form of a single object
-containing two pairs, ``global`` and ``jobs``.
+containing three pairs, ``global``, ``jobs`` and, optionally, a
+``schema``.
+
+The ``schema`` describes which version of the batch specification is
+in use.  If none is provided, it defaults to ``1``.  Specific
+instances where other values are required are described below.
 
 
 .. _pscheduler_batch_input_global:
@@ -98,9 +103,10 @@ Defaults to ``true``.
 
 ``iterations`` (Number or JQ Transform) - The number of times to run
 the specified task.  If a JQ transform is provided, the script should
-calculate and return the number of iterations as an integer.  Input to
-the transform is ``null``; any external data required should be
-accessed via ``$global``.
+calculate and return the number of iterations as an integer and the
+``schema`` should be set to at least ``3``.  Input to the transform is
+``null``; any external data required should be accessed via
+``$global``.
 
 ``parallel`` (Boolean) - Whether or not the job's iterations should be
 run in parallel.  This defaults to ``false`` and implies ``sync-start``
