@@ -108,34 +108,60 @@ To disable the automatic updating of perfSONAR packages on Debian/Ubuntu delete 
 Special Upgrade Notes
 =====================
 
-BWCTL Support
--------------
-As of the perfSONAR 4.2 release in August 2019, all support for BWCTL tests is discontinued. When perfSONAR 4.0 was released in April 2017, the perfSONAR project began the deprecation of BWCTL. The timeline of events was that followed are below:
+Upgrading to perfSONAR 5.X
+---------------------------
+Archive changes
+*************************
+perfSONAR 5.0.0 brings with it a number of changes, the largest of which is the migration away from the default archive of esmond to a new archive based on `OpenSearch <https://opensearch.org/>`_. **DATA WILL NOT BE MIGRATED FROM ESMOND TO OPENSEARCH**
 
-* perfSONAR 4.0 was end-of-life on **February 15, 2019** (six months after the final release of perfSONAR 4.1). BWCTL was also end-of-life at this time meaning it stopped receiving security updates. 
-* perfSONAR 4.2.0 in August 2019 removes the BWCTL pScheduler plug-ins so pscheduler tests can no longer be run to hosts only running BWCTL. 
-* Security updates for the old BWCTL pScheduler plug-ins discontinue in February 2020 when perfSONAR 4.1 is end-of-life. There will be no updates unless any critical security patches arise. 
+The update behavior you will see depends on the bundle you have installed:
 
-BWCTL is NOT forcibly removed from CentOS systems that already have it installed. You can remove it manually with ``yum remove bwctl-server bwctl-client``. Debian systems do have an auto-remove function that may remove BWCTL since no packages will be dependent on it once you upgrade to 4.1 or later. Exact behavior depends on how you have apt configured.
+- **perfsonar-toolkit and perfsonar-core** - Your system will auto-update if enabled. **YOUR DATA WILL NOT BE MIGRATED BUT WILL NOT BE DELETED**. Esmond will be disabled but the data will stay on disk. You can re-enable Esmond but be aware that running Esmond and Opensearch simultaneously can consume significant system resources. If you want to access the data, we recomend moving to a new system running standalone esmond as detailed :doc:`here </multi_ma_backups>`.
+- **perfsonar-centralmanagement** - This package will NOT auto-update since it is no longer available in perfSONAR 5.0.0. This gives large central archives a chance to control when they want to move users.
 
-With support discontinued, the following cases will no longer work:
+Esmond API Compatibility
+*************************
+perfSONAR 5.0.0 includes a component named elmond that provides full backward compatibility for esmond queries. The URL and format are exactly the same, so should be transparent to clients. 
 
-#. The remote end is running an unsupported 3.5.1 (released March 2016) or older release. The remedy for this problem is for the remote end to update. 
-#. A firewall is blocking port 443. This can be solved by opening port 443 or a non-standard pScheduler port. See :ref:`psconfig_templates_advanced-addresses-pscheduler_address` for more information.
+pScheduler Limits changes
+*************************
+pScheduler has removed support for the *test* limit type. It has been folded into the *jq* type. **If you have not modified your limits file, then your limits file will be upgraded automatically.** If you have made changes then you will have to manually migrate to the new format. The exact change will depend on your rul but an example of the new and old style can be found below:
 
-If you are on a pre-4.2.0 release, you can determine which of your tests are still using BWCTL by running the following command on a toolkit installation::
+*Old format*::
 
-    /usr/lib/perfsonar/scripts/find_bwctl_measurements
+  {
+      "#": "This prevents denial of service by scheduling long tasks.",
+      "name": "idleex-default",
+      "description": "Default limits for idleex",
+      "type": "test",
+      "data": {
+      "test": "idleex",
+      "limit": {
+          "duration": {
+                      "range": {
+                          "lower": "PT1S",
+                          "upper": "PT2S"
+                      }
+                  }
+      }
+      }
+  }
 
-This will contact the measurement archive on the local machine and return any BWCTL tests that pScheduler ran and recorded in the last day. See `/usr/lib/perfsonar/scripts/find_bwctl_measurements --help` for information on command-line options to change the archive URL, time range fo data analyzed and other options. Since in 4.2.0 these tests are not possible, a pure 4.2.0 host should return no recent results.
+*New format*::
 
-Debian 8 and Ubuntu 14 Support Discontinued
--------------------------------------------
-perfSONAR 4.2 and later are NOT available for Debian 8 (and `Debian 8 is now only supported on a limited set of architectures <https://www.debian.org/releases/jessie/>`_ anyways). If you wish to migrate an existing Debian 8 (Jessie) host to Debian 9 (Stretch) you are advised to do it with the following steps:
-
-#. Lock your system on perfsonar-4.1 packages by replacing the ``perfsonar-release`` repository with a plain ``perfsonar-4.1`` repository entry.  This is done in the ``/etc/apt/sources.list.d/perfsonar-release.list`` file, where you just replace **perfsonar-release** with **perfsonar-4.1** in the ``deb`` and ``deb-src`` lines.
-#. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_).
-#. Reactivate the ``perfsonar-release`` repository in your perfSONAR APT source file.
-#. Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
-#. Reboot your system one last time.
+  {
+      "#": "This prevents denial of service by scheduling long tasks.",
+      "name": "idleex-default",
+      "description": "Default limits for idleex",
+      "type": "jq",
+      "data": {
+          "script": [
+              "import \"pscheduler/iso8601\" as iso;",
+              "if .test.type == \"idleex\" and iso::duration_as_seconds(.test.spec.duration) > 2",
+              "then \"Duration for idleex must be less than 2 seconds.\"",
+              "else true",
+              "end"
+          ]
+      }
+  }
 
