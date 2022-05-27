@@ -76,19 +76,13 @@ Step 2: Install a Bundle
 
     apt install perfsonar-core
 
-  During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
-
-* **perfSONAR Central Management**::
-
-    apt install perfsonar-centralmanagement
-
-  During the installation process, you'll be asked to choose a password for the esmond database.
+  During the installation process, you'll be asked to choose a password for the pscheduler database.
 
 * **perfSONAR Toolkit**::
 
     apt install perfsonar-toolkit
 
-  During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
+  During the installation process, you'll be asked to choose a password for the pscheduler database.
 
 .. note:: On Debian 10, only the ``perfsonar-tools`` and the ``perfsonar-testpoint`` bundles are supported at the moment.
 
@@ -105,8 +99,6 @@ In addition to any of the bundles above you may also **optionally** choose to in
 You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
-
-.. note:: On a **perfsonar-centralmanagement** system you probably only want the optional **perfsonar-toolkit-servicewatcher** package to be installed.
 
 Reducing installation size
 ++++++++++++++++++++++++++
@@ -227,16 +219,6 @@ Note that you may have to wait a few hours for NTP to synchronize your clock bef
 
 Configuration
 =============
-
-Configuring Central Management
--------------------------------
-If you installed the perfsonar-centralmanagement bundle see the following documents:
-
-* :doc:`multi_ma_install`
-* :doc:`psconfig_publish`
-* :doc:`psconfig_maddash_agent`
-* :doc:`maddash_intro`
-
 
 Configuring perfSONAR through the web interface
 ------------------------------------------------

@@ -2,60 +2,6 @@
 Listing of Important perfSONAR Files
 ***************************************
 
-esmond
-======
-
-Configuration Files
---------------------
-
-.. _config_files-esmond-conf-main:
-
-Main Configuration File
-#######################
-:Description: The main configuration file for esmond
-:CentOS: ``/etc/esmond/esmond.conf``
-:Debian: ``/etc/esmond/esmond.conf``
-:Documentation: *N/A*
-
-Important Scripts
------------------
-
-.. _config_files-esmond-scripts-startup:
-
-Start-up Script
-##########################
-:Description: Esmond is started/stopped/restarted when HTTPD is started/stopped/restarted
-:CentOS: ``systemctl start|stop|restart httpd``
-:Debian: ``service apache2 restart``
-
-.. _config_files-esmond-scripts-ps_remove_data:
-
-Data Cleaner
-##########################
-:Description: Cleans out old esmond data given a policy file.
-:CentOS: ``/usr/lib/esmond/utils/ps_remove_data.py``
-:Debian: ``/usr/share/esmond/util/ps_remove_data.py``
-:Documentation: :ref:`multi_ma_backups-delete`
-
-Log Files
----------
-
-.. _config_files-esmond-logs-esmond:
-
-esmond Log
-##########################
-:Description: Primary error log for esmond software.
-:CentOS: ``/var/log/esmond/esmond.log``
-:Debian: ``/var/log/esmond/esmond.log``
-
-.. _config_files-esmond-logs-django:
-
-Django Log
-##########################
-:Description: Error log related to Django framework such as processing JSON messages and database interactions
-:CentOS: ``/var/log/esmond/django.log``
-:Debian: ``/var/log/esmond/django.log``
-
 LS Registration Daemon
 =======================
 
@@ -333,15 +279,6 @@ Configuration Files
 
 .. note:: The Toolkit contains other configuration files but in general non-developers should not be changing them. As such they are not listed here.
 
-.. _config_files-toolkit-conf-clean_esmond_db:
-
-Measurement Archive Data Retention Policy
-#########################################
-:Description: The configuration file used by the :ref:`esmond data cleaner <config_files-esmond-scripts-ps_remove_data>` script when running in the :ref:`cron <config_files-toolkit-cron-clean_esmond_db>` installed by the Toolkit.
-:CentOS: ``/etc/perfsonar/toolkit/clean_esmond_db.conf``
-:Debian: ``/etc/perfsonar/toolkit/clean_esmond_db.conf``
-:Documentation: :ref:`multi_ma_backups-delete`
-
 
 Important Scripts
 -----------------
@@ -387,18 +324,6 @@ Multi-Interface Routing Setup Script
 :CentOS: ``/usr/lib/perfsonar/scripts/mod_interface_route``
 :Debian: ``/usr/lib/perfsonar/scripts/mod_interface_route``
 :Documentation: :doc:`manage_dual_xface`
-
-
-Installed Cron Jobs
--------------------
-
-.. _config_files-toolkit-cron-clean_esmond_db:
-
-Measurement Archive Data Cleaner
-#####################################
-:Description: Cleans out data in the measurement archive according to retention policy in :ref:`config_files-toolkit-conf-clean_esmond_db`. Runs at 2:30AM every morning.
-:CentOS: ``/etc/cron.d/cron-clean_esmond_db``
-:Debian: ``/etc/cron.d/cron-clean_esmond_db``
 
 .. _config_files-toolkit-cron-service_watcher:
 
