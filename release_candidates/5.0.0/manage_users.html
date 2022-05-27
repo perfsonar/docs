@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Managing Users &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Host Tuning" href="manage_tuning.html" />
+    <link rel="prev" title="Reading Log Files" href="manage_logs.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_tuning.html" title="Host Tuning"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_logs.html" title="Reading Log Files"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Managing Users</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="managing-users">
+<h1>Managing Users<a class="headerlink" href="#managing-users" title="Permalink to this headline">¶</a></h1>
+<p>The perfSONAR Toolkit provides utilities for adding, deleting and modifying users that have permissions to access the web interface. All of these tasks could be done through the standard *NIX command-line tools and the tools provided are mainly for convenience.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You will also be prompted to create a user and password that can be used to administer the host through the web interface during the first command line root login to the server. See also <a class="reference internal" href="install_config_first_time.html"><span class="doc">Configuring the Toolkit for the First Time</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The perfSONAR Toolkit does not provide any special utilities to create superusers after it is already installed. You will need to use built-in utilities like <em>visudo</em> to create privileged users and add them to <strong>pssudo</strong> group (<strong>pssudo</strong> group is installed by perfSONAR Toolkit and allows anyone in pssudo group to have sudo on the machine). Note that any users in the wheel group will NOT be allowed access to the web interface.</p>
+</div>
+<div class="section" id="adding-a-web-user">
+<span id="manage-users-add-web-user"></span><h2>Adding a Web User<a class="headerlink" href="#adding-a-web-user" title="Permalink to this headline">¶</a></h2>
+<p>When adding users to the Toolkit that you want to access the web interface, it is recommended you use the provided script <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>. To add web users with that script run the following:</p>
+<ol class="arabic">
+<li><p>Login to the system as a root user</p></li>
+<li><p>Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">nptoolkit</span><span class="o">-</span><span class="n">configure</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+<li><p>At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">customization</span> <span class="n">script</span>
+
+<span class="mf">1.</span> <span class="n">Change</span> <span class="n">Timezone</span>
+<span class="mf">2.</span> <span class="n">Manage</span> <span class="n">Web</span> <span class="n">Users</span>
+<span class="mf">0.</span> <span class="n">exit</span>
+
+<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>Select option <strong>1. Add a new user</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">user</span> <span class="n">administration</span> <span class="n">program</span><span class="o">.</span>
+<span class="n">This</span> <span class="n">program</span> <span class="n">will</span> <span class="n">help</span> <span class="n">you</span> <span class="n">administer</span> <span class="n">users</span><span class="o">.</span>
+<span class="n">You</span> <span class="n">may</span> <span class="n">configure</span> <span class="nb">any</span> <span class="n">of</span> <span class="n">the</span> <span class="n">options</span> <span class="n">below</span> <span class="k">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">:</span>
+    <span class="mf">1.</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">user</span>
+    <span class="mf">2.</span> <span class="n">Delete</span> <span class="n">a</span> <span class="n">user</span>
+    <span class="mf">3.</span> <span class="n">Change</span> <span class="n">a</span> <span class="n">user</span><span class="s1">&#39;s password</span>
+    <span class="mf">0.</span> <span class="n">exit</span>
+<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span>  <span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+<li><p>Enter the name of the user you would like to add and hit <strong>Enter</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Enter</span> <span class="n">the</span> <span class="n">user</span> <span class="n">whose</span> <span class="n">account</span> <span class="n">you</span><span class="s1">&#39;d like to add. Just hit enter to exit: myuser</span>
+</pre></div>
+</div>
+</li>
+<li><p>Next enter and confirm the password for the new user:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">New</span> <span class="n">password</span><span class="p">:</span>
+<span class="n">Re</span><span class="o">-</span><span class="nb">type</span> <span class="n">new</span> <span class="n">password</span><span class="p">:</span>
+<span class="n">Adding</span> <span class="n">password</span> <span class="k">for</span> <span class="n">user</span> <span class="n">myuser</span>
+</pre></div>
+</div>
+</li>
+<li><p>The new user is added. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p></li>
+</ol>
+</div>
+<div class="section" id="deleting-a-web-user">
+<h2>Deleting a Web User<a class="headerlink" href="#deleting-a-web-user" title="Permalink to this headline">¶</a></h2>
+<p>You may delete a Web user with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
+<ol class="arabic">
+<li><p>Login to the system as a root user.</p></li>
+<li><p>Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">nptoolkit</span><span class="o">-</span><span class="n">configure</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+<li><p>At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">customization</span> <span class="n">script</span>
+
+<span class="mf">1.</span> <span class="n">Change</span> <span class="n">Timezone</span>
+<span class="mf">2.</span> <span class="n">Manage</span> <span class="n">Web</span> <span class="n">Users</span>
+<span class="mf">0.</span> <span class="n">exit</span>
+
+<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>Select option <strong>2. Delete a user</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">user</span> <span class="n">administration</span> <span class="n">program</span><span class="o">.</span>
+<span class="n">This</span> <span class="n">program</span> <span class="n">will</span> <span class="n">help</span> <span class="n">you</span> <span class="n">administer</span> <span class="n">users</span><span class="o">.</span>
+<span class="n">You</span> <span class="n">may</span> <span class="n">configure</span> <span class="nb">any</span> <span class="n">of</span> <span class="n">the</span> <span class="n">options</span> <span class="n">below</span> <span class="k">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">:</span>
+    <span class="mf">1.</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">user</span>
+    <span class="mf">2.</span> <span class="n">Delete</span> <span class="n">a</span> <span class="n">user</span>
+    <span class="mf">3.</span> <span class="n">Change</span> <span class="n">a</span> <span class="n">user</span><span class="s1">&#39;s password</span>
+    <span class="mf">0.</span> <span class="n">exit</span>
+<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span>  <span class="mi">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>Type the name of the user you would like to delete and confirm:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Enter</span> <span class="n">the</span> <span class="n">user</span> <span class="n">whose</span> <span class="n">account</span> <span class="n">you</span><span class="s1">&#39;d like to remove. Just hit enter to exit: myuser</span>
+</pre></div>
+</div>
+</li>
+<li><p>The user is deleted. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p></li>
+</ol>
+</div>
+<div class="section" id="changing-a-web-user-s-password">
+<h2>Changing a Web User’s Password<a class="headerlink" href="#changing-a-web-user-s-password" title="Permalink to this headline">¶</a></h2>
+<p>You may change a web user’s password with the <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em>:</p>
+<ol class="arabic">
+<li><p>Login to the system as a root user.</p></li>
+<li><p>Run <em>/usr/lib/perfsonar/scripts/nptoolkit-configure.py</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">nptoolkit</span><span class="o">-</span><span class="n">configure</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+<li><p>At the prompt, select option <strong>2. Manage Web Users</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">customization</span> <span class="n">script</span>
+
+<span class="mf">1.</span> <span class="n">Change</span> <span class="n">Timezone</span>
+<span class="mf">2.</span> <span class="n">Manage</span> <span class="n">Web</span> <span class="n">Users</span>
+<span class="mf">0.</span> <span class="n">exit</span>
+
+<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>Select option <strong>3. Change a user’s password</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">perfSONAR</span> <span class="n">Toolkit</span> <span class="n">user</span> <span class="n">administration</span> <span class="n">program</span><span class="o">.</span>
+<span class="n">This</span> <span class="n">program</span> <span class="n">will</span> <span class="n">help</span> <span class="n">you</span> <span class="n">administer</span> <span class="n">users</span><span class="o">.</span>
+<span class="n">You</span> <span class="n">may</span> <span class="n">configure</span> <span class="nb">any</span> <span class="n">of</span> <span class="n">the</span> <span class="n">options</span> <span class="n">below</span> <span class="k">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">:</span>
+    <span class="mf">1.</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">user</span>
+    <span class="mf">2.</span> <span class="n">Delete</span> <span class="n">a</span> <span class="n">user</span>
+    <span class="mf">3.</span> <span class="n">Change</span> <span class="n">a</span> <span class="n">user</span><span class="s1">&#39;s password</span>
+    <span class="mf">0.</span> <span class="n">exit</span>
+<span class="n">Make</span> <span class="n">a</span> <span class="n">selection</span><span class="p">:</span>  <span class="mi">3</span>
+</pre></div>
+</div>
+</li>
+<li><p>Type the name of the user with the password you would like to change:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Enter</span> <span class="n">the</span> <span class="n">user</span> <span class="n">whose</span> <span class="n">password</span> <span class="n">you</span><span class="s1">&#39;d like to change. Just hit enter to exit: myuser</span>
+</pre></div>
+</div>
+</li>
+<li><p>Type and confirm the new password:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Please</span> <span class="n">specify</span> <span class="n">a</span> <span class="n">password</span> <span class="k">for</span> <span class="n">the</span> <span class="n">myuser</span> <span class="n">account</span><span class="o">.</span>
+    <span class="n">New</span> <span class="n">password</span><span class="p">:</span>
+    <span class="n">Re</span><span class="o">-</span><span class="nb">type</span> <span class="n">new</span> <span class="n">password</span><span class="p">:</span>
+    <span class="n">Updating</span> <span class="n">password</span> <span class="k">for</span> <span class="n">user</span> <span class="n">myuser</span>
+</pre></div>
+</div>
+</li>
+<li><p>Normal precautions should be taken to protect the password as it can be used to access the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8. It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.</p></li>
+<li><p>The user’s password is now changed. You may perform other operations with the tool or enter <strong>0</strong> to go back to main menu and then <strong>0</strong> to exit the program.</p></li>
+</ol>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Managing Users</a><ul>
+<li><a class="reference internal" href="#adding-a-web-user">Adding a Web User</a></li>
+<li><a class="reference internal" href="#deleting-a-web-user">Deleting a Web User</a></li>
+<li><a class="reference internal" href="#changing-a-web-user-s-password">Changing a Web User’s Password</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="manage_logs.html">Previous topic</a>
+                  <ul><li><a href="manage_logs.html" title="previous chapter">Reading Log Files</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_tuning.html">Next topic</a>
+                      <ul><li><a href="manage_tuning.html" title="next chapter">Host Tuning</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_tuning.html" title="Host Tuning"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_logs.html" title="Reading Log Files"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Managing Users</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

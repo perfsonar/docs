@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Managing Daemons &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Managing Daemons</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="managing-daemons">
+<h1>Managing Daemons<a class="headerlink" href="#managing-daemons" title="Permalink to this headline">¶</a></h1>
+<p>This page describes the CentOS7+/Debian daemons you should expect to see with each bundle. This page is for expert users, and may be helpful for debugging/troubleshooting.</p>
+<p>Each perfSONAR bundle runs various services, which use one or more daemons.</p>
+<div class="section" id="list-of-daemons">
+<h2>List of Daemons<a class="headerlink" href="#list-of-daemons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="testpoint">
+<h3>Testpoint<a class="headerlink" href="#testpoint" title="Permalink to this headline">¶</a></h3>
+<p>Hosts running the perfsonar <code class="docutils literal notranslate"><span class="pre">testpoint</span></code> bundle should see these daemons:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>postgresql-9.5.service</em> - stores schedules of pScheduler</p></li>
+<li><p><em>httpd.service</em> - web server for pScheduler (<em>apache</em> in Debian)</p></li>
+<li><p><em>fail2ban.service</em> - intrusion detection system (IDS) to log suspicious activity</p></li>
+<li><p><em>firewalld.service</em> - firewall service</p></li>
+<li><p><em>ntpd.service</em> - NTP time synchronisation</p></li>
+<li><p><em>owamp-server.service</em> - OWAMP</p></li>
+<li><p><em>twamp-server.service</em> - TWAMP</p></li>
+<li><p><em>perfsonar-lscachedaemon.service</em> - perfSONAR Lookup Service cache daemon</p></li>
+<li><p><em>perfsonar-lsregistrationdaemon.service</em> - registration with the Lookup Service</p></li>
+<li><p><em>psconfig-pscheduler-agent.service</em> - reads pSConfig templates and generates a set of pScheduler tasks</p></li>
+<li><p><em>pscheduler-archiver.service</em> - executes archiver plug-ins using the results of runs</p></li>
+<li><p><em>pscheduler-runner.service</em> - executes runs on the schedule using the selected tool</p></li>
+<li><p><em>pscheduler-scheduler.service</em> - puts new runs on the schedule or marks a run as a non-starter if it can not find an available slot</p></li>
+<li><p><em>pscheduler-ticker.service</em> - handles basic maintenance of pScheduler</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="toolkit">
+<h3>Toolkit<a class="headerlink" href="#toolkit" title="Permalink to this headline">¶</a></h3>
+<p>Hosts running the perfsonar <code class="docutils literal notranslate"><span class="pre">toolkit</span></code> bundle should see all daemons running in the <code class="docutils literal notranslate"><span class="pre">testpoint</span></code> <strong>plus additional</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>perfsonar-configdaemon.service</em> - used by the administrative web interface to configure the host</p></li>
+<li><p><em>perfsonar-configure_nic_parameters</em> - detects if the NIC is misconfigured, and makes necessary configuration changes to NIC</p></li>
+<li><dl class="simple">
+<dt><em>perfsonar-generate_motd</em> - takes care of Message of The Day</dt><dd><ul>
+<li><p><em>cassandra</em> - used by esmond DB and stores the results of a measurement</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><em>postgresql-9.5.service</em> - used by esmond DB and stores measurement metadata</p></li>
+</ul>
+</div></blockquote>
+<p>For selected services in <code class="docutils literal notranslate"><span class="pre">toolkit</span></code> the status is listed in the Toolkit GUI main page <em>Services</em> tab.</p>
+</div>
+<div class="section" id="central-ma">
+<h3>Central MA<a class="headerlink" href="#central-ma" title="Permalink to this headline">¶</a></h3>
+<p>Hosts running a <code class="docutils literal notranslate"><span class="pre">centralmanagement</span></code> bundle should see these daemons:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>perfsonar-psconfig-maddash.service</em> - reads pSConfig template and creates MaDDash dashboards</p></li>
+<li><p><em>httpd.service</em> - web server</p></li>
+<li><p><em>maddash-server.service</em> - MaDDash dashboard server</p></li>
+<li><p><em>cassandra</em> - used by esmond DB and stores the results of a measurement</p></li>
+<li><p><em>postgresql-9.5.service</em> - used by esmond DB and stores measurement metadata</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="showing-service-status">
+<h2>Showing service status<a class="headerlink" href="#showing-service-status" title="Permalink to this headline">¶</a></h2>
+<p>Run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">status</span> <span class="n">SERVICE</span><span class="o">-</span><span class="n">NAME</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="restarting-daemons">
+<h2>Restarting Daemons<a class="headerlink" href="#restarting-daemons" title="Permalink to this headline">¶</a></h2>
+<p>Run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span><span class="o">/</span><span class="n">stop</span><span class="o">/</span><span class="n">restart</span> <span class="n">SERVICE</span><span class="o">-</span><span class="n">NAME</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enabling-disabling-daemons">
+<h2>Enabling/Disabling Daemons<a class="headerlink" href="#enabling-disabling-daemons" title="Permalink to this headline">¶</a></h2>
+<p>Run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">enable</span><span class="o">/</span><span class="n">disable</span> <span class="n">SERVICE</span><span class="o">-</span><span class="n">NAME</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Managing Daemons</a><ul>
+<li><a class="reference internal" href="#list-of-daemons">List of Daemons</a><ul>
+<li><a class="reference internal" href="#testpoint">Testpoint</a></li>
+<li><a class="reference internal" href="#toolkit">Toolkit</a></li>
+<li><a class="reference internal" href="#central-ma">Central MA</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#showing-service-status">Showing service status</a></li>
+<li><a class="reference internal" href="#restarting-daemons">Restarting Daemons</a></li>
+<li><a class="reference internal" href="#enabling-disabling-daemons">Enabling/Disabling Daemons</a></li>
+</ul>
+</li>
+</ul>
+
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Managing Daemons</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

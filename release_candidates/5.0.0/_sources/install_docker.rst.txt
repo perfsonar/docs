@@ -1,0 +1,189 @@
+*********************************
+Using perfSONAR with Docker
+*********************************
+
+Using perfSONAR with Docker provides a non-intrusive way to run the perfSONAR software on a variety of platforms including Linux, Mac and Windows. This document focuses on setting-up an instance of the perfsonar-testpoint bundle, described in :doc:`install_options`.
+
+Geting Docker
+=================
+Docker must be installed and the Docker daemon running in order to use perfSONAR in a container. Detailed instructions for installing docker are beyond the scope of this document. Docker is available on all major platforms at https://www.docker.com/community-edition and may also be available via your operating system's native package manager, such as yum or apt.      
+
+Considerations
+==============
+#. This Docker image is intended to provide an isolated environment for bringing-up a quick testing client than can easily be removed when complete. It can also be used as a more permenent tester but requires additional considerations such as how to persist and manage configurations.
+#. Performance of Docker containers may vary depending on the environment. In general, the network measurements in Docker will perform better than a virtual machine (VM) but not as well as a bare metal host. This is a broad generalization though as non-Linux OSes such as Windows and Mac actually run containers in a virtual machine.
+#. Networking configuration is one of the biggest considerations when running perfSONAR in a container. Docker provides a number of different modes each with tradeoffs. This choice is made more complicated by the fact that implementations can vary between underlying operating systems. Running with *host* networking provides an experience closest to a traditional non-containerized perfSONAR installation. There is no NAT with which to contend and IPv6 support is inherited from the base system. The downside is that you may not have external software like httpd, postgres or other applications that use the same ports as perfSONAR running on the host system. Other modes such as those that use port forwarding do not have this limitation, but can be significantly more challenging to get working with protocols such as IPv6. 
+#. Currently perfSONAR does NOT provide a container image that supports ARM.
+
+QuickStart using the `docker` command
+=======================================
+
+These instructions are good for those that want to get a container running quickly using the `docker` command directly. The following assumes that Docker has been successfully installed and is running on the host system. It also assumes that the base host is running a time keeping system such as NTP and is NOT running httpd, postgres, or anything else listening on the list of ports below. The Docker image will share the network stack with the host and so expects to be able to bind to all of the ports as if it were being run natively. 
+
+.. note:: See http://www.perfsonar.net/deploy/security-considerations/ for a full listing of ports.
+
+Docker does support the concept of remapping network ports to guests, but is beyond the scope of this model.
+
+First, pull down the latest Docker image::
+
+  # docker pull perfsonar/testpoint
+
+This will download the latest built image of the perfsonar testpoint bundle. It includes a base CentOS7 install and the perfsonar-testpoint packages. Once the image is downloaded and extracted, start up the container by doing::
+
+  # docker run -d --net=host perfsonar/testpoint
+
+Verify that the container is running::
+
+  # docker ps
+  CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS               NAMES
+  db89e1b5be3b        perfsonar/testpoint   "/bin/sh -c '/usr/..."   42 minutes ago      Up 42 minutes                           nifty_panini
+
+.. note:: Your container ID and "names" will likely be different than the above. These are generated randomly each time a container is started.
+
+Now you can connect to the running Docker image::
+
+  # docker exec -it <container ID from above> bash
+
+At this point you will be at a bash prompt inside of the container, and may start running tests::
+
+  # pscheduler troubleshoot
+  # pscheduler task throughput --dest hostname
+
+Congratulations, you're running perfSONAR in Docker!
+
+Running the container with the `psdocker` script
+################################################
+If you are attempting the steps in the previous section on a Mac OS X system then the `pscheduler task` command may fail with an error such as `Unable to locate pscheduler server`. This is usually due to the way hostnames are assigned in Docker on Mac. With that in mind the perfSONAR team provides a script that helps setup the container properly (this works on non-Mac systems as well). You can use the script by following the steps below.
+
+Download the *perfsonar-testpoint-docker* git reposiory::
+
+  # git clone https://github.com/perfsonar/perfsonar-testpoint-docker
+
+Start and enter the container with the *psdocker* script::
+
+  # ./perfsonar-testpoint-docker/utils/psdocker
+
+You can leave the container with `exit` command and re-enter it by running the *psdocker* command at anytime.
+
+You can stop the container with the following::
+
+  # ./perfsonar-testpoint-docker/utils/psdocker stop
+
+.. note:: You may also give the start and stop commands an additional parameter that points at a tag representing a specific version of perfSONAR. Example: `psdocker start v4.3.0` to run release 4.3.0 or `psdocker start staging` to run the latest beta.
+
+.. note:: If you find this script useful you may decide to put it in your path. Example: `sudo cp ./perfsonar-testpoint-docker/utils/psdocker /usr/local/bin/psdocker`
+
+Troubleshooting
+===============
+
+The easiest way to troubleshoot issues with the Docker image are to connect to it while running. Find the container ID of the running container::
+
+  # docker ps
+  CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS               NAMES
+  db89e1b5be3b        perfsonar/testpoint   "/bin/sh -c '/usr/..."   42 minutes ago      Up 42 minutes                           nifty_panini
+
+Connect to the container::
+
+  # docker exec -it <container ID from above> bash
+
+And then do troubleshooting as you would anywhere else in perfSONAR. You can look at various log files, run commands in debug mode, etc.
+
+Managing Upgrades
+=================
+
+To upgrade your Docker container, from the parent do the following::
+
+    # docker pull perfsonar/testpoint
+
+If it reports a message about "Image is up to date" then you are already running the latest version.
+
+You will need to stop the currently running container and start the new version. First figure out the container id of the currently running one::
+    
+    # docker ps -a
+    CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS                           PORTS               NAMES
+    b5e393edf7ad        perfsonar/testpoint   "/bin/sh -c '/usr/..."   57 minutes ago      Up 57 minutes                                        cocky_mirzakhani
+
+Once the container ID is known, have docker shut it down::
+
+  # docker kill b5e393edf7ad
+ 
+.. warning:: Shutting down the container will cause it to lose all state. All scheduled tests will be forgotten and any configuration made that hasn't been committed back to the Docker image will be lost.
+
+And now start up the new one. This process is the same as the first time it was started, but now with the newer image it will start up the new version::
+
+  # docker run -d --net=host perfsonar/testpoint
+
+Connect to the docker instance again and verify that you are running the version expected::
+
+  # docker exec -it <new container's ID> bash
+  # rpm -qa | grep perfsonar
+
+Your Docker instance of perfsonar-testpoint has now been upgraded to the latest perfSONAR code. 
+
+
+Running with `docker-compose`
+=============================
+`Docker Compose <https://docs.docker.com/compose/>`_ is software that assists in running and managing one or more containers defined in a YAML file. For covenience, perfSONAR provides such a YAML file to assist in setting-up a single testpoint with a shared volume to persist test configurations. This setup can also be used for ad-hoc testers if you find the docker-compose method more convenient than the other options mentioned in previous sections.
+
+To obtain the docker-compose file, first download the *perfsonar-testpoint-docker* git repository::
+
+  # git clone https://github.com/perfsonar/perfsonar-testpoint-docker
+
+Next change your working directory to the downloaded directory::
+
+  # cd perfsonar-testpoint-docker
+
+Start the container in the background::
+
+  # docker-compose up -d
+
+Your container is now running. You can enter the container, verify it is working and add a remote pSConfig file that will be persisted in the `./compose/psconfig` directory::
+
+  # docker-compose exec testpoint bash
+  [docker-desktop /]# pscheduler troubleshoot
+  [docker-desktop /]# psconfig remote add URL # replace URL with your pSConfig JSON file URL
+  [docker-desktop /]# exit
+
+You can stop your container at any time with the following::
+
+  # docker-compose down
+
+If you bring the container back-up you should be able to see your pSConfig changes still::
+
+  # docker-compose up -d
+  # docker-compose exec testpoint psconfig remote list
+
+
+Running the Systemd Image
+==========================
+
+The container image adopted in the previous steps makes use of `supervisord <http://supervisord.org/>`_ to manage system processes. In addition to that, perfSONAR also provides an image based on `systemd <https://systemd.io/>`_.
+
+As systemd is the system and service manager adopted by most Linux distributions, both installation and management of services are done in the same way inside the container as in a bare metal host. This facilitates the container maintenance and automation. Also, in scenarios where the testpoint container is expected to run for long periods without stopping, systemd guarantees better stability.
+
+On the other hand, to run a Docker container with systemd, additional parameters are needed. Because of that, a dedicated `docker-compose <https://docs.docker.com/compose/>`_ YAML file was provided to assist in this process.
+
+Build the image locally::
+
+  # docker-compose -f docker-compose.systemd.yml build
+
+Start the container in the background::
+
+  # docker-compose -f docker-compose.systemd.yml up -d
+
+Your container is now running. You can enter the container, verify it is working and add a remote pSConfig file that will be persisted in the `./compose/psconfig` directory::
+
+  # docker-compose -f docker-compose.systemd.yml exec testpoint bash
+  [docker-desktop /]# systemctl status
+  [docker-desktop /]# pscheduler troubleshoot
+  [docker-desktop /]# psconfig remote add URL # replace URL with your pSConfig JSON file URL
+  [docker-desktop /]# exit
+
+You can stop your container at any time with the following::
+
+  # docker-compose -f docker-compose.systemd.yml down
+
+If you bring the container back-up you should be able to see your pSConfig changes still::
+
+  # docker-compose -f docker-compose.systemd.yml up -d
+  # docker-compose -f docker-compose.systemd.yml exec testpoint psconfig remote list

@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Using perfSONAR with Docker &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using perfSONAR with Ansible" href="install_ansible.html" />
+    <link rel="prev" title="Bundle Installation on Debian" href="install_debian.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_ansible.html" title="Using perfSONAR with Ansible"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_debian.html" title="Bundle Installation on Debian"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Using perfSONAR with Docker</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-perfsonar-with-docker">
+<h1>Using perfSONAR with Docker<a class="headerlink" href="#using-perfsonar-with-docker" title="Permalink to this headline">¶</a></h1>
+<p>Using perfSONAR with Docker provides a non-intrusive way to run the perfSONAR software on a variety of platforms including Linux, Mac and Windows. This document focuses on setting-up an instance of the perfsonar-testpoint bundle, described in <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR Installation Options</span></a>.</p>
+<div class="section" id="geting-docker">
+<h2>Geting Docker<a class="headerlink" href="#geting-docker" title="Permalink to this headline">¶</a></h2>
+<p>Docker must be installed and the Docker daemon running in order to use perfSONAR in a container. Detailed instructions for installing docker are beyond the scope of this document. Docker is available on all major platforms at <a class="reference external" href="https://www.docker.com/community-edition">https://www.docker.com/community-edition</a> and may also be available via your operating system’s native package manager, such as yum or apt.</p>
+</div>
+<div class="section" id="considerations">
+<h2>Considerations<a class="headerlink" href="#considerations" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>This Docker image is intended to provide an isolated environment for bringing-up a quick testing client than can easily be removed when complete. It can also be used as a more permenent tester but requires additional considerations such as how to persist and manage configurations.</p></li>
+<li><p>Performance of Docker containers may vary depending on the environment. In general, the network measurements in Docker will perform better than a virtual machine (VM) but not as well as a bare metal host. This is a broad generalization though as non-Linux OSes such as Windows and Mac actually run containers in a virtual machine.</p></li>
+<li><p>Networking configuration is one of the biggest considerations when running perfSONAR in a container. Docker provides a number of different modes each with tradeoffs. This choice is made more complicated by the fact that implementations can vary between underlying operating systems. Running with <em>host</em> networking provides an experience closest to a traditional non-containerized perfSONAR installation. There is no NAT with which to contend and IPv6 support is inherited from the base system. The downside is that you may not have external software like httpd, postgres or other applications that use the same ports as perfSONAR running on the host system. Other modes such as those that use port forwarding do not have this limitation, but can be significantly more challenging to get working with protocols such as IPv6.</p></li>
+<li><p>Currently perfSONAR does NOT provide a container image that supports ARM.</p></li>
+</ol>
+</div>
+<div class="section" id="quickstart-using-the-docker-command">
+<h2>QuickStart using the <cite>docker</cite> command<a class="headerlink" href="#quickstart-using-the-docker-command" title="Permalink to this headline">¶</a></h2>
+<p>These instructions are good for those that want to get a container running quickly using the <cite>docker</cite> command directly. The following assumes that Docker has been successfully installed and is running on the host system. It also assumes that the base host is running a time keeping system such as NTP and is NOT running httpd, postgres, or anything else listening on the list of ports below. The Docker image will share the network stack with the host and so expects to be able to bind to all of the ports as if it were being run natively.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <a class="reference external" href="http://www.perfsonar.net/deploy/security-considerations/">http://www.perfsonar.net/deploy/security-considerations/</a> for a full listing of ports.</p>
+</div>
+<p>Docker does support the concept of remapping network ports to guests, but is beyond the scope of this model.</p>
+<p>First, pull down the latest Docker image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker pull perfsonar/testpoint</span>
+</pre></div>
+</div>
+<p>This will download the latest built image of the perfsonar testpoint bundle. It includes a base CentOS7 install and the perfsonar-testpoint packages. Once the image is downloaded and extracted, start up the container by doing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker run -d --net=host perfsonar/testpoint</span>
+</pre></div>
+</div>
+<p>Verify that the container is running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker ps</span>
+<span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                 <span class="n">COMMAND</span>                  <span class="n">CREATED</span>             <span class="n">STATUS</span>              <span class="n">PORTS</span>               <span class="n">NAMES</span>
+<span class="n">db89e1b5be3b</span>        <span class="n">perfsonar</span><span class="o">/</span><span class="n">testpoint</span>   <span class="s2">&quot;/bin/sh -c &#39;/usr/...&quot;</span>   <span class="mi">42</span> <span class="n">minutes</span> <span class="n">ago</span>      <span class="n">Up</span> <span class="mi">42</span> <span class="n">minutes</span>                           <span class="n">nifty_panini</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Your container ID and “names” will likely be different than the above. These are generated randomly each time a container is started.</p>
+</div>
+<p>Now you can connect to the running Docker image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker exec -it &lt;container ID from above&gt; bash</span>
+</pre></div>
+</div>
+<p>At this point you will be at a bash prompt inside of the container, and may start running tests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># pscheduler troubleshoot</span>
+<span class="c1"># pscheduler task throughput --dest hostname</span>
+</pre></div>
+</div>
+<p>Congratulations, you’re running perfSONAR in Docker!</p>
+<div class="section" id="running-the-container-with-the-psdocker-script">
+<h3>Running the container with the <cite>psdocker</cite> script<a class="headerlink" href="#running-the-container-with-the-psdocker-script" title="Permalink to this headline">¶</a></h3>
+<p>If you are attempting the steps in the previous section on a Mac OS X system then the <cite>pscheduler task</cite> command may fail with an error such as <cite>Unable to locate pscheduler server</cite>. This is usually due to the way hostnames are assigned in Docker on Mac. With that in mind the perfSONAR team provides a script that helps setup the container properly (this works on non-Mac systems as well). You can use the script by following the steps below.</p>
+<p>Download the <em>perfsonar-testpoint-docker</em> git reposiory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># git clone https://github.com/perfsonar/perfsonar-testpoint-docker</span>
+</pre></div>
+</div>
+<p>Start and enter the container with the <em>psdocker</em> script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ./perfsonar-testpoint-docker/utils/psdocker</span>
+</pre></div>
+</div>
+<p>You can leave the container with <cite>exit</cite> command and re-enter it by running the <em>psdocker</em> command at anytime.</p>
+<p>You can stop the container with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ./perfsonar-testpoint-docker/utils/psdocker stop</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may also give the start and stop commands an additional parameter that points at a tag representing a specific version of perfSONAR. Example: <cite>psdocker start v4.3.0</cite> to run release 4.3.0 or <cite>psdocker start staging</cite> to run the latest beta.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you find this script useful you may decide to put it in your path. Example: <cite>sudo cp ./perfsonar-testpoint-docker/utils/psdocker /usr/local/bin/psdocker</cite></p>
+</div>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to troubleshoot issues with the Docker image are to connect to it while running. Find the container ID of the running container:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker ps</span>
+<span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                 <span class="n">COMMAND</span>                  <span class="n">CREATED</span>             <span class="n">STATUS</span>              <span class="n">PORTS</span>               <span class="n">NAMES</span>
+<span class="n">db89e1b5be3b</span>        <span class="n">perfsonar</span><span class="o">/</span><span class="n">testpoint</span>   <span class="s2">&quot;/bin/sh -c &#39;/usr/...&quot;</span>   <span class="mi">42</span> <span class="n">minutes</span> <span class="n">ago</span>      <span class="n">Up</span> <span class="mi">42</span> <span class="n">minutes</span>                           <span class="n">nifty_panini</span>
+</pre></div>
+</div>
+<p>Connect to the container:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker exec -it &lt;container ID from above&gt; bash</span>
+</pre></div>
+</div>
+<p>And then do troubleshooting as you would anywhere else in perfSONAR. You can look at various log files, run commands in debug mode, etc.</p>
+</div>
+<div class="section" id="managing-upgrades">
+<h2>Managing Upgrades<a class="headerlink" href="#managing-upgrades" title="Permalink to this headline">¶</a></h2>
+<p>To upgrade your Docker container, from the parent do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker pull perfsonar/testpoint</span>
+</pre></div>
+</div>
+<p>If it reports a message about “Image is up to date” then you are already running the latest version.</p>
+<p>You will need to stop the currently running container and start the new version. First figure out the container id of the currently running one:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker ps -a</span>
+<span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                 <span class="n">COMMAND</span>                  <span class="n">CREATED</span>             <span class="n">STATUS</span>                           <span class="n">PORTS</span>               <span class="n">NAMES</span>
+<span class="n">b5e393edf7ad</span>        <span class="n">perfsonar</span><span class="o">/</span><span class="n">testpoint</span>   <span class="s2">&quot;/bin/sh -c &#39;/usr/...&quot;</span>   <span class="mi">57</span> <span class="n">minutes</span> <span class="n">ago</span>      <span class="n">Up</span> <span class="mi">57</span> <span class="n">minutes</span>                                        <span class="n">cocky_mirzakhani</span>
+</pre></div>
+</div>
+<p>Once the container ID is known, have docker shut it down:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker kill b5e393edf7ad</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Shutting down the container will cause it to lose all state. All scheduled tests will be forgotten and any configuration made that hasn’t been committed back to the Docker image will be lost.</p>
+</div>
+<p>And now start up the new one. This process is the same as the first time it was started, but now with the newer image it will start up the new version:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker run -d --net=host perfsonar/testpoint</span>
+</pre></div>
+</div>
+<p>Connect to the docker instance again and verify that you are running the version expected:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker exec -it &lt;new container&#39;s ID&gt; bash</span>
+<span class="c1"># rpm -qa | grep perfsonar</span>
+</pre></div>
+</div>
+<p>Your Docker instance of perfsonar-testpoint has now been upgraded to the latest perfSONAR code.</p>
+</div>
+<div class="section" id="running-with-docker-compose">
+<h2>Running with <cite>docker-compose</cite><a class="headerlink" href="#running-with-docker-compose" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://docs.docker.com/compose/">Docker Compose</a> is software that assists in running and managing one or more containers defined in a YAML file. For covenience, perfSONAR provides such a YAML file to assist in setting-up a single testpoint with a shared volume to persist test configurations. This setup can also be used for ad-hoc testers if you find the docker-compose method more convenient than the other options mentioned in previous sections.</p>
+<p>To obtain the docker-compose file, first download the <em>perfsonar-testpoint-docker</em> git repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># git clone https://github.com/perfsonar/perfsonar-testpoint-docker</span>
+</pre></div>
+</div>
+<p>Next change your working directory to the downloaded directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd perfsonar-testpoint-docker</span>
+</pre></div>
+</div>
+<p>Start the container in the background:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose up -d</span>
+</pre></div>
+</div>
+<p>Your container is now running. You can enter the container, verify it is working and add a remote pSConfig file that will be persisted in the <cite>./compose/psconfig</cite> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose exec testpoint bash</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># pscheduler troubleshoot</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># psconfig remote add URL # replace URL with your pSConfig JSON file URL</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># exit</span>
+</pre></div>
+</div>
+<p>You can stop your container at any time with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose down</span>
+</pre></div>
+</div>
+<p>If you bring the container back-up you should be able to see your pSConfig changes still:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose up -d</span>
+<span class="c1"># docker-compose exec testpoint psconfig remote list</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-the-systemd-image">
+<h2>Running the Systemd Image<a class="headerlink" href="#running-the-systemd-image" title="Permalink to this headline">¶</a></h2>
+<p>The container image adopted in the previous steps makes use of <a class="reference external" href="http://supervisord.org/">supervisord</a> to manage system processes. In addition to that, perfSONAR also provides an image based on <a class="reference external" href="https://systemd.io/">systemd</a>.</p>
+<p>As systemd is the system and service manager adopted by most Linux distributions, both installation and management of services are done in the same way inside the container as in a bare metal host. This facilitates the container maintenance and automation. Also, in scenarios where the testpoint container is expected to run for long periods without stopping, systemd guarantees better stability.</p>
+<p>On the other hand, to run a Docker container with systemd, additional parameters are needed. Because of that, a dedicated <a class="reference external" href="https://docs.docker.com/compose/">docker-compose</a> YAML file was provided to assist in this process.</p>
+<p>Build the image locally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml build</span>
+</pre></div>
+</div>
+<p>Start the container in the background:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml up -d</span>
+</pre></div>
+</div>
+<p>Your container is now running. You can enter the container, verify it is working and add a remote pSConfig file that will be persisted in the <cite>./compose/psconfig</cite> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml exec testpoint bash</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># systemctl status</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># pscheduler troubleshoot</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># psconfig remote add URL # replace URL with your pSConfig JSON file URL</span>
+<span class="p">[</span><span class="n">docker</span><span class="o">-</span><span class="n">desktop</span> <span class="o">/</span><span class="p">]</span><span class="c1"># exit</span>
+</pre></div>
+</div>
+<p>You can stop your container at any time with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml down</span>
+</pre></div>
+</div>
+<p>If you bring the container back-up you should be able to see your pSConfig changes still:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose -f docker-compose.systemd.yml up -d</span>
+<span class="c1"># docker-compose -f docker-compose.systemd.yml exec testpoint psconfig remote list</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Using perfSONAR with Docker</a><ul>
+<li><a class="reference internal" href="#geting-docker">Geting Docker</a></li>
+<li><a class="reference internal" href="#considerations">Considerations</a></li>
+<li><a class="reference internal" href="#quickstart-using-the-docker-command">QuickStart using the <cite>docker</cite> command</a><ul>
+<li><a class="reference internal" href="#running-the-container-with-the-psdocker-script">Running the container with the <cite>psdocker</cite> script</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li><a class="reference internal" href="#managing-upgrades">Managing Upgrades</a></li>
+<li><a class="reference internal" href="#running-with-docker-compose">Running with <cite>docker-compose</cite></a></li>
+<li><a class="reference internal" href="#running-the-systemd-image">Running the Systemd Image</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="install_debian.html">Previous topic</a>
+                  <ul><li><a href="install_debian.html" title="previous chapter">Bundle Installation on Debian</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="install_ansible.html">Next topic</a>
+                      <ul><li><a href="install_ansible.html" title="next chapter">Using perfSONAR with Ansible</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_ansible.html" title="Using perfSONAR with Ansible"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_debian.html" title="Bundle Installation on Debian"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Using perfSONAR with Docker</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

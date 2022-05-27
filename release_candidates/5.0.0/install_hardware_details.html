@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detailed Information on perfSONAR Hardware Requirements &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Detailed Information on perfSONAR Hardware Requirements</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="detailed-information-on-perfsonar-hardware-requirements">
+<h1>Detailed Information on perfSONAR Hardware Requirements<a class="headerlink" href="#detailed-information-on-perfsonar-hardware-requirements" title="Permalink to this headline">¶</a></h1>
+<p>A core port of the perfSONAR philosophy is test isolation: only one test should run on the host at a time. This
+ensures that test results are not impacted by other tests. Otherwise it is much more difficult to interpret test results, which may vary due to host effects rather then network effects. For this reason, the heart of perfSONAR is the tool <em>pScheduler</em>, which is designed to carefully schedule one test at a time.</p>
+<p>perfSONAR measurement tools are much more accurate running on dedicated hardware. While it may be useful to run them on other hosts such as Data Transfer Nodes as well, the development team recommends a specific measurement machine (or machines).  This will ensure the local operations staff, users, and the community at large, can rely on and use the measurement resource to the fullest extent.</p>
+<p>This means you should not run perfSONAR tools on a host running a web server, a data server, or on a virtual machine, because in all of these cases it is not possible to guarantee test isolation.</p>
+<p>As long as you have two or more cores, it is now safe to run a database, a.k.a. the perfSONAR Measurement Archive (MA), on the perfSONAR host. Inserts and queries to the database appear to have no impact on test results. Its also OK to run latency/loss tests (owamp) on one NIC, and throughput tests (iperf3/nuttcp) on a second NIC, without noticeable impact on the results. For more information on configuring a perfSONAR host for two NICs, see: <a class="reference external" href="http://docs.perfsonar.net/manage_dual_xface.html">http://docs.perfsonar.net/manage_dual_xface.html</a></p>
+<p>Note: Running both owamp and iperf at the same time on the same NIC is a problem, and should be avoided.
+iperf tests will often cause owamp to lose packets when running on the same NIC.</p>
+<div class="section" id="processor">
+<h2>Processor<a class="headerlink" href="#processor" title="Permalink to this headline">¶</a></h2>
+<p>The perfSONAR Toolkit is designed and tested for both the x86 and x86_64 architectures.  Use on other architectures (e.g. ARM) is not currently supported by the development team.  Efforts are underway by community members to explore creating a low-cost test infrastructure.</p>
+<p>A system containing a single CPU with multiple cores is sufficient for perfSONAR Toolkit operation. Multi-CPU setups will still function, but may introduce variability into the measurement process unless proper care is taken to bind applications to a given CPU/Core. There are three intense operations that occur on a perfSONAR Toolkit:</p>
+<ul class="simple">
+<li><p><strong>Measurement</strong>: The act of performing any measurement (particularly something intense like a throughput test) will require almost complete access to a processor or core</p></li>
+<li><p><strong>Storage</strong>: The perfSONAR Toolkit Measurement Archive (a combination of a NoSQL and SQL database) stores the result of each regular test, and also responds to queries from local and remote services for data retrieval</p></li>
+<li><p><strong>Graphical Front End</strong>: Powering the web server, and fetching data for remote rendering of data, is the responsibility of the server</p></li>
+</ul>
+<p>User’s that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much hardware support.</p>
+<p>Clock speed is a factor if the system will be used for throughput testing, as the operation is resource intensive.  Clock speeds of at least 2.7 Ghz are required to support TCP tests at speeds of 10Gbps, and more (3Ghz or greater) for UDP.  Note that for single stream operation, only a single CPU/Core is used, but multiple streams can consume more resources.</p>
+<p>If the target use case for the system is lower speed throughput (e.g. 1Gbps or less), or latency testing, the Intel Atom processor has been shown to work.</p>
+</div>
+<div class="section" id="motherboard">
+<h2>Motherboard<a class="headerlink" href="#motherboard" title="Permalink to this headline">¶</a></h2>
+<p>Choice of motherboard matters greatly if the machine will be used for 10Gbps (or greater) throughput testing, and is heavily dependent on the choice of network interface card.  For these use cases, it is recommended an Intel Ivy Bridge or Sandy Bridge be used, as these are known to support version 3 of the PCI specification.  It is also recommended that the number of required PCI lanes for the target NIC be verified, to be sure that there will be enough bandwidth available between the motherboard and the daughter card.</p>
+<p>For less resource intensive applications such as latency testing, choose a motherboard that is known to work with the processor family you are employing, and features enough peripheral slots to support the use case.</p>
+</div>
+<div class="section" id="ram">
+<h2>RAM<a class="headerlink" href="#ram" title="Permalink to this headline">¶</a></h2>
+<p>The development team recommends a minimum of 4GB of volatile memory on all systems running the full installation of the perfSONAR Toolkit.  There are three intense operations that occur on a perfSONAR Toolkit that require the support of memory:</p>
+<p>User’s that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much memory support. The recommended amount of memory for the toolkit (4GB) will ensure proper concurrent operation of all measurement tools, web services, and supporting products such as databases.</p>
+<p>Nodes that only run the <em>testpoint</em> bundle may work with as little as 2GB of memory, although the project recommends at least 4GB to ensure proper operation.</p>
+<p>Nodes that will be used as a central repository for the measurements from a number of beacons are recommended to have as much memory as possible (e.g. greater than 16GB is recommended).</p>
+</div>
+<div class="section" id="local-storage">
+<h2>Local Storage<a class="headerlink" href="#local-storage" title="Permalink to this headline">¶</a></h2>
+<p>Local storage choices are a function of the machine’s use case.  If the machine will not be storing any data (e.g. if it is not running a Measurement Archive), it can function without local storage (e.g. netbooting, or booting off of a CD or USB device).  If the machine will be storing measurement data, it is recommended that a minimum of 100GB of space be made available.  As a default behavior, the perfSONAR toolkit will not clean out stored measurements, and these will build up until the user makes the choice to clean databases.</p>
+</div>
+<div class="section" id="network-interface-card">
+<h2>Network Interface Card<a class="headerlink" href="#network-interface-card" title="Permalink to this headline">¶</a></h2>
+<p>The choice of network interface card is highly dependent on the use case.  Latency machines do not require high amounts of bandwidth, and work well using 1Gbps capable hardware.  Throughput testing works best when a higher speed (10Gbps or greater) is available, but will function well at lower speeds.</p>
+<p>The perfSONAR Toolkit will operate with a given NIC provided there are drivers available from the CentOS project or the vendor.  It is suggested that before buying a NIC that operators consult with CentOS or Vendor documentation to judge the level of support, or ask the  list to see if there is any community experience.</p>
+<p>If you are trying to do 10G data transfers on your network, it’s best to have 10G perfSONAR hosts. However, be careful when testing from a 10G network to a 1G network, to ensure your test traffic does not impact the slower network. The use of lower capacity NICs can introduce unintended behavior into the operation of the measurement tools.</p>
+<p><strong>Onboard NIC</strong></p>
+<p>The onboard NIC functions best as a “management” port instead of a measurement port.  This being said, there are use cases that can be supported by onboard NIC technology.</p>
+<p>Typical motherboards have available 1000BaseT ports as a standard option.  These ports are reasonable for both latency and bandwidth (1Gbps max) testing.  Known issues include the introduction of Jitter into latency measurements due to the sharing of system resources (e.g. common communication bus for traffic coming off of the Disk, NIC, or other peripherals).</p>
+<p>10GBase ports are less standard, but available on certain types of motherboards.  In testing it has been shown that a similar problem of system resource contention (e.g. sharing a system communications network with peripherals) can cause measurement abnormalities.  10GBase works best as a daughter board, where it can utilize the higher PCI communications system to support high speed throughput testing.</p>
+<p><strong>PCI-slot NIC</strong></p>
+<p>The primary concern when purchasing daughter board NICs is to evaluate that the slot on the motherboard will support the NIC specification.  Many 10GBase NIC cards require several “lanes” (e.g. a rating such as x4, or x8) of a PCI slot.  Consult the motherboard documentation to be sure the slot you are targeting can support this amount of bandwidth.  Using a slot that does not have enough lanes wired will result in lower than expected throughput.</p>
+<p>40G/100G cards require a higher number of lanes (e.g. x16 in some cases) as well as support for the PCI 3.0 specification.  This is often only available in newer motherboards (Intel Sandy/Ivy Bridge).  Lack of support for these items may result in poor performance</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Detailed Information on perfSONAR Hardware Requirements</a><ul>
+<li><a class="reference internal" href="#processor">Processor</a></li>
+<li><a class="reference internal" href="#motherboard">Motherboard</a></li>
+<li><a class="reference internal" href="#ram">RAM</a></li>
+<li><a class="reference internal" href="#local-storage">Local Storage</a></li>
+<li><a class="reference internal" href="#network-interface-card">Network Interface Card</a></li>
+</ul>
+</li>
+</ul>
+
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Detailed Information on perfSONAR Hardware Requirements</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

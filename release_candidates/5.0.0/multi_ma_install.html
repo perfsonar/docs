@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deploying a Central Measurement Archive &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="What is MaDDash?" href="maddash_intro.html" />
+    <link rel="prev" title="MeshConfig to pSConfig Migration Guide" href="psconfig_meshconfig_migrate.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maddash_intro.html" title="What is MaDDash?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_meshconfig_migrate.html" title="MeshConfig to pSConfig Migration Guide"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Deploying a Central Measurement Archive</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="deploying-a-central-measurement-archive">
+<h1>Deploying a Central Measurement Archive<a class="headerlink" href="#deploying-a-central-measurement-archive" title="Permalink to this headline">¶</a></h1>
+<p>Measurement results from your regular tests are stored in a <strong>measurement archive (MA)</strong>. This leads to the definition of two categories of hosts:</p>
+<ol class="arabic simple">
+<li><p>The <strong>measurement host</strong> that runs regular tests such as throughput, one-way latency, ping and traceroute measurements.</p></li>
+<li><p>The <strong>archive host</strong> that stores the results from the measurement host(s)</p></li>
+</ol>
+<p>By default the perfSONAR Toolkit is both measurement host AND archive host. It comes installed with both the regular testing infrastructure and the measurement archive software. The measurement archive stores all the results from measurements defined in the regular testing configuration of the local host. In most cases, this is an adequate storage strategy.</p>
+<p>As an alternative, you may decide to separate your measurement hosts and archive host(s). This allows a single “centralized” archive host to store results from multiple measurement hosts. A few use cases where this may be desirable are as follows:</p>
+<ul class="simple">
+<li><p>Your measurement hosts are on less powerful (and likely lower cost) hardware that you don’t want having the overhead of running the measurement archive. The measurement archive has higher hardware requirements than the measurement tools, so removing it can result in considerable resource savings.</p></li>
+<li><p>Your site has the experience and the infrastructure to manage large databases that you would like to leverage for storing measurement results on a dedicated archive host.</p></li>
+<li><p>You want to store results in multiple places. For example, you may store your results locally but also store them in a central archive where complex analysis tools operate on all the data from multiple hosts in one location.</p></li>
+</ul>
+<p>Those are just a few examples. If you think a central measurement archive is right for your measurement strategy, then read the remainder of this document for instructions on how to configure both your archive host and measurement hosts.</p>
+<div class="section" id="installing-the-measurement-archive-software">
+<h2>Installing the Measurement Archive Software<a class="headerlink" href="#installing-the-measurement-archive-software" title="Permalink to this headline">¶</a></h2>
+<p>The measurement archive is implemented using a software package named <em>perfsonar-archive</em>. Ypur can install as a standalone package on any perfSONAR supported operating system with the following:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="authenticating-measurement-hosts">
+<h2>Authenticating Measurement Hosts<a class="headerlink" href="#authenticating-measurement-hosts" title="Permalink to this headline">¶</a></h2>
+<p>Measurement hosts need to authenticate to the measurement archive when they register data. This is implemented using one of two methods:</p>
+<ol class="arabic simple">
+<li><p>A username and password that is passed in the HTTP header of all requests.</p></li>
+<li><p>Using IP based authentication</p></li>
+</ol>
+<p>The remainder of this section describes how to setup both type of accounts.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may have a combination of the above where some accounts authenticate based on IP address and others based on username/password.</p>
+</div>
+<div class="section" id="authenticating-by-username-and-password">
+<span id="multi-ma-install-intro"></span><h3>Authenticating by Username and Password<a class="headerlink" href="#authenticating-by-username-and-password" title="Permalink to this headline">¶</a></h3>
+<p>The username and password is set in OpenSearch. You can create your own but an account is enabled with the minimum set of permissions needed to write to the perfSONAR indices. You can find the details in <cite>/etc/perfsonar/opensearch/logstash_login</cite>.</p>
+</div>
+<div class="section" id="authenticating-by-ip-address">
+<span id="multi-ma-install-auth-ip"></span><h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this headline">¶</a></h3>
+<p>This is done in the Apache proxy for Logstash. See the examples in <em>/etc/httpd/conf.d/apache-logstash.conf</em>.</p>
+</div>
+</div>
+<div class="section" id="configuring-measurement-hosts">
+<h2>Configuring Measurement Hosts<a class="headerlink" href="#configuring-measurement-hosts" title="Permalink to this headline">¶</a></h2>
+<p>Each measurement host must be configured to register its data to the central archive. This is done by configuring the <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">pSConfig pScheduler Agent</span></a> to use the archive. The exact approach depends largely with how you are reading your template and which tasks you want to send to the central archive.</p>
+<p>One approach is to define the archive in the pSConfig template being used. In that case, the pSConfig template is going to need a section similar to the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://ma.example.perfsonar.net/logstash&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;put&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The full set of options for the <code class="docutils literal notranslate"><span class="pre">data</span></code> section of an <em>archive</em> object of type <em>http</em> are detailed <a class="reference internal" href="pscheduler_ref_archivers.html#pscheduler-ref-archivers-archivers-http"><span class="std std-ref">here</span></a>.  The defined <code class="docutils literal notranslate"><span class="pre">tasks</span></code> section will need to reference the archive defined above for those tasks to be stored. See <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">Introduction to pSConfig Templates</span></a> for information on how tasks and archives link together if that is not clear.</p>
+<p>The above example does not define how to set the authentication token for a username and password. It is possible to set the token using HTTP Basic Auth using the <code class="docutils literal notranslate"><span class="pre">_headers</span></code> field. Before you do that though you need to base64 encode the username and password separated by a colon. If using the default credentials then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">base64</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">opensearch</span><span class="o">/</span><span class="n">logstash_login</span>
+</pre></div>
+</div>
+<p>With the output value you can generate a definition as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://ma.example.perfsonar.net/logstash&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span> <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span><span class="s2">&quot;Basic BASE64ENCODEDCREDS&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>It is only recommended you set the</strong> <code class="docutils literal notranslate"><span class="pre">_headers</span></code> <strong>if your template is a file on the local system that will never be published to the web.</strong> This is to protect your credentials from being exposed. See <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-templates-local"><span class="std std-ref">Local Templates</span></a> for how to setup local templates. Alternatively see <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-archives"><span class="std std-ref">Configuring Default Archives</span></a> for information on how to define a default archiver locally for all tasks. Finally, if you have a remote template and would like to set the <code class="docutils literal notranslate"><span class="pre">_auth-token</span></code> after the agent downloads the template see <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-all"><span class="std std-ref">Transforming All Remote Templates</span></a> and <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-one"><span class="std std-ref">Transforming Individual Remote Templates</span></a>.</p>
+<p>If you are using a remote pSConfig template that has your archive defined in it, make sure you use the <code class="docutils literal notranslate"><span class="pre">--configure-archives</span></code> option of <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">remote</span> <span class="pre">add</span></code> when you add the URL to the template. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="n">add</span> <span class="o">--</span><span class="n">configure</span><span class="o">-</span><span class="n">archives</span> <span class="n">URL</span>
+</pre></div>
+</div>
+<p>If the option is not included then the archive will be ignored.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Deploying a Central Measurement Archive</a><ul>
+<li><a class="reference internal" href="#installing-the-measurement-archive-software">Installing the Measurement Archive Software</a></li>
+<li><a class="reference internal" href="#authenticating-measurement-hosts">Authenticating Measurement Hosts</a><ul>
+<li><a class="reference internal" href="#authenticating-by-username-and-password">Authenticating by Username and Password</a></li>
+<li><a class="reference internal" href="#authenticating-by-ip-address">Authenticating by IP Address</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-measurement-hosts">Configuring Measurement Hosts</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="psconfig_meshconfig_migrate.html">Previous topic</a>
+                  <ul><li><a href="psconfig_meshconfig_migrate.html" title="previous chapter">MeshConfig to pSConfig Migration Guide</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="maddash_intro.html">Next topic</a>
+                      <ul><li><a href="maddash_intro.html" title="next chapter">What is MaDDash?</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maddash_intro.html" title="What is MaDDash?"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_meshconfig_migrate.html" title="MeshConfig to pSConfig Migration Guide"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Deploying a Central Measurement Archive</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
