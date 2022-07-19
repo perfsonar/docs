@@ -1,6 +1,8 @@
 ***********************************
-Managing Measurement Archive Data
+Managing Esmond Data
 ***********************************
+
+.. note:: ESMOND IS NO LONGER SUPPORTED. THIS PAGE MAY BE USEFUL IF YOU ARE TRYING TO MOVE HISTORICAL DATA TO A DIFFERENT MACHINE
 
 As you collect measurements over time, there are some common tasks you may wish to perform such as:
 

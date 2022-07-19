@@ -102,15 +102,12 @@ Managing Multiple Hosts with pSConfig
    
 .. _index-multiple:
 
-Archiving Measurements with esmond
-----------------------------------
+Archiving Measurements with OpenSearch
+---------------------------------------
 .. toctree::
    :maxdepth: 1
    
    multi_ma_install
-   multi_ma_clustering
-   multi_ma_backups
-   esmond_api_rest
    
 Displaying Measurements with MaDDash
 -------------------------------------
@@ -160,6 +157,7 @@ Accessing Raw Data
    
    client_tools
    client_apis
+   esmond_api_rest
 
 .. _index-previous_releases:
 

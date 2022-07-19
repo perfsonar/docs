@@ -2,22 +2,7 @@
 perfSONAR Client Tools 
 **********************
 
-perfSONAR includes some sample tools to retrieve perfSONAR data from the measurement archive (called esmond) and from the Lookup Service (called sLS). You can also use the :doc:`client_apis` to write your own tools.
-
-
-esmond clients
---------------
-esmond Service clients are available at https://pypi.python.org/pypi/esmond_client/, or can be installed using python's *easy_install*:
-::
-
-     easy_install esmond-client
-
-esmond clients include:
-
-- esmond-ps-get-metadata
-- esmond-ps-get-endpoints
-- esmond-ps-get
-- esmond-ps-get-bulk
+perfSONAR includes some sample tools to retrieve perfSONAR-related data. You can also use the :doc:`client_apis` to write your own tools.
 
 
 Lookup Service clients

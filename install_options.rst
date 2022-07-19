@@ -18,13 +18,12 @@ There are several other installation options as well for certain versions of bot
       * Publish the existence of a measurement node 
 
     This bundle does NOT contain the software required to store measurements locally in an archive; the archive must be remote. This is best for dedicated testers running on lightweight hardware platforms that have a remote location in which to publish results.
-#. **perfsonar-core:** The perfsonar-core bundle install includes everything in the perfsonar-testpoint bundle install plus the esmond measurement archive used to store results. This is ideal for dedicated measurement hosts that want to store results locally, but do not want a perfSONAR Toolkit install. In other words, they do not want to use a web interface and want the flexibility to choose default security and tuning settings.
+#. **perfsonar-core:** The perfsonar-core bundle install includes everything in the perfsonar-testpoint bundle install plus the measurement archive used to store results. This is ideal for dedicated measurement hosts that want to store results locally, but do not want a perfSONAR Toolkit install. In other words, they do not want to use a web interface and want the flexibility to choose default security and tuning settings.
 #. **perfsonar-toolkit:** This bundle includes everything in perfsonar-core bundle plus:
     * The web interface used to manage tests
     * Scripts used to apply system-wide default tuning and security settings
 
     This bundle is for those that wish to install the full suite of tools included on the perfSONAR Toolkit ISO but on an existing Linux system. 
-#. **perfsonar-centralmanagement:** The perfsonar-centralmanagement bundle is independent from the bundles above and installs tools needed to centrally manage a large number of hosts and display their results. This includes the esmond measurement archive, tools for publishing task templates, and dashboard software for displaying results (MaDDash). 
 
 .. image:: images/install_options-bundle_tree.png
 
