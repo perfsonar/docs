@@ -138,7 +138,19 @@ The JSON version of a task specification can be sent to the standard output with
 
     pscheduler task --export throughput --dest wherever --udp --ip-version 6 > mytask.json
 
+
+Exporting tasks for the Batch Processor
+---------------------------------------
+
+A minimal batch specification can be sent to the standard output
+without scheduling using the ``--export`` and ``--export-format
+batch`` switches::
+
+    pscheduler task --export --export-format batch rtt --dest wherever > mybatch.json
+
 **NOTE:**  Tasks are not validated until submitted for scheduling, so it is possible to export invalid tasks.
+
+
 
 .. _pscheduler_client_tasks-importing:
 

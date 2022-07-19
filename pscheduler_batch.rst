@@ -128,7 +128,9 @@ specification as would be produced using the ``task`` command's
 ``schedule``, those parameters will be ignored.  If the value is an
 array, the contents of the array will be treated as a set of tasks and
 the number of iterations will be set to its length.  This overrides
-the contents of ``iterations``.
+the contents of ``iterations``.  Also note that a minimal batch
+containing a single task can be exported using the ``--export`` and
+``--export-format batch`` switches.
 
 ``task-transform`` - A jq transform that operates on the ``task``'s
 value for each iteration to make iteration-specific changes.  The
