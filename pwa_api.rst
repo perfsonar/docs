@@ -9,7 +9,7 @@ Get Access token
 
 Before you can start using the API, you need to obtain an access token. 
 
-Login to your PWA server, and run something like following..
+Login to your PWA docker, and run something like following..
 
 .. code-block:: bash
 
@@ -17,8 +17,15 @@ Login to your PWA server, and run something like following..
    $ /app/bin/auth.js issue --scopes '{"pwa": ["user"]}' --username 'username' 
    eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3NjYS5pdS5lZHUvYXV0aCIsImlhdCI6MTQ4NzYyNzE2OS45NjMsInNjb3BlcyI6eyJtY2EiOlsidXNlciJdfSwic3ViIjowfQ.hmKr5GAhabMwSltdyq21__-JSGFXFyhxLB7HxhucXLMOslqVo2yOx4qZoLprBDKcCFnKQ7fQNY0fI9coi9ix40clci--p5iSD-w4gzXaxRm2wvldUDQeA...
    $ exit
+   
+In case of PWA running on a server, 
 
-Copy the output from auth.js which is your access token. Store this on your server somewhere and make sure only you can access it (like chmod 600 ``~/.pwa.token.jwt``\ )
+.. code-block:: bash
+
+   $ sudo pwa_auth issue --scopes '{"sca": ["admin"] }' --sub 'pwa'
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovLzxob3N0bmFtZT4vcHdhL2F1dGgiLCJpYXQiOjE2NjAyODkzMjkuMSwic3ViIjoicHdhIiwic2NvcGVzIjp7InNjYSI6WyJhZG1pbiJdfX0.dE9nrXcI7jPb7-FETjL3dPNk9Iotx8gxdBXhf7RKntVZ_75cj-cib9GAqoCl00vTBla95mR0QcEnKDW8Ic_RV5dp3mW7rRvlisDToR73RoW1j1C46ufMaeeKx8gw_s40NaKoRhSODV0Dk-Zmbz2mEdwpAOmTJ149zjeLmyChUV5ZR-zh7NpiDGu_MAYpwo3rOK88emeLNF6ke355QQk8uJTeAymSzPPQcBXL9imGl6hIXTdfNniklOAlcEdm3XWe5-EBjWK0ezbhNOZCFiprZcd2wMjQidmCgrhLK-X4gO...
+
+Copy the output from auth.js or pwa_auth which is your access token. Store this on your server somewhere and make sure only you can access it (like chmod 600 ``~/.pwa.token.jwt``\ )
 
 Query APIs
 ----------
