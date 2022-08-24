@@ -226,6 +226,8 @@ there will be more than one.  Each result is a JSON object containing
 pairs named ``application/json``, ``text/plain`` and ``text/html`` for
 each of the formats in which pScheduler can produce a result.
 
+The ``batch`` pair includes diagnostic information about the batch.
+
 
 
 .. _pscheduler_batch_python:
