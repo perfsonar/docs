@@ -187,3 +187,20 @@ If you bring the container back-up you should be able to see your pSConfig chang
 
   # docker-compose -f docker-compose.systemd.yml up -d
   # docker-compose -f docker-compose.systemd.yml exec testpoint psconfig remote list
+
+
+Advanced: Managing the Firewall with Docker Container
+======================================================
+By default, the docker container does not touch the host firewall even though it does contain the perfsonar-toolkit-security package. The firewall (iptables) is managed by the Linux kernel and thus the container has to share the firewall with the host system. By default, the container does not have permission to run or manage iptables. That means management of the firewall must be done by the system administrator on he host system (i.e. outside the container). 
+
+It is possible to give the container permissions to manage the firewall and run the perfSONAR provided script to install the rule. There is no formal recommendation on using this method versus managing the firewall at the host system layer. Use whichever method works best for you. If you would like to have the container manage the rules then you follow the steps below:
+
+1. Add `--cap-add=NET_ADMIN` to your `docker run` command OR the following to you docker-compose.yml file::
+
+     cap_add:
+         - NET_ADMIN
+
+2. Run the command `/usr/lib/perfsonar/scripts/configure_firewall install` inside the container. The full command for doing this with the systemd image and Docker Compose is::
+
+    docker-compose -f docker-compose.systemd.yml exec testpoint /usr/lib/perfsonar/scripts/configure_firewall install
+

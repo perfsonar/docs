@@ -252,6 +252,24 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="advanced-managing-the-firewall-with-docker-container">
+<h2>Advanced: Managing the Firewall with Docker Container<a class="headerlink" href="#advanced-managing-the-firewall-with-docker-container" title="Permalink to this headline">¶</a></h2>
+<p>By default, the docker container does not touch the host firewall even though it does contain the perfsonar-toolkit-security package. The firewall (iptables) is managed by the Linux kernel and thus the container has to share the firewall with the host system. By default, the container does not have permission to run or manage iptables. That means management of the firewall must be done by the system administrator on he host system (i.e. outside the container).</p>
+<p>It is possible to give the container permissions to manage the firewall and run the perfSONAR provided script to install the rule. There is no formal recommendation on using this method versus managing the firewall at the host system layer. Use whichever method works best for you. If you would like to have the container manage the rules then you follow the steps below:</p>
+<ol class="arabic">
+<li><p>Add <cite>–cap-add=NET_ADMIN</cite> to your <cite>docker run</cite> command OR the following to you docker-compose.yml file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cap_add</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">NET_ADMIN</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the command <cite>/usr/lib/perfsonar/scripts/configure_firewall install</cite> inside the container. The full command for doing this with the systemd image and Docker Compose is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="o">.</span><span class="n">systemd</span><span class="o">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">testpoint</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">configure_firewall</span> <span class="n">install</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
 </div>
 
 
@@ -275,6 +293,7 @@
 <li><a class="reference internal" href="#managing-upgrades">Managing Upgrades</a></li>
 <li><a class="reference internal" href="#running-with-docker-compose">Running with <cite>docker-compose</cite></a></li>
 <li><a class="reference internal" href="#running-the-systemd-image">Running the Systemd Image</a></li>
+<li><a class="reference internal" href="#advanced-managing-the-firewall-with-docker-container">Advanced: Managing the Firewall with Docker Container</a></li>
 </ul>
 </li>
 </ul>
