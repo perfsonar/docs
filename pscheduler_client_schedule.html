@@ -1,10 +1,9 @@
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Viewing the Schedule &#8212; perfSONAR Toolkit 4.4.5 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -20,7 +19,17 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Running a pScheduler Server" href="pscheduler_server_running.html" />
-    <link rel="prev" title="Creating and Managing Tasks" href="pscheduler_client_tasks.html" /> 
+    <link rel="prev" title="Creating and Managing Tasks" href="pscheduler_client_tasks.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
   </head><body>
     <header>
         <div class="headerContents">
@@ -52,8 +61,7 @@
         <li class="right" >
           <a href="pscheduler_client_tasks.html" title="Creating and Managing Tasks"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.5 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Viewing the Schedule</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.5 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -81,7 +89,7 @@
 <div class="section" id="the-basics">
 <span id="pscheduler-client-schedule-basics"></span><h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h2>
 <p>pScheduler maintains a schedule in the database and this schedule can be queried. Having some base knowledge of how pScheduler maintains its schedule can go a long way in understanding what is seen when you query the schedule.</p>
-<p>Every time a <a class="reference internal" href="pscheduler_intro.html#term-Task"><span class="xref std std-term">task</span></a> is created, one or more <a class="reference internal" href="pscheduler_intro.html#term-Run"><span class="xref std std-term">runs</span></a> are scheduled. Runs are scheduled 24 hours in advance by default (this is known as the <a class="reference internal" href="pscheduler_intro.html#term-Schedule-Horizon"><span class="xref std std-term">schedule horizon</span></a>). This means that you can not only see what has run in the past and what is running in the present, but also exactly when pScheduler will attempt a run in the future.</p>
+<p>Every time a <a class="reference internal" href="pscheduler_intro.html#term-task"><span class="xref std std-term">task</span></a> is created, one or more <a class="reference internal" href="pscheduler_intro.html#term-run"><span class="xref std std-term">runs</span></a> are scheduled. Runs are scheduled 24 hours in advance by default (this is known as the <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><span class="xref std std-term">schedule horizon</span></a>). This means that you can not only see what has run in the past and what is running in the present, but also exactly when pScheduler will attempt a run in the future.</p>
 <p>Runs also have a status depending on whether they have already run or are still waiting to do so.  Possible status values are:</p>
 <blockquote>
 <div><ul class="simple">
@@ -131,7 +139,7 @@
 <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">host2</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">/</span><span class="n">tasks</span><span class="o">/</span><span class="n">a07cdaa6</span><span class="o">-</span><span class="mi">624</span><span class="n">b</span><span class="o">-</span><span class="mi">4128</span><span class="o">-</span><span class="mi">9821</span><span class="o">-</span><span class="mi">0</span><span class="n">b2dc9c2b760</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">2</span><span class="n">cd5e548</span><span class="o">-</span><span class="n">dff9</span><span class="o">-</span><span class="mi">44</span><span class="n">d8</span><span class="o">-</span><span class="mi">8475</span><span class="o">-</span><span class="n">b38791e2d5a5</span>
 </pre></div>
 </div>
-<p>The runs displayed will include any task where your host is a <a class="reference internal" href="pscheduler_intro.html#term-Participant"><span class="xref std std-term">participant</span></a>, not just the <a class="reference internal" href="pscheduler_intro.html#term-Lead-Participant"><span class="xref std std-term">lead participant</span></a>.</p>
+<p>The runs displayed will include any task where your host is a <a class="reference internal" href="pscheduler_intro.html#term-participant"><span class="xref std std-term">participant</span></a>, not just the <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><span class="xref std std-term">lead participant</span></a>.</p>
 <p>With one (delta) argument, the schedule between now and some point in the past or future will be shown. Deltas are ISO 8601 durations, with -PT1H meaning one hour in the past and P1D meaning one day in the future. Examples:</p>
 <blockquote>
 <div><ul>
@@ -162,7 +170,7 @@
 </li>
 </ul>
 </div></blockquote>
-<p>It also provides the <code class="docutils literal notranslate"><span class="pre">--filter-test</span> <span class="pre">TEST_TYPE</span></code> option to ask for a particular <a class="reference internal" href="pscheduler_intro.html#term-Test"><span class="xref std std-term">test</span></a> type. For a list of test types see <a class="reference internal" href="pscheduler_ref_tests_tools.html"><span class="doc">Test and Tool Reference</span></a>. For example, you may ask for all the throughput tests scheduled in the next hour with:</p>
+<p>It also provides the <code class="docutils literal notranslate"><span class="pre">--filter-test</span> <span class="pre">TEST_TYPE</span></code> option to ask for a particular <a class="reference internal" href="pscheduler_intro.html#term-test"><span class="xref std std-term">test</span></a> type. For a list of test types see <a class="reference internal" href="pscheduler_ref_tests_tools.html"><span class="doc">Test and Tool Reference</span></a>. For example, you may ask for all the throughput tests scheduled in the next hour with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">test</span> <span class="n">throughput</span> <span class="n">PT1H</span>
 </pre></div>
 </div>
@@ -188,14 +196,14 @@
 </div>
 <p>You always redirect the output to a file and the program will return an error before execution if you do not. Example output is shown below:</p>
 <img alt="_images/pscheduler_client_schedule-plot.png" src="_images/pscheduler_client_schedule-plot.png" />
-<p>The vertical axis is the time that the test ran or is scheduled to run. The green boxes are <a class="reference internal" href="pscheduler_intro.html#term-Run"><span class="xref std std-term">runs</span></a> of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of five classifications listed at the top:</p>
+<p>The vertical axis is the time that the test ran or is scheduled to run. The green boxes are <a class="reference internal" href="pscheduler_intro.html#term-run"><span class="xref std std-term">runs</span></a> of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of five classifications listed at the top:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p><strong>Exclusive</strong> - An example is a <em>throughput</em> task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests. These test can run in parallel only with background tests.</p></li>
 <li><p><strong>Normal</strong> - An example is a task with a test type of <em>latency</em>.</p></li>
 <li><p><strong>Background Single-Result</strong> - Background tests that produce single result. Example test types include <em>rtt</em> and <em>trace</em> or <em>clock</em>. These tests can run in parallel with anything else.</p></li>
 <li><p><strong>Background Multi-Result</strong> - Background tests that produce multiple (streaming) results. Example test type is <em>latencybg</em>. It is not uncommon to have this column look almost entirely solid if you have <em>latencybg</em> tasks since they run continuously. These tests can run in parallel with anything else.</p></li>
-<li><p><strong>Non-Starting</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-Schedule-Horizon"><span class="xref std std-term">schedule horizon</span></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</p></li>
+<li><p><strong>Non-Starting</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-schedule-horizon"><span class="xref std std-term">schedule horizon</span></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</p></li>
 <li><p><strong>Preempted</strong> - These runs were preempted by another with higher priority.</p></li>
 </ol>
 </div></blockquote>
@@ -269,7 +277,6 @@
 </div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -319,8 +326,7 @@
         <li class="right" >
           <a href="pscheduler_client_tasks.html" title="Creating and Managing Tasks"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.5 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Viewing the Schedule</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.5 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -365,7 +371,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

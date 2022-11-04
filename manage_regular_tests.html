@@ -1,10 +1,9 @@
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configuring Regular Tests &#8212; perfSONAR Toolkit 4.4.5 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -20,7 +19,17 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Updating Administrative Information" href="manage_admin_info.html" />
-    <link rel="prev" title="Choosing a Management Method" href="manage_choose.html" /> 
+    <link rel="prev" title="Choosing a Management Method" href="manage_choose.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
   </head><body>
     <header>
         <div class="headerContents">
@@ -52,8 +61,7 @@
         <li class="right" >
           <a href="manage_choose.html" title="Choosing a Management Method"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.5 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Configuring Regular Tests</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.5 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -104,13 +112,13 @@
 <span id="manage-reg-tests-types"></span><h2>Types of Regular Tests<a class="headerlink" href="#types-of-regular-tests" title="Permalink to this headline">¶</a></h2>
 <p>As a first step test definition must be added. Multiple types of tests can be configured through the web interface. They are described below:</p>
 <dl class="glossary simple">
-<dt id="term-Throughput">Throughput</dt><dd><p>This type of test measures the amount of data that can be transferred over a period of time. It is implemented using a tool called pScheduler that makes sure the throughput tests do not conflict with each other. By default pScheduler executes <a class="reference external" href="http://software.es.net/iperf/">iperf3</a> to actually measure throughput, but iperf2 and nuttcp can also be used. For a description of the pros and cons of each tool, see <a class="reference external" href="https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/">fasterdata.es.net</a>.</p>
+<dt id="term-throughput">Throughput</dt><dd><p>This type of test measures the amount of data that can be transferred over a period of time. It is implemented using a tool called pScheduler that makes sure the throughput tests do not conflict with each other. By default pScheduler executes <a class="reference external" href="http://software.es.net/iperf/">iperf3</a> to actually measure throughput, but iperf2 and nuttcp can also be used. For a description of the pros and cons of each tool, see <a class="reference external" href="https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/">fasterdata.es.net</a>.</p>
 </dd>
-<dt id="term-Ping">Ping</dt><dd><p>This type of test measures the round-trip-time of packet and other statistics such as loss. The pScheduler tool is used to manage the schedule and it spawns a ping command to perform the actual measurement. Ping collects similar statistics to the one-way latency test (such as packet loss) but does so at a much less granular level and without regard for whether the measured value occurred on the forward or reverse path. The advantage of ping tests is that many sites accept ping tests without the need for firewall modifications or special daemon’s running on the target host.</p>
+<dt id="term-ping">Ping</dt><dd><p>This type of test measures the round-trip-time of packet and other statistics such as loss. The pScheduler tool is used to manage the schedule and it spawns a ping command to perform the actual measurement. Ping collects similar statistics to the one-way latency test (such as packet loss) but does so at a much less granular level and without regard for whether the measured value occurred on the forward or reverse path. The advantage of ping tests is that many sites accept ping tests without the need for firewall modifications or special daemon’s running on the target host.</p>
 </dd>
-<dt id="term-One-way-latency">One-way latency</dt><dd><p>This type of test measures delay and loss separately for each direction of a path (as opposed to combining the values of each direction as ping tests). The underling tool run is an OWAMP client. This type of test runs constantly sending several packets each seconds. This allows it to find very small amounts of loss if present that may be missed by other tools. If also running throughput tests, you may see anomalies such as a sudden burst of loss when throughput tests run. For this reason it is often recommended you run this type of test on a separate interface or host than the throughput tests. See <a class="reference internal" href="manage_dual_xface.html"><span class="doc">Configuring a Host with Multiple Interfaces</span></a> for more information on running tests on separate interfaces.</p>
+<dt id="term-one-way-latency">One-way latency</dt><dd><p>This type of test measures delay and loss separately for each direction of a path (as opposed to combining the values of each direction as ping tests). The underling tool run is an OWAMP client. This type of test runs constantly sending several packets each seconds. This allows it to find very small amounts of loss if present that may be missed by other tools. If also running throughput tests, you may see anomalies such as a sudden burst of loss when throughput tests run. For this reason it is often recommended you run this type of test on a separate interface or host than the throughput tests. See <a class="reference internal" href="manage_dual_xface.html"><span class="doc">Configuring a Host with Multiple Interfaces</span></a> for more information on running tests on separate interfaces.</p>
 </dd>
-<dt id="term-Traceroute">Traceroute</dt><dd><p>Traceroute tests periodically measure the path between the source and destination. By default this type of test will automatically be added every time you add any of the other types of tests. This type of test is crucial in determining how a packet traverses a network and can be helpful in identifying events such as path changes that affect other test types. The underlying tool is pScheduler to manage scheduling the test and the tracepath command to actual perform the measurement. The tool will fallback to traceroute if tracepath is not installed on the source host for some reason (all Toolkit hosts come with tracepath by default). It is also possible to choose <em>paris-traceroute</em> as in underlying tool.</p>
+<dt id="term-traceroute">Traceroute</dt><dd><p>Traceroute tests periodically measure the path between the source and destination. By default this type of test will automatically be added every time you add any of the other types of tests. This type of test is crucial in determining how a packet traverses a network and can be helpful in identifying events such as path changes that affect other test types. The underlying tool is pScheduler to manage scheduling the test and the tracepath command to actual perform the measurement. The tool will fallback to traceroute if tracepath is not installed on the source host for some reason (all Toolkit hosts come with tracepath by default). It is also possible to choose <em>paris-traceroute</em> as in underlying tool.</p>
 </dd>
 </dl>
 </div>
@@ -541,7 +549,6 @@
 </div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -598,8 +605,7 @@
         <li class="right" >
           <a href="manage_choose.html" title="Choosing a Management Method"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.5 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Configuring Regular Tests</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.5 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -644,7 +650,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
