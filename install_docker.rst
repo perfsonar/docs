@@ -6,7 +6,12 @@ Using perfSONAR with Docker provides a non-intrusive way to run the perfSONAR so
 
 Geting Docker
 =================
-Docker must be installed and the Docker daemon running in order to use perfSONAR in a container. Detailed instructions for installing docker are beyond the scope of this document. Docker is available on all major platforms at https://www.docker.com/community-edition and may also be available via your operating system's native package manager, such as yum or apt.      
+Docker must be installed and the Docker daemon running in order to use perfSONAR in a container. Detailed instructions for installing docker are beyond the scope of this document. Docker is available on all major platforms at https://www.docker.com/community-edition and may also be available via your operating system's native package manager, such as yum or apt.
+
+**NOTE:** the perfSONAR container has been tested with **recent**
+ versions of Docker CE and Podman.  Older versions of Docker
+ (specifically 1.x) are known to cause problems.
+
 
 Considerations
 ==============
