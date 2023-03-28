@@ -6,7 +6,7 @@ Using perfSONAR with Ansible
 
 Introduction
 ============================================
-PerfSONAR uses Ansible playbooks and roles published by the perfSONAR Project to install and maintain a complete deployment.
+perfSONAR uses Ansible playbooks and roles published by the perfSONAR Project to install and maintain a complete deployment.
 
 For initial documentation look at https://github.com/perfsonar/ansible-playbook-perfsonar README file.
 
