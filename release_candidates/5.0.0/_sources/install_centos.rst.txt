@@ -2,7 +2,7 @@
 Bundle Installation on CentOS 
 ******************************
 
-perfSONAR combines various sets of measurement tools and services. Commonly people install the entire set of tools using the Toolkit ISO (as detailed at :doc:`install_getting`) but this may not be optimal for every situation. For example if you only need a subset of the tools, you have an existing CentOS system on which you'd like to install the software and/or you are doing a large deployment of perfSONAR nodes. With this in mind RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
+perfSONAR combines various sets of measurement tools and services bundled in different useful ways. RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
 System Requirements 
 ==================== 
@@ -162,7 +162,7 @@ To run the script manually, run::
 Step 7: Register your services 
 ------------------------------- 
 
-Note: this step can be done through the web interface if the perfsonar-toolkit bundle (or the ISO) was installed. 
+Note: this step can be done through the web interface if the perfsonar-toolkit bundle was installed. 
 See :doc:`manage_admin_info`.
 
 No actual configuration is required but filling fields such as administrator_email, site_name, city, country, latitude, longitude, etc. are **highly recommended**. You can add these by removing the leading `#` of any property and filling it out with a proper value for your host. Changes will be picked-up automatically without need for any restarts.
