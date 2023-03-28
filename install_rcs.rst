@@ -7,23 +7,11 @@ Testing Beta Versions of perfSONAR
 
 The perfSONAR project traditionally does public betas testing prior to major new releases. These are announced on the mailing lists when available. Participating in betas is open to anyone and feedback generated from these tests helps the development team formulate the best possible final release. You can help with testing by going through one or more of the following test scenarios:
 
-* A clean installation of our Toolkit ISOs
-* A clean installation of one of our CentOS bundles
+* A clean installation of one of our CentOS or Debian bundles
 * An upgrade of either a toolkit or CentOS bundle
-* A clean installation of our Debian packages and/or bundles
 * An upgrade of an existing Debian installation
 
 You may consult `the testing checklist <https://github.com/perfsonar/project/wiki/Toolkit-Testing-Checklist>`_ to help guide your testing. For full instructions on how to get beta packages and ISOs, see the sections below.
-
-.. _install_rcs-clean-isos:
-
-Testing a Clean Installation of the Toolkit ISOs
-================================================
-You may download the latest beta ISOs at the following URL :
-
-    * http://downloads.perfsonar.net/toolkit/betas/
-    
-Once downloaded you may follow the instructions at :doc:`install_centos_fullinstall` or :doc:`install_centos_netinstall` for step-by-step instructions on installing the software.
 
 .. _install_rcs-clean-centos:
 
