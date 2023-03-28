@@ -69,7 +69,7 @@ You may install this source list as follows::
     wget http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
     wget -qO - http://downloads.perfsonar.net/debian/perfsonar-snapshot.gpg.key | apt-key add -
 
-These Debian packages should work on Debian 9 and Ubuntu 18.  The perfsonar-testpoint bundle should also work on Debian 10.
+These Debian packages should work on Debian 10, Ubuntu 18 and 20.  The perfsonar-archive bundle should also work on Debian 11 and Ubuntu 22.
 
 On Ubuntu you need to make you have the **universe** repository enabled, this is done with the command ``add-apt-repository universe``
 
