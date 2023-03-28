@@ -8,7 +8,7 @@ perfSONAR combines various sets of measurement tools and services. For perfSONAR
 * Ubuntu 18 Bionic Beaver
 * Ubuntu 20 Focal Fossa
 
-Debian meta packages are available to install the bundles described in :doc:`install_options`.  The `perfsonar-archive` package can also be installed on Debian 11 and Ubuntu 22.
+Debian meta packages are available to install the bundles described in :doc:`install_options`.  The ``perfsonar-archive`` package can also be installed on Debian 11 and Ubuntu 22.
 
 The remaining sections of this document detail the steps required for installing these bundles.
 
