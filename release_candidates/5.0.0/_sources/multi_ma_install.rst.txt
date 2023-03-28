@@ -19,7 +19,7 @@ Those are just a few examples. If you think a central measurement archive is rig
 
 Installing the Measurement Archive Software
 ============================================
-The measurement archive is implemented using a software package named *perfsonar-archive*. Ypur can install as a standalone package on any perfSONAR supported operating system with the following:
+The measurement archive is implemented using a software package named *perfsonar-archive*. You can install as a standalone package on any perfSONAR supported operating system with the following:
 
   *CentOS/RedHat:*::
 
