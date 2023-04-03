@@ -108,6 +108,7 @@ Archiving Measurements with OpenSearch
    :maxdepth: 1
    
    multi_ma_install
+   legacy_archive_esmond
    
 Displaying Measurements with MaDDash
 -------------------------------------
