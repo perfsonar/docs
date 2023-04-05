@@ -58,6 +58,7 @@ perfSONAR Toolkit
    manage_dual_xface
    manage_security
    manage_limits
+   manage_daemons
    using_graphs
    using_ext_tools
 

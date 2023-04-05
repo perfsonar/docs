@@ -13,17 +13,13 @@ Most perfSONAR related services keep log files under the directory **/var/log/pe
 +==============================================+===================================================================+============================================+
 | pScheduler                                   | * /var/log/pscheduler/pscheduler.log                              | |log_descr_pscheduler|                     |
 +----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
-| Esmond Measurement Archive                   | * /var/log/esmond/esmond.log                                      | |log_descr_esmond|                         |
-|                                              | * /var/log/httpd/error_log                                        |                                            |
-|                                              | * /var/log/apache2/error.log (Debian/Ubuntu)                      |                                            |
-|                                              | * /var/log/cassandra/cassandra.log                                |                                            |
-|                                              | * /var/lib/pgsql/pgstartup.log                                    |                                            |
-|                                              | * /var/log/postgresql/postgresql-9.6-main.log (Debian/Ubuntu 16)  |                                            |
-|                                              | * /var/log/postgresql/postgresql-10-main.log (Ubuntu 18)          |                                            |
-+----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
 | pSConfig pScheduler Agent                    | * /var/log/perfsonar/psconfig-pscheduler-agent.log                | |log_descr_psconfig|                       |
 |                                              | * /var/log/perfsonar/psconfig-pscheduler-agent-transactions.log   |                                            |
 |                                              | * /var/log/perfsonar/psconfig-pscheduler-agent-tasks.log          |                                            |
++----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
+| OpenSearch/Logstash Archive                  | * /var/log/httpd/ssl_error_log                                    | |log_descr_archive|                        |
+|                                              | * /var/log/opensearch/opensearch.log                              |                                            |
+|                                              | * /var/log/logstash/logstash-plain.log                            |                                            |
 +----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
 | OWAMP                                        | * /var/log/perfsonar/owamp.log                                    | |log_descr_owamp|                          |
 +----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
@@ -62,7 +58,7 @@ This could likely be derived from the a combination pScheduler and OWAMP logs, b
 
 .. |log_descr_owamp|  replace:: Every OWAMP test (both on the client and server side) is logged in this file. It should be used when an OWAMP test is not completing. It contains information about denied or failed tests. It may also contain information when an *owamp-server* process crashes unexpectedly.
 .. |log_descr_pscheduler|  replace:: Contains logs related to the scheduling, running, and storage of measurements. This is often a good starting point if you are trying to debug a missing or failed measurement.
-.. |log_descr_esmond|  replace:: If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. *esmond.log* has information from the archive itself (e.g. improperly formatted requests). The HTTPD error log has information such as if esmond was able to connect to it's underlying databases. Speaking of databases, esmond connects to both Cassandra and PostgreSQL so it may be worth checking those logs as well.
+.. |log_descr_archive|  replace:: If your measurement archive is not running or your graphs are not returning data you may want to look in one of these logs. The HTTPD error log has information such as if the proxy could reach Logstash or OpenSearch. The Logstash logs indicate if there was an issue reaching OpenSearch or processing the result. OpenSearch logs will indicate if there is an issue with the database or processing queries.
 .. |log_descr_config|  replace:: If you are unable to save changes to the configuration made through the web interface, this is a good place to look.
 .. |log_descr_lscache|  replace:: If you get a message saying that your communities or lookup service cache are out of date, this log file may contain more information.
 .. |log_descr_lsreg|  replace:: Look here if your toolkit web page says that your host is not registered with the lookup service or you cannot find your host in the global services directory.

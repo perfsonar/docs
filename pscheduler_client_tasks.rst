@@ -111,13 +111,13 @@ You can tell the ``pscheduler`` command to send results to an :term:`archiver` u
     #. A filename starting with the @ symbol that points at a file containing a JSON archiver specification.
     #. A string literal of the JSON archiver specification
 
-For example, the *perfsonar-core* and *perfsonar-toolkit* bundles install a special file at */usr/share/pscheduler/psc-archiver-esmond.json* with an archiver specification for writing to the locally running esmond instance. You could then use that file to publish a *trace* test (or any other test) to the local MA instance with the following command::
+For example, the *perfsonar-core* and *perfsonar-toolkit* bundles install a special script you can use to generate a local archive definition: ``/usr/lib/perfsonar/archive/perfsonar-scripts/psconfig_archive.sh -n localhost > local_archive.json``. You could then use that file to publish a *trace* test (or any other test) to the local archive instance with the following command::
 
-    pscheduler task --archive @/usr/share/pscheduler/psc-archiver-esmond.json trace --dest www.perfsonar.net
+    pscheduler task --archive @local_archive.json trace --dest www.perfsonar.net
     
-Alternatively, you could use a JSON string to accomplish the same as follows (replacing ``abc123`` with the API key used for your esmond instance) ::
+Alternatively, you could use a JSON string to accomplish the same as follows (replacing ``eXamPleTokEn`` with the auth used for your logstash instance) ::
 
-    pscheduler task --archive '{"archiver": "esmond","data":{"url":"http://localhost/esmond/perfsonar/archive/","_auth-token": "abc123"}}' trace --dest www.perfsonar.net
+    pscheduler task --archive '{"archiver": "http","data":{ "_url":"http://localhost/logstash", "verify-ssl": false, "op": "put", "_headers": { "x-ps-observer": "{% scheduled_by_address %}", "content-type": "application/json", "Authorization":"Basic eXamPleTokEn" }}}' trace --dest www.perfsonar.net
  
 For more information on different archivers and their specifications, see :doc:`pscheduler_ref_archivers`.
 
