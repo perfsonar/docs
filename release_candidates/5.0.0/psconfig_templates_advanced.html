@@ -17,7 +17,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="MeshConfig to pSConfig Migration Guide" href="psconfig_meshconfig_migrate.html" />
+    <link rel="next" title="Deploying a Central Measurement Archive" href="multi_ma_install.html" />
     <link rel="prev" title="pSConfig Template Variables" href="psconfig_templates_vars.html" /> 
   </head><body>
     <header>
@@ -45,7 +45,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="psconfig_meshconfig_migrate.html" title="MeshConfig to pSConfig Migration Guide"
+          <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="psconfig_templates_vars.html" title="pSConfig Template Variables"
@@ -560,14 +560,20 @@
 <section id="setting-host-archives">
 <span id="psconfig-templates-advanced-hosts-archives"></span><h3>Setting Host Archives<a class="headerlink" href="#setting-host-archives" title="Permalink to this heading">¶</a></h3>
 <p>A <em>host</em> object supports setting one or more archives to be used anytime an address belonging to that <em>host</em> is is the <a class="reference internal" href="psconfig_templates_vars.html#psconfig-templates-vars-scheduled-by-address"><span class="std std-ref">scheduled_by_address</span></a> of an individual task. It does this through the <code class="docutils literal notranslate"><span class="pre">archives</span></code> property which accepts a list of <em>archive</em> object names.</p>
-<p>For example, you can set a an archive that publishes results to an esmond instance running on <code class="docutils literal notranslate"><span class="pre">thrlat2-archive.perfsonar.net</span></code> anytime either <code class="docutils literal notranslate"><span class="pre">thr2.perfsonar.net</span></code> or <code class="docutils literal notranslate"><span class="pre">lat2.perfsonar.net</span></code> is responsible for scheduling a task:</p>
+<p>For example, you can set a an archive that publishes results to an archive running on <code class="docutils literal notranslate"><span class="pre">thrlat2-archive.perfsonar.net</span></code> anytime either <code class="docutils literal notranslate"><span class="pre">thr2.perfsonar.net</span></code> or <code class="docutils literal notranslate"><span class="pre">lat2.perfsonar.net</span></code> is responsible for scheduling a task:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span>
        <span class="s2">&quot;local_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://thrlat2-archive.perfsonar.net/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span>
+            <span class="s2">&quot;archiver&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:{</span>
+                <span class="s2">&quot;schema&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;_url&quot;</span><span class="p">:</span><span class="s2">&quot;https://thrlat2-archive.perfsonar.net/logstash&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+                <span class="s2">&quot;op&quot;</span><span class="p">:</span><span class="s2">&quot;put&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;_headers&quot;</span><span class="p">:{</span>
+                    <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;content-type&quot;</span><span class="p">:</span><span class="s2">&quot;application/json&quot;</span>
+                <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">},</span>
@@ -710,11 +716,17 @@
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span>
-       <span class="s2">&quot;esmond_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;central_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
             <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://esmond.archive.perfsonar.net/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span>
+                <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.archive/logstash&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+                <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;_headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span>
+                <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">},</span>
@@ -729,12 +741,12 @@
         <span class="s2">&quot;latency_task&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;latency_group&quot;</span><span class="p">,</span>
             <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;latency_test&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">]</span>
+            <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;central_archive&quot;</span><span class="p">]</span>
         <span class="p">},</span>
         <span class="s2">&quot;throughput_task&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
             <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;central_archive&quot;</span><span class="p">],</span>
             <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;every_4_hours&quot;</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -920,7 +932,7 @@ both <em>mesh</em> and <em>disjoint</em> group types have a base set of address 
         <span class="p">],</span>
         <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
         <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;central_archive&quot;</span><span class="p">],</span>
         <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;every_4_hours&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -937,7 +949,7 @@ both <em>mesh</em> and <em>disjoint</em> group types have a base set of address 
         <span class="s2">&quot;priority&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
         <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
         <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;central_archive&quot;</span><span class="p">],</span>
         <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;every_4_hours&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -953,7 +965,7 @@ both <em>mesh</em> and <em>disjoint</em> group types have a base set of address 
     <span class="s2">&quot;throughput_task&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
         <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;central_archive&quot;</span><span class="p">],</span>
         <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;every_4_hours&quot;</span><span class="p">,</span>
         <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;production-measurement&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
@@ -1117,8 +1129,8 @@ both <em>mesh</em> and <em>disjoint</em> group types have a base set of address 
                 </ul>
                   <ul>
                       <li>
-                      <a href="psconfig_meshconfig_migrate.html">Next topic</a>
-                      <ul><li><a href="psconfig_meshconfig_migrate.html" title="next chapter">MeshConfig to pSConfig Migration Guide</a></li></ul>
+                      <a href="multi_ma_install.html">Next topic</a>
+                      <ul><li><a href="multi_ma_install.html" title="next chapter">Deploying a Central Measurement Archive</a></li></ul>
                       </li>
                   </ul>
                 
@@ -1135,7 +1147,7 @@ both <em>mesh</em> and <em>disjoint</em> group types have a base set of address 
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="psconfig_meshconfig_migrate.html" title="MeshConfig to pSConfig Migration Guide"
+          <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
              >next</a> |</li>
         <li class="right" >
           <a href="psconfig_templates_vars.html" title="pSConfig Template Variables"

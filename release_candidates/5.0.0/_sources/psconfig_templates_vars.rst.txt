@@ -138,23 +138,23 @@ The ``address`` template variable is commonly used for test specifications that 
         }
     }
         
-Likewise, this variable is useful for *archive* objects of type *esmond* where the Esmond server is running on one of the endpoints. For example, if paired with the test specification above, this would always store the result on the host that is the ``source`` of the test. The template and expanded values are shown below:
+Likewise, this variable is useful for *archive* objects such as those of type *http* where the URL is to an archive running on one of the endpoints. For example, if paired with the test specification above, this would always store the result on the host that is the ``source`` of the test. The template and expanded values are shown below:
 
 * **Template**::
 
     "source_archive": {
-         "archiver": "esmond",
+         "archiver": "http",
          "data": {
-             "url": "https://{% address[0] %}/esmond/perfsonar/archive/"
+             "_url": "https://{% address[0] %}/logstash"
          }
     }
 
 * **Post-Expansion**::
 
     "source_archive": {
-         "archiver": "esmond",
+         "archiver": "http",
          "data": {
-             "url": "https://10.0.0.1/esmond/perfsonar/archive/"
+             "_url": "https://10.0.0.1/logstash"
          }
     }
 
@@ -458,23 +458,23 @@ This variable may be useful in instances where :ref:`scheduled_by_address <pscon
 
 Examples
 ---------
-The ``localhost`` template variable can be useful when building URLs for archives of type *esmond*. The example below embeds the variable in the ``url`` field. If the host expected to schedule the test does not have :ref:`no-agent <psconfig_templates_advanced-addresses-noagent>` enabled then it will expand to "localhost" as shown below:
+The ``localhost`` template variable can be useful when building URLs for archives. The example below embeds the variable in the ``url`` field. If the host expected to schedule the test does not have :ref:`no-agent <psconfig_templates_advanced-addresses-noagent>` enabled then it will expand to "localhost" as shown below:
 
 * **Template**::
 
     "local_archive": {
-         "archiver": "esmond",
+         "archiver": "http",
          "data": {
-             "url": "https://{% localhost %}/esmond/perfsonar/archive/"
+             "_url": "https://{% localhost %}/logstash"
          }
     }
 
 * **Post-Expansion**::
 
     "local_archive": {
-         "archiver": "esmond",
+         "archiver": "http",
          "data": {
-             "url": "https://localhost/esmond/perfsonar/archive/"
+             "_url": "https://localhost/logstash"
          }
     }
 
@@ -483,9 +483,9 @@ If that same example is for a task where the host expected to schedule the task 
 * **Post-Expansion**::
 
     "local_archive": {
-         "archiver": "esmond",
+         "archiver": "http",
          "data": {
-             "url": "https://10.0.0.1/esmond/perfsonar/archive/"
+             "_url": "https://10.0.0.1/logstash"
          }
     }
 
@@ -581,26 +581,29 @@ This variable always returns a string and will take the form of an IP address or
 
 Examples
 ---------
-This is often used in both the ``url`` and ``measurement-agent`` fields for archives of type *esmond*. In the ``url`` it tells it to register the results to the host requesting the task. In the ``measurement-agent`` it explicitly defines the host that requested the measurement, which is the meaning of the ``measurement-agent`` field. Assuming the variable expands to 10.0.0.1, below is an example template and its expansion:
+This is often used in both the ``url`` and observer or measurment agent fields for archives (i.e. a field indicating what host performed the measurement). In the ``_url`` it tells it to register the results to the host requesting the task. In the ``x-ps-observer`` header it explicitly defines the host that requested the measurement, which is a special field the perfSONAR Logstash pipeline that writes to OpenSearch understands. Assuming the variable expands to 10.0.0.1, below is an example template and its expansion:
 
 * **Template**::
 
     "sched_by_archive": {
-         "archiver": "esmond",
+         "archiver": "http",
          "data": {
-             "url": "https://{% scheduled_by_address %}/esmond/perfsonar/archive/",
-             "measurement-agent": "{% scheduled_by_address %}"
+             "_url": "https://{% scheduled_by_address %}/logstash"
+         },
+         "_headers": {
+             "x-ps-observer": "{% scheduled_by_address %}"
          }
     }
 
 * **Post-Expansion**::
 
     "sched_by_archive": {
-         "archiver": "esmond",
+         "archiver": "http",
          "data": {
-             "url": "https://10.0.0.1/esmond/perfsonar/archive/",
-             "measurement-agent": "10.0.0.1"
+             "_url": "https://10.0.0.1/logstash"
+         },
+         "_headers": {
+             "x-ps-observer": "10.0.0.1"
          }
     }
-
 

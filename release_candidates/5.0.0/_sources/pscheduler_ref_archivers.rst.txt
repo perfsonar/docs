@@ -82,7 +82,7 @@ Multiple Archivers
 The results of a task can be sent to multiple archivers by using the ``--archive`` switch multiple times::
 
     % pscheduler task \
-          --archive @/home/fred/archive-to-esmond.json \
+          --archive @/home/fred/http-archive.json \
           --archive '{ "archiver": "bitbucket", "data": {} }' \
           trace --dest www.perfsonar.net
 

@@ -298,14 +298,13 @@ There are many other template variables and listing them all is beyond the scope
 
 .. note:: For valid specifications of these objects it is recommended you see the :doc:`pScheduler archiver reference <pscheduler_ref_archivers>`, the documentation for a specific plug-in or the documentation for the tool you are using to generate the JSON. 
 
-Below is an example of an ``archivers`` section we define that uses an *esmond* archiver:: 
+Below is an example of an ``archivers`` section we define that uses an *http* archiver:: 
 
    "archives": {
         "colors_archive": {
-             "archiver": "esmond",
+             "archiver": "http",
              "data": {
-                 "url": "https://{% scheduled_by_address %}/esmond/perfsonar/archive/",
-                 "measurement-agent": "{% scheduled_by_address %}"
+                 "_url": "https://{% scheduled_by_address %}/my/archive",
              }
         }
     }
@@ -375,7 +374,7 @@ With the basic concepts behind us, we will now move away from the abstract and i
     
 In the diagram, hosts are represented by the images of blade servers. We have four hosts that we want to run latency and/or throughput tasks and a fifth host that does not schedule any tasks but instead stores the results of the others in a central archive. Under each server image is one or more hostnames of network interfaces attached to that host. The diagram color-codes the interface hostnames, but working counter-clockwise around the diagram each host has interfaces with the following role:
 
-* The host at the top with the *esmond.archive.perfsonar.net* interface will not perform any tests and will be running an :doc:`esmond <multi_ma_install>` archive.
+* The host at the top with the *esmond.archive.perfsonar.net* interface will not perform any tests and will be running an :doc:`archive <multi_ma_install>`.
 * The host with a single interface addressed *lat1.perfsonar.net* will only run latency tests.
 * The host with a single interface addressed *thr1.perfsonar.net* will only run throughput tests.
 * The host with a single interface addressed *thrlat1.perfsonar.net* will run both latency and throughput tests on the same interface.
@@ -486,19 +485,17 @@ The second test, named `throughput_test`, defines a test of type ``throughput``.
 We have a single host dedicated to archiving the results from all the others. It is defined in the following ``archives`` section::
 
     "archives": { 
-       "esmond_archive": {
-            "archiver": "esmond",
+       "central_archive": {
+            "archiver": "http",
             "data": {
-                "url": "https://esmond.archive.perfsonar.net/esmond/perfsonar/archive",
-                "measurement-agent": "{% scheduled_by_address %}"
+                "_url": "https://esmond.archive.perfsonar.net/my/archive"
             }
         }
     }
     
-As stated before, it is running esmond, so we use the ``archiver`` of type ``esmond``. For the ``data`` section we have two fields:
+As stated before, it is running am archiver listening for HTTP requests, so we use the ``archiver`` of type ``http``. For the ``data`` section we have one field:
 
-* The ``url`` is a fixed URL pointing at *esmond.archive.perfsonar.net* as listed in our diagram. Since all the measurements will get registered to the same place, no template variables are needed for the ``url``.
-* The ``measurement-agent`` is a field esmond uses to keep track of the host that requested the original measurement. Here we can use the ``{% scheduled_by_address %}`` template variable to have the agent automatically fill-in the value since it will depend on where the agent is running that creates the task.
+* The ``url`` is a fixed URL pointing at *esmond.archive.perfsonar.net* as listed in our diagram. Since all the measurements will get registered to the same place, no template variables are needed for the ``_url``.
 
 .. _psconfig_templates_intro-example-schedules:
 
@@ -526,12 +523,12 @@ Now that all our components have been created, we can finally create our task de
         "latency_task": {
             "group": "latency_group",
             "test": "latency_test",
-            "archives": ["esmond_archive"]
+            "archives": ["central_archive"]
         },
         "throughput_task": {
             "group": "throughput_group",
             "test": "throughput_test",
-            "archives": ["esmond_archive"],
+            "archives": ["central_archive"],
             "schedule": "every_4_hours"
         }
     }

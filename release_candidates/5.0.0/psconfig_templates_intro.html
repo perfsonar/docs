@@ -332,13 +332,12 @@
 <p class="admonition-title">Note</p>
 <p>For valid specifications of these objects it is recommended you see the <a class="reference internal" href="pscheduler_ref_archivers.html"><span class="doc">pScheduler archiver reference</span></a>, the documentation for a specific plug-in or the documentation for the tool you are using to generate the JSON.</p>
 </div>
-<p>Below is an example of an <code class="docutils literal notranslate"><span class="pre">archivers</span></code> section we define that uses an <em>esmond</em> archiver:</p>
+<p>Below is an example of an <code class="docutils literal notranslate"><span class="pre">archivers</span></code> section we define that uses an <em>http</em> archiver:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span>
      <span class="s2">&quot;colors_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-          <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
           <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-              <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}/esmond/perfsonar/archive/&quot;</span><span class="p">,</span>
-              <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span>
+              <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}/my/archive&quot;</span><span class="p">,</span>
           <span class="p">}</span>
      <span class="p">}</span>
  <span class="p">}</span>
@@ -399,7 +398,7 @@
 </figure>
 <p>In the diagram, hosts are represented by the images of blade servers. We have four hosts that we want to run latency and/or throughput tasks and a fifth host that does not schedule any tasks but instead stores the results of the others in a central archive. Under each server image is one or more hostnames of network interfaces attached to that host. The diagram color-codes the interface hostnames, but working counter-clockwise around the diagram each host has interfaces with the following role:</p>
 <ul class="simple">
-<li><p>The host at the top with the <em>esmond.archive.perfsonar.net</em> interface will not perform any tests and will be running an <a class="reference internal" href="multi_ma_install.html"><span class="doc">esmond</span></a> archive.</p></li>
+<li><p>The host at the top with the <em>esmond.archive.perfsonar.net</em> interface will not perform any tests and will be running an <a class="reference internal" href="multi_ma_install.html"><span class="doc">archive</span></a>.</p></li>
 <li><p>The host with a single interface addressed <em>lat1.perfsonar.net</em> will only run latency tests.</p></li>
 <li><p>The host with a single interface addressed <em>thr1.perfsonar.net</em> will only run throughput tests.</p></li>
 <li><p>The host with a single interface addressed <em>thrlat1.perfsonar.net</em> will run both latency and throughput tests on the same interface.</p></li>
@@ -505,20 +504,18 @@
 <span id="id8"></span><h3><code class="docutils literal notranslate"><span class="pre">archives</span></code><a class="headerlink" href="#psconfig-templates-intro-example-archives" title="Permalink to this heading">¶</a></h3>
 <p>We have a single host dedicated to archiving the results from all the others. It is defined in the following <code class="docutils literal notranslate"><span class="pre">archives</span></code> section:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span>
-   <span class="s2">&quot;esmond_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;central_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
         <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://esmond.archive.perfsonar.net/esmond/perfsonar/archive&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span>
+            <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://esmond.archive.perfsonar.net/my/archive&quot;</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>As stated before, it is running esmond, so we use the <code class="docutils literal notranslate"><span class="pre">archiver</span></code> of type <code class="docutils literal notranslate"><span class="pre">esmond</span></code>. For the <code class="docutils literal notranslate"><span class="pre">data</span></code> section we have two fields:</p>
+<p>As stated before, it is running am archiver listening for HTTP requests, so we use the <code class="docutils literal notranslate"><span class="pre">archiver</span></code> of type <code class="docutils literal notranslate"><span class="pre">http</span></code>. For the <code class="docutils literal notranslate"><span class="pre">data</span></code> section we have one field:</p>
 <ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">url</span></code> is a fixed URL pointing at <em>esmond.archive.perfsonar.net</em> as listed in our diagram. Since all the measurements will get registered to the same place, no template variables are needed for the <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">measurement-agent</span></code> is a field esmond uses to keep track of the host that requested the original measurement. Here we can use the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">scheduled_by_address</span> <span class="pre">%}</span></code> template variable to have the agent automatically fill-in the value since it will depend on where the agent is running that creates the task.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">url</span></code> is a fixed URL pointing at <em>esmond.archive.perfsonar.net</em> as listed in our diagram. Since all the measurements will get registered to the same place, no template variables are needed for the <code class="docutils literal notranslate"><span class="pre">_url</span></code>.</p></li>
 </ul>
 </section>
 <section id="psconfig-templates-intro-example-schedules">
@@ -545,12 +542,12 @@
     <span class="s2">&quot;latency_task&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;latency_group&quot;</span><span class="p">,</span>
         <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;latency_test&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">]</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;central_archive&quot;</span><span class="p">]</span>
     <span class="p">},</span>
     <span class="s2">&quot;throughput_task&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_group&quot;</span><span class="p">,</span>
         <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput_test&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;esmond_archive&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;central_archive&quot;</span><span class="p">],</span>
         <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;every_4_hours&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>

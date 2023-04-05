@@ -116,8 +116,12 @@ perfSONAR 5.0.0 brings with it a number of changes, the largest of which is the 
 
 The update behavior you will see depends on the bundle you have installed:
 
-- **perfsonar-toolkit and perfsonar-core** - Your system will auto-update if enabled. **YOUR DATA WILL NOT BE MIGRATED BUT WILL NOT BE DELETED**. Esmond will be disabled but the data will stay on disk. You can re-enable Esmond but be aware that running Esmond and Opensearch simultaneously can consume significant system resources. If you want to access the data, we recomend moving to a new system running standalone esmond as detailed :doc:`here </multi_ma_backups>`.
+- **perfsonar-toolkit and perfsonar-core** - Your system will auto-update if enabled. **YOUR DATA WILL NOT BE MIGRATED BUT WILL NOT BE DELETED**. Esmond will be disabled but the data will stay on disk. You can re-enable Esmond but be aware that running Esmond and Opensearch simultaneously can consume significant system resources. If you want to access the data, we recomend moving to a new system running standalone esmond as detailed :doc:`here <legacy_archive_esmond>`.
 - **perfsonar-centralmanagement** - This package will NOT auto-update since it is no longer available in perfSONAR 5.0.0. This gives large central archives a chance to control when they want to move users.
+
+ISO Image No Longer Avaiable
+**********************************
+The CentOS 7 based ISO image for the Toolkit is no longer available starting in 5.0. The operating system packages (.rpm and .deb packages) as well as Docker containers will be the supported options going forward.
 
 Esmond API Compatibility
 *************************

@@ -2,7 +2,7 @@
 Hardware Requirements
 *************************************
 
-The requirements for the perfsonar-core, perfsonar-toolkit, and perfsonar-archive bundles are a minimum of 4 cores and 4GB of RAM. 
+The requirements for the perfsonar-core, perfsonar-toolkit, and perfsonar-archive bundles are a minimum of 4 cores and 8GB of RAM. 
 The perfsonar-testpoint bundle may work with 2GB of RAM, but 4GB is recommended. 
 The clock speed requirements depends on how fast your network is, but we recommend
 at least 2GHz cores in general, and 2.8GHz or higher if you want to test 10G paths.

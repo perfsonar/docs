@@ -12,14 +12,13 @@ Testpoint
 ---------
 Hosts running the perfsonar ``testpoint`` bundle should see these daemons:
            
-    * *postgresql-9.5.service* - stores schedules of pScheduler
+    * *postgresql-10.service* - stores schedules of pScheduler
     * *httpd.service* - web server for pScheduler (*apache* in Debian)
     * *fail2ban.service* - intrusion detection system (IDS) to log suspicious activity
     * *firewalld.service* - firewall service
     * *ntpd.service* - NTP time synchronisation
     * *owamp-server.service* - OWAMP
     * *twamp-server.service* - TWAMP
-    * *perfsonar-lscachedaemon.service* - perfSONAR Lookup Service cache daemon
     * *perfsonar-lsregistrationdaemon.service* - registration with the Lookup Service
     * *psconfig-pscheduler-agent.service* - reads pSConfig templates and generates a set of pScheduler tasks
     * *pscheduler-archiver.service* - executes archiver plug-ins using the results of runs
@@ -34,20 +33,21 @@ Hosts running the perfsonar ``toolkit`` bundle should see all daemons running in
     * *perfsonar-configdaemon.service* - used by the administrative web interface to configure the host
     * *perfsonar-configure_nic_parameters* - detects if the NIC is misconfigured, and makes necessary configuration changes to NIC
     * *perfsonar-generate_motd* - takes care of Message of The Day
-	* *cassandra* - used by esmond DB and stores the results of a measurement
-    * *postgresql-9.5.service* - used by esmond DB and stores measurement metadata
+    * *perfsonar-lscachedaemon.service* - perfSONAR Lookup Service cache daemon
+    * *logstash.service* - used to format and annotate results from pScheduler before storing in OpenSearch
+    * *opensearch.service* - stores measurement results
+    * *elmond.service* - backward compatibility interface that speaks the Esmond API from perfSONAR 4.X and earlier.
 
 For selected services in ``toolkit`` the status is listed in the Toolkit GUI main page *Services* tab.
 
-Central MA
+Archive
 ----------
-Hosts running a ``centralmanagement`` bundle should see these daemons:
+Hosts running an ``archive`` bundle should see these daemons:
 
-    * *perfsonar-psconfig-maddash.service* - reads pSConfig template and creates MaDDash dashboards
     * *httpd.service* - web server
-    * *maddash-server.service* - MaDDash dashboard server
-    * *cassandra* - used by esmond DB and stores the results of a measurement
-    * *postgresql-9.5.service* - used by esmond DB and stores measurement metadata
+    * *logstash.service* - used to format and annotate results from pScheduler before storing in OpenSearch
+    * *opensearch.service* - stores measurement results
+    * *elmond.service* - backward compatibility interface that speaks the Esmond API from perfSONAR 4.X and earlier.
 
 Showing service status
 =======================

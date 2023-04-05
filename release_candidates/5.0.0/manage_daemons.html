@@ -16,7 +16,9 @@
     <script src="_static/sphinx_highlight.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Test Results Graphs" href="using_graphs.html" />
+    <link rel="prev" title="Limiting Tests to R&amp;E Networks Only" href="manage_limits.html" /> 
   </head><body>
     <header>
         <div class="headerContents">
@@ -42,6 +44,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="using_graphs.html" title="Test Results Graphs"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_limits.html" title="Limiting Tests to R&amp;E Networks Only"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Managing Daemons</a></li> 
       </ul>
@@ -66,14 +74,13 @@
 <p>Hosts running the perfsonar <code class="docutils literal notranslate"><span class="pre">testpoint</span></code> bundle should see these daemons:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><em>postgresql-9.5.service</em> - stores schedules of pScheduler</p></li>
+<li><p><em>postgresql-10.service</em> - stores schedules of pScheduler</p></li>
 <li><p><em>httpd.service</em> - web server for pScheduler (<em>apache</em> in Debian)</p></li>
 <li><p><em>fail2ban.service</em> - intrusion detection system (IDS) to log suspicious activity</p></li>
 <li><p><em>firewalld.service</em> - firewall service</p></li>
 <li><p><em>ntpd.service</em> - NTP time synchronisation</p></li>
 <li><p><em>owamp-server.service</em> - OWAMP</p></li>
 <li><p><em>twamp-server.service</em> - TWAMP</p></li>
-<li><p><em>perfsonar-lscachedaemon.service</em> - perfSONAR Lookup Service cache daemon</p></li>
 <li><p><em>perfsonar-lsregistrationdaemon.service</em> - registration with the Lookup Service</p></li>
 <li><p><em>psconfig-pscheduler-agent.service</em> - reads pSConfig templates and generates a set of pScheduler tasks</p></li>
 <li><p><em>pscheduler-archiver.service</em> - executes archiver plug-ins using the results of runs</p></li>
@@ -90,28 +97,24 @@
 <div><ul class="simple">
 <li><p><em>perfsonar-configdaemon.service</em> - used by the administrative web interface to configure the host</p></li>
 <li><p><em>perfsonar-configure_nic_parameters</em> - detects if the NIC is misconfigured, and makes necessary configuration changes to NIC</p></li>
-<li><dl class="simple">
-<dt><em>perfsonar-generate_motd</em> - takes care of Message of The Day</dt><dd><ul>
-<li><p><em>cassandra</em> - used by esmond DB and stores the results of a measurement</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p><em>postgresql-9.5.service</em> - used by esmond DB and stores measurement metadata</p></li>
+<li><p><em>perfsonar-generate_motd</em> - takes care of Message of The Day</p></li>
+<li><p><em>perfsonar-lscachedaemon.service</em> - perfSONAR Lookup Service cache daemon</p></li>
+<li><p><em>logstash.service</em> - used to format and annotate results from pScheduler before storing in OpenSearch</p></li>
+<li><p><em>opensearch.service</em> - stores measurement results</p></li>
+<li><p><em>elmond.service</em> - backward compatibility interface that speaks the Esmond API from perfSONAR 4.X and earlier.</p></li>
 </ul>
 </div></blockquote>
 <p>For selected services in <code class="docutils literal notranslate"><span class="pre">toolkit</span></code> the status is listed in the Toolkit GUI main page <em>Services</em> tab.</p>
 </section>
-<section id="central-ma">
-<h3>Central MA<a class="headerlink" href="#central-ma" title="Permalink to this heading">¶</a></h3>
-<p>Hosts running a <code class="docutils literal notranslate"><span class="pre">centralmanagement</span></code> bundle should see these daemons:</p>
+<section id="archive">
+<h3>Archive<a class="headerlink" href="#archive" title="Permalink to this heading">¶</a></h3>
+<p>Hosts running an <code class="docutils literal notranslate"><span class="pre">archive</span></code> bundle should see these daemons:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><em>perfsonar-psconfig-maddash.service</em> - reads pSConfig template and creates MaDDash dashboards</p></li>
 <li><p><em>httpd.service</em> - web server</p></li>
-<li><p><em>maddash-server.service</em> - MaDDash dashboard server</p></li>
-<li><p><em>cassandra</em> - used by esmond DB and stores the results of a measurement</p></li>
-<li><p><em>postgresql-9.5.service</em> - used by esmond DB and stores measurement metadata</p></li>
+<li><p><em>logstash.service</em> - used to format and annotate results from pScheduler before storing in OpenSearch</p></li>
+<li><p><em>opensearch.service</em> - stores measurement results</p></li>
+<li><p><em>elmond.service</em> - backward compatibility interface that speaks the Esmond API from perfSONAR 4.X and earlier.</p></li>
 </ul>
 </div></blockquote>
 </section>
@@ -153,7 +156,7 @@
 <li><a class="reference internal" href="#list-of-daemons">List of Daemons</a><ul>
 <li><a class="reference internal" href="#testpoint">Testpoint</a></li>
 <li><a class="reference internal" href="#toolkit">Toolkit</a></li>
-<li><a class="reference internal" href="#central-ma">Central MA</a></li>
+<li><a class="reference internal" href="#archive">Archive</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#showing-service-status">Showing service status</a></li>
@@ -163,6 +166,18 @@
 </li>
 </ul>
 
+                <ul>
+                  <li>
+                  <a href="manage_limits.html">Previous topic</a>
+                  <ul><li><a href="manage_limits.html" title="previous chapter">Limiting Tests to R&amp;E Networks Only</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="using_graphs.html">Next topic</a>
+                      <ul><li><a href="using_graphs.html" title="next chapter">Test Results Graphs</a></li></ul>
+                      </li>
+                  </ul>
                 
                 
             </nav>
@@ -176,6 +191,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="using_graphs.html" title="Test Results Graphs"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_limits.html" title="Limiting Tests to R&amp;E Networks Only"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Managing Daemons</a></li> 
       </ul>

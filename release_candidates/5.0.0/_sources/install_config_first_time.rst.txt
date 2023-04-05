@@ -6,7 +6,7 @@ After installing the perfSONAR Toolkit, there are a few additional steps to be t
 
 Your First Login
 ================
-*These steps apply for perfSONAR Toolkit ISO installation*
+*These steps apply for perfSONAR Toolkit installation*
 
 The first time you login to your Toolkit you will be prompted to create a user that can perform administrative actions via the web interface. 
 

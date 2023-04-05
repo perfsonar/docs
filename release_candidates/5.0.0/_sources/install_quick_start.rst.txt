@@ -2,18 +2,25 @@
 Toolkit Installation Quick Start
 *********************************
 
-These instructions are for the full Toolkit installation. For other perfSONAR installation options, see :doc:`install_options`.
+These instructions are for the full Toolkit installation on CentOS 7. For other perfSONAR installation options, see :doc:`install_options`.
 
-#. Download the NetInstall ISO from :centos_netinstall_iso:`here <x86_64>`
+#. Install CentOS 7 using your preferred method from https://centos.org
 
-        .. seealso:: The NetInstall is the recommended installation type, but for more information on other installation types see :doc:`install_getting`.
-#. Using your favorite software, burn the image to a CD, DVD or USB drive and insert the chosen installation media into your host.  
+#. Login to the host and become sudo::
 
-    .. note:: Linux and Macintosh users may consider using the dd tool: *sudo dd if=/PATH/TO/FILE.iso of=/dev/DISK*
-#. Follow the prompts provided by the CentOS installer to install the required packages. If you have installed a Linux operating system before, these prompts should be relatively self-explanatory. 
+        sudo -s
 
-        .. seealso:: For a complete walkthrough of these prompts see :doc:`install_centos_netinstall`
-#. Once the installation completes and the host reboots, login from the console using the root password you created during the previous step
+#. Run the following commands::
+
+        yum install epel-release http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
+        yum clean all
+        yum install perfsonar-toolkit
+
+#. Exit sudo and become sudo again to trigger login prompt::
+
+        exit
+        sudo -s
+
 #. You will be prompted to create a user and password that can be used to administer the host through the web interface. Follow the prompts to complete this step.
     .. image:: images/install_quick_start-first-login-prompt.png
 #. Open **http://<hostname>** in a web browser where **<hostname>** is the name or address of your host

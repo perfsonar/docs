@@ -86,5 +86,5 @@ Configuring pSConfig and MaDDash
 
 You can add `disk-to-disk` tests to a pSConfig template. There is a lot of flexibility in how you define your tests, but one example can be found here: https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json
 
-Once you have the test added to the pSConfig template and assuming you are storing them in esmond, then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash :maddash_quick_install:`quick install guide<>`.
+Once you have the test added to the pSConfig template and assuming you are storing them in esmond (or in an OpenSearch instance with an Elmond interface), then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash :maddash_quick_install:`quick install guide<>`.
 
