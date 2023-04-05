@@ -44,13 +44,13 @@ For less resource intensive applications such as latency testing, choose a mothe
 RAM
 ---
 
-The development team recommends a minimum of 4GB of volatile memory on all systems running the full installation of the perfSONAR Toolkit.  There are three intense operations that occur on a perfSONAR Toolkit that require the support of memory:
+The development team recommends a minimum of 8GB of volatile memory on all systems running the full installation of the perfSONAR Toolkit.  There are three intense operations that occur on a perfSONAR Toolkit that require the support of memory:
 
-User's that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much memory support. The recommended amount of memory for the toolkit (4GB) will ensure proper concurrent operation of all measurement tools, web services, and supporting products such as databases. 
+User's that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much memory support. The recommended amount of memory for the toolkit (8GB) will ensure proper concurrent operation of all measurement tools, web services, and supporting products such as databases. 
 
 Nodes that only run the *testpoint* bundle may work with as little as 2GB of memory, although the project recommends at least 4GB to ensure proper operation. 
  
-Nodes that will be used as a central repository for the measurements from a number of beacons are recommended to have as much memory as possible (e.g. greater than 16GB is recommended). 
+Nodes that will be used as a central archive for the measurements from a number of beacons are recommended to have as much memory as possible (e.g. greater than 16GB is recommended). 
 
 Local Storage
 -------------

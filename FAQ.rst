@@ -357,10 +357,6 @@ Q: How can I tune a Dell server for a high throughput and low latency?
 
 http://i.dell.com/sites/content/shared-content/data-sheets/en/Documents/configuring-low-latency-environments-on-dell-poweredge-12g-servers.pdf
 
-Q: How do I backup a perfSONAR instance or migrate the configuration and data to a new machine?
-========================================================================================================================================================================================
-**A:** See our :doc:`migration guide <install_migrate_centos7>` for a set of scripts that will create a backup/restore of relevant configuration files and measurement data. 
-
 Q: What is PTP?
 ========================================================================================================================================================================================
 **A:** PTP is the Precision Time Protocol, also known as IEEE 1588, a more-accurate successor to the Network Time Protocol which as been used for many years to discipline the clocks in general-purpose computers. Under ideal conditions, PTP can discipline a clock to within a few microseconds of UTC. Compare this with NTP, which typically has accuracy of about a millisecond when used with clocks on the Internet and 100 microseconds or less when using a stratum-1 clock in a LAN environment.
