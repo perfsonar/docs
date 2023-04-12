@@ -1,25 +1,37 @@
 
-<!DOCTYPE html>
 
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
-    <title>Configuring a Host with Multiple Interfaces &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuring a Host with Multiple Interfaces &mdash; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '5.0.0b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 5.0.0b1 documentation" href="index.html" />
     <link rel="next" title="Firewalls and Security Software" href="manage_security.html" />
     <link rel="prev" title="Host Tuning" href="manage_tuning.html" /> 
-  </head><body>
+  </head>
+  <body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -38,7 +50,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -50,8 +62,7 @@
         <li class="right" >
           <a href="manage_tuning.html" title="Host Tuning"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Configuring a Host with Multiple Interfaces</a></li> 
+        <li><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -61,146 +72,139 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
-  <section id="configuring-a-host-with-multiple-interfaces">
-<h1>Configuring a Host with Multiple Interfaces<a class="headerlink" href="#configuring-a-host-with-multiple-interfaces" title="Permalink to this heading">¶</a></h1>
+  <div class="section" id="configuring-a-host-with-multiple-interfaces">
+<h1>Configuring a Host with Multiple Interfaces<a class="headerlink" href="#configuring-a-host-with-multiple-interfaces" title="Permalink to this headline">¶</a></h1>
 <p>You may run the perfSONAR Toolkit on a host with multiple interfaces. The most common reason to do this is to run throughput and latency tests on separate physical interfaces to prevent interference between the test types. Additional configuration is required to ensure this type of testing works properly. You will need to do the following:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>Decide what IP addresses you are going to assign each interface. See <a class="reference internal" href="#multixface-addressing"><span class="std std-ref">IP Addressing Strategy</span></a> for a discussion on choosing subnets and other relevant decision points.</p></li>
-<li><p>Setup routing rules that ensure when a source IP address is selected for a test, that  the operating system honors that IP address by sending it out the desired interface. A script is provided for this purpose and is detailed in the section <a class="reference internal" href="#multixface-route"><span class="std std-ref">Host Routing Table Configuration</span></a></p></li>
-<li><p>When defining your tests either through the <a class="reference internal" href="manage_regular_tests.html"><span class="doc">configuration GUI</span></a> or <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">pSConfig template</span></a>, you need to select the desired interface. See the individual pages for a description on how to make this selection.</p></li>
+<li>Decide what IP addresses you are going to assign each interface. See <a class="reference internal" href="#multixface-addressing"><em>IP Addressing Strategy</em></a> for a discussion on choosing subnets and other relevant decision points.</li>
+<li>Setup routing rules that ensure when a source IP address is selected for a test, that  the operating system honors that IP address by sending it out the desired interface. A script is provided for this purpose and is detailed in the section <a class="reference internal" href="#multixface-route"><em>Host Routing Table Configuration</em></a></li>
+<li>When defining your tests either through the <a class="reference internal" href="manage_regular_tests.html"><em>configuration GUI</em></a> or <a class="reference internal" href="psconfig_templates_intro.html"><em>pSConfig template</em></a>, you need to select the desired interface. See the individual pages for a description on how to make this selection.</li>
 </ol>
 </div></blockquote>
-<section id="ip-addressing-strategy">
-<span id="multixface-addressing"></span><h2>IP Addressing Strategy<a class="headerlink" href="#ip-addressing-strategy" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="ip-addressing-strategy">
+<span id="multixface-addressing"></span><h2>IP Addressing Strategy<a class="headerlink" href="#ip-addressing-strategy" title="Permalink to this headline">¶</a></h2>
 <p>The first decision to be made is how you are going to address the interfaces on your hosts. It is <strong>recommended</strong> that you assign each interface to a different subnet. For example, you may give each interface a /30 with the other end being the gateway. This is not strictly required but considerably simplifies the networking involved and can make debugging easier. You should consult with your local network operators when making this determination.</p>
 <p>If you do decide to put both interfaces on the same subnet, special <em>sysctl</em> settings are required to prevent ARP conflicts. These are set by default on the perfSONAR Toolkit but are documented below as reference:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">arp_ignore</span><span class="o">=</span><span class="mi">1</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">arp_ignore</span><span class="o">=</span><span class="mi">1</span>
 <span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">arp_announce</span><span class="o">=</span><span class="mi">2</span>
 <span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">default</span><span class="o">.</span><span class="n">arp_filter</span><span class="o">=</span><span class="mi">1</span>
 <span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">arp_filter</span><span class="o">=</span><span class="mi">1</span>
 </pre></div>
 </div>
-</section>
-<section id="host-routing-table-configuration">
-<span id="multixface-route"></span><h2>Host Routing Table Configuration<a class="headerlink" href="#host-routing-table-configuration" title="Permalink to this heading">¶</a></h2>
-<section id="adding-routes">
-<h3>Adding Routes<a class="headerlink" href="#adding-routes" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="host-routing-table-configuration">
+<span id="multixface-route"></span><h2>Host Routing Table Configuration<a class="headerlink" href="#host-routing-table-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="adding-routes">
+<h3>Adding Routes<a class="headerlink" href="#adding-routes" title="Permalink to this headline">¶</a></h3>
 <p>When a regular test is run (or you run a measurement at the command-line using an option to specify the source address), the operating system may or may not use the provided source IP address when deciding which interface on the local host to use for forwarding. Most default routing tables only look at the destination address when making forwarding decisions which can lead to unexpected behavior with your measurements.</p>
 <p>In order to avoid this situation, you need to run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at <em>/usr/lib/perfsonar/scripts/mod_interface_route</em>. For <strong>each interface on the host</strong> you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:</p>
 <blockquote>
-<div><ul class="simple">
-<li><dl class="simple">
-<dt>Interface 1</dt><dd><dl class="field-list simple">
-<dt class="field-odd">Interface Name<span class="colon">:</span></dt>
-<dd class="field-odd"><p>eth0</p>
-</dd>
-<dt class="field-even">IPv4 Address<span class="colon">:</span></dt>
-<dd class="field-even"><p>10.0.0.2</p>
-</dd>
-<dt class="field-odd">IPv4 Gateway<span class="colon">:</span></dt>
-<dd class="field-odd"><p>10.0.0.1</p>
-</dd>
-<dt class="field-even">IPv6 Address<span class="colon">:</span></dt>
-<dd class="field-even"><p>fde1:40ff:e1a3:d50e::2</p>
-</dd>
-<dt class="field-odd">IPv6 Gateway<span class="colon">:</span></dt>
-<dd class="field-odd"><p>fde1:40ff:e1a3:d50e::1</p>
-</dd>
-</dl>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Interface 1</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Interface Name:</th><td class="field-body">eth0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">IPv4 Address:</th><td class="field-body">10.0.0.2</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">IPv4 Gateway:</th><td class="field-body">10.0.0.1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">IPv6 Address:</th><td class="field-body">fde1:40ff:e1a3:d50e::2</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">IPv6 Gateway:</th><td class="field-body">fde1:40ff:e1a3:d50e::1</td>
+</tr>
+</tbody>
+</table>
 </dd>
 </dl>
 </li>
-<li><dl class="simple">
-<dt>Interface 2</dt><dd><dl class="field-list simple">
-<dt class="field-odd">Interface Name<span class="colon">:</span></dt>
-<dd class="field-odd"><p>eth1</p>
-</dd>
-<dt class="field-even">IPv4 Address<span class="colon">:</span></dt>
-<dd class="field-even"><p>10.1.1.2</p>
-</dd>
-<dt class="field-odd">IPv4 Gateway<span class="colon">:</span></dt>
-<dd class="field-odd"><p>10.1.1.1</p>
-</dd>
-<dt class="field-even">IPv6 Address<span class="colon">:</span></dt>
-<dd class="field-even"><p>fd7d:3189:ed46:2736::2</p>
-</dd>
-<dt class="field-odd">IPv6 Gateway<span class="colon">:</span></dt>
-<dd class="field-odd"><p>fd7d:3189:ed46:2736::1</p>
-</dd>
-</dl>
+<li><dl class="first docutils">
+<dt>Interface 2</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Interface Name:</th><td class="field-body">eth1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">IPv4 Address:</th><td class="field-body">10.1.1.2</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">IPv4 Gateway:</th><td class="field-body">10.1.1.1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">IPv6 Address:</th><td class="field-body">fd7d:3189:ed46:2736::2</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">IPv6 Gateway:</th><td class="field-body">fd7d:3189:ed46:2736::1</td>
+</tr>
+</tbody>
+</table>
 </dd>
 </dl>
 </li>
 </ul>
 </div></blockquote>
 <p>Below is an example of the commands we would run to install the rules required to correctly use both interfaces for measurement traffic:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">mod_interface_route</span> <span class="o">--</span><span class="n">command</span> <span class="n">add</span> <span class="o">--</span><span class="n">device</span> <span class="n">eth0</span> <span class="o">--</span><span class="n">ipv4_gateway</span> <span class="mf">10.0.0.1</span> <span class="o">--</span><span class="n">ipv6_gateway</span> <span class="n">fde1</span><span class="p">:</span><span class="mi">40</span><span class="n">ff</span><span class="p">:</span><span class="n">e1a3</span><span class="p">:</span><span class="n">d50e</span><span class="p">::</span><span class="mi">1</span>
-<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">mod_interface_route</span> <span class="o">--</span><span class="n">command</span> <span class="n">add</span> <span class="o">--</span><span class="n">device</span> <span class="n">eth1</span> <span class="o">--</span><span class="n">ipv4_gateway</span> <span class="mf">10.1.1.1</span> <span class="o">--</span><span class="n">ipv6_gateway</span> <span class="n">fd7d</span><span class="p">:</span><span class="mi">3189</span><span class="p">:</span><span class="n">ed46</span><span class="p">:</span><span class="mi">2736</span><span class="p">::</span><span class="mi">1</span>
-</pre></div>
+<div class="highlight-python"><pre>/usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
+/usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1</pre>
 </div>
 <p>Replace the options above with those relevant to each interface on your host to create the necessary rules.</p>
 <p>After performing the task above, your routes should now be setup. There are two ways to enable the newly installed rules to persist between system reboots. One is to set the <strong>mod_interface_route</strong> command to run whenever the machine boots, and the other is to configure the <strong>mod_interface_route</strong> command to run whenever the interface is brought up or torn down.</p>
 <p>The easiest approach is to have the routes setup when the machine boots. To do this, it is recommended that you add the <em>mod_interface_route</em> commands to <strong>/etc/rc.local</strong>. Copy them exactly as you ran them at the command-line and they should get executed each time your host starts.</p>
 <p>To have the routes setup whenever the interface is brought up, you will need to create two shell scripts: <strong>/sbin/ifup-local</strong> and <strong>/sbin/ifdown-local</strong>. The <strong>/sbin/ifup-local</strong> script gets executed whenever an interface is brought up, and will be used setup the route. The <strong>/sbin/ifdown-local</strong> script gets executed whenever an interface is brought down, and will be used to remove the route. Both scripts get executed with the interface name as the first parameter. The scripts then take the appropriate steps based on which interface is being taken up or torn down.</p>
 <p>An example <strong>/sbin/ifup-local</strong> script based on the example interfaces above:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#/bin/sh
+<div class="highlight-python"><pre>#/bin/sh
 INTERFACE=$1
 
-if [ &quot;$INTERFACE&quot; == &quot;eth0&quot; ]; then
+if [ "$INTERFACE" == "eth0" ]; then
     /usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth0 --ipv4_gateway 10.0.0.1 --ipv6_gateway fde1:40ff:e1a3:d50e::1
-elif [ &quot;$INTERFACE&quot; == &quot;eth1&quot; ]; then
+elif [ "$INTERFACE" == "eth1" ]; then
     /usr/lib/perfsonar/scripts/mod_interface_route --command add --device eth1 --ipv4_gateway 10.1.1.1 --ipv6_gateway fd7d:3189:ed46:2736::1
-fi
-</pre></div>
+fi</pre>
 </div>
 <p>An example <strong>/sbin/ifdown-local</strong> script based on the example interfaces above:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/sh
+<div class="highlight-python"><pre>#!/bin/sh
 
 INTERFACE=$1
 
-if [ &quot;$INTERFACE&quot; == &quot;eth0&quot; -o &quot;$INTERFACE&quot; == &quot;eth1&quot; ]; then
+if [ "$INTERFACE" == "eth0" -o "$INTERFACE" == "eth1" ]; then
     /usr/lib/perfsonar/scripts/mod_interface_route  --command delete --device  $1
-fi
-</pre></div>
+fi</pre>
 </div>
 <p>After you have created those scripts, make sure that they are executable by running <strong>chmod ugo+x /sbin/ifup-local /sbin/ifdown-local</strong>.</p>
-</section>
-<section id="viewing-routes">
-<h3>Viewing Routes<a class="headerlink" href="#viewing-routes" title="Permalink to this heading">¶</a></h3>
-<p>You may see the IPv4 changes by running the command <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">rule</span> <span class="pre">list</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ip rule list</span>
-<span class="mi">0</span><span class="p">:</span>  <span class="kn">from</span> <span class="nn">all</span> <span class="n">lookup</span> <span class="n">local</span>
-<span class="mi">200</span><span class="p">:</span>        <span class="kn">from</span> <span class="mf">10.0.0.2</span> <span class="n">lookup</span> <span class="n">eth0_source_route</span>
-<span class="mi">200</span><span class="p">:</span>        <span class="kn">from</span> <span class="mf">10.1.1.2</span> <span class="n">lookup</span> <span class="n">eth1_source_route</span>
-<span class="mi">32766</span><span class="p">:</span>      <span class="kn">from</span> <span class="nn">all</span> <span class="n">lookup</span> <span class="n">main</span>
-<span class="mi">32767</span><span class="p">:</span>      <span class="kn">from</span> <span class="nn">all</span> <span class="n">lookup</span> <span class="n">default</span>
-</pre></div>
 </div>
-<p>You may see the IPv6 changes by running the command <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">-6</span> <span class="pre">rule</span> <span class="pre">list</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ip -6 rule list</span>
-<span class="mi">0</span><span class="p">:</span>  <span class="kn">from</span> <span class="nn">all</span> <span class="n">lookup</span> <span class="n">local</span>
-<span class="mi">200</span><span class="p">:</span>        <span class="kn">from</span> <span class="nn">fde1</span><span class="p">:</span><span class="mi">40</span><span class="n">ff</span><span class="p">:</span><span class="n">e1a3</span><span class="p">:</span><span class="n">d50e</span><span class="p">::</span><span class="mi">2</span> <span class="n">lookup</span> <span class="n">eth0_source_route</span>
-<span class="mi">200</span><span class="p">:</span>        <span class="kn">from</span> <span class="nn">fd7d</span><span class="p">:</span><span class="mi">3189</span><span class="p">:</span><span class="n">ed46</span><span class="p">:</span><span class="mi">2736</span><span class="p">::</span><span class="mi">2</span> <span class="n">lookup</span> <span class="n">eth1_source_route</span>
-<span class="mi">32766</span><span class="p">:</span>      <span class="kn">from</span> <span class="nn">all</span> <span class="n">lookup</span> <span class="n">main</span>
-</pre></div>
+<div class="section" id="viewing-routes">
+<h3>Viewing Routes<a class="headerlink" href="#viewing-routes" title="Permalink to this headline">¶</a></h3>
+<p>You may see the IPv4 changes by running the command <tt class="docutils literal"><span class="pre">ip</span> <span class="pre">rule</span> <span class="pre">list</span></tt>:</p>
+<div class="highlight-python"><pre># ip rule list
+0:  from all lookup local
+200:        from 10.0.0.2 lookup eth0_source_route
+200:        from 10.1.1.2 lookup eth1_source_route
+32766:      from all lookup main
+32767:      from all lookup default</pre>
 </div>
-</section>
-<section id="deleting-routes">
-<h3>Deleting Routes<a class="headerlink" href="#deleting-routes" title="Permalink to this heading">¶</a></h3>
+<p>You may see the IPv6 changes by running the command <tt class="docutils literal"><span class="pre">ip</span> <span class="pre">-6</span> <span class="pre">rule</span> <span class="pre">list</span></tt>:</p>
+<div class="highlight-python"><pre># ip -6 rule list
+0:  from all lookup local
+200:        from fde1:40ff:e1a3:d50e::2 lookup eth0_source_route
+200:        from fd7d:3189:ed46:2736::2 lookup eth1_source_route
+32766:      from all lookup main</pre>
+</div>
+</div>
+<div class="section" id="deleting-routes">
+<h3>Deleting Routes<a class="headerlink" href="#deleting-routes" title="Permalink to this headline">¶</a></h3>
 <p>If you would like to remove previously added rules and routes, simply give the <em>mod_interface_route</em> script the <em>delete</em> command and the device for which you want the rules removed. For example to remove both the rules from our previous example, run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">mod_interface_route</span> <span class="o">--</span><span class="n">command</span> <span class="n">delete</span> <span class="o">--</span><span class="n">device</span> <span class="n">eth0</span>
-<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">mod_interface_route</span> <span class="o">--</span><span class="n">command</span> <span class="n">delete</span> <span class="o">--</span><span class="n">device</span> <span class="n">eth1</span>
-</pre></div>
+<div class="highlight-python"><pre>/usr/lib/perfsonar/scripts/mod_interface_route --command delete --device eth0
+/usr/lib/perfsonar/scripts/scripts/mod_interface_route --command delete --device eth1</pre>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -240,7 +244,7 @@ fi
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -252,8 +256,7 @@ fi
         <li class="right" >
           <a href="manage_tuning.html" title="Host Tuning"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Configuring a Host with Multiple Interfaces</a></li> 
+        <li><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -296,9 +299,9 @@ fi
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    <div class="footer">
+        &copy; Copyright 2023, perfSONAR Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

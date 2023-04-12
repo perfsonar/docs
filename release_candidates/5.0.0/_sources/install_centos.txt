@@ -57,9 +57,9 @@ Step 2: Install a Bundle
 
     yum install perfsonar-core
 
-* **perfSONAR Central Management**::
+* **perfSONAR Archive**::
 
-    yum install perfsonar-centralmanagement
+    yum install perfsonar-archive
 
 * **perfSONAR Toolkit**::
 
@@ -78,8 +78,6 @@ In addition to any of the bundles above you may also **optionnally** choose to i
 You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
-
-.. note:: On a **perfsonar-centralmanagement** system you probably only want the optional **perfsonar-toolkit-servicewatcher** package to be installed.
 
 .. _install_centos_step3:
 
@@ -193,23 +191,6 @@ If they are not running you may start them with appropriate init commands as a r
 
 In order to find more information about services running in perfSONAR bundles visit :doc:`manage_daemons`.
 
-Configuring Central Management
+Configuring an Archive
 -------------------------------
-If you installed the perfsonar-centralmanagement bundle see the following documents:
-
-* :doc:`multi_ma_install`
-* :doc:`psconfig_publish`
-* :doc:`psconfig_maddash_agent`
-* :doc:`maddash_intro`
-
-Configuring perfSONAR through the web interface
-------------------------------------------------
-If you installed the perfsonar-toolkit or perfsonar-centralmanagement bundle on an existing CentOS host, 
-you'll probably need to disable SELinux to gain access to the web interface. This is done with the following commands:
-::
-
-    echo 0 >/selinux/enforce
-    sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
-
-After that, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
-
+If you installed the perfsonar-archive bundle see the following document :doc:`multi_ma_install`

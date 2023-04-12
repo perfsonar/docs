@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Grafana perfSONAR Dashboard Cookbook &mdash; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '5.0.0b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 5.0.0b1 documentation" href="index.html" />
+    <link rel="next" title="What is pScheduler?" href="pscheduler_intro.html" />
+    <link rel="prev" title="External Tools" href="using_ext_tools.html" /> 
+  </head>
+  <body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pscheduler_intro.html" title="What is pScheduler?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="using_ext_tools.html" title="External Tools"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="grafana-perfsonar-dashboard-cookbook">
+<h1>Grafana perfSONAR Dashboard Cookbook<a class="headerlink" href="#grafana-perfsonar-dashboard-cookbook" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://grafana.com/">Grafana</a> is a popular open source visualization platform for building dashboards. It supports multiple data sources, including the <a class="reference external" href="https://opensearch.org/">OpenSearch</a> database that is installed by default with the perfSONAR Toolkit and Archive bundles. This guide will walkthrough how to:</p>
+<ul class="simple">
+<li>Install Grafana (you can skip this if you have an existing installation)</li>
+<li>Setup an OpenSearch data source that points at your perfSONAR installation</li>
+<li>Import the Matrix visualization plug-in</li>
+<li>Import a pre-built set of dashboards for viewing the data</li>
+<li>Provide tips for building your own dashboards</li>
+</ul>
+<p>The following is required to use this guide:</p>
+<ul class="simple">
+<li>A perfSONAR 5.0 or later host with either the Toolkit or Archive package installed.</li>
+<li>A host where you can run Grafana that can reach port 443 on your perfSONAR host. This can be a separate host or can run on the same host where you have perfSONAR installed.</li>
+</ul>
+<div class="section" id="step-1-install-grafana">
+<h2>Step 1: Install Grafana<a class="headerlink" href="#step-1-install-grafana" title="Permalink to this headline">¶</a></h2>
+<p>This step will walkthrough how to get Grafana running in a Docker container. <strong>If you have an existing Grafana installation you can skip this step.</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A Grafana installation via Docker is not required. Docker is used in this guide as a quick way to get up and running for users without an existing Grafana installation. Other Grafana installation methods work equally as well and have well-documented installation steps for a number of operating systems that can be found at <a class="reference external" href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/">Grafana Installation Instructions</a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Docker setup in this document will not persist your changes, so it is best used for non-production purposes. Consult the Grafana documentation for persisting Docker installs.</p>
+</div>
+<p>If you do not have an existing installation but would like to experiment with perfSONAR and Grafana, then follow the steps below:</p>
+<ol class="arabic">
+<li><p class="first">Login to a host running Docker where you want to install Grafana. Installing Docker is outside the scope of this document, but instructions can be found here: <a class="reference external" href="https://docs.docker.com/engine/install/">Docker Install Instructions</a>.</p>
+</li>
+<li><p class="first">Start the Grafana container (Note: Linux systems may require you to run as sudo):</p>
+<div class="highlight-python"><pre>docker run -d -p 3000:3000 --name grafana grafana/grafana-oss</pre>
+</div>
+</li>
+<li><p class="first">Verify that Grafana is running by opening your web browser to <a class="reference external" href="http://localhost:3000">http://localhost:3000</a>. Replace localhost with your Grafana host&#8217;s name if installed remotely. If it is running then you should see a page like the following:</p>
+</li>
+</ol>
+<img alt="_images/grafana_cookbook-login.png" src="_images/grafana_cookbook-login.png" />
+<ol class="arabic simple" start="4">
+<li>Login using the default username and password of admin/admin</li>
+</ol>
+<img alt="_images/grafana_cookbook-login_admin.png" src="_images/grafana_cookbook-login_admin.png" />
+<ol class="arabic simple" start="5">
+<li>On the page that loads, change your password to something other than the default (or click Skip).</li>
+</ol>
+<img alt="_images/grafana_cookbook-pwchange.png" src="_images/grafana_cookbook-pwchange.png" />
+<ol class="arabic simple" start="6">
+<li>You should now be logged-in and see a page similar to the following:</li>
+</ol>
+<img alt="_images/grafana_cookbook-loginsuccess.png" src="_images/grafana_cookbook-loginsuccess.png" />
+</div>
+<div class="section" id="step-2-install-and-configure-opensearch-data-source">
+<h2>Step 2: Install and Configure OpenSearch Data Source<a class="headerlink" href="#step-2-install-and-configure-opensearch-data-source" title="Permalink to this headline">¶</a></h2>
+<p>In this step you will install and configure the OpenSearch data source plug-in used to talk to perfSONAR. The steps are as follows:</p>
+<ol class="arabic simple">
+<li>Hover over the Settings icon on the left (looks like a cog wheel) and select &#8220;Plugins&#8221; from the menu.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_select.png" src="_images/grafana_cookbook-plugins_select.png" />
+<ol class="arabic simple" start="2">
+<li>On the page that loads type &#8220;OpenSearch&#8221; into the &#8220;Search&#8221; box toward the top.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_opensearch_search.png" src="_images/grafana_cookbook-plugins_opensearch_search.png" />
+<ol class="arabic simple" start="3">
+<li>Click on the OpenSearch plugin in the search results.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_opensearch_select.png" src="_images/grafana_cookbook-plugins_opensearch_select.png" />
+<ol class="arabic simple" start="4">
+<li>On the page that loads click &#8220;Install&#8221; and wait for the process to complete. It usually only takes a few seconds.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_opensearch_install.png" src="_images/grafana_cookbook-plugins_opensearch_install.png" />
+<ol class="arabic simple" start="5">
+<li>We will now configure Grafana to talk to OpenSearch. Click the &#8220;Create a OpenSearch data source&#8221; button near the top of page.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_opensearch_create.png" src="_images/grafana_cookbook-plugins_opensearch_create.png" />
+<ol class="arabic" start="6">
+<li><dl class="first docutils">
+<dt>On the page that loads fill-in the fields with the following (any field not referenced can be left as default).</dt>
+<dd><ul class="first last simple">
+<li><em>Name:</em> perfSONAR Measurements</li>
+<li><em>URL:</em> <a class="reference external" href="https://">https://</a><em>PERFSONAR_HOST</em>/opensearch (Replace PERFSONAR_HOST with the address of the host where you have the perfSONAR archive running)</li>
+<li><em>Skip TLS Verify</em>: Enable this toggle since by default perfSONAR installations use self-signed certificate. If you have replaced the default certificate with a trusted certificate then you can leave this disabled.</li>
+<li><em>Index name</em>: pscheduler*</li>
+<li><em>Time field name</em>: pscheduler.start_time</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+<p>Example screenshot below using a Toolkit at address 10.1.1.1 (Note: Hostnames are fine to use instead of IPs if applicable):</p>
+<img alt="_images/grafana_cookbook-plugins_opensearch_setup.png" src="_images/grafana_cookbook-plugins_opensearch_setup.png" />
+<ol class="arabic simple" start="7">
+<li>Click &#8220;Save &amp; test&#8221;. You should see a message like below if it worked. If you get an error, check the settings above and verify you are able to reach the target perfSONAR host from your Grafana host.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_opensearch_success.png" src="_images/grafana_cookbook-plugins_opensearch_success.png" />
+<ol class="arabic simple" start="8">
+<li>Congratulations, you now have a Grafana instance talking to your perfSONAR Archive. The next steps will progress you toward displaying some data.</li>
+</ol>
+</div>
+<div class="section" id="step-3-install-the-matrix-plugin">
+<h2>Step 3: Install the Matrix Plugin<a class="headerlink" href="#step-3-install-the-matrix-plugin" title="Permalink to this headline">¶</a></h2>
+<p>In this step you will install another Grafana plug-in, but instead of being a plug-in that allows you to talk to a data source, it is a plugin that will allow you to include a new type of visualization in your dashboard. In this case, it is the matrix panel that is useful for summarizing tests.</p>
+<ol class="arabic simple">
+<li>Hover over the Settings icon on the left (looks like a cog wheel) and select &#8220;Plugins&#8221; from the menu.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_select.png" src="_images/grafana_cookbook-plugins_select.png" />
+<ol class="arabic simple" start="2">
+<li>On the page that loads type &#8220;Matrix&#8221; into the &#8220;Search&#8221; box toward the top.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_matrix_search.png" src="_images/grafana_cookbook-plugins_matrix_search.png" />
+<ol class="arabic simple" start="3">
+<li>Click on the &#8220;ESNET Matrix Panel&#8221; plugin in the search results.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_matrix_select.png" src="_images/grafana_cookbook-plugins_matrix_select.png" />
+<ol class="arabic simple" start="4">
+<li>On the page that loads click &#8220;Install&#8221; and wait for the process to complete. It usually takes a few seconds to a minute. We are now ready to import some dashboards.</li>
+</ol>
+<img alt="_images/grafana_cookbook-plugins_matrix_install.png" src="_images/grafana_cookbook-plugins_matrix_install.png" />
+</div>
+<div class="section" id="step-4-import-dashboards">
+<h2>Step 4: Import Dashboards<a class="headerlink" href="#step-4-import-dashboards" title="Permalink to this headline">¶</a></h2>
+<p>This step will walkthrough how to import a pre-existing set of dashboards provided by the perfSONAR development team. You can always create your own (we&#8217;ll cover that in the next step), but these provide a quick way to start playing with data. They can also be used as a reference for when you want to create your own. The steps are as follows:</p>
+<ol class="arabic simple">
+<li>In the Grafana Menu on the left (not the top), hover over the &#8220;four square&#8221; icon and select &#8220;+ Import&#8221;.</li>
+</ol>
+<img alt="_images/grafana_cookbook-import_select.png" src="_images/grafana_cookbook-import_select.png" />
+<ol class="arabic simple" start="2">
+<li>On the page that loads copy and paste the contents of the file <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/grafana/main/examples/overview.json">perfSONAR Overview Grafana Dashboard JSON</a> into the textbox labeled &#8220;Import via panel json&#8221;.</li>
+</ol>
+<img alt="_images/grafana_cookbook-import_textbox.png" src="_images/grafana_cookbook-import_textbox.png" />
+<ol class="arabic simple" start="3">
+<li>On the next page you do not need to change any settings, just click &#8220;Import&#8221;</li>
+</ol>
+<img alt="_images/grafana_cookbook-import_confirm.png" src="_images/grafana_cookbook-import_confirm.png" />
+<ol class="arabic simple" start="4">
+<li>You will now have an overview page that looks like the below:</li>
+</ol>
+<img alt="_images/grafana_cookbook-import_overview.png" src="_images/grafana_cookbook-import_overview.png" />
+<ol class="arabic simple" start="5">
+<li>You can explore the visualization on the page. You&#8217;ll notice that you can click on the boxes on the grids displayed, but the dashboard they point to does not exist. Let&#8217;s import that dashboard as well. In the Grafana Menu on the left (not the top), hover over the &#8220;four square&#8221; icon and select &#8220;+ Import&#8221;.</li>
+</ol>
+<img alt="_images/grafana_cookbook-import_select.png" src="_images/grafana_cookbook-import_select.png" />
+<ol class="arabic simple" start="6">
+<li>On the page that loads copy and paste the contents of the file <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/grafana/main/examples/endpoints.json">perfSONAR Endpoint Pair Grafana Dashboard JSON</a> into the textbox labeled &#8220;Import via panel json&#8221;.</li>
+</ol>
+<img alt="_images/grafana_cookbook-import_textbox.png" src="_images/grafana_cookbook-import_textbox.png" />
+<ol class="arabic simple" start="7">
+<li>You will now have a page to look at specific endpoint pairs as shown below:</li>
+</ol>
+<img alt="_images/grafana_cookbook-import_endpoints.png" src="_images/grafana_cookbook-import_endpoints.png" />
+<ol class="arabic simple" start="8">
+<li>Now that you have a few dashboards imported, take a chance to explore. Try to not only understand the data being shown, but also explore the queries behind them and see if you can understand how they work. You can look at how the visualizations were configured by hovering over a panel, selecting its drop down menu at the top and selecting &#8220;Edit&#8221;. An example of this menu is shown below:</li>
+</ol>
+<img alt="_images/grafana_cookbook-import_edit.png" src="_images/grafana_cookbook-import_edit.png" />
+<p>After you have spent some time exploring, proceed to the next section to walkthrough an example of how to build a basic line graph from scratch.</p>
+</div>
+<div class="section" id="step-5-building-your-own-line-graph">
+<h2>Step 5: Building Your Own Line Graph<a class="headerlink" href="#step-5-building-your-own-line-graph" title="Permalink to this headline">¶</a></h2>
+<p>This section will walkthrough how to build a new dashboard and add a line graph that shows maximum packet loss over time for all tests. This is intended to be a very simple example. The steps you follow to add this graph are similar to adding other visualizations, so can be used as a launching point to further customization. The steps for adding a new dashboard with a line graph are as follows:</p>
+<ol class="arabic simple">
+<li>In the Grafana Menu on the left (not the top), hover over the &#8220;four square&#8221; icon and select &#8220;+ New dashboard&#8221;.</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_create.png" src="_images/grafana_cookbook-new_create.png" />
+<ol class="arabic simple" start="2">
+<li>You should have a page that looks like below. Click &#8220;Add a new panel&#8221;</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_add_panel.png" src="_images/grafana_cookbook-new_add_panel.png" />
+<ol class="arabic simple" start="3">
+<li>This loads an editor where you can build the query and control various settings of the graph. Let&#8217;s try to build a graph of the maximum packet loss over time. First, make sure the &#8220;perfSONAR Measurements&#8221; data source is selected as well as the &#8220;Time series&#8221; visualization.</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_edit_check_ds_viz.png" src="_images/grafana_cookbook-new_edit_check_ds_viz.png" />
+<ol class="arabic simple" start="4">
+<li>Change the title of the graph to &#8220;Maximum Packet Loss Over Time&#8221;:</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_edit_title.png" src="_images/grafana_cookbook-new_edit_title.png" />
+<ol class="arabic simple" start="3">
+<li>In the query Editor we are now going to change its default to do a &#8220;Max&#8221; calculation on the &#8220;results.packets.loss&#8221; field. (Note: After changing these fields, if the graph does not change, click the &#8220;refresh&#8221; icon on the page.) This is all shown below:</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_edit_query.png" src="_images/grafana_cookbook-new_edit_query.png" />
+<ol class="arabic simple" start="4">
+<li>You should now see a graph of the packet loss. You will notice there are no units on the data in the Y axis. The &#8220;results.packets.loss&#8221; field is a numeric value from 0-1.0 representing a percentage. It would be ideal if this display as an actual percent as opposed to a decimal. Luckily, Grafana allows us to control the units. On the right panel, type &#8220;Unit&#8221; in the search box:</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_edit_units.png" src="_images/grafana_cookbook-new_edit_units.png" />
+<ol class="arabic simple" start="5">
+<li>In the Unit search box, type &#8220;percent&#8221; and select &#8220;Misc/Percent (0.0-1.0)&#8221;</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_edit_units_percent.png" src="_images/grafana_cookbook-new_edit_units_percent.png" />
+<ol class="arabic simple" start="6">
+<li>You now have a graph that shows the maximum packet loss values across all tests with proper units. Click &#8220;Apply&#8221; to leave the editor.</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_edit_apply.png" src="_images/grafana_cookbook-new_edit_apply.png" />
+<ol class="arabic simple" start="7">
+<li>Now let&#8217;s save our work. Click the &#8220;Save&#8221; button (shaped like a <a class="reference external" href="https://en.wikipedia.org/wiki/Floppy_disk">floppy disk</a>) on the upper right.</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_save_click.png" src="_images/grafana_cookbook-new_save_click.png" />
+<ol class="arabic simple" start="8">
+<li>Name your dashboard and click Save. Below we call it &#8220;My perfSONAR Dashboard&#8221;</li>
+</ol>
+<img alt="_images/grafana_cookbook-new_save_save.png" src="_images/grafana_cookbook-new_save_save.png" />
+<p>You now have a new dashboard! This is a very simple example but gives small a taste of the types of things you can build.</p>
+</div>
+<div class="section" id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>This document gave a walkthrough of how to get an initial Grafana instance running that can display perfSONAR data. As a next step, try building your own dashboard. It often helps to start by identifying a question you want to answer and then exploring the various options available. It often takes some trial and error since there are lots of settings to control the look of what you are trying to display. Be sure to experiment, and when you get something you like, consider sharing your work with the perfSONAR community, as we can all learn from each other.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Grafana perfSONAR Dashboard Cookbook</a><ul>
+<li><a class="reference internal" href="#step-1-install-grafana">Step 1: Install Grafana</a></li>
+<li><a class="reference internal" href="#step-2-install-and-configure-opensearch-data-source">Step 2: Install and Configure OpenSearch Data Source</a></li>
+<li><a class="reference internal" href="#step-3-install-the-matrix-plugin">Step 3: Install the Matrix Plugin</a></li>
+<li><a class="reference internal" href="#step-4-import-dashboards">Step 4: Import Dashboards</a></li>
+<li><a class="reference internal" href="#step-5-building-your-own-line-graph">Step 5: Building Your Own Line Graph</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="using_ext_tools.html">Previous topic</a>
+                  <ul><li><a href="using_ext_tools.html" title="previous chapter">External Tools</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pscheduler_intro.html">Next topic</a>
+                      <ul><li><a href="pscheduler_intro.html" title="next chapter">What is pScheduler?</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pscheduler_intro.html" title="What is pScheduler?"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="using_ext_tools.html" title="External Tools"
+             >previous</a> |</li>
+        <li><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer">
+        &copy; Copyright 2023, perfSONAR Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

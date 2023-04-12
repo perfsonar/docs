@@ -1,25 +1,37 @@
 
-<!DOCTYPE html>
 
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
-    <title>Running a pScheduler Server &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Running a pScheduler Server &mdash; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '5.0.0b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 5.0.0b1 documentation" href="index.html" />
     <link rel="next" title="Batch Processing" href="pscheduler_batch.html" />
     <link rel="prev" title="Viewing the Schedule" href="pscheduler_client_schedule.html" /> 
-  </head><body>
+  </head>
+  <body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -38,7 +50,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -50,8 +62,7 @@
         <li class="right" >
           <a href="pscheduler_client_schedule.html" title="Viewing the Schedule"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Running a pScheduler Server</a></li> 
+        <li><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -61,34 +72,33 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
-  <section id="running-a-pscheduler-server">
-<h1>Running a pScheduler Server<a class="headerlink" href="#running-a-pscheduler-server" title="Permalink to this heading">¶</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+  <div class="section" id="running-a-pscheduler-server">
+<h1>Running a pScheduler Server<a class="headerlink" href="#running-a-pscheduler-server" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>The pScheduler server is the component that does the heavy-lifting of scheduling and managing tasks.  It consists of multiple daemon processes and makes extensive use of <a class="reference external" href="https://www.postgresql.org">PostgreSQL</a>. This document describes basic usage of the server.</p>
-</section>
-<section id="daemons">
-<h2>Daemons<a class="headerlink" href="#daemons" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="daemons">
+<h2>Daemons<a class="headerlink" href="#daemons" title="Permalink to this headline">¶</a></h2>
 <p>pScheduler consists for four daemon processes that run as separate services. The four services are:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p><strong>pscheduler-scheduler</strong> - This process is what puts new runs on the schedule or marks a run as a non-starter if it can not find an available slot.</p></li>
-<li><p><strong>pscheduler-runner</strong> - This process is what executes runs on the schedule using the selected tool</p></li>
-<li><p><strong>pscheduler-archiver</strong> - This process executes archiver plug-ins using the results of runs. Archivers generally send results to long-term storage or to applications for further processing.</p></li>
-<li><p><strong>pscheduler-ticker</strong> - This process handles basic maintenance of pScheduler</p></li>
+<li><strong>pscheduler-scheduler</strong> - This process is what puts new runs on the schedule or marks a run as a non-starter if it can not find an available slot.</li>
+<li><strong>pscheduler-runner</strong> - This process is what executes runs on the schedule using the selected tool</li>
+<li><strong>pscheduler-archiver</strong> - This process executes archiver plug-ins using the results of runs. Archivers generally send results to long-term storage or to applications for further processing.</li>
+<li><strong>pscheduler-ticker</strong> - This process handles basic maintenance of pScheduler</li>
 </ol>
 </div></blockquote>
-<p>These services can be started/stopped with <code class="docutils literal notranslate"><span class="pre">systemctl</span></code> or the <code class="docutils literal notranslate"><span class="pre">service</span></code> command depending on the operating system. For example:</p>
+<p>These services can be started/stopped with <tt class="docutils literal"><span class="pre">systemctl</span></tt> or the <tt class="docutils literal"><span class="pre">service</span></tt> command depending on the operating system. For example:</p>
 <blockquote>
 <div><ul>
-<li><p>Using systemctl:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">scheduler</span>
-<span class="n">systemctl</span> <span class="n">start</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">runner</span>
-<span class="n">systemctl</span> <span class="n">start</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">archiver</span>
-<span class="n">systemctl</span> <span class="n">start</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">ticker</span>
-</pre></div>
+<li><p class="first">Using systemctl:</p>
+<div class="highlight-python"><pre>systemctl start pscheduler-scheduler
+systemctl start pscheduler-runner
+systemctl start pscheduler-archiver
+systemctl start pscheduler-ticker</pre>
 </div>
 </li>
 </ul>
@@ -96,49 +106,48 @@
 <p>In addition to these processes, it also requires Apache HTTPD and PostgreSQL daemons to be running. Apache provides the web server where pScheduler accepts REST API requests and PostgreSQL is where the schedule is stored. The name of these processes is dependent on the operating system:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>CentOS (all versions)</strong>: <code class="docutils literal notranslate"><span class="pre">httpd</span></code> and <code class="docutils literal notranslate"><span class="pre">postgresql-9.5</span></code></p></li>
-<li><p><strong>Debian (all versions)</strong>: <code class="docutils literal notranslate"><span class="pre">apache2</span></code> and <code class="docutils literal notranslate"><span class="pre">postgresql</span></code></p></li>
+<li><strong>CentOS (all versions)</strong>: <tt class="docutils literal"><span class="pre">httpd</span></tt> and <tt class="docutils literal"><span class="pre">postgresql-9.5</span></tt></li>
+<li><strong>Debian (all versions)</strong>: <tt class="docutils literal"><span class="pre">apache2</span></tt> and <tt class="docutils literal"><span class="pre">postgresql</span></tt></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="logging">
-<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
 <p>By default pScheduler logs to syslog facility <strong>local4</strong>. It sets-up rsyslogd to redirect all logging to the following file:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>/var/log/pscheduler/pscheduler.log</p></li>
+<li>/var/log/pscheduler/pscheduler.log</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you are using an alternative syslog implementation to rsyslogd then you will need to configure it to redirect local4 manually</p>
+<p class="first admonition-title">Note</p>
+<p class="last">If you are using an alternative syslog implementation to rsyslogd then you will need to configure it to redirect local4 manually</p>
 </div>
-</section>
-<section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
-<p>pScheduler has regular configuration files for configuring various aspects of the server. It also has a file for managing <a class="reference internal" href="pscheduler_intro.html#term-Limits"><span class="xref std std-term">limits</span></a> of the server. For more information on both of these topics, see the pages below:</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler has regular configuration files for configuring various aspects of the server. It also has a file for managing <a class="reference internal" href="pscheduler_intro.html#term-limits"><em class="xref std std-term">limits</em></a> of the server. For more information on both of these topics, see the pages below:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><a class="reference internal" href="config_pscheduler.html"><span class="doc">Configuring pScheduler</span></a></p></li>
-<li><p><a class="reference internal" href="config_pscheduler_limits.html"><span class="doc">Configuring pScheduler Limits</span></a></p></li>
+<li><a class="reference internal" href="config_pscheduler.html"><em>Configuring pScheduler</em></a></li>
+<li><a class="reference internal" href="config_pscheduler_limits.html"><em>Configuring pScheduler Limits</em></a></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="pausing-and-resuming">
-<h2>Pausing and Resuming<a class="headerlink" href="#pausing-and-resuming" title="Permalink to this heading">¶</a></h2>
-<p>pScheduler can be directed to stop running tasks using the <code class="docutils literal notranslate"><span class="pre">pause</span></code>
+</div>
+<div class="section" id="pausing-and-resuming">
+<h2>Pausing and Resuming<a class="headerlink" href="#pausing-and-resuming" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler can be directed to stop running tasks using the <tt class="docutils literal"><span class="pre">pause</span></tt>
 command.  With no arguments, the pause will last indefinitely; with an
-ISO 8601 duration (e.g., <code class="docutils literal notranslate"><span class="pre">PT2H</span></code>), the pause will last for the amount
+ISO 8601 duration (e.g., <tt class="docutils literal"><span class="pre">PT2H</span></tt>), the pause will last for the amount
 of time specified.  Note that any runs in progress when this command
 is executed will be allowed to run to completion.  Runs scheduled
-while the system is paused will fail with a <code class="docutils literal notranslate"><span class="pre">missed</span></code> status.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">resume</span></code> command will start runing tasks with the next one on
+while the system is paused will fail with a <tt class="docutils literal"><span class="pre">missed</span></tt> status.</p>
+<p>The <tt class="docutils literal"><span class="pre">resume</span></tt> command will start runing tasks with the next one on
 the schedule.</p>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -176,7 +185,7 @@ the schedule.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -188,8 +197,7 @@ the schedule.</p>
         <li class="right" >
           <a href="pscheduler_client_schedule.html" title="Viewing the Schedule"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Running a pScheduler Server</a></li> 
+        <li><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -232,9 +240,9 @@ the schedule.</p>
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    <div class="footer">
+        &copy; Copyright 2023, perfSONAR Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

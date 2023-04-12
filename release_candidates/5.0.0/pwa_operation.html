@@ -1,25 +1,38 @@
 
-<!DOCTYPE html>
 
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
-    <title>Operational Guide &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Operational Guide &mdash; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '5.0.0b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 5.0.0b1 documentation" href="index.html" />
+    <link rel="up" title="pSConfig Web Admin" href="pwa.html" />
     <link rel="next" title="Monitoring" href="pwa_monitoring.html" />
     <link rel="prev" title="Hosts" href="pwa_userguide_host.html" /> 
-  </head><body>
+  </head>
+  <body>
     <header>
         <div class="headerContents">
           <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
@@ -38,7 +51,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -50,9 +63,8 @@
         <li class="right" >
           <a href="pwa_userguide_host.html" title="Hosts"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Operational Guide</a></li> 
+        <li><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &raquo;</li>
+          <li><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -62,47 +74,44 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
-  <section id="operational-guide">
-<h1>Operational Guide<a class="headerlink" href="#operational-guide" title="Permalink to this heading">¶</a></h1>
-<section id="user-management">
-<h2>User Management<a class="headerlink" href="#user-management" title="Permalink to this heading">¶</a></h2>
+  <div class="section" id="operational-guide">
+<h1>Operational Guide<a class="headerlink" href="#operational-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="user-management">
+<h2>User Management<a class="headerlink" href="#user-management" title="Permalink to this headline">¶</a></h2>
 <p>For PWA user management details, read <a class="reference external" href="pwa_user_management">User Management</a></p>
-</section>
-<section id="service-status">
-<h2>Service Status<a class="headerlink" href="#service-status" title="Permalink to this heading">¶</a></h2>
-<p>PWA runs in a Docker container; to list the containers running on the host, user the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> command.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo docker ps
+</div>
+<div class="section" id="service-status">
+<h2>Service Status<a class="headerlink" href="#service-status" title="Permalink to this headline">¶</a></h2>
+<p>PWA runs in a Docker container; to list the containers running on the host, user the <tt class="docutils literal"><span class="pre">docker</span> <span class="pre">ps</span></tt> command.</p>
+<div class="highlight-python"><pre>$ sudo docker ps
 [root@mca-nightly mj82]# docker ps
 CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                                                              NAMES
-cc9137f3c1ec        perfsonar/pwa-admin   &quot;/start.sh&quot;              2 hours ago         Up 2 hours          80/tcp, 8080/tcp                                                   pwa-admin1
-d23ed1cddbff        perfsonar/pwa-pub     &quot;node /app/api/pwapu…&quot;   2 hours ago         Up 2 hours          8080/tcp                                                           pwa-pub1
-457a9ba151bf        nginx                 &quot;nginx -g &#39;daemon of…&quot;   11 days ago         Up 10 days          0.0.0.0:80-&gt;80/tcp, 0.0.0.0:443-&gt;443/tcp, 0.0.0.0:9443-&gt;9443/tcp   nginx
-301be8a679c7        perfsonar/sca-auth    &quot;/app/docker/start.sh&quot;   11 days ago         Up 11 days          80/tcp, 8080/tcp                                                   sca-auth
-ccde4bfc7a2d        mongo                 &quot;docker-entrypoint.s…&quot;   11 days ago         Up 11 days          27017/tcp                                                          mongo
-</pre></div>
+cc9137f3c1ec        perfsonar/pwa-admin   "/start.sh"              2 hours ago         Up 2 hours          80/tcp, 8080/tcp                                                   pwa-admin1
+d23ed1cddbff        perfsonar/pwa-pub     "node /app/api/pwapu…"   2 hours ago         Up 2 hours          8080/tcp                                                           pwa-pub1
+457a9ba151bf        nginx                 "nginx -g 'daemon of…"   11 days ago         Up 10 days          0.0.0.0:80-&gt;80/tcp, 0.0.0.0:443-&gt;443/tcp, 0.0.0.0:9443-&gt;9443/tcp   nginx
+301be8a679c7        perfsonar/sca-auth    "/app/docker/start.sh"   11 days ago         Up 11 days          80/tcp, 8080/tcp                                                   sca-auth
+ccde4bfc7a2d        mongo                 "docker-entrypoint.s…"   11 days ago         Up 11 days          27017/tcp                                                          mongo</pre>
 </div>
-<p>To see logs for a container, use the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span></code> command.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo docker logs --tail 20 pwa-admin1
-</pre></div>
+<p>To see logs for a container, use the <tt class="docutils literal"><span class="pre">docker</span> <span class="pre">logs</span></tt> command.</p>
+<div class="highlight-python"><pre>$ sudo docker logs --tail 20 pwa-admin1</pre>
 </div>
-<p>If you leave out the <cite>–tail</cite> parameter, it will show ALL the logs for that container, which may be quite long.</p>
+<p>If you leave out the <cite>&#8211;tail</cite> parameter, it will show ALL the logs for that container, which may be quite long.</p>
 <p>If you want to monitor a specific component within a container, PWA uses <a class="reference external" href="http://pm2.keymetrics.io/docs/usage/quick-start/#cheatsheet">PM2</a> to manage its related services and load-balance incoming requests.</p>
 <p>There are two ways to run commands within a docker container.</p>
 <ol class="arabic">
-<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container&gt;</span> <span class="pre">&lt;command&gt;</span></code> - this allows you to execute something inside the container without actually interactively entering the container. This is useful for one-off or scripted commands.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo docker exec -it pwa-admin1 pm2 logs
-</pre></div>
+<li><p class="first"><tt class="docutils literal"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container&gt;</span> <span class="pre">&lt;command&gt;</span></tt> - this allows you to execute something inside the container without actually interactively entering the container. This is useful for one-off or scripted commands.</p>
+<div class="highlight-python"><pre>$ sudo docker exec -it pwa-admin1 pm2 logs</pre>
 </div>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container&gt;</span> <span class="pre">bash</span></code> - this starts an interactive bash shell within the container.</p></li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container&gt;</span> <span class="pre">bash</span></tt> - this starts an interactive bash shell within the container.</p>
+</li>
 </ol>
 <p>You can see a list of services like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo docker exec -it pwa-admin1 pm2 logs
-</pre></div>
+<div class="highlight-python"><pre>$ sudo docker exec -it pwa-admin1 pm2 logs</pre>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo docker exec -it pwa-admin1 bash
+<div class="highlight-python"><pre>$ sudo docker exec -it pwa-admin1 bash
 root@cc9137f3c1ec:/# pm2 status
 ┌──────────┬────┬──────┬─────┬────────┬─────────┬────────┬─────┬───────────┬──────┬──────────┐
 │ App name │ id │ mode │ pid │ status │ restart │ uptime │ cpu │ mem       │ user │ watching │
@@ -117,81 +126,74 @@ root@cc9137f3c1ec:/# pm2 status
 ├───────────────┼─────────┼────────────┼────────┼─────────┼─────┼─────────────┼──────┤
 │ pm2-logrotate │ 2.6.0   │ N/A        │ online │ 0       │ 0%  │ 31.465 MB   │ root │
 └───────────────┴─────────┴────────────┴────────┴─────────┴─────┴─────────────┴──────┘
- Use `pm2 show &lt;id|name&gt;` to get more details about an app
-</pre></div>
+ Use `pm2 show &lt;id|name&gt;` to get more details about an app</pre>
 </div>
 <p>The auth service provides PWA authentication. pwaadmin is the main PWA UI (server side component), and pwapub generates MeshConfig/pSConfig output to be downloaded by external services. You can safely shutdown / restart pwaadmin without impacting mcapub service. pwacache periodically loads host information from configured sLS and global LS instances.</p>
-<p>You should see all service to show “online” with small number of restart (if you update configuration for any service, the service will be automatically restarted, so you will see non-0 restart in such case). You can reset restart count by doing this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pm2</span> <span class="n">reset</span> <span class="n">pwaadmin</span>
-</pre></div>
+<p>You should see all service to show &#8220;online&#8221; with small number of restart (if you update configuration for any service, the service will be automatically restarted, so you will see non-0 restart in such case). You can reset restart count by doing this:</p>
+<div class="highlight-python"><pre>pm2 reset pwaadmin</pre>
 </div>
 <p>or</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pm2</span> <span class="n">reset</span> <span class="nb">all</span>
-</pre></div>
+<div class="highlight-python"><pre>pm2 reset all</pre>
 </div>
 <p>You can monitor realtime stats of each services via</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pm2</span> <span class="n">monit</span>
-</pre></div>
+<div class="highlight-python"><pre>pm2 monit</pre>
 </div>
 <p>For more information on PM2, please see the <a class="reference external" href="http://pm2.keymetrics.io/">PM2 main page</a></p>
-</section>
-<section id="pwa-conatiners">
-<h2>PWA Conatiners<a class="headerlink" href="#pwa-conatiners" title="Permalink to this heading">¶</a></h2>
-<p>Here is a complete list of PWA Docker containers, and what services run under them.</p>
-<section id="pwa-admin1">
-<h3>pwa-admin1<a class="headerlink" href="#pwa-admin1" title="Permalink to this heading">¶</a></h3>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pwaadmin</span></code>
-This includes the PWA web-based UI, and the API</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pwacache</span></code>
-The PWA cache, which pulls down host details from the global LS and any private LSes you may have configured, on a regular basis.</p></li>
-</ol>
-</section>
-<section id="pwa-pub1">
-<h3>pwa-pub1<a class="headerlink" href="#pwa-pub1" title="Permalink to this heading">¶</a></h3>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pwapub</span></code>
-The PWA Publisher, which publishes MeshConfig/pSConfig outputs; this is what you point your MadDash instance and tests hosts at.</p></li>
-</ol>
-</section>
-<section id="sca-auth">
-<h3>sca-auth<a class="headerlink" href="#sca-auth" title="Permalink to this heading">¶</a></h3>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ui</span></code> (<em>sca-auth</em>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">auth</span></code> (<em>sca-auth</em>)
-The Authentication service provides the API for the authentication module</p></li>
-</ol>
-</section>
-</section>
-<section id="other-containers">
-<h2>Other Containers<a class="headerlink" href="#other-containers" title="Permalink to this heading">¶</a></h2>
-<p>These Docker containers are required by PWA, but not part of PWA itself.</p>
-<section id="mongo">
-<h3>mongo<a class="headerlink" href="#mongo" title="Permalink to this heading">¶</a></h3>
-<p>This is the MongoDB database, and is used to store the Host Group/Testspec/Config options, as well as the LS cache.</p>
-</section>
-<section id="nginx">
-<h3>nginx<a class="headerlink" href="#nginx" title="Permalink to this heading">¶</a></h3>
-<p>A web server which is used as a reverse proxy to access the other components.</p>
-</section>
-</section>
-<section id="backup-volatile-data">
-<h2>Backup (Volatile Data)<a class="headerlink" href="#backup-volatile-data" title="Permalink to this heading">¶</a></h2>
-<p>All the PWA-related data is stored under this directory; if you want to back up your data, simply copy this folder.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">data</span>
-</pre></div>
 </div>
-<p>PWA stores Config-related information in the <code class="docutils literal notranslate"><span class="pre">mongo/</span></code> subdirectory, and auth data in <code class="docutils literal notranslate"><span class="pre">auth/</span></code>.</p>
+<div class="section" id="pwa-conatiners">
+<h2>PWA Conatiners<a class="headerlink" href="#pwa-conatiners" title="Permalink to this headline">¶</a></h2>
+<p>Here is a complete list of PWA Docker containers, and what services run under them.</p>
+<div class="section" id="pwa-admin1">
+<h3>pwa-admin1<a class="headerlink" href="#pwa-admin1" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">pwaadmin</span></tt>
+This includes the PWA web-based UI, and the API</li>
+<li><tt class="docutils literal"><span class="pre">pwacache</span></tt>
+The PWA cache, which pulls down host details from the global LS and any private LSes you may have configured, on a regular basis.</li>
+</ol>
+</div>
+<div class="section" id="pwa-pub1">
+<h3>pwa-pub1<a class="headerlink" href="#pwa-pub1" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">pwapub</span></tt>
+The PWA Publisher, which publishes MeshConfig/pSConfig outputs; this is what you point your MadDash instance and tests hosts at.</li>
+</ol>
+</div>
+<div class="section" id="sca-auth">
+<h3>sca-auth<a class="headerlink" href="#sca-auth" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">ui</span></tt> (<em>sca-auth</em>)</li>
+<li><tt class="docutils literal"><span class="pre">auth</span></tt> (<em>sca-auth</em>)
+The Authentication service provides the API for the authentication module</li>
+</ol>
+</div>
+</div>
+<div class="section" id="other-containers">
+<h2>Other Containers<a class="headerlink" href="#other-containers" title="Permalink to this headline">¶</a></h2>
+<p>These Docker containers are required by PWA, but not part of PWA itself.</p>
+<div class="section" id="mongo">
+<h3>mongo<a class="headerlink" href="#mongo" title="Permalink to this headline">¶</a></h3>
+<p>This is the MongoDB database, and is used to store the Host Group/Testspec/Config options, as well as the LS cache.</p>
+</div>
+<div class="section" id="nginx">
+<h3>nginx<a class="headerlink" href="#nginx" title="Permalink to this headline">¶</a></h3>
+<p>A web server which is used as a reverse proxy to access the other components.</p>
+</div>
+</div>
+<div class="section" id="backup-volatile-data">
+<h2>Backup (Volatile Data)<a class="headerlink" href="#backup-volatile-data" title="Permalink to this headline">¶</a></h2>
+<p>All the PWA-related data is stored under this directory; if you want to back up your data, simply copy this folder.</p>
+<div class="highlight-python"><pre>/usr/local/data</pre>
+</div>
+<p>PWA stores Config-related information in the <tt class="docutils literal"><span class="pre">mongo/</span></tt> subdirectory, and auth data in <tt class="docutils literal"><span class="pre">auth/</span></tt>.</p>
 <p>Additionally, PWA config data is under</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">pwa</span>
-</pre></div>
+<div class="highlight-python"><pre>/etc/pwa</pre>
 </div>
 <p>So this folder should also be backed up, as well.</p>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -238,7 +240,7 @@ The Authentication service provides the API for the authentication module</p></l
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -250,9 +252,8 @@ The Authentication service provides the API for the authentication module</p></l
         <li class="right" >
           <a href="pwa_userguide_host.html" title="Hosts"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Operational Guide</a></li> 
+        <li><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &raquo;</li>
+          <li><a href="pwa.html" >pSConfig Web Admin</a> &raquo;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -295,9 +296,9 @@ The Authentication service provides the API for the authentication module</p></l
         </div> <!-- /footerContents -->
     </footer>
     
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    <div class="footer">
+        &copy; Copyright 2023, perfSONAR Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
