@@ -126,7 +126,7 @@ This step will walkthrough how to import a pre-existing set of dashboards provid
 
 3. On the next page you do not need to change any settings, just click "Import"
 
-.. image:: images/grafana_cookbook-import_confirm.png
+.. image:: images/grafana_cookbook-import_confirm_overview.png
 
 4. You will now have an overview page that looks like the below:
 
@@ -140,11 +140,15 @@ This step will walkthrough how to import a pre-existing set of dashboards provid
 
 .. image:: images/grafana_cookbook-import_textbox.png
 
-7. You will now have a page to look at specific endpoint pairs as shown below:
+7. On the next page you do not need to change any settings, just click "Import"
+
+.. image:: images/grafana_cookbook-import_confirm_endpoints.png
+
+8. You will now have a page to look at specific endpoint pairs as shown below:
 
 .. image:: images/grafana_cookbook-import_endpoints.png
 
-8. Now that you have a few dashboards imported, take a chance to explore. Try to not only understand the data being shown, but also explore the queries behind them and see if you can understand how they work. You can look at how the visualizations were configured by hovering over a panel, selecting its drop down menu at the top and selecting "Edit". An example of this menu is shown below:
+9. Now that you have a few dashboards imported, take a chance to explore. Try to not only understand the data being shown, but also explore the queries behind them and see if you can understand how they work. You can look at how the visualizations were configured by hovering over a panel, selecting its drop down menu at the top and selecting "Edit". An example of this menu is shown below:
 
 .. image:: images/grafana_cookbook-import_edit.png
 
