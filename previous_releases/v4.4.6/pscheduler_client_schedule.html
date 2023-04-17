@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Viewing the Schedule &#8212; perfSONAR Toolkit 4.4.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Running a pScheduler Server" href="pscheduler_server_running.html" />
+    <link rel="prev" title="Creating and Managing Tasks" href="pscheduler_client_tasks.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_client_tasks.html" title="Creating and Managing Tasks"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Viewing the Schedule</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="viewing-the-schedule">
+<h1>Viewing the Schedule<a class="headerlink" href="#viewing-the-schedule" title="Permalink to this heading">¶</a></h1>
+<section id="introduction">
+<span id="pscheduler-client-schedule-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<p>It is often desirable to view the pScheduler schedule to plan new tests, debug a problem or just see how busy a host is at a particular time. The <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command-line client includes the following commands to provide this visibility:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code> - This command outputs the schedule in the requested timeframe as text. See <a class="reference internal" href="#pscheduler-client-schedule-schedule"><span class="std std-ref">Viewing the Schedule as Text with pscheduler schedule</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></code> - This command creates a PNG image file that provides a box plot of the schedule. See <a class="reference internal" href="#pscheduler-client-schedule-plot-schedule"><span class="std std-ref">Visualizing the Schedule with pscheduler plot-schedule</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">monitor</span></code> - This command provides top-like output showing near real-time state of runs in the database. See <a class="reference internal" href="#pscheduler-client-schedule-monitor"><span class="std std-ref">Monitoring the Schedule in Real Time with pscheduler monitor</span></a>.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="the-basics">
+<span id="pscheduler-client-schedule-basics"></span><h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this heading">¶</a></h2>
+<p>pScheduler maintains a schedule in the database and this schedule can be queried. Having some base knowledge of how pScheduler maintains its schedule can go a long way in understanding what is seen when you query the schedule.</p>
+<p>Every time a <a class="reference internal" href="pscheduler_intro.html#term-Task"><span class="xref std std-term">task</span></a> is created, one or more <a class="reference internal" href="pscheduler_intro.html#term-Run"><span class="xref std std-term">runs</span></a> are scheduled. Runs are scheduled 24 hours in advance by default (this is known as the <a class="reference internal" href="pscheduler_intro.html#term-Schedule-Horizon"><span class="xref std std-term">schedule horizon</span></a>). This means that you can not only see what has run in the past and what is running in the present, but also exactly when pScheduler will attempt a run in the future.</p>
+<p>Runs also have a status depending on whether they have already run or are still waiting to do so.  Possible status values are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Pending</strong> - This run is scheduled to execute at some point in the future</p></li>
+<li><p><strong>On Deck</strong> - This run is scheduled to execute and will begin execution very soon</p></li>
+<li><p><strong>Running</strong> - This run is on the verge of executing or has started execution</p></li>
+<li><p><strong>Cleanup</strong> - This run completed execution and is doing some final operations</p></li>
+<li><p><strong>Finished</strong> - The run has already executed and finished successfully</p></li>
+<li><p><strong>Overdue</strong> - The run was scheduled to execute at a certain time in the past but did not. It may get executed soon if it is not beyond a certain threshold.</p></li>
+<li><p><strong>Missed</strong> - The run was scheduled but did not execute at it’s given time. This can happen if the runner was not running at the scheduled time or the pScheduler was instructed to stop executing runs using the <cite>pause</cite> command.</p></li>
+<li><p><strong>Failed</strong> - The run failed to complete for some reason</p></li>
+<li><p><strong>Non-Starter</strong> - The run could not be scheduled because there was no timeslots that could accomodate the constraints</p></li>
+<li><p><strong>Canceled</strong> - The task was cancelled before the run was executed</p></li>
+</ul>
+</div></blockquote>
+<p>The information above should be enough background to get started looking at the output of pScheduler commands.</p>
+</section>
+<section id="viewing-the-schedule-as-text-with-pscheduler-schedule">
+<span id="pscheduler-client-schedule-schedule"></span><h2>Viewing the Schedule as Text with <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code><a class="headerlink" href="#viewing-the-schedule-as-text-with-pscheduler-schedule" title="Permalink to this heading">¶</a></h2>
+<p>This <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code> command asks pScheduler to fetch scheduled task runs from the past, present or future and display them as text. It takes the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="p">[</span> <span class="n">OPTIONS</span> <span class="p">]</span> <span class="p">[</span> <span class="n">delta</span> <span class="o">|</span> <span class="n">start</span> <span class="n">end</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>It outputs a list of runs that take the form below (where items in capital letters are replaced with values of the displayed run):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">START</span> <span class="o">-</span> <span class="n">END</span>  <span class="p">(</span><span class="n">STATUS</span><span class="p">)</span>
+<span class="n">PSCHEDULER_TASK_COMMAND</span> <span class="p">(</span><span class="n">Run</span> <span class="k">with</span> <span class="n">tool</span> <span class="n">TOOL</span><span class="p">)</span>
+<span class="n">RUN_URL</span>
+</pre></div>
+</div>
+<p>This is best shown with an example. All runs for the next hour will be displayed if no arguments are given:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">pscheduler</span> <span class="n">schedule</span>
+<span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T19</span><span class="p">:</span><span class="mi">53</span><span class="p">:</span><span class="mi">55</span><span class="o">-</span><span class="mi">07</span><span class="p">:</span><span class="mi">00</span> <span class="o">-</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T19</span><span class="p">:</span><span class="mi">53</span><span class="p">:</span><span class="mi">55</span><span class="o">-</span><span class="mi">07</span><span class="p">:</span><span class="mi">00</span>  <span class="p">(</span><span class="n">Finished</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">host2</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">version</span> <span class="mi">4</span> <span class="o">--</span><span class="n">source</span> <span class="n">host1</span> <span class="p">(</span><span class="n">Run</span> <span class="k">with</span>
+  <span class="n">tool</span> <span class="s1">&#39;traceroute&#39;</span><span class="p">)</span>
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">host1</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">/</span><span class="n">tasks</span><span class="o">/</span><span class="mi">0</span><span class="n">d545908</span><span class="o">-</span><span class="n">ff87</span><span class="o">-</span><span class="mi">4</span><span class="n">b34</span><span class="o">-</span><span class="mi">986</span><span class="n">f</span><span class="o">-</span><span class="n">b94afda74b16</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">b26460b2</span><span class="o">-</span><span class="mi">8</span><span class="n">edf</span><span class="o">-</span><span class="mi">499</span><span class="n">c</span><span class="o">-</span><span class="n">ad34</span><span class="o">-</span><span class="n">a4c358f5279d</span>
+
+
+<span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T19</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">05</span><span class="o">-</span><span class="mi">07</span><span class="p">:</span><span class="mi">00</span> <span class="o">-</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T19</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">05</span><span class="o">-</span><span class="mi">07</span><span class="p">:</span><span class="mi">00</span>  <span class="p">(</span><span class="n">Finished</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">host3</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">version</span> <span class="mi">4</span> <span class="o">--</span><span class="n">source</span> <span class="n">host1</span> <span class="p">(</span><span class="n">Run</span>
+  <span class="k">with</span> <span class="n">tool</span> <span class="s1">&#39;traceroute&#39;</span><span class="p">)</span>
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">host1</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">/</span><span class="n">tasks</span><span class="o">/</span><span class="n">cd93bf0a</span><span class="o">-</span><span class="n">ebd3</span><span class="o">-</span><span class="mi">4</span><span class="n">a86</span><span class="o">-</span><span class="n">bbd0</span><span class="o">-</span><span class="n">ff5adfdac118</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">8</span><span class="n">b780de3</span><span class="o">-</span><span class="mi">9</span><span class="n">fad</span><span class="o">-</span><span class="mi">445</span><span class="n">d</span><span class="o">-</span><span class="mi">8</span><span class="n">dac</span><span class="o">-</span><span class="mi">4</span><span class="n">dfd99f16c3f</span>
+
+
+<span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T19</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">15</span><span class="o">-</span><span class="mi">07</span><span class="p">:</span><span class="mi">00</span> <span class="o">-</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T19</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">20</span><span class="o">-</span><span class="mi">07</span><span class="p">:</span><span class="mi">00</span>  <span class="p">(</span><span class="n">Finished</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">host1</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">version</span> <span class="mi">4</span> <span class="o">--</span><span class="n">source</span> <span class="n">host2</span> <span class="p">(</span><span class="n">Run</span>
+  <span class="k">with</span> <span class="n">tool</span> <span class="s1">&#39;traceroute&#39;</span><span class="p">)</span>
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">host2</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">/</span><span class="n">tasks</span><span class="o">/</span><span class="n">a07cdaa6</span><span class="o">-</span><span class="mi">624</span><span class="n">b</span><span class="o">-</span><span class="mi">4128</span><span class="o">-</span><span class="mi">9821</span><span class="o">-</span><span class="mi">0</span><span class="n">b2dc9c2b760</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">2</span><span class="n">cd5e548</span><span class="o">-</span><span class="n">dff9</span><span class="o">-</span><span class="mi">44</span><span class="n">d8</span><span class="o">-</span><span class="mi">8475</span><span class="o">-</span><span class="n">b38791e2d5a5</span>
+</pre></div>
+</div>
+<p>The runs displayed will include any task where your host is a <a class="reference internal" href="pscheduler_intro.html#term-Participant"><span class="xref std std-term">participant</span></a>, not just the <a class="reference internal" href="pscheduler_intro.html#term-Lead-Participant"><span class="xref std std-term">lead participant</span></a>.</p>
+<p>With one (delta) argument, the schedule between now and some point in the past or future will be shown. Deltas are ISO 8601 durations, with -PT1H meaning one hour in the past and P1D meaning one day in the future. Examples:</p>
+<blockquote>
+<div><ul>
+<li><p>One hour in the past:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">-</span><span class="n">PT1H</span>
+</pre></div>
+</div>
+</li>
+<li><p>One day in the future:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="n">P1D</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>With two (start and end) arguments, the schedule within a range of times will be shown. Either argument can be a delta as described above (e.g. -P2D) or a ISO 8601 timestamp (e.g., 2016-09-04T12:34:56+0400). Examples:</p>
+<blockquote>
+<div><ul>
+<li><p>One hour in the past to two hours in the future:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">-</span><span class="n">PT1H</span> <span class="n">PT2H</span>
+</pre></div>
+</div>
+</li>
+<li><p>One hour timeframe between two specific times:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">04</span><span class="n">T12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">56</span><span class="o">+</span><span class="mi">0400</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">04</span><span class="n">T13</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">56</span><span class="o">+</span><span class="mi">0400</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>It also provides the <code class="docutils literal notranslate"><span class="pre">--filter-test</span> <span class="pre">TEST_TYPE</span></code> option to ask for a particular <a class="reference internal" href="pscheduler_intro.html#term-Test"><span class="xref std std-term">test</span></a> type. For a list of test types see <a class="reference internal" href="pscheduler_ref_tests_tools.html"><span class="doc">Test and Tool Reference</span></a>. For example, you may ask for all the throughput tests scheduled in the next hour with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">test</span> <span class="n">throughput</span> <span class="n">PT1H</span>
+</pre></div>
+</div>
+<p>You may specify <code class="docutils literal notranslate"><span class="pre">--filter-test</span></code> multiple times to query multiple types of tests. For example, the following queries all <em>trace</em> and <em>rtt</em> tests that ran in the last 30 minutes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">test</span> <span class="n">trace</span> <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">test</span> <span class="n">rtt</span> <span class="o">-</span><span class="n">PT30M</span>
+</pre></div>
+</div>
+<p>You may also ask for all tests that are NOT a certain type by using the <code class="docutils literal notranslate"><span class="pre">--invert</span></code> option. This can be especially useful for ignoring background tasks that generally don’t prevent other tasks from running at the same time. For example, you could ignore all <em>latencybg</em> tests with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">test</span> <span class="n">latencybg</span> <span class="o">--</span><span class="n">invert</span>
+</pre></div>
+</div>
+<p>Any of the commands above can also be run to a remote pScheduler server using the <code class="docutils literal notranslate"><span class="pre">--host</span> <span class="pre">HOST</span></code> option, where <code class="docutils literal notranslate"><span class="pre">HOST</span></code> is the address of the pScheduler server with the schedule you’d like to see. For example, to see the schedule for the last hour of the pScheduler server on <em>host2</em> you would run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">--</span><span class="n">host</span> <span class="n">host2</span> <span class="o">-</span><span class="n">PT1H</span>
+</pre></div>
+</div>
+<p>If you are curious about any additional options or details, you can also run <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">schedule</span> <span class="pre">--help</span></code> to get more information about this command.</p>
+</section>
+<section id="visualizing-the-schedule-with-pscheduler-plot-schedule">
+<span id="pscheduler-client-schedule-plot-schedule"></span><h2>Visualizing the Schedule with <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></code><a class="headerlink" href="#visualizing-the-schedule-with-pscheduler-plot-schedule" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></code> command asks pScheduler to fetch scheduled task runs from the past, present or future and display them as box plot in a PNG image file. It takes the following form where OPTIONS is command-line options and IMAGE_FILE is the location where you want the generated image saved:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="p">[</span> <span class="n">OPTIONS</span> <span class="p">]</span> <span class="p">[</span> <span class="n">delta</span> <span class="o">|</span> <span class="n">start</span> <span class="n">end</span> <span class="p">]</span> <span class="o">&gt;</span> <span class="n">IMAGE_FILE</span>
+</pre></div>
+</div>
+<p>You always redirect the output to a file and the program will return an error before execution if you do not. Example output is shown below:</p>
+<img alt="_images/pscheduler_client_schedule-plot.png" src="_images/pscheduler_client_schedule-plot.png" />
+<p>The vertical axis is the time that the test ran or is scheduled to run. The green boxes are <a class="reference internal" href="pscheduler_intro.html#term-Run"><span class="xref std std-term">runs</span></a> of tasks and their height indicates the time allotted for them on the schedule. Each run is grouped into one of five classifications listed at the top:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><strong>Exclusive</strong> - An example is a <em>throughput</em> task. If you have very little whitespace in this category then you may have difficulty finding a timeslot for new tests. These test can run in parallel only with background tests.</p></li>
+<li><p><strong>Normal</strong> - An example is a task with a test type of <em>latency</em>.</p></li>
+<li><p><strong>Background Single-Result</strong> - Background tests that produce single result. Example test types include <em>rtt</em> and <em>trace</em> or <em>clock</em>. These tests can run in parallel with anything else.</p></li>
+<li><p><strong>Background Multi-Result</strong> - Background tests that produce multiple (streaming) results. Example test type is <em>latencybg</em>. It is not uncommon to have this column look almost entirely solid if you have <em>latencybg</em> tasks since they run continuously. These tests can run in parallel with anything else.</p></li>
+<li><p><strong>Non-Starting</strong> - These are runs that could not find a time-slot. A very important note, and common point of confusion, is that the time shown is the earliest possible time in the slot it was trying to schedule. This IS NOT the time when the scheduler tried to find a slot, failed and labelled it as a non-start. pScheduler uses a <a class="reference internal" href="pscheduler_intro.html#term-Schedule-Horizon"><span class="xref std std-term">schedule horizon</span></a> so likely attempted to schedule the run 24 hours in advance. A large number of runs in this category may be the indication of a busy host where it is difficult for exclusive tasks to find a timeslot.</p></li>
+<li><p><strong>Preempted</strong> - These runs were preempted by another with higher priority.</p></li>
+</ol>
+</div></blockquote>
+<p>For more detailed information about test classifications see <a class="reference internal" href="pscheduler_ref_tests_tools.html#pscheduler-ref-tests-tools-test-classifications"><span class="std std-ref">Test Classifications</span></a>.</p>
+<p>The primary options for manipulating what is in the image are the time arguments that take the same form as <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code>. If no arguments are given, all runs for the next hour will be displayed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span>
+</pre></div>
+</div>
+<p>With one (delta) argument, the schedule between now and some point in the past or future will be shown. Deltas are ISO 8601 durations, with -PT1H meaning one hour in the past and P1D meaning one day in the future. Examples:</p>
+<blockquote>
+<div><ul>
+<li><p>One hour in the past:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="o">-</span><span class="n">PT1H</span>
+</pre></div>
+</div>
+</li>
+<li><p>One day in the future:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="n">P1D</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>With two (start and end) arguments, the schedule within a range of times will be shown. Either argument can be a delta as described above (e.g. -P2D) or a ISO 8601 timestamp (e.g., 2016-09-04T12:34:56+0400). Examples:</p>
+<blockquote>
+<div><ul>
+<li><p>One hour in the past to two hours in the future:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="o">-</span><span class="n">PT1H</span> <span class="n">PT2H</span>
+</pre></div>
+</div>
+</li>
+<li><p>One hour timeframe between two specific times:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">04</span><span class="n">T12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">56</span><span class="o">+</span><span class="mi">0400</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">04</span><span class="n">T13</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">56</span><span class="o">+</span><span class="mi">0400</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>Any of the commands above can also be run to a remote pScheduler server using the <code class="docutils literal notranslate"><span class="pre">--host</span> <span class="pre">HOST</span></code> option, where <code class="docutils literal notranslate"><span class="pre">HOST</span></code> is the address of the pScheduler server with the schedule you’d like to see. For example, to see the schedule for the last hour of the pScheduler server on <em>host2</em> you would run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="o">--</span><span class="n">host</span> <span class="n">host2</span> <span class="o">-</span><span class="n">PT1H</span>
+</pre></div>
+</div>
+<p>If you are curious about any additional options or details, you can also run <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span> <span class="pre">--help</span></code> to get more information about this command.</p>
+</section>
+<section id="monitoring-the-schedule-in-real-time-with-pscheduler-monitor">
+<span id="pscheduler-client-schedule-monitor"></span><h2>Monitoring the Schedule in Real Time with <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">monitor</span></code><a class="headerlink" href="#monitoring-the-schedule-in-real-time-with-pscheduler-monitor" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">monitor</span></code> command provides top-like output of what the schedule is doing in near real time. It takes the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">monitor</span> <span class="p">[</span> <span class="n">OPTIONS</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>The output displayed looks like the following:</p>
+<img alt="_images/pscheduler_client_schedule-monitor.png" src="_images/pscheduler_client_schedule-monitor.png" />
+<p>Each row in the table shows a run. The runs are grouped by status and show the following in the columns from left to right:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The time that the task started</p></li>
+<li><p>The <a class="reference internal" href="#pscheduler-client-schedule-basics"><span class="std std-ref">status</span></a> of the run. If it’s in the <em>Running</em> state it will be highlighted as well.</p></li>
+<li><p>The command-line parameters one could give to <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">task</span></code> to create the run</p></li>
+</ul>
+</div></blockquote>
+<p>The most common method for invoking the command is to give it no options and it will fill the screen with as many tasks as it can fit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">monitor</span>
+</pre></div>
+</div>
+<p>If you would like to monitor a pScheduler server on remote host you can add the <code class="docutils literal notranslate"><span class="pre">--host</span></code> switch as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">monitor</span> <span class="o">--</span><span class="n">host</span> <span class="n">host2</span>
+</pre></div>
+</div>
+<p>If you are curious about any additional options or details, you can also run <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">monitor</span> <span class="pre">--help</span></code> to get more information about this command.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Viewing the Schedule</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#the-basics">The Basics</a></li>
+<li><a class="reference internal" href="#viewing-the-schedule-as-text-with-pscheduler-schedule">Viewing the Schedule as Text with <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">schedule</span></code></a></li>
+<li><a class="reference internal" href="#visualizing-the-schedule-with-pscheduler-plot-schedule">Visualizing the Schedule with <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">plot-schedule</span></code></a></li>
+<li><a class="reference internal" href="#monitoring-the-schedule-in-real-time-with-pscheduler-monitor">Monitoring the Schedule in Real Time with <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">monitor</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pscheduler_client_tasks.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_client_tasks.html" title="previous chapter">Creating and Managing Tasks</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="pscheduler_server_running.html">Next topic</a>
+                      <ul><li><a href="pscheduler_server_running.html" title="next chapter">Running a pScheduler Server</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_client_tasks.html" title="Creating and Managing Tasks"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Viewing the Schedule</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

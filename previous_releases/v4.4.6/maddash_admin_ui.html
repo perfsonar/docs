@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>MaDDash Administrator Web Interface &#8212; perfSONAR Toolkit 4.4.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MaDDash API Reference" href="maddash_api_intro.html" />
+    <link rel="prev" title="Customizing the MaDDash Web Interface" href="maddash_config_webui.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maddash_api_intro.html" title="MaDDash API Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="maddash_config_webui.html" title="Customizing the MaDDash Web Interface"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MaDDash Administrator Web Interface</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="maddash-administrator-web-interface">
+<h1>MaDDash Administrator Web Interface<a class="headerlink" href="#maddash-administrator-web-interface" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The administrator web interface was added in Version 1.2 of the toolkit and not present in prior versions of MaDDash.</p>
+</div>
+<p>The administrator web interface allows privileged users to perform special operations on the dashboard. The operations it allows include:</p>
+<ul class="simple">
+<li><p>Re-scheduling a check to run at a certain time.</p></li>
+<li><p>Scheduling an event, such as a maintenance window, that may impact check results</p></li>
+<li><p>Viewing and canceling existing events</p></li>
+</ul>
+<p>The sections that follow describes how to create login credentials for this interface, access it, and perform supported operations.</p>
+<section id="adding-removing-administrative-users">
+<span id="adminui-adduser"></span><h2>Adding/Removing Administrative Users<a class="headerlink" href="#adding-removing-administrative-users" title="Permalink to this heading">¶</a></h2>
+<p>The administrator web interface requires a username and password through HTTP BASIC authentication to gain access to the page. By default no users are created. You may use Apache’s <em>htpasswd</em> command to add users to the file <em>/etc/maddash/maddash-webui/admin-users</em>. The command to add a user (e.g. <em>myadmin</em>) is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">htpasswd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">maddash</span><span class="o">/</span><span class="n">maddash</span><span class="o">-</span><span class="n">webui</span><span class="o">/</span><span class="n">admin</span><span class="o">-</span><span class="n">users</span> <span class="n">myadmin</span>
+</pre></div>
+</div>
+<p>Follow the prompts to set the password. If you wish to remove a user then you may run the following command (replacing <em>myadmin</em> with the name of the user to be removed):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">htpasswd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">maddash</span><span class="o">/</span><span class="n">maddash</span><span class="o">-</span><span class="n">webui</span><span class="o">/</span><span class="n">admin</span><span class="o">-</span><span class="n">users</span> <span class="o">-</span><span class="n">D</span> <span class="n">myadmin</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You must be logged-in to the command-line as a root user to run the commands above</p>
+</div>
+</section>
+<section id="configuring-https">
+<span id="adminui-https"></span><h2>Configuring HTTPS<a class="headerlink" href="#configuring-https" title="Permalink to this heading">¶</a></h2>
+<p>It is required that the administrator interface be run over HTTPS. By default any attempt to access the administrator interface will be forwarded to the HTTPS protected version of the site. By default, a self-signed SSL certificate is generated for you. It is recommended that you get a properly signed certificate for your page though. Since MaDDash sits behind Apache, the instructions for doing so are the same as any other Apache instance. It is recommended you read the <a class="reference external" href="http://httpd.apache.org/docs/2.4/ssl/ssl_howto.html">Apache SSL page</a>  for further guidance.</p>
+</section>
+<section id="accessing-the-administrator-web-interface">
+<span id="adminui-access"></span><h2>Accessing the Administrator Web Interface<a class="headerlink" href="#accessing-the-administrator-web-interface" title="Permalink to this heading">¶</a></h2>
+<p>You may access the interface by selecting <em>Server Settings…</em> from the <em>Settings</em> drop-down menu on the standard MaDDash web interface:</p>
+<img alt="_images/maddash-server-settings.png" src="_images/maddash-server-settings.png" />
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>If the menu above does not appear then see <a class="reference internal" href="maddash_config_webui.html#config-webui-vizcustom"><span class="std std-ref">Visual Customizations</span></a> and the <em>enableAdminUI</em> option for more information on enabling this link.</p>
+</div>
+<p>Alternatively, you may access the page directly at <em>https://MYHOST/maddash-webui/admin</em> (where MYHOST is the address of your MaDDash web server). Upon reaching the page you will be prompted to login as an administrative user:</p>
+<img alt="_images/maddash-access-login.png" src="_images/maddash-access-login.png" />
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#adminui-adduser"><span class="std std-ref">Adding/Removing Administrative Users</span></a> for the steps for creating an administrative user.</p>
+</div>
+<p>After entering your credentials you will be shown the home screen where you can navigate to areas in the page detailed in the remainder of this document:</p>
+<img alt="_images/maddash-access-home.png" src="_images/maddash-access-home.png" />
+</section>
+<section id="rescheduling-checks">
+<span id="adminui-reschedule"></span><h2>Rescheduling Checks<a class="headerlink" href="#rescheduling-checks" title="Permalink to this heading">¶</a></h2>
+<p>It may be desirable to re-schedule a check or series of checks to run at a certain time. For example, if you have a throughput checks that runs twice a day, you may not wish to wait the full 12 hours for it to run again. This allows you to force it to run sooner than it would otherwise. Likewise you can push the next run time further out in the future. This is always a one-time change and after the newly scheduled execution time, the check will resume its previous schedule.</p>
+<p>The first step for using this feature through the web interface is to <a class="reference internal" href="#adminui-access"><span class="std std-ref">access</span></a> the administrator web interface and click <em>Reschedule Check</em> on the home screen or in the left-hand menu.</p>
+<img alt="_images/maddash-reschedule-access.png" src="_images/maddash-reschedule-access.png" />
+<p>The page that loads contains a set of menus to select the checks you want rescheduled and fields to set the time you want the checks run. See <a class="reference internal" href="#adminui-filters"><span class="std std-ref">Selecting Checks</span></a> for more information on how to use the selection menus. Select the checks you want, set the time and hit schedule to reschedule checks. A message should appear indicating the number of checks that were updated. For example, below updates all check in the BWCTL grid to run at January 1, 2015 at 9:00AM EST:</p>
+<img alt="_images/maddash-reschedule-example.png" src="_images/maddash-reschedule-example.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that depending on how busy MaDDash is it may not run the checks at exactly the time selected, but will do its best to run them as close as possible to that time. Likewise, if you set it to a the present time or in the past, the checks will be run as soon as possible.</p>
+</div>
+</section>
+<section id="scheduling-events">
+<span id="adminui-events-add"></span><h2>Scheduling Events<a class="headerlink" href="#scheduling-events" title="Permalink to this heading">¶</a></h2>
+<p>The web interface allows you to schedule an <strong>event</strong>. In the MaDDash context an event is a period of time where the results of a check may be impacted by a known occurrence. For example, if you are running throughput checks and know that a certain set of hosts will be down for maintenance, you can mark the occurrence through this interface. You can opt to temporarily pause checks from running during this time or you can opt to keep them running. Regardless, a note will be displayed on the MaDDash user interface indicating the event’s existence which should help inform users if unexpected results are reported during the allotted time. Also, if you opt to temporarily disable a check, it will be marked with a special color (default: black) to indicate that it is not running.</p>
+<p>In order to schedule an event, you must first <a class="reference internal" href="#adminui-access"><span class="std std-ref">access</span></a> the administrator web interface and click <em>Schedule Event</em> on the home screen or in the left-hand menu.</p>
+<img alt="_images/maddash-addevent-access.png" src="_images/maddash-addevent-access.png" />
+<p>The page that loads contains a set of menus to select the checks that will be affected by the event. It also contains fields to populate the details of the event. See <a class="reference internal" href="#adminui-filters"><span class="std std-ref">Selecting Checks</span></a> for more information on how to use the selection menus. The fields describing the event have the following meaning:</p>
+<dl class="simple glossary">
+<dt id="term-Name">Name<a class="headerlink" href="#term-Name" title="Permalink to this term">¶</a></dt><dd><p>A short label used to identify the event</p>
+</dd>
+<dt id="term-Description">Description<a class="headerlink" href="#term-Description" title="Permalink to this term">¶</a></dt><dd><p>A longer description that provides important details about the event.</p>
+</dd>
+<dt id="term-Start-Time">Start Time<a class="headerlink" href="#term-Start-Time" title="Permalink to this term">¶</a></dt><dd><p>The date and time that the event starts</p>
+</dd>
+<dt id="term-End-Time">End Time<a class="headerlink" href="#term-End-Time" title="Permalink to this term">¶</a></dt><dd><p>The date and time that the event ends</p>
+</dd>
+<dt id="term-Mark-checks-as-down-during-event">Mark checks as down during event<a class="headerlink" href="#term-Mark-checks-as-down-during-event" title="Permalink to this term">¶</a></dt><dd><p>A checkbox indicating whether the check should be paused for the duration of the event. If selected then the checks will not run and will have a special color in the dashboard (default: black).</p>
+</dd>
+</dl>
+<p>After populating all the fields, you may click schedule to create the event. A message should display indicating the event was scheduled:</p>
+<img alt="_images/maddash-addevent-scheduled.png" src="_images/maddash-addevent-scheduled.png" />
+</section>
+<section id="viewing-existing-events">
+<h2>Viewing Existing Events<a class="headerlink" href="#viewing-existing-events" title="Permalink to this heading">¶</a></h2>
+<p>To view events you must first <a class="reference internal" href="#adminui-access"><span class="std std-ref">access</span></a> the administrator web interface and click <em>View/Delete Event</em> on the home screen or in the left-hand menu.</p>
+<img alt="_images/maddash-viewevent-access.png" src="_images/maddash-viewevent-access.png" />
+<p>The page that loads will contain a list of events. See <a class="reference internal" href="#adminui-events-add"><span class="std std-ref">Scheduling Events</span></a> for the meaning of each column.</p>
+<img alt="_images/maddash-viewevent-list.png" src="_images/maddash-viewevent-list.png" />
+</section>
+<section id="canceling-events">
+<h2>Canceling Events<a class="headerlink" href="#canceling-events" title="Permalink to this heading">¶</a></h2>
+<p>To cancel an event you must first <a class="reference internal" href="#adminui-access"><span class="std std-ref">access</span></a> the administrator web interface and click <em>View/Delete Event</em> on the home screen or in the left-hand menu.</p>
+<img alt="_images/maddash-viewevent-access.png" src="_images/maddash-viewevent-access.png" />
+<p>The page that loads will contain a list of events. Next to each event is a remove button labelled with a <em>-</em>. Click this button and follow the prompt to delete an event.</p>
+<img alt="_images/maddash-delevent-process.png" src="_images/maddash-delevent-process.png" />
+<p>The event should now be deleted.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you would like to modify an event you must first delete it then re-add it through the <a class="reference internal" href="#adminui-events-add"><span class="std std-ref">scheduling interface</span></a></p>
+</div>
+</section>
+<section id="selecting-checks">
+<span id="adminui-filters"></span><h2>Selecting Checks<a class="headerlink" href="#selecting-checks" title="Permalink to this heading">¶</a></h2>
+<p>At the top of many of the pages you will see four drop-down menus used to select the checks to which you want an operation performed. A good analogy for this interface is email filters you may set in your mail client that matches against items like subject, to address, from address, etc and then performs some actions on mail that match those filters (e.g. move them to a special folder). In this case we are not matching emails but instead checks to be performed by MaDDash. Each menu matches against the grid, row, column and check name respectively. By default, every menu is set to <em>any</em> meaning every check performed by MaDDash will be selected.</p>
+<img alt="_images/maddash-select-all.png" src="_images/maddash-select-all.png" />
+<p>You may use the drop down menus to further refine your selection. The other end of the spectrum would be to select exactly one check by specifying a value for each of the menus. For example:</p>
+<img alt="_images/maddash-select-one.png" src="_images/maddash-select-one.png" />
+<p>Of course often times the operation you will want to perform will fall somewhere in between one check and all checks. The interface allows flexibility on how the checks are selected. Beyond the initial four menus, the <em>+</em> and <em>-</em> buttons will add and remove additional filters respectively of the same type. It essentially creates an OR condition for filters of that type. For example if you want to match only the checks in the BWCTL or OWAMP grids, but ignore any other grids, then you may click the <em>+</em> to add another grid filter and select the two grids you want from the menus:</p>
+<img alt="_images/maddash-select-grids.png" src="_images/maddash-select-grids.png" />
+<p>You can do the same thing for the row (which corresponds to the labels on the left-hand side of a dashboard), the column (which corresponds to the labels on the top of a dashboard), and check names. There is a special checkbox labeled <em>Filter on row and column simultaneously</em> that allows you to match against either row or column. For example, if your rows and columns represent hosts and you want to match a host regardless whether its in the row or column then use this checkpox. For example, the filters below will match and check involving albq-pt1.es.net regardless of whether it is a row or column:</p>
+<img alt="_images/maddash-select-rowcol.png" src="_images/maddash-select-rowcol.png" />
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">MaDDash Administrator Web Interface</a><ul>
+<li><a class="reference internal" href="#adding-removing-administrative-users">Adding/Removing Administrative Users</a></li>
+<li><a class="reference internal" href="#configuring-https">Configuring HTTPS</a></li>
+<li><a class="reference internal" href="#accessing-the-administrator-web-interface">Accessing the Administrator Web Interface</a></li>
+<li><a class="reference internal" href="#rescheduling-checks">Rescheduling Checks</a></li>
+<li><a class="reference internal" href="#scheduling-events">Scheduling Events</a></li>
+<li><a class="reference internal" href="#viewing-existing-events">Viewing Existing Events</a></li>
+<li><a class="reference internal" href="#canceling-events">Canceling Events</a></li>
+<li><a class="reference internal" href="#selecting-checks">Selecting Checks</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="maddash_config_webui.html">Previous topic</a>
+                  <ul><li><a href="maddash_config_webui.html" title="previous chapter">Customizing the MaDDash Web Interface</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="maddash_api_intro.html">Next topic</a>
+                      <ul><li><a href="maddash_api_intro.html" title="next chapter">MaDDash API Reference</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maddash_api_intro.html" title="MaDDash API Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="maddash_config_webui.html" title="Customizing the MaDDash Web Interface"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MaDDash Administrator Web Interface</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

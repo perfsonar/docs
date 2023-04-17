@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>MeshConfig to pSConfig Migration Guide &#8212; perfSONAR Toolkit 4.4.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deploying a Central Measurement Archive" href="multi_ma_install.html" />
+    <link rel="prev" title="Advanced pSConfig Templates" href="psconfig_templates_advanced.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_templates_advanced.html" title="Advanced pSConfig Templates"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MeshConfig to pSConfig Migration Guide</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="meshconfig-to-psconfig-migration-guide">
+<h1>MeshConfig to pSConfig Migration Guide<a class="headerlink" href="#meshconfig-to-psconfig-migration-guide" title="Permalink to this heading">¶</a></h1>
+<section id="upgrading-agents">
+<span id="psconfig-mesconfig-migrate-agents"></span><h2>Upgrading Agents<a class="headerlink" href="#upgrading-agents" title="Permalink to this heading">¶</a></h2>
+<section id="overview">
+<span id="psconfig-mesconfig-migrate-agents-overview"></span><h3>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h3>
+<p>Any host that reads a template file (or mesh file in MeshConfig terminology) is considered an agent. Agent hosts that upgrade to 4.1 will automatically upgrade to pSConfig and <strong>no further action is required</strong> by the host administrator. All configuration files will be migrated and the old software will be removed automatically. All agents are capable of reading the old MeshConfig JSON format, so your old mesh files you are pointing at will continue to work even once you have upgraded to the pSConfig agent.</p>
+<p>For those interested in the exact details of what happens on upgrade let’s take a look at the two supported agents in MeshConfig, <em>perfsonar-meshconfig-agent</em> and <em>perfsonar-meshconfig-guiagent</em></p>
+</section>
+<section id="upgrade-details-of-perfsonar-meshconfig-agent-to-perfsonar-psconfig-pscheduler">
+<span id="psconfig-mesconfig-migrate-agents-pscheduler"></span><h3>Upgrade details of <em>perfsonar-meshconfig-agent</em> to <em>perfsonar-psconfig-pscheduler</em><a class="headerlink" href="#upgrade-details-of-perfsonar-meshconfig-agent-to-perfsonar-psconfig-pscheduler" title="Permalink to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section provides advanced details for those interested in the upgrade process. You DO NOT need to run any of the commands in this section, all the work is done automatically on upgrade.</p>
+</div>
+<p>The <em>perfsonar-meshconfig-agent</em> package was responsible for reading a JSON mesh file and creating pScheduler tasks. In perfSONAR 4.1, this package is replaced by <em>perfsonar-psconfig-pscheduler</em> that can read a pSConfig template (or a JSON file in the old MeshConfig format) and create pScheduler tasks. The installer package does this by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">pscheduler</span><span class="o">-</span><span class="n">migrate</span>
+</pre></div>
+</div>
+<p>This command performs the following actions:</p>
+<ol class="arabic simple">
+<li><p>It translates the file <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/meshconfig-agent.conf</span></code> to the new format supported by the agent and stores the result in <code class="docutils literal notranslate"><span class="pre">etc/perfsonar/psconfig/pscheduler-agent.json</span></code>. This only runs if <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/meshconfig-agent.conf</span></code> exists and after it is complete, a backup is created at <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/meshconfig-agent.conf.DATETIME</span></code> where <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code> is a timestamp of when it was moved.</p></li>
+<li><p>It moves the  contents of <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/meshconfig-agent-tasks.conf</span></code> to <code class="docutils literal notranslate"><span class="pre">/var/lib/perfsonar/toolkit/gui-tasks.conf</span></code>. Any tasks generated from remote mesh files are removed since they will presumably be recreated when the new pSConfig agent runs and all tasks are no longer stored in a single file. Any global archives are moved to the <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/psconfig/archived.d/</span></code> include directory.  It then translates the results and stores them in <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/psconfig/pscheduler.d/toolkit-webui.json</span></code>. These two files are required by the Toolkit GUI since it still internally represents the tasks in the old format and translates upon save. A backup is created at <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/meshconfig-agent-tasks.conf.DATETIME</span></code> where <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code> is a timestamp of when it was moved.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">client_uuid</span></code> and <code class="docutils literal notranslate"><span class="pre">psc_tracker</span></code> files are moved from <code class="docutils literal notranslate"><span class="pre">/var/lib/perfsonar/meshconfig</span></code> to <code class="docutils literal notranslate"><span class="pre">/var/lib/perfsonar/psconfig</span></code>.</p></li>
+</ol>
+<p>The output of this command including any errors can be found in <code class="docutils literal notranslate"><span class="pre">/var/log/perfsonar/psconfig-pscheduler-migrate.log</span></code>.</p>
+<p>See <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">Running the pSConfig pScheduler Agent</span></a> for more information on using the pSConfig pScheduler agent and the features it provides.</p>
+</section>
+<section id="upgrade-details-of-perfsonar-meshconfig-guiagent-to-perfsonar-psconfig-maddash">
+<span id="psconfig-mesconfig-migrate-agents-maddash"></span><h3>Upgrade details of <em>perfsonar-meshconfig-guiagent</em> to <em>perfsonar-psconfig-maddash</em><a class="headerlink" href="#upgrade-details-of-perfsonar-meshconfig-guiagent-to-perfsonar-psconfig-maddash" title="Permalink to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section provides advanced details for those interested in the upgrade process. You DO NOT need to run any of the commands in this section, all the work is done automatically on upgrade.</p>
+</div>
+<p>The <em>perfsonar-meshconfig-guiagent</em> package was responsible for reading a JSON mesh file and creating MaDDash dashboards. In perfSONAR 4.1, this package is replaced by <em>perfsonar-psconfig-maddash</em> that can read a pSConfig template (or a JSON file in the old MeshConfig format) and create MaDDash dashboards. The installer package does this by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">maddash</span><span class="o">-</span><span class="n">migrate</span>
+</pre></div>
+</div>
+<p>This command has one task which is to convert <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/meshconfig-guiagent.conf</span></code> to the new format supported by the agent and stores the results in <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/psconfig/maddash-agent.json</span></code>.</p>
+<p>The output of this command including any errors can be found in <code class="docutils literal notranslate"><span class="pre">/var/log/perfsonar/psconfig-maddash-migrate.log</span></code>.</p>
+<p>See <a class="reference internal" href="psconfig_maddash_agent.html"><span class="doc">Running the pSConfig MaDDash Agent</span></a> for more information on using the pSConfig MaDDash agent and the features it provides.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once moving to the new agent, if you are pointing at an old MeshConfig file using <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code>, then how your dashboard is displayed will change from how it looked prior to the upgrade. See <a class="reference internal" href="#psconfig-mesconfig-migrate-forcebidir"><span class="std std-ref">Special Notes on force_bidirectional and Changes to MaDDash Display</span></a> for more details.</p>
+</div>
+</section>
+</section>
+<section id="translating-an-old-meshconfig-json-file-to-psconfig-format">
+<span id="psconfig-mesconfig-migrate-translate"></span><h2>Translating an old MeshConfig JSON file to pSConfig Format<a class="headerlink" href="#translating-an-old-meshconfig-json-file-to-psconfig-format" title="Permalink to this heading">¶</a></h2>
+<p>The current set of agents support both the old MeshConfig JSON format and the new pSConfig JSON format, so there is no immediate requirement to update your old mesh files. In fact, if you expect some agents will not upgrade right away and be running MeshConfig then your only option is to use the old forma for those old agents. You can choose to maintain both formats if you so desire, or you can just maintain the old MeshConfig format until all agents have upgraded.</p>
+<p>At a point where either all the agents reading your template have upgraded or you are in need of a feature only supported by pSConfig, then you will want to start using the new format. You can convert an old MeshConfig JSON file using the following command:</p>
+<blockquote>
+<div><p>psconfig translate -o NEW_JSON_FILE OLD_JSON_FILE</p>
+</div></blockquote>
+<p>Run <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">translate</span> <span class="pre">--help</span></code> for a full list of options. The command converts the old MeshConfig JSON at the file path or URL specified by <code class="docutils literal notranslate"><span class="pre">OLD_JSON_FILE</span></code>  and converts it to the new format that it stores in <code class="docutils literal notranslate"><span class="pre">NEW_JSON_FILE</span></code>.  Note that it does NOT support the old Apache MeshConfig format, the file MUST be converted to the MeshConfig JSON format first.</p>
+<p>Once you have your converted template see <a class="reference internal" href="psconfig_publish.html"><span class="doc">Publishing a pSConfig Template</span></a> for more details on publishing the new template. Also see <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">Introduction to pSConfig Templates</span></a> for more information on working with templates.</p>
+</section>
+<section id="special-notes-on-force-bidirectional-and-changes-to-maddash-display">
+<span id="psconfig-mesconfig-migrate-forcebidir"></span><h2>Special Notes on force_bidirectional and Changes to MaDDash Display<a class="headerlink" href="#special-notes-on-force-bidirectional-and-changes-to-maddash-display" title="Permalink to this heading">¶</a></h2>
+<p>One special behavior of the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">translate</span></code> command is that it will ignore the <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> option by default. This is done because force_bidirectional is an option a number of our examples used historically without much explanation. As a result a lot of people are using it but not really sure why. In most cases it will have a lot of undesirable consequences such as:</p>
+<ul class="simple">
+<li><p>Overtesting of the network in the form of unnecessary duplicate tests</p></li>
+<li><p>Increased load on the host systems due to the aforementioned duplicate tests</p></li>
+<li><p>Less time available on the schedule due to the aforementioned duplicate tests</p></li>
+<li><p>Increased likelihood of firewall problems since more connections are made from different sources</p></li>
+<li><p>Dashboards are more difficult to read</p></li>
+</ul>
+<p>Note that disabling <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> is NOT the same thing as disabling bidirectional tests (i.e. tests that run in the forward and reverse direction). If you are confused by that statement, you are getting a glimpse of why <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">translate</span></code> is choosing to ignore the option by default. Let’s take a closer look at what <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> actually does. Below is a diagram with two pairs of hosts and assumes there is an old mesh file using <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code>. The top pair of hosts both run agents and thus both read the old mesh file. In the second pair, only <em>Host 1</em> has an agent and reads the mesh file.  In this example <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> is <strong>enabled</strong>:</p>
+<figure class="align-center" id="id1">
+<img alt="_images/psconfig_mesconfig_migrate-force_bidir_1.png" src="_images/psconfig_mesconfig_migrate-force_bidir_1.png" />
+<figcaption>
+<p><span class="caption-text"><em>An example of the tests generated when force_bidirectional is enabled</em></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Note that in the top pair, each agent requests the test in both directions. This results in a total of four tests with each direction being run twice. In the bottom case, only the first host requests both tests since the agent knows the remote side does not have its own agent as indicated by the <code class="docutils literal notranslate"><span class="pre">no_agent</span></code> property in the mesh file. Note that the <code class="docutils literal notranslate"><span class="pre">no_agent</span></code> is the main driver for it requesting both directions, not <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code>. Each direction is just run once and there are no duplicate tests.</p>
+<p>Now let’s look at the same two pairs but with <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> <strong>disabled</strong>:</p>
+<figure class="align-center" id="id2">
+<img alt="_images/psconfig_mesconfig_migrate-force_bidir_2.png" src="_images/psconfig_mesconfig_migrate-force_bidir_2.png" />
+<figcaption>
+<p><span class="caption-text"><em>An example of the tests generated when force_bidirectional is disabled</em></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Note that in the top pair, each agent requests the test where it is the source and thus we just get one copy of each test and no duplicate copy. The second host pair is unaffected by the <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> change since only the first host has an agent, but it still manages to request both directions of the test. The important takeaway here is that with force_bidirectional off we still get results in both directions, we just eliminate unnecessary duplicates.</p>
+<p>Now let’s take a closer look at the dashboard and how it displays <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> tests. For a group of type mesh (every host tests to every other host) we get a grid like the following:</p>
+<figure class="align-center" id="id3">
+<img alt="_images/psconfig_mesconfig_migrate-force_bidir_3.png" src="_images/psconfig_mesconfig_migrate-force_bidir_3.png" />
+<figcaption>
+<p><span class="caption-text"><em>An example MaDDash grid when force_bidirectional is enabled for a group of type mesh</em></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Each host in the row represents the source and each column represents the destination. Since we have two tests to display for each direction, the box gets split in two with the top and bottom differentiated by who requested the test. If you’ve ever wondered what split boxes mean, this is part of that answer. The other part comes from looking at a grid of type <em>disjoint</em> (hosts in one group test to hosts in another group). An example of a grid using <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> is shown below:</p>
+<figure class="align-center" id="id4">
+<img alt="_images/psconfig_mesconfig_migrate-force_bidir_4.png" src="_images/psconfig_mesconfig_migrate-force_bidir_4.png" />
+<figcaption>
+<p><span class="caption-text"><em>An example MaDDash grid when force_bidirectional is enabled for a group of type disjoint</em></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The diagram above highlights a crucial fact: <strong>If you are running a disjoint mesh using force_bidirectional in 4.0 or sooner, half you tests are not even displaying</strong>.  This is not a bug as much of a fact that the box would need to be split <em>four ways</em> to show everything, which would not be readable.</p>
+<p>The summary above is driving at the fact that <code class="docutils literal notranslate"><span class="pre">force_bidirecional</span></code> both leads to unnecessary duplicate testing and more confusing dashboards. pSConfig aims to improve both of these aspects. The first part of this is discouraging the use of <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> in general. In fact, pSConfig does not even support the option (though as we see later it has a way to accomplish the same tests and display them in a more sane way). In MaDDash. whether running the old MeshConfig GUI Agent or the new pSConfig MaDDash Agent, without <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> your grids are displayed as follows:</p>
+<ul class="simple">
+<li><p>Grids for groups of type <em>mesh</em> are whole boxes (no split) with the row being the source and the column being the destination.</p></li>
+<li><p>Grids for groups of type <em>disjoint</em> are still split with the top being the forward direction and the bottom being the reverse.</p></li>
+</ul>
+<p>If you absolutely feel you need the equivalent of <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code>, then pSConfig does support a way. Basically what you have to do is define two separate tasks in your template with the only difference being the <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-tasks-scheduled-by"><span class="std std-ref">scheduled-by</span></a> property (see  <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-tasks-scheduled-by"><span class="std std-ref">Controlling the Agent That Schedules a Task</span></a> for full details). In the case of the mesh, this leads to <strong>two grids</strong> as follows:</p>
+<figure class="align-center" id="id5">
+<img alt="_images/psconfig_mesconfig_migrate-force_bidir_5.png" src="_images/psconfig_mesconfig_migrate-force_bidir_5.png" />
+<figcaption>
+<p><span class="caption-text"><em>An example MaDDash grid generated using pSConfig tasks with different scheduled-by properties and of group type mesh</em></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>For type <em>disjoint</em> the <strong>two grids</strong> look as follows:</p>
+<figure class="align-center" id="id6">
+<img alt="_images/psconfig_mesconfig_migrate-force_bidir_6.png" src="_images/psconfig_mesconfig_migrate-force_bidir_6.png" />
+<figcaption>
+<p><span class="caption-text"><em>An example MaDDash grid generated using pSConfig tasks with different scheduled-by properties and of group type disjoint</em></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above is also relevant if using a pSConfig MaDDash Agent to read an old MeshConfig file. In this case, it will convert <code class="docutils literal notranslate"><span class="pre">force_bidirectional</span></code> to two tasks and your dashboard will change. You will now have a second grid labelled <em>Scheduled by Destination</em> that looks like the second grid in each of the last two diagrams</p>
+</div>
+<p>If you want translation to convert <code class="docutils literal notranslate"><span class="pre">force_bidriectional</span></code> to two <em>task</em> objects with <code class="docutils literal notranslate"><span class="pre">scheduled-by</span></code> set then give <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">translate</span></code> the <code class="docutils literal notranslate"><span class="pre">--use-force-bidirectional</span></code> option. Just be sure you know what you are doing and are not creating duplicate tests you don’t need.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">MeshConfig to pSConfig Migration Guide</a><ul>
+<li><a class="reference internal" href="#upgrading-agents">Upgrading Agents</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#upgrade-details-of-perfsonar-meshconfig-agent-to-perfsonar-psconfig-pscheduler">Upgrade details of <em>perfsonar-meshconfig-agent</em> to <em>perfsonar-psconfig-pscheduler</em></a></li>
+<li><a class="reference internal" href="#upgrade-details-of-perfsonar-meshconfig-guiagent-to-perfsonar-psconfig-maddash">Upgrade details of <em>perfsonar-meshconfig-guiagent</em> to <em>perfsonar-psconfig-maddash</em></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#translating-an-old-meshconfig-json-file-to-psconfig-format">Translating an old MeshConfig JSON file to pSConfig Format</a></li>
+<li><a class="reference internal" href="#special-notes-on-force-bidirectional-and-changes-to-maddash-display">Special Notes on force_bidirectional and Changes to MaDDash Display</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="psconfig_templates_advanced.html">Previous topic</a>
+                  <ul><li><a href="psconfig_templates_advanced.html" title="previous chapter">Advanced pSConfig Templates</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="multi_ma_install.html">Next topic</a>
+                      <ul><li><a href="multi_ma_install.html" title="next chapter">Deploying a Central Measurement Archive</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="multi_ma_install.html" title="Deploying a Central Measurement Archive"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_templates_advanced.html" title="Advanced pSConfig Templates"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.4.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MeshConfig to pSConfig Migration Guide</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>
