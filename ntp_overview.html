@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>NTP Overview &#8212; perfSONAR Toolkit 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfsonar-logo-black-full-100.png"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">NTP Overview</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ntp-overview">
+<h1>NTP Overview<a class="headerlink" href="#ntp-overview" title="Permalink to this heading">¶</a></h1>
+<p>The Network Time Protocol (NTP) is a method to synchronize clocks to UTC (timezones are set locally by the administrator).  The general goal of this software is to ensure that time is monotonically increasing, e.g. NTP will not skip a clock backwards in time and only makes adjustments that slow or speed up the local clock to move it towards the true definition of time.  NTP will minimize offset (the difference from true time) and skew (difference of time change rate from the true rate), as it operates on a host.</p>
+<p>NTP is required to be running on perfSONAR servers that are performing OWAMP measurements.  OWAMP is designed to make API calls to a running NTP daemon to determine the time and relative errors for hosts involved in a measurement.  As an example, OWAMP works by sending streams of small UDP packets.  Each is timestamped on one end, and then compared on the other end upon receipt.  These accurate timestamps are used to calculate latency and jitter on a more fine level than is possible via other methods (ICMP packets used in Ping).  It is possible to operate the perfSONAR tools without a running NTP daemon (e.g. by using certain switches in the tools to disable the check of time), however the resulting measurements of network performance will be skewed due to the lack of accurate timekeeping.</p>
+<p>If NTP is being configured manually (e.g. editing /etc/ntp.conf), there are several key points to be aware of to ensure that time is as accurate as possible on the host:</p>
+<ul class="simple">
+<li><p>A directly attached clock (CDMA, GPS, etc.) is not required to use perfSONAR.  These external devices can certainly help to keep time accurate (in some cases to differences of less than 1 millisecond), but do add expense and maintenance to the operation of the measurement machine.  External clocks can cost several hundred dollars, and do require access to cellular networks (in the case of CDMA devices) or a clear view of the sky via an external antenna (in the case of a GPS).</p></li>
+<li><p>Using the NTP daemon to synchronize against a grouping of well known clock servers (many of which are operating with a directly attached clock) is sufficient for the measurement needs of perfSONAR.</p></li>
+<li><p>Selecting 4-5 servers is a good way to ensure there are backups available in the event of a failure.  These servers should be:</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>Not from the NTP pool.  The default configuration for NTP is to use regional pool servers (e.g. some located in North America, or Europe, etc.).  Pool servers work well if there is not a critical need for time accuracy in the range of a few milliseconds.  For measurement needs, accessing time consistently, from well known and trusted servers, is a requirement.</p></li>
+<li><p>Located topologically close to the server.  In general they should be no more than 20ms away.  Selecting a server that is far away makes the time subject to the increased latency, adding to a higher possible error.</p></li>
+<li><p>Located on divergent network paths.  The reasoning for this requirement is to prevent a catastrophic network failure from impacting all time servers that are synchronized against.  For example, if 4 servers are selected, all located and operated by a peer network, and this peer suffered a network outage, time updates may not be available.</p></li>
+<li><p>Of the same ‘stratum’. Stratum is defined to be the distance away from a true time source.  For example, if a host has a CDMA clock attached to it, it is a stratum 1 server (the CDMA itself is stratum 0).  Setting server choices to be all of the same stratum will aide the NTP algorithm selection process.  In general try to synchronize against clocks that are stratum 1, 2, or 3.  Higher stratum servers can impart additional error into measurement calculations.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>Many U.S. Laboratories, Universities, and Network Providers have public NTP servers that can be leveraged, if you cannot find a public list for a specific site, sending an email may be a good way to find out.</p></li>
+<li><p>Secure NTP against misuse.  This typically means now allowing external entities to query your NTP status by inserting rules that only allow your subnet to poll the server.  This will prevent attacks like NTP amplification.</p></li>
+</ul>
+<p>Once NTP is configured, it will take a day to fully stabilize a clock.  This process happens quickly at first (e.g. sending a set of small synchronization packets every 60 seconds), and then slows down by querying on the order of minutes.  Clock synchronization packets are UDP, and typically use port 123.</p>
+<section id="viewing-ntp-status">
+<h2>Viewing NTP Status<a class="headerlink" href="#viewing-ntp-status" title="Permalink to this heading">¶</a></h2>
+<p>NTP can be queried on a machine using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[user@host ~]$ /usr/sbin/ntpq -p -c rv
+    remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*GPS_PALISADE(1) .CDMA.           0 l   13   16  377    0.000    0.007   0.000
++albq-owamp-v4.e 198.128.2.10     2 u   25   64  377   54.065    0.031   0.010
+ atla-owamp.es.n 198.124.252.126  2 u   26   64  377   13.063    0.085   0.015
++sunn-owamp.es.n 198.129.252.106  2 u   15   64  377   62.270   -0.276   0.011
+ aofa-owamp.es.n 198.124.252.126  2 u   19   64  377    5.216    0.103   0.043
+ star-owamp.es.n 198.124.252.126  2 u   42   64  377   17.447    0.945   0.054
+associd=0 status=0415 leap_none, sync_uhf_radio, 1 event, clock_sync,
+version=&quot;ntpd 4.2.6p5@1.2349-o Sat Nov 23 18:21:48 UTC 2013 (1)&quot;,
+processor=&quot;x86_64&quot;, system=&quot;Linux/2.6.32-504.1.3.el6.x86_64&quot;, leap=00,
+stratum=1, precision=-22, rootdelay=0.000, rootdisp=0.469, refid=CDMA,
+reftime=d82c943a.40804c37  Fri, Dec  5 2014 12:29:46.251,
+clock=d82c9448.0851cd31  Fri, Dec  5 2014 12:30:00.032, peer=22846, tc=5,
+mintc=3, offset=0.001, frequency=-56.648, sys_jitter=0.042,
+clk_jitter=0.000, clk_wander=0.000
+</pre></div>
+</div>
+<p>Additional statistics can be found using this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[user@host ~]$ ntpstat
+synchronised to NTP server (198.124.252.126) at stratum 2
+  time correct to within 38 ms
+  polling server every 1024 s
+</pre></div>
+</div>
+</section>
+<section id="latency-test-observations-on-well-tuned-machines">
+<h2>Latency Test Observations on Well-Tuned Machines<a class="headerlink" href="#latency-test-observations-on-well-tuned-machines" title="Permalink to this heading">¶</a></h2>
+<p>Even on well tuned servers, time abnormalities can be witnessed due to the sensitivity of tools like OWAMP.  NTP works hard to get your host to within a couple of milliseconds of true time.  When measuring latency between hosts that are very topologically close (e.g. LAN distances up to 5 milliseconds), it is quiet possible that NTP drift will be observed over time.  The following figure shows that calculated latency can drift on the order of 1/2 a millisecond frequently as the system clocks are updated by NTP in the background.</p>
+<img alt="_images/close-ntp.png" src="_images/close-ntp.png" />
+<p>The next figure shows a closer view of this behavior.  Clocks will drift slowly between the intervals that NTP adjusts them, particularly if NTP has stabilized and is running every couple of minutes instead of a more frequent pace.</p>
+<img alt="_images/ntp-drift.png" src="_images/ntp-drift.png" />
+<p>Hosts that are further away will not see this behavior, as the difference of a fractional millisecond is less important when the latency is 10s or 100s of milliseconds.</p>
+<img alt="_images/ntp-far.png" src="_images/ntp-far.png" />
+</section>
+<section id="statement-on-precision-time-protocol-ptp">
+<h2>Statement on Precision Time Protocol (PTP)<a class="headerlink" href="#statement-on-precision-time-protocol-ptp" title="Permalink to this heading">¶</a></h2>
+<p>There have been reports that perfSONAR produces inaccurate or impossible (negative) results when testing transit time on networks whose latency is in the sub-millisecond range (i.e., less than the clock accuracy provided by the Network Time Protocol served by hosts on the Internet).   This is expected, although not necessarily desirable, behavior.  It has further been suggested that perfSONAR should integrate support for the IEEE 1588 Precision Time Protocol (PTP), which can discipline a computer’s clock to within tens of microseconds, eliminating this problem.</p>
+<p>While the perfSONAR development team’s goal is to provide the most accurate measurements in as many situations as possible, there are two factors that lead us to question whether PTP support is a project we should undertake.</p>
+<p>First is the benefit to perfSONAR’s primary mission, which is identifying network problems along paths between domains.  The latency in those paths tends to be large enough that NTP’s millisecond accuracy is sufficient for most testing.  Installations requiring better have the option of installing local stratum-1 NTP servers, some of which can be had for under US$500 and have been known to discipline clients’ clocks to well under a quarter millisecond.</p>
+<p>Second is the deployment cost of PTP, which is currently very high.  A campus wanting to use it would require at least two grandmaster clocks (US$2,500+ for basic models) and every router and switch between the grandmasters and perfSONAR nodes would have to be capable of functioning as a boundary or transparent clock.  This feature is usually found in switches designed for use in low-latency applications, not the workgroup switches that end up in wiring closets.  The least-expensive, PTP-capable switch we are able to identify is the Cisco Nexus 3048TP (48 1GbE ports plus four 10 Gb SFP+) at US$5,000.  Using this equipment to upgrade a 25-switch installation would put the capital cost at about US$130,000 for just the infrastructure, or US$1,300 per perfSONAR node in a 100-node installation.  In addition, all systems running perfSONAR would also require NICs with hardware support for the timestamping that makes PTP work accurately.  While software-only PTP clients exist, they may suffer inaccuracies induced by the vagaries of running under a general-purpose operating system and provide inaccurate results when testing in a LAN environment.</p>
+<p>Because of these two things, support for PTP is not currently on perfSONAR’s development roadmap.  That said, the team welcomes user feedback and uses it to measure demand for new features and how much priority they should be given.  If a large enough contingent of users is deploying PTP in their networks and believes the additional accuracy would be useful, it will be considered for a future release.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">NTP Overview</a><ul>
+<li><a class="reference internal" href="#viewing-ntp-status">Viewing NTP Status</a></li>
+<li><a class="reference internal" href="#latency-test-observations-on-well-tuned-machines">Latency Test Observations on Well-Tuned Machines</a></li>
+<li><a class="reference internal" href="#statement-on-precision-time-protocol-ptp">Statement on Precision Time Protocol (PTP)</a></li>
+</ul>
+</li>
+</ul>
+
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">NTP Overview</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Deploying a Central Measurement Archive &#8212; perfSONAR Toolkit 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Viewing Legacy Esmond Data" href="legacy_archive_esmond.html" />
+    <link rel="prev" title="Advanced pSConfig Templates" href="psconfig_templates_advanced.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfsonar-logo-black-full-100.png"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="legacy_archive_esmond.html" title="Viewing Legacy Esmond Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_templates_advanced.html" title="Advanced pSConfig Templates"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Deploying a Central Measurement Archive</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="deploying-a-central-measurement-archive">
+<h1>Deploying a Central Measurement Archive<a class="headerlink" href="#deploying-a-central-measurement-archive" title="Permalink to this heading">¶</a></h1>
+<p>Measurement results from your regular tests are stored in a <strong>measurement archive (MA)</strong>. This leads to the definition of two categories of hosts:</p>
+<ol class="arabic simple">
+<li><p>The <strong>measurement host</strong> that runs regular tests such as throughput, one-way latency, ping and traceroute measurements.</p></li>
+<li><p>The <strong>archive host</strong> that stores the results from the measurement host(s)</p></li>
+</ol>
+<p>By default the perfSONAR Toolkit is both measurement host AND archive host. It comes installed with both the regular testing infrastructure and the measurement archive software. The measurement archive stores all the results from measurements defined in the regular testing configuration of the local host. In many cases, this is an adequate storage strategy.</p>
+<p>As an alternative, you may decide to separate your measurement hosts and archive host(s). This allows a single “centralized” archive host to store results from multiple measurement hosts. A few use cases where this may be desirable are as follows:</p>
+<ul class="simple">
+<li><p>Your measurement hosts are on less powerful (and likely lower cost) hardware that you don’t want having the overhead of running the measurement archive. The measurement archive has higher hardware requirements than the measurement tools, so removing it can result in considerable resource savings.</p></li>
+<li><p>Your site has the experience and the infrastructure to manage large databases that you would like to leverage for storing measurement results on a dedicated archive host.</p></li>
+<li><p>You want to store results in multiple places. For example, you may store your results locally but also store them in a central archive where analysis tools operate on all the data from multiple hosts in one location.</p></li>
+</ul>
+<p>Those are just a few examples. If you think a central measurement archive is right for your measurement strategy, then read the remainder of this document for instructions on how to configure both your archive host and measurement hosts.</p>
+<section id="installing-the-measurement-archive-software">
+<h2>Installing the Measurement Archive Software<a class="headerlink" href="#installing-the-measurement-archive-software" title="Permalink to this heading">¶</a></h2>
+<p>The measurement archive is implemented using a software package named <em>perfsonar-archive</em>. You can install as a standalone package on any perfSONAR supported operating system with the following:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="authenticating-measurement-hosts">
+<h2>Authenticating Measurement Hosts<a class="headerlink" href="#authenticating-measurement-hosts" title="Permalink to this heading">¶</a></h2>
+<p>Measurement hosts need to authenticate to the measurement archive when they register data. This is implemented using one of two methods:</p>
+<ol class="arabic simple">
+<li><p>A username and password that is passed in the HTTP header of all requests.</p></li>
+<li><p>Using IP based authentication</p></li>
+</ol>
+<p>The remainder of this section describes how to setup both type of accounts.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may have a combination of the above where some accounts authenticate based on IP address and others based on username/password.</p>
+</div>
+<section id="authenticating-by-username-and-password">
+<span id="multi-ma-install-intro"></span><h3>Authenticating by Username and Password<a class="headerlink" href="#authenticating-by-username-and-password" title="Permalink to this heading">¶</a></h3>
+<p>The username and password is set in OpenSearch. You can create your own but an account is enabled with the minimum set of permissions needed to write to the perfSONAR indices. You can find the details in <cite>/etc/perfsonar/opensearch/logstash_login</cite>.</p>
+</section>
+<section id="authenticating-by-ip-address">
+<span id="multi-ma-install-auth-ip"></span><h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this heading">¶</a></h3>
+<p>This is done in the Apache proxy for Logstash. See the examples in <em>/etc/httpd/conf.d/apache-logstash.conf</em>.</p>
+</section>
+</section>
+<section id="configuring-measurement-hosts">
+<h2>Configuring Measurement Hosts<a class="headerlink" href="#configuring-measurement-hosts" title="Permalink to this heading">¶</a></h2>
+<p>Each measurement host must be configured to register its data to the central archive. This is done by configuring the <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">pSConfig pScheduler Agent</span></a> to use the archive. Specifically, it configures the HTTP archiver plugin supported by pScheduler. The full set of options for the HTTP archiver plugin are detailed <a class="reference internal" href="pscheduler_ref_archivers.html#pscheduler-ref-archivers-archivers-http"><span class="std std-ref">here</span></a>. The exact approach depends largely on how you are reading your pSConfig template and which tasks you want to send to the central archive.</p>
+<p>Some common scenarios are listed below:</p>
+<section id="scenario-1-writing-to-a-local-archive">
+<h3>Scenario 1: Writing to a Local Archive<a class="headerlink" href="#scenario-1-writing-to-a-local-archive" title="Permalink to this heading">¶</a></h3>
+<p>Note that by default, a perfSONAR Toolkit writes all tests to a local archive so no additional steps are needed. The archive definition can be found in <cite>/etc/perfsonar/psconfig/archives.d/http_logstash.json</cite>. If you need to regenerate that configuration, you can run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>The output of the command will look similar to the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}/logstash&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span><span class="s2">&quot;Basic eXamPleTokEn&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Copy the above output to <cite>/etc/perfsonar/psconfig/archives.d/http_logstash.json</cite> and all pSConfig tests will write to the local archive.</p>
+</section>
+<section id="scenario-2-writing-to-a-remote-archive-with-username-and-password-authentication">
+<h3>Scenario 2: Writing to a Remote Archive with Username and Password Authentication<a class="headerlink" href="#scenario-2-writing-to-a-remote-archive-with-username-and-password-authentication" title="Permalink to this heading">¶</a></h3>
+<p>As an example, let’s say we want all our measurement hosts to write results to an archive with the hostname <cite>example.archive</cite>. We can generate a configuration with the following command where the hostname is given as a parameter to the script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span> <span class="n">example</span><span class="o">.</span><span class="n">archive</span>
+</pre></div>
+</div>
+<p>The output looks as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.archive/logstash&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span><span class="s2">&quot;Basic eXamPleTokEn&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;esmond_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.archive/esmond/perfsonar/archive/&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note some differences include the URL pointing at the provided host, SSL verification is disabled by default (assumes a self-signed certificate), and an <cite>esmond_url</cite> is generated which can be used by tools like MaDDash to grab data using the legacy Esmond interface. Note this <cite>esmond_url</cite> will never be used by measurement clients to write results, it is only for querying using the backward compatibility interface.</p>
+<p>The simplest method for using the above output is to add it to a new JSON file in the <cite>/etc/perfsonar/psconfig/archives.d/</cite> directory.  See <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-templates-local"><span class="std std-ref">Local Templates</span></a> for more information on how to setup local templates.</p>
+<p><strong>It is only recommended you set the</strong> <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> <strong>field if your template is a file on the local system that will never be published to the web.</strong> This is to protect your credentials from being exposed. If you would like to use username and password authentication while still publishing to a public pSConfig template, you can remove the Authorization field from the definition published either by hand or re-running the above command with <cite>/usr/lib/perfsonar/archive/perfsonar-scripts/psconfig_archive.sh -a none -n example.archive</cite>. You can then add it back locally using a transform script. See  <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-all"><span class="std std-ref">Transforming All Remote Templates</span></a> and <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-one"><span class="std std-ref">Transforming Individual Remote Templates</span></a> for examples of how to do this.</p>
+</section>
+<section id="scenario-3-writing-to-a-remote-archive-with-ip-authentication">
+<h3>Scenario 3: Writing to a Remote Archive with IP Authentication<a class="headerlink" href="#scenario-3-writing-to-a-remote-archive-with-ip-authentication" title="Permalink to this heading">¶</a></h3>
+<p>In this scenario you have configured a list of allowed IPs in <em>/etc/httpd/conf.d/apache-logstash.conf</em>. You can safely publish to the web without authentication info. Generate the archiver configuration with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">a</span> <span class="n">none</span> <span class="o">-</span><span class="n">n</span> <span class="n">example</span><span class="o">.</span><span class="n">archive</span>
+</pre></div>
+</div>
+<p>The output should look something like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.archive/logstash&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;esmond_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.archive/esmond/perfsonar/archive/&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Copy above to your central pSConfig template and your measurement hosts should begin archiving.</p>
+</section>
+</section>
+<section id="legacy-installation-writing-to-both-esmond-and-opensearch">
+<h2>Legacy Installation: Writing to both Esmond and OpenSearch<a class="headerlink" href="#legacy-installation-writing-to-both-esmond-and-opensearch" title="Permalink to this heading">¶</a></h2>
+<p>In perfSONAR 5.0, the legacy archive named Esmond is dropped in favor of a new default archiver using OpenSearch. Since Esmond data is not migrated to OpenSearch, some users may find it beneficial to write to both archivers in parallel for a period of time. Assuming you have an existing Esmond installation and a new OpenSearch installation, you can continue to have measurement hosts write to each. <strong>Given that Esmond will not be supported long-term by the perfSONAR project, we recommend you consider this a temporary measure and have a plan to retire your Esmond installation after a few months.</strong></p>
+<p>The biggest decision point for this is where you would like existing MaDDash instances to retrieve data that it displays. Generally, if you have both defined in the same pSConfig Template, then MaDDash will pick the first it encounters when it displays data. If you desire to exercise greater control of the archiver MaDDash chooses, then you have multiple options. A few different common scenarios are detailed below.</p>
+<section id="scenario-1-maddash-reads-from-legacy-esmond">
+<h3>Scenario 1: MaDDash Reads from Legacy Esmond<a class="headerlink" href="#scenario-1-maddash-reads-from-legacy-esmond" title="Permalink to this heading">¶</a></h3>
+<p>In this case you will write to both Esmond and OpenSearch, but MaDDash will only read from Esmond. This may be a good choice if you want to display historical data prior to the 5.0 release alongside new data while simulataneously building a new (albeit undisplayed in MaDDash) history in OpenSearch.</p>
+<p>The first step is to put both archiver definitions in your pSConfig template. This will vary depending on the authentication mechanism you use for each, but will likely be similar to the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;archives&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;esmond_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span><span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">:</span><span class="s2">&quot;https://example.esmond/esmond/perfsonar/archive/&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;opensearch_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;schema&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;_url&quot;</span><span class="p">:</span><span class="s2">&quot;https://example.archive/logstash&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;op&quot;</span><span class="p">:</span><span class="s2">&quot;put&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_headers&quot;</span><span class="p">:{</span>
+              <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;content-type&quot;</span><span class="p">:</span><span class="s2">&quot;application/json&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;addresses&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;ADDRESS1&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS1&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;ADDRESS2&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS2&quot;</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;groups&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;group_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;addresses&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS1&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS2&quot;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;tests&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;test_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dest&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span><span class="s2">&quot;PT30S&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;schedules&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;schedule_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span><span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sliprand&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+        <span class="s2">&quot;slip&quot;</span><span class="p">:</span><span class="s2">&quot;PT4H&quot;</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;tasks&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;throughput_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;group_example&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;test_example&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span><span class="s2">&quot;schedule_example&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:[</span>
+            <span class="s2">&quot;esmond_example&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;opensearch_example&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span><span class="s2">&quot;Example Throughput Tests&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The critical piece is that you don’t define an <cite>esmond_url</cite> in the <cite>_meta</cite> section for the HTTP archiver definition used to write to OpenSearch. This will force MaDDash to use the native Esmond archiver since it will not have a compatible way to communicate with the OpenSearch host.</p>
+</section>
+<section id="scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch">
+<h3>Scenario 2: Having a MaDDash Read from Esmond and from OpenSearch<a class="headerlink" href="#scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch" title="Permalink to this heading">¶</a></h3>
+<p>If you would like to have a single MaDDash instance that reads from both archives, you can do so but will need a second pSConfig template file. There are multiple variations to achieve this, but if you already have a pSConfig template like in Scenaro 1, you can point measurement hosts at that file as well as your MaDDash instance to get the data from Esmond.</p>
+<p>You can now define a second pSConfig template that is a copy of the first, but has the following changes:</p>
+<ol class="arabic simple">
+<li><p>The task name and <cite>display-name</cite> is unique to distinguish from the other meshes. For example, add a ‘pS5’ prefix.</p></li>
+<li><p>Only define the HTTP archiver and make sure it has an <cite>esmond_url</cite> in the <cite>_meta</cite> section.</p></li>
+<li><p>DO NOT point measurement hosts at this pSConfig temple or you will get duplicate testing. Just point MaDDash at this second template file.</p></li>
+</ol>
+<p>An example that modifies the template from Scenario 1 is below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;archives&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;opensearch_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;schema&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;_url&quot;</span><span class="p">:</span><span class="s2">&quot;https://example.archive/logstash&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;op&quot;</span><span class="p">:</span><span class="s2">&quot;put&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_headers&quot;</span><span class="p">:{</span>
+              <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;content-type&quot;</span><span class="p">:</span><span class="s2">&quot;application/json&quot;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;esmond_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.archive/esmond/perfsonar/archive/&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;addresses&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;ADDRESS1&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS1&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;ADDRESS2&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS2&quot;</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;groups&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;group_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;addresses&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS1&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS2&quot;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;tests&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;test_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dest&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span><span class="s2">&quot;PT30S&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;schedules&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;schedule_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span><span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sliprand&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+        <span class="s2">&quot;slip&quot;</span><span class="p">:</span><span class="s2">&quot;PT4H&quot;</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;tasks&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;pS5_throughput_example&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;group_example&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;test_example&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span><span class="s2">&quot;schedule_example&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:[</span>
+            <span class="s2">&quot;opensearch_example&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;pS5 - Example Throughput Tests&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Run an additional <cite>psconfig remote add</cite> command or copy to <cite>/etc/perfsonar/psconfig/maddash.d</cite> on the MaDDash host to point at this mesh, and you should see results from both instances displayed.</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Deploying a Central Measurement Archive</a><ul>
+<li><a class="reference internal" href="#installing-the-measurement-archive-software">Installing the Measurement Archive Software</a></li>
+<li><a class="reference internal" href="#authenticating-measurement-hosts">Authenticating Measurement Hosts</a><ul>
+<li><a class="reference internal" href="#authenticating-by-username-and-password">Authenticating by Username and Password</a></li>
+<li><a class="reference internal" href="#authenticating-by-ip-address">Authenticating by IP Address</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-measurement-hosts">Configuring Measurement Hosts</a><ul>
+<li><a class="reference internal" href="#scenario-1-writing-to-a-local-archive">Scenario 1: Writing to a Local Archive</a></li>
+<li><a class="reference internal" href="#scenario-2-writing-to-a-remote-archive-with-username-and-password-authentication">Scenario 2: Writing to a Remote Archive with Username and Password Authentication</a></li>
+<li><a class="reference internal" href="#scenario-3-writing-to-a-remote-archive-with-ip-authentication">Scenario 3: Writing to a Remote Archive with IP Authentication</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#legacy-installation-writing-to-both-esmond-and-opensearch">Legacy Installation: Writing to both Esmond and OpenSearch</a><ul>
+<li><a class="reference internal" href="#scenario-1-maddash-reads-from-legacy-esmond">Scenario 1: MaDDash Reads from Legacy Esmond</a></li>
+<li><a class="reference internal" href="#scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch">Scenario 2: Having a MaDDash Read from Esmond and from OpenSearch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="psconfig_templates_advanced.html">Previous topic</a>
+                  <ul><li><a href="psconfig_templates_advanced.html" title="previous chapter">Advanced pSConfig Templates</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="legacy_archive_esmond.html">Next topic</a>
+                      <ul><li><a href="legacy_archive_esmond.html" title="next chapter">Viewing Legacy Esmond Data</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="legacy_archive_esmond.html" title="Viewing Legacy Esmond Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="psconfig_templates_advanced.html" title="Advanced pSConfig Templates"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Deploying a Central Measurement Archive</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

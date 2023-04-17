@@ -1,0 +1,487 @@
+**************************************************************
+Running the pSConfig pScheduler Agent
+**************************************************************
+
+.. _psconfig_pscheduler_agent-intro:
+
+Introduction
+===============
+
+.. _psconfig_pscheduler_agent-intro-role:
+
+pSConfig pScheduler Agent's Role
+---------------------------------
+The role of the *pSConfig pScheduler Agent* is to read :doc:`pSConfig templates <psconfig_intro>` and generate a set of :doc:`pScheduler <pscheduler_intro>` :term:`tasks <task>`. The diagram below describes this role:
+
+.. figure:: images/psconfig_pscheduler_agent-arch.png
+    :align: center
+    
+    *A diagram showing the psconfig-pscheduler-agent reading templates from a number of sources and submitting tasks to pScheduler servers.*
+    
+Performing this role is a multi-step process that includes the following:
+
+#. Read the configured templates and optionally apply local modifications
+#. Determine the pScheduler tasks to schedule
+#. Communicate with the appropriate pScheduler servers to ensure the tasks are created
+
+These steps are completed anytime one of the following events occur:
+
+* The agent starts
+* Within a configurable amount of time of a change to a *local* configuration file (changes to remote files are not detected). By default the value is *1 minute*.
+* If no changes, on a configurable interval after the start of the last run. By default these steps are run every *1 hour*. 
+
+.. note:: See :ref:`psconfig_pscheduler_agent-advanced` for more detail on the configuration options mentioned above. 
+
+The remainder of this section describes each of these steps in greater detail.
+
+.. _psconfig_pscheduler_agent-intro-read:
+
+Reading and Modifying Templates
+----------------------------------
+The agents first job is to read a set of :doc:`templates <psconfig_templates_intro>`. The templates to read are configured by the administrator of the agent. For information on how to configure templates see :ref:`psconfig_pscheduler_agent-templates`.
+
+After reading a template, an agent is also capable of performing local modifications to that template. The types of modifications supported include:
+
+* Inclusion of default archives for all tasks. See :ref:`psconfig_pscheduler_agent-modify-archives` for more detail.
+* Direct transformations to the template JSON. See :ref:`psconfig_pscheduler_agent-modify-transform_one` and :ref:`psconfig_pscheduler_agent-modify-transform_all` for more detail.
+
+.. _psconfig_pscheduler_agent-intro-determine:
+
+Determining the pScheduler Tasks to Create
+-------------------------------------------
+An individual agent is not necessarily responsible for creating and managing all the tasks described by a template. Instead, an agent looks at the :ref:`address objects <psconfig_templates_intro-concepts-addresses>` associated with individual tasks and only concerns itself with those it is configured to manage. It determines these addresses as follows:
+
+*  By default, the agent detects the addresses on the local interfaces of the host which it runs. 
+*  The default behavior can be overriden by setting the ``addresses`` option in the default configuration file. See :ref:`psconfig_pscheduler_agent-advanced` for more detail.
+
+Once it has the list of addresses for which it is responsible, it is not just a matter of seeing if one of the addresses is in the generated address list for a task. Instead, it must also analyze if the address it matches is also the one designated to schedule the task. This designation is dependent on the task configuration. A full discussion of this stage of the decision process can be found in :ref:`psconfig_templates_advanced-tasks-scheduled_by`.
+
+.. _psconfig_pscheduler_agent-intro-communicate:
+
+Communicating with pScheduler
+-------------------------------
+Once the set of tasks that needs to be managed is determined, the agent must then decide which pScheduler servers to contact to make sure they are created. It does this by contacting a pScheduler :term:`assist server` that will identify a :term:`lead participant`. The assist server is a pScheduler server running on the local host of the agent by default, but this :ref:`can be overridden <psconfig_pscheduler_agent-advanced>`. How the lead is determined is test plug-in dependent which is why the agent needs a pScheduler assist server to make the decision. 
+
+Once it has the lead, the pSConfig agent will contact that server to see if the task already exists and will create it if not. Tasks are created with an end time that is the later of the following:
+
+* A configurable fixed amount of time after the task is created. By default this is *24 hours*.
+* The length of time required to complete a configurable number of runs. By default the value is *2*.
+
+.. note:: See :ref:`psconfig_pscheduler_agent-advanced` for more detail on the configuration options listed above. 
+
+The task will be recreated after its expiration if it is still in the template. If at any point a task is removed, then the task will be canceled the next time the agent runs.
+
+.. note:: The new task is actually put on the schedule several hours before it is set to expire, but with a start time that matches the end time of the old task. This should minimize any downtime between the transition but also prevent test collisions. 
+
+When finished communicating with all the required pScheduler servers, the agent will remain idle until its next run. 
+
+.. _psconfig_pscheduler_agent-install:
+
+Installation
+=============
+
+.. _psconfig_pscheduler_agent-standalone:
+
+Installing the Standalone Package
+-----------------------------------
+The pSConfig pScheduler agent is installed with the package ``perfsonar-psconfig-pscheduler``. You can run the following commands to install it:
+
+    *CentOS*::
+    
+        yum install perfsonar-psconfig-pscheduler
+
+    *Debian/Ubuntu*::
+    
+        apt-get install perfsonar-psconfig-pscheduler
+
+.. _psconfig_pscheduler_agent-bundle:
+
+Installing as Part of a Bundle
+-------------------------------
+The ``perfsonar-psconfig-pscheduler`` is included in the following :doc:`perfSONAR bundles <install_options>`:
+
+* *perfsonar-testpoint*
+* *perfsonar-core*
+* *perfsonar-toolkit*
+
+.. _psconfig_pscheduler_agent-run:
+
+Running ``psconfig-pscheduler-agent``
+======================================
+
+.. _psconfig_pscheduler_agent-run-start:
+
+Starting ``psconfig-pscheduler-agent``
+--------------------------------------
+::
+
+    systemctl start psconfig-pscheduler-agent
+
+
+.. _psconfig_pscheduler_agent-run-stop:
+
+Stopping ``psconfig-pscheduler-agent``
+--------------------------------------
+::
+
+    systemctl stop psconfig-pscheduler-agent
+
+
+.. _psconfig_pscheduler_agent-run-restart:
+
+Restarting ``psconfig-pscheduler-agent``
+--------------------------------------------
+::
+
+    systemctl restart psconfig-pscheduler-agent
+    
+.. _psconfig_pscheduler_agent-run-status:
+
+Checking the status of ``psconfig-pscheduler-agent``
+-----------------------------------------------------
+::
+
+    systemctl status psconfig-pscheduler-agent
+
+.. _psconfig_pscheduler_agent-templates:
+
+Configuring Templates
+======================
+
+.. _psconfig_pscheduler_agent-templates-basics:
+
+Configuration Basics
+-----------------------------
+In order for the agent to create tasks, it must first be configured to read one or more templates. There are multiple ways to add a template depending on its location relative to the host system of the agent. These include:
+
+#. Configuring *remote* templates  by supplying a URL and desired options to the agent. This is most commonly done using the ``psconfig remote`` command. See :ref:`psconfig_pscheduler_agent-templates-remote` for details.
+#. Configuring *local* templates that live on the agent's filesystem either using the ``psconfig remote`` command or by copying the template files to a dedicated directory whose contents are automatically read by the agent. See :ref:`psconfig_pscheduler_agent-templates-local` for details.
+
+
+.. _psconfig_pscheduler_agent-templates-remote:
+
+Remote Templates
+-----------------------------
+The primary way to add, list, and delete the remote templates read by the agent is with the ``psconfig remote`` command. 
+
+.. note:: The ``psconfig remote`` command simply edits the ``/etc/perfsonar/psconfig/pscheduler-agent.json`` file. For most users it is recommended to use the ``psconfig remote`` command as opposed to editing the file directly as it is less prone to syntax errors. 
+
+As an example let's say we have a pSConfig template at the URL ``https://10.0.0.1/example.json``. The agent can be configured to read the template by running the following command **as a root user**::
+
+    psconfig remote add "https://10.0.0.1/example.json"
+
+The above command will add the new template to the agent. The agent should begin reading the template within 60 seconds of the change if using default settings (i.e. no agent restart required). 
+
+You may also provide the command with additional processing instructions. For example, the default behavior of the agent is to ignore the archive definitions of the remote template. This is to ensure the local administrator has a chance to "opt-in" to where the results are sent. To use the archives defined in the remote template we can provide the ``--configure-archives`` option as shown below::
+
+     psconfig remote add --configure-archives "https://10.0.0.1/example.json"
+
+Note that the ``psconfig remote`` command ensures a given URL is only used once by the agent. If we already had ``https://10.0.0.1/example.json`` in our file and then ran the command above, the previous definition would be replaced with one that had the ``configure-archives`` option set. To see the full set of options available run the following::
+
+    psconfig remote --help
+
+In addition to adding remote templates, you may also view them. The following command lists the remote templates in use by the agent::
+
+    psconfig remote list
+    
+The above command returns a list of JSON objects containing the template URL and any options set.
+
+Finally, to remove our example remote template we can run the ``psconfig remote delete`` command **as a root user** as shown below::
+
+    psconfig remote delete "https://10.0.0.1/example.json"
+    
+The command accepts only a URL and will remove the agent's pointer to that template. Within 60 seconds of executing that command, the agent will run and begin canceling any tasks from the removed template that it was responsible for creating. 
+
+.. note:: The ``psconfig remote`` command is also the command used by the :doc:`MaDDash agent <psconfig_maddash_agent>` to manage remote templates. If you have both agents installed on the same system, then any ``psconfig remote`` command will affect both agents by default. If you'd only like a command to apply to the pScheduler agent then add the ``--agent pscheduler`` option. Run ``psconfig remote --help`` for full details. 
+
+.. _psconfig_pscheduler_agent-templates-local:
+
+Local Templates
+--------------------------
+The agent can read templates from the local filesystem. One way to do this is by giving the ``psconfig remote`` command either a URL beginning with ``file://`` or an absolute path to the file on the filesystem. An example command is below where ``/path/to/template.json`` is the example path to the template file::
+    
+      psconfig remote add /path/to/template.json
+
+Everything about the command works the same with a file path as it would with a http/https URL. See :ref:`psconfig_pscheduler_agent-templates-remote` for more details on this command.
+
+A second way you can add a local template is to copy it into the *template include directory*. By default this is located at ``/etc/perfsonar/psconfig/pscheduler.d/``. For example::
+
+    cp /path/to/template.json /etc/perfsonar/psconfig/pscheduler.d/template.json
+    
+    
+Any file ending with ``.json`` in this directory will get read by the agent automatically. Some important notes about including files in this manner:
+
+* Adding a new file, removing a file or updating a file within the template include directory will get detected automatically by the agent within 60 seconds of the change (i.e. no need to restart the agent). 
+* Files are read every 60 minutes regardless of changes when the agent checks on the state of the tasks it has created in pScheduler.
+* Any ``archives`` defined for the tasks will be configured. This is equivalent to the behavior of running ``psconfig remote add`` with the ``-configure-archives`` option. If you do not want to use archives from the template, then remove them from the template file. 
+* The agent will follow symlinks if you use those instead of copying the file directly, though it may affect the agent's ability to detect changes (i.e. you may have to wait up to 60 minutes for the agent to see the changes).
+* The agent ignores any files that do not end in ``.json``
+
+.. _psconfig_pscheduler_agent-modify:
+
+Modifying Templates
+=======================
+
+.. _psconfig_pscheduler_agent-modify-archives:
+
+Configuring Default Archives
+-----------------------------
+The agent can modify all tasks it manages to include additional archives not defined in the templates themselves. This can be done by copying archive definition files to the *archive include directory*. The default location of the *archive include directory* is ``/etc/perfsonar/psconfig/archives.d/``.
+
+Archive definition files are JSON files that contain exactly one :ref:`pScheduler archive definition <pscheduler_ref_archivers-archivers>`. For example, let's say the file ``/path/to/archive-syslog.json`` contains the following::
+
+    {
+        "archiver": "syslog",
+        "data": {
+            "facility": "local6",
+            "priority": "info"
+        }
+    }
+
+We can copy this file to ``/etc/perfsonar/psconfig/archives.d/`` as follows::
+
+    cp /path/to/archive-syslog.json /etc/perfsonar/psconfig/archives.d/archive-syslog.json
+    
+Once copied, the agent will detect the change within 60 seconds. It will then recreate all the tasks it manages to include the archive defined above. You may include as many archive files in this directory as needed and all of them will be included with every task. A few other important notes:
+
+* Adding a new file, removing a file or updating a file within the archive include directory will get detected automatically by the agent within 60 seconds of the change (i.e. no need to restart the agent). 
+* Files are read every 60 minutes regardless of changes when the agent checks on the state of the tasks it's created in pScheduler.
+* The agent will follow symlinks if you use those instead of copying the file directly, though it may affect the agent's ability to detect changes (i.e. you may have to wait up to 60 minutes for the agent to see the changes).
+* The agent ignores any files that do not end in ``.json``.
+
+.. _psconfig_pscheduler_agent-modify-transform_all:
+
+Transforming All Remote Templates
+-----------------------------------
+The agent can make custom local modifications to templates it reads using *transform scripts*. Transform scripts take the form of `jq <https://stedolan.github.io/jq/>`_ and give complete freedom to manipulate the JSON. This can be especially useful with remote templates where the agent administrator may not have the ability to make changes. Some changes you may consider making with transform scripts include (but are not limited to):
+
+* Updating authentication tokens needed by an *archive* object that cannot be safely published in a publicly available template
+* Updating parameters related to ports in a *test* object's ``spec`` property if your local site has specific firewall restriction not applicable to other hosts running agents
+* Adding additional ``reference`` information to a template *task* object so the generated pScheduler tasks contain extra metadata specific to the agent's host
+
+All components of the template JSON can be revised which creates countless possibilities. For transform scripts that you want to apply to ALL templates read by the agent, including both those added with ``psconfig remote`` and those added from the template include directory, you can add a file to the *transforms include directory*. This directory is located at  ``/etc/perfsonar/psconfig/transforms.d`` by default. The script takes the following form::
+
+    {
+        "script": ...
+    }
+    
+The ``...`` can either be a jq statement as a string or it can be an array of strings used for readability. The example below uses the array form to define a script that sets the ``_Authorization`` field to ``Basic eXamPleTokEn`` of an archiver named ``example-archive-central``::
+
+    {
+        "script": [
+            "if .archives.\"example-archive-central\" then",
+            "    .archives.\"example-archive-central\".data.\"_headers\".Authorization |= \"Basic eXamPleTokEn\"",
+            "else",
+            "    .",
+            "end"
+        ]
+    }
+
+If we say the script above lives in ``/path/to/logstash-auth.json`` we can add it to the agent as follows::
+
+    cp /path/to/logstash-auth.json /etc/perfsonar/psconfig/transforms.d/logstash-auth.json
+
+Once copied, the agent will detect the change within 60 seconds. It will then re-read all the templates, apply the script to each, and recreate any tasks that were altered by the transformation. A few other important notes:
+
+* Adding a new file, removing a file or updating a file within the transforms include directory will get detected automatically by the agent within 60 seconds of the change (i.e. no need to restart the agent). 
+* Files are read every 60 minutes regardless of changes when the agent checks on the state of the tasks it's created in pScheduler.
+* The agent will follow symlinks if you use those instead of copying the file directly, though it may affect the agent's ability to detect changes (i.e. you may have to wait up to 60 minutes for the agent to see the changes).
+* The agent ignores any files that do not end in ``.json``.
+
+
+.. _psconfig_pscheduler_agent-modify-transform_one:
+
+Transforming Individual Remote Templates
+------------------------------------------
+It is possible to make custom local modification to *individual* templates added with ``psconfig remote`` using the ``--transform`` option. This is useful if you do not want a script affecting everything read by an agent.
+
+.. note:: Templates added using the template include directory cannot be transformed individually. An agent administrator can apply default transformations to them as detailed in :ref:`psconfig_pscheduler_agent-modify-transform_all` or make the change manually since the administrator presumably has access to the local template.
+
+The ``--transform`` option accepts either a `jq <https://stedolan.github.io/jq/>`_ script as a string or from a file. For the later approach, if the option starts with ``@`` it will read the file specified by the path after the ``@``. The example below shows the form where the script is provided as a string::
+
+    psconfig remote add --transform "if .archives.\"example-archive-central\" then .archives.\"example-archive-central\".data.\"_auth-token\" |= \"ABC123\" else . end" "https://10.0.0.1/example.json"
+
+Alternatively, if we assume our script lives in a file at ``/path/to/logstash-auth.json`` with the format described in :ref:`psconfig_pscheduler_agent-modify-transform_all`, we can run::
+
+    psconfig remote add --transform @/path/to/logstash-auth.json "https://10.0.0.1/example.json"
+
+In both cases you can run ``psconfig remote list`` to verify the transform is in the remote definition. 
+
+.. _psconfig_pscheduler_agent-troubleshoot:
+
+Troubleshooting
+===================
+
+.. _psconfig_pscheduler_agent-troubleshoot-stats:
+
+Looking at the last run with ``psconfig pscheduler-stats``
+-----------------------------------------------------------
+One of the first steps to perform when debugging the pSConfig pScheduler agent is to get information about the last time the agent ran. A run in this context describes an instance when pSConfig downloaded all the templates it is configured to use, made any local modifications and determined which tasks that need to be created and/or removed from the pScheduler servers with which it interacts. As described in :ref:`psconfig_pscheduler_agent-intro-role`, a run can be triggered by the passing of a set time interval (60 minutes by default) or a configuration file change.
+
+Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the ``psconfig pscheduler-stats`` command. The command does not require any options and is shown below::
+    
+     psconfig pscheduler-stats
+
+Below is an example of the successful output::
+
+    Agent Last Run Start Time: 2018/04/24 19:29:54
+    Agent Last Run End Time: 2018/04/24 19:30:04
+    Agent Last Run Process ID (PID): 6026
+    Agent Last Run Log GUID: DD85D234-47F5-11E8-B2F1-3613118410B6
+    Total tasks managed by agent: 8
+    From include files: 5
+        /etc/perfsonar/psconfig/pscheduler.d/template.json: 5
+    From remote definitions: 3
+        https://10.0.0.1/example.json: 3
+
+The output fields can be described as follows:
+
+* **Agent Last Run Start Time** is the time when the agent began its last complete run.
+* **Agent Last Run End Time** is the time when the last complete run ended.
+* **Agent Last Run Process ID (PID)** is the process ID of the agent at the time of its last complete run. This should only change if the agent is restarted.
+* **Agent Last Run Log GUID** is a globally unique ID used to identify a run in the logs. You can grep the :ref:`log files <psconfig_pscheduler_agent-troubleshoot-logs>` with this ID to get the information about a specific run. 
+* **Total tasks managed by agent** is the number of tasks the agent is responsible for managing. This is not necessarily the total number that were created the last run, but it is the number of tasks it is monitoring and managing across all pScheduler servers.
+* **From include files** is a count of the number of tasks that come from templates in the template include directory. Directly underneath that is a breakdown of the task count by the file from which they originate.
+* **From remote definitions** is a count of the number of tasks that come from URLs added using the ``psconfig remote`` command. Underneath is a breakdown of the task count by URL. 
+
+This command is useful as a quick health check of the agent. It can answer questions like:
+
+* When did my agent last run?
+* What templates is it using?
+* Is it managing the tasks I expect it to manage?
+
+Also, if it throws an error that can be useful information too. In particular the output below is a good sign that your agent has never ran since it has not created the necessary log file::
+
+    Unable to open /var/log/perfsonar/psconfig-pscheduler-agent.log: No such file or directory
+    
+This script may not give all the answers, but will hopefully get things started when debugging unexpected behavior of the agent.
+
+.. _psconfig_pscheduler_agent-troubleshoot-tasks:
+
+Viewing Managed pScheduler Tasks with ``psconfig pscheduler-tasks``
+--------------------------------------------------------------------
+The ``psconfig pscheduler-tasks`` command provides a JSON list of pScheduler tasks managed by the pSConfig pScheduler agent. It parses the file ``/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log`` for all the tasks found in the last run. It does not require any options and can be run as follows::
+    
+    psconfig pscheduler-tasks
+    
+Example output of an agent managing three tasks is shown below::
+
+    {
+       "tasks" : [
+          {
+             "archives" : [],
+             "test" : {
+                "spec" : {
+                   "source" : "10.0.0.10",
+                   "dest" : "10.0.0.11",
+                   "duration" : "PT30S",
+                   "schema" : 1
+                },
+                "type" : "throughput"
+             },
+             "reference" : {
+                "psconfig" : {
+                   "created-by" : {
+                      "user-agent" : "psconfig-pscheduler-agent",
+                      "uuid" : "E0E9389A-1748-11E8-A7FE-65A6AE5B70B2"
+                   }
+                }
+             },
+             "schema" : 1,
+             "schedule" : {
+                "until" : "2018-04-25T19:29:54Z",
+                "sliprand" : true,
+                "repeat" : "PT4H",
+                "slip" : "PT4H"
+             }
+          },
+          {
+             "archives" : [],
+             "test" : {
+                "spec" : {
+                   "source" : "10.0.0.10",
+                   "dest" : "10.0.0.11",
+                   "schema" : 1
+                },
+                "type" : "trace"
+             },
+             "reference" : {
+                "psconfig" : {
+                   "created-by" : {
+                      "user-agent" : "psconfig-pscheduler-agent",
+                      "uuid" : "E0E9389A-1748-11E8-A7FE-65A6AE5B70B2"
+                   }
+                }
+             },
+             "schema" : 1,
+             "schedule" : {
+                "sliprand" : true,
+                "repeat" : "PT10M",
+                "slip" : "PT10M"
+             }
+          },
+          {
+             "archives" : [],
+             "test" : {
+                "spec" : {
+                   "source" : "10.0.0.10",
+                   "dest" : "10.0.0.11",
+                   "schema" : 1
+                },
+                "type" : "latencybg"
+             },
+             "reference" : {
+                "psconfig" : {
+                   "created-by" : {
+                      "user-agent" : "psconfig-pscheduler-agent",
+                      "uuid" : "E0E9389A-1748-11E8-A7FE-65A6AE5B70B2"
+                   }
+                }
+             },
+             "schema" : 1,
+             "schedule" : {}
+          }
+        ]
+    }
+
+This list includes all the tasks it manages, not necessarily the list created by the last run. It also does not guarantee that they were successfully scheduled in pScheduler. What it does provide though is the agent's perspective on the tasks that it tries to create and maintain. Matching this list to what is actually in pScheduler is often crucial to debugging and this command provides a view into the agent's side of that information. 
+
+
+
+.. _psconfig_pscheduler_agent-troubleshoot-logs:
+
+Reading the Logs
+-----------------
+If you need to debug beyond what the utilities above provide from the logs, then you can manually look at the log files.There are three important logs used by the agent:
+
+    * The **agent log** lives at ``/var/log/perfsonar/psconfig-pscheduler-agent.log`` and tracks basic information about agent activity and any errors encountered. This is often the first log to review when debugging as it is not as verbose as the others and provides a quick summary of the agent's actions.
+    * The **task log** lives at ``/var/log/perfsonar/psconfig-pscheduler-agent-tasks.log`` and tracks the pScheduler tasks the agent manages. This is where the ``psconfig pscheduler-tasks`` :ref:`command <psconfig_pscheduler_agent-troubleshoot-tasks>` gets the information it displays. This log is useful if you need to look at how pSConfig is defining tasks it gives (or tries to give) to pScheduler. 
+    * The **transaction log** lives at ``/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log`` and logs each individual interaction with pScheduler. Every request to list, create and delete tasks is shown in this log. Each line provides context such as the action being performed, the pScheduler server URL and the raw JSON sent/received from the server. This log is intended to be verbose and useful when intricate debugging is needed.
+
+All of the logs are designed to by highly parsable with fields in the form of ``key=value`` separated by whitespace. Every line has a ``guid=`` field with an ID unique to the run of an agent. This ID is consistent between log files and is incredibly useful for linking events seen in separate logs. 
+
+As an example, the GUID can be used for filtering log lines across files with ``grep`` or similar tools.  It is often easiest to run the ``psconfig pscheduler-stats`` :ref:`command <psconfig_pscheduler_agent-troubleshoot-stats>` to get the GUID of the last run as a launching point to parse the logs. For example, looking at the example output from :ref:`psconfig_pscheduler_agent-troubleshoot-stats`, the run had a GUID of ``DD85D234-47F5-11E8-B2F1-3613118410B6``. Knowing this GUID, all the log messages associated with that run can be queried using a command like the following::
+
+    grep "guid=DD85D234-47F5-11E8-B2F1-3613118410B6" /var/log/perfsonar/psconfig-pscheduler-*.log
+
+You can further filter that output if needed, and hopefully eventually find the information needed to solve any issues encountered.
+
+
+.. _psconfig_pscheduler_agent-advanced:
+
+Advanced Configuration
+========================
+The primary configuration file for the agent lives in ``/etc/perfsonar/psconfig/pscheduler-agent.json``. It provides a number of options for fine-tuning your agent such as how often to download remote templates, the address of the pScheduler assist server, and more. The best way to edit the file is with the ``psconfig agentctl`` command. You can get a full list of options supported by the agent with the following::
+
+    psconfig agentctl pscheduler ?
+    
+For full details on how to use the `psconfig agentctl` command to display, set, and unset properties run::
+
+    psconfig agentctl --help
+    
+.. _psconfig_pscheduler_agent-reading:
+
+Further Reading
+=========================
+* For a full listing of pSConfig pScheduler Agent related files see the reference :ref:`here <config_files-psconfig>`
+
