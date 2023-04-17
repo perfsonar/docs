@@ -53,7 +53,6 @@ The ``psconfig publish`` command accepts a parameter with the location of a pSCo
 
 The command performs the following actions:
 
-#. If required, automatically detects and translates the given file from legacy MeshConfig format to the new pSConfig format. See :doc:`psconfig_meshconfig_migrate` for details on what this means. 
 #. Validates the input file syntax against the pSConfig template schema. You may skip this step by providing the ``--skip-validate`` option.
 #. Adds a ``psconfig-publisher`` field to the template ``_meta`` object indicating this file was published by the CLI and he time at which this command ran. You may skip this step by providing the ``--skip-meta`` option.
 #. Saves the file to */usr/lib/perfsonar/web-psconfig* with the same name as the provided file. The output of the file will remove extraneous whitespace in an attempt to be more compact for downloading agents. If you would like the file in a more human-readable format you can specify the ``--pretty`` option.

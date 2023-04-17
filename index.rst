@@ -33,14 +33,11 @@ Installation
    
    install_getting
    install_quick_start
-   install_centos_netinstall
-   install_centos_fullinstall
    install_config_first_time
    install_centos
    install_debian
    install_docker
    install_ansible
-   install_migrate_centos7
    manage_update
 
 .. _index-toolkit:
@@ -61,9 +58,10 @@ perfSONAR Toolkit
    manage_dual_xface
    manage_security
    manage_limits
+   manage_daemons
    using_graphs
    using_ext_tools
-
+   grafana_cookbook
 
 .. _index-pscheduler:
 
@@ -98,19 +96,16 @@ Managing Multiple Hosts with pSConfig
    pwa
    psconfig_templates_vars
    psconfig_templates_advanced
-   psconfig_meshconfig_migrate
    
 .. _index-multiple:
 
-Archiving Measurements with esmond
-----------------------------------
+Archiving Measurements with OpenSearch
+---------------------------------------
 .. toctree::
    :maxdepth: 1
    
    multi_ma_install
-   multi_ma_clustering
-   multi_ma_backups
-   esmond_api_rest
+   legacy_archive_esmond
    
 Displaying Measurements with MaDDash
 -------------------------------------
@@ -160,6 +155,7 @@ Accessing Raw Data
    
    client_tools
    client_apis
+   esmond_api_rest
 
 .. _index-previous_releases:
 

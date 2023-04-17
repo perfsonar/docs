@@ -78,7 +78,7 @@ Any pScheduler task can be configured to run repeatedly by adding options to the
 
     * ``--start TIMESTAMP`` - Run the first iteration of the task at _timestamp_.
     * ``--repeat DURATION`` - Repeat runs at intervals of ``DURATION``.
-    * ``--repeat-cron CRONSPEC`` - Repeat runs cron(8)-style according to ``CRONSPEC``.  ``CRONSPEC`` is a `POSIX-standard cron entry specification <https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html>`_  without a shell command attached (e.g., ``0,20,40 * * * 1-5`).
+    * ``--repeat-cron CRONSPEC`` - Repeat runs cron(8)-style according to ``CRONSPEC``.  ``CRONSPEC`` is a `POSIX-standard cron entry specification <https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html>`_  without a shell command attached (e.g., ``0,20,40 * * * 1-5``).
     * ``--max-runs N`` - Allow the task to run up to ``N`` times.
     * ``--until TIMESTAMP`` - Repeat runs of the task until ``TIMESTAMP``.
     * ``--slip DURATION`` - Allow the start of each run to be as much as ``DURATION`` later than their ideal scheduled time.  If the environment variable *PSCHEDULER_SLIP* is present, its value will be used as a default, and.  Failing that, the default will be ``PT5M``.  (Note that the slip value also applies to non-repeating tasks.)
@@ -111,15 +111,23 @@ You can tell the ``pscheduler`` command to send results to an :term:`archiver` u
     #. A filename starting with the @ symbol that points at a file containing a JSON archiver specification.
     #. A string literal of the JSON archiver specification
 
-For example, the *perfsonar-core* and *perfsonar-toolkit* bundles install a special file at */usr/share/pscheduler/psc-archiver-esmond.json* with an archiver specification for writing to the locally running esmond instance. You could then use that file to publish a *trace* test (or any other test) to the local MA instance with the following command::
+For example, the *perfsonar-core* and *perfsonar-toolkit* bundles install a special script you can use to generate a local archive definition: ``/usr/lib/perfsonar/archive/perfsonar-scripts/psconfig_archive.sh -n localhost > local_archive.json``. You could then use that file to publish a *trace* test (or any other test) to the local archive instance with the following command::
 
-    pscheduler task --archive @/usr/share/pscheduler/psc-archiver-esmond.json trace --dest www.perfsonar.net
+    pscheduler task --archive @local_archive.json trace --dest www.perfsonar.net
     
-Alternatively, you could use a JSON string to accomplish the same as follows (replacing ``abc123`` with the API key used for your esmond instance) ::
+Alternatively, you could use a JSON string to accomplish the same as follows (replacing ``eXamPleTokEn`` with the auth used for your logstash instance) ::
 
-    pscheduler task --archive '{"archiver": "esmond","data":{"url":"http://localhost/esmond/perfsonar/archive/","_auth-token": "abc123"}}' trace --dest www.perfsonar.net
+    pscheduler task --archive '{"archiver": "http","data":{ "_url":"http://localhost/logstash", "verify-ssl": false, "op": "put", "_headers": { "x-ps-observer": "{% scheduled_by_address %}", "content-type": "application/json", "Authorization":"Basic eXamPleTokEn" }}}' trace --dest www.perfsonar.net
  
 For more information on different archivers and their specifications, see :doc:`pscheduler_ref_archivers`.
+
+If a task has archives specified, the `--keep-after-archive` parameter
+may be added to force runs to be removed from the system after the
+specified amount of time to save space.  For example::
+
+    pscheduler task --archive '...' --keep-after-archive PT30S trace --dest www.perfsonar.net
+    
+
  
 .. _pscheduler_client_tasks-exporting:
 
@@ -130,7 +138,19 @@ The JSON version of a task specification can be sent to the standard output with
 
     pscheduler task --export throughput --dest wherever --udp --ip-version 6 > mytask.json
 
+
+Exporting tasks for the Batch Processor
+---------------------------------------
+
+A minimal batch specification can be sent to the standard output
+without scheduling using the ``--export`` and ``--export-format
+batch`` switches::
+
+    pscheduler task --export --export-format batch rtt --dest wherever > mybatch.json
+
 **NOTE:**  Tasks are not validated until submitted for scheduling, so it is possible to export invalid tasks.
+
+
 
 .. _pscheduler_client_tasks-importing:
 

@@ -265,21 +265,21 @@ All components of the template JSON can be revised which creates countless possi
         "script": ...
     }
     
-The ``...`` can either be a jq statement as a string or it can be an array of strings used for readability. The example below uses the array form to define a script that sets the ``_auth-token`` field to ``ABC123`` of an archiver named ``example-archive-central``::
+The ``...`` can either be a jq statement as a string or it can be an array of strings used for readability. The example below uses the array form to define a script that sets the ``_Authorization`` field to ``Basic eXamPleTokEn`` of an archiver named ``example-archive-central``::
 
     {
         "script": [
             "if .archives.\"example-archive-central\" then",
-            "    .archives.\"example-archive-central\".data.\"_auth-token\" |= \"ABC123\"",
+            "    .archives.\"example-archive-central\".data.\"_headers\".Authorization |= \"Basic eXamPleTokEn\"",
             "else",
             "    .",
             "end"
         ]
     }
 
-If we say the script above lives in ``/path/to/esmond-auth.json`` we can add it to the agent as follows::
+If we say the script above lives in ``/path/to/logstash-auth.json`` we can add it to the agent as follows::
 
-    cp /path/to/esmond-auth.json /etc/perfsonar/psconfig/transforms.d/esmond-auth.json
+    cp /path/to/logstash-auth.json /etc/perfsonar/psconfig/transforms.d/logstash-auth.json
 
 Once copied, the agent will detect the change within 60 seconds. It will then re-read all the templates, apply the script to each, and recreate any tasks that were altered by the transformation. A few other important notes:
 
@@ -301,9 +301,9 @@ The ``--transform`` option accepts either a `jq <https://stedolan.github.io/jq/>
 
     psconfig remote add --transform "if .archives.\"example-archive-central\" then .archives.\"example-archive-central\".data.\"_auth-token\" |= \"ABC123\" else . end" "https://10.0.0.1/example.json"
 
-Alternatively, if we assume our script lives in a file at ``/path/to/esmond-auth.json`` with the format described in :ref:`psconfig_pscheduler_agent-modify-transform_all`, we can run::
+Alternatively, if we assume our script lives in a file at ``/path/to/logstash-auth.json`` with the format described in :ref:`psconfig_pscheduler_agent-modify-transform_all`, we can run::
 
-    psconfig remote add --transform @/path/to/esmond-auth.json "https://10.0.0.1/example.json"
+    psconfig remote add --transform @/path/to/logstash-auth.json "https://10.0.0.1/example.json"
 
 In both cases you can run ``psconfig remote list`` to verify the transform is in the remote definition. 
 

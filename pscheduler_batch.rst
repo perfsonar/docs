@@ -2,8 +2,6 @@
 Batch Processing
 ****************
 
-**NOTE:**  In release 4.3.0, this is a beta feature.
-
 pScheduler can be used to run a series of tasks, called a *batch*,
 from the command line and return the results for further processing by
 other programs.
@@ -23,13 +21,6 @@ The batch processor is started using a ``pscheduler`` command::
 
     pscheduler batch [ OPTIONS ] [ INPUT-FILE ]
 
-
-**NOTE:** The batch processor has a safety mechanism to prevent
- accidental use in production until it is no longer a beta feature.
- To invoke it in this version, set the environment variable ``BETA``
- to any value, e.g.::
-
-    BETA=1 pscheduler batch [ OPTIONS ] [ INPUT-FILE ]
 
 The ``OPTIONS`` control the batch processor's behavior and can be listed
 using the ``--help`` option.
@@ -51,7 +42,12 @@ Input
 -----
 
 Input to the batch processor is JSON in the form of a single object
-containing two pairs, ``global`` and ``jobs``.
+containing three pairs, ``global``, ``jobs`` and, optionally, a
+``schema``.
+
+The ``schema`` describes which version of the batch specification is
+in use.  If none is provided, it defaults to ``1``.  Specific
+instances where other values are required are described below.
 
 
 .. _pscheduler_batch_input_global:
@@ -96,7 +92,12 @@ debugging output.
 ``enabled`` (Boolean) - Determines whether or not the job is run.
 Defaults to ``true``.
 
-``iterations`` (Number) - The number of times to run the specified task.
+``iterations`` (Number or JQ Transform) - The number of times to run
+the specified task.  If a JQ transform is provided, the script should
+calculate and return the number of iterations as an integer and the
+``schema`` should be set to at least ``3``.  Input to the transform is
+``null``; any external data required should be accessed via
+``$global``.
 
 ``parallel`` (Boolean) - Whether or not the job's iterations should be
 run in parallel.  This defaults to ``false`` and implies ``sync-start``
@@ -121,10 +122,15 @@ restrictions on being run at the same time will not necessarily start
 in sync (or at all if no ``slip`` is allowed as part of the task's
 ``schedule`` section.
 
-``task`` (Object) - A pScheduler task specification as would be
-produced using the ``task`` command's ``--export`` switch.  Note that
-if the specification contains a ``schedule``, those parameters will be
-ignored.
+``task`` (Object or Array of Objects) - A pScheduler task
+specification as would be produced using the ``task`` command's
+``--export`` switch.  Note that if the specification contains a
+``schedule``, those parameters will be ignored.  If the value is an
+array, the contents of the array will be treated as a set of tasks and
+the number of iterations will be set to its length.  This overrides
+the contents of ``iterations``.  Also note that a minimal batch
+containing a single task can be exported using the ``--export`` and
+``--export-format batch`` switches.
 
 ``task-transform`` - A jq transform that operates on the ``task``'s
 value for each iteration to make iteration-specific changes.  The
@@ -158,6 +164,43 @@ calculated based on the iteration::
         }
     }
 
+``continue-if`` - A jq transform that determines, based on the results
+of a job, whether the batch processor should continue to the next job
+or abort the batch.  The input given to the transform is the same as
+the value of the ``results`` pair in the output as described below.
+For example::
+
+    [
+      {
+        "task": { ... },
+        "runs": [
+          {
+            "application/json": {
+              "schema": 1,
+              "duration": "PT2S",
+              "succeeded": true
+            },
+            "text/plain": " ... ",
+            "text/html": " ... "
+          }
+        ]
+      }
+    ]
+
+The transform should return ```true`` for the batch to continue with
+the next job or ``false`` to abort the batch without processing any
+subsequent jobs.  Any other value is treated as an error and
+the batch will be aborted with no results.
+
+A ``continue-if`` that decides whether to continue based on the
+success or failure of the first run in a job would look like this::
+
+    {
+        "task": { ... },
+        "continue-if": {
+            "script": ".[0].runs[0].\"application/json\".succeeded"
+        }
+     }
 
 
 .. _pscheduler_batch_output:
@@ -182,6 +225,8 @@ but for tasks that return multiple results (e.g., ``latencybg``),
 there will be more than one.  Each result is a JSON object containing
 pairs named ``application/json``, ``text/plain`` and ``text/html`` for
 each of the formats in which pScheduler can produce a result.
+
+The ``batch`` pair includes diagnostic information about the batch.
 
 
 

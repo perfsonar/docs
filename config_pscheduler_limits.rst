@@ -36,8 +36,15 @@ pScheduler server automatically detect changes to the limit configuration and pu
 Content
 -------
 
-The file is `JavaScript Object Notation <http://www.json.org>`_ (JSON)
-containing a single object with the pairs shown here::
+The contents of the limit file can be either a URL with a scheme
+(e.g., ``https://...``) or `JavaScript Object Notation
+<http://www.json.org>`_ (JSON).
+
+If the file contains a URL, the content at that location will be
+fetched and its contents will be parsed as shown below.
+
+Whether read directly or fetched, the limit file contains a single
+JSON object with the pairs shown here::
 
     {
         "#": "Skeletal pScheduler limit configuration",
@@ -564,7 +571,7 @@ For example::
                 "name": "r-and-e-partners",
                 "description": "Partners from research and education"
                 "identifiers": [ "partners", "r-and-e" ],
-		"require": "all"
+                "require": "all"
             },
         ...
     }
@@ -814,41 +821,35 @@ For example::
                 }
             },
             {
-                "name": "throughput-default-template",
-                "description": "Template for throughput defaults",
-                "type": "test",
+                "name": "throughput-default-time",
+                "description": "Throughput time limits",
+                "type": "jq",
                 "data": {
-                    "test": "throughput",
-                    "limit": {
-                    "duration": {
-                        "range": { "lower": "PT5S", "upper": "PT60S" }
-                    }
+                    "script": [
+                        "import \"pscheduler/iso8601\" as iso;",
+                        "if .test.type == \"throughput\"",
+                        "   and iso::duration_as_seconds(.test.spec.duration) > 60",
+                        "then \"Duration for throughput must be 60 seconds or less.\"",
+                        "else true",
+                        "end"
+                    ]
                 }
             },
             {
                 "name": "throughput-default-udp",
-                "description": "UDP throughput for all requesters",
-                "clone": "throughput-default-template",
+                "description": "UDP throughput bandwidth limits",
+                "type": "jq",
                 "data": {
-	            "limit": {
-                        "bandwidth": {
-                            "range": { "lower": "1", "upper": "800K" },
-                        }
-                        "udp": { "match": true }
-                    }
-                }
-            },
-            {
-                "name": "throughput-default-tcp",
-                "description": "TCP throughput for all requesters",
-                "clone": "throughput-default-template",
-                "data": {
-	            "limit": {
-                        "bandwidth": {
-                            "range": { "lower": "1", "upper": "50M" },
-                        }
-                        "udp": { "match": false }
-                    }
+                    "script": [
+                        "import \"pscheduler/iso8601\" as iso;",
+                        "if .test.type == \"throughput\"",
+                        "   and .test.spec.udp == true",
+                        "   and (.test.spec.bandwidth == null or.test.spec.bandwidth > 50000000)",
+                        "then",
+                        "  \"UDP throughput bandwidth must be less than 50 Mb/s\"",
+                        "else true",
+                        "end"
+                    ]
                 }
             }
         ],
@@ -1013,9 +1014,8 @@ Its ``data`` is an object containing the following pairs:
   if the run's time range overlaps the specified range but does not
   fall completely within it.
 
-Note that limits of this type are not evaluated and will be
-considered to have passed when determining whether a task will be
-allowed on the system.
+Note that limits of this type are only evaluated when scheduling runs
+and will be considered having passed when a task is submitted.
 
 For example::
 
@@ -1034,7 +1034,7 @@ For example::
 ``run-schedule`` - Check Attributes of the Run Time
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``run-daterange`` limit tests to see whether attributes the time
+The ``run-schedule`` limit tests to see whether attributes of the time
 range for a run matches those specified.
 
 Its ``data`` is an object containing the following pairs.  The format
@@ -1048,7 +1048,7 @@ of the pairs is described below.
   ISO 8601.
 - ``hour`` - The hours in which the run will happen, numbered from ``0`` to ``23``
 - ``minute`` - The minutes in which the run will happen, numbered from ``0`` to ``59``.
-- ``minute`` - The seconds in which the run will happen, numbered from ``0`` to ``59``.
+- ``second`` - The seconds in which the run will happen, numbered from ``0`` to ``59``.
 
 All pairs are optional.
 
@@ -1059,9 +1059,8 @@ following pairs:
 - ``lower`` - An integer specifying the lower end of the range.
 - ``upper`` - An integer specifying the upper end of the range.
 
-Note that this limits of this type are not evaluated and will be
-considered to have passed when determining whether a task will be
-allowed on the system.
+Note that limits of this type are only evaluated when scheduling runs
+and will be considered having passed when a task is submitted.
 
 For example::
 
@@ -1074,46 +1073,6 @@ For example::
             "hour": [ 2, { "lower": 4, "upper": 7 } ],
             "overlap": true
             "invert": true
-        }
-    }
-
-
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-``test`` - Check Test Parameters
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-**NOTE:  This limit type is considered deprecated and will be removed
-in a future release.  Use the ``jq`` limit instead.** 
-
-The ``test`` limit compares the parameters of a proposed test against
-a template containing acceptable values.
-
-Its ``data`` is an object containing the following pairs:
-
-- ``test`` - A string specifying the test type.  Proposed tests not
-  of this type will fail this limit.
-- ``limit`` - A JSON object consisting of pairs for each test
-  parameter.  The key used for each pair will match one of the test's
-  parameters, which match the names of the command-line interface's
-  long-form option switches.  (A list for a given test can be
-  retrieved by running ``pscheduler task TEST-NAME --help``, where
-  ``TEST-NAME`` is the name of the test.)  The value and the value is
-  a limit of the appropriate type for that parameter.  See *Limit
-  Types* for further details.
-
-For example::
-
-    {
-        "name": "throughput-udp",
-        "description": "Limits for UDP throughput tests",
-        "type": "test",
-        "data": {
-        "test": "throughput",
-        "limit": {
-            "duration": { "range": { "lower": "PT5S", "upper": "PT60S" } },
-            "bandwidth": { "range": { "lower": "1", "upper": "50M" } },
-            "udp": { "match": true }
         }
     }
 

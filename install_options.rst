@@ -2,43 +2,32 @@
 perfSONAR Installation Options
 ******************************
 
-perfSONAR has historically been packaged as the **perfSONAR Toolkit**: an ISO containing a custom distribution of the CentOS operating system with all of the perfSONAR tools and services (including the software required to automatically run tests on a regular schedule, participate in a centrally managed set of tests, publish the existence of a measurement node, archive used to store results and web interface). The **perfSONAR Toolkit ISO** is probably the best distribution for you if at least one or more of the following hold true:
+perfSONAR has number of installation "bundles" depending on your needs and the set of tools you plan to use. Each bundle is available as operating system packages and in some cases Docker containers. The current set of available bundles are as follows: 
 
-* You are new to perfSONAR
-* You plan to only deploy a small number of perfSONAR nodes
-* You plan to use the CentOS operating system
-* You do NOT wish to install perfSONAR on a host with the operating system already installed
 
-There are several other installation options as well for certain versions of both **CentOS** and **Debian/Ubuntu**:
-
-#. **perfsonar-tools:** This bundle includes just the command-line clients needed to run on-demand measurements such as iperf, iperf3 and owamp. This bundle is generally best for hosts that aren't dedicated measurement nodes but want the command-line utilities available for troubleshooting as the need arises.
-#. **perfsonar-testpoint:** This bundle includes everything from the perfsonar-tools bundle as well as the software required to:
+#. **perfSONAR Tools** This bundle includes just the command-line clients needed to run on-demand measurements such as iperf, iperf3 and owamp. This bundle is generally best for hosts that aren't dedicated measurement nodes but want the command-line utilities available for troubleshooting as the need arises.
+#. **perfSONAR Testpoint:** This bundle includes everything from the Tools bundle as well as the software required to:
       * Automatically run tests on a regular schedule
       * Participate in a centrally managed set of tests 
       * Publish the existence of a measurement node 
 
     This bundle does NOT contain the software required to store measurements locally in an archive; the archive must be remote. This is best for dedicated testers running on lightweight hardware platforms that have a remote location in which to publish results.
-#. **perfsonar-core:** The perfsonar-core bundle install includes everything in the perfsonar-testpoint bundle install plus the esmond measurement archive used to store results. This is ideal for dedicated measurement hosts that want to store results locally, but do not want a perfSONAR Toolkit install. In other words, they do not want to use a web interface and want the flexibility to choose default security and tuning settings.
-#. **perfsonar-toolkit:** This bundle includes everything in perfsonar-core bundle plus:
+#. **perfSONAR Archive:** This host does not run measurements, but stores the measurements from one or more other hosts. It is a common pattern to install Testpoints on multiple hosts and have them all write to a central host running the Archive package.
+#. **perfSONAR Core:** This bundle install includes everything in the Testpoint and Archive bundles. This is ideal for dedicated measurement hosts that want to store results locally, but do not want a perfSONAR Toolkit install. In other words, they do not want to use a web interface and want the flexibility to choose default security and tuning settings.
+#. **perfSONAR Toolkit:** This bundle is a great option if you are not sure where to start. It has the most complete set of software and includes everything in Core bundle plus:
     * The web interface used to manage tests
     * Scripts used to apply system-wide default tuning and security settings
 
-    This bundle is for those that wish to install the full suite of tools included on the perfSONAR Toolkit ISO but on an existing Linux system. 
-#. **perfsonar-centralmanagement:** The perfsonar-centralmanagement bundle is independent from the bundles above and installs tools needed to centrally manage a large number of hosts and display their results. This includes the esmond measurement archive, tools for publishing task templates, and dashboard software for displaying results (MaDDash). 
+A visual description of the bundles can be found below:
 
 .. image:: images/install_options-bundle_tree.png
 
-This flowchart was created to help pick the correct option:
+Choosing a Bundle
+==========================
+This flowchart below was created to help pick the best option for your use case:
 
 .. image:: images/bundle_flowchart.png
-
-In addition to the above, pieces of perfSONAR can also be run inside of the Docker ecosystem. This allows for perfSONAR to be run in otherwise unsupported environments, including Mac OSX and Windows. Note that there are some limitations while running in those environments. For more information, see :doc:`install_docker`.
  
-
-CentOS Toolkit ISO Installation 
-===============================
-* See :doc:`install_getting`
-
 CentOS Bundle Installation 
 ==========================
 * See :doc:`install_centos`

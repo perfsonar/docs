@@ -11,7 +11,7 @@ perfSONAR measurement tools are much more accurate running on dedicated hardware
 
 This means you should not run perfSONAR tools on a host running a web server, a data server, or on a virtual machine, because in all of these cases it is not possible to guarantee test isolation.
 
-As long as you have two or more cores, it is now safe to run a database, a.k.a. the perfSONAR Measurement Archive (MA), on the perfSONAR host. Inserts and queries to the database appear to have no impact on test results. Its also OK to run latency/loss tests (owamp) on one NIC, and throughput tests (iperf3/nuttcp) on a second NIC, without noticeable impact on the results. For more information on configuring a perfSONAR host for two NICs, see: http://docs.perfsonar.net/manage_dual_xface.html
+As long as you have four or more cores, it is now safe to run a database, a.k.a. the perfSONAR Measurement Archive (MA), on the perfSONAR host. Inserts and queries to the database appear to have no impact on test results. Its also OK to run latency/loss tests (owamp) on one NIC, and throughput tests (iperf3/nuttcp) on a second NIC, without noticeable impact on the results. For more information on configuring a perfSONAR host for two NICs, see: http://docs.perfsonar.net/manage_dual_xface.html
 
 Note: Running both owamp and iperf at the same time on the same NIC is a problem, and should be avoided. 
 iperf tests will often cause owamp to lose packets when running on the same NIC.
@@ -44,13 +44,13 @@ For less resource intensive applications such as latency testing, choose a mothe
 RAM
 ---
 
-The development team recommends a minimum of 4GB of volatile memory on all systems running the full installation of the perfSONAR Toolkit.  There are three intense operations that occur on a perfSONAR Toolkit that require the support of memory:
+The development team recommends a minimum of 8GB of volatile memory on all systems running the full installation of the perfSONAR Toolkit.  There are three intense operations that occur on a perfSONAR Toolkit that require the support of memory:
 
-User's that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much memory support. The recommended amount of memory for the toolkit (4GB) will ensure proper concurrent operation of all measurement tools, web services, and supporting products such as databases. 
+User's that choose to forgo some of these functions (e.g. a Bundle that does not feature a web interface, or measurement archive) will not need as much memory support. The recommended amount of memory for the toolkit (8GB) will ensure proper concurrent operation of all measurement tools, web services, and supporting products such as databases. 
 
 Nodes that only run the *testpoint* bundle may work with as little as 2GB of memory, although the project recommends at least 4GB to ensure proper operation. 
  
-Nodes that will be used as a central repository for the measurements from a number of beacons are recommended to have as much memory as possible (e.g. greater than 16GB is recommended). 
+Nodes that will be used as a central archive for the measurements from a number of beacons are recommended to have as much memory as possible (e.g. greater than 16GB is recommended). 
 
 Local Storage
 -------------

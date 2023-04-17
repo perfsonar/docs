@@ -82,7 +82,7 @@ Multiple Archivers
 The results of a task can be sent to multiple archivers by using the ``--archive`` switch multiple times::
 
     % pscheduler task \
-          --archive @/home/fred/archive-to-esmond.json \
+          --archive @/home/fred/http-archive.json \
           --archive '{ "archiver": "bitbucket", "data": {} }' \
           trace --dest www.perfsonar.net
 
@@ -347,6 +347,61 @@ Example
 
 
 
+.. _pscheduler_ref_archivers-archivers-postgresql:
+
+``postgresql``
+-------------------------------------------
+
+The ``postgresql`` archiver connects to a PostgreSQL database and
+inserts a row into a table.
+
+The query made to do the insertion will be ``INSERT INTO
+table_name(column_name) VALUES (...)`` where ``table_name`` and
+``column_name`` are the table and column specified.
+
+
+.. _pscheduler_ref_archivers-archivers-postgresql-data:
+
+Archiver Data
+++++++++++++++++++++++++++++++++++++++++++++++
+
+``_dsn`` - Connection information for the PostgreSQL server.
+
+``table`` - The name of the table where the row will be inserted.
+
+``column`` - The name of the column where the data will be inserted.
+This column must be of type ``JSON``, ``JSONB`` or any other that will
+be automatically cast on insertion.
+
+``connection-expires`` - Optional.  How long the connection should be
+kept alive.  The default is never.
+
+``retry-policy`` - Optional. Describes how to retry failed attempts to
+submit the measurement to esmond before giving up.  The default
+behavior is to try once and then give up.
+
+
+.. _pscheduler_ref_archivers-archivers-postgresql-example:
+
+Example
+++++++++++++++++++++++++++++++++++++++++++++++
+::
+  
+    {
+        "archiver": "postgresql",
+        "data": {
+            "_dsn": "dbname=measurement user=torgo password=mumble",
+            "table": "measurements",
+            "column": "json_from_ps",
+            "connection-expires": "PT30S",
+            "retry-policy": [
+                { "attempts": 5,  "wait": "PT5S" }
+            ]
+        }
+    }
+
+
+
 .. _pscheduler_ref_archivers-archivers-rabbitmq:
 
 ``rabbitmq``
@@ -479,74 +534,6 @@ Example
         "data": {
             "host": "sockets.example.net",
             "port": 6264
-        }
-    }
-
-.. _pscheduler_ref_archivers-transforms:
-
-.. _pscheduler_ref_archivers-archivers-tcp:
-
-``tcp``
--------------------------------------------
-
-The ``tcp`` archiver connects to a listening TCP socket, sends the raw
-JSON result and disconnects.
-
-
-.. _pscheduler_ref_archivers-archivers-tcp-data:
-
-Archiver Data
-++++++++++++++++++++++++++++++++++++++++++++++
-
-``host`` - The host 
-
-
-.. _pscheduler_ref_archivers-archivers-tcp-example:
-
-Example
-++++++++++++++++++++++++++++++++++++++++++++++
-::
-  
-    {
-        "archiver": "tcp",
-        "data": {
-            "ident": "mytests",
-            "facility": "local3",
-            "priority": "warning"
-        }
-    }
-
-
-
-.. _pscheduler_ref_archivers-archivers-tcp:
-
-``tcp``
--------------------------------------------
-
-The ``tcp`` archiver connects to a listening TCP socket, sends the raw
-JSON result and disconnects.
-
-
-.. _pscheduler_ref_archivers-archivers-tcp-data:
-
-Archiver Data
-++++++++++++++++++++++++++++++++++++++++++++++
-
-``host`` - The host 
-
-
-.. _pscheduler_ref_archivers-archivers-tcp-example:
-
-Example
-++++++++++++++++++++++++++++++++++++++++++++++
-::
-  
-    {
-        "archiver": "tcp",
-        "data": {
-            "ident": "mytests",
-            "facility": "local3",
-            "priority": "warning"
         }
     }
 

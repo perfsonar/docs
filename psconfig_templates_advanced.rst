@@ -452,15 +452,21 @@ Setting Host Archives
 -------------------------
 A *host* object supports setting one or more archives to be used anytime an address belonging to that *host* is is the :ref:`scheduled_by_address <psconfig_templates_vars-scheduled_by_address>` of an individual task. It does this through the ``archives`` property which accepts a list of *archive* object names. 
 
-For example, you can set a an archive that publishes results to an esmond instance running on ``thrlat2-archive.perfsonar.net`` anytime either ``thr2.perfsonar.net`` or ``lat2.perfsonar.net`` is responsible for scheduling a task::
+For example, you can set a an archive that publishes results to an archive running on ``thrlat2-archive.perfsonar.net`` anytime either ``thr2.perfsonar.net`` or ``lat2.perfsonar.net`` is responsible for scheduling a task::
 
     {
         "archives": { 
            "local_archive": {
-                "archiver": "esmond",
-                "data": {
-                    "url": "https://thrlat2-archive.perfsonar.net/esmond/perfsonar/archive",
-                    "measurement-agent": "{% scheduled_by_address %}"
+                "archiver":"http",
+                "data":{
+                    "schema":3,
+                    "_url":"https://thrlat2-archive.perfsonar.net/logstash",
+                    "verify-ssl":false,
+                    "op":"put",
+                    "_headers":{
+                        "x-ps-observer":"{% scheduled_by_address %}",
+                        "content-type":"application/json"
+                    }
                 }
             }
         },
@@ -608,11 +614,17 @@ Finally we build our base template that includes the files::
             }
         },
         "archives": { 
-           "esmond_archive": {
-                "archiver": "esmond",
+           "central_archive": {
+                "archiver": "http",
                 "data": {
-                    "url": "https://esmond.archive.perfsonar.net/esmond/perfsonar/archive",
-                    "measurement-agent": "{% scheduled_by_address %}"
+                    "schema": 3,
+                    "_url": "https://example.archive/logstash",
+                    "verify-ssl": false,
+                    "op": "put",
+                    "_headers": {
+                        "x-ps-observer": "{% scheduled_by_address %}",
+                        "content-type": "application/json"
+                    }
                 }
             }
         },
@@ -627,12 +639,12 @@ Finally we build our base template that includes the files::
             "latency_task": {
                 "group": "latency_group",
                 "test": "latency_test",
-                "archives": ["esmond_archive"]
+                "archives": ["central_archive"]
             },
             "throughput_task": {
                 "group": "throughput_group",
                 "test": "throughput_test",
-                "archives": ["esmond_archive"],
+                "archives": ["central_archive"],
                 "schedule": "every_4_hours"
             }
         }
@@ -836,7 +848,7 @@ An example of a ``tools`` property is shown below::
             ],
             "group": "throughput_group",
             "test": "throughput_test",
-            "archives": ["esmond_archive"],
+            "archives": ["central_archive"],
             "schedule": "every_4_hours"
         }
     }
@@ -857,7 +869,7 @@ An example of the ``priority`` field is shown in the following example::
             "priority": 10,
             "group": "throughput_group",
             "test": "throughput_test",
-            "archives": ["esmond_archive"],
+            "archives": ["central_archive"],
             "schedule": "every_4_hours"
         }
     }
@@ -876,7 +888,7 @@ pSConfig allows you to define a reference object to be passed to pScheduler as s
         "throughput_task": {
             "group": "throughput_group",
             "test": "throughput_test",
-            "archives": ["esmond_archive"],
+            "archives": ["central_archive"],
             "schedule": "every_4_hours",
             "reference": {
                 "production-measurement": true,

@@ -2,16 +2,15 @@
 Bundle Installation on Debian
 ***********************************
 
-perfSONAR combines various sets of measurement tools and services. For perfSONAR 4.4 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
-
-* Debian 9 Stretch
-* Ubuntu 18 Bionic Beaver
-
-Partial support of perfSONAR, i.e. only ``perfsonar-testpoint`` bundle at the moment, is also available on the following distributions:
+perfSONAR combines various sets of measurement tools and services. For perfSONAR 5.0 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
 * Debian 10 Buster
+* Ubuntu 18 Bionic Beaver
+* Ubuntu 20 Focal Fossa
 
-Debian meta packages are available to install the bundles described in :doc:`install_options`. The remaining sections of this document detail the steps required for installing these bundles.
+Debian meta packages are available to install the bundles described in :doc:`install_options`.  The ``perfsonar-archive`` package can also be installed on Debian 11 and Ubuntu 22.
+
+The remaining sections of this document detail the steps required for installing these bundles.
 
 
 System Requirements
@@ -19,14 +18,12 @@ System Requirements
 
 * **Architecture:** We provide Debian packages for 6 different architectures:
 
-  * 32-bit (i386)
   * 64-bit (amd64)
-  * ARMv4t and up (armel) (only for Debian)
   * ARMv7 and up (armhf)
   * ARM64 (arm64)
   * PPC64 (ppc64el)
 
-* **Operating System:**  Any system running a Debian 9 or Ubuntu 18 server OS is supported.  Other Debian flavours derived from Debian 9 or Ubuntu 18 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 10, Ubuntu 18 or 20 server OS is supported.  Other Debian flavours derived from Debian 10, Ubuntu 18 or 20 might work too but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
@@ -76,21 +73,21 @@ Step 2: Install a Bundle
 
     apt install perfsonar-core
 
-  During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
+  During the installation process, you'll be asked to choose a password for the pscheduler database.
 
-* **perfSONAR Central Management**::
+* **perfSONAR Archive**::
 
-    apt install perfsonar-centralmanagement
+    apt install perfsonar-archive
 
-  During the installation process, you'll be asked to choose a password for the esmond database.
+  During the installation process, you'll be asked to choose a password for the pscheduler database.
 
 * **perfSONAR Toolkit**::
 
     apt install perfsonar-toolkit
 
-  During the installation process, you'll be asked to choose a password for the pscheduler and the esmond databases.
+  During the installation process, you'll be asked to choose a password for the pscheduler database.
 
-.. note:: On Debian 10, only the ``perfsonar-tools`` and the ``perfsonar-testpoint`` bundles are supported at the moment.
+.. note:: The ``perfsonar-archive`` bundle is also supported on Debian 11 and Ubuntu 22.
 
 Optional Packages
 ++++++++++++++++++
@@ -105,8 +102,6 @@ In addition to any of the bundles above you may also **optionally** choose to in
 You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
 
     /usr/lib/perfsonar/scripts/install-optional-packages.py
-
-.. note:: On a **perfsonar-centralmanagement** system you probably only want the optional **perfsonar-toolkit-servicewatcher** package to be installed.
 
 Reducing installation size
 ++++++++++++++++++++++++++
@@ -228,51 +223,39 @@ Note that you may have to wait a few hours for NTP to synchronize your clock bef
 Configuration
 =============
 
-Configuring Central Management
--------------------------------
-If you installed the perfsonar-centralmanagement bundle see the following documents:
-
-* :doc:`multi_ma_install`
-* :doc:`psconfig_publish`
-* :doc:`psconfig_maddash_agent`
-* :doc:`maddash_intro`
-
-
 Configuring perfSONAR through the web interface
 ------------------------------------------------
 After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
 
-Upgrading from 4.3.x (or 4.2.x)
-========================================
-If you had installed a perfSONAR 4.3.x (or 4.2.x) bundle and you now want to upgrade to perfSONAR 4.4, you'll have to follow the instructions here below.  This will work for all Debian and Ubuntu versions supported on both releases, i.e. Debian 9, Debian 10 and Ubuntu 18.
+Upgrading from 4.4.x
+====================
+If you had installed a perfSONAR 4.4.x bundle and you now want to upgrade to perfSONAR 5.0, you'll have to follow the instructions here below.  This will only work for Debian and Ubuntu versions supported on both releases, i.e. Debian 10 and Ubuntu 18.
 
 Upgrade the perfSONAR installation
 ----------------------------------
-If you have auto-update enabled and already using the ``perfsonar-release.list`` APT source file (as was instructed when installing 4.3 or 4.2), you should receive the 4.4 upgrade automatically. However, because of some dependency changes and repository name change, the full upgrade need to be done manually.
+If you have auto-update enabled and already using the ``perfsonar-release.list`` APT source file (as was instructed when installing 4.4), you should receive the 5.0 upgrade automatically. However, because of some dependency changes and repository name change, the full upgrade need to be done manually.
 
 If you don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
 
    apt update
    apt upgrade
 
-The measurements and the measurement archives that you already have defined in your 4.3.x (or 4.2.x) installation will be migrated to the 4.4 toolkit automatically.
+The measurements and the measurement archives that you already have defined in your 4.4.x installation will be migrated to the 5.0 toolkit automatically.
 
-If you are upgrading from 4.2, you'll need to run the command ``apt dist-upgrade`` because of a change in the depencies created by the move to Python 3.
-
-.. note:: You might see ``apt`` issuing a warning about conflicting distribution with a message like ``W: Conflicting distribution: http://downloads.perfsonar.net/debian perfsonar-release InRelease (expected perfsonar-4.3 but got perfsonar-4.4)``  This is expected and can be ignored because you indeed are upgrading from 4.3 to 4.4.
+.. note:: You might see ``apt`` issuing a warning about conflicting distribution with a message like ``W: Conflicting distribution: http://downloads.perfsonar.net/debian perfsonar-release InRelease (expected perfsonar-4.4 but got perfsonar-5.0)``  This is expected and can be ignored because you indeed are upgrading from 4.4 to 5.0.
 
 Upgrade to another bundle
 -------------------------
 If you want to move from the `perfsonar-testpoint` bundle to another bundle that we provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
 
-Upgrade from Ubuntu 16 to Ubuntu 18
+Upgrade from Ubuntu 18 to Ubuntu 20 
 -----------------------------------
-If you have a perfSONAR host running Ubuntu 16 and you want to upgrade it to 18, we recommend you to follow the following steps:
+If you have a perfSONAR host running Ubuntu 18 and you want to upgrade it to 20, we recommend you to follow the following steps:
 
-* Upgrade Ubuntu 16 to Ubuntu 18 (following official instructions, here are `Bionic Upgrades notes <https://help.ubuntu.com/community/BionicUpgrades>`_)
+* Upgrade Ubuntu 18 to Ubuntu 20 (following official instructions, here are `Focal Upgrades notes <https://help.ubuntu.com/community/FocalUpgrades>`_)
 * Reboot your system unless already done in previous step.
 * Run apt-get update; apt-get dist-upgrade to get the latest version of perfSONAR.
 * Reboot your system one last time.
 
-Alternatively, do a fresh installation of perfSONAR on Ubuntu 18.
+Alternatively, do a fresh installation of perfSONAR on Ubuntu 20.
 
