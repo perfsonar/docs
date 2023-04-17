@@ -21,7 +21,7 @@ Installing MaDDash on CentOS
 =====================================
 MaDDash can be installed with the following commands::
 
-    yum install epel-release http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.10-1.noarch.rpm
+    yum install epel-release http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
     yum clean all
     yum install maddash
 

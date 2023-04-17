@@ -18,13 +18,9 @@ You may consult `the testing checklist <https://github.com/perfsonar/project/wik
 Testing CentOS Bundles Installation
 ====================================
 
-You can test CentOS bundle installation by first pointing your existing CentOS installation at the perfSONAR main yum repository (if not already)::
+Install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
 
-    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.10-1.noarch.rpm
-    
-Next, install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
-
-    yum install perfSONAR-repo-staging
+    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfsonar-repo-staging-0.11-1.noarch.rpm
 
 Once you are pointing at the staging repository you may follow the steps at :doc:`install_centos` to choose and configure your bundle.
     
