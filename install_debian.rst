@@ -235,10 +235,10 @@ Upgrade the perfSONAR installation
 ----------------------------------
 If you have auto-update enabled and already using the ``perfsonar-release.list`` APT source file (as was instructed when installing 4.4), you should receive the 5.0 upgrade automatically. However, because of some dependency changes and repository name change, the full upgrade need to be done manually.
 
-If you don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
+If this is the case or you don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
 
    apt update
-   apt upgrade
+   apt dist-upgrade
 
 The measurements and the measurement archives that you already have defined in your 4.4.x installation will be migrated to the 5.0 toolkit automatically.
 
