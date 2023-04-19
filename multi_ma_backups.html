@@ -1,0 +1,574 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Managing Esmond Data &#8212; perfSONAR Toolkit 5.0.0b1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Managing Esmond Data</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="managing-esmond-data">
+<h1>Managing Esmond Data<a class="headerlink" href="#managing-esmond-data" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ESMOND IS NO LONGER SUPPORTED. THIS PAGE MAY BE USEFUL IF YOU ARE TRYING TO MOVE HISTORICAL DATA TO A DIFFERENT MACHINE</p>
+</div>
+<p>As you collect measurements over time, there are some common tasks you may wish to perform such as:</p>
+<ul class="simple">
+<li><p>Backing-up the data</p></li>
+<li><p>Migrating the data to new hardware</p></li>
+<li><p>Deleting old data</p></li>
+</ul>
+<p>The measurement archive software, esmond, keeps data in two databases: <a class="reference external" href="https://cassandra.apache.org">Cassandra</a> and <a class="reference external" href="http://www.postgresql.org">PostgreSQL</a>. Both of these databases need to be considered when performing any of the operations listed above. The remainder of this document covers the options and steps needed to perform each of these data management tasks.</p>
+<section id="backing-up-and-restoring-data">
+<h2>Backing-up and Restoring Data<a class="headerlink" href="#backing-up-and-restoring-data" title="Permalink to this heading">¶</a></h2>
+<p>You may want to back-up data in case of a failure. Both Cassandra and PostgreSQL offer multiple options for backing-up and restoring data. A few common options are:</p>
+<ul class="simple">
+<li><p><strong>Using built-in replication features of each database</strong> - See <span class="xref std std-doc">multi_ma_clustering</span> for more details</p></li>
+<li><p><strong>Using existing tools to create snapshots</strong> - The remainder of this section discusses how to do this for both Cassandra and PostgreSQL</p></li>
+</ul>
+<section id="cassandra-snapshots-with-nodetool">
+<span id="multi-ma-backups-snapshots-cassandra"></span><h3>Cassandra Snapshots with <cite>nodetool</cite><a class="headerlink" href="#cassandra-snapshots-with-nodetool" title="Permalink to this heading">¶</a></h3>
+<section id="preparing-your-environment">
+<span id="multi-ma-backups-snapshots-cassandra-prep"></span><h4>Preparing Your Environment<a class="headerlink" href="#preparing-your-environment" title="Permalink to this heading">¶</a></h4>
+<p>Cassandra comes with a command called <em>nodetool</em> that is capable of performing a number of administrative operations. One such operation is creating and restoring snapshots of the data. In order to make sure your cassandra server can use nodetool, login to your cassandra host(s) and do the following:</p>
+<ol class="arabic">
+<li><p>Uncomment or add the following at the bottom of <em>/etc/cassandra/conf/cassandra-env.sh</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LOCAL_JMX</span><span class="o">=</span><span class="n">yes</span>
+
+<span class="k">if</span> <span class="p">[</span> <span class="s2">&quot;$LOCAL_JMX&quot;</span> <span class="o">=</span> <span class="s2">&quot;yes&quot;</span> <span class="p">];</span> <span class="n">then</span>
+  <span class="n">JVM_OPTS</span><span class="o">=</span><span class="s2">&quot;$JVM_OPTS -Dcassandra.jmx.local.port=$JMX_PORT -XX:+DisableExplicitGC&quot;</span>
+<span class="k">else</span>
+  <span class="n">JVM_OPTS</span><span class="o">=</span><span class="s2">&quot;$JVM_OPTS -Dcom.sun.management.jmxremote.port=$JMX_PORT&quot;</span>
+  <span class="n">JVM_OPTS</span><span class="o">=</span><span class="s2">&quot;$JVM_OPTS -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT&quot;</span>
+  <span class="n">JVM_OPTS</span><span class="o">=</span><span class="s2">&quot;$JVM_OPTS -Dcom.sun.management.jmxremote.ssl=false&quot;</span>
+  <span class="n">JVM_OPTS</span><span class="o">=</span><span class="s2">&quot;$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=true&quot;</span>
+  <span class="n">JVM_OPTS</span><span class="o">=</span><span class="s2">&quot;$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=/etc/cassandra/jmxremote.password&quot;</span>
+<span class="n">fi</span>
+</pre></div>
+</div>
+</li>
+<li><p>Restart cassandra:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">cassandra</span> <span class="n">restart</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="creating-the-snapshot">
+<h4>Creating the Snapshot<a class="headerlink" href="#creating-the-snapshot" title="Permalink to this heading">¶</a></h4>
+<p>You can create a snapshot of the esmond data with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nodetool</span> <span class="n">snapshot</span> <span class="n">esmond</span> <span class="o">-</span><span class="n">t</span> <span class="n">esmond_snapshot</span>
+</pre></div>
+</div>
+<p>You may use a different value for -t, it is just a label for the snapshot. If -t is not specified a Unix timestamp of the current time will be used. Assuming you use esmond_snapshot as your value for -t the command will create the following directories:</p>
+<ul class="simple">
+<li><p>/var/lib/cassandra/data/esmond/base_rates/snapshots/esmond_snapshot</p></li>
+<li><p>/var/lib/cassandra/data/esmond/rate_aggregations/snapshots/esmond_snapshot</p></li>
+<li><p>/var/lib/cassandra/data/esmond/raw_data/snapshots/esmond_snapshot</p></li>
+<li><p>/var/lib/cassandra/data/esmond/stat_aggregations/snapshots/esmond_snapshot</p></li>
+</ul>
+<p>Note that the directories above contain hard links to the original files, so they should not take a large amount of space on the existing disk. This also means you cannot delete the original files until these are removed.</p>
+</section>
+<section id="moving-snapshots-to-a-remote-server">
+<h4>Moving Snapshots to a Remote Server<a class="headerlink" href="#moving-snapshots-to-a-remote-server" title="Permalink to this heading">¶</a></h4>
+<p>You may optionally want to move your back-ups to a remote server. The steps to do so are as follows:</p>
+<ol class="arabic">
+<li><p>Create a tarball of the snapshot files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">czf</span> <span class="n">esmond</span><span class="o">-</span><span class="n">snapshot</span><span class="o">-</span><span class="n">base_rates</span><span class="o">.</span><span class="n">tgz</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">base_rates</span><span class="o">/</span><span class="n">snapshots</span><span class="o">/</span><span class="n">esmond_snapshot</span>
+<span class="n">tar</span> <span class="o">-</span><span class="n">czf</span> <span class="n">esmond</span><span class="o">-</span><span class="n">snapshot</span><span class="o">-</span><span class="n">rate_aggregations</span><span class="o">.</span><span class="n">tgz</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">rate_aggregations</span><span class="o">/</span><span class="n">snapshots</span><span class="o">/</span><span class="n">esmond_snapshot</span>
+<span class="n">tar</span> <span class="o">-</span><span class="n">czf</span> <span class="n">esmond</span><span class="o">-</span><span class="n">snapshot</span><span class="o">-</span><span class="n">raw_data</span><span class="o">.</span><span class="n">tgz</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">raw_data</span><span class="o">/</span><span class="n">snapshots</span><span class="o">/</span><span class="n">esmond_snapshot</span>
+<span class="n">tar</span> <span class="o">-</span><span class="n">czf</span> <span class="n">esmond</span><span class="o">-</span><span class="n">snapshot</span><span class="o">-</span><span class="n">stat_aggregations</span><span class="o">.</span><span class="n">tgz</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">stat_aggregations</span><span class="o">/</span><span class="n">snapshots</span><span class="o">/</span><span class="n">esmond_snapshot</span>
+</pre></div>
+</div>
+</li>
+<li><p>Remotely copy the files to the new server using a tool such as scp:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="n">esmond</span><span class="o">-</span><span class="n">snapshot</span><span class="o">-*.</span><span class="n">tgz</span> <span class="n">user</span><span class="nd">@newhost</span><span class="p">:</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="restoring-snapshots">
+<h4>Restoring Snapshots<a class="headerlink" href="#restoring-snapshots" title="Permalink to this heading">¶</a></h4>
+<p>You may restore you files, either on a new or existing host, with the following steps:</p>
+<ol class="arabic">
+<li><p>Shutdown cassandra:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">cassandra</span> <span class="n">stop</span>
+</pre></div>
+</div>
+</li>
+<li><p>Clear the commit logs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">commitlog</span><span class="o">/*.</span><span class="n">log</span>
+</pre></div>
+</div>
+</li>
+<li><p>Delete all the the old data files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rm</span> <span class="o">-</span><span class="n">f</span>  <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">base_rates</span><span class="o">/*.</span><span class="n">db</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">f</span>  <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">rate_aggregations</span><span class="o">/*.</span><span class="n">db</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">f</span>  <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">raw_data</span><span class="o">/*.</span><span class="n">db</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">f</span>  <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">stat_aggregations</span><span class="o">/*.</span><span class="n">db</span>
+</pre></div>
+</div>
+</li>
+<li><p>Copy the contents of the snapshot into the data directories (<em>NOTE: The location of the snapshot may vary if it was migrated from another host or a label other than esmond_snapshot was used</em>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">base_rates</span><span class="o">/</span><span class="n">snapshots</span><span class="o">/</span><span class="n">esmond_snapshot</span><span class="o">/*</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">base_rates</span><span class="o">/</span>
+<span class="n">cp</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">rate_aggregations</span><span class="o">/</span><span class="n">snapshots</span><span class="o">/</span><span class="n">esmond_snapshot</span><span class="o">/*</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">rate_aggregations</span><span class="o">/</span>
+<span class="n">cp</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">raw_data</span><span class="o">/</span><span class="n">snapshots</span><span class="o">/</span><span class="n">esmond_snapshot</span><span class="o">/*</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">raw_data</span><span class="o">/</span>
+<span class="n">cp</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">stat_aggregations</span><span class="o">/</span><span class="n">snapshots</span><span class="o">/</span><span class="n">esmond_snapshot</span><span class="o">/*</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">stat_aggregations</span><span class="o">/</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start cassandra:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">cassandra</span> <span class="n">start</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run a repair:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nodetool</span> <span class="n">repair</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="clearing-snapshots">
+<h4>Clearing snapshots<a class="headerlink" href="#clearing-snapshots" title="Permalink to this heading">¶</a></h4>
+<p>You may want to clear a snapshot because it’s too old to be useful, you’d like to delete data to which it is linked or you mistakenly created a snapshot testing the commands in the previous section. Rather than removing all the files by hand you can use a nodetool command to do so. Below is an example of how to remove the snapshot labelled esmond_snapshot in the esmond keyspace:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nodetool</span> <span class="n">clearsnapshot</span> <span class="o">-</span><span class="n">t</span> <span class="n">esmond_snapshot</span> <span class="o">--</span> <span class="n">esmond</span>
+</pre></div>
+</div>
+<p>If you want to clear all snapshots in the esmond keyspace run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nodetool</span> <span class="n">clearsnapshot</span> <span class="o">--</span> <span class="n">esmond</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="postgresql-snapshots-with-pg-dump-and-pg-restore">
+<span id="multi-ma-backups-snapshots-postgresql"></span><h3>PostgreSQL Snapshots with <cite>pg_dump</cite> and <cite>pg_restore</cite><a class="headerlink" href="#postgresql-snapshots-with-pg-dump-and-pg-restore" title="Permalink to this heading">¶</a></h3>
+<section id="id1">
+<h4>Creating the Snapshot<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h4>
+<p>You may create a snapshot of your database with the following command:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pg_dump</span> <span class="o">-</span><span class="n">F</span> <span class="n">t</span> <span class="o">-</span><span class="n">f</span> <span class="n">esmond</span><span class="o">.</span><span class="n">tar</span> <span class="o">-</span><span class="n">U</span> <span class="n">esmond</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">pg_dump</span> <span class="o">-</span><span class="n">F</span> <span class="n">t</span> <span class="o">-</span><span class="n">f</span> <span class="n">esmond</span><span class="o">.</span><span class="n">tar</span> <span class="n">esmond</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This will create a tarball file in the current directory named esmond.tar. Note that this is a new file and though compressed, will consume additional disk space.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/etc/esmond/esmond.conf</em></p>
+</div>
+</section>
+<section id="moving-the-snapshot-to-a-remote-server">
+<h4>Moving the Snapshot to a Remote Server<a class="headerlink" href="#moving-the-snapshot-to-a-remote-server" title="Permalink to this heading">¶</a></h4>
+<p>Moving the snapshot to a different server is as simple using your favorite remote copy tool to move the tarball to another server. For example, using <em>scp</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="n">esmond</span><span class="o">.</span><span class="n">tar</span> <span class="n">user</span><span class="nd">@remote</span><span class="o">-</span><span class="n">host</span><span class="p">:</span>
+</pre></div>
+</div>
+</section>
+<section id="restoring-the-snapshot">
+<h4>Restoring the Snapshot<a class="headerlink" href="#restoring-the-snapshot" title="Permalink to this heading">¶</a></h4>
+<p>You may restore the snapshot with the following command:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pg_restore</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span><span class="n">U</span> <span class="n">esmond</span> <span class="o">-</span><span class="n">d</span> <span class="n">esmond</span> <span class="n">esmond</span><span class="o">.</span><span class="n">tar</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">pg_restore</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span><span class="n">d</span> <span class="n">esmond</span> <span class="n">esmond</span><span class="o">.</span><span class="n">tar</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are prompted for a password, see the <em>sql_db_password</em> property in <em>/etc/esmond/esmond.conf</em></p>
+</div>
+<p>This will delete any existing data and replace it with the backup. See the pg_restore documentation for more details.</p>
+</section>
+</section>
+</section>
+<section id="migrating-data">
+<h2>Migrating Data<a class="headerlink" href="#migrating-data" title="Permalink to this heading">¶</a></h2>
+<p>All hardware is eventually retired and when this happens you may want to move your data to a new server. This section covers how to migrate both the Cassandra and PostgreSQL data.</p>
+<section id="migrating-cassandra-data">
+<h3>Migrating Cassandra Data<a class="headerlink" href="#migrating-cassandra-data" title="Permalink to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If migrating to a server with a different architecture or operating system it is recommended you instead follow the steps in <a class="reference internal" href="#multi-ma-backups-snapshots-cassandra"><span class="std std-ref">Cassandra Snapshots with nodetool</span></a> for creating, migrating and restoring snapshots.</p>
+</div>
+<p>By default, packaged installs of cassandra keep all data in <em>/var/lib/cassandra</em>. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your cassandra server and copying the directory to the new host. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">cassandra</span> <span class="n">stop</span>
+<span class="n">scp</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span> <span class="n">user</span><span class="nd">@newhost</span><span class="p">:</span><span class="n">cassandra</span>
+</pre></div>
+</div>
+<p>You can then restore the data as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">cassandra</span> <span class="n">stop</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/*</span>
+<span class="n">mv</span> <span class="n">cassandra</span><span class="o">/*</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/</span>
+<span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">cassandra</span><span class="p">:</span><span class="n">cassandra</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cassandra</span><span class="o">/*</span>
+<span class="n">service</span> <span class="n">cassandra</span> <span class="n">start</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are running on a cluster you may also need to run <em>nodetool repair</em></p>
+</div>
+</section>
+<section id="migrating-postgresql-data">
+<h3>Migrating PostgreSQL Data<a class="headerlink" href="#migrating-postgresql-data" title="Permalink to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If migrating to a server with a different architecture or operating system it is recommended you instead follow the steps in <a class="reference internal" href="#multi-ma-backups-snapshots-postgresql"><span class="std std-ref">PostgreSQL Snapshots with pg_dump and pg_restore</span></a> for creating, migrating and restoring data.</p>
+</div>
+<p>By default, packaged installs of PostgreSQL keep all data in <em>/var/lib/pgsql</em>. If you are migrating to a server running a similar operating system and architecture as the old system, a valid option may be simply stopping your PostgreSQL server and copying the directory to the new host. For example:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">pgsql</span> <span class="n">stop</span>
+<span class="n">scp</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">pgsql</span> <span class="n">user</span><span class="nd">@newhost</span><span class="p">:</span><span class="n">pgsql</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">postgresql</span> <span class="n">stop</span>
+<span class="n">scp</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span> <span class="n">user</span><span class="nd">@newhost</span><span class="p">:</span><span class="n">pgsql</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>You can then restore the data as follows:</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">pgsql</span> <span class="n">stop</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">pgsql</span><span class="o">/*</span>
+<span class="n">mv</span> <span class="n">pgsql</span><span class="o">/*</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">pgsql</span><span class="o">/</span>
+<span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">postgres</span><span class="p">:</span><span class="n">postgres</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">pgsql</span><span class="o">/*</span>
+<span class="n">service</span> <span class="n">pgsql</span> <span class="n">start</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">postgresql</span> <span class="n">stop</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/*</span>
+<span class="n">mv</span> <span class="n">pgsql</span><span class="o">/*</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/</span>
+<span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">postgres</span><span class="p">:</span><span class="n">postgres</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/*</span>
+<span class="n">service</span> <span class="n">postgresql</span> <span class="n">start</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="deleting-old-data">
+<span id="multi-ma-backups-delete"></span><h2>Deleting Old Data<a class="headerlink" href="#deleting-old-data" title="Permalink to this heading">¶</a></h2>
+<p>You may want to remove old data over time to conserve disk space or to clear out measurements you no longer want displayed. Currently perfSONAR comes with a script named <cite>clean_esmond_db.sh</cite> that uses esmond’s tool named <cite>ps_remove_data.py</cite> capable of deleting data based on age in both in Cassandra and PostgreSQL. This section details usage of that script.</p>
+<section id="using-clean-esmond-db-sh">
+<h3>Using <cite>clean_esmond_db.sh</cite><a class="headerlink" href="#using-clean-esmond-db-sh" title="Permalink to this heading">¶</a></h3>
+<p><cite>clean_esmond_db.sh</cite> sets the environment and then invokes <cite>ps_remove_data.py</cite> with optional parameters that uses a configuration file defining a data retention policy and then removes data in Cassandra and PostgreSQL based on that policy. The script is installed by default with esmond, used to run as a cron job, and can be found at:</p>
+<ul class="simple">
+<li><p>/usr/lib/prefsonar/scripts/clean_esmond_db.sh</p></li>
+</ul>
+<p><cite>ps_remove_data.py</cite> itself is located in <em>/usr/lib/esmond/util/</em>. This script accepts the following arguments:</p>
+<ul class="simple">
+<li><p><strong>-c &lt;conf-file&gt;</strong>: Optional parameter to set the location of the config file. Defaults to <cite>/usr/lib/esmond/util/ps_remove_data.conf</cite>. <cite>clean_esmond_db.sh</cite> sets this path to <cite>/etc/perfsonar/toolkit/clean_esmond_db.conf</cite> that contains the default retention policy after installing esmond. If you need to use another path modify it in <cite>clean_esmond_db.sh</cite>.</p></li>
+<li><p><strong>-s DATESTRING</strong>: Date string with time in past to start looking for expired data. Default is current time. e.g. “2017-01-01 00:00:00”</p></li>
+<li><p><strong>-t SECONDS</strong>: Number of seconds of data to query at a time. Querying the full range causes timeouts. Default is 86400 (1 day).</p></li>
+<li><p><strong>-m NUMBER</strong>: Number of queries that don’t return data before giving up on looking for more. If -t is 1 day and this value is 50, that means it will need to say 50 days without data before determining there is nothing left to delete. Default is 50.</p></li>
+</ul>
+<p>The configuration file is in JSON format and defines data retention policies for your data. It allows you to match on three values:</p>
+<ul class="simple">
+<li><p><strong>event_type</strong> - The type of data for which this policy applies. A valid list can be found in the esmond <a class="reference internal" href="esmond_api_rest.html#psclient-rest-eventtypes"><span class="std std-ref">API documentation</span></a>. You may also pass <code class="docutils literal notranslate"><span class="pre">*</span></code> to match any value.</p></li>
+<li><p><strong>summary_type</strong> - The type of summary to which this policy applies. Valid values are <em>base</em> for unsummarized data and any value from the list found in <cite>this discussion &lt;psclient-rest-basevsumm&gt;</cite>. You may also pass <code class="docutils literal notranslate"><span class="pre">*</span></code> to match any value.</p></li>
+<li><p><strong>summary_window</strong> - An integer indicating the summary window to match (in seconds). A value of 0 means unsummarized (a.k.a base) data. You may also pass <code class="docutils literal notranslate"><span class="pre">*</span></code> to match any value.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are curious about the summary types and summary windows being used, look for pscheduler archiver reference.</p>
+</div>
+<p>In addition to the matching fields you must also set the following:</p>
+<ul class="simple">
+<li><p><strong>expire</strong> - The value (in days) after which point the data should be deleted. A value of “never” means to always keep data. A value of “0” means to delete all matching data  immediately.</p></li>
+</ul>
+<p>The script will choose the policy with the most specific match using a preference
+order of event_type, summary_type and then summary_window. For example, assume a piece of data matches two policies defined as follows:</p>
+<ol class="arabic simple">
+<li><p>One where it matches the <em>event_type</em> but both the other filters are set to <code class="docutils literal notranslate"><span class="pre">*</span></code></p></li>
+<li><p>Another where the event_type is <code class="docutils literal notranslate"><span class="pre">*</span></code> but it matches both <em>summary_type</em> and <em>summary_window</em>,</p></li>
+</ol>
+<p>In this example it will choose the first policy where it matches the specific (i.e. not <code class="docutils literal notranslate"><span class="pre">*</span></code>) event type based on the preference order of the fields.</p>
+<p>A full example of a configuration file can be found below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;policies&quot;</span><span class="p">:</span> <span class="p">[</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;365&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;86400&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;1825&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;histogram-owdelay&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;histogram-rtt&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;histogram-ttl&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-loss-rate&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-count-sent&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-count-lost&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-duplicates&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;packet-reorders&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">},</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;event_type&quot;</span><span class="p">:</span>      <span class="s2">&quot;time-error-estimates&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_type&quot;</span><span class="p">:</span>    <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;summary_window&quot;</span><span class="p">:</span>  <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;expire&quot;</span><span class="p">:</span>          <span class="s2">&quot;180&quot;</span>
+<span class="p">}</span>
+
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The example above can be found in <cite>/usr/lib/esmond/util/ps_remove_data.conf</cite> of the system where esmond is installed</p>
+</div>
+<p>The example contains several policies. The order of the policies is NOT significant. The first policy is a catch-all that removes anything older than 365 days if it does not match any other policies. This policy has a <code class="docutils literal notranslate"><span class="pre">*</span></code> for every value and is the least specific of a match possible. That means if any part of the other policies match, they will override the expiration of this policy. The second policy, matches all 24 hour (86400 seconds) summaries and keeps them for 5 years. Notice that it extends the life of these types of data from the default policy. The remaining policies match a specific event type and a summary window of 0 (which means unsummarized data) and expires it after 180 days (roughly 6 months). The event types all match that registered by the OWAMP tool, which writes new data every minute. Given the amount of data, this policy deletes it sooner that it would other (presumably less frequently written) data.</p>
+<blockquote>
+<div><p><em>CentOS/RedHat:</em>:</p>
+<p>It’s best to run <cite>clean_esmond_db.sh</cite> with it’s default settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">prefsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">clean_esmond_db</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>If you want to run the removal script with another policy file then enter the following commands (-c points to your specific policy file):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span>
+<span class="o">.</span> <span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">python</span> <span class="o">./</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p><em>Debian/Ubuntu:</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">default</span><span class="o">/</span><span class="n">esmond</span>
+<span class="n">export</span> <span class="n">ESMOND_ROOT</span> <span class="n">ESMOND_CONF</span>
+<span class="n">export</span> <span class="n">DJANGO_SETTINGS_MODULE</span><span class="o">=</span><span class="n">esmond</span><span class="o">.</span><span class="n">settings</span>
+<span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">esmond</span><span class="o">/</span><span class="n">util</span><span class="o">/</span><span class="n">ps_remove_data</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If running your measurement archive on a perfSONAR Toolkit or <em>core</em> or <em>centralmanagement</em> bundles then a cronjob under <em>/etc/cron.d/</em> with a default policy will be setup and run nightly automatically.</p>
+</div>
+<p>Finally, though this tool can be useful it has several limitations that are important to be aware of:</p>
+<ul class="simple">
+<li><p>You can only delete data based on it’s age, NOT other parameters like source or destination</p></li>
+<li><p>This tool may perform slowly for large deployments with lots of data and/or clustered databases.</p></li>
+</ul>
+<p>These limitations will be addressed in future versions of the software.</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Managing Esmond Data</a><ul>
+<li><a class="reference internal" href="#backing-up-and-restoring-data">Backing-up and Restoring Data</a><ul>
+<li><a class="reference internal" href="#cassandra-snapshots-with-nodetool">Cassandra Snapshots with <cite>nodetool</cite></a><ul>
+<li><a class="reference internal" href="#preparing-your-environment">Preparing Your Environment</a></li>
+<li><a class="reference internal" href="#creating-the-snapshot">Creating the Snapshot</a></li>
+<li><a class="reference internal" href="#moving-snapshots-to-a-remote-server">Moving Snapshots to a Remote Server</a></li>
+<li><a class="reference internal" href="#restoring-snapshots">Restoring Snapshots</a></li>
+<li><a class="reference internal" href="#clearing-snapshots">Clearing snapshots</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#postgresql-snapshots-with-pg-dump-and-pg-restore">PostgreSQL Snapshots with <cite>pg_dump</cite> and <cite>pg_restore</cite></a><ul>
+<li><a class="reference internal" href="#id1">Creating the Snapshot</a></li>
+<li><a class="reference internal" href="#moving-the-snapshot-to-a-remote-server">Moving the Snapshot to a Remote Server</a></li>
+<li><a class="reference internal" href="#restoring-the-snapshot">Restoring the Snapshot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#migrating-data">Migrating Data</a><ul>
+<li><a class="reference internal" href="#migrating-cassandra-data">Migrating Cassandra Data</a></li>
+<li><a class="reference internal" href="#migrating-postgresql-data">Migrating PostgreSQL Data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deleting-old-data">Deleting Old Data</a><ul>
+<li><a class="reference internal" href="#using-clean-esmond-db-sh">Using <cite>clean_esmond_db.sh</cite></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0b1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Managing Esmond Data</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

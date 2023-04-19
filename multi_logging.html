@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Central Logging Configuration &mdash; perfSONAR Toolkit 4.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="perfSONAR Toolkit 4.0.2 documentation" href="index.html" />
+    <link rel="next" title="Puppet management overview" href="multi_puppet_overview.html" />
+    <link rel="prev" title="Managing Measurement Archive Data" href="multi_ma_backups.html" /> 
+  </head>
+  <body role="document">
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfSONAR-header.gif"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="multi_puppet_overview.html" title="Puppet management overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="multi_ma_backups.html" title="Managing Measurement Archive Data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="central-logging-configuration">
+<h1>Central Logging Configuration<a class="headerlink" href="#central-logging-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Central logging is a useful tool for managing multiple systems. With central logging, one system acts as a server, and all other systems send their logs over the network to the central server for storage and analysis.</p>
+</div>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<p><strong>Operating System:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>Any linux system running either a 32-bit or 64-bit <strong>CentOS 6</strong> operating system should be able to follow the process outlined in this document. Other operating systems should work with similar configuration, but are untested at this time.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Software:</strong></dt>
+<dd><ul class="first last simple">
+<li>These examples use the rsyslog software included in CentOS 6 (version 5.8.10)</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Example configuration files are available from the <a class="reference external" href="https://github.com/perfsonar/central-management/tree/master/syslog/rsyslog">perfSONAR Central Management project on Github</a></p>
+<p>The main rsyslog configuration file goes in <code class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></code>.  Additional files go in <code class="docutils literal"><span class="pre">/etc/rsyslog.d/</span></code>.</p>
+<div class="section" id="server">
+<h3>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h3>
+<p>Before you can configure the client, you must configure the server to receive logs from other systems over the network. <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.conf">This example config file</a> is available.
+This should work without any changes, but you may wish to customize it. In this example, the server is configured to store its local logs locally and centrally along with those submitted by remote servers. If you wish to disable this, comment out or remove this line:</p>
+<div class="highlight-python"><div class="highlight"><pre>*.* @@127.0.0.1:514
+</pre></div>
+</div>
+<p>You also need to include one or two files in <code class="docutils literal"><span class="pre">/etc/rsyslog.d</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">rsyslog-server.conf</span></code> [<a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.d/rsyslog-server.conf">Download rsyslog-server.conf</a>]<ul>
+<li><strong>Required.</strong> Enables the server functionality</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">owamp_bwctl-syslog.conf</span></code> [<a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/server/rsyslog.d/owamp_bwctl-syslog.conf">Download owamp_bwctl-syslog.conf</a>]</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Optional.</strong> Normally installed when you install owamp or bwctl, so you may already have it.</li>
+</ul>
+</div></blockquote>
+<p>Configure your server by editing <code class="docutils literal"><span class="pre">/etc/rsyslog.d/rsyslog-server.conf</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre># Provides TCP syslog reception
+$ModLoad imtcp.so
+$InputTCPServerRun 514
+
+# Provides UDP syslog reception
+#$ModLoad imudp
+#$UDPServerRun 514
+
+# Log file name - hostname/programname
+$template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
+
+# send all logs to FILENAME according to the above template
+*.* ?FILENAME
+</pre></div>
+</div>
+<p>In the example configuration file, the server is set to listen on TCP port 514. Comment out or remove the TCP section if you don&#8217;t want TCP enabled. Similarly, you may uncomment the UDP section to enable listening over UDP. TCP is more reliable, and is recommended.</p>
+<p>If you change the protocol/port the host is listening on, revise the host specifier line in <code class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></code> to reflect this change. The number after the colon (:) is the port. For TCP, use &#64;&#64; when specifying the host:</p>
+<div class="highlight-python"><div class="highlight"><pre>*.* @@127.0.0.1:514
+</pre></div>
+</div>
+<p>For UDP, use &#64; when specifying the host:</p>
+<div class="highlight-python"><div class="highlight"><pre>*.* @127.0.0.1:514
+</pre></div>
+</div>
+<p>In this example, the server will store all logs under <code class="docutils literal"><span class="pre">/var/log/central/</span></code>. Change the filename template as desired.:</p>
+<div class="highlight-python"><div class="highlight"><pre># Log file name - hostname/programname
+$template FILENAME,&quot;/var/log/central/%HOSTNAME%/%PROGRAMNAME%.log&quot;
+</pre></div>
+</div>
+<p>For more information read the <a class="reference external" href="http://www.rsyslog.com/doc/v5-stable/configuration/templates.html">rsyslog documentation</a>.</p>
+<dl class="docutils">
+<dt>When you have finished configuring the server, run::</dt>
+<dd>sudo service rsyslog restart</dd>
+</dl>
+<p>If you are running a firewall, don&#8217;t forget to open the appropriate port(s) accordingly.</p>
+</div>
+<div class="section" id="client">
+<h3>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h3>
+<p>Once the server is working, the clients need to be configured to send their syslogs to the central server. As with the server, we need an <code class="docutils literal"><span class="pre">/etc/rsyslog.conf</span></code> file. However, it should be slightly different as it needs to specify the hostname of the server where it should send its logs. An <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.conf">example client rsyslog.conf file</a>  is available here.</p>
+<p>The only required modification is changing the rmote host specification:</p>
+<div class="highlight-python"><div class="highlight"><pre># FILL THIS IN:
+# remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional
+*.* @@remote-host:514
+</pre></div>
+</div>
+<p>Change <code class="docutils literal"><span class="pre">remote-host</span></code> to the hostname or IP address of your central syslog server. Use &#8216;&#64;&#64;&#8217; for a TCP connection, or &#8216;&#64;&#8217; for a UDP connection. Specify the port after the colon.</p>
+<p>The clients also need an <code class="docutils literal"><span class="pre">/etc/rsyslog.d/owamp_bwctl-syslog.conf</span></code> file. This is optional, but will improve bwctl/owamp logging. This is normally installed when you install owamp, but if you need it, an <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/central-management/master/syslog/rsyslog/client/rsyslog.d/owamp_bwctl-syslog.conf">example owamp_bwctl-syslog.conf file</a> is available.</p>
+<dl class="docutils">
+<dt>When you have finished configuring the client, run::</dt>
+<dd>sudo service rsyslog restart</dd>
+</dl>
+<p>Double check that the logs are being stored properly on the central server, if configured as in this example, the logs should be under <code class="docutils literal"><span class="pre">/var/log/central/</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Central Logging Configuration</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#server">Server</a></li>
+<li><a class="reference internal" href="#client">Client</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="multi_ma_backups.html">Previous topic</a>
+                  <ul><li><a href="multi_ma_backups.html" title="previous chapter">Managing Measurement Archive Data</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="multi_puppet_overview.html">Next topic</a>
+                      <ul><li><a href="multi_puppet_overview.html" title="next chapter">Puppet management overview</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="multi_puppet_overview.html" title="Puppet management overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="multi_ma_backups.html" title="Managing Measurement Archive Data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 4.0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>
