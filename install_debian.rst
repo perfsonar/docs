@@ -16,7 +16,7 @@ The remaining sections of this document detail the steps required for installing
 System Requirements
 ===================
 
-* **Architecture:** We provide Debian packages for 6 different architectures:
+* **Architecture:** We provide Debian packages for 4 different architectures:
 
   * 64-bit (amd64)
   * ARMv7 and up (armhf)
@@ -254,7 +254,7 @@ If you have a perfSONAR host running Ubuntu 18 and you want to upgrade it to 20,
 
 * Upgrade Ubuntu 18 to Ubuntu 20 (following official instructions, here are `Focal Upgrades notes <https://help.ubuntu.com/community/FocalUpgrades>`_)
 * Reboot your system unless already done in previous step.
-* Run apt-get update; apt-get dist-upgrade to get the latest version of perfSONAR.
+* Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
 * Reboot your system one last time.
 
 Alternatively, do a fresh installation of perfSONAR on Ubuntu 20.
