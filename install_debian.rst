@@ -99,10 +99,6 @@ In addition to any of the bundles above you may also **optionally** choose to in
      * ``apt install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
      * ``apt install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
-You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
-
-    /usr/lib/perfsonar/scripts/install-optional-packages.py
-
 Reducing installation size
 ++++++++++++++++++++++++++
 If you want to reduce the perfSONAR installation size as much as possible, you can call ``apt`` with the ``--no-install-recommends`` option.  This will prevent Debian recommended packages to be automatically installed (you can also configure this globaly in the APT configuration files with the statement ``APT::Install-Recommends "0";``).  This can become useful when you want to install the perfsonar-testpoint bundle with the less overhead possible.
