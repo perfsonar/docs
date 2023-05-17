@@ -104,10 +104,10 @@ The output looks as follows::
                 "x-ps-observer": "{% scheduled_by_address %}",
                 "content-type": "application/json", 
                 "Authorization":"Basic eXamPleTokEn"
-            },
-            "_meta": {
-                "esmond_url": "https://example.archive/esmond/perfsonar/archive/"
             }
+        },
+        "_meta": {
+            "esmond_url": "https://example.archive/esmond/perfsonar/archive/"
         }
     }
 
@@ -136,10 +136,10 @@ The output should look something like the following::
             "_headers": {
                 "x-ps-observer": "{% scheduled_by_address %}",
                 "content-type": "application/json"
-            },
-            "_meta": {
-                "esmond_url": "https://example.archive/esmond/perfsonar/archive/"
             }
+        },
+        "_meta": {
+            "esmond_url": "https://example.archive/esmond/perfsonar/archive/"
         }
     }
 

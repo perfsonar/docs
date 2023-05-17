@@ -75,9 +75,6 @@ In addition to any of the bundles above you may also **optionnally** choose to i
      * ``yum install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
      * ``yum install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
-You may also run the command below to get everything listed above on **perfsonar-testpoint** and **perfsonar-core** bundles::
-
-    /usr/lib/perfsonar/scripts/install-optional-packages.py
 
 .. _install_centos_step3:
 
