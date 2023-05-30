@@ -1,20 +1,21 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
-    <title>Batch Processing &#8212; perfSONAR Toolkit 5.0.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <title>Batch Processing &#8212; perfSONAR Toolkit 5.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Configuring pScheduler Limits" href="config_pscheduler_limits.html" />
@@ -60,8 +61,7 @@
         <li class="right" >
           <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Batch Processing</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,16 +73,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="batch-processing">
-<h1>Batch Processing<a class="headerlink" href="#batch-processing" title="Permalink to this heading">¶</a></h1>
+  <div class="section" id="batch-processing">
+<h1>Batch Processing<a class="headerlink" href="#batch-processing" title="Permalink to this headline">¶</a></h1>
 <p>pScheduler can be used to run a series of tasks, called a <em>batch</em>,
 from the command line and return the results for further processing by
 other programs.</p>
 <p>Each task is referred to as a <em>job</em>.</p>
 <p>Jobs can be done singly or in multiple <em>iterations</em> with the latter
 being possible serially or in parallel.</p>
-<section id="invocation">
-<span id="pscheduler-batch-invocation"></span><h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="invocation">
+<span id="pscheduler-batch-invocation"></span><h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
 <p>The batch processor is started using a <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">batch</span> <span class="p">[</span> <span class="n">OPTIONS</span> <span class="p">]</span> <span class="p">[</span> <span class="n">INPUT</span><span class="o">-</span><span class="n">FILE</span> <span class="p">]</span>
 </pre></div>
@@ -94,17 +94,17 @@ using the <code class="docutils literal notranslate"><span class="pre">--help</s
 <p>The final result (see <span class="xref std std-doc">_pscheduler_batch_output</span>) is sent to the
 standard output.</p>
 <p>Error and diagnostic output will be sent to standard error.</p>
-</section>
-<section id="input">
-<span id="pscheduler-batch-input"></span><h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="input">
+<span id="pscheduler-batch-input"></span><h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>Input to the batch processor is JSON in the form of a single object
 containing three pairs, <code class="docutils literal notranslate"><span class="pre">global</span></code>, <code class="docutils literal notranslate"><span class="pre">jobs</span></code> and, optionally, a
 <code class="docutils literal notranslate"><span class="pre">schema</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">schema</span></code> describes which version of the batch specification is
 in use.  If none is provided, it defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.  Specific
 instances where other values are required are described below.</p>
-<section id="the-global-pair">
-<span id="pscheduler-batch-input-global"></span><h3>The <code class="docutils literal notranslate"><span class="pre">global</span></code> Pair<a class="headerlink" href="#the-global-pair" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="the-global-pair">
+<span id="pscheduler-batch-input-global"></span><h3>The <code class="docutils literal notranslate"><span class="pre">global</span></code> Pair<a class="headerlink" href="#the-global-pair" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">global</span></code> pair is an optional JSON object containing data and
 transforms provided or applied to all jobs.  It contains the following
 pairs, all optional:</p>
@@ -115,9 +115,9 @@ the <code class="docutils literal notranslate"><span class="pre">task</span></co
 <p><code class="docutils literal notranslate"><span class="pre">transform-post</span></code> (pScheduler jq Transform) - A transform applied to
 the <code class="docutils literal notranslate"><span class="pre">task</span></code> object in each job after <cite>transform-pre</cite> and the job’s
 <cite>task-transform</cite> have been applied.</p>
-</section>
-<section id="the-jobs-pair">
-<span id="pscheduler-batch-input-jobs"></span><h3>The <code class="docutils literal notranslate"><span class="pre">jobs</span></code> Pair<a class="headerlink" href="#the-jobs-pair" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="the-jobs-pair">
+<span id="pscheduler-batch-input-jobs"></span><h3>The <code class="docutils literal notranslate"><span class="pre">jobs</span></code> Pair<a class="headerlink" href="#the-jobs-pair" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">jobs</span></code> pair is an array of objects, each containing a single job:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;jobs&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span> <span class="o">...</span> <span class="n">Job</span> <span class="mi">1</span> <span class="o">..</span> <span class="p">},</span>
@@ -232,10 +232,10 @@ success or failure of the first run in a job would look like this:</p>
  <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="output">
-<span id="pscheduler-batch-output"></span><h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="output">
+<span id="pscheduler-batch-output"></span><h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>Once all jobs have been completed, the batch processor will output a
 copy of the input with the addition of a <code class="docutils literal notranslate"><span class="pre">results</span></code> pair in each job
 containing information about what tasks were run and the results they
@@ -251,9 +251,9 @@ there will be more than one.  Each result is a JSON object containing
 pairs named <code class="docutils literal notranslate"><span class="pre">application/json</span></code>, <code class="docutils literal notranslate"><span class="pre">text/plain</span></code> and <code class="docutils literal notranslate"><span class="pre">text/html</span></code> for
 each of the formats in which pScheduler can produce a result.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">batch</span></code> pair includes diagnostic information about the batch.</p>
-</section>
-<section id="invocation-from-python">
-<span id="pscheduler-batch-python"></span><h2>Invocation from Python<a class="headerlink" href="#invocation-from-python" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="invocation-from-python">
+<span id="pscheduler-batch-python"></span><h2>Invocation from Python<a class="headerlink" href="#invocation-from-python" title="Permalink to this headline">¶</a></h2>
 <p>The batch processor can be invoked from Python on any system where
 pScheduler’s Python library is installed.  (On CentOS, this would be
 the <code class="docutils literal notranslate"><span class="pre">python-pscheduler</span></code> package.)</p>
@@ -267,7 +267,7 @@ the <code class="docutils literal notranslate"><span class="pre">python-pschedul
 <span class="n">batch</span> <span class="o">=</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
 
 <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Callback function for the batch processor to emit a line of</span>
 <span class="sd">    debug.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -280,11 +280,11 @@ the <code class="docutils literal notranslate"><span class="pre">python-pschedul
 <span class="n">result</span> <span class="o">=</span> <span class="n">processor</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="tips-and-tricks">
-<span id="pscheduler-batch-tips"></span><h2>Tips and Tricks<a class="headerlink" href="#tips-and-tricks" title="Permalink to this heading">¶</a></h2>
-<section id="running-different-tasks-as-part-of-the-same-job">
-<h3>Running Different Tasks as Part of the Same Job<a class="headerlink" href="#running-different-tasks-as-part-of-the-same-job" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="tips-and-tricks">
+<span id="pscheduler-batch-tips"></span><h2>Tips and Tricks<a class="headerlink" href="#tips-and-tricks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="running-different-tasks-as-part-of-the-same-job">
+<h3>Running Different Tasks as Part of the Same Job<a class="headerlink" href="#running-different-tasks-as-part-of-the-same-job" title="Permalink to this headline">¶</a></h3>
 <p>Different tests can be run in parallel by using the <code class="docutils literal notranslate"><span class="pre">task-transform</span></code>
 to alter the contents of the <code class="docutils literal notranslate"><span class="pre">test</span></code> pair for each iteration.</p>
 <blockquote>
@@ -340,12 +340,11 @@ beforehand and afterward.:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -402,8 +401,7 @@ beforehand and afterward.:</p>
         <li class="right" >
           <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Batch Processing</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -448,7 +446,7 @@ beforehand and afterward.:</p>
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2023, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

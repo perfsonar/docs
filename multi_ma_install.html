@@ -1,20 +1,21 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
-    <title>Deploying a Central Measurement Archive &#8212; perfSONAR Toolkit 5.0.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <title>Deploying a Central Measurement Archive &#8212; perfSONAR Toolkit 5.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Viewing Legacy Esmond Data" href="legacy_archive_esmond.html" />
@@ -60,8 +61,7 @@
         <li class="right" >
           <a href="psconfig_templates_advanced.html" title="Advanced pSConfig Templates"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Deploying a Central Measurement Archive</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,8 +73,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="deploying-a-central-measurement-archive">
-<h1>Deploying a Central Measurement Archive<a class="headerlink" href="#deploying-a-central-measurement-archive" title="Permalink to this heading">¶</a></h1>
+  <div class="section" id="deploying-a-central-measurement-archive">
+<h1>Deploying a Central Measurement Archive<a class="headerlink" href="#deploying-a-central-measurement-archive" title="Permalink to this headline">¶</a></h1>
 <p>Measurement results from your regular tests are stored in a <strong>measurement archive (MA)</strong>. This leads to the definition of two categories of hosts:</p>
 <ol class="arabic simple">
 <li><p>The <strong>measurement host</strong> that runs regular tests such as throughput, one-way latency, ping and traceroute measurements.</p></li>
@@ -88,8 +88,8 @@
 <li><p>You want to store results in multiple places. For example, you may store your results locally but also store them in a central archive where analysis tools operate on all the data from multiple hosts in one location.</p></li>
 </ul>
 <p>Those are just a few examples. If you think a central measurement archive is right for your measurement strategy, then read the remainder of this document for instructions on how to configure both your archive host and measurement hosts.</p>
-<section id="installing-the-measurement-archive-software">
-<h2>Installing the Measurement Archive Software<a class="headerlink" href="#installing-the-measurement-archive-software" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="installing-the-measurement-archive-software">
+<h2>Installing the Measurement Archive Software<a class="headerlink" href="#installing-the-measurement-archive-software" title="Permalink to this headline">¶</a></h2>
 <p>The measurement archive is implemented using a software package named <em>perfsonar-archive</em>. You can install as a standalone package on any perfSONAR supported operating system with the following:</p>
 <blockquote>
 <div><p><em>CentOS/RedHat:</em>:</p>
@@ -101,9 +101,9 @@
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-<section id="authenticating-measurement-hosts">
-<h2>Authenticating Measurement Hosts<a class="headerlink" href="#authenticating-measurement-hosts" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="authenticating-measurement-hosts">
+<h2>Authenticating Measurement Hosts<a class="headerlink" href="#authenticating-measurement-hosts" title="Permalink to this headline">¶</a></h2>
 <p>Measurement hosts need to authenticate to the measurement archive when they register data. This is implemented using one of two methods:</p>
 <ol class="arabic simple">
 <li><p>A username and password that is passed in the HTTP header of all requests.</p></li>
@@ -114,21 +114,21 @@
 <p class="admonition-title">Note</p>
 <p>You may have a combination of the above where some accounts authenticate based on IP address and others based on username/password.</p>
 </div>
-<section id="authenticating-by-username-and-password">
-<span id="multi-ma-install-intro"></span><h3>Authenticating by Username and Password<a class="headerlink" href="#authenticating-by-username-and-password" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="authenticating-by-username-and-password">
+<span id="multi-ma-install-intro"></span><h3>Authenticating by Username and Password<a class="headerlink" href="#authenticating-by-username-and-password" title="Permalink to this headline">¶</a></h3>
 <p>The username and password is set in OpenSearch. You can create your own but an account is enabled with the minimum set of permissions needed to write to the perfSONAR indices. You can find the details in <cite>/etc/perfsonar/opensearch/logstash_login</cite>.</p>
-</section>
-<section id="authenticating-by-ip-address">
-<span id="multi-ma-install-auth-ip"></span><h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="authenticating-by-ip-address">
+<span id="multi-ma-install-auth-ip"></span><h3>Authenticating by IP Address<a class="headerlink" href="#authenticating-by-ip-address" title="Permalink to this headline">¶</a></h3>
 <p>This is done in the Apache proxy for Logstash. See the examples in <em>/etc/httpd/conf.d/apache-logstash.conf</em>.</p>
-</section>
-</section>
-<section id="configuring-measurement-hosts">
-<h2>Configuring Measurement Hosts<a class="headerlink" href="#configuring-measurement-hosts" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="configuring-measurement-hosts">
+<h2>Configuring Measurement Hosts<a class="headerlink" href="#configuring-measurement-hosts" title="Permalink to this headline">¶</a></h2>
 <p>Each measurement host must be configured to register its data to the central archive. This is done by configuring the <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">pSConfig pScheduler Agent</span></a> to use the archive. Specifically, it configures the HTTP archiver plugin supported by pScheduler. The full set of options for the HTTP archiver plugin are detailed <a class="reference internal" href="pscheduler_ref_archivers.html#pscheduler-ref-archivers-archivers-http"><span class="std std-ref">here</span></a>. The exact approach depends largely on how you are reading your pSConfig template and which tasks you want to send to the central archive.</p>
 <p>Some common scenarios are listed below:</p>
-<section id="scenario-1-writing-to-a-local-archive">
-<h3>Scenario 1: Writing to a Local Archive<a class="headerlink" href="#scenario-1-writing-to-a-local-archive" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="scenario-1-writing-to-a-local-archive">
+<h3>Scenario 1: Writing to a Local Archive<a class="headerlink" href="#scenario-1-writing-to-a-local-archive" title="Permalink to this headline">¶</a></h3>
 <p>Note that by default, a perfSONAR Toolkit writes all tests to a local archive so no additional steps are needed. The archive definition can be found in <cite>/etc/perfsonar/psconfig/archives.d/http_logstash.json</cite>. If you need to regenerate that configuration, you can run the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span>
 </pre></div>
@@ -150,9 +150,9 @@
 </pre></div>
 </div>
 <p>Copy the above output to <cite>/etc/perfsonar/psconfig/archives.d/http_logstash.json</cite> and all pSConfig tests will write to the local archive.</p>
-</section>
-<section id="scenario-2-writing-to-a-remote-archive-with-username-and-password-authentication">
-<h3>Scenario 2: Writing to a Remote Archive with Username and Password Authentication<a class="headerlink" href="#scenario-2-writing-to-a-remote-archive-with-username-and-password-authentication" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="scenario-2-writing-to-a-remote-archive-with-username-and-password-authentication">
+<h3>Scenario 2: Writing to a Remote Archive with Username and Password Authentication<a class="headerlink" href="#scenario-2-writing-to-a-remote-archive-with-username-and-password-authentication" title="Permalink to this headline">¶</a></h3>
 <p>As an example, let’s say we want all our measurement hosts to write results to an archive with the hostname <cite>example.archive</cite>. We can generate a configuration with the following command where the hostname is given as a parameter to the script:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span> <span class="n">example</span><span class="o">.</span><span class="n">archive</span>
 </pre></div>
@@ -180,9 +180,9 @@
 <p>Note some differences include the URL pointing at the provided host, SSL verification is disabled by default (assumes a self-signed certificate), and an <cite>esmond_url</cite> is generated which can be used by tools like MaDDash to grab data using the legacy Esmond interface. Note this <cite>esmond_url</cite> will never be used by measurement clients to write results, it is only for querying using the backward compatibility interface.</p>
 <p>The simplest method for using the above output is to add it to a new JSON file in the <cite>/etc/perfsonar/psconfig/archives.d/</cite> directory.  See <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-templates-local"><span class="std std-ref">Local Templates</span></a> for more information on how to setup local templates.</p>
 <p><strong>It is only recommended you set the</strong> <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> <strong>field if your template is a file on the local system that will never be published to the web.</strong> This is to protect your credentials from being exposed. If you would like to use username and password authentication while still publishing to a public pSConfig template, you can remove the Authorization field from the definition published either by hand or re-running the above command with <cite>/usr/lib/perfsonar/archive/perfsonar-scripts/psconfig_archive.sh -a none -n example.archive</cite>. You can then add it back locally using a transform script. See  <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-all"><span class="std std-ref">Transforming All Remote Templates</span></a> and <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-one"><span class="std std-ref">Transforming Individual Remote Templates</span></a> for examples of how to do this.</p>
-</section>
-<section id="scenario-3-writing-to-a-remote-archive-with-ip-authentication">
-<h3>Scenario 3: Writing to a Remote Archive with IP Authentication<a class="headerlink" href="#scenario-3-writing-to-a-remote-archive-with-ip-authentication" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="scenario-3-writing-to-a-remote-archive-with-ip-authentication">
+<h3>Scenario 3: Writing to a Remote Archive with IP Authentication<a class="headerlink" href="#scenario-3-writing-to-a-remote-archive-with-ip-authentication" title="Permalink to this headline">¶</a></h3>
 <p>In this scenario you have configured a list of allowed IPs in <em>/etc/httpd/conf.d/apache-logstash.conf</em>. You can safely publish to the web without authentication info. Generate the archiver configuration with the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">a</span> <span class="n">none</span> <span class="o">-</span><span class="n">n</span> <span class="n">example</span><span class="o">.</span><span class="n">archive</span>
 </pre></div>
@@ -207,14 +207,14 @@
 </pre></div>
 </div>
 <p>Copy above to your central pSConfig template and your measurement hosts should begin archiving.</p>
-</section>
-</section>
-<section id="legacy-installation-writing-to-both-esmond-and-opensearch">
-<h2>Legacy Installation: Writing to both Esmond and OpenSearch<a class="headerlink" href="#legacy-installation-writing-to-both-esmond-and-opensearch" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="legacy-installation-writing-to-both-esmond-and-opensearch">
+<h2>Legacy Installation: Writing to both Esmond and OpenSearch<a class="headerlink" href="#legacy-installation-writing-to-both-esmond-and-opensearch" title="Permalink to this headline">¶</a></h2>
 <p>In perfSONAR 5.0, the legacy archive named Esmond is dropped in favor of a new default archiver using OpenSearch. Since Esmond data is not migrated to OpenSearch, some users may find it beneficial to write to both archivers in parallel for a period of time. Assuming you have an existing Esmond installation and a new OpenSearch installation, you can continue to have measurement hosts write to each. <strong>Given that Esmond will not be supported long-term by the perfSONAR project, we recommend you consider this a temporary measure and have a plan to retire your Esmond installation after a few months.</strong></p>
 <p>The biggest decision point for this is where you would like existing MaDDash instances to retrieve data that it displays. Generally, if you have both defined in the same pSConfig Template, then MaDDash will pick the first it encounters when it displays data. If you desire to exercise greater control of the archiver MaDDash chooses, then you have multiple options. A few different common scenarios are detailed below.</p>
-<section id="scenario-1-maddash-reads-from-legacy-esmond">
-<h3>Scenario 1: MaDDash Reads from Legacy Esmond<a class="headerlink" href="#scenario-1-maddash-reads-from-legacy-esmond" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="scenario-1-maddash-reads-from-legacy-esmond">
+<h3>Scenario 1: MaDDash Reads from Legacy Esmond<a class="headerlink" href="#scenario-1-maddash-reads-from-legacy-esmond" title="Permalink to this headline">¶</a></h3>
 <p>In this case you will write to both Esmond and OpenSearch, but MaDDash will only read from Esmond. This may be a good choice if you want to display historical data prior to the 5.0 release alongside new data while simulataneously building a new (albeit undisplayed in MaDDash) history in OpenSearch.</p>
 <p>The first step is to put both archiver definitions in your pSConfig template. This will vary depending on the authentication mechanism you use for each, but will likely be similar to the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -296,9 +296,9 @@
 </pre></div>
 </div>
 <p>The critical piece is that you don’t define an <cite>esmond_url</cite> in the <cite>_meta</cite> section for the HTTP archiver definition used to write to OpenSearch. This will force MaDDash to use the native Esmond archiver since it will not have a compatible way to communicate with the OpenSearch host.</p>
-</section>
-<section id="scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch">
-<h3>Scenario 2: Having a MaDDash Read from Esmond and from OpenSearch<a class="headerlink" href="#scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch">
+<h3>Scenario 2: Having a MaDDash Read from Esmond and from OpenSearch<a class="headerlink" href="#scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch" title="Permalink to this headline">¶</a></h3>
 <p>If you would like to have a single MaDDash instance that reads from both archives, you can do so but will need a second pSConfig template file. There are multiple variations to achieve this, but if you already have a pSConfig template like in Scenaro 1, you can point measurement hosts at that file as well as your MaDDash instance to get the data from Esmond.</p>
 <p>You can now define a second pSConfig template that is a copy of the first, but has the following changes:</p>
 <ol class="arabic simple">
@@ -381,12 +381,11 @@
 </pre></div>
 </div>
 <p>Run an additional <cite>psconfig remote add</cite> command or copy to <cite>/etc/perfsonar/psconfig/maddash.d</cite> on the MaDDash host to point at this mesh, and you should see results from both instances displayed.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -448,8 +447,7 @@
         <li class="right" >
           <a href="psconfig_templates_advanced.html" title="Advanced pSConfig Templates"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Deploying a Central Measurement Archive</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -494,7 +492,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2023, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
