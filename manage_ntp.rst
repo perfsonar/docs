@@ -2,6 +2,8 @@
 Configuring NTP
 ***************
 
+note:: These instructions do not apply to EL variants newer than CentOS 7. These operating systems use chrony and the NTP UIs are disabled. You can configure chrony by hand on these systems.
+
 For perfSONAR tests to work correctly, it is critical that the Network Time Protocol (NTP) be configured properly. Almost all the measurements require an accurate system clock to calculate time-based metrics. Failure to have a synced clock can lead to unexpected results such as negative latency values. It is recommended to sync with **4-5 servers (not more)**, and that they all be fairly **close in proximity (less than 20ms RTT)**. The perfSONAR web interface provides a convenient way to configure NTP. It allows you to select time servers using the following methods:
 
 #. By default the perfSONAR Toolkit will select the five closest known servers (perfSONAR ships with a known list of NTP servers). For details on refreshing this selection see :ref:`manage_ntp-closest`.

@@ -7,33 +7,42 @@ Testing Beta Versions of perfSONAR
 
 The perfSONAR project traditionally does public betas testing prior to major new releases. These are announced on the mailing lists when available. Participating in betas is open to anyone and feedback generated from these tests helps the development team formulate the best possible final release. You can help with testing by going through one or more of the following test scenarios:
 
-* A clean installation of one of our CentOS or Debian bundles
-* An upgrade of either a toolkit or CentOS bundle
-* An upgrade of an existing Debian installation
+* A clean installation of one of our EL or Debian bundles
+* An upgrade of an existing EL or Debian installation
 
 You may consult `the testing checklist <https://github.com/perfsonar/project/wiki/Toolkit-Testing-Checklist>`_ to help guide your testing. For full instructions on how to get beta packages and ISOs, see the sections below.
 
-.. _install_rcs-clean-centos:
+.. _install_rcs-clean-el:
 
-Testing CentOS Bundles Installation
+Testing EL Bundles Installation
 ====================================
 
-Install the staging yum repository where test versions of the software are kept. You may set this up with the following command::
+Install the staging yum repository where test versions of the software are kept. You may set this up with the following commands below.
+
+**EL7**::
 
     yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfsonar-repo-staging-0.11-1.noarch.rpm
 
-Once you are pointing at the staging repository you may follow the steps at :doc:`install_centos` to choose and configure your bundle.
+**EL8**::
+
+    yum install http://software.internet2.edu/rpms/el8/x86_64/latest/packages/perfsonar-repo-staging-0.11-1.noarch.rpm
+
+**EL9**::
+
+    yum install http://software.internet2.edu/rpms/el9/x86_64/latest/packages/perfsonar-repo-staging-0.11-1.noarch.rpm
+
+Once you are pointing at the staging repository you may follow the steps at :doc:`install_el` to choose and configure your bundle.
     
 .. note:: If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours.
 
-.. _install_rcs-upgrade-centos:
+.. _install_rcs-upgrade-el:
 
-Testing Upgrades of an Existing Toolkit or CentOS Bundle Installation
+Testing Upgrades of an Existing Toolkit or EL Bundle Installation
 =====================================================================
 
-You can test upgrades of any existing CentOS-based perfSONAR installation by first pointing your existing CentOS installation at the perfSONAR staging yum repository and then running yum update::
+You can test upgrades of any existing EL-based perfSONAR installation by first pointing your existing EL installation at the perfSONAR staging yum repository and then running yum update::
 
-        yum install perfSONAR-repo-staging
+        yum install perfsonar-repo-staging
         yum update
 
 .. note:: If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours

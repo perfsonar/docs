@@ -28,9 +28,9 @@ This flowchart below was created to help pick the best option for your use case:
 
 .. image:: images/bundle_flowchart.png
  
-CentOS Bundle Installation 
-==========================
-* See :doc:`install_centos`
+Enterprise Linux-based Bundle Installation 
+==================================================
+* See :doc:`install_el`
 
 Debian/Ubuntu Bundle Installation
 =================================
