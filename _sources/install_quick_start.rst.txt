@@ -2,9 +2,9 @@
 Toolkit Installation Quick Start
 *********************************
 
-These instructions are for the full Toolkit installation on CentOS 7. For other perfSONAR installation options, see :doc:`install_options`.
+These instructions are for the full Toolkit installation on Alma 9 or Rocky 9. For other perfSONAR installation options, see :doc:`install_options`.
 
-#. Install CentOS 7 using your preferred method from https://centos.org
+#. Install Alma or Rocky 9 using your preferred method from https://almalinux.org/ or https://rockylinux.org/
 
 #. Login to the host and become sudo::
 
@@ -12,9 +12,10 @@ These instructions are for the full Toolkit installation on CentOS 7. For other 
 
 #. Run the following commands::
 
-        yum install epel-release http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
-        yum clean all
-        yum install perfsonar-toolkit
+        dnf config-manager --set-enabled crb
+        dnf install epel-release http://software.internet2.edu/rpms/el9/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
+        dnf clean all
+        dnf install perfsonar-toolkit
 
 #. Exit sudo and become sudo again to trigger login prompt::
 

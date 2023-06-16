@@ -28,7 +28,7 @@ Note that any time you upgrade the perfSONAR Toolkit, you should make sure your 
 
 Manually Enabling Tuning Settings
 =================================
-In case you didn't use toolkit installation an optional *perfsonar-toolkit-sysctl* package is available that configures the system with perfSONAR settings. For more information on optional script installation see :ref:`install_centos_installation`.
+In case you didn't use toolkit installation an optional *perfsonar-toolkit-sysctl* package is available that configures the system with perfSONAR settings. For more information on optional script installation see :ref:`install_el_installation`.
 
 .. note:: In case your host has changed interface speed you can re-run ``/usr/lib/perfsonar/scripts/configure_sysctl`` script in order to tune system settings again. 
 

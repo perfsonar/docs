@@ -34,6 +34,7 @@ Installation
    install_getting
    install_quick_start
    install_config_first_time
+   install_el
    install_centos
    install_debian
    install_docker

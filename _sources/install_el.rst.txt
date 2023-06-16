@@ -1,8 +1,9 @@
-*********************************
-Bundle Installation on CentOS 7
-*********************************
+************************************************************
+Bundle Installation on RedHat Enterprise Linux Variants 
+************************************************************
+ 
+note:: For older CentOS 7 installation see :doc:`install_centos`
 
-.. note:: For newer RedHat-based operating systems after CentOS 7 see :doc:`install_el`
 
 perfSONAR combines various sets of measurement tools and services bundled in different useful ways. RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
@@ -10,38 +11,52 @@ System Requirements
 ==================== 
 * **Operating System:**
 
-  * **CentOS 7** x86_64 installations are supported. Other RedHat-based operating systems may work, but are not officially supported at this time.
+  * **Alma 8, Alma 9, Rocky 8 or Rocky 9** x86_64 installations are supported. Other RedHat-based operating systems may work, but are not officially supported at this time.
   * See :doc:`install_hardware` for hardware requirements and more.
 
 .. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
 
-.. _install_centos_installation:
+.. _install_el_installation:
 
 Installation 
 ============
 
-.. _install_centos_step1:
+.. _install_el_step1:
 
-Step 1: Configure Yum 
+Step 1: Configure DNF 
 ---------------------- 
-.. note:: If your system is using yum priorities make sure that repositories required for perfSONAR are higher priority than anything else to avoid conflicts with older versions. Please note that yum maintainers do not recommend using priorities.
+.. note:: If your system is using dnf/yum priorities make sure that repositories required for perfSONAR are higher priority than anything else to avoid conflicts with older versions. Please note that yum maintainers do not recommend using priorities.
 
-The process configures yum to point at the necessary repositories to get packages needed for perfSONAR. **You will need to follow the steps below as privileged user**:
+The process configures dnf to point at the necessary repositories to get packages needed for perfSONAR. **You will need to follow the steps below as privileged user**:
+
+.. note:: All commands work on both EL8 and EL9 based operating systems unless otherwise indicated
 
 #. Install the EPEL RPM::
 
-    yum install epel-release
+    dnf install epel-release
 
-#. Install the perfSONAR-repo RPM::
+#. **EL8-only** Enable the PowerTools repository on an EL8 system::
 
-    yum install http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
+    dnf config-manager --set-enabled powertools
 
-#. Refresh yum's cache so it detects the new RPMS::
+#. **EL9-only** Enable the CBR repository on an EL9 system::
 
-    yum clean all
+    dnf config-manager --set-enabled crb
+
+#. **EL8-only** Install the perfsonar-repo RPM for EL8::
+
+    dnf install http://software.internet2.edu/rpms/el8/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
+
+#. **EL9-only** Install the perfsonar-repo RPM for EL9::
+
+    dnf install http://software.internet2.edu/rpms/el9/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
+
+#. Refresh dnf's cache so it detects the new RPMS::
+
+    dnf clean all
 
 
-.. _install_centos_step2:
+.. _install_el_step2:
 
 Step 2: Install a Bundle 
 -------------------------------- 
@@ -49,53 +64,39 @@ Step 2: Install a Bundle
 
 * **perfSONAR Tools**::
 
-    yum install perfsonar-tools  
+    dnf install perfsonar-tools  
   
 * **perfSONAR Test Point**::
 
-    yum install perfsonar-testpoint  
+    dnf install perfsonar-testpoint  
 
 * **perfSONAR Core**::
 
-    yum install perfsonar-core
+    dnf install perfsonar-core
 
 * **perfSONAR Archive**::
 
-    yum install perfsonar-archive
+    dnf install perfsonar-archive
 
 * **perfSONAR Toolkit**::
 
-    yum install perfsonar-toolkit
+    dnf install perfsonar-toolkit
 
 Optional Packages
 ++++++++++++++++++
 In addition to any of the bundles above you may also **optionnally** choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):
 
-     * ``yum install perfsonar-toolkit-ntp`` - Automatically detects closest NTP servers and sets them in ntp.conf
-     * ``yum install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
-     * ``yum install perfsonar-toolkit-servicewatcher`` - Adds a cron job that checks if services are still running.
-     * ``yum install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
-     * ``yum install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
+     * ``dnf install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
+     * ``dnf install perfsonar-toolkit-servicewatcher`` - Adds a cron job that checks if services are still running.
+     * ``dnf install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
+     * ``dnf install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
 
-.. _install_centos_step3:
+.. _install_el_step3:
 
-Step 3: Verify NTP and Tuning Parameters 
+Step 3: Verify Tuning Parameters 
 ----------------------------------------- 
-*Step 3 can be ignored for perfsonar-toolkit package installation as its instructions are included and run automatically*
-
-* **NTP Tuning**
-
-  - **Auto-select NTP servers based on proximity**
-    
-    The Network Time Protocol (NTP) is required by the tools in order to obtain accurate measurements. Measurements will not give accurate results unless NTP is configured. If an optional package was installed, then run::
-
-        /usr/lib/perfsonar/scripts/configure_ntpd new
-        systemctl restart ntpd
-
-  You can verify if NTP is running with the following command::
-
-    /usr/sbin/ntpq -p  
+*Step 3 can be ignored for perfsonar-toolkit package installation as its instructions are included and run automatically* 
 
 * **System Tuning**
   
@@ -113,7 +114,7 @@ Step 3: Verify NTP and Tuning Parameters
 
 
 
-.. _install_centos_step4:
+.. _install_el_step4:
 
 Step 4: Firewall and Security Considerations 
 -------------------------------------------- 
@@ -133,16 +134,16 @@ ESnet provides a file containing all R&E subnets, which is updated nightly. Inst
 
 Note that the perfsonar-toolkit-security package is automatically included in the perfsonar-toolkit bundle.
 
-.. _install_centos_step5:
+.. _install_el_step5:
 
 Step 5: Auto updates
 --------------------
 
-You can also enable yum ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this follow the steps in :ref:`manage_update-auto-cli`.
+You can also enable dnf ‘auto updates’ to ensure you always have the most current and hopefully most secure packages. To do this follow the steps in :ref:`manage_update-auto-cli`.
 
 .. note:: Automatic updates are enabled by default in the perfSONAR Toolkit.
 
-.. _install_centos_step6:
+.. _install_el_step6:
 
 Step 6: Service Watcher
 ------------------------
@@ -154,7 +155,7 @@ To run the script manually, run::
 
   /usr/lib/perfsonar/scripts/service_watcher
 
-.. _install_centos_step7:
+.. _install_el_step7:
 
 Step 7: Register your services 
 ------------------------------- 
@@ -164,7 +165,7 @@ See :doc:`manage_admin_info`.
 
 No actual configuration is required but filling fields such as administrator_email, site_name, city, country, latitude, longitude, etc. are **highly recommended**. You can add these by removing the leading `#` of any property and filling it out with a proper value for your host. Changes will be picked-up automatically without need for any restarts.
 
-.. _install_centos_step8:
+.. _install_el_step8:
 
 Step 8: Starting your services 
 ------------------------------- 

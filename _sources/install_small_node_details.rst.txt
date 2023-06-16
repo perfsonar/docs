@@ -24,7 +24,7 @@ Please note that the perfSONAR team is not formally endorsing any particular pro
 System Requirements
 ===================
 
-ARM-based devices seem to work best running Ubuntu, while the slightly larger, $200-class nodes will usually work with CentOS, Debian or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on CentOS 7 and Ubuntu 18/20, and Debian 10. We provide compatible Debian packages for 6 different hardware architectures:
+ARM-based devices seem to work best running Ubuntu, while the slightly larger, $200-class nodes will usually work with EL, Debian or Ubuntu. The :doc:`perfsonar-testpoint <install_options>` bundle works on CentOS 7 and Ubuntu 18/20, and Debian 10. We provide compatible Debian packages for 6 different hardware architectures:
 
   * 64-bit (amd64)
   * ARMv7 and up (armhf) - not recommended for the full testpoint bundle
@@ -38,7 +38,7 @@ Installation Instructions
 
 The :doc:`perfsonar-testpoint <install_options>` bundle can be used to install everything you need to add a low-end node to a centrally managed task template with a central measurement archive. See: 
 
-- :doc:`install_centos`
+- :doc:`install_el`
 - :doc:`install_debian`
 
 Certain devices like the Liva use an EMMC drive that is only supported in the *deskop* version of Ubuntu. 
