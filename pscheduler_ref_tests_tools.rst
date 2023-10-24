@@ -84,6 +84,11 @@ trace
 :Description: Trace the path between IP hosts
 :Tools: traceroute, tracepath, paris-traceroute
 
+mtu
+###########
+:Description: Measure Maximum Transmission Unit (MTU)
+:Tools: None
+
 .. _pscheduler_ref_tests_tools-test_classifications:
 
 Test Classifications
@@ -318,3 +323,21 @@ DNS tests support the following arguments::
   --record=RECORD          Record type to query  (One of a, aaaa, ns, cname, soa, ptr, mx and txt)
   --query=QUERY            String to query
   --timeout=TIMEOUT        Timeout for each query attempt
+
+mtu Tests
+==========
+
+MTU tests support the following arguments::
+
+  pscheduler task mtu --help
+  Usage: task [task-options] mtu [test-options]
+
+  -h, --help            show this help message and exit
+  --source=SOURCE       Sending host  --source-node=SOURCE_NODE
+                        pScheduler node on sending host, if different
+  --dest=DEST           Receiving host
+  --port=PORT           Receiving port. Defaults to 1060.
+
+You may have to add a firewall rule for port 1060 for this test to function properly::
+
+  firewall-cmd --zone=public --add-port=1060/tcp --permanent
