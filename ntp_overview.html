@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>NTP Overview &#8212; perfSONAR Toolkit 5.0.5 documentation</title>
+    <title>NTP Overview &#8212; perfSONAR Toolkit 5.0.6 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -52,7 +52,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.6 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">NTP Overview</a></li> 
       </ul>
     </div>
@@ -85,7 +85,7 @@
 </div></blockquote>
 <ul class="simple">
 <li><p>Many U.S. Laboratories, Universities, and Network Providers have public NTP servers that can be leveraged, if you cannot find a public list for a specific site, sending an email may be a good way to find out.</p></li>
-<li><p>Secure NTP against misuse.  This typically means now allowing external entities to query your NTP status by inserting rules that only allow your subnet to poll the server.  This will prevent attacks like NTP amplification.</p></li>
+<li><p>Secure NTP against misuse. This typically means not allowing external entities to query your NTP status by inserting rules that only allow your subnet to poll the server. This will prevent attacks like NTP amplification.</p></li>
 </ul>
 <p>Once NTP is configured, it will take a day to fully stabilize a clock.  This process happens quickly at first (e.g. sending a set of small synchronization packets every 60 seconds), and then slows down by querying on the order of minutes.  Clock synchronization packets are UDP, and typically use port 123.</p>
 <section id="viewing-ntp-status">
@@ -130,7 +130,7 @@ synchronised to NTP server (198.124.252.126) at stratum 2
 <section id="statement-on-precision-time-protocol-ptp">
 <h2>Statement on Precision Time Protocol (PTP)<a class="headerlink" href="#statement-on-precision-time-protocol-ptp" title="Permalink to this heading">¶</a></h2>
 <p>There have been reports that perfSONAR produces inaccurate or impossible (negative) results when testing transit time on networks whose latency is in the sub-millisecond range, i.e., less than the clock accuracy provided by the Network Time Protocol served by hosts on the Internet.   This is expected, although not necessarily desirable, behavior.  It has further been suggested that perfSONAR should integrate support for the IEEE 1588 Precision Time Protocol (PTP), which can discipline a computer’s clock to within tens of microseconds, eliminating this problem.</p>
-<p>The perfSONAR development team’s goal is to provide the most accurate measurements in as many situations as possible. When we last reviewed the potential to add PTP support to perfSONAR in 2015, there were two factors that led us to deduce that it was not timely. First, the primary mission of perfSONAR is identifying network problems along paths between domains, and thus for most cases the latency will be large enough that NTP’s millisecind accuracy is sufficient. But more importantly, second, both the level of support in network hardware, and its cost, was prohibitive at that time.</p>
+<p>The perfSONAR development team’s goal is to provide the most accurate measurements in as many situations as possible. When we last reviewed the potential to add PTP support to perfSONAR in 2015, there were two factors that led us to deduce that it was not timely. First, the primary mission of perfSONAR is identifying network problems along paths between domains, and thus for most cases the latency will be large enough that NTP’s millisecond accuracy is sufficient. But more importantly, second, both the level of support in network hardware, and its cost, was prohibitive at that time.</p>
 <p>While it is possible for installations requiring better accuracy to install local stratum-1 NTP servers, some of which can be had for under US$500 and have been known to discipline clients’ clocks to well under a quarter millisecond, there are now reasons why the perfSONAR project is revisiting PTP.</p>
 <p>First, a growing number of National Research and Education Networks (NRENs) are deploying or beginning to deploy PTP, or services like White Rabbit that use PTP, in their production networks. While their primary use cases may be in other areas, e.g., to provide resilience via a national metrology institute to GPS-based time sources, or to enhance security-related applications like SIEM, once a more accurate time source is available its application to one way delay measurement in principle becomes possible. The NRENs may also then extend their PTP-based time service to their member organisations. Second, the availablility of hardware - network devices and NICs - with PTP support is now much wider, and its cost no longer a blocking factor. Third, there is now an extension to the OWAMP protocol used by perfSONAR to support the PTP timestamp format (RFC 8186). And last but not least, there are now more users expressing an interest in deploying perfSONAR to measure network characteristics in campus networks and data centres scenarios where the one way delay will be significantly under 1ms.</p>
 <p>At the team’s meeting in Amsterdam in August 2023, these factors were discussed and it was agreed that the team would explore the pieces required to introduce PTP support to perfSONAR, whether through changes to the existing owping tool, or perhaps by authoring a new test tool. It would seek practical experience in hwardware timestamping.  And the team will also look to evaluate the observed timing accuracy for perfSONAR nodes that are synchronised through PTP (independently of any future test type that uses PTP timestamping).</p>
@@ -170,7 +170,7 @@ synchronised to NTP server (198.124.252.126) at stratum 2
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.6 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">NTP Overview</a></li> 
       </ul>
     </div>
