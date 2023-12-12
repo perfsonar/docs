@@ -55,61 +55,11 @@ Q: How do I disable global registration?
         
         systemctl stop perfsonar-lsregistrationdaemon
         systemctl disable perfsonar-lsregistrationdaemon
-
-Q: Can I boot from a USB key instead of a DVD?
-==============================================
-
-**A:** The perfSONAR Toolkit Netinstall and FullInstall images are capable of being installed on a USB stick instead of a DVD. To write these images to the media, we recommend using dd, such as::
- 
- sudo dd if=pS-Toolkit-VERSION-FullInstall-x86_64.iso of=/dev/disk3
- 
-
-Q: During the NetInstall, I see errors about a corrupt file being downloaded. What should I do?
-================================================================================================
-**A:** During the NetInstall, you may see some errors about a corrupt file being downloaded along with buttons like Reboot and Retry. This happens if it fails to download an RPM from a mirror, which can happen for numerous reasons. Usually, that error can be solved by hitting Retry. You may have to hit that multiple times depending on which mirrors the install is trying to download the RPM from.
-
-Q: When trying a clean install with perfSONAR Toolkit, the system doesn't recognize any disks/doesn't see my RAID controller. Things work with other operating systems. What should I do?
-=================================================================================================================================================================================================================================
-
-**A:** You can try one of the vanilla CentOS images at http:://www.centos.org and then install the necessary packages via yum::
-
-    yum install perfsonar-toolkit
-
-If that does not work, it sounds like an operating system issue and beyond the scope of perfSONAR.
-
-Q: I would like to install and patch perfsonar boxes behind a web proxy, is it possible to specify this on the grub command line?
-======================================================================================================================================================
-**A:** Anaconda documentation indicates this grub parameter should do the trick::
- 
- proxy=[protocol://][username[:password]@]host[:port]
- 
-Note that during a fresh network installation, Anaconda does install updates immediately (e.g. it wouldn't use a version of an RPM from when the ISO was built), and doesn't actually run any network services before the reboot. 
  
 Q: Which repository addresses will be used to get updates to the perfSONAR software?
 ========================================================================================================================================================================================
 **A:** By default, the perfSONAR repo points at a mirror list hosted by software.internet2.edu. In this mirror list is linux.mirrors.es.net. In order to use the default configuration you will need to allow access to software.internet2.edu so you can grab the mirrorlist. After that, the packages can be downloaded from any of the sites listed which includes linux.mirrors.es.net, software.internet2.edu, and a few other places. You should be able to get away with just opening up access to software.internet2.edu (so it can get the mirror list) and linux.mirrors.es.net (so you can get the packages). 
 Those should be the only places you need as linux.mirrors.es.net also has a mirror for all the base CentOS packages.
-
-Q: Is there a way to re-image perfSONAR resources remotely?
-========================================================================================================================================================================================
-**A:** If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a DVD or USB would be mounted.
-As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance, some services support "virtual media" if they contain a DRACs with the enterprise feature set enabled.
-For a more general solution, and going on the assumption that remote console access is available to a servers, consider a package called iPXE. iPXE can attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are::
-
- set net0/ip 10.9.8.7
- set net0/netmask 255.255.255.0
- set net0/gateway 10.9.8.1
- set dns 10.9.8.2
- sanboot http://server.example.net/toolkit.iso
-
-If DHCP is available, the process is considerably simpler::
-
- dhcp
- sanboot http://server.example.net/toolkit.iso
- 
-Any HTTP server used to serve the ISO must support range requests. The standard Apache on most systems will.
-Note that iPXE needs to be on a bootable medium, and it’s operationally better when separate from the disk in the machine. This means that remote locations will need to have something like a USB stick installed. Once in place, set the BIOS to ignore it and boot it explicitly when needed. Since it’s a regular USB device, it can be updated remotely while the main OS is running.
-
 
 
 Q: I am trying to run perfSONAR on low-cost hardware (e.g. raspberry pi, etc.). Where should I start?
@@ -144,6 +94,11 @@ Q: How do you upgrade a perfSONAR node from Debian 7 to Debian 9
     #. Reboot (to get systemd running)
     #. Change perfSONAR repository from perfsonar-wheezy-release to perfsonar-release
     #. Upgrade Debian 8 to Debian 9 (following Debian instructions, here are `Stretch upgrade notes for i386 architecture <https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html>`_)
+
+Q: Why can't my Debian/Ubuntu host find ping?
+================================================================
+
+**A:** Run ``apt reinstall iputils-ping`` to fix the issue. This was caused by a bug in the paris-traceroute package that installed a non-standard version of ping that required sudo. This was removed in perfSONAR 5.0.5 which left some systems without a ping command.
 
 
 Tool Questions
