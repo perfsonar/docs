@@ -126,57 +126,10 @@
 </pre></div>
 </div>
 </section>
-<section id="q-can-i-boot-from-a-usb-key-instead-of-a-dvd">
-<h3>Q: Can I boot from a USB key instead of a DVD?<a class="headerlink" href="#q-can-i-boot-from-a-usb-key-instead-of-a-dvd" title="Permalink to this heading">¶</a></h3>
-<p><strong>A:</strong> The perfSONAR Toolkit Netinstall and FullInstall images are capable of being installed on a USB stick instead of a DVD. To write these images to the media, we recommend using dd, such as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">dd</span> <span class="k">if</span><span class="o">=</span><span class="n">pS</span><span class="o">-</span><span class="n">Toolkit</span><span class="o">-</span><span class="n">VERSION</span><span class="o">-</span><span class="n">FullInstall</span><span class="o">-</span><span class="n">x86_64</span><span class="o">.</span><span class="n">iso</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk3</span>
-</pre></div>
-</div>
-</section>
-<section id="q-during-the-netinstall-i-see-errors-about-a-corrupt-file-being-downloaded-what-should-i-do">
-<h3>Q: During the NetInstall, I see errors about a corrupt file being downloaded. What should I do?<a class="headerlink" href="#q-during-the-netinstall-i-see-errors-about-a-corrupt-file-being-downloaded-what-should-i-do" title="Permalink to this heading">¶</a></h3>
-<p><strong>A:</strong> During the NetInstall, you may see some errors about a corrupt file being downloaded along with buttons like Reboot and Retry. This happens if it fails to download an RPM from a mirror, which can happen for numerous reasons. Usually, that error can be solved by hitting Retry. You may have to hit that multiple times depending on which mirrors the install is trying to download the RPM from.</p>
-</section>
-<section id="q-when-trying-a-clean-install-with-perfsonar-toolkit-the-system-doesn-t-recognize-any-disks-doesn-t-see-my-raid-controller-things-work-with-other-operating-systems-what-should-i-do">
-<h3>Q: When trying a clean install with perfSONAR Toolkit, the system doesn’t recognize any disks/doesn’t see my RAID controller. Things work with other operating systems. What should I do?<a class="headerlink" href="#q-when-trying-a-clean-install-with-perfsonar-toolkit-the-system-doesn-t-recognize-any-disks-doesn-t-see-my-raid-controller-things-work-with-other-operating-systems-what-should-i-do" title="Permalink to this heading">¶</a></h3>
-<p><strong>A:</strong> You can try one of the vanilla CentOS images at <a class="reference external" href="http:://www.centos.org">http:://www.centos.org</a> and then install the necessary packages via yum:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">toolkit</span>
-</pre></div>
-</div>
-<p>If that does not work, it sounds like an operating system issue and beyond the scope of perfSONAR.</p>
-</section>
-<section id="q-i-would-like-to-install-and-patch-perfsonar-boxes-behind-a-web-proxy-is-it-possible-to-specify-this-on-the-grub-command-line">
-<h3>Q: I would like to install and patch perfsonar boxes behind a web proxy, is it possible to specify this on the grub command line?<a class="headerlink" href="#q-i-would-like-to-install-and-patch-perfsonar-boxes-behind-a-web-proxy-is-it-possible-to-specify-this-on-the-grub-command-line" title="Permalink to this heading">¶</a></h3>
-<p><strong>A:</strong> Anaconda documentation indicates this grub parameter should do the trick:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">proxy</span><span class="o">=</span><span class="p">[</span><span class="n">protocol</span><span class="p">:</span><span class="o">//</span><span class="p">][</span><span class="n">username</span><span class="p">[:</span><span class="n">password</span><span class="p">]</span><span class="o">@</span><span class="p">]</span><span class="n">host</span><span class="p">[:</span><span class="n">port</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Note that during a fresh network installation, Anaconda does install updates immediately (e.g. it wouldn’t use a version of an RPM from when the ISO was built), and doesn’t actually run any network services before the reboot.</p>
-</section>
 <section id="q-which-repository-addresses-will-be-used-to-get-updates-to-the-perfsonar-software">
 <h3>Q: Which repository addresses will be used to get updates to the perfSONAR software?<a class="headerlink" href="#q-which-repository-addresses-will-be-used-to-get-updates-to-the-perfsonar-software" title="Permalink to this heading">¶</a></h3>
 <p><strong>A:</strong> By default, the perfSONAR repo points at a mirror list hosted by software.internet2.edu. In this mirror list is linux.mirrors.es.net. In order to use the default configuration you will need to allow access to software.internet2.edu so you can grab the mirrorlist. After that, the packages can be downloaded from any of the sites listed which includes linux.mirrors.es.net, software.internet2.edu, and a few other places. You should be able to get away with just opening up access to software.internet2.edu (so it can get the mirror list) and linux.mirrors.es.net (so you can get the packages).
 Those should be the only places you need as linux.mirrors.es.net also has a mirror for all the base CentOS packages.</p>
-</section>
-<section id="q-is-there-a-way-to-re-image-perfsonar-resources-remotely">
-<h3>Q: Is there a way to re-image perfSONAR resources remotely?<a class="headerlink" href="#q-is-there-a-way-to-re-image-perfsonar-resources-remotely" title="Permalink to this heading">¶</a></h3>
-<p><strong>A:</strong> If the intention is to use the perfSONAR ISO as the base, the installer just needs view the installation medium like a DVD or USB would be mounted.
-As for specifics of a mechanism to remotely install, consult the documentation of your server. For instance, some services support “virtual media” if they contain a DRACs with the enterprise feature set enabled.
-For a more general solution, and going on the assumption that remote console access is available to a servers, consider a package called iPXE. iPXE can attach an ISO via iSCSI or HTTP, so all that is needed is to put up a server the remote machines can reach. The commands to do it are:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="n">net0</span><span class="o">/</span><span class="n">ip</span> <span class="mf">10.9.8.7</span>
-<span class="nb">set</span> <span class="n">net0</span><span class="o">/</span><span class="n">netmask</span> <span class="mf">255.255.255.0</span>
-<span class="nb">set</span> <span class="n">net0</span><span class="o">/</span><span class="n">gateway</span> <span class="mf">10.9.8.1</span>
-<span class="nb">set</span> <span class="n">dns</span> <span class="mf">10.9.8.2</span>
-<span class="n">sanboot</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">toolkit</span><span class="o">.</span><span class="n">iso</span>
-</pre></div>
-</div>
-<p>If DHCP is available, the process is considerably simpler:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dhcp</span>
-<span class="n">sanboot</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">toolkit</span><span class="o">.</span><span class="n">iso</span>
-</pre></div>
-</div>
-<p>Any HTTP server used to serve the ISO must support range requests. The standard Apache on most systems will.
-Note that iPXE needs to be on a bootable medium, and it’s operationally better when separate from the disk in the machine. This means that remote locations will need to have something like a USB stick installed. Once in place, set the BIOS to ignore it and boot it explicitly when needed. Since it’s a regular USB device, it can be updated remotely while the main OS is running.</p>
 </section>
 <section id="q-i-am-trying-to-run-perfsonar-on-low-cost-hardware-e-g-raspberry-pi-etc-where-should-i-start">
 <h3>Q: I am trying to run perfSONAR on low-cost hardware (e.g. raspberry pi, etc.). Where should I start?<a class="headerlink" href="#q-i-am-trying-to-run-perfsonar-on-low-cost-hardware-e-g-raspberry-pi-etc-where-should-i-start" title="Permalink to this heading">¶</a></h3>
@@ -210,6 +163,10 @@ Don’t <em>restart</em> the journaling service (i.e., don’t do “systemctl r
 <li><p>Upgrade Debian 8 to Debian 9 (following Debian instructions, here are <a class="reference external" href="https://www.debian.org/releases/stretch/i386/release-notes/ch-upgrading.en.html">Stretch upgrade notes for i386 architecture</a>)</p></li>
 </ol>
 </div></blockquote>
+</section>
+<section id="q-why-can-t-my-debian-ubuntu-host-find-ping">
+<h3>Q: Why can’t my Debian/Ubuntu host find ping?<a class="headerlink" href="#q-why-can-t-my-debian-ubuntu-host-find-ping" title="Permalink to this heading">¶</a></h3>
+<p><strong>A:</strong> Run <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">reinstall</span> <span class="pre">iputils-ping</span></code> to fix the issue. This was caused by a bug in the paris-traceroute package that installed a non-standard version of ping that required sudo. This was removed in perfSONAR 5.0.5 which left some systems without a ping command.</p>
 </section>
 </section>
 <section id="tool-questions">
@@ -469,16 +426,12 @@ $PG_DUMP \
 <li><a class="reference internal" href="#q-what-should-i-enter-for-the-communities-section-of-my-administrative-information-configuration">Q: What should I enter for the <em>Communities</em> section of my <em>Administrative Information</em> configuration?</a></li>
 <li><a class="reference internal" href="#q-i-do-not-think-i-am-a-member-of-a-community-should-i-put-anything">Q: I do not think I am a member of a community, should I put anything?</a></li>
 <li><a class="reference internal" href="#q-how-do-i-disable-global-registration">Q: How do I disable global registration?</a></li>
-<li><a class="reference internal" href="#q-can-i-boot-from-a-usb-key-instead-of-a-dvd">Q: Can I boot from a USB key instead of a DVD?</a></li>
-<li><a class="reference internal" href="#q-during-the-netinstall-i-see-errors-about-a-corrupt-file-being-downloaded-what-should-i-do">Q: During the NetInstall, I see errors about a corrupt file being downloaded. What should I do?</a></li>
-<li><a class="reference internal" href="#q-when-trying-a-clean-install-with-perfsonar-toolkit-the-system-doesn-t-recognize-any-disks-doesn-t-see-my-raid-controller-things-work-with-other-operating-systems-what-should-i-do">Q: When trying a clean install with perfSONAR Toolkit, the system doesn’t recognize any disks/doesn’t see my RAID controller. Things work with other operating systems. What should I do?</a></li>
-<li><a class="reference internal" href="#q-i-would-like-to-install-and-patch-perfsonar-boxes-behind-a-web-proxy-is-it-possible-to-specify-this-on-the-grub-command-line">Q: I would like to install and patch perfsonar boxes behind a web proxy, is it possible to specify this on the grub command line?</a></li>
 <li><a class="reference internal" href="#q-which-repository-addresses-will-be-used-to-get-updates-to-the-perfsonar-software">Q: Which repository addresses will be used to get updates to the perfSONAR software?</a></li>
-<li><a class="reference internal" href="#q-is-there-a-way-to-re-image-perfsonar-resources-remotely">Q: Is there a way to re-image perfSONAR resources remotely?</a></li>
 <li><a class="reference internal" href="#q-i-am-trying-to-run-perfsonar-on-low-cost-hardware-e-g-raspberry-pi-etc-where-should-i-start">Q: I am trying to run perfSONAR on low-cost hardware (e.g. raspberry pi, etc.). Where should I start?</a></li>
 <li><a class="reference internal" href="#q-i-am-running-a-small-node-and-seeing-a-lot-of-io-what-is-going-on">Q: I am running a small node, and seeing a lot of IO. What is going on?</a></li>
 <li><a class="reference internal" href="#q-where-can-i-find-more-resources-regarding-timekeeping-for-vmware-virtual-machines">Q: Where can I find more resources regarding timekeeping for VMWare Virtual Machines?</a></li>
 <li><a class="reference internal" href="#q-how-do-you-upgrade-a-perfsonar-node-from-debian-7-to-debian-9">Q: How do you upgrade a perfSONAR node from Debian 7 to Debian 9</a></li>
+<li><a class="reference internal" href="#q-why-can-t-my-debian-ubuntu-host-find-ping">Q: Why can’t my Debian/Ubuntu host find ping?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#tool-questions">Tool Questions</a><ul>
