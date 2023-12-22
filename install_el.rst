@@ -1,9 +1,6 @@
 ************************************************************
 Bundle Installation on RedHat Enterprise Linux Variants 
 ************************************************************
- 
-note:: For older CentOS 7 installation see :doc:`install_centos`
-
 
 perfSONAR combines various sets of measurement tools and services bundled in different useful ways. RPMs are available that install the bundles described in :doc:`install_options`. The steps in the remaining sections of this document detail the steps required for installing these bundles.
 
@@ -11,7 +8,7 @@ System Requirements
 ==================== 
 * **Operating System:**
 
-  * **Alma 8, Alma 9, Rocky 8 or Rocky 9** x86_64 installations are supported. Other RedHat-based operating systems may work, but are not officially supported at this time.
+  * **Alma 9 or Rocky 9** x86_64 installations are supported. Other RedHat-based operating systems based on EL9 may work, but are not officially supported at this time.
   * See :doc:`install_hardware` for hardware requirements and more.
 
 .. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
@@ -25,29 +22,19 @@ Installation
 
 Step 1: Configure DNF 
 ---------------------- 
-.. note:: If your system is using dnf/yum priorities make sure that repositories required for perfSONAR are higher priority than anything else to avoid conflicts with older versions. Please note that yum maintainers do not recommend using priorities.
+.. note:: If your system is using dnf priorities make sure that repositories required for perfSONAR are higher priority than anything else to avoid conflicts with older versions. Please note that dnf maintainers do not recommend using priorities.
 
 The process configures dnf to point at the necessary repositories to get packages needed for perfSONAR. **You will need to follow the steps below as privileged user**:
-
-.. note:: All commands work on both EL8 and EL9 based operating systems unless otherwise indicated
 
 #. Install the EPEL RPM::
 
     dnf install epel-release
 
-#. **EL8-only** Enable the PowerTools repository on an EL8 system::
-
-    dnf config-manager --set-enabled powertools
-
-#. **EL9-only** Enable the CBR repository on an EL9 system::
+#. Enable the CBR repository::
 
     dnf config-manager --set-enabled crb
 
-#. **EL8-only** Install the perfsonar-repo RPM for EL8::
-
-    dnf install http://software.internet2.edu/rpms/el8/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
-
-#. **EL9-only** Install the perfsonar-repo RPM for EL9::
+#. Install the perfsonar-repo RPM for EL9::
 
     dnf install http://software.internet2.edu/rpms/el9/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
 
@@ -145,19 +132,7 @@ You can also enable dnf ‘auto updates’ to ensure you always have the most cu
 
 .. _install_el_step6:
 
-Step 6: Service Watcher
-------------------------
-The ``perfsonar-toolkit-servicewatcher`` installs scripts that check if important processes are running and restarts if they have stopped unexpectedly. 
-
-The install automatically configures cron to run the service_watcher regularly.
-
-To run the script manually, run::
-
-  /usr/lib/perfsonar/scripts/service_watcher
-
-.. _install_el_step7:
-
-Step 7: Register your services 
+Step 6: Register your services 
 ------------------------------- 
 
 Note: this step can be done through the web interface if the perfsonar-toolkit bundle was installed. 
@@ -165,9 +140,9 @@ See :doc:`manage_admin_info`.
 
 No actual configuration is required but filling fields such as administrator_email, site_name, city, country, latitude, longitude, etc. are **highly recommended**. You can add these by removing the leading `#` of any property and filling it out with a proper value for your host. Changes will be picked-up automatically without need for any restarts.
 
-.. _install_el_step8:
+.. _install_el_step7:
 
-Step 8: Starting your services 
+Step 7: Starting your services 
 ------------------------------- 
 All services should be started after install. Additionally, you can start all the services by rebooting the host since all are configured to run by default. In order to check services status issue the following commands::
 

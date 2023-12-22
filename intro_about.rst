@@ -26,6 +26,7 @@ perfSONAR includes numerous utilities responsible for carrying out the actual ne
     * tracepath_ - Another path trace tool that also measures path MTU
     * paris-traceroute_ - A packet trace tool that attempts to identify paths in the presence of load balancers
     * ping_ - The classic utility for determining reachability, round-trip time (RTT) and basic packet loss.
+    * `Many More <https://github.com/perfsonar/pscheduler>`_ - perfSONAR has a plugin architecture that supports many other tools such as measuring DNS and HTTP performance with more being added all the time. 
 
 .. _intro_about-scheduling:
 
@@ -43,7 +44,7 @@ More information on using the pScheduler can be found in the section :ref:`index
 
 Archiving
 ----------
-The archiving layer currently consists of components that store measurement information as time-series data. This layer is often referred to as the *measurement archive (MA)* and the plug-in architecture of pScheduler allows flexibility in what software is used at this layer. The default that ships with perfSONAR is a combinaton of `Logstash <https://www.elastic.co/logstash/>`_ and `OpenSearch <https://opensearch.org/>`_. These are externally developed open source components that add aadditional metdata and allow it to be queried in a flexible manner. The components can be installed on each measurement host if they meet hardware requirements or a single central instance may store results from multiple measurement hosts. For more information see :doc:`multi_ma_install`.
+The archiving layer currently consists of components that store measurement information as time-series data. This layer is often referred to as the *measurement archive (MA)* and the plug-in architecture of pScheduler allows flexibility in what software is used at this layer. The default that ships with perfSONAR is a combinaton of `Logstash <https://www.elastic.co/logstash/>`_ and `OpenSearch <https://opensearch.org/>`_. These are externally developed open source components that add additional metdata and allow it to be queried in a flexible manner. The components can be installed on each measurement host if they meet hardware requirements or a single central instance may store results from multiple measurement hosts. For more information see :doc:`multi_ma_install`.
 
 .. note: The :doc:`pScheduler<pscheduler_intro>` component does allow the creation of plug-ins for sending results to other types of archives, this is just the setup included with relevant perfSONAR bundles by default. See :doc:`pscheduler_ref_archivers` for a list of a few other options currently available as plug-ins. 
 
@@ -60,7 +61,7 @@ The configuration layer is where desired measurements are defined along with ins
 pSConfig assists with these challenges by providing agents to automate each of the configuration tasks listed above. This includes:
 
     #. **pSconfig pScheduler Agent** - The agent responsible for reading a template and configuring the tasks defined in pScheduler. See :doc:`psconfig_pscheduler_agent` for more details on this agent.
-    #. **pSConfig MaDDash Agent** - The agent responsible for reading a template and configuring MaDDash to display the results of defined tasks in a dashboard. See :doc:`psconfig_maddash_agent` for more details on this agent.
+    #. **pSConfig Grafana Agent** - The agent responsible for reading a template and configuring Grafana to display the results of defined tasks in a dashboard. See :doc:`psconfig_maddash_agent` for more details on this agent.
 
 For complete information on pSConfig start with :doc:`psconfig_intro` for more details on pSConfig basic concepts/terminology.
 
@@ -72,12 +73,11 @@ Visualization
 
 perfSONAR also includes components for visualizing the data. These components provide a window into the data and are the primary way most operators analyze and identify network issues.  The primary tools provided by the main perfSONAR project are:
 
-    * **Graphs** - The perfSONAR graphs package provides a set of graphs that display the various measurements over time and provide useful information about the hosts involved. See :doc:`using_graphs` for more detail.
-    * **MaDDash** - This component queries the :ref:`archiving layer <intro_about-archiving>` periodically for measurements and displays a dashboard indicating the performance of each relative to a set of defined thresholds. It can also send alerts based on patterns in the dashboard. See the :doc:`MaDDash documentation <maddash_intro>` for more details.
+    * **Grafana** - perfSONAR provides dashboards for the `Grafana <https://grafana.com/>`_ visualization framework. The dashboards display the various measurements over time and provide useful information about the hosts involved.
+    * **OpenSearch Dashbaords** - `OpenSearch Dashboards <https://opensearch.org/docs/latest/dashboards/index/>`_ is an interface to OpenSearch that allows you to view data and access various OpenSearch settings.
 
 In addition to displaying results, there are also graphical interfaces available for configuring perfSONAR components:
 
-    * **Toolkit GUI** - This ships with every perfSONAR Toolkit and allows defining tasks for the local pSConfig pScheduler agent. See :doc:`manage_regular_tests` for more details.
     * **pSConfig Web Admin** - This is a web-based application for defining remote templates that can be read by the pSConfig Agents. See :doc:`pwa` for more details.
     
 .. _intro_about-discovery:
@@ -96,5 +96,4 @@ In general, no configuration is needed of the registration component but for a g
 .. _nuttcp: https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/nuttcp/
 .. _traceroute: https://linux.die.net/man/8/traceroute
 .. _tracepath: https://linux.die.net/man/8/tracepath
-.. _paris-traceroute: http://manpages.ubuntu.com/manpages/trusty/man8/paris-traceroute.8.html
 .. _ping: https://linux.die.net/man/8/ping

@@ -72,11 +72,10 @@ perfSONAR hosts are just like any other host and need to be actively managed to 
   * An important aspect of security is to stay informed. Multiple system administrators from your site should be subscribed to the perfsonar security `announcement list <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_. This mailing list keeps users up-to-date on actions that need to be taken when critical security updates for both perfSONAR and third-party packages are released. 
   * Always follow best common security practices when it comes to creating user accounts and choosing passwords. Normal precautions should be taken to protect the root password as it can be used to make changes to the system. For example, safe password practices would recommend a password that contains a mixture of letters of different case, numbers, symbols, and a length greater than 8.  It is also not recommend to re-use passwords on multiple machines, in the event of a system breach.
   * If you have enabled SSH on the system, consider restricting access to specific subnets to the SSH port via IPTables, or implement a *jump host* that allows only logins from one location.  
-  * Consider configuring rsyslog to send logs to other locations for aggregation and analysis
+  * Consider configuring syslog to send logs to other locations for aggregation and analysis
   * If email has been enabled on the host, forward email from root to a central location
   * If applicable, use a management network on a spare networking interface to further restrict the access profile for users and system data.  
-  * If your site uses any form of automated management (CFEngine, Puppet, Forman, etc.), integrate the perfSONAR node into this procedure.  
-  * If you run `Nagios <http://www.nagios.org>`_, add your perfSONAR host to your monitoring infrastructure. Consider running some of the nagios `security plugins <http://exchange.nagios.org/directory/Plugins/Security#/>`_ such as `check_yum <http://exchange.nagios.org/directory/Plugins/Operating-Systems/Linux/check_yum/details>`_
+  * If your site uses any form of automated management (e.g. Ansible), integrate the perfSONAR node into this procedure.  
   * Automatic updates are enabled by default on all perfSONAR Toolkit hosts. In order to understand how to update your Toolkit and if automatic updates are right for your system, see :doc:`manage_update`
   * The perfSONAR Toolkit ships with a default iptables rule-set and intrusion detection system (IDS) software. In order to learn more about these components and how to do things like add custom firewall rules see :doc:`manage_security`
 

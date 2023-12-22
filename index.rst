@@ -35,7 +35,6 @@ Installation
    install_quick_start
    install_config_first_time
    install_el
-   install_centos
    install_debian
    install_docker
    install_ansible
@@ -80,7 +79,6 @@ Running Measurements with pScheduler
    pscheduler_ref_tests_tools
    pscheduler_ref_archivers
    pscheduler_ref_contexts
-   pscheduler_ref_bwctl
    pscheduler_disk_to_disk
    
 Managing Multiple Hosts with pSConfig
