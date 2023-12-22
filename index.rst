@@ -39,6 +39,7 @@ Installation
    install_docker
    install_ansible
    manage_update
+   cookbook_central_archive
 
 .. _index-toolkit:
 
