@@ -1,0 +1,454 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Batch Processing &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuring pScheduler Limits" href="config_pscheduler_limits.html" />
+    <link rel="prev" title="Running a pScheduler Server" href="pscheduler_server_running.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfsonar-logo-black-full-100.png"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="config_pscheduler_limits.html" title="Configuring pScheduler Limits"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Batch Processing</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="batch-processing">
+<h1>Batch Processing<a class="headerlink" href="#batch-processing" title="Permalink to this heading">¶</a></h1>
+<p>pScheduler can be used to run a series of tasks, called a <em>batch</em>,
+from the command line and return the results for further processing by
+other programs.</p>
+<p>Each task is referred to as a <em>job</em>.</p>
+<p>Jobs can be done singly or in multiple <em>iterations</em> with the latter
+being possible serially or in parallel.</p>
+<section id="invocation">
+<span id="pscheduler-batch-invocation"></span><h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this heading">¶</a></h2>
+<p>The batch processor is started using a <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">batch</span> <span class="p">[</span> <span class="n">OPTIONS</span> <span class="p">]</span> <span class="p">[</span> <span class="n">INPUT</span><span class="o">-</span><span class="n">FILE</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> control the batch processor’s behavior and can be listed
+using the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">INPUT-FILE</span></code> is a path to the input.  If not provided or is
+<code class="docutils literal notranslate"><span class="pre">-</span></code>, input will be taken from the standard input.</p>
+<p>The final result (see <span class="xref std std-doc">_pscheduler_batch_output</span>) is sent to the
+standard output.</p>
+<p>Error and diagnostic output will be sent to standard error.</p>
+</section>
+<section id="input">
+<span id="pscheduler-batch-input"></span><h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">¶</a></h2>
+<p>Input to the batch processor is JSON in the form of a single object
+containing three pairs, <code class="docutils literal notranslate"><span class="pre">global</span></code>, <code class="docutils literal notranslate"><span class="pre">jobs</span></code> and, optionally, a
+<code class="docutils literal notranslate"><span class="pre">schema</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">schema</span></code> describes which version of the batch specification is
+in use.  If none is provided, it defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.  Specific
+instances where other values are required are described below.</p>
+<section id="the-global-pair">
+<span id="pscheduler-batch-input-global"></span><h3>The <code class="docutils literal notranslate"><span class="pre">global</span></code> Pair<a class="headerlink" href="#the-global-pair" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">global</span></code> pair is an optional JSON object containing data and
+transforms provided or applied to all jobs.  It contains the following
+pairs, all optional:</p>
+<p><code class="docutils literal notranslate"><span class="pre">data</span></code> (Any JSON) - Data made available to all jq transforms as a
+variable named <code class="docutils literal notranslate"><span class="pre">$global</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">transform-pre</span></code> (pScheduler jq Transform) - A transform applied to
+the <code class="docutils literal notranslate"><span class="pre">task</span></code> object in each job before anything else is done.</p>
+<p><code class="docutils literal notranslate"><span class="pre">transform-post</span></code> (pScheduler jq Transform) - A transform applied to
+the <code class="docutils literal notranslate"><span class="pre">task</span></code> object in each job after <cite>transform-pre</cite> and the job’s
+<cite>task-transform</cite> have been applied.</p>
+</section>
+<section id="the-jobs-pair">
+<span id="pscheduler-batch-input-jobs"></span><h3>The <code class="docutils literal notranslate"><span class="pre">jobs</span></code> Pair<a class="headerlink" href="#the-jobs-pair" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">jobs</span></code> pair is an array of objects, each containing a single job:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;jobs&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span> <span class="o">...</span> <span class="n">Job</span> <span class="mi">1</span> <span class="o">..</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="o">...</span> <span class="n">Job</span> <span class="mi">2</span> <span class="o">..</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="o">...</span> <span class="n">Job</span> <span class="n">n</span> <span class="o">..</span> <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>A job is described in a JSON object containing the following pairs:</p>
+<p><code class="docutils literal notranslate"><span class="pre">label</span></code> (String) - A label for the job, used for reference in
+debugging output.</p>
+<p><code class="docutils literal notranslate"><span class="pre">enabled</span></code> (Boolean) - Determines whether or not the job is run.
+Defaults to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">iterations</span></code> (Number or JQ Transform) - The number of times to run
+the specified task.  If a JQ transform is provided, the script should
+calculate and return the number of iterations as an integer and the
+<code class="docutils literal notranslate"><span class="pre">schema</span></code> should be set to at least <code class="docutils literal notranslate"><span class="pre">3</span></code>.  Input to the transform is
+<code class="docutils literal notranslate"><span class="pre">null</span></code>; any external data required should be accessed via
+<code class="docutils literal notranslate"><span class="pre">$global</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">parallel</span></code> (Boolean) - Whether or not the job’s iterations should be
+run in parallel.  This defaults to <code class="docutils literal notranslate"><span class="pre">false</span></code> and implies <code class="docutils literal notranslate"><span class="pre">sync-start</span></code>
+(see below) unless <code class="docutils literal notranslate"><span class="pre">sync-start</span></code> is explicitly set <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">setup-time</span></code> (Boolean) - The amount of time expected for pScheduler to
+set up a single run.  The default of <code class="docutils literal notranslate"><span class="pre">PT15S</span></code> should be more than
+sufficient in most cases.  This is ignored if not doing a synchronized
+start (see <code class="docutils literal notranslate"><span class="pre">sync-start</span></code>, below).</p>
+<p><code class="docutils literal notranslate"><span class="pre">backoff</span></code> (String) - ISO8601 duration indicating how long each
+iteration run in parallel waits before being submitted to pScheduler.
+The first will have no backoff, the second will have the indicated
+backoff, the third will have twice that, etc.  This value is ignored
+if <code class="docutils literal notranslate"><span class="pre">parallel</span></code> is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">sync-start</span></code> (Boolean) - If running in parallel, set the start time of
+all iterations to be the same.  The time is based on the <code class="docutils literal notranslate"><span class="pre">number</span></code> of
+times the task is run, <code class="docutils literal notranslate"><span class="pre">backoff</span></code> and <code class="docutils literal notranslate"><span class="pre">setup-time</span></code>.  This value is
+ignored if <code class="docutils literal notranslate"><span class="pre">parallel</span></code> is <code class="docutils literal notranslate"><span class="pre">false</span></code>.  Note that tasks subject to
+restrictions on being run at the same time will not necessarily start
+in sync (or at all if no <code class="docutils literal notranslate"><span class="pre">slip</span></code> is allowed as part of the task’s
+<code class="docutils literal notranslate"><span class="pre">schedule</span></code> section.</p>
+<p><code class="docutils literal notranslate"><span class="pre">task</span></code> (Object or Array of Objects) - A pScheduler task
+specification as would be produced using the <code class="docutils literal notranslate"><span class="pre">task</span></code> command’s
+<code class="docutils literal notranslate"><span class="pre">--export</span></code> switch.  Note that if the specification contains a
+<code class="docutils literal notranslate"><span class="pre">schedule</span></code>, those parameters will be ignored.  If the value is an
+array, the contents of the array will be treated as a set of tasks and
+the number of iterations will be set to its length.  This overrides
+the contents of <code class="docutils literal notranslate"><span class="pre">iterations</span></code>.  Also note that a minimal batch
+containing a single task can be exported using the <code class="docutils literal notranslate"><span class="pre">--export</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--export-format</span> <span class="pre">batch</span></code> switches.</p>
+<p><code class="docutils literal notranslate"><span class="pre">task-transform</span></code> - A jq transform that operates on the <code class="docutils literal notranslate"><span class="pre">task</span></code>’s
+value for each iteration to make iteration-specific changes.  The
+<code class="docutils literal notranslate"><span class="pre">$iteration</span></code> variable is provided to indicate which iteration
+(starting with <code class="docutils literal notranslate"><span class="pre">0</span></code>) is being transformed.  The script should operate
+on the input in place.</p>
+<p>For example, this job will run five sequential <code class="docutils literal notranslate"><span class="pre">rtt</span></code> tests to
+<code class="docutils literal notranslate"><span class="pre">www.perfsonar.net</span></code> with 5, 10, 15, 20 and 25 pings sent.  The
+<code class="docutils literal notranslate"><span class="pre">task-transform</span></code> adds a <code class="docutils literal notranslate"><span class="pre">count</span></code> to the test specification that is
+calculated based on the iteration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;rtt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iterations&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;parallel&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+    <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rtt&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;www.perfsonar.net&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;task-transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;.test.spec.count = ($iteration + 1) * 5&quot;</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">continue-if</span></code> - A jq transform that determines, based on the results
+of a job, whether the batch processor should continue to the next job
+or abort the batch.  The input given to the transform is the same as
+the value of the <code class="docutils literal notranslate"><span class="pre">results</span></code> pair in the output as described below.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">},</span>
+    <span class="s2">&quot;runs&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s2">&quot;application/json&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+          <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;PT2S&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;succeeded&quot;</span><span class="p">:</span> <span class="n">true</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;text/plain&quot;</span><span class="p">:</span> <span class="s2">&quot; ... &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text/html&quot;</span><span class="p">:</span> <span class="s2">&quot; ... &quot;</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The transform should return <code class="docutils literal notranslate"><span class="pre">`true</span></code> for the batch to continue with
+the next job or <code class="docutils literal notranslate"><span class="pre">false</span></code> to abort the batch without processing any
+subsequent jobs.  Any other value is treated as an error and
+the batch will be aborted with no results.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">continue-if</span></code> that decides whether to continue based on the
+success or failure of the first run in a job would look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">},</span>
+    <span class="s2">&quot;continue-if&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;.[0].runs[0].</span><span class="se">\&quot;</span><span class="s2">application/json</span><span class="se">\&quot;</span><span class="s2">.succeeded&quot;</span>
+    <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="output">
+<span id="pscheduler-batch-output"></span><h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">¶</a></h2>
+<p>Once all jobs have been completed, the batch processor will output a
+copy of the input with the addition of a <code class="docutils literal notranslate"><span class="pre">results</span></code> pair in each job
+containing information about what tasks were run and the results they
+produced.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">results</span></code> pair is an array of JSON objects, with one element per
+iteration.  Each object contains the following pairs:</p>
+<p><code class="docutils literal notranslate"><span class="pre">task</span></code> (pScheduler Task Specification) - The task that was submitted
+to pScheduler and run.</p>
+<p><code class="docutils literal notranslate"><span class="pre">runs</span></code> (Array of pScheduler Results) - An array of the results
+produced by the task.  In most cases, there will be a single element,
+but for tasks that return multiple results (e.g., <code class="docutils literal notranslate"><span class="pre">latencybg</span></code>),
+there will be more than one.  Each result is a JSON object containing
+pairs named <code class="docutils literal notranslate"><span class="pre">application/json</span></code>, <code class="docutils literal notranslate"><span class="pre">text/plain</span></code> and <code class="docutils literal notranslate"><span class="pre">text/html</span></code> for
+each of the formats in which pScheduler can produce a result.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">batch</span></code> pair includes diagnostic information about the batch.</p>
+</section>
+<section id="invocation-from-python">
+<span id="pscheduler-batch-python"></span><h2>Invocation from Python<a class="headerlink" href="#invocation-from-python" title="Permalink to this heading">¶</a></h2>
+<p>The batch processor can be invoked from Python on any system where
+pScheduler’s Python library is installed.  (On CentOS, this would be
+the <code class="docutils literal notranslate"><span class="pre">python-pscheduler</span></code> package.)</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">pscheduler.batchprocessor</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="n">batch</span> <span class="o">=</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback function for the batch processor to emit a line of</span>
+<span class="sd">    debug.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+<span class="n">processor</span> <span class="o">=</span> <span class="n">pscheduler</span><span class="o">.</span><span class="n">batchprocessor</span><span class="o">.</span><span class="n">BatchProcessor</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+<span class="c1"># Leave out the debug argument for no debugging.</span>
+<span class="c1"># This can be invoked multiple times to run the same batch repeatedly.</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">processor</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="tips-and-tricks">
+<span id="pscheduler-batch-tips"></span><h2>Tips and Tricks<a class="headerlink" href="#tips-and-tricks" title="Permalink to this heading">¶</a></h2>
+<section id="running-different-tasks-as-part-of-the-same-job">
+<h3>Running Different Tasks as Part of the Same Job<a class="headerlink" href="#running-different-tasks-as-part-of-the-same-job" title="Permalink to this heading">¶</a></h3>
+<p>Different tests can be run in parallel by using the <code class="docutils literal notranslate"><span class="pre">task-transform</span></code>
+to alter the contents of the <code class="docutils literal notranslate"><span class="pre">test</span></code> pair for each iteration.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Put an array of the tests to be run in the task’s <code class="docutils literal notranslate"><span class="pre">reference</span></code>
+pair.  The length of the array should be the same as the specified
+<code class="docutils literal notranslate"><span class="pre">iterations</span></code>.</p></li>
+<li><p>Leave the task’s <code class="docutils literal notranslate"><span class="pre">test</span></code> section as an empty object (<code class="docutils literal notranslate"><span class="pre">{}</span></code>).</p></li>
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">task-transform</span></code> that replaces the test with an element
+from the array (e.g., <code class="docutils literal notranslate"><span class="pre">.test</span> <span class="pre">=</span> <span class="pre">.reference.tests[$iteration]</span></code>).</p></li>
+</ul>
+</div></blockquote>
+<p>This example runs a three-minute-long streaming latency test with a
+throughput test to the same host during the second minute.  The
+<code class="docutils literal notranslate"><span class="pre">backoff</span></code> value makes the througput test sleep for one minute before
+it is scheduled and started so there’s latency data produced
+beforehand and afterward.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;different-in-parallel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iterations&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;parallel&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;backoff&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1M&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;tests&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;latencybg&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;ps.example.net&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;PT3M&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;ps.example.net&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1M&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+
+        <span class="p">},</span>
+        <span class="s2">&quot;#&quot;</span><span class="p">:</span> <span class="s2">&quot;This is intentionally empty:&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;task-transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;# Replace the test section of the task with one of the&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;# tests in the reference block based on the iteration.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.test = .reference.tests[$iteration]&quot;</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Batch Processing</a><ul>
+<li><a class="reference internal" href="#invocation">Invocation</a></li>
+<li><a class="reference internal" href="#input">Input</a><ul>
+<li><a class="reference internal" href="#the-global-pair">The <code class="docutils literal notranslate"><span class="pre">global</span></code> Pair</a></li>
+<li><a class="reference internal" href="#the-jobs-pair">The <code class="docutils literal notranslate"><span class="pre">jobs</span></code> Pair</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#output">Output</a></li>
+<li><a class="reference internal" href="#invocation-from-python">Invocation from Python</a></li>
+<li><a class="reference internal" href="#tips-and-tricks">Tips and Tricks</a><ul>
+<li><a class="reference internal" href="#running-different-tasks-as-part-of-the-same-job">Running Different Tasks as Part of the Same Job</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="pscheduler_server_running.html">Previous topic</a>
+                  <ul><li><a href="pscheduler_server_running.html" title="previous chapter">Running a pScheduler Server</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="config_pscheduler_limits.html">Next topic</a>
+                      <ul><li><a href="config_pscheduler_limits.html" title="next chapter">Configuring pScheduler Limits</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="config_pscheduler_limits.html" title="Configuring pScheduler Limits"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pscheduler_server_running.html" title="Running a pScheduler Server"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Batch Processing</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

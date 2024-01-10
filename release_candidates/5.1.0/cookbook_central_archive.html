@@ -1,0 +1,616 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Choosing a Management Method" href="manage_choose.html" />
+    <link rel="prev" title="Updating perfSONAR" href="manage_update.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfsonar-logo-black-full-100.png"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="manage_choose.html" title="Choosing a Management Method"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manage_update.html" title="Updating perfSONAR"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="central-archive-with-grafana-cookbook-not-production-currently-uses-nightly-minor-repo">
+<h1>Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO<a class="headerlink" href="#central-archive-with-grafana-cookbook-not-production-currently-uses-nightly-minor-repo" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Edit note: Update <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json">https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json</a> to use main repo before release</p>
+</div>
+<p>This guide walks-through a standard perfSONAR setup where there are multiple perfSONAR Testpoint hosts writing measurements to central archive from which results can be displayed.</p>
+<p>This guide will assume a setup that looks like the following:</p>
+<a class="reference external image-reference" href="_images/cbca_setup.png"><img alt="_images/cbca_setup.png" src="_images/cbca_setup.png" /></a>
+<p>This setup has two types of hosts:</p>
+<ul class="simple">
+<li><p><strong>Archive Host</strong> - A single host where all measurements are stored. In this setup it also runs Grafan for visualizing results.</p></li>
+<li><p><strong>Testpoint Hosts</strong> - Multiple hosts that run measurements and send the results to the <em>Archive Host</em>. In this example there are three hosts, but there can be more (or less) in your own setup.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Hardware requirements for each type of host will vary. Generally the archive host will need more hardware resources than the testpoint. Much of it depends on how many tests you plan to run. See <a class="reference internal" href="install_hardware.html"><span class="doc">Hardware Requirements</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>perfSONAR supports many variations on the architecture above (e.g. Grafana on a different host, running a mixture of Toolkits and testpoints, and many more). This guide strictly focuses on a central archive setup with multiple testpoints for simplicity, but feel free to adapt this guide to your own needs.</p>
+</div>
+<section id="step-1-setup-the-perfsonar-archive-for-storing-measurements">
+<h2>Step 1: Setup the perfSONAR Archive for Storing Measurements<a class="headerlink" href="#step-1-setup-the-perfsonar-archive-for-storing-measurements" title="Permalink to this heading">¶</a></h2>
+<p>In this step we’ll setup the <em>archive host</em> store measurements. Specifically we’ll use the <em>perfsonar-archive</em> package to install and setup Logstash and OpenSearch. Follow the steps below:</p>
+<ol class="arabic">
+<li><p>Login via SSH or similar to the command-line of your <strong>archive host</strong>.</p></li>
+<li><p>Become a user with root privileges. You can do this using sudo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">s</span>
+</pre></div>
+</div>
+</li>
+<li><p>First we need to setup the package repositories for perfSONAR. The commands for this step depend on the operating system. See the commands for applicable operating system below:</p></li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p><strong>RedHat-based (e.g. Rocky, Alma)</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">config</span><span class="o">-</span><span class="n">manager</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">enabled</span> <span class="n">crb</span>
+<span class="n">dnf</span> <span class="n">install</span> <span class="n">epel</span><span class="o">-</span><span class="n">release</span>
+<span class="n">dnf</span> <span class="n">install</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">internet2</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">rpms</span><span class="o">/</span><span class="n">el9</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">nightly</span><span class="o">-</span><span class="n">minor</span><span class="o">-</span><span class="mf">0.11</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
+<span class="n">dnf</span> <span class="n">clean</span> <span class="nb">all</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Debian/Ubuntu</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">o</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">list</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">list</span>
+<span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">official</span><span class="o">.</span><span class="n">gpg</span><span class="o">.</span><span class="n">key</span> <span class="o">|</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+<span class="n">apt</span><span class="o">-</span><span class="n">update</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><p>Next we’ll install the perfsonar-archive package. This will setup OpenSearch and Logstash. The command will again depend on the operating system:</p></li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p><strong>RedHat-based (e.g. Rocky, Alma)</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Debian/Ubuntu</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic" start="5">
+<li><p>Let’s quickly verify Opensearch and Logstash are running. You should see both listed as <strong>active (running)</strong> when you execute the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">status</span> <span class="n">opensearch</span>
+<span class="n">systemctl</span> <span class="n">status</span> <span class="n">logstash</span>
+</pre></div>
+</div>
+</li>
+<li><p>Next we’ll setup IP authentication so that the testpoint hosts will be able to send their results. This verification is handled by the Apache proxy in front of Logstash. We are going to edit <strong>/etc/httpd/conf.d/apache-logstash.conf</strong> to include the example IPs (see the diagram at the top of this guide). Note we’ll add both the IPv4 and IPv6 addresses to make sure the host can authenticate via either protocol. The following is what we setup for the example (the <em>Require ip</em> lines are the relevant portions):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">IfModule</span> <span class="n">proxy_module</span><span class="o">&gt;</span>
+    <span class="n">ProxyRequests</span> <span class="n">Off</span>
+    <span class="o">&lt;</span><span class="n">Proxy</span> <span class="o">*&gt;</span>
+        <span class="o">&lt;</span><span class="n">IfVersion</span> <span class="o">&gt;=</span> <span class="mf">2.4</span><span class="o">&gt;</span>
+            <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+        <span class="o">&lt;/</span><span class="n">IfVersion</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">IfVersion</span> <span class="o">&lt;</span> <span class="mf">2.4</span><span class="o">&gt;</span>
+            <span class="n">Order</span> <span class="n">deny</span><span class="p">,</span><span class="n">allow</span>
+            <span class="n">Allow</span> <span class="kn">from</span> <span class="nn">all</span>
+        <span class="o">&lt;/</span><span class="n">IfVersion</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">Proxy</span><span class="o">&gt;</span>
+
+    <span class="n">ProxyPass</span> <span class="o">/</span><span class="n">logstash</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">11283</span> <span class="n">status</span><span class="o">=+</span><span class="n">I</span>
+    <span class="n">ProxyPassReverse</span> <span class="o">/</span><span class="n">logstash</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">11283</span> <span class="n">status</span><span class="o">=+</span><span class="n">I</span>
+    <span class="n">ProxyPreserveHost</span> <span class="n">On</span>
+
+    <span class="o">&lt;</span><span class="n">Location</span> <span class="o">/</span><span class="n">logstash</span><span class="o">&gt;</span>
+        <span class="n">Authtype</span> <span class="n">Basic</span>
+        <span class="n">Authname</span> <span class="s2">&quot;Logstash Pass&quot;</span>
+        <span class="n">AuthUserFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">opensearch</span><span class="o">/</span><span class="n">logstash_login</span>
+        <span class="o">&lt;</span><span class="n">RequireAny</span><span class="o">&gt;</span>
+        <span class="c1">##################</span>
+        <span class="c1">## Require a valid username and password</span>
+        <span class="n">Require</span> <span class="n">valid</span><span class="o">-</span><span class="n">user</span>
+
+        <span class="c1">###################</span>
+        <span class="c1">## Enable IP based or hostname authentication as an alternative to username/pass</span>
+        <span class="c1">## The RequireAny means that as long as one of these match then writing will be allowed</span>
+        <span class="c1">## There are are many options, some of which are shown below but for full docs see</span>
+        <span class="c1">## https://httpd.apache.org/docs/2.4/howto/access.html</span>
+        <span class="c1">##</span>
+        <span class="n">Require</span> <span class="n">ip</span> <span class="mf">10.1.1.0</span><span class="o">/</span><span class="mi">24</span>
+        <span class="n">Require</span> <span class="n">ip</span> <span class="p">::</span><span class="n">ffff</span><span class="p">:</span><span class="n">a01</span><span class="p">:</span><span class="mi">100</span><span class="o">/</span><span class="mi">120</span>
+
+        <span class="o">&lt;/</span><span class="n">RequireAny</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">Location</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">IfModule</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Restart apache to apply the changes above. This command is OS dependent:</p></li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p><strong>RedHat-based (e.g. Rocky, Alma)</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">httpd</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Debian/Ubuntu</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>We now have a host capable of storing results. We are now ready to setup Grafana so we’ll be able to visualize results.</p>
+</section>
+<section id="step-2-setup-visualization-with-grafana">
+<h2>Step 2: Setup Visualization with Grafana<a class="headerlink" href="#step-2-setup-visualization-with-grafana" title="Permalink to this heading">¶</a></h2>
+<p>Now that the host can store measurements, let’s prepare to visualize them. You should perform all of these steps on the <strong>archive host</strong>. Let’s begin:</p>
+<ol class="arabic simple">
+<li><p>The first step is to install a group of packages we’ll need to finish the setup. The commands are OS-dependent:</p></li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p><strong>RedHat-based (e.g. Rocky, Alma)</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">grafana</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">grafana</span><span class="o">-</span><span class="n">toolkit</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">hostmetrics</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">publisher</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Debian/Ubuntu</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">grafana</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">grafana</span><span class="o">-</span><span class="n">toolkit</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">hostmetrics</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">publisher</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic" start="2">
+<li><p>Let’s verify Grafana is running. Open <cite>https://ARCHIVE_HOSTNAME/grafana</cite> in your browser where ARCHIVE_HOSTNAME is the name of your archive host. In this example it would be <cite>https://archive.local/grafana</cite>. You should see a screen like the following.</p>
+<blockquote>
+<div><img alt="_images/cbca_gf_verify.png" src="_images/cbca_gf_verify.png" />
+</div></blockquote>
+</li>
+<li><p>Navigate to the <strong>perfSONAR Host Metrics</strong> page. There may be a link under “Recently Viewed Dashboards” (see previous screenshot) or type “perfSONARHost Metrics” in the search bar:</p>
+<blockquote>
+<div><img alt="_images/cbca_gf_search_hm.png" src="_images/cbca_gf_search_hm.png" />
+</div></blockquote>
+</li>
+<li><p>You should get a page that looks like the following. Some of the fields will not be filled-in since they only apply to perfSONAR hosts running measurements, but you should see service status, CPU stats, memory stats, etc. You can adjust the time range to zoom-in since it defaults to 24 hours. This can also be helpful to check that all the relevant services are running. See example below:</p>
+<blockquote>
+<div><img alt="_images/cbca_gf_hm.png" src="_images/cbca_gf_hm.png" />
+</div></blockquote>
+</li>
+</ol>
+<p>We now have a working Grafana installation. For now there is not much to show beyond host statistics, but we will revisit this after we have the measurements running. In the next step, we’ll define the measurements to run.</p>
+</section>
+<section id="step-3-build-and-publish-measurement-configuration-with-psconfig">
+<h2>Step 3: Build and Publish Measurement Configuration with pSConfig<a class="headerlink" href="#step-3-build-and-publish-measurement-configuration-with-psconfig" title="Permalink to this heading">¶</a></h2>
+<p>In this step we’ll create a file that defines the measurements we want all the testpoints to run. This is called a <strong>pSConfig Template File</strong>. If you want to learn more about pSConfig templates see <a class="reference internal" href="psconfig_intro.html"><span class="doc">What is pSConfig?</span></a>. In this example we’ll generate the file by hand from a skeleton file then use some helpful utilities to fill-in and publish. Steps are as follows:</p>
+<ol class="arabic">
+<li><p>Create a directory where you will edit the templates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">~/</span><span class="n">psconfig_templates</span>
+<span class="n">cd</span> <span class="o">~/</span><span class="n">psconfig_templates</span>
+</pre></div>
+</div>
+</li>
+<li><p>Download the “skeleton” file which we will use as the starting point for our pSConfig template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">o</span> <span class="n">psconfig</span><span class="o">.</span><span class="n">json</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="mf">5.1.0</span><span class="o">/</span><span class="n">psconfig</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">skeleton</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</li>
+<li><p>The first thing we’ll add to the pSConfig template is instructions that tell testpoints how to send results to the archive. There is a helper script that helps us generate this definition. You will pass it a <cite>-n</cite> that tells it the public address of your archive. In our example it is <em>archive.local</em> but change that to the address of your archive host. The command for this example looks like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span> <span class="n">archive</span><span class="o">.</span><span class="n">local</span>
+</pre></div>
+</div>
+</li>
+<li><p>You output will look similar to the following (with archive.local replaced with your hostname):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://archive.local/logstash&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;esmond_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://archive.local/esmond/perfsonar/archive/&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="4">
+<li><p>We are going to copy and paste above into our <cite>psconfig.json</cite> file under the <em>archives</em> section and name it <em>example_http_archive</em>. This is what our psconfig.json looks like when we are done:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
+    <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Measurements&quot;</span>
+<span class="p">},</span>
+
+<span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;example_http_archive&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://archive.local/logstash&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;esmond_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://archive.local/esmond/perfsonar/archive/&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">},</span>
+
+<span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Now well add the addresses of our testpoints and define a group that build a mesh of tests between all the testpoints:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+
+<span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;testpoint1.local&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;testpoint1.local&quot;</span> <span class="p">},</span>
+    <span class="s2">&quot;testpoint2.local&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;testpoint2.local&quot;</span> <span class="p">},</span>
+    <span class="s2">&quot;testpoint3.local&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;testpoint3.local&quot;</span> <span class="p">}</span>
+<span class="p">},</span>
+
+<span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;example_group_mesh&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;testpoint1.local&quot;</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;testpoint2.local&quot;</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;testpoint3.local&quot;</span> <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">},</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>The next section defines the test specifications, schedules and tasks. We’ll just keep the defaults of the skeleton, but you can adjust these to meet your needs. Any test type or option supported by pscheduler is supported by this file. For reference, below is exactly what is in skeleton file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="s2">&quot;tests&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;example_test_throughput&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;PT30S&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example_test_latencybg&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;latencybg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;flip&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% f</span><span class="s2">lip %}&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example_test_trace&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;trace&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">},</span>
+
+<span class="s2">&quot;schedules&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;example_schedule_PT4H&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span> <span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sliprand&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="s2">&quot;slip&quot;</span><span class="p">:</span> <span class="s2">&quot;PT4H&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example_schedule_PT10M&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span> <span class="s2">&quot;PT10M&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sliprand&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="s2">&quot;slip&quot;</span><span class="p">:</span> <span class="s2">&quot;PT10M&quot;</span>
+    <span class="p">}</span>
+<span class="p">},</span>
+<span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;example_task_throughput&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;example_group_mesh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;example_test_throughput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;example_schedule_PT4H&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;example_http_archive&quot;</span> <span class="p">],</span>
+        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Throughput Tests&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example_task_latencybg&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;example_group_mesh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;example_test_latencybg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;example_http_archive&quot;</span> <span class="p">],</span>
+        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Loss Tests&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example_task_trace&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;example_group_mesh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;example_test_trace&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;example_schedule_PT10M&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;example_http_archive&quot;</span> <span class="p">],</span>
+        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Traceroute Tests&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Save the file when you are done.</p></li>
+<li><p>We will now publish the file to a local web server so the testpoints can download it. We do this will the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">publish</span> <span class="n">psconfig</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</li>
+<li><p>The output of the command looks like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Success! File saved to /usr/lib/perfsonar/web-psconfig/psconfig.json
+Published file can be accessed at https://archive.local/psconfig/psconfig.json
+Execute the following on a host running an agent to use this file:
+    psconfig remote add &quot;https://archive.local/psconfig/psconfig.json&quot;
+</pre></div>
+</div>
+</li>
+<li><p>That last command will be important when we setup the testpoints. We will also run it right now on our archive host (replace archive.local with your hostname):</p>
+<p>psconfig remote add “<a class="reference external" href="https://archive.local/psconfig/psconfig.json">https://archive.local/psconfig/psconfig.json</a>”</p>
+</li>
+<li><p>The previous command tells a pSConfig agent running on the host to setup some dashboards. It also tells it to gather host statistics from each of the testpoints. We aren’t getting any results yet, but lets take a quick look at the dashboards it created by visiting <strong>https://archive.local/grafana/dashboards</strong>.</p></li>
+<li><p>Click the folder <strong>perfSONAR pSConfig</strong> folder on the page that load.</p></li>
+<li><p>Click on <strong>All perfSONAR Measurements</strong>. The dashboard doesn’t have any data, so let’s fix that by having our testpoints run some measurements.</p>
+<img alt="_images/cbca_gf_nodata.png" src="_images/cbca_gf_nodata.png" />
+</li>
+</ol>
+</section>
+<section id="step-4-setup-perfsonar-testpoint-hosts">
+<h2>Step 4: Setup perfSONAR Testpoint hosts<a class="headerlink" href="#step-4-setup-perfsonar-testpoint-hosts" title="Permalink to this heading">¶</a></h2>
+<p>We will now logout of the archive host and login to a testpoint host. The steps in this section we will repeat for each of our testpoint hosts.</p>
+<ol class="arabic">
+<li><p>Login via SSH or similar to the command-line of the <strong>testpoint host</strong> you want to setup.</p></li>
+<li><p>Become a user with root privileges. You can do this using sudo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Setup the package repositories for perfSONAR. The commands for this step depend on the operating system. See the commands for applicable operating system below:</p></li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p><strong>RedHat-based (e.g. Rocky, Alma)</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">config</span><span class="o">-</span><span class="n">manager</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">enabled</span> <span class="n">crb</span>
+<span class="n">dnf</span> <span class="n">install</span> <span class="n">epel</span><span class="o">-</span><span class="n">release</span>
+<span class="n">dnf</span> <span class="n">install</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">internet2</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">rpms</span><span class="o">/</span><span class="n">el9</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">nightly</span><span class="o">-</span><span class="n">minor</span><span class="o">-</span><span class="mf">0.11</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
+<span class="n">dnf</span> <span class="n">clean</span> <span class="nb">all</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Debian/Ubuntu</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">o</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">list</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">list</span>
+<span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">official</span><span class="o">.</span><span class="n">gpg</span><span class="o">.</span><span class="n">key</span> <span class="o">|</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+<span class="n">apt</span><span class="o">-</span><span class="n">update</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><p>Next we’ll install the perfsonar-testpoint package. The command will again depend on the operating system:</p></li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p><strong>RedHat-based (e.g. Rocky, Alma)</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">testpoint</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Debian/Ubuntu</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">testpoint</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic" start="3">
+<li><p>Let’s verify our install worked by running the <cite>pscheduler troubleshoot</cite> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">troubleshoot</span>
+</pre></div>
+</div>
+</li>
+<li><p>Now we’ll point the testpoint at the pSConfig template file we setup earlier:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="n">add</span> <span class="s2">&quot;https://archive.local/psconfig/psconfig.json&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>The testpoint is now setup. Repeat these steps for each testpoint.</p></li>
+</ol>
+</section>
+<section id="step-5-viewing-results">
+<h2>Step 5: Viewing Results<a class="headerlink" href="#step-5-viewing-results" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Go to toolkit page to get overview</p></li>
+<li><p>Go to psconfig directory look at dashboards</p></li>
+<li><p>See host metrics.</p></li>
+<li><p>Set default dashboard</p></li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO</a><ul>
+<li><a class="reference internal" href="#step-1-setup-the-perfsonar-archive-for-storing-measurements">Step 1: Setup the perfSONAR Archive for Storing Measurements</a></li>
+<li><a class="reference internal" href="#step-2-setup-visualization-with-grafana">Step 2: Setup Visualization with Grafana</a></li>
+<li><a class="reference internal" href="#step-3-build-and-publish-measurement-configuration-with-psconfig">Step 3: Build and Publish Measurement Configuration with pSConfig</a></li>
+<li><a class="reference internal" href="#step-4-setup-perfsonar-testpoint-hosts">Step 4: Setup perfSONAR Testpoint hosts</a></li>
+<li><a class="reference internal" href="#step-5-viewing-results">Step 5: Viewing Results</a></li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="manage_update.html">Previous topic</a>
+                  <ul><li><a href="manage_update.html" title="previous chapter">Updating perfSONAR</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="manage_choose.html">Next topic</a>
+                      <ul><li><a href="manage_choose.html" title="next chapter">Choosing a Management Method</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="manage_choose.html" title="Choosing a Management Method"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manage_update.html" title="Updating perfSONAR"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

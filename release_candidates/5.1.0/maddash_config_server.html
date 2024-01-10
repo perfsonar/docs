@@ -1,0 +1,1194 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Configuring the MaDDash Server &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Running and Managing the MaDDash Server" href="maddash_running.html" />
+    <link rel="prev" title="MaDDash Installation" href="maddash_install.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfsonar-logo-black-full-100.png"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maddash_running.html" title="Running and Managing the MaDDash Server"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="maddash_install.html" title="MaDDash Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Configuring the MaDDash Server</a></li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="configuring-the-maddash-server">
+<h1>Configuring the MaDDash Server<a class="headerlink" href="#configuring-the-maddash-server" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The primary way most users configure MaDDash is with the <a class="reference internal" href="psconfig_maddash_agent.html"><span class="doc">pSConfig MaDDash Agent</span></a>. The agent automatically fills in the values detailed below and most never need to touch any of the options listed. If you find you self in a situation where you do need to make manual configuration changes, then this document provides guidance.</p>
+</div>
+<p>The main configuration file for the maddash-server component is located at <em>/etc/maddash/maddash-server/maddash.yaml</em></p>
+<p>The file is in <a class="reference external" href="http://www.yaml.org/">YAML</a> format. In this file you define the checks you want to run and how they are organized. You can also tweak setting for the embedded web server and various other aspects of the software. The configuration file is broken into the following primary sections:</p>
+<ul class="simple">
+<li><p><em>groups</em> - In general, this is the section where you define lists of hosts that you want to check. You can define any number of custom groups in this section. When you define <em>grids</em> these groups will be used to define what constitutes the rows and columns. In theory they don’t have to be hosts, but for the perfSONAR checks this is the common case because your dimensions are endpoints of a test.</p></li>
+<li><p><em>checks</em> - This is where you define how to run each check. For Nagios checks, this means defining the command-line script to run and arguments to pass it.</p></li>
+<li><p><em>grids</em>  - This is where you define how the groups will be applied to the checks. You define the <em>groups</em> that will compose the rows and columns, then define the type of check that will be run.</p></li>
+<li><p><em>dashboards</em> - This is where you group <em>grids</em> together.</p></li>
+</ul>
+<p>In addition to the sections above, there are also the following <em>optional</em> sections:</p>
+<ul class="simple">
+<li><p><em>reports</em> - A set of patterns that can match across one or more cells in individual grids and generate notifications</p></li>
+<li><p><em>notifications</em> - Here you can define the types of notifications sent (e.g. email) when a pattern defined in the <em>reports</em> is matched.</p></li>
+</ul>
+<p>There are also a number of miscellaneous parameters related to the general operation of the service. Each of these property categories is described in the remainder of this section.</p>
+<section id="groups">
+<h2>groups<a class="headerlink" href="#groups" title="Permalink to this heading">¶</a></h2>
+<p><strong>groups</strong> are used to define the resources that will compose the rows and columns of a grid. For the perfSONAR checks, this is often used to group the endpoints used in performance tests together (e.g. create a group for all the hosts running OWAMP tests and another for all the hosts running BWCTL tests). The names, members and number of groups is all customizable. <em>groups</em> take the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">groups</span><span class="p">:</span>
+    <span class="n">groupName</span><span class="p">:</span>
+        <span class="o">-</span> <span class="s2">&quot;member&quot;</span>
+        <span class="o">-</span> <span class="s2">&quot;member&quot;</span>
+</pre></div>
+</div>
+<p>All groups go under the <em>group</em> block. In the example above <em>groupName</em> can replaced with any alphanumeric string that does not contain whitespace. For example “myOwampHosts”, “campusHosts”, or any other string that meets the requirements. This name will be used later in the configuration, so its important to make note of it. In the above example, you should change <em>member</em> to the name of the host or other resource you want in the list.</p>
+</section>
+<section id="groupmembers">
+<span id="group-member-props"></span><h2>groupMembers<a class="headerlink" href="#groupmembers" title="Permalink to this heading">¶</a></h2>
+<p><strong>groupMembers</strong> are  used to further describe members of a group. Any custom property may be added but only the values listed are understood by the default MaDDash interface. There is also a special <em>map</em> propert that can be used to dynamically set values based on the value of the opposing row/column. groupMembers take the following format where <em>“member”</em> is the name of the member referenced:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">groupMembers</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;member&quot;</span>
+      <span class="o">...</span><span class="n">member</span> <span class="n">properties</span><span class="o">...</span>
+</pre></div>
+</div>
+<p>Below are the list of well-known properties:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The group member this is referencing. For example, the hostname or address of a single item in a <em>group</em> list</p></td>
+</tr>
+<tr class="row-odd"><td><p>label</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The value to show when displaying information about the referenced group member.</p></td>
+</tr>
+<tr class="row-even"><td><p>pstoolkiturl</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The URL of the perfSONAR Toolkit web page.</p></td>
+</tr>
+<tr class="row-odd"><td><p>map</p></td>
+<td><p>YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>Defines properties that change depending on the opposing row/column. The keys of this object are other groupMembers underneath which is a custom set of parameters that can be accessed in template strings using %row.map.&lt;property&gt; and  %col.map.&lt;property&gt; respectively. The reserved key <em>default</em> can be used to define a set of properties that apply to hosts not explicitly listed otherwise.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="checks">
+<h2>checks<a class="headerlink" href="#checks" title="Permalink to this heading">¶</a></h2>
+<section id="general-parameters">
+<h3>General Parameters<a class="headerlink" href="#general-parameters" title="Permalink to this heading">¶</a></h3>
+<p><strong>checks</strong> are where you provide instructions as to how results should be obtained. Checks take the current format in the configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">checks</span><span class="p">:</span>
+    <span class="n">checkName</span> <span class="p">:</span>
+       <span class="o">...</span><span class="n">check</span><span class="o">-</span><span class="n">parameters</span><span class="o">...</span>
+</pre></div>
+</div>
+<p>The <em>checkName</em> can be any alphanumeric string with no whitespace. It is used to identify the check later in the file, so you should note it. For example you could name it something like “owampLossCheck” or “bwctl100Gbps”. The following parameters are available for the check:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>A human-readable name used for display purposes when describing this check</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>Human-readable text describing the purpose of this check. The description field accepts the template variables %row and %col that will be populated with the current row and column values respectively when the check in applied to a grid.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The type of check. Currently the software supports <em>net.es.maddash.checks.NagiosCheck</em>, <em>net.es.maddash.checks.PSNagiosCheck</em>, and <em>net.es.maddash.checks.RandomCheck</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>params</p></td>
+<td><p>YAML Object</p></td>
+<td><p>Type dependent</p></td>
+<td><p>A YAML object containing parameters specific to the check. See the <a class="reference internal" href="#type-specific-params"><span class="std std-ref">Type-specific Parameters</span></a> section.</p></td>
+</tr>
+<tr class="row-even"><td><p>checkInterval</p></td>
+<td><p>int</p></td>
+<td><p>Yes</p></td>
+<td><p>How frequently to run the check in seconds</p></td>
+</tr>
+<tr class="row-odd"><td><p>retryInterval</p></td>
+<td><p>int</p></td>
+<td><p>Yes</p></td>
+<td><p>How frequently to run the check in seconds if it encounters a state different from the current state</p></td>
+</tr>
+<tr class="row-even"><td><p>retryAttempts</p></td>
+<td><p>int</p></td>
+<td><p>Yes</p></td>
+<td><p>The number of consecutive times a new state must be seen before it changes the state of the check. For example, if a check has been OK for many days, but suddenly a critical is seen, then a critical state must be seen 2 more times before the status will change</p></td>
+</tr>
+<tr class="row-odd"><td><p>timeout</p></td>
+<td><p>int</p></td>
+<td><p>Yes</p></td>
+<td><p>The number of seconds to wait for the check to return. If it does not return in this timeframe, the check is set to the UNKNOWN status.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="type-specific-parameters">
+<span id="type-specific-params"></span><h3>Type-specific Parameters<a class="headerlink" href="#type-specific-parameters" title="Permalink to this heading">¶</a></h3>
+<p>Currently the software supports the following types of checks:</p>
+<ul class="simple">
+<li><p><em>net.es.maddash.checks.NagiosCheck</em> - This check is performed using Nagios command. The parameters provided describe how to run that command.</p></li>
+<li><p><em>net.es.maddash.checks.PSNagiosCheck</em> - This check is a perfSONAR Nagios command. It is an extension of <em>net.es.maddash.checks.NagiosCheck</em>, but includes additional fields to collect information necessary to display graphs from the perfSONAR toolkit.</p></li>
+<li><p><em>net.es.maddash.checks.RandomCheck</em> - This should only be used for testing. This check returns a random result every time it runs.</p></li>
+</ul>
+<section id="nagioscheck">
+<span id="nagios-check"></span><h4>NagiosCheck<a class="headerlink" href="#nagioscheck" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>command</p></td>
+<td><p>String or YAML Object</p></td>
+<td><p>Yes</p></td>
+<td><p>The full nagios command to run on the local system. It accepts the template variables and can also be a map where the outer key is the row and inner is the column (both can take special value “default”) allowing for deterministic setting of the command.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="psnagioscheck">
+<span id="psnagios-check"></span><h4>PSNagiosCheck<a class="headerlink" href="#psnagioscheck" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>command</p></td>
+<td><p>String or YAML Object</p></td>
+<td><p>Yes</p></td>
+<td><p>See <a class="reference internal" href="#nagios-check"><span class="std std-ref">NagiosCheck</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>maUrl</p></td>
+<td><p>YAML Object</p></td>
+<td><p>Yes</p></td>
+<td><p>The URL of the measurement archive where performance data related to this check may be retrieved. This accepts the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span class="std std-ref">Nagios Check Template Variables</span></a> section. The object has one key that is called <em>default</em> which will be the default URL used for any cell in a grid. The remaining keys are members of groups assigned to the row. If default and a row key are specified, the row key is preferred for that row. The value of each key is a map where the key is a member of a group assigned to the column or you can use the <em>default</em> key to apply the URL to every column in the row. If default is specified and a specific value for a column, the specific value for the column is preferred. See the default configuration file for a full example.</p></td>
+</tr>
+<tr class="row-even"><td><p>graphUrl</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>A URL where a graph of data related to the check can be retrieved. This accepts the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span class="std std-ref">Nagios Check Template Variables</span></a> section.</p></td>
+</tr>
+<tr class="row-odd"><td><p>metaDataKeyLookup</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p><em>DEPRECATED</em> A URL where metaDataKeys can be looked up for the data. These are often needed to generate the graph URL. This accepts some of the template variables listed in the <a class="reference internal" href="#psnagios-check-template-vars"><span class="std std-ref">Nagios Check Template Variables</span></a> section. <em>Note: Some variables it cannot accept because it is responsible for generating them.</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="nagios-check-template-variables">
+<span id="psnagios-check-template-vars"></span><h4>Nagios Check Template Variables<a class="headerlink" href="#nagios-check-template-variables" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>%row</p></td>
+<td><p>The row in the grid associated with this check at the time its run</p></td>
+</tr>
+<tr class="row-odd"><td><p>%col</p></td>
+<td><p>The column in the grid associated with this check at the time its run</p></td>
+</tr>
+<tr class="row-even"><td><p>%row.&lt;prop&gt;</p></td>
+<td><p>Custom properties defined in the groupMembers section.</p></td>
+</tr>
+<tr class="row-odd"><td><p>%col.&lt;prop&gt;</p></td>
+<td><p>Custom properties defined in the groupMembers section.</p></td>
+</tr>
+<tr class="row-even"><td><p>%row.map.&lt;prop&gt;</p></td>
+<td><p>Custom properties defined in the groupMembers section that change depending on opposing row or column.</p></td>
+</tr>
+<tr class="row-odd"><td><p>%col.map.&lt;prop&gt;</p></td>
+<td><p>Custom properties defined in the groupMembers section that change depending on opposing row or column.</p></td>
+</tr>
+<tr class="row-even"><td><p>%maUrl</p></td>
+<td><p>The url of the measurement archive. You can’t use this in the maUrl parameters as this is generated from that template.</p></td>
+</tr>
+<tr class="row-odd"><td><p>%maKeyF</p></td>
+<td><p><strong>DEPRECATED</strong> A comma-separated list of the metaDataKeys for the forward direction of a test. This cannot be used in metaDataKeyLookup as it is generated after the URL that is called.</p></td>
+</tr>
+<tr class="row-even"><td><p>%maKeyR</p></td>
+<td><p><strong>DEPRECATED</strong> A comma-separated list of the metaDataKeys for the reverse direction of a test. This cannot be used in metaDataKeyLookup as it is generated after the URL that is called.</p></td>
+</tr>
+<tr class="row-odd"><td><p>%srcName</p></td>
+<td><p><strong>DEPRECATED</strong> The hostname of the source endpoint of a point-to-point test. This cannot be used in metaDataKeyLookup as it is generated after the URL is called.</p></td>
+</tr>
+<tr class="row-even"><td><p>%srcIP</p></td>
+<td><p><strong>DEPRECATED</strong> The IP address of the source endpoint of a point-to-point test. This cannot be used in metaDataKeyLookup as it is generated after the URL is called.</p></td>
+</tr>
+<tr class="row-odd"><td><p>%dstName</p></td>
+<td><p><strong>DEPRECATED</strong> The hostname of the destination endpoint of a point-to-point test. This cannot be used in metaDataKeyLookup as it is generated after the URL is called.</p></td>
+</tr>
+<tr class="row-even"><td><p>%dstIP</p></td>
+<td><p><strong>DEPRECATED</strong> The IP of the destination endpoint of a point-to-point test. This cannot be used in metaDataKeyLookup as it is generated after the URL is called.</p></td>
+</tr>
+<tr class="row-odd"><td><p>%eventType</p></td>
+<td><p><strong>DEPRECATED</strong> The eventType returned by metaDataKeyLookup of the destination endpoint of a point-to-point test. This cannot be used in metaDataKeyLookup as it is generated after the URL is called.</p></td>
+</tr>
+<tr class="row-even"><td><p>%event.delayBuckets</p></td>
+<td><p>The string <em>http://ggf.org/ns/nmwg/characteristic/delay/summary/20110317</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>%event.delay</p></td>
+<td><p>The string <em>http://ggf.org/ns/nmwg/characteristic/delay/summary/20070921</em></p></td>
+</tr>
+<tr class="row-even"><td><p>%event.bandwidth</p></td>
+<td><p>The string <em>http://ggf.org/ns/nmwg/characteristics/bandwidth/achievable/2.0</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>%event.iperf</p></td>
+<td><p>The string <em>http://ggf.org/ns/nmwg/tools/iperf/2.0</em></p></td>
+</tr>
+<tr class="row-even"><td><p>%event.utilization</p></td>
+<td><p><em>The string http://ggf.org/ns/nmwg/characteristic/utilization/2.0</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="grids">
+<h2>grids<a class="headerlink" href="#grids" title="Permalink to this heading">¶</a></h2>
+<p><strong>grids</strong> associate <em>groups</em> with <em>checks</em> and arrange them in a two-dimensional structure. Grids are arranged as a list of objects with the following parameters:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>A human readable name of the grid</p></td>
+</tr>
+<tr class="row-odd"><td><p>rows</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The name of the <em>group</em> that will compose the rows of the grid. This must match a group name defined in the <em>groups</em> section of the configuration file or an error will be returned.</p></td>
+</tr>
+<tr class="row-even"><td><p>columns</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The name of the <em>group</em> that will compose the columns of the grid. This must match a group name defined in the <em>groups</em> section of the configuration file or an error will be returned.</p></td>
+</tr>
+<tr class="row-odd"><td><p>checks</p></td>
+<td><p>List of Strings</p></td>
+<td><p>Yes</p></td>
+<td><p>The name of the <em>check</em> elements that need to be run for each row and column. Each element must match a check name defined under the <em>checks</em> section of the configuration or an error will be returned.</p></td>
+</tr>
+<tr class="row-even"><td><p>rowOrder</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>Specifies how the rows should be ordered. Valid values are <em>alphabetical</em>, which will sort them alphabetically, or <em>group</em> which will present them exactly in the order they are defined in the <em>group</em> section.</p></td>
+</tr>
+<tr class="row-odd"><td><p>colOrder</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>Specifies how the columns should be ordered. Valid values are <em>alphabetical</em>, which will sort them alphabetically, or <em>group</em> which will present them exactly in the order they are defined in the <em>group</em> section.</p></td>
+</tr>
+<tr class="row-even"><td><p>excludeSelf</p></td>
+<td><p>boolean</p></td>
+<td><p>Yes</p></td>
+<td><p>If set to 1, then a check will not be run where the value of the current row is equal to the value of the current column. If set to 0, then a check will be run in this case.</p></td>
+</tr>
+<tr class="row-odd"><td><p>excludeChecks</p></td>
+<td><p>YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>This excludes individual checks based on the row and column. The structure is a map where the key is the name of the row where you want to exclude a check. It should match a member of the group assigned to the “rows” property of this grid or it can be the special key ‘default’ that matches every row. The value is a list of columns that should not appear in the grid. An item in the list must be a member of the group assigned to the “columns” property of this grid or the special value “all” which removes all columns for a row. A full example is provided in the default configuration file.</p></td>
+</tr>
+<tr class="row-even"><td><p>columnAlgorithm</p></td>
+<td><p>boolean</p></td>
+<td><p>Yes</p></td>
+<td><p>Determines which checks will be run. Valid values are as follows: all - Run a check between every row and column; afterSelf - Run a check to every host that’s defined after the current row in the ‘rows’ group; beforeSelf - Run a check to every host that’s defined before the current row in the ‘rows’ group</p></td>
+</tr>
+<tr class="row-odd"><td><p>reports</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>References the <em>id</em> field of a report in the <em>reports</em> section to match against this grid.</p></td>
+</tr>
+<tr class="row-even"><td><p>statusLabels</p></td>
+<td><p>YAML object</p></td>
+<td><p>Yes</p></td>
+<td><p>Describes what each status means. It is structured as a set of key/value pairs where the key is the status and the value is the description of the status. Valid status values are <em>ok</em>, <em>warning</em>, <em>critical</em>, <em>unknown</em> and <em>notrun</em>, and <em>extra</em>. You do not need to define every status if not all are applicable to your check.</p></td>
+</tr>
+<tr class="row-odd"><td><p>statusLabels.extra</p></td>
+<td><p>YAML object</p></td>
+<td><p>Yes</p></td>
+<td><p>Object where you can define custom status labels. Valid keys are <em>value</em> which is an integer identifying the custom state, <em>shortName</em> which is a name to label the state and <em>description</em> which is text that will apear in the GUI legend.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dashboards">
+<h2>dashboards<a class="headerlink" href="#dashboards" title="Permalink to this heading">¶</a></h2>
+<p><strong>dashboards</strong> group grids together. You define them as as a list of YAML objects with the following properties:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The name you want displayed as the title of the dashboard</p></td>
+</tr>
+<tr class="row-odd"><td><p>grids</p></td>
+<td><p>List of YAML objects</p></td>
+<td><p>Yes</p></td>
+<td><p>The list of grids you want included in this dashboard. Each item in the list has one property <em>name</em>, where you specify the name of the grid. This must map to a <em>name</em> property for one of the defined grids in the configuration file.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reports">
+<span id="maddash-config-server-reports"></span><h2>reports<a class="headerlink" href="#reports" title="Permalink to this heading">¶</a></h2>
+<p><strong>reports</strong> define patterns that match across one or more cells in a single grid. You define them as as a list of YAML objects with the following properties:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The identifier used in <em>grids</em> to reference this rule</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule</p></td>
+<td><p>YAML Object</p></td>
+<td><p>Yes</p></td>
+<td><p>The parent rule object that defines that patterns to match and the “problem” it identifies</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.type</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The type of rule. See <a class="reference internal" href="#maddash-config-server-reports-rule-types"><span class="std std-ref">Rule Types</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.selector</p></td>
+<td><p>YAML object</p></td>
+<td><p>Type dependent</p></td>
+<td><p>An object describing what cells to look at when evaluating the rule. Valid when <em>rule.type</em> is <em>rule</em> or <em>siteRule</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.match</p></td>
+<td><p>YAML object</p></td>
+<td><p>Type dependent</p></td>
+<td><p>An object describing how to determine if this pattern should generate a notification. Valid when <em>rule.type</em> is <em>rule</em> or <em>siteRule</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.problem</p></td>
+<td><p>YAML object</p></td>
+<td><p>Type dependent</p></td>
+<td><p>An object describing what to do if the rule matches. Valid when <em>rule.type</em> is <em>rule</em> or <em>siteRule</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.rules</p></td>
+<td><p>List of YAML objects</p></td>
+<td><p>Type dependent</p></td>
+<td><p>List of rule objects to evaluate. Valid when <em>rule.type</em> is <em>forEachSite, *matchAll</em> or <em>matchFirst</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.site</p></td>
+<td><p>String</p></td>
+<td><p>Type dependent</p></td>
+<td><p>Only valid when <em>rule.type</em> is <em>siteRule</em>. This is the name or the row or column to evaluate</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.selector.type</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The type of selector. See <a class="reference internal" href="#maddash-config-server-reports-selector-types"><span class="std std-ref">Selector Types</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.selector.rowSite</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The name of the row to select when using a selector of type <em>cell</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.selector.colSite</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The name of the column to select when using a selector of type <em>cell</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.selector.rowIndex</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The index of the check to select when selecting a row in a match of type <em>cell</em> or <em>check</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.selector.colIndex</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The index of the check to select when selecting a column in a match of type <em>cell</em> or <em>check</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.match.type</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The type of match. See <a class="reference internal" href="#maddash-config-server-reports-match-types"><span class="std std-ref">Match Types</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.match.status</p></td>
+<td><p>Integers</p></td>
+<td><p>Type dependent</p></td>
+<td><p>For match types <em>status</em> and <em>statusThreshold</em>, the integer value of the status to match.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.match.statuses</p></td>
+<td><p>List of Numbers</p></td>
+<td><p>Type dependent</p></td>
+<td><p>For match type <em>statusWeightedThreshold</em>, the list of statuses where the index in the list corresponds to the integer value of the status (starting at 0)</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.match.threshold</p></td>
+<td><p>Number</p></td>
+<td><p>Type dependent</p></td>
+<td><p>For match type <em>statusThreshold</em> the percentage of checks that must have <em>status</em> and for <em>statusWeightedThreshold</em> the average weight of each selected check</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.problem.severity</p></td>
+<td><p>Integer</p></td>
+<td><p>Yes</p></td>
+<td><p>The severity of the problem. 0=OK, 1=WARNING, 2=CRITICAL, 3=UNKNOWN</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.problem.category</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>A string to define the category of the problem, for example CONFIGURATION or PERFORMANCE.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rule.problem.message</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>A message describing the problem (i.e. what it means when the rules match)</p></td>
+</tr>
+<tr class="row-even"><td><p>rule.problem.solutions</p></td>
+<td><p>List of Strings</p></td>
+<td><p>No</p></td>
+<td><p>A list of potential solutions to the problem</p></td>
+</tr>
+</tbody>
+</table>
+<section id="rule-types">
+<span id="maddash-config-server-reports-rule-types"></span><h3>Rule Types<a class="headerlink" href="#rule-types" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>forEachSite</p></td>
+<td><p>A site in this context is a a group member that is in a row and/or column. This type of rule loops through these unique groupMembers and applies the rule object in the <em>rules</em> property.</p></td>
+</tr>
+<tr class="row-odd"><td><p>matchAll</p></td>
+<td><p>All the sub-rules defined in <em>rules</em> must match for the pattern to match</p></td>
+</tr>
+<tr class="row-even"><td><p>matchFirst</p></td>
+<td><p>The first sub-rule defined in <em>rules</em> that matches causes this rule to match</p></td>
+</tr>
+<tr class="row-odd"><td><p>siteRule</p></td>
+<td><p>A rule that only looks at the site specified by a <em>site</em> property</p></td>
+</tr>
+<tr class="row-even"><td><p>rule</p></td>
+<td><p>The fundamental building block of the other rule types that selects a set of cells, matches them against a criteria and defines the <em>problem</em> a match identifies.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="selector-types">
+<span id="maddash-config-server-reports-selector-types"></span><h3>Selector Types<a class="headerlink" href="#selector-types" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cell</p></td>
+<td><p>Selects a specific cell for a site given by <em>rowSite</em> and/or <em>colSite</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>check</p></td>
+<td><p>Selects a an individual check specified by <em>rowIndex</em> and <em>colIndex</em></p></td>
+</tr>
+<tr class="row-even"><td><p>column</p></td>
+<td><p>Selects a column</p></td>
+</tr>
+<tr class="row-odd"><td><p>grid</p></td>
+<td><p>Selects the entire grid</p></td>
+</tr>
+<tr class="row-even"><td><p>row</p></td>
+<td><p>Selects an entire row</p></td>
+</tr>
+<tr class="row-odd"><td><p>site</p></td>
+<td><p>Selects row and column</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="match-types">
+<span id="maddash-config-server-reports-match-types"></span><h3>Match Types<a class="headerlink" href="#match-types" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p>Match if all the checks selected have the given status</p></td>
+</tr>
+<tr class="row-odd"><td><p>statusThreshold</p></td>
+<td><p>Match if the percentage of cells specified by <em>threshold</em> have the given <em>status</em></p></td>
+</tr>
+<tr class="row-even"><td><p>statusWeightedThreshold</p></td>
+<td><p>Assign a weight to each status using the <em>statuses</em> array and if the average weight of the selected cells is above <em>threshold</em> generate an alarm</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="notifications">
+<span id="maddash-config-server-notifications"></span><h2>notifications<a class="headerlink" href="#notifications" title="Permalink to this heading">¶</a></h2>
+<p><strong>notifications</strong> define when and where to send notifications of problems found in <em>reports</em>.  You define them as as a list of YAML objects with the following properties:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>An identifier that can be any string. Mainly used as a description and may be used by notification plug-in.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The type of notification. Current valid values are <em>email</em> or <em>servicenow</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p>schedule</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>A cron schedule in <em>MIN HOUR DAY-OF-MONTH MONTH DAY-OF-WEEK</em> format.</p></td>
+</tr>
+<tr class="row-odd"><td><p>problemReportFrequency</p></td>
+<td><p>Integer</p></td>
+<td><p>Yes</p></td>
+<td><p>Frequency in seconds with which to report the same problem.</p></td>
+</tr>
+<tr class="row-even"><td><p>problemResolveAfter</p></td>
+<td><p>Integer</p></td>
+<td><p>Yes</p></td>
+<td><p>If supported, the length of time to wait after a problem has gone away to mark it as resolved.</p></td>
+</tr>
+<tr class="row-odd"><td><p>minimumSeverity</p></td>
+<td><p>Integer</p></td>
+<td><p>Yes</p></td>
+<td><p>The minimum severity a problem must be to generate a notification where 0=OK, 1=Warning, 2=Critical</p></td>
+</tr>
+<tr class="row-even"><td><p>filters</p></td>
+<td><p>List of YAML Object</p></td>
+<td><p>Yes</p></td>
+<td><p>A list of filter objects that define which types of problems to generate notifications.</p></td>
+</tr>
+<tr class="row-odd"><td><p>filters.type</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The type of filter. Valid values are <em>dashboard</em>, <em>grid</em>, <em>site</em>, and <em>category</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p>filters.value</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The value to match. For example, if this is of type <em>dashboard</em> then this is the name of the dashboard for which notifications should be generated.</p></td>
+</tr>
+<tr class="row-odd"><td><p>parameters</p></td>
+<td><p>YAML Object</p></td>
+<td><p>Yes</p></td>
+<td><p>Type specific parameters. See <a class="reference internal" href="#maddash-config-server-notifications-email"><span class="std std-ref">Email Parameters</span></a> and <a class="reference internal" href="#maddash-config-server-notifications-servicenow"><span class="std std-ref">ServiceNow Parameters</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="email-parameters">
+<span id="maddash-config-server-notifications-email"></span><h3>Email Parameters<a class="headerlink" href="#email-parameters" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mailServer</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>An object describing how to contact your mail server. If not specified, defaults are used.</p></td>
+</tr>
+<tr class="row-odd"><td><p>mailServer.address</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The IP or hostname of your mail server. Default is 127.0.0.1.</p></td>
+</tr>
+<tr class="row-even"><td><p>mailServer.port</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The port of your mail server. Default is port 25.</p></td>
+</tr>
+<tr class="row-odd"><td><p>mailServer.username</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The username for authenticating to your mail server. Default is none.</p></td>
+</tr>
+<tr class="row-even"><td><p>mailServer.password</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The password for authenticating to your mail server. Default is none.</p></td>
+</tr>
+<tr class="row-odd"><td><p>mailServer.useSSL</p></td>
+<td><p>boolean</p></td>
+<td><p>No</p></td>
+<td><p>Indicates whether or not to use SSL when communicating with mail server. Default is false.</p></td>
+</tr>
+<tr class="row-even"><td><p>from</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The from address of emails sent.</p></td>
+</tr>
+<tr class="row-odd"><td><p>replyTo</p></td>
+<td><p>List of Strings</p></td>
+<td><p>No</p></td>
+<td><p>A list of replyTo addresses for emails sent.</p></td>
+</tr>
+<tr class="row-even"><td><p>to</p></td>
+<td><p>List of Strings</p></td>
+<td><p>No</p></td>
+<td><p>A list of addresses where the emails should be sent.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cc</p></td>
+<td><p>List of Strings</p></td>
+<td><p>No</p></td>
+<td><p>A list of CC addresses to send copies of the email notifications.</p></td>
+</tr>
+<tr class="row-even"><td><p>bcc</p></td>
+<td><p>List of Strings</p></td>
+<td><p>No</p></td>
+<td><p>A list of BCC addresses to send blind copies of the email notifications.</p></td>
+</tr>
+<tr class="row-odd"><td><p>subjectPrefix</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>A string to append on beginning of the email subject. Note that the subject is the <em>name</em> property of the notification definition.</p></td>
+</tr>
+<tr class="row-even"><td><p>format</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The format of the email sent. Valid values are <em>html</em> or <em>text</em>. Default is html.</p></td>
+</tr>
+<tr class="row-odd"><td><p>dashboardUrl</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The URL of your dashboard used to add links in emails. If not specified then links will not be included.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="servicenow-parameters">
+<span id="maddash-config-server-notifications-servicenow"></span><h3>ServiceNow Parameters<a class="headerlink" href="#servicenow-parameters" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>instance</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>Name of the ServiceNow instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>oauthFile</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>A YAML file containing a combination of the <em>username</em>, <em>password</em>, <em>clientID</em>, and <em>clientSecret</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p>clientID</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The client ID to authenticate to ServiceNow</p></td>
+</tr>
+<tr class="row-odd"><td><p>clientSecret</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The client secret to authenticate to ServiceNow.</p></td>
+</tr>
+<tr class="row-even"><td><p>username</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The username to authenticate to ServiceNow.</p></td>
+</tr>
+<tr class="row-odd"><td><p>password</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The password to authenticate to ServiceNow.</p></td>
+</tr>
+<tr class="row-even"><td><p>recordTable</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The name of the table to create the record.</p></td>
+</tr>
+<tr class="row-odd"><td><p>recordFields</p></td>
+<td><p>YAML Object</p></td>
+<td><p>Yes</p></td>
+<td><p>A YAML object with the fields to set on creation. This is highly dependent on your ServiceNow setup. The keys are the name of the fields. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span class="std std-ref">ServiceNow Template Variables</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>resolveFields</p></td>
+<td><p>YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>A YAML object with the fields to set on resolve. This is highly dependent on your ServiceNow setup. The keys are the name of the fields. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span class="std std-ref">ServiceNow Template Variables</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>dashboardUrl</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The URL of the dashboard. This is used to generate links to the dashboard in created records.</p></td>
+</tr>
+<tr class="row-even"><td><p>duplicateRules</p></td>
+<td><p>YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>Rules used to determine if a record that already exists in ServiceNow matches a problem and what action to take if it does.</p></td>
+</tr>
+<tr class="row-odd"><td><p>duplicateRules.identityFields</p></td>
+<td><p>List of Strings</p></td>
+<td><p>No</p></td>
+<td><p>A list of fields that MUST match in both records for them to be considered equal.</p></td>
+</tr>
+<tr class="row-even"><td><p>duplicateRules.rules</p></td>
+<td><p>List of YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>A list of rules evaluated in order until one matches that determine the action to take when a record is found that matches the given identity fields.</p></td>
+</tr>
+<tr class="row-odd"><td><p>duplicateRules.rules[N].equalsFields</p></td>
+<td><p>YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>An object where the key is the field to match and the value is what that field must equal for the given <em>updateFields</em> to be applied to the record.</p></td>
+</tr>
+<tr class="row-even"><td><p>duplicateRules.rules[N].gtFields</p></td>
+<td><p>YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>An object where the key is the field to match and the value is what that field must be greater than for the given <em>updateFields</em> to be applied to the record.</p></td>
+</tr>
+<tr class="row-odd"><td><p>duplicateRules.rules[N].ltFields</p></td>
+<td><p>YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>An object where the key is the field to match and the value is what that field must less than for the given <em>updateFields</em> to be applied to the record.</p></td>
+</tr>
+<tr class="row-even"><td><p>duplicateRules.rules[N].updateFields</p></td>
+<td><p>YAML Object</p></td>
+<td><p>No</p></td>
+<td><p>The fields to update in the record and the values they should be given if this rule matches. The values support multiple <a class="reference internal" href="#maddash-config-server-notifications-servicenow-template"><span class="std std-ref">ServiceNow Template Variables</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="servicenow-template-variables">
+<span id="maddash-config-server-notifications-servicenow-template"></span><h3>ServiceNow Template Variables<a class="headerlink" href="#servicenow-template-variables" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>%br</p></td>
+<td><p>A line break</p></td>
+</tr>
+<tr class="row-odd"><td><p>%problemEntity</p></td>
+<td><p>The source of the problem - either a grid or a site (i.e. a row and/or column)</p></td>
+</tr>
+<tr class="row-even"><td><p>%gridUrl</p></td>
+<td><p>The URL of the grid</p></td>
+</tr>
+<tr class="row-odd"><td><p>%gridLink</p></td>
+<td><p>An HTML link to the grid</p></td>
+</tr>
+<tr class="row-even"><td><p>%siteName</p></td>
+<td><p>The name of the site (i.e. row and/or column) that is the source of the alarm</p></td>
+</tr>
+<tr class="row-odd"><td><p>%gridName</p></td>
+<td><p>Name of the grid that is source of the alarm</p></td>
+</tr>
+<tr class="row-even"><td><p>%isGlobal</p></td>
+<td><p>Boolean indicating whether this affects the entire grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p>%severity</p></td>
+<td><p>The severity of the problem.</p></td>
+</tr>
+<tr class="row-even"><td><p>%category</p></td>
+<td><p>The problem category.</p></td>
+</tr>
+<tr class="row-odd"><td><p>%solutions</p></td>
+<td><p>A bulleted list of potential solutions.</p></td>
+</tr>
+<tr class="row-even"><td><p>%name</p></td>
+<td><p>The name of the problem.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="general-properties">
+<h2>General Properties<a class="headerlink" href="#general-properties" title="Permalink to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>database</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The path to the directory where the database is stored</p></td>
+</tr>
+<tr class="row-odd"><td><p>jobThreadPoolSize</p></td>
+<td><p>Integer</p></td>
+<td><p>No</p></td>
+<td><p>The maximum number of checks that can run in parallel. Defaults to 20</p></td>
+</tr>
+<tr class="row-even"><td><p>jobBatchSize</p></td>
+<td><p>Integer</p></td>
+<td><p>No</p></td>
+<td><p>The maximum number of checks that can be running or waiting to run in memory. Defaults to 250.</p></td>
+</tr>
+<tr class="row-odd"><td><p>disableScheduler</p></td>
+<td><p>Boolean</p></td>
+<td><p>No</p></td>
+<td><p>If set to 1 then the server will only run as a REST server and not execute any new checks. Default is 0.</p></td>
+</tr>
+<tr class="row-even"><td><p>skipTableBuild</p></td>
+<td><p>Boolean</p></td>
+<td><p>No</p></td>
+<td><p>If set to 1 then the database tables will not be built and indexes will not be built/rebuilt. The first time you run the server it must be set to 0. After that, you may find that setting it to 1 significantly speeds-up boot time. Keeping it on though has the advantage of rebuilding indexes on startup which can improve query performance.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="web-server-properties">
+<h2>Web Server Properties<a class="headerlink" href="#web-server-properties" title="Permalink to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>serverHost</p></td>
+<td><p>String</p></td>
+<td><p>No</p></td>
+<td><p>The hostname of the interface where the web server should listen. Defaults to localhost.</p></td>
+</tr>
+<tr class="row-odd"><td><p>http</p></td>
+<td><p>YAML Object</p></td>
+<td><p>Yes (unless https specified)</p></td>
+<td><p>Parameters related to http. See <a class="reference internal" href="#http-props"><span class="std std-ref">http properties</span></a> section.</p></td>
+</tr>
+<tr class="row-even"><td><p>https</p></td>
+<td><p>YAML Object</p></td>
+<td><p>Yes (unless http specified)</p></td>
+<td><p>Parameters related to https. See <a class="reference internal" href="#https-props"><span class="std std-ref">https properties</span></a> section.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="http-properties">
+<span id="http-props"></span><h3>http properties<a class="headerlink" href="#http-properties" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>port</p></td>
+<td><p>Integer</p></td>
+<td><p>Yes</p></td>
+<td><p>The port on which the web server should listen for HTTP connections</p></td>
+</tr>
+<tr class="row-odd"><td><p>proxyMode</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>Reserved for future use. Currently let’s the server know that if it is behind a proxy. This may be used in later implementation to extract headers that forward information related to authentication.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="https-properties">
+<span id="https-props"></span><h3>https properties<a class="headerlink" href="#https-properties" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>port</p></td>
+<td><p>Integer</p></td>
+<td><p>Yes</p></td>
+<td><p>The port on which the web server should listen for HTTPS connections</p></td>
+</tr>
+<tr class="row-odd"><td><p>keystore</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The keystore containing the key ‘mykey’ to use as the ssl server certificate. It should also contain any trusted certificates if doing client authentication.</p></td>
+</tr>
+<tr class="row-even"><td><p>keystorePassword</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>The password to access the keystore.</p></td>
+</tr>
+<tr class="row-odd"><td><p>clientAuth</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>Indicates whether a client to the rest server must have a trusted SSL certificate. Valid values are <em>require</em>, <em>want</em> and <em>off</em>. <em>require</em> means the user MUST have a trusted certificate or the request will be rejected. <em>want</em> means the server will check the certificate if one is presented, but will not reject requests that do not provide one. <em>off</em> means no certificate is required.</p></td>
+</tr>
+<tr class="row-even"><td><p>proxyMode</p></td>
+<td><p>String</p></td>
+<td><p>Yes</p></td>
+<td><p>Reserved for future use. Currently let’s the server know that if it is behind a proxy. This may be used in later implementation to extract headers that forward information related to authentication.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Configuring the MaDDash Server</a><ul>
+<li><a class="reference internal" href="#groups">groups</a></li>
+<li><a class="reference internal" href="#groupmembers">groupMembers</a></li>
+<li><a class="reference internal" href="#checks">checks</a><ul>
+<li><a class="reference internal" href="#general-parameters">General Parameters</a></li>
+<li><a class="reference internal" href="#type-specific-parameters">Type-specific Parameters</a><ul>
+<li><a class="reference internal" href="#nagioscheck">NagiosCheck</a></li>
+<li><a class="reference internal" href="#psnagioscheck">PSNagiosCheck</a></li>
+<li><a class="reference internal" href="#nagios-check-template-variables">Nagios Check Template Variables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#grids">grids</a></li>
+<li><a class="reference internal" href="#dashboards">dashboards</a></li>
+<li><a class="reference internal" href="#reports">reports</a><ul>
+<li><a class="reference internal" href="#rule-types">Rule Types</a></li>
+<li><a class="reference internal" href="#selector-types">Selector Types</a></li>
+<li><a class="reference internal" href="#match-types">Match Types</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#notifications">notifications</a><ul>
+<li><a class="reference internal" href="#email-parameters">Email Parameters</a></li>
+<li><a class="reference internal" href="#servicenow-parameters">ServiceNow Parameters</a></li>
+<li><a class="reference internal" href="#servicenow-template-variables">ServiceNow Template Variables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#general-properties">General Properties</a></li>
+<li><a class="reference internal" href="#web-server-properties">Web Server Properties</a><ul>
+<li><a class="reference internal" href="#http-properties">http properties</a></li>
+<li><a class="reference internal" href="#https-properties">https properties</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="maddash_install.html">Previous topic</a>
+                  <ul><li><a href="maddash_install.html" title="previous chapter">MaDDash Installation</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="maddash_running.html">Next topic</a>
+                      <ul><li><a href="maddash_running.html" title="next chapter">Running and Managing the MaDDash Server</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maddash_running.html" title="Running and Managing the MaDDash Server"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="maddash_install.html" title="MaDDash Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Configuring the MaDDash Server</a></li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>
