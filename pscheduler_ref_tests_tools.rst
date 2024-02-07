@@ -47,7 +47,7 @@ dns
 http
 ############
 :Description: Measure HTTP response time
-:Tools: psurl
+:Tools: curl
 
 latency
 ############
@@ -120,15 +120,23 @@ Throughput tests support the following arguments::
   -t DURATION, --duration=DURATION
                         Total runtime of test
   -i INTERVAL, --interval=INTERVAL
-                        How often to report results (internally, results still reported in aggregate at end)
+                        How often to report results (internally, results still
+						reported in aggregate at end)
+  --link-rtt=LINK_RTT   Approximate link round-trip time (ISO8601 or integer
+                        ms)
   -P PARALLEL, --parallel=PARALLEL
                         How many parallel streams to run during the test
   -u, --udp             Use UDP instead of TCP testing
   -b BANDWIDTH, --bandwidth=BANDWIDTH
                         Bandwidth to rate limit the test to, supports SI
                         notation such as 1G
+  --bandwidth-strict    Never go faster than --bandwidth, even to make up for
+						lost time.
+  --burst-size=BURST_SIZE
+                        Limit bursts of packets to this number
   -w WINDOW_SIZE, --window-size=WINDOW_SIZE
-                        TCP window size to use for the test, supports SI notation such as 64M
+                        TCP window size to use for the test, supports
+                        SI notation such as 64M
   -m MSS, --mss=MSS     TCP maximum segment size
   -l BUFFER_LENGTH, --buffer-length=BUFFER_LENGTH
                         length of the buffer to read/write from
@@ -148,8 +156,14 @@ Throughput tests support the following arguments::
                         Set's the sending side's CPU affinity
   --server-cpu-affinity=SERVER_CPU_AFFINITY
                         Set's the receiving's side's CPU affinity
+  --single-ended        Run a test directly to a host without pscheduler.
+  --single-ended-port=SINGLE_ENDED_PORT
+                        Run a test directly to a given port.
   --reverse             Reverses the direction of the test.
-
+  --reverse-connections
+                        Make connections from destination to source where
+                        possible.
+  --loopback            Run both client and server side in a loopback test.
 
 The currently supported throughput tools are *iperf2*, *iperf3*, and *nuttcp*. *iperf3* is the default.
 Note that not every tool supports every option. The following table summarizes tool specific option.
@@ -210,6 +224,9 @@ Latency tests support the following arguments::
   -f, --flip            In multi-participant mode, have the dest start the
                         client and request a reverse test. Useful in some
                         firewall and NAT environments.
+  -r, --reverse         Report results in the reverse direction (destination
+                        to source) if possible.
+  --traverse-nat        Take steps to traverse outbound NAT
   -R, --output-raw      Output individual packet statistics. This will
                         substantially increase the size of a successful
                         result.
@@ -298,9 +315,18 @@ HTTP tests support the following arguments::
   
   -h, --help             show this help message and exit
   --url=URL              URL to query
+  --header=HEADERS       HTTP header for request, format 'HeaderName: Value'.
+                         May be repeated.
   --parse=PARSE          String to parse for
   --host=HOST            Host to run the test
   --host-node=HOST_NODE  Host to run the test
+  --ip-version=IP_VERSION
+                         Specificy which IP version to use, 4 or 6
+  --always-succeed       Treat HTTP failures as successes, regardless of
+                         response code
+  --keep-content=KEEP_CONTENT
+                         Amount of content to keep in bytes; default none, 0
+                         for no limit, SI units supported
   --timeout=TIMEOUT      Timeout for each query attempt
   
 dns Tests
