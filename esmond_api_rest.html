@@ -1,21 +1,20 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>esmond API Reference &#8212; perfSONAR Toolkit 5.0.7 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>esmond API Reference &#8212; perfSONAR Toolkit 5.0.8 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="esmond Perl Client Libraries" href="esmond_api_perl.html" />
@@ -61,7 +60,8 @@
         <li class="right" >
           <a href="client_apis.html" title="perfSONAR Client API"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.7 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">esmond API Reference</a></li> 
       </ul>
     </div>
     </div>
@@ -73,13 +73,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="esmond-api-reference">
-<h1>esmond API Reference<a class="headerlink" href="#esmond-api-reference" title="Permalink to this headline">¶</a></h1>
+  <section id="esmond-api-reference">
+<h1>esmond API Reference<a class="headerlink" href="#esmond-api-reference" title="Permalink to this heading">¶</a></h1>
 <p>This document describes the basics of reading and writing data from the perfSONAR measurement archive. The measurement archive implements a REST interface where clients can retrieve descriptions of measurements being run and the results of those measurements. It currently offers support for a range of measurements related to throughput, packet delay, packet loss, packet traces and more (with additional data types being added all the time). This document is intended to give developers a basic programming language-neutral understanding of how to interact with the archive.</p>
-<div class="section" id="querying-data">
-<h2>Querying Data<a class="headerlink" href="#querying-data" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="getting-started">
-<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
+<section id="querying-data">
+<h2>Querying Data<a class="headerlink" href="#querying-data" title="Permalink to this heading">¶</a></h2>
+<section id="getting-started">
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h3>
 <p>Querying the measurement archive generally follows the two-step process below:
 #. Find the measurements with the type of data you want
 #. Retrieve the result data for the measurements you find</p>
@@ -165,16 +165,11 @@
 </pre></div>
 </div>
 <p>The example above glosses over many details and options, but outlines the normal workflow for querying data. See the remainder of this section for further details on more advanced queries and data types.</p>
-</div>
-<div class="section" id="finding-the-right-measurements">
-<h3>Finding the right measurements<a class="headerlink" href="#finding-the-right-measurements" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="finding-the-right-measurements">
+<h3>Finding the right measurements<a class="headerlink" href="#finding-the-right-measurements" title="Permalink to this heading">¶</a></h3>
 <p>Finding measurements with parameters relevant to the data you are seeking is the first step in querying the measurement archive. All searches of this type go to the top-level URL (usually /esmond/perfsonar/archive) and you can use HTTP GET parameters to filter the results. Almost any parameter in the measurement objects returned can be used as a search filter. If no results match your search you will get back an empty list. If one or more measurements match your search, you will get back a list of objects describing the measurements called <strong>metadata</strong>. This information includes URIs where you can get the measurement results. Fields and filters common to all measurement objects are listed in the table below:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 4%" />
-<col style="width: 2%" />
-<col style="width: 94%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Field name</p></td>
 <td><p>Type</p></td>
@@ -207,15 +202,15 @@
 </tbody>
 </table>
 <p>In addition to the fields above, specific measurement types can have context-specific fields that are searchable. A list of these fields is available in the API <a class="reference external" href="https://docs.google.com/document/d/1DFl4bgFxIQtRqYIZPHAT8xW4TACppKq2UeYK13ZsUDk/pub">specification</a>. Examples and more information on common searches are provided in the remainder of this section.</p>
-<div class="section" id="listing-all-the-measurements">
-<h4>Listing all the measurements<a class="headerlink" href="#listing-all-the-measurements" title="Permalink to this headline">¶</a></h4>
+<section id="listing-all-the-measurements">
+<h4>Listing all the measurements<a class="headerlink" href="#listing-all-the-measurements" title="Permalink to this heading">¶</a></h4>
 <p>Perhaps the simplest query one can perform is to list all the measurement metadata for which an archive has data. You can do this by querying the top level URI with no GET filters:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="searching-by-endpoint">
-<span id="psclient-rest-search"></span><h4>Searching by Endpoint<a class="headerlink" href="#searching-by-endpoint" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="searching-by-endpoint">
+<span id="psclient-rest-search"></span><h4>Searching by Endpoint<a class="headerlink" href="#searching-by-endpoint" title="Permalink to this heading">¶</a></h4>
 <p>It is common to want to search by the endpoints of a point-to-point test. The archive provides two fields for this: <strong>source</strong> and <strong>destination</strong>. These fields are always stored as an IPv4 or IPv6 address depending on the type of address used in the actual measurement. If you provide just the source, all tests that send data from the given host will be returned. Likewise, if you provide just the destination the all hosts receiving data at the particular host will be returned. If both are provided, only tests between the given source and destination will be returned. Examples:</p>
 <p><strong>Match all measurement metadata with source 10.1.1.1</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/?source=10.1.1.1&quot;</span>
@@ -238,10 +233,6 @@
 #. Use the special <strong>dns-match-rule</strong> filter in your GET parameters.
 The <strong>dns-match-rule</strong> parameter controls what DNS lookups the server will perform and accepts the following options:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 8%" />
-<col style="width: 92%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Value</p></td>
 <td><p>Description</p></td>
@@ -267,9 +258,9 @@ The <strong>dns-match-rule</strong> parameter controls what DNS lookups the serv
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/?source=host1.example.net&amp;dns-match-rule=only-v6&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="searching-by-event-type">
-<h4>Searching by Event Type<a class="headerlink" href="#searching-by-event-type" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="searching-by-event-type">
+<h4>Searching by Event Type<a class="headerlink" href="#searching-by-event-type" title="Permalink to this heading">¶</a></h4>
 <p>Another common desire is to search for only those measurements with a particular type of data. There is a special filter called <strong>event-type</strong> that returns this information. This will return any measurement metadata object that has an item in its <em>event-types</em> list where the <em>event-type</em> field equals the provided value. For example, to return only those measurements containing throughput data one could run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/?event-type=throughput&quot;</span>
 </pre></div>
@@ -279,15 +270,11 @@ The <strong>dns-match-rule</strong> parameter controls what DNS lookups the serv
 </pre></div>
 </div>
 <p>Summaries are explained in more detail in the section <a class="reference internal" href="#psclient-rest-basevsumm"><span class="std std-ref">Base Data vs Summaries</span></a>.</p>
-</div>
-<div class="section" id="searching-by-most-recent-result-time">
-<h4>Searching by most recent result time<a class="headerlink" href="#searching-by-most-recent-result-time" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="searching-by-most-recent-result-time">
+<h4>Searching by most recent result time<a class="headerlink" href="#searching-by-most-recent-result-time" title="Permalink to this heading">¶</a></h4>
 <p>The previous examples will return all measurement metadata regardless of whether they have received any new data recently. In some cases this is fine, but its often useful to filter-out tests that have not been updated in a long time. For example if you have an old test that is no longer run and will not be updated again, but would like to keep the data around for historical purposes. You can filter measurement metadata based on time with the following special time filters:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 2%" />
-<col style="width: 98%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Filter</p></td>
 <td><p>Description</p></td>
@@ -327,15 +314,11 @@ The <strong>dns-match-rule</strong> parameter controls what DNS lookups the serv
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/?time-range=86400&amp;event-type=throughput&amp;source=10.1.1.1&amp;destination=10.1.1.2&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="limiting-results-returned">
-<h4>Limiting results returned<a class="headerlink" href="#limiting-results-returned" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="limiting-results-returned">
+<h4>Limiting results returned<a class="headerlink" href="#limiting-results-returned" title="Permalink to this heading">¶</a></h4>
 <p>The following options are available to limit the results returned and do things like pagination of results:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Filter</p></td>
 <td><p>Description</p></td>
@@ -361,12 +344,12 @@ The <strong>dns-match-rule</strong> parameter controls what DNS lookups the serv
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/?offset=10&quot;</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="retrieving-measurement-results">
-<h3>Retrieving Measurement Results<a class="headerlink" href="#retrieving-measurement-results" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="base-data-vs-summaries">
-<span id="psclient-rest-basevsumm"></span><h4>Base Data vs Summaries<a class="headerlink" href="#base-data-vs-summaries" title="Permalink to this headline">¶</a></h4>
+</section>
+</section>
+<section id="retrieving-measurement-results">
+<h3>Retrieving Measurement Results<a class="headerlink" href="#retrieving-measurement-results" title="Permalink to this heading">¶</a></h3>
+<section id="base-data-vs-summaries">
+<span id="psclient-rest-basevsumm"></span><h4>Base Data vs Summaries<a class="headerlink" href="#base-data-vs-summaries" title="Permalink to this heading">¶</a></h4>
 <p>Once you find the measurements with the parameters you want, you need to retrieve the actual results those measurements are collecting. The location of the data is provided by the list of objects in the <strong>event-types</strong> field. For reference, the <em>event-types</em> object looks something like the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;event-types&quot;</span><span class="p">:[</span>
@@ -412,19 +395,15 @@ The <strong>dns-match-rule</strong> parameter controls what DNS lookups the serv
 <li><p><strong>statistics</strong> - Currently only applies to the histogram type, but contains common statistical measures of data over the summary window such as minimum, maximum, mean and median.</p></li>
 </ul>
 <p>Summary data such as aggregation and average over large time windows can be a useful way to grab data over long periods of time as it should result in a smaller data set returned than the base data returned over the same timeframe. The <em>statistics</em> summary can be useful even on base data as it provides additional information about each data point. Querying base or summary data depends on the use case.</p>
-</div>
-<div class="section" id="retrieving-time-series-data">
-<h4>Retrieving time series data<a class="headerlink" href="#retrieving-time-series-data" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="retrieving-time-series-data">
+<h4>Retrieving time series data<a class="headerlink" href="#retrieving-time-series-data" title="Permalink to this heading">¶</a></h4>
 <p>Once you have decided whether you want base or statistical data, retrieving it is simply a matter of doing an HTTP GET to the provide URI. For example, to get all the base throughput data for a particular test, you can run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/f6b732e9f351487a96126f0c25e5e546/throughput/base&quot;</span>
 </pre></div>
 </div>
 <p>In general you will want to filter data based on time and you can do so with the following GET parameters (notice they have the same names and meaing as we used to search the measurement metadata):</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 2%" />
-<col style="width: 98%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Filter</p></td>
 <td><p>Description</p></td>
@@ -469,9 +448,9 @@ The <strong>dns-match-rule</strong> parameter controls what DNS lookups the serv
 </pre></div>
 </div>
 <p>The format of <strong>val</strong> depends on the event type (and in some cases the summary-type as well), some are numeric while others are JSON objects. The next section describes common event types and how to retrieve data.</p>
-</div>
-<div class="section" id="querying-throughput">
-<h4>Querying Throughput<a class="headerlink" href="#querying-throughput" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="querying-throughput">
+<h4>Querying Throughput<a class="headerlink" href="#querying-throughput" title="Permalink to this heading">¶</a></h4>
 <p><strong>Event Type(s):</strong> throughput</p>
 <p>Throughput is a series of integer values always in bits per second. There may be average summaries but in general you will likely query the base data if the throughput tests only run a few times a day. You can do this with a query like the following to get the last 24 hours of throughput data:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/f6b732e9f351487a96126f0c25e5e546/throughput/base?time-range=86400&quot;</span>
@@ -498,9 +477,9 @@ The <strong>dns-match-rule</strong> parameter controls what DNS lookups the serv
 <span class="p">]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="querying-delay-one-way-delay">
-<h4>Querying Delay/One-way Delay<a class="headerlink" href="#querying-delay-one-way-delay" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="querying-delay-one-way-delay">
+<h4>Querying Delay/One-way Delay<a class="headerlink" href="#querying-delay-one-way-delay" title="Permalink to this heading">¶</a></h4>
 <p><strong>Event Type(s):</strong> histogram-rtt, histogram-owdelay</p>
 <p>Delay values are stored in a histogram where the histogram bucket is the number of milliseconds measured and the value is the number of packets that were measured to have that value. Delay in terms of the round trip time reported by ping is represented with the event-type <strong>histogram-delay</strong>. One-way delay is represented as “histogram-owdelay”. The format of their histograms is exactly the same. Examples of query the 24 hours of base data are below:</p>
 <p><strong>Ping Round Trip Time</strong></p>
@@ -606,9 +585,9 @@ The <strong>dns-match-rule</strong> parameter controls what DNS lookups the serv
 <span class="p">]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="querying-packet-loss">
-<h4>Querying Packet Loss<a class="headerlink" href="#querying-packet-loss" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="querying-packet-loss">
+<h4>Querying Packet Loss<a class="headerlink" href="#querying-packet-loss" title="Permalink to this heading">¶</a></h4>
 <p><strong>Event Type(s):</strong> packet-loss-rate
 Packet loss rate measures the number of packets lost over the number of packets sent. It is represented as a floating point number between 0 and 1 where 0 equals 0% packet loss and 1 equals 100% packet loss. You can query the base packet loss data using the packet-loss-rate event type such as in the request below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/fce0483e51de49aaa7fcf8884d053134/packet-loss-rate/base&quot;</span>
@@ -635,9 +614,9 @@ Packet loss rate measures the number of packets lost over the number of packets 
 </pre></div>
 </div>
 <p>Packet-loss can also have an <em>aggregation</em> summary that give the packet loss percentage over the given summary window.</p>
-</div>
-<div class="section" id="querying-packet-traces">
-<h4>Querying Packet Traces<a class="headerlink" href="#querying-packet-traces" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="querying-packet-traces">
+<h4>Querying Packet Traces<a class="headerlink" href="#querying-packet-traces" title="Permalink to this heading">¶</a></h4>
 <p><strong>Event Type(s):</strong> packet-trace
 The results of a traceroute or tracepath measurement are stored under the packet-trace event type. The result is an array of objects describing the result of each traceroute or tracepath probe. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>curl http://archive.example.net/esmond/perfsonar/archive/641860b2004c46a7b21fe26e5ffea9af/packet-trace/base?time-range=600
@@ -744,10 +723,6 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </div>
 <p>The object fields have the following meaning:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 7%" />
-<col style="width: 93%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Field Name</p></td>
 <td><p>Description</p></td>
@@ -776,9 +751,9 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </tbody>
 </table>
 <p>There are no summaries supported for the packet-trace type currently.</p>
-</div>
-<div class="section" id="querying-subinterval-data">
-<h4>Querying Subinterval Data<a class="headerlink" href="#querying-subinterval-data" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="querying-subinterval-data">
+<h4>Querying Subinterval Data<a class="headerlink" href="#querying-subinterval-data" title="Permalink to this heading">¶</a></h4>
 <p><strong>Event Type(s):</strong> throughput-subintervals, packet-retransmits-subintervals</p>
 <p>Data such as throughput and packet retransmits is also available for subintervals of an individual test. No summarizations are avilable for this data type.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://archive.example.net/esmond/perfsonar/archive/f6b732e9f351487a96126f0c25e5e546/packet-retransmits-subintervals/base?time-range=86400&quot;</span>
@@ -999,13 +974,13 @@ The results of a traceroute or tracepath measurement are stored under the packet
 <span class="p">]</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="publishing-data">
-<h2>Publishing Data<a class="headerlink" href="#publishing-data" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>Getting Started<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+</section>
+<section id="publishing-data">
+<h2>Publishing Data<a class="headerlink" href="#publishing-data" title="Permalink to this heading">¶</a></h2>
+<section id="id1">
+<h3>Getting Started<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
 <p>The measurement archive defines a REST API for publishing data via HTTP POST requests. Much like querying data there are two steps to this process:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -1071,20 +1046,15 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </pre></div>
 </div>
 <p>See the remainder of this section for more details one each of these steps.</p>
-</div>
-<div class="section" id="authentication-and-authorization">
-<span id="psclient-rest-authn"></span><h3>Authentication and Authorization<a class="headerlink" href="#authentication-and-authorization" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="authentication-and-authorization">
+<span id="psclient-rest-authn"></span><h3>Authentication and Authorization<a class="headerlink" href="#authentication-and-authorization" title="Permalink to this heading">¶</a></h3>
 <p>Writing data generally requires some form of authentication and authorization. IP authentication is one option that does not require any modification to the message. The measurement archive supports the use of the HTTP Authorization header with an authorization string the form of <code class="docutils literal notranslate"><span class="pre">Token</span> <span class="pre">&lt;api-key&gt;</span></code> where <code class="docutils literal notranslate"><span class="pre">&lt;api-key&gt;</span></code> is the authentication credential. It is also recommended all requests be sent over HTTPS since otherwise these credentials will be sent in plain text. More information on obtaining an API key can be found <a class="reference internal" href="multi_ma_install.html#multi-ma-install-intro"><span class="std std-ref">here</span></a>.</p>
-</div>
-<div class="section" id="publishing-the-measurement-description">
-<h3>Publishing the Measurement Description<a class="headerlink" href="#publishing-the-measurement-description" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="publishing-the-measurement-description">
+<h3>Publishing the Measurement Description<a class="headerlink" href="#publishing-the-measurement-description" title="Permalink to this heading">¶</a></h3>
 <p>The first step to publishing data is to send a <em>metadata</em> object describing the measurement and the types of results it will collect. It looks very similar to the measurement descriptions returned by a query. When you register though, you do not provide the metadata-key nor any of the URIs as these will be generated by the server. All requests are sent as an HTTP POST to the top-level URL (usually ending with /esmond/perfsonar/archive). The metadata object MUST contain a <em>subject-type</em> field and a list of <em>event-types</em>. If the subject-type is <em>point-to-point</em> then the following fields are additionally required:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 6%" />
-<col style="width: 4%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Field name</p></td>
 <td><p>Type</p></td>
@@ -1118,11 +1088,6 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </table>
 <p>The objects in the <em>event-types</em> array provided each have two fields:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 20%" />
-<col style="width: 71%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Field name</p></td>
 <td><p>Type</p></td>
@@ -1140,11 +1105,6 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </table>
 <p>The summary objects have the following fields:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 9%" />
-<col style="width: 76%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Field name</p></td>
 <td><p>Type</p></td>
@@ -1161,16 +1121,11 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </tbody>
 </table>
 <p>After sending the request, the HTTP status code will indicate the result. If it succeed you will receive an HTTP 200 status code with the created metadata object including the generated <em>metadata-key</em> and URIs for each event-type. One feature of the Measurement Archive that can be useful is that if an existing measurement exactly matches one posted (i.e. same parameters and same even types) than that object is returned. This prevents the need of registration clients to keep local state of the URIs used to publish data. They can simply re-register the metadata each time and get back the existing metadata object if there is one.</p>
-</div>
-<div class="section" id="publishing-a-single-measurement-result">
-<h3>Publishing a Single Measurement Result<a class="headerlink" href="#publishing-a-single-measurement-result" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="publishing-a-single-measurement-result">
+<h3>Publishing a Single Measurement Result<a class="headerlink" href="#publishing-a-single-measurement-result" title="Permalink to this heading">¶</a></h3>
 <p>You can publish a single measurement by sending a HTTP POST to one of the values in the event-type <em>base-uri</em> fields of the metadata object we created. This HTTP body contains a JSON object with two fields:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 11%" />
-<col style="width: 23%" />
-<col style="width: 66%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Field name</p></td>
 <td><p>Type</p></td>
@@ -1187,16 +1142,11 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </tbody>
 </table>
 <p>The HTTP status code indicates success or failure. HTTP 200 means the measurement was published and there will be no JSON body. If the request fails for any reason, an non-200 status code is set and the cody will contain a JSON object with a single <em>error</em> field containing a message describing the error.</p>
-</div>
-<div class="section" id="publishing-multiple-measurement-results">
-<h3>Publishing Multiple Measurement Results<a class="headerlink" href="#publishing-multiple-measurement-results" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="publishing-multiple-measurement-results">
+<h3>Publishing Multiple Measurement Results<a class="headerlink" href="#publishing-multiple-measurement-results" title="Permalink to this heading">¶</a></h3>
 <p>It may be desirable to publish data points for multiple timestamps and/or multiple event types in the same request. This type of bulk request contains an object with a <em>data</em> field contain an array of the data to be published. The array contains a series of time-series objects with a <em>ts</em> and a <em>val</em> just like in the single-measurement case but the val of each object takes the following form:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 7%" />
-<col style="width: 14%" />
-<col style="width: 78%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Field name</p></td>
 <td><p>Type</p></td>
@@ -1246,11 +1196,11 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </pre></div>
 </div>
 <p>In the response, the HTTP status code indicates success or failure. HTTP 200 means the measurement was published and there will be no JSON body. If the request fails for any reason, an non-200 status code is set and the cody will contain a JSON object with a single <em>error</em> field containing a message describing the error.</p>
-</div>
-<div class="section" id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="publishing-throughput-data">
-<h4>Publishing Throughput Data<a class="headerlink" href="#publishing-throughput-data" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h3>
+<section id="publishing-throughput-data">
+<h4>Publishing Throughput Data<a class="headerlink" href="#publishing-throughput-data" title="Permalink to this heading">¶</a></h4>
 <p>An example of throughput metadata as published for BWCTL running iperf3 by the perfSONAR Regular Testing component:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
    <span class="s2">&quot;tool-name&quot;</span><span class="p">:</span><span class="s2">&quot;bwctl/iperf3&quot;</span><span class="p">,</span>
@@ -1416,9 +1366,9 @@ The results of a traceroute or tracepath measurement are stored under the packet
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="publishing-delay-one-way-delay-data">
-<h4>Publishing Delay/One-way Delay Data<a class="headerlink" href="#publishing-delay-one-way-delay-data" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="publishing-delay-one-way-delay-data">
+<h4>Publishing Delay/One-way Delay Data<a class="headerlink" href="#publishing-delay-one-way-delay-data" title="Permalink to this heading">¶</a></h4>
 <p>An example of delay metadata as published for BWCTL running ping by the perfSONAR Regular Testing component:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
    <span class="s2">&quot;tool-name&quot;</span><span class="p">:</span><span class="s2">&quot;bwctl/ping&quot;</span><span class="p">,</span>
@@ -1671,9 +1621,9 @@ The results of a traceroute or tracepath measurement are stored under the packet
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="publishing-packet-loss">
-<h4>Publishing Packet Loss<a class="headerlink" href="#publishing-packet-loss" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="publishing-packet-loss">
+<h4>Publishing Packet Loss<a class="headerlink" href="#publishing-packet-loss" title="Permalink to this heading">¶</a></h4>
 <p>A special note about packet loss: packet loss is currently published for multiple tools such as ping, UDP throughput tests, and owamp(powstream or owping). Packet loss is a percentage type and the MA provides a special format for registering such values to make summarization possible. Instead of registering the float value, you register the <em>numerator</em> and <em>denominator</em>, in this case packets lost and packets sent respectively. Below is the packet-loss portion extracted from one-way delay example above:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="p">{</span>
@@ -1686,9 +1636,9 @@ The results of a traceroute or tracepath measurement are stored under the packet
 <span class="o">...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="publishing-packet-traces">
-<h4>Publishing Packet Traces<a class="headerlink" href="#publishing-packet-traces" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="publishing-packet-traces">
+<h4>Publishing Packet Traces<a class="headerlink" href="#publishing-packet-traces" title="Permalink to this heading">¶</a></h4>
 <p>An example of packet trace metadata as published for BWCTL running tracepath by the perfSONAR Regular Testing component:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
    <span class="s2">&quot;tool-name&quot;</span><span class="p">:</span><span class="s2">&quot;bwctl/tracepath&quot;</span><span class="p">,</span>
@@ -1770,17 +1720,13 @@ The results of a traceroute or tracepath measurement are stored under the packet
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="full-list-of-event-types">
-<span id="psclient-rest-eventtypes"></span><h2>Full List of Event Types<a class="headerlink" href="#full-list-of-event-types" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="full-list-of-event-types">
+<span id="psclient-rest-eventtypes"></span><h2>Full List of Event Types<a class="headerlink" href="#full-list-of-event-types" title="Permalink to this heading">¶</a></h2>
 <p>A few of the common event types have been covered in previous sections, but a full list is provided below for reference (NOTE: See API <a class="reference external" href="https://docs.google.com/document/d/1DFl4bgFxIQtRqYIZPHAT8xW4TACppKq2UeYK13ZsUDk/pub">specification</a> for more formal definitions of each type):</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 12%" />
-<col style="width: 88%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Name</p></td>
 <td><p>Description</p></td>
@@ -1886,25 +1832,26 @@ The results of a traceroute or tracepath measurement are stored under the packet
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="programming-language-libraries">
-<h2>Programming Language Libraries<a class="headerlink" href="#programming-language-libraries" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="programming-language-libraries">
+<h2>Programming Language Libraries<a class="headerlink" href="#programming-language-libraries" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="esmond_api_perl.html">esmond Perl Client Libraries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="esmond_api_python.html">esmond Python Client Libraries</a></li>
 </ul>
 </div>
-</div>
-<div class="section" id="full-api-specification">
-<h2>Full API Specification<a class="headerlink" href="#full-api-specification" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="full-api-specification">
+<h2>Full API Specification<a class="headerlink" href="#full-api-specification" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://docs.google.com/document/d/1DFl4bgFxIQtRqYIZPHAT8xW4TACppKq2UeYK13ZsUDk/pub">Full API Specification</a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -1989,7 +1936,8 @@ The results of a traceroute or tracepath measurement are stored under the packet
         <li class="right" >
           <a href="client_apis.html" title="perfSONAR Client API"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.7 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">esmond API Reference</a></li> 
       </ul>
     </div>
     <footer id="fat">
@@ -2034,7 +1982,7 @@ The results of a traceroute or tracepath measurement are stored under the packet
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
     </div>
   </body>
 </html>
