@@ -89,6 +89,11 @@ Step 2: Install a Bundle
 
 .. note:: The ``perfsonar-archive`` bundle is also supported on Debian 11 and Ubuntu 22.
 
+Setting the default user password in PostgreSQL
+++++++++++++++++++
+With a regular ``apt install``, the user is prompted to enter a password for the new PostgreSQL database created during installation. You can choose this password arbitrarily or leave it empty (the DB is only accessible locally).
+Alternatively, you can install packages with APT in non-interactive mode to avoid the password prompt by setting the following environment variable when installing: ``DEBIAN_FRONTEND=noninteractive apt install perfsonar-toolkit``
+
 Optional Packages
 ++++++++++++++++++
 In addition to any of the bundles above you may also **optionally** choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):

@@ -186,7 +186,7 @@ The **dns-match-rule** parameter controls what DNS lookups the server will perfo
 A quick example that returns only results with a source that matches the AAAA record of host1.example.net is below:
 ::
 
-    curl "http://archive.example.net/esmond/perfsonar/archive/?source=host1.example.net&dns-match-rule=v6-only"
+    curl "http://archive.example.net/esmond/perfsonar/archive/?source=host1.example.net&dns-match-rule=only-v6"
 
 
 Searching by Event Type 
