@@ -335,7 +335,7 @@ Step 4: Publishing Your Measurement Configuration with pSConfig
     .. image:: images/cbca_gf_nodata.png
 
 
-Step 4: Setup perfSONAR Testpoint hosts
+Step 5: Setup perfSONAR Testpoint hosts
 ========================================================
 We will now logout of the archive host and login to a testpoint host. The steps in this section we will repeat for each of our testpoint hosts. 
 
@@ -381,7 +381,7 @@ We will now logout of the archive host and login to a testpoint host. The steps 
 
 5. The testpoint is now setup. Repeat these steps for each testpoint.
 
-Step 5: Viewing Results
+Step 6: Viewing Results
 ========================================================
 1. Go to toolkit page to get overview
 2. Go to psconfig directory look at dashboards
