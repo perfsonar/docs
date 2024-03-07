@@ -44,26 +44,25 @@ In this step we'll setup the *archive host* store measurements. Specifically we'
  * **Debian/Ubuntu**::
 
     cd /etc/apt/sources.list.d/
-    curl -o perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
-    curl http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
+    curl -o perfsonar-minor-snapshot.list downloads.perfsonar.net/debian/perfsonar-minor-snapshot.list
+    curl http://downloads.perfsonar.net/debian/perfsonar-snapshot.gpg.key | apt-key add -
     apt-update
 
-4. Next we'll install the perfsonar-archive package. This will setup OpenSearch and Logstash. The command will again depend on the operating system::
+4. Next we'll install the perfsonar-archive package. This will setup OpenSearch and Logstash. The command will again depend on the operating system:
 
  * **RedHat-based (e.g. Rocky, Alma)**::
-    
+
     dnf install perfsonar-archive
 
  * **Debian/Ubuntu**::
 
     apt install perfsonar-archive
 
-5. Let's quickly verify Opensearch and Logstash are running. You should see both listed as **active (running)** when you execute the following commands::
+5. Let's quickly verify the archive is running with the *psarchive troubleshoot* utility. It will check that components such as OpenSearch and Logstash are running as well as verify authentication credentials. It can also check if the archive has data, but since we have not yet configured our measurement hosts we will skip that check with the `--skip-opensearch-data` option. Run the command as follows and if everything is marked as *OK* then proceed, otherwise follow the instructions in the command output to debug::
 
-    systemctl status opensearch
-    systemctl status logstash
+    psarchive troubleshoot --skip-opensearch-data
 
-6. Next we'll setup IP authentication so that the testpoint hosts will be able to send their results. This verification is handled by the Apache proxy in front of Logstash. We are going to edit **/etc/httpd/conf.d/apache-logstash.conf** to include the example IPs (see the diagram at the top of this guide). Note we'll add both the IPv4 and IPv6 addresses to make sure the host can authenticate via either protocol. The following is what we setup for the example (the *Require ip* lines are the relevant portions)::
+6. Next we'll setup IP authentication so that the testpoint hosts will be able to send their results. This verification is handled by the Apache proxy in front of Logstash. We are going to edit **/etc/httpd/conf.d/apache-logstash.conf** (Rocky/Alma) or **/etc/apache2/conf-available/apache-logstash.conf** (Debian/Ubuntu) to include the example IPs (see the diagram at the top of this guide). Note we'll add both the IPv4 and IPv6 addresses to make sure the host can authenticate via either protocol. The following is what we setup for the example (the *Require ip* lines are the relevant portions)::
 
     <IfModule proxy_module>
         ProxyRequests Off
@@ -133,7 +132,7 @@ Now that the host can store measurements, let's prepare to visualize them. You s
 
     .. image:: images/cbca_gf_verify.png
 
-3. Navigate to the **perfSONAR Host Metrics** page. There may be a link under "Recently Viewed Dashboards" (see previous screenshot) or type "perfSONARHost Metrics" in the search bar:
+3. Navigate to the **perfSONAR Host Metrics** page. There may be a link under "Recently Viewed Dashboards" (see previous screenshot) or type "perfSONAR Host Metrics" in the search bar:
 
     .. image:: images/cbca_gf_search_hm.png
 
@@ -144,7 +143,7 @@ Now that the host can store measurements, let's prepare to visualize them. You s
 We now have a working Grafana installation. For now there is not much to show beyond host statistics, but we will revisit this after we have the measurements running. In the next step, we'll define the measurements to run. 
 
 
-Step 3: Build and Publish Measurement Configuration with pSConfig
+Step 3: Creating Your Measurement Configuration with pSConfig
 ==================================================================
 In this step we'll create a file that defines the measurements we want all the testpoints to run. This is called a **pSConfig Template File**. If you want to learn more about pSConfig templates see :doc:`psconfig_intro`. In this example we'll generate the file by hand from a skeleton file then use some helpful utilities to fill-in and publish. Steps are as follows:
 
@@ -159,7 +158,7 @@ In this step we'll create a file that defines the measurements we want all the t
 
 3. The first thing we'll add to the pSConfig template is instructions that tell testpoints how to send results to the archive. There is a helper script that helps us generate this definition. You will pass it a `-n` that tells it the public address of your archive. In our example it is *archive.local* but change that to the address of your archive host. The command for this example looks like the following::
 
-    /usr/lib/perfsonar/archive/perfsonar-scripts/psconfig_archive.sh -n archive.local
+    /usr/lib/perfsonar/archive/perfsonar-scripts/psconfig_archive.sh -n archive.local -a ip
 
 4. You output will look similar to the following (with archive.local replaced with your hostname)::
 
@@ -180,7 +179,7 @@ In this step we'll create a file that defines the measurements we want all the t
         }
     }
 
-4. We are going to copy and paste above into our `psconfig.json` file under the *archives* section and name it *example_http_archive*. This is what our psconfig.json looks like when we are done::
+5. We are going to copy and paste above into our `psconfig.json` file under the *archives* section and name it *example_http_archive*. This is what our psconfig.json looks like when we are done::
 
     {
     "_meta":{
@@ -209,7 +208,7 @@ In this step we'll create a file that defines the measurements we want all the t
     "addresses": {
     ...
 
-5. Now well add the addresses of our testpoints and define a group that build a mesh of tests between all the testpoints::
+6. Now well add the addresses of our testpoints and define a group that build a mesh of tests between all the testpoints::
 
     ...
         
@@ -230,7 +229,7 @@ In this step we'll create a file that defines the measurements we want all the t
         }
     },
     ...
-6. The next section defines the test specifications, schedules and tasks. We'll just keep the defaults of the skeleton, but you can adjust these to meet your needs. Any test type or option supported by pscheduler is supported by this file. For reference, below is exactly what is in skeleton file::
+7. The next section defines the test specifications, schedules and tasks. We'll just keep the defaults of the skeleton, but you can adjust these to meet your needs. Any test type or option supported by pscheduler is supported by this file. For reference, below is exactly what is in skeleton file::
 
     ...
     "tests": {
@@ -278,7 +277,8 @@ In this step we'll create a file that defines the measurements we want all the t
             "schedule": "example_schedule_PT4H",
             "archives": [ "example_http_archive" ],
             "reference": {
-                "display-task-name": "Example Throughput Tests"
+                "display-task-name": "Example Throughput Tests",
+                "display-task-group": [ "Example Tests" ]
             }
         },
         "example_task_latencybg": {
@@ -286,7 +286,8 @@ In this step we'll create a file that defines the measurements we want all the t
             "test": "example_test_latencybg",
             "archives": [ "example_http_archive" ],
             "reference": {
-                "display-task-name": "Example Loss Tests"
+                "display-task-name": "Example Loss Tests",
+                "display-task-group": [ "Example Tests" ]
             }
         },
         "example_task_trace": {
@@ -295,37 +296,43 @@ In this step we'll create a file that defines the measurements we want all the t
             "schedule": "example_schedule_PT10M",
             "archives": [ "example_http_archive" ],
             "reference": {
-                "display-task-name": "Example Traceroute Tests"
+                "display-task-name": "Example Traceroute Tests",
+                "display-task-group": [ "Example Tests" ]
             }
         }
     }
 
-7. Save the file when you are done.
+8. Save the file when you are done.
 
-8. We will now publish the file to a local web server so the testpoints can download it. We do this will the following command::
+9. Run the following to validate your JSON file and correct any errors found::
 
+    psconfig validate psconfig.json
+
+Step 4: Publishing Your Measurement Configuration with pSConfig
+==================================================================
+
+1. We will now publish the file to a local web server so the testpoints can download it. We do this will the following command::
+    
     psconfig publish psconfig.json
 
-9. The output of the command looks like the following::
+2. The output of the command looks like the following::
 
     Success! File saved to /usr/lib/perfsonar/web-psconfig/psconfig.json
     Published file can be accessed at https://archive.local/psconfig/psconfig.json
-    Execute the following on a host running an agent to use this file:
+    Execute the following on a host running an agent to use this file: 
         psconfig remote add "https://archive.local/psconfig/psconfig.json"
 
-10. That last command will be important when we setup the testpoints. We will also run it right now on our archive host (replace archive.local with your hostname)::
+3. That last command will be important when we setup the testpoints. We will also run it right now on our archive host (replace archive.local with your hostname)::
 
     psconfig remote add "https://archive.local/psconfig/psconfig.json"
 
-11. The previous command tells a pSConfig agent running on the host to setup some dashboards. It also tells it to gather host statistics from each of the testpoints. We aren't getting any results yet, but lets take a quick look at the dashboards it created by visiting **https://archive.local/grafana/dashboards**.
+4. The previous command tells a pSConfig agent running on the host to setup some dashboards. It also tells it to gather host statistics from each of the testpoints. We aren't getting any results yet, but lets take a quick look at the dashboards it created by visiting **https://archive.local/grafana/dashboards**.
 
-12. Click the folder **perfSONAR pSConfig** folder on the page that load.
+5. Click the folder **perfSONAR pSConfig** folder on the page that load.
 
-13. Click on **All perfSONAR Measurements**. The dashboard doesn't have any data, so let's fix that by having our testpoints run some measurements.
+6. Click on **All perfSONAR Measurements**. The dashboard doesn't have any data, so let's fix that by having our testpoints run some measurements.
 
     .. image:: images/cbca_gf_nodata.png
-
-
 
 
 Step 4: Setup perfSONAR Testpoint hosts
@@ -354,10 +361,10 @@ We will now logout of the archive host and login to a testpoint host. The steps 
     curl http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
     apt-update
 
-4. Next we'll install the perfsonar-testpoint package. The command will again depend on the operating system::
+4. Next we'll install the perfsonar-testpoint package. The command will again depend on the operating system:
 
  * **RedHat-based (e.g. Rocky, Alma)**::
-    
+
     dnf install perfsonar-testpoint
 
  * **Debian/Ubuntu**::

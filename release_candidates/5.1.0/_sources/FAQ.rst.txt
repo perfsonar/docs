@@ -175,6 +175,11 @@ Q: Where are the relevant logs for perfSONAR services?
 **A:** Please see :doc:`manage_logs` for more information. 
 
 
+Q: How do I enable log compression with logrotate.conf?
+========================================================================================================================================================================================
+**A:** Sometimes, log files can grow bigger and consume disk space even before their rotation. ``Logrotate`` is a system utility installed by default and is configured to handle log rotation for all installed packages and applications. In order to enable system-wide log files compression change default settings in ``/etc/logrotate.conf`` and uncomment ``compress`` option. This implies that rotated files will be compressed with log files having a ``.gz`` file extension. 
+
+
 Q: Can I use a firewall?
 ========================================================================================================================================================================================
 **A:** Please see :doc:`manage_security`.

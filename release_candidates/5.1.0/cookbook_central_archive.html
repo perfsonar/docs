@@ -119,8 +119,8 @@
 </li>
 <li><p><strong>Debian/Ubuntu</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span>
-<span class="n">curl</span> <span class="o">-</span><span class="n">o</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">list</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">list</span>
-<span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">official</span><span class="o">.</span><span class="n">gpg</span><span class="o">.</span><span class="n">key</span> <span class="o">|</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">o</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">minor</span><span class="o">-</span><span class="n">snapshot</span><span class="o">.</span><span class="n">list</span> <span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">minor</span><span class="o">-</span><span class="n">snapshot</span><span class="o">.</span><span class="n">list</span>
+<span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">snapshot</span><span class="o">.</span><span class="n">gpg</span><span class="o">.</span><span class="n">key</span> <span class="o">|</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
 <span class="n">apt</span><span class="o">-</span><span class="n">update</span>
 </pre></div>
 </div>
@@ -145,13 +145,12 @@
 </ul>
 </div></blockquote>
 <ol class="arabic" start="5">
-<li><p>Let’s quickly verify Opensearch and Logstash are running. You should see both listed as <strong>active (running)</strong> when you execute the following commands:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">status</span> <span class="n">opensearch</span>
-<span class="n">systemctl</span> <span class="n">status</span> <span class="n">logstash</span>
+<li><p>Let’s quickly verify the archive is running with the <em>psarchive troubleshoot</em> utility. It will check that components such as OpenSearch and Logstash are running as well as verify authentication credentials. It can also check if the archive has data, but since we have not yet configured our measurement hosts we will skip that check with the <cite>–skip-opensearch-data</cite> option. Run the command as follows and if everything is marked as <em>OK</em> then proceed, otherwise follow the instructions in the command output to debug:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psarchive</span> <span class="n">troubleshoot</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">opensearch</span><span class="o">-</span><span class="n">data</span>
 </pre></div>
 </div>
 </li>
-<li><p>Next we’ll setup IP authentication so that the testpoint hosts will be able to send their results. This verification is handled by the Apache proxy in front of Logstash. We are going to edit <strong>/etc/httpd/conf.d/apache-logstash.conf</strong> to include the example IPs (see the diagram at the top of this guide). Note we’ll add both the IPv4 and IPv6 addresses to make sure the host can authenticate via either protocol. The following is what we setup for the example (the <em>Require ip</em> lines are the relevant portions):</p>
+<li><p>Next we’ll setup IP authentication so that the testpoint hosts will be able to send their results. This verification is handled by the Apache proxy in front of Logstash. We are going to edit <strong>/etc/httpd/conf.d/apache-logstash.conf</strong> (Rocky/Alma) or <strong>/etc/apache2/conf-available/apache-logstash.conf</strong> (Debian/Ubuntu) to include the example IPs (see the diagram at the top of this guide). Note we’ll add both the IPv4 and IPv6 addresses to make sure the host can authenticate via either protocol. The following is what we setup for the example (the <em>Require ip</em> lines are the relevant portions):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">IfModule</span> <span class="n">proxy_module</span><span class="o">&gt;</span>
     <span class="n">ProxyRequests</span> <span class="n">Off</span>
     <span class="o">&lt;</span><span class="n">Proxy</span> <span class="o">*&gt;</span>
@@ -236,7 +235,7 @@
 <div><img alt="_images/cbca_gf_verify.png" src="_images/cbca_gf_verify.png" />
 </div></blockquote>
 </li>
-<li><p>Navigate to the <strong>perfSONAR Host Metrics</strong> page. There may be a link under “Recently Viewed Dashboards” (see previous screenshot) or type “perfSONARHost Metrics” in the search bar:</p>
+<li><p>Navigate to the <strong>perfSONAR Host Metrics</strong> page. There may be a link under “Recently Viewed Dashboards” (see previous screenshot) or type “perfSONAR Host Metrics” in the search bar:</p>
 <blockquote>
 <div><img alt="_images/cbca_gf_search_hm.png" src="_images/cbca_gf_search_hm.png" />
 </div></blockquote>
@@ -249,8 +248,8 @@
 </ol>
 <p>We now have a working Grafana installation. For now there is not much to show beyond host statistics, but we will revisit this after we have the measurements running. In the next step, we’ll define the measurements to run.</p>
 </section>
-<section id="step-3-build-and-publish-measurement-configuration-with-psconfig">
-<h2>Step 3: Build and Publish Measurement Configuration with pSConfig<a class="headerlink" href="#step-3-build-and-publish-measurement-configuration-with-psconfig" title="Permalink to this heading">¶</a></h2>
+<section id="step-3-creating-your-measurement-configuration-with-psconfig">
+<h2>Step 3: Creating Your Measurement Configuration with pSConfig<a class="headerlink" href="#step-3-creating-your-measurement-configuration-with-psconfig" title="Permalink to this heading">¶</a></h2>
 <p>In this step we’ll create a file that defines the measurements we want all the testpoints to run. This is called a <strong>pSConfig Template File</strong>. If you want to learn more about pSConfig templates see <a class="reference internal" href="psconfig_intro.html"><span class="doc">What is pSConfig?</span></a>. In this example we’ll generate the file by hand from a skeleton file then use some helpful utilities to fill-in and publish. Steps are as follows:</p>
 <ol class="arabic">
 <li><p>Create a directory where you will edit the templates:</p>
@@ -265,7 +264,7 @@
 </div>
 </li>
 <li><p>The first thing we’ll add to the pSConfig template is instructions that tell testpoints how to send results to the archive. There is a helper script that helps us generate this definition. You will pass it a <cite>-n</cite> that tells it the public address of your archive. In our example it is <em>archive.local</em> but change that to the address of your archive host. The command for this example looks like the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span> <span class="n">archive</span><span class="o">.</span><span class="n">local</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">psconfig_archive</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span> <span class="n">archive</span><span class="o">.</span><span class="n">local</span> <span class="o">-</span><span class="n">a</span> <span class="n">ip</span>
 </pre></div>
 </div>
 </li>
@@ -289,8 +288,6 @@
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic" start="4">
 <li><p>We are going to copy and paste above into our <cite>psconfig.json</cite> file under the <em>archives</em> section and name it <em>example_http_archive</em>. This is what our psconfig.json looks like when we are done:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
@@ -391,7 +388,8 @@
         <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;example_schedule_PT4H&quot;</span><span class="p">,</span>
         <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;example_http_archive&quot;</span> <span class="p">],</span>
         <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Throughput Tests&quot;</span>
+            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Throughput Tests&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;display-task-group&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;Example Tests&quot;</span> <span class="p">]</span>
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s2">&quot;example_task_latencybg&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -399,7 +397,8 @@
         <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;example_test_latencybg&quot;</span><span class="p">,</span>
         <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;example_http_archive&quot;</span> <span class="p">],</span>
         <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Loss Tests&quot;</span>
+            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Loss Tests&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;display-task-group&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;Example Tests&quot;</span> <span class="p">]</span>
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s2">&quot;example_task_trace&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -408,7 +407,8 @@
         <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="s2">&quot;example_schedule_PT10M&quot;</span><span class="p">,</span>
         <span class="s2">&quot;archives&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;example_http_archive&quot;</span> <span class="p">],</span>
         <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Traceroute Tests&quot;</span>
+            <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Traceroute Tests&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;display-task-group&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;Example Tests&quot;</span> <span class="p">]</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -416,6 +416,16 @@
 </div>
 </li>
 <li><p>Save the file when you are done.</p></li>
+<li><p>Run the following to validate your JSON file and correct any errors found:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">validate</span> <span class="n">psconfig</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="step-4-publishing-your-measurement-configuration-with-psconfig">
+<h2>Step 4: Publishing Your Measurement Configuration with pSConfig<a class="headerlink" href="#step-4-publishing-your-measurement-configuration-with-psconfig" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic">
 <li><p>We will now publish the file to a local web server so the testpoints can download it. We do this will the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">publish</span> <span class="n">psconfig</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
@@ -430,12 +440,16 @@ Execute the following on a host running an agent to use this file:
 </div>
 </li>
 <li><p>That last command will be important when we setup the testpoints. We will also run it right now on our archive host (replace archive.local with your hostname):</p>
-<p>psconfig remote add “<a class="reference external" href="https://archive.local/psconfig/psconfig.json">https://archive.local/psconfig/psconfig.json</a>”</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">remote</span> <span class="n">add</span> <span class="s2">&quot;https://archive.local/psconfig/psconfig.json&quot;</span>
+</pre></div>
+</div>
 </li>
 <li><p>The previous command tells a pSConfig agent running on the host to setup some dashboards. It also tells it to gather host statistics from each of the testpoints. We aren’t getting any results yet, but lets take a quick look at the dashboards it created by visiting <strong>https://archive.local/grafana/dashboards</strong>.</p></li>
 <li><p>Click the folder <strong>perfSONAR pSConfig</strong> folder on the page that load.</p></li>
 <li><p>Click on <strong>All perfSONAR Measurements</strong>. The dashboard doesn’t have any data, so let’s fix that by having our testpoints run some measurements.</p>
-<img alt="_images/cbca_gf_nodata.png" src="_images/cbca_gf_nodata.png" />
+<blockquote>
+<div><img alt="_images/cbca_gf_nodata.png" src="_images/cbca_gf_nodata.png" />
+</div></blockquote>
 </li>
 </ol>
 </section>
@@ -526,7 +540,8 @@ Execute the following on a host running an agent to use this file:
 <li><a class="reference internal" href="#">Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO</a><ul>
 <li><a class="reference internal" href="#step-1-setup-the-perfsonar-archive-for-storing-measurements">Step 1: Setup the perfSONAR Archive for Storing Measurements</a></li>
 <li><a class="reference internal" href="#step-2-setup-visualization-with-grafana">Step 2: Setup Visualization with Grafana</a></li>
-<li><a class="reference internal" href="#step-3-build-and-publish-measurement-configuration-with-psconfig">Step 3: Build and Publish Measurement Configuration with pSConfig</a></li>
+<li><a class="reference internal" href="#step-3-creating-your-measurement-configuration-with-psconfig">Step 3: Creating Your Measurement Configuration with pSConfig</a></li>
+<li><a class="reference internal" href="#step-4-publishing-your-measurement-configuration-with-psconfig">Step 4: Publishing Your Measurement Configuration with pSConfig</a></li>
 <li><a class="reference internal" href="#step-4-setup-perfsonar-testpoint-hosts">Step 4: Setup perfSONAR Testpoint hosts</a></li>
 <li><a class="reference internal" href="#step-5-viewing-results">Step 5: Viewing Results</a></li>
 </ul>
