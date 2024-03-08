@@ -128,11 +128,9 @@ Now that the host can store measurements, let's prepare to visualize them. You s
 
     apt install perfsonar-grafana perfsonar-grafana-toolkit perfsonar-psconfig-hostmetrics perfsonar-psconfig-publisher
 
-2. Let's verify Grafana is running. Open `https://ARCHIVE_HOSTNAME/grafana` in your browser where ARCHIVE_HOSTNAME is the name of your archive host. In this example it would be `https://archive.local/grafana`. You should see a screen like the following.
+2. Let's verify Grafana is running. Open `https://ARCHIVE_HOSTNAME/grafana` in your browser where ARCHIVE_HOSTNAME is the name of your archive host. In this example it would be `https://archive.local/grafana`. You'll see a default Grafana page without much useful information at this point.
 
-    .. image:: images/cbca_gf_verify.png
-
-3. Navigate to the **perfSONAR Host Metrics** page. There may be a link under "Recently Viewed Dashboards" (see previous screenshot) or type "perfSONAR Host Metrics" in the search bar:
+3. Navigate to the **perfSONAR Host Metrics** page by typing "perfSONAR Host Metrics" in the search bar:
 
     .. image:: images/cbca_gf_search_hm.png
 
@@ -383,7 +381,12 @@ We will now logout of the archive host and login to a testpoint host. The steps 
 
 Step 6: Viewing Results
 ========================================================
-1. Go to toolkit page to get overview
-2. Go to psconfig directory look at dashboards
-3. See host metrics.
-4. Set default dashboard
+Return to *https://ARCHIVE_HOSTNAME/grafana*. You should now be able to start viewing results of you measurements. How quickly you see results will depend on the frequency with which you configured tests to run in your JSON file. For example, if you are running *latencybg* tests you should see results within a few minutes whereas most users run throughput tests every few hours, so they make take longer to appear. 
+
+.. image:: images/grafana_cookbook-ui-final.png
+
+On the page that loads, you should see a breakdown of the number of tests running by type. You should also see a table summarizing the results of throughput, latency and RTT tests.
+
+You can also quickly navigate to dashboards configured from your pSConfig file using links in the bottom right menu.
+
+Feel free to explore the interface but if you have reached this point then you have successfully configured your perfSONAR central archive setup.
