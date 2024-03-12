@@ -897,7 +897,7 @@ For example::
             "type": "throughput",
             "spec": {
                 "dest": "ps.example.com",
-                "bandwidth": "200M",
+                "bandwidth": 200000000,
                 "duration": "PT1M"
             },
         },
@@ -962,9 +962,9 @@ Limit the bandwidth of `throughput` tests to 500 Mb/s::
         "type": "jq",
         "data": {
             "script": "import \"pscheduler/si\" as si;
-                       "500M" as $max_bandwidth
+                       500000000 as $max_bandwidth
                        | if .type == \"throughput\"
-                             and si::as_integer(.spec.bandwidth) > si::as_integer($max_bandwidth)
+                             and .spec.bandwidth > $max_bandwidth
                          then \"Bandwidth is limited to \\($max_bandwidth)\"
                          else true
                          end"
