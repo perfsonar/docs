@@ -166,13 +166,13 @@ pSConfig pScheduler Agent Configuration File
 :Debian: ``/etc/perfsonar/psconfig/pscheduler-agent.json``
 :Documentation: *N/A*
 
-.. _config_files-psconfig-conf-maddash:
+.. _config_files-psconfig-conf-grafana:
 
-pSConfig MaDDash Agent Configuration File
+pSConfig Grafana Agent Configuration File
 ##############################################
-:Description: The pSConfig MaDDash Agent configuration file
-:CentOS: ``/etc/perfsonar/psconfig/maddash-agent.json``
-:Debian: ``/etc/perfsonar/psconfig/maddash-agent.json``
+:Description: The pSConfig Grafana Agent configuration file
+:CentOS: ``/etc/perfsonar/psconfig/grafana-agent.json``
+:Debian: ``/etc/perfsonar/psconfig/grafana-agent.json``
 :Documentation: *N/A*
 
 .. _config_files-psconfig-conf-pscheduler-d:
@@ -184,13 +184,13 @@ pSConfig pScheduler Agent Include Directory
 :Debian: ``/etc/perfsonar/psconfig/pscheduler.d``
 :Documentation: *N/A*
 
-.. _config_files-psconfig-conf-maddash-d:
+.. _config_files-psconfig-conf-grafana-d:
 
-pSConfig MaDDash Agent Include Directory
+pSConfig Grafana Agent Include Directory
 ##############################################
-:Description: Directory for pSConfig templates that automatically get loaded by MaDDash agent
-:CentOS: ``/etc/perfsonar/psconfig/maddash.d``
-:Debian: ``/etc/perfsonar/psconfig/maddash.d``
+:Description: Directory for pSConfig templates that automatically get loaded by Grafana agent
+:CentOS: ``/etc/perfsonar/psconfig/grafana.d``
+:Debian: ``/etc/perfsonar/psconfig/grafana.d``
 :Documentation: *N/A*
 
 .. _config_files-psconfig-conf-archive-d:
@@ -222,13 +222,13 @@ pSConfig pScheduler Agent Start-up Script
 :CentOS: ``systemctl start|stop|restart psconfig-pscheduler-agent``
 :Debian: ``service psconfig-pscheduler-agent start|stop|restart``
 
-.. _config_files-psconfig-scripts-maddash-startup:
+.. _config_files-psconfig-scripts-grafana-startup:
 
-pSConfig MaDDash Agent Start-up Script
+pSConfig Grafana Agent Start-up Script
 ############################################
-:Description: Scripts used to start|stop|restart the pSConfig MaDDash Agent
-:CentOS: ``systemctl start|stop|restart psconfig-maddash-agent``
-:Debian: ``service psconfig-maddash-agent start|stop|restart``
+:Description: Scripts used to start|stop|restart the pSConfig Grafana Agent
+:CentOS: ``systemctl start|stop|restart psconfig-grafana-agent``
+:Debian: ``service psconfig-grafana-agent start|stop|restart``
 
 .. _config_files-psconfig-scripts-ps_remove_data:
 
@@ -263,13 +263,13 @@ pSConfig pScheduler Agent Transactions Log
 :CentOS: ``/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log``
 :Debian: ``/var/log/perfsonar/psconfig-pscheduler-agent-transactions.log``
 
-.. _config_files-psconfig-logs-maddash-agent:
+.. _config_files-psconfig-logs-grafana-agent:
 
-pSConfig MaDDash Agent Log
+pSConfig Grafana Agent Log
 ##########################
-:Description: Primary log for pSConfig MaDDash Agent
-:CentOS: ``/var/log/perfsonar/psconfig-maddash-agent.log``
-:Debian: ``/var/log/perfsonar/psconfig-maddash-agent.log``
+:Description: Primary log for pSConfig Grafana Agent
+:CentOS: ``/var/log/perfsonar/psconfig-grafana-agent.log``
+:Debian: ``/var/log/perfsonar/psconfig-grafana-agent.log``
 
 Toolkit
 ========

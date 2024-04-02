@@ -14,9 +14,9 @@ Basic Host Settings
 
 * Site Name: The name of the site (typically this comes from the sLS)
 
-* Host Description: The host description (will be displayed in Maddash as the row/column labels).
+* Host Description: The host description (may be displayed as the row/column labels in visualizations).
 
-* toolkit_url: If toolkit_url is set to "auto", MadDash will use hostname of this record to auto-generate the URL that links back to the toolkit instance on maddash matrix view. If you use custom URL for your toolkit instance, change it to the real URL.
+* toolkit_url: If toolkit_url is set to "auto", visualizations may use hostname of this record to auto-generate the URL that links back to the toolkit instance. If you use custom URL for your toolkit instance, change it to the real URL.
 
 * No Agent: (As commented in UI)
 

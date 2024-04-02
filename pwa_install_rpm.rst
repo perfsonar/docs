@@ -37,7 +37,7 @@ There are several packages relating to PWA:
 
 #. **perfsonar-psconfig-web-admin-publisher**
 
-   * The publisher (the component from which mesh nodes and maddash pull down the configs
+   * The publisher (the component from which mesh nodes pull down the configs)
 
 #. **perfsonar-psconfig-web-admin-auth**
 

@@ -296,6 +296,5 @@ rst_epilog = """
 #   :centos_netinstall_iso:`x86_64`
 #   :centos_netinstall_iso:`toolkit iso <x86_64>`
 extlinks = {
-    'centos': ("http://www.centos.org", 'CentOS %s' % centos_version),
-    'maddash_quick_install': ("https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharing%s", '')
+    'centos': ("http://www.centos.org", 'CentOS %s' % centos_version)
 }

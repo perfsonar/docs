@@ -2,7 +2,7 @@
 pSConfig Quickstart Guide
 ******************************
 
-.. note:: This page contains a quick set of commands for publishing a pSConfig template and configuring the pScheduler and MaDDash agents to use them. As the *Quickstart* in the title implies, this is not intended to be a comprehensive guid, for that see the rest of the :doc:`pSConfig documentation<psconfig_intro>`.
+.. note:: This page contains a quick set of commands for publishing a pSConfig template and configuring the pScheduler and Grafana agents to use them. As the *Quickstart* in the title implies, this is not intended to be a comprehensive guid, for that see the rest of the :doc:`pSConfig documentation<psconfig_intro>`.
 
 
 On the host where the template is to be published...
@@ -37,17 +37,17 @@ On each host running measurements...
 
     psconfig remote add https://MYHOST/psconfig/template.json
     
-On your MaDDash host...
+On your Grafana host...
 ==========================================================
-#. Make sure the ``perfsonar-psconfig-maddash`` package is installed:
+#. Make sure the ``perfsonar-psconfig-grafana`` package is installed:
 
-    *CentOS*::
+    *RedHat*::
     
-        yum install perfsonar-psconfig-maddash
+        dnf install perfsonar-psconfig-grafana
 
     *Debian/Ubuntu*::
     
-        apt-get install perfsonar-psconfig-maddash
+        apt-get install perfsonar-psconfig-grafana
 #. Run the following command to point the agent at the template::
 
     psconfig remote add https://MYHOST/psconfig/template.json
