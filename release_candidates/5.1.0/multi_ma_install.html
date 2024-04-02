@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Deploying a Central Measurement Archive &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -177,7 +177,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Note some differences include the URL pointing at the provided host, SSL verification is disabled by default (assumes a self-signed certificate), and an <cite>esmond_url</cite> is generated which can be used by tools like MaDDash to grab data using the legacy Esmond interface. Note this <cite>esmond_url</cite> will never be used by measurement clients to write results, it is only for querying using the backward compatibility interface.</p>
+<p>Note some differences include the URL pointing at the provided host, SSL verification is disabled by default (assumes a self-signed certificate), and an <cite>esmond_url</cite> is generated which can be used by legacy tools to grab data using the legacy Esmond interface. Note this <cite>esmond_url</cite> will never be used by measurement clients to write results, it is only for querying using the backward compatibility interface.</p>
 <p>The simplest method for using the above output is to add it to a new JSON file in the <cite>/etc/perfsonar/psconfig/archives.d/</cite> directory.  See <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-templates-local"><span class="std std-ref">Local Templates</span></a> for more information on how to setup local templates.</p>
 <p><strong>It is only recommended you set the</strong> <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> <strong>field if your template is a file on the local system that will never be published to the web.</strong> This is to protect your credentials from being exposed. If you would like to use username and password authentication while still publishing to a public pSConfig template, you can remove the Authorization field from the definition published either by hand or re-running the above command with <cite>/usr/lib/perfsonar/archive/perfsonar-scripts/psconfig_archive.sh -a none -n example.archive</cite>. You can then add it back locally using a transform script. See  <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-all"><span class="std std-ref">Transforming All Remote Templates</span></a> and <a class="reference internal" href="psconfig_pscheduler_agent.html#psconfig-pscheduler-agent-modify-transform-one"><span class="std std-ref">Transforming Individual Remote Templates</span></a> for examples of how to do this.</p>
 </section>
@@ -209,180 +209,6 @@
 <p>Copy above to your central pSConfig template and your measurement hosts should begin archiving.</p>
 </section>
 </section>
-<section id="legacy-installation-writing-to-both-esmond-and-opensearch">
-<h2>Legacy Installation: Writing to both Esmond and OpenSearch<a class="headerlink" href="#legacy-installation-writing-to-both-esmond-and-opensearch" title="Permalink to this heading">¶</a></h2>
-<p>In perfSONAR 5.0, the legacy archive named Esmond is dropped in favor of a new default archiver using OpenSearch. Since Esmond data is not migrated to OpenSearch, some users may find it beneficial to write to both archivers in parallel for a period of time. Assuming you have an existing Esmond installation and a new OpenSearch installation, you can continue to have measurement hosts write to each. <strong>Given that Esmond will not be supported long-term by the perfSONAR project, we recommend you consider this a temporary measure and have a plan to retire your Esmond installation after a few months.</strong></p>
-<p>The biggest decision point for this is where you would like existing MaDDash instances to retrieve data that it displays. Generally, if you have both defined in the same pSConfig Template, then MaDDash will pick the first it encounters when it displays data. If you desire to exercise greater control of the archiver MaDDash chooses, then you have multiple options. A few different common scenarios are detailed below.</p>
-<section id="scenario-1-maddash-reads-from-legacy-esmond">
-<h3>Scenario 1: MaDDash Reads from Legacy Esmond<a class="headerlink" href="#scenario-1-maddash-reads-from-legacy-esmond" title="Permalink to this heading">¶</a></h3>
-<p>In this case you will write to both Esmond and OpenSearch, but MaDDash will only read from Esmond. This may be a good choice if you want to display historical data prior to the 5.0 release alongside new data while simulataneously building a new (albeit undisplayed in MaDDash) history in OpenSearch.</p>
-<p>The first step is to put both archiver definitions in your pSConfig template. This will vary depending on the authentication mechanism you use for each, but will likely be similar to the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;archives&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;esmond_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span><span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;data&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;measurement-agent&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;url&quot;</span><span class="p">:</span><span class="s2">&quot;https://example.esmond/esmond/perfsonar/archive/&quot;</span>
-        <span class="p">}</span>
-      <span class="p">},</span>
-      <span class="s2">&quot;opensearch_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;data&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;schema&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;_url&quot;</span><span class="p">:</span><span class="s2">&quot;https://example.archive/logstash&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
-            <span class="s2">&quot;op&quot;</span><span class="p">:</span><span class="s2">&quot;put&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_headers&quot;</span><span class="p">:{</span>
-              <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
-              <span class="s2">&quot;content-type&quot;</span><span class="p">:</span><span class="s2">&quot;application/json&quot;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;addresses&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;ADDRESS1&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS1&quot;</span>
-      <span class="p">},</span>
-      <span class="s2">&quot;ADDRESS2&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS2&quot;</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;groups&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;group_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;addresses&quot;</span><span class="p">:[</span>
-            <span class="p">{</span>
-              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS1&quot;</span>
-            <span class="p">},</span>
-            <span class="p">{</span>
-              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS2&quot;</span>
-            <span class="p">}</span>
-        <span class="p">]</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;tests&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;test_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;spec&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;dest&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;duration&quot;</span><span class="p">:</span><span class="s2">&quot;PT30S&quot;</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;schedules&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;schedule_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span><span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;sliprand&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
-        <span class="s2">&quot;slip&quot;</span><span class="p">:</span><span class="s2">&quot;PT4H&quot;</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;tasks&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;throughput_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;group_example&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;test_example&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span><span class="s2">&quot;schedule_example&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;archives&quot;</span><span class="p">:[</span>
-            <span class="s2">&quot;esmond_example&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;opensearch_example&quot;</span>
-        <span class="p">],</span>
-        <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span><span class="s2">&quot;Example Throughput Tests&quot;</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>The critical piece is that you don’t define an <cite>esmond_url</cite> in the <cite>_meta</cite> section for the HTTP archiver definition used to write to OpenSearch. This will force MaDDash to use the native Esmond archiver since it will not have a compatible way to communicate with the OpenSearch host.</p>
-</section>
-<section id="scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch">
-<h3>Scenario 2: Having a MaDDash Read from Esmond and from OpenSearch<a class="headerlink" href="#scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch" title="Permalink to this heading">¶</a></h3>
-<p>If you would like to have a single MaDDash instance that reads from both archives, you can do so but will need a second pSConfig template file. There are multiple variations to achieve this, but if you already have a pSConfig template like in Scenaro 1, you can point measurement hosts at that file as well as your MaDDash instance to get the data from Esmond.</p>
-<p>You can now define a second pSConfig template that is a copy of the first, but has the following changes:</p>
-<ol class="arabic simple">
-<li><p>The task name and <cite>display-name</cite> is unique to distinguish from the other meshes. For example, add a ‘pS5’ prefix.</p></li>
-<li><p>Only define the HTTP archiver and make sure it has an <cite>esmond_url</cite> in the <cite>_meta</cite> section.</p></li>
-<li><p>DO NOT point measurement hosts at this pSConfig temple or you will get duplicate testing. Just point MaDDash at this second template file.</p></li>
-</ol>
-<p>An example that modifies the template from Scenario 1 is below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;archives&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;opensearch_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;archiver&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;data&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;schema&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;_url&quot;</span><span class="p">:</span><span class="s2">&quot;https://example.archive/logstash&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;verify-ssl&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
-            <span class="s2">&quot;op&quot;</span><span class="p">:</span><span class="s2">&quot;put&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_headers&quot;</span><span class="p">:{</span>
-              <span class="s2">&quot;x-ps-observer&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">cheduled_by_address %}&quot;</span><span class="p">,</span>
-              <span class="s2">&quot;content-type&quot;</span><span class="p">:</span><span class="s2">&quot;application/json&quot;</span>
-            <span class="p">}</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;_meta&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;esmond_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.archive/esmond/perfsonar/archive/&quot;</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;addresses&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;ADDRESS1&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS1&quot;</span>
-      <span class="p">},</span>
-      <span class="s2">&quot;ADDRESS2&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;address&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS2&quot;</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;groups&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;group_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;addresses&quot;</span><span class="p">:[</span>
-            <span class="p">{</span>
-              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS1&quot;</span>
-            <span class="p">},</span>
-            <span class="p">{</span>
-              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;ADDRESS2&quot;</span>
-            <span class="p">}</span>
-        <span class="p">]</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;tests&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;test_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;spec&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[0] %}&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;dest&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="si">% a</span><span class="s2">ddress[1] %}&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;duration&quot;</span><span class="p">:</span><span class="s2">&quot;PT30S&quot;</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;schedules&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;schedule_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;repeat&quot;</span><span class="p">:</span><span class="s2">&quot;PT4H&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;sliprand&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
-        <span class="s2">&quot;slip&quot;</span><span class="p">:</span><span class="s2">&quot;PT4H&quot;</span>
-      <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;tasks&quot;</span><span class="p">:{</span>
-      <span class="s2">&quot;pS5_throughput_example&quot;</span><span class="p">:{</span>
-        <span class="s2">&quot;group&quot;</span><span class="p">:</span><span class="s2">&quot;group_example&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;test&quot;</span><span class="p">:</span><span class="s2">&quot;test_example&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;schedule&quot;</span><span class="p">:</span><span class="s2">&quot;schedule_example&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;archives&quot;</span><span class="p">:[</span>
-            <span class="s2">&quot;opensearch_example&quot;</span>
-        <span class="p">],</span>
-        <span class="s2">&quot;_meta&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;display-name&quot;</span><span class="p">:</span> <span class="s2">&quot;pS5 - Example Throughput Tests&quot;</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Run an additional <cite>psconfig remote add</cite> command or copy to <cite>/etc/perfsonar/psconfig/maddash.d</cite> on the MaDDash host to point at this mesh, and you should see results from both instances displayed.</p>
-</section>
-</section>
 </section>
 
 
@@ -406,11 +232,6 @@
 <li><a class="reference internal" href="#scenario-1-writing-to-a-local-archive">Scenario 1: Writing to a Local Archive</a></li>
 <li><a class="reference internal" href="#scenario-2-writing-to-a-remote-archive-with-username-and-password-authentication">Scenario 2: Writing to a Remote Archive with Username and Password Authentication</a></li>
 <li><a class="reference internal" href="#scenario-3-writing-to-a-remote-archive-with-ip-authentication">Scenario 3: Writing to a Remote Archive with IP Authentication</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#legacy-installation-writing-to-both-esmond-and-opensearch">Legacy Installation: Writing to both Esmond and OpenSearch</a><ul>
-<li><a class="reference internal" href="#scenario-1-maddash-reads-from-legacy-esmond">Scenario 1: MaDDash Reads from Legacy Esmond</a></li>
-<li><a class="reference internal" href="#scenario-2-having-a-maddash-read-from-esmond-and-from-opensearch">Scenario 2: Having a MaDDash Read from Esmond and from OpenSearch</a></li>
 </ul>
 </li>
 </ul>

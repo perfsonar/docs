@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Configuring pScheduler Limits &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -856,7 +856,7 @@ of runs.</p></li>
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;throughput&quot;</span><span class="p">,</span>
         <span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;ps.example.com&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="s2">&quot;200M&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mi">200000000</span><span class="p">,</span>
             <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1M&quot;</span>
         <span class="p">},</span>
     <span class="p">},</span>
@@ -919,9 +919,9 @@ of runs.</p></li>
     &quot;type&quot;: &quot;jq&quot;,
     &quot;data&quot;: {
         &quot;script&quot;: &quot;import \&quot;pscheduler/si\&quot; as si;
-                   &quot;500M&quot; as $max_bandwidth
+                   500000000 as $max_bandwidth
                    | if .type == \&quot;throughput\&quot;
-                         and si::as_integer(.spec.bandwidth) &gt; si::as_integer($max_bandwidth)
+                         and .spec.bandwidth &gt; $max_bandwidth
                      then \&quot;Bandwidth is limited to \\($max_bandwidth)\&quot;
                      else true
                      end&quot;
