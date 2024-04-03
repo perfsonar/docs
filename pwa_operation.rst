@@ -113,7 +113,7 @@ pwa-pub1
 --------
 
 1. ``pwapub``
-   The PWA Publisher, which publishes MeshConfig/pSConfig outputs; this is what you point your MadDash instance and tests hosts at.
+   The PWA Publisher, which publishes MeshConfig/pSConfig outputs; this is what you point your tests hosts at.
 
 sca-auth
 --------

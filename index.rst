@@ -92,7 +92,7 @@ Managing Multiple Hosts with pSConfig
    psconfig_templates_intro
    psconfig_publish
    psconfig_pscheduler_agent
-   psconfig_maddash_agent
+   psconfig_grafana_agent
    pwa
    psconfig_templates_vars
    psconfig_templates_advanced
@@ -106,20 +106,6 @@ Archiving Measurements with OpenSearch
    
    multi_ma_install
    legacy_archive_esmond
-   
-Displaying Measurements with MaDDash
--------------------------------------
-.. toctree::
-   :maxdepth: 1
-  
-   maddash_intro
-   MaDDash Quick Install Guide <https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharing>
-   maddash_install
-   maddash_config_server
-   maddash_running
-   maddash_config_webui
-   maddash_admin_ui
-   maddash_api_intro
 
 .. _index-config_ref:
 

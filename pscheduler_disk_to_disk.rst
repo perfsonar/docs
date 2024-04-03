@@ -10,7 +10,7 @@ This document describes how to install the plug-in for perfSONAR disk-to-disk te
  #. Installing perfSONAR and the new plugins using yum
  #. Configuring Globus using provided Ansible roles
  #. Commands for performing disk-to-disk transfers with pScheduler
- #. Adding tests to pSConfig and MaDDash
+ #. Adding tests to pSConfig and Grafana
 
 Configuring Yum Repositories
 ------------------------------------
@@ -81,10 +81,10 @@ Standard Curl Test
 
 .. note:: See `pscheduler task disk-to-disk --help` for a full list of options
 
-Configuring pSConfig and MaDDash
+Configuring pSConfig and Grafana
 ------------------------------------
 
 You can add `disk-to-disk` tests to a pSConfig template. There is a lot of flexibility in how you define your tests, but one example can be found here: https://raw.githubusercontent.com/perfsonar/perfsonar-dev-mesh/master/psconfig/gridftp.json
 
-Once you have the test added to the pSConfig template and assuming you are storing them in esmond (or in an OpenSearch instance with an Elmond interface), then the MaDDash agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up MaDDash see the MaDDash :maddash_quick_install:`quick install guide<>`.
+Once you have the test added to the pSConfig template and assuming you are storing them in OpenSearch, then the Grafana agent will automatically create a dashboard for you that alarms on throughput. For more information on setting up Grafana see the :doc:`pSConfig Grafana Agent <psconfig_grafana_agent>`.
 

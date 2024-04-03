@@ -685,7 +685,7 @@ pSConfig allows you to define *context* objects in the ``contexts`` section of a
         }
     }
     
-Note that a pScheduler assist server is required to determine the number of participants requiring contexts. This is particularly important when using the MaDDash agent which is typically not on a server running pScheduler. You either need to run pScheduler locally or set the *pscheduler_assist_server* configuration option.
+Note that a pScheduler assist server is required to determine the number of participants requiring contexts. This is particularly important when using the Grafana agent which is typically not on a server running pScheduler. You either need to run pScheduler locally or set the *pscheduler_assist_server* configuration option.
 
 If you need to be selective where you use contexts then you  may consider using a construct such as :ref:`address labels <psconfig_templates_advanced-addresses-labels>` to allow explicit selection of a version of an *address* object with or without contexts. An example that defines the default version of an address with no ``contexts`` and a label that does have ``contexts`` is shown below::
 

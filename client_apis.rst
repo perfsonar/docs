@@ -25,9 +25,6 @@ The esmond Service clients can be installed using python's *easy_install*::
 
    easy_install sls-client
 
-**perfSONAR Dashboard (MaDDash) API**:
-   * :doc:`maddash_api_intro`
-
 **Toolkit Host configuration API**:
    * perfSONAR toolkit host configuration info can be retrieved using a URL of this format:
       * http://your-perfsonar-hostname/toolkit/index.cgi?format=json

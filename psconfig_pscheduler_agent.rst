@@ -86,9 +86,9 @@ Installing the Standalone Package
 -----------------------------------
 The pSConfig pScheduler agent is installed with the package ``perfsonar-psconfig-pscheduler``. You can run the following commands to install it:
 
-    *CentOS*::
+    *RedHat*::
     
-        yum install perfsonar-psconfig-pscheduler
+        dnf install perfsonar-psconfig-pscheduler
 
     *Debian/Ubuntu*::
     
@@ -192,7 +192,7 @@ Finally, to remove our example remote template we can run the ``psconfig remote 
     
 The command accepts only a URL and will remove the agent's pointer to that template. Within 60 seconds of executing that command, the agent will run and begin canceling any tasks from the removed template that it was responsible for creating. 
 
-.. note:: The ``psconfig remote`` command is also the command used by the :doc:`MaDDash agent <psconfig_maddash_agent>` to manage remote templates. If you have both agents installed on the same system, then any ``psconfig remote`` command will affect both agents by default. If you'd only like a command to apply to the pScheduler agent then add the ``--agent pscheduler`` option. Run ``psconfig remote --help`` for full details. 
+.. note:: The ``psconfig remote`` command is also the command used by other agents to manage remote templates. If you have both agents installed on the same system, then any ``psconfig remote`` command will affect both agents by default. If you'd only like a command to apply to the pScheduler agent then add the ``--agent pscheduler`` option. Run ``psconfig remote --help`` for full details. 
 
 .. _psconfig_pscheduler_agent-templates-local:
 
@@ -314,13 +314,13 @@ Troubleshooting
 
 .. _psconfig_pscheduler_agent-troubleshoot-stats:
 
-Looking at the last run with ``psconfig pscheduler-stats``
+Looking at the last run with ``psconfig stats pscheduler``
 -----------------------------------------------------------
 One of the first steps to perform when debugging the pSConfig pScheduler agent is to get information about the last time the agent ran. A run in this context describes an instance when pSConfig downloaded all the templates it is configured to use, made any local modifications and determined which tasks that need to be created and/or removed from the pScheduler servers with which it interacts. As described in :ref:`psconfig_pscheduler_agent-intro-role`, a run can be triggered by the passing of a set time interval (60 minutes by default) or a configuration file change.
 
-Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the ``psconfig pscheduler-stats`` command. The command does not require any options and is shown below::
+Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the ``psconfig stats pscheduler `` command. The command does not require any options and is shown below::
     
-     psconfig pscheduler-stats
+     psconfig stats pscheduler
 
 Below is an example of the successful output::
 
@@ -460,7 +460,7 @@ If you need to debug beyond what the utilities above provide from the logs, then
 
 All of the logs are designed to by highly parsable with fields in the form of ``key=value`` separated by whitespace. Every line has a ``guid=`` field with an ID unique to the run of an agent. This ID is consistent between log files and is incredibly useful for linking events seen in separate logs. 
 
-As an example, the GUID can be used for filtering log lines across files with ``grep`` or similar tools.  It is often easiest to run the ``psconfig pscheduler-stats`` :ref:`command <psconfig_pscheduler_agent-troubleshoot-stats>` to get the GUID of the last run as a launching point to parse the logs. For example, looking at the example output from :ref:`psconfig_pscheduler_agent-troubleshoot-stats`, the run had a GUID of ``DD85D234-47F5-11E8-B2F1-3613118410B6``. Knowing this GUID, all the log messages associated with that run can be queried using a command like the following::
+As an example, the GUID can be used for filtering log lines across files with ``grep`` or similar tools.  It is often easiest to run the ``psconfig stats pscheduler`` :ref:`command <psconfig_pscheduler_agent-troubleshoot-stats>` to get the GUID of the last run as a launching point to parse the logs. For example, looking at the example output from :ref:`psconfig_pscheduler_agent-troubleshoot-stats`, the run had a GUID of ``DD85D234-47F5-11E8-B2F1-3613118410B6``. Knowing this GUID, all the log messages associated with that run can be queried using a command like the following::
 
     grep "guid=DD85D234-47F5-11E8-B2F1-3613118410B6" /var/log/perfsonar/psconfig-pscheduler-*.log
 

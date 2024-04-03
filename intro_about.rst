@@ -61,7 +61,7 @@ The configuration layer is where desired measurements are defined along with ins
 pSConfig assists with these challenges by providing agents to automate each of the configuration tasks listed above. This includes:
 
     #. **pSconfig pScheduler Agent** - The agent responsible for reading a template and configuring the tasks defined in pScheduler. See :doc:`psconfig_pscheduler_agent` for more details on this agent.
-    #. **pSConfig Grafana Agent** - The agent responsible for reading a template and configuring Grafana to display the results of defined tasks in a dashboard. See :doc:`psconfig_maddash_agent` for more details on this agent.
+    #. **pSConfig Grafana Agent** - The agent responsible for reading a template and configuring Grafana to display the results of defined tasks in a dashboard. See :doc:`psconfig_grafana_agent` for more details on this agent.
 
 For complete information on pSConfig start with :doc:`psconfig_intro` for more details on pSConfig basic concepts/terminology.
 
