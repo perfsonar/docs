@@ -321,41 +321,19 @@ We will now logout of the archive host and login to a testpoint host. The steps 
 
     sudo -s
 
-3. Setup the package repositories for perfSONAR. The commands for this step depend on the operating system. See the commands for applicable operating system below:
+3. Now we'll run the installation script again, but specify the tespoint package::
 
- * **RedHat-based (e.g. Rocky, Alma)**::
-    
-    dnf config-manager --set-enabled crb
-    dnf install epel-release
-    dnf install http://software.internet2.edu/rpms/el9/x86_64/latest/packages/perfsonar-repo-nightly-minor-0.11-1.noarch.rpm
-    dnf clean all
-
- * **Debian/Ubuntu**::
-
-    cd /etc/apt/sources.list.d/
-    curl -o perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
-    curl http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
-    apt-update
-
-4. Next we'll install the perfsonar-testpoint package. The command will again depend on the operating system:
-
- * **RedHat-based (e.g. Rocky, Alma)**::
-
-    dnf install perfsonar-testpoint
-
- * **Debian/Ubuntu**::
-
-    apt install perfsonar-testpoint
-
-3. Let's verify our install worked by running the `pscheduler troubleshoot` command::
+    curl -s https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar | sh -s - --repo staging testpoint
+ 
+4. Let's verify our install worked by running the `pscheduler troubleshoot` command::
 
     pscheduler troubleshoot
 
-4. Now we'll point the testpoint at the pSConfig template file we setup earlier::
+5. Now we'll point the testpoint at the pSConfig template file we setup earlier::
 
     psconfig remote add "https://archive.local/psconfig/psconfig.json"
 
-5. The testpoint is now setup. Repeat these steps for each testpoint.
+6. The testpoint is now setup. Repeat these steps for each testpoint.
 
 Step 6: Viewing Results
 ========================================================
