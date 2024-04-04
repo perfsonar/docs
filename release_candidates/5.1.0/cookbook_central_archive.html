@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
+    <title>Central Archive with Grafana Cookbook &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -61,7 +61,7 @@
           <a href="manage_update.html" title="Updating perfSONAR"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Central Archive with Grafana Cookbook</a></li> 
       </ul>
     </div>
     </div>
@@ -73,11 +73,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="central-archive-with-grafana-cookbook-not-production-currently-uses-nightly-minor-repo">
-<h1>Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO<a class="headerlink" href="#central-archive-with-grafana-cookbook-not-production-currently-uses-nightly-minor-repo" title="Permalink to this heading">¶</a></h1>
+  <section id="central-archive-with-grafana-cookbook">
+<h1>Central Archive with Grafana Cookbook<a class="headerlink" href="#central-archive-with-grafana-cookbook" title="Permalink to this heading">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Edit note: Update <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json">https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json</a> to use main repo before release</p>
+<p>This page uses the staging repo and URLs such as <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json">https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json</a> and <a class="reference external" href="https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar">https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar</a> will change for final release</p>
 </div>
 <p>This guide walks-through a standard perfSONAR setup where there are multiple perfSONAR Testpoint hosts writing measurements to central archive from which results can be displayed.</p>
 <p>This guide will assume a setup that looks like the following:</p>
@@ -105,46 +105,11 @@
 </pre></div>
 </div>
 </li>
-<li><p>First we need to setup the package repositories for perfSONAR. The commands for this step depend on the operating system. See the commands for applicable operating system below:</p></li>
-</ol>
-<blockquote>
-<div><ul>
-<li><p><strong>RedHat-based (e.g. Rocky, Alma)</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">config</span><span class="o">-</span><span class="n">manager</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">enabled</span> <span class="n">crb</span>
-<span class="n">dnf</span> <span class="n">install</span> <span class="n">epel</span><span class="o">-</span><span class="n">release</span>
-<span class="n">dnf</span> <span class="n">install</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">internet2</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">rpms</span><span class="o">/</span><span class="n">el9</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">nightly</span><span class="o">-</span><span class="n">minor</span><span class="o">-</span><span class="mf">0.11</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
-<span class="n">dnf</span> <span class="n">clean</span> <span class="nb">all</span>
+<li><p>Run the personar install script to setup the package repositories and install the perfSONAR archive. The command will automatically detect the operating system and install the correct packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="o">--</span><span class="n">repo</span> <span class="n">staging</span> <span class="n">archive</span>
 </pre></div>
 </div>
 </li>
-<li><p><strong>Debian/Ubuntu</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span>
-<span class="n">curl</span> <span class="o">-</span><span class="n">o</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">minor</span><span class="o">-</span><span class="n">snapshot</span><span class="o">.</span><span class="n">list</span> <span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">minor</span><span class="o">-</span><span class="n">snapshot</span><span class="o">.</span><span class="n">list</span>
-<span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">debian</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">snapshot</span><span class="o">.</span><span class="n">gpg</span><span class="o">.</span><span class="n">key</span> <span class="o">|</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
-<span class="n">apt</span><span class="o">-</span><span class="n">update</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</div></blockquote>
-<ol class="arabic simple" start="4">
-<li><p>Next we’ll install the perfsonar-archive package. This will setup OpenSearch and Logstash. The command will again depend on the operating system:</p></li>
-</ol>
-<blockquote>
-<div><ul>
-<li><p><strong>RedHat-based (e.g. Rocky, Alma)</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Debian/Ubuntu</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</div></blockquote>
-<ol class="arabic" start="5">
 <li><p>Let’s quickly verify the archive is running with the <em>psarchive troubleshoot</em> utility. It will check that components such as OpenSearch and Logstash are running as well as verify authentication credentials. It can also check if the archive has data, but since we have not yet configured our measurement hosts we will skip that check with the <cite>–skip-opensearch-data</cite> option. Run the command as follows and if everything is marked as <em>OK</em> then proceed, otherwise follow the instructions in the command output to debug:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psarchive</span> <span class="n">troubleshoot</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">opensearch</span><span class="o">-</span><span class="n">data</span>
 </pre></div>
@@ -532,7 +497,7 @@ Execute the following on a host running an agent to use this file:
             <nav id="channelNav" class="channelNav">
                 
                 <ul>
-<li><a class="reference internal" href="#">Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO</a><ul>
+<li><a class="reference internal" href="#">Central Archive with Grafana Cookbook</a><ul>
 <li><a class="reference internal" href="#step-1-setup-the-perfsonar-archive-for-storing-measurements">Step 1: Setup the perfSONAR Archive for Storing Measurements</a></li>
 <li><a class="reference internal" href="#step-2-setup-visualization-with-grafana">Step 2: Setup Visualization with Grafana</a></li>
 <li><a class="reference internal" href="#step-3-creating-your-measurement-configuration-with-psconfig">Step 3: Creating Your Measurement Configuration with pSConfig</a></li>
@@ -575,7 +540,7 @@ Execute the following on a host running an agent to use this file:
           <a href="manage_update.html" title="Updating perfSONAR"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Central Archive with Grafana Cookbook</a></li> 
       </ul>
     </div>
     <footer id="fat">

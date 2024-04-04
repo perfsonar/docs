@@ -1,8 +1,8 @@
 *********************************************************************************************************************
-Central Archive with Grafana Cookbook - NOT PRODUCTION. CURRENTLY USES NIGHTLY-MINOR REPO
+Central Archive with Grafana Cookbook
 *********************************************************************************************************************
 
-.. note:: Edit note: Update https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json to use main repo before release
+.. note:: This page uses the staging repo and URLs such as https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json and https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar will change for final release
 
 This guide walks-through a standard perfSONAR setup where there are multiple perfSONAR Testpoint hosts writing measurements to central archive from which results can be displayed. 
 
@@ -32,37 +32,15 @@ In this step we'll setup the *archive host* store measurements. Specifically we'
 
     sudo -s
 
-3. First we need to setup the package repositories for perfSONAR. The commands for this step depend on the operating system. See the commands for applicable operating system below:
+3. Run the personar install script to setup the package repositories and install the perfSONAR archive. The command will automatically detect the operating system and install the correct packages::
 
- * **RedHat-based (e.g. Rocky, Alma)**::
-    
-    dnf config-manager --set-enabled crb
-    dnf install epel-release
-    dnf install http://software.internet2.edu/rpms/el9/x86_64/latest/packages/perfsonar-repo-nightly-minor-0.11-1.noarch.rpm
-    dnf clean all
+    curl -s https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar | sh -s - --repo staging archive
 
- * **Debian/Ubuntu**::
-
-    cd /etc/apt/sources.list.d/
-    curl -o perfsonar-minor-snapshot.list downloads.perfsonar.net/debian/perfsonar-minor-snapshot.list
-    curl http://downloads.perfsonar.net/debian/perfsonar-snapshot.gpg.key | apt-key add -
-    apt-update
-
-4. Next we'll install the perfsonar-archive package. This will setup OpenSearch and Logstash. The command will again depend on the operating system:
-
- * **RedHat-based (e.g. Rocky, Alma)**::
-
-    dnf install perfsonar-archive
-
- * **Debian/Ubuntu**::
-
-    apt install perfsonar-archive
-
-5. Let's quickly verify the archive is running with the *psarchive troubleshoot* utility. It will check that components such as OpenSearch and Logstash are running as well as verify authentication credentials. It can also check if the archive has data, but since we have not yet configured our measurement hosts we will skip that check with the `--skip-opensearch-data` option. Run the command as follows and if everything is marked as *OK* then proceed, otherwise follow the instructions in the command output to debug::
+4. Let's quickly verify the archive is running with the *psarchive troubleshoot* utility. It will check that components such as OpenSearch and Logstash are running as well as verify authentication credentials. It can also check if the archive has data, but since we have not yet configured our measurement hosts we will skip that check with the `--skip-opensearch-data` option. Run the command as follows and if everything is marked as *OK* then proceed, otherwise follow the instructions in the command output to debug::
 
     psarchive troubleshoot --skip-opensearch-data
 
-6. Next we'll setup IP authentication so that the testpoint hosts will be able to send their results. This verification is handled by the Apache proxy in front of Logstash. We are going to edit **/etc/httpd/conf.d/apache-logstash.conf** (Rocky/Alma) or **/etc/apache2/conf-available/apache-logstash.conf** (Debian/Ubuntu) to include the example IPs (see the diagram at the top of this guide). Note we'll add both the IPv4 and IPv6 addresses to make sure the host can authenticate via either protocol. The following is what we setup for the example (the *Require ip* lines are the relevant portions)::
+5. Next we'll setup IP authentication so that the testpoint hosts will be able to send their results. This verification is handled by the Apache proxy in front of Logstash. We are going to edit **/etc/httpd/conf.d/apache-logstash.conf** (Rocky/Alma) or **/etc/apache2/conf-available/apache-logstash.conf** (Debian/Ubuntu) to include the example IPs (see the diagram at the top of this guide). Note we'll add both the IPv4 and IPv6 addresses to make sure the host can authenticate via either protocol. The following is what we setup for the example (the *Require ip* lines are the relevant portions)::
 
     <IfModule proxy_module>
         ProxyRequests Off
@@ -102,7 +80,7 @@ In this step we'll setup the *archive host* store measurements. Specifically we'
         </Location>
     </IfModule>
 
-7. Restart apache to apply the changes above. This command is OS dependent:
+6. Restart apache to apply the changes above. This command is OS dependent:
 
  * **RedHat-based (e.g. Rocky, Alma)**::
     
