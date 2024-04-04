@@ -1,20 +1,21 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
     <title>Archiver Reference &#8212; perfSONAR Toolkit 5.0.8 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Contexts Reference" href="pscheduler_ref_contexts.html" />
@@ -60,8 +61,7 @@
         <li class="right" >
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Archiver Reference</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,15 +73,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="archiver-reference">
-<h1>Archiver Reference<a class="headerlink" href="#archiver-reference" title="Permalink to this heading">¶</a></h1>
-<section id="introduction">
-<span id="pscheduler-ref-archivers-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
-<p>pScheduler’s architecture features the concept of <a class="reference internal" href="pscheduler_intro.html#term-Archiver"><span class="xref std std-term">archivers</span></a>, which send completed measurement results elsewhere for storage or processing.  Archivers are plugins, which means the set of destinations available for use with pScheduler can be easily expanded.</p>
+  <div class="section" id="archiver-reference">
+<h1>Archiver Reference<a class="headerlink" href="#archiver-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="pscheduler-ref-archivers-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler’s architecture features the concept of <a class="reference internal" href="pscheduler_intro.html#term-archiver"><span class="xref std std-term">archivers</span></a>, which send completed measurement results elsewhere for storage or processing.  Archivers are plugins, which means the set of destinations available for use with pScheduler can be easily expanded.</p>
 <p>Archiving in pScheduler is reliable.  After each attempt to dispose of the result, the archiver plugin will tell pScheduler whether it succeeded and, if not, whether or not to try again and how long to wait before the next attempt.</p>
-</section>
-<section id="basic-json-syntax">
-<span id="pscheduler-ref-archivers-syntax"></span><h2>Basic JSON Syntax<a class="headerlink" href="#basic-json-syntax" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="basic-json-syntax">
+<span id="pscheduler-ref-archivers-syntax"></span><h2>Basic JSON Syntax<a class="headerlink" href="#basic-json-syntax" title="Permalink to this headline">¶</a></h2>
 <p>Archiving is accomplished by providing an <em>archive specification</em> in the form of a JSON object containing these values:</p>
 <p><code class="docutils literal notranslate"><span class="pre">archiver</span></code> - The name of the archiver to use. See <a class="reference internal" href="#pscheduler-ref-archivers-archivers"><span class="std std-ref">Archivers</span></a> for a list available in the base pScheduler distribution.</p>
 <p><code class="docutils literal notranslate"><span class="pre">data</span></code> - A JSON object containing archiver-specific data to be used in deciding how to dispose of the result.</p>
@@ -98,21 +98,21 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="archiving-from-the-command-line">
-<span id="pscheduler-ref-archivers-cli"></span><h2>Archiving from the Command Line<a class="headerlink" href="#archiving-from-the-command-line" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="archiving-from-the-command-line">
+<span id="pscheduler-ref-archivers-cli"></span><h2>Archiving from the Command Line<a class="headerlink" href="#archiving-from-the-command-line" title="Permalink to this headline">¶</a></h2>
 <p>pScheduler can be directed to send measurement results to an archiver by using the <code class="docutils literal notranslate"><span class="pre">--archive</span></code> switch followed by an archive specification.</p>
-<section id="specifying-archivers">
-<span id="pscheduler-ref-archivers-cli-spec"></span><h3>Specifying Archivers<a class="headerlink" href="#specifying-archivers" title="Permalink to this heading">¶</a></h3>
-<section id="directly-as-a-string-literal">
-<span id="pscheduler-ref-archivers-cli-spec-string"></span><h4>Directly, as a String Literal<a class="headerlink" href="#directly-as-a-string-literal" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="specifying-archivers">
+<span id="pscheduler-ref-archivers-cli-spec"></span><h3>Specifying Archivers<a class="headerlink" href="#specifying-archivers" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="directly-as-a-string-literal">
+<span id="pscheduler-ref-archivers-cli-spec-string"></span><h4>Directly, as a String Literal<a class="headerlink" href="#directly-as-a-string-literal" title="Permalink to this headline">¶</a></h4>
 <p>The archive specification may be added directly to the command line as a string literal containing its JSON:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">archive</span> <span class="s1">&#39;{ &quot;archiver&quot;: &quot;bitbucket&quot;, &quot;data&quot;: </span><span class="si">{}</span><span class="s1"> }&#39;</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-</section>
-<section id="indirectly-from-a-file">
-<span id="pscheduler-ref-archivers-cli-spec-flie"></span><h4>Indirectly, From a File<a class="headerlink" href="#indirectly-from-a-file" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="indirectly-from-a-file">
+<span id="pscheduler-ref-archivers-cli-spec-flie"></span><h4>Indirectly, From a File<a class="headerlink" href="#indirectly-from-a-file" title="Permalink to this headline">¶</a></h4>
 <p>If the argument given to the <code class="docutils literal notranslate"><span class="pre">--archive</span></code> switch begins with <code class="docutils literal notranslate"><span class="pre">&#64;</span></code>, the remainder of the argument will be treated as the path to a JSON file containing an archive specification which will be opened, read and treated as if it had been typed in by hand.  If the first character of the path is a tilde (<code class="docutils literal notranslate"><span class="pre">~</span></code>), it will be expanded to the user’s home directory.  For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">cat</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">fred</span><span class="o">/</span><span class="n">archive</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">bitbucket</span><span class="o">.</span><span class="n">json</span>
 <span class="p">{</span>
@@ -123,10 +123,10 @@
 <span class="o">%</span> <span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">archive</span> <span class="o">@/</span><span class="n">home</span><span class="o">/</span><span class="n">fred</span><span class="o">/</span><span class="n">archive</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">bitbucket</span><span class="o">.</span><span class="n">json</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="multiple-archivers">
-<span id="pscheduler-ref-archivers-cli-multi"></span><h3>Multiple Archivers<a class="headerlink" href="#multiple-archivers" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="multiple-archivers">
+<span id="pscheduler-ref-archivers-cli-multi"></span><h3>Multiple Archivers<a class="headerlink" href="#multiple-archivers" title="Permalink to this headline">¶</a></h3>
 <p>The results of a task can be sent to multiple archivers by using the <code class="docutils literal notranslate"><span class="pre">--archive</span></code> switch multiple times:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">pscheduler</span> <span class="n">task</span> \
       <span class="o">--</span><span class="n">archive</span> <span class="o">@/</span><span class="n">home</span><span class="o">/</span><span class="n">fred</span><span class="o">/</span><span class="n">http</span><span class="o">-</span><span class="n">archive</span><span class="o">.</span><span class="n">json</span> \
@@ -135,9 +135,9 @@
 </pre></div>
 </div>
 <p>Other than system-imposed limits on the length of the command line, there is no limit on the number of archivers that may be specified as part of a task.</p>
-</section>
-<section id="archiving-as-part-of-a-json-task-specification">
-<span id="pscheduler-ref-archivers-cli-json"></span><h3>Archiving as Part of a JSON Task Specification<a class="headerlink" href="#archiving-as-part-of-a-json-task-specification" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="archiving-as-part-of-a-json-task-specification">
+<span id="pscheduler-ref-archivers-cli-json"></span><h3>Archiving as Part of a JSON Task Specification<a class="headerlink" href="#archiving-as-part-of-a-json-task-specification" title="Permalink to this headline">¶</a></h3>
 <p>Archive specifications can be added to a JSON task specification as an array of JSON objects as part of the <code class="docutils literal notranslate"><span class="pre">archives</span></code> property:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">cat</span> <span class="n">mytask</span><span class="o">.</span><span class="n">json</span>
 <span class="p">{</span>
@@ -172,14 +172,14 @@
 <p class="admonition-title">Note</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">.</span></code> in the command above is a placeholder for the test type, which is imported from <code class="docutils literal notranslate"><span class="pre">mytask.json</span></code>.)</p>
 </div>
-</section>
-</section>
-<section id="archiving-in-psconfig-templates">
-<span id="pscheduler-ref-archivers-psconfig"></span><h2>Archiving in pSConfig Templates<a class="headerlink" href="#archiving-in-psconfig-templates" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="archiving-in-psconfig-templates">
+<span id="pscheduler-ref-archivers-psconfig"></span><h2>Archiving in pSConfig Templates<a class="headerlink" href="#archiving-in-psconfig-templates" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="psconfig_intro.html"><span class="doc">pSConfig</span></a> allows for the use of <em>archive</em> objects in the <code class="docutils literal notranslate"><span class="pre">archives</span></code> section of pSConfig templates. They take the exact same format as described in this document. For more information on pSConfig templates see <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">Introduction to pSConfig Templates</span></a></p>
-</section>
-<section id="archiving-globally">
-<span id="pscheduler-ref-archivers-global"></span><h2>Archiving Globally<a class="headerlink" href="#archiving-globally" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="archiving-globally">
+<span id="pscheduler-ref-archivers-global"></span><h2>Archiving Globally<a class="headerlink" href="#archiving-globally" title="Permalink to this headline">¶</a></h2>
 <p>pScheduler can be configured to apply an archive specification to every run it performs on a host by placing each one in a file in <code class="docutils literal notranslate"><span class="pre">/etc/pscheduler/default-archives</span></code>.  Files must be readable by the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> user.</p>
 <p>For example, this file will use the HTTP archiver to post the results of all throughput tests to <code class="docutils literal notranslate"><span class="pre">https://host.example.com/place/to/post</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -195,36 +195,36 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="archivers">
-<span id="pscheduler-ref-archivers-archivers"></span><h2>Archivers<a class="headerlink" href="#archivers" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="archivers">
+<span id="pscheduler-ref-archivers-archivers"></span><h2>Archivers<a class="headerlink" href="#archivers" title="Permalink to this headline">¶</a></h2>
 <p>The archivers listed below are supplied as part of the standard distribution of pScheduler.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>All items listed in each <em>Archiver Data</em> subsection are required unless otherwise noted.</p>
 </div>
-<section id="bitbucket">
-<span id="pscheduler-ref-archivers-archivers-bitbucket"></span><h3><code class="docutils literal notranslate"><span class="pre">bitbucket</span></code><a class="headerlink" href="#bitbucket" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="bitbucket">
+<span id="pscheduler-ref-archivers-archivers-bitbucket"></span><h3><code class="docutils literal notranslate"><span class="pre">bitbucket</span></code><a class="headerlink" href="#bitbucket" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">bitbucket</span></code> archiver sends measurement results to the <a class="reference external" href="http://catb.org/jargon/html/B/bit-bucket.html">bit bucket</a> (i.e., it does nothing with them).  This archiver was developed for testing pScheduler and serves no useful function in a production setting.</p>
-<section id="archiver-data">
-<span id="pscheduler-ref-archivers-archivers-bitbucket-data"></span><h4>Archiver Data<a class="headerlink" href="#archiver-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="archiver-data">
+<span id="pscheduler-ref-archivers-archivers-bitbucket-data"></span><h4>Archiver Data<a class="headerlink" href="#archiver-data" title="Permalink to this headline">¶</a></h4>
 <p>This archiver uses no archiver-specific data.</p>
-</section>
-<section id="example">
-<span id="pscheduler-ref-archivers-archivers-bitbucket-example"></span><h4>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="example">
+<span id="pscheduler-ref-archivers-archivers-bitbucket-example"></span><h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;bitbucket&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="esmond">
-<span id="pscheduler-ref-archivers-archivers-esmond"></span><h3><code class="docutils literal notranslate"><span class="pre">esmond</span></code><a class="headerlink" href="#esmond" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="esmond">
+<span id="pscheduler-ref-archivers-archivers-esmond"></span><h3><code class="docutils literal notranslate"><span class="pre">esmond</span></code><a class="headerlink" href="#esmond" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">esmond</span></code> archiver submits measurement results to the esmond time series database using specialized translations of results for <code class="docutils literal notranslate"><span class="pre">throughput</span></code>, <code class="docutils literal notranslate"><span class="pre">latency</span></code>, <code class="docutils literal notranslate"><span class="pre">trace</span></code> and <code class="docutils literal notranslate"><span class="pre">rtt</span></code> tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the <code class="docutils literal notranslate"><span class="pre">pscheduler-raw</span></code> event type.</p>
-<section id="pscheduler-ref-archivers-archivers-esmond-data">
-<span id="id1"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-esmond-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="pscheduler-ref-archivers-archivers-esmond-data">
+<span id="id1"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-esmond-data" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> - The URL for the esmond server which will collect the result.</p>
 <p><code class="docutils literal notranslate"><span class="pre">_auth-token</span></code> - Optional. The authorization token to be used when submitting the result.  Note that the <code class="docutils literal notranslate"><span class="pre">_</span></code> prefix indicates that this value is considered a secret and will not be supplied if the task specification is retrieved from pScheduler via its REST API.  If not specified, IP authentication is assumed.</p>
 <p><code class="docutils literal notranslate"><span class="pre">measurement-agent</span></code> - Optional. The name of the pScheduler host that produced the result. If not specified, defaults to the endpoint pscheduler deemed the lead.</p>
@@ -240,9 +240,9 @@
 </dl>
 <p><code class="docutils literal notranslate"><span class="pre">summaries</span></code> - Optional.  A list of objects containing an <code class="docutils literal notranslate"><span class="pre">event-type</span></code>, <code class="docutils literal notranslate"><span class="pre">summary-type</span></code> and <code class="docutils literal notranslate"><span class="pre">summary-window</span></code>.  If not specified, defaults to a standard set of summaries used by perfSONAR.  See the <a class="reference internal" href="esmond_api_rest.html#psclient-rest-basevsumm"><span class="std std-ref">esmond documentation</span></a> for more details on summaries.</p>
 <p><code class="docutils literal notranslate"><span class="pre">verify-ssl</span></code> - Optional.  Defaults to <code class="docutils literal notranslate"><span class="pre">false</span></code>. If enabled, check SSL certificate of esmond server against list of known certificate authorities (CAs).  See the <a class="reference external" href="http://docs.python-requests.org/en/v1.0.0/user/advanced/#ssl-cert-verification">requests documentation</a> for more details on environment variables and other options for specifying path to CA store.</p>
-</section>
-<section id="pscheduler-ref-archivers-archivers-esmond-example">
-<span id="id2"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-esmond-example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-esmond-example">
+<span id="id2"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-esmond-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;esmond&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -258,18 +258,18 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="failer">
-<span id="pscheduler-ref-archivers-archivers-failer"></span><h3><code class="docutils literal notranslate"><span class="pre">failer</span></code><a class="headerlink" href="#failer" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="failer">
+<span id="pscheduler-ref-archivers-archivers-failer"></span><h3><code class="docutils literal notranslate"><span class="pre">failer</span></code><a class="headerlink" href="#failer" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">failer</span></code> archiver provides the same archiving function as <code class="docutils literal notranslate"><span class="pre">bitbucket</span></code> but introduces failure and retries a random fraction of the time.  This archiver was developed for testing pScheduler and serves no useful function in a production setting.</p>
-<section id="pscheduler-ref-archivers-archivers-failer-data">
-<span id="id3"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-failer-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="pscheduler-ref-archivers-archivers-failer-data">
+<span id="id3"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-failer-data" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">fail</span></code> - The fraction of the time that archive attempts will fail, in the range <code class="docutils literal notranslate"><span class="pre">[0.0,1.0]</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">retry</span></code> - The fraction of the time that archive attempts will be retried after a failure, in the range <code class="docutils literal notranslate"><span class="pre">[0.0,1.0]</span></code>.</p>
-</section>
-<section id="pscheduler-ref-archivers-archivers-failer-example">
-<span id="id4"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-failer-example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-failer-example">
+<span id="id4"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-failer-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;failer&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -279,13 +279,13 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="http">
-<span id="pscheduler-ref-archivers-archivers-http"></span><h3><code class="docutils literal notranslate"><span class="pre">http</span></code><a class="headerlink" href="#http" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="http">
+<span id="pscheduler-ref-archivers-archivers-http"></span><h3><code class="docutils literal notranslate"><span class="pre">http</span></code><a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">http</span></code> archiver sends results to HTTP or HTTPS servers using the <code class="docutils literal notranslate"><span class="pre">POST</span></code> or <code class="docutils literal notranslate"><span class="pre">PUT</span></code> operation.</p>
-<section id="pscheduler-ref-archivers-archivers-http-data">
-<span id="id5"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-http-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="pscheduler-ref-archivers-archivers-http-data">
+<span id="id5"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-http-data" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">_url</span></code> - The URL to which the data should be posted or put.</p>
 <p><code class="docutils literal notranslate"><span class="pre">op</span></code> - Optional.  The HTTP operation to be used, <code class="docutils literal notranslate"><span class="pre">post</span></code> or <code class="docutils literal notranslate"><span class="pre">put</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">headers</span></code> - Optional, available in schema 2 and later.  A JSON object consisting of pairs whose values are strings, numeric types or <code class="docutils literal notranslate"><span class="pre">null</span></code>.  Each pair except those whose values are <code class="docutils literal notranslate"><span class="pre">null</span></code> will be passed to the HTTP server as a header.  The archiver gives special treatment to the following headers:</p>
@@ -297,9 +297,9 @@
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">bind</span></code> - Optional.  The address on the host to which the HTTP client should bind when making the request.</p>
 <p><code class="docutils literal notranslate"><span class="pre">retry-policy</span></code> - Optional.  Describes how to retry failed attempts to submit the measurement to esmond before giving up.  The default behavior is to try once and then give up.</p>
-</section>
-<section id="pscheduler-ref-archivers-archivers-http-example">
-<span id="id6"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-http-example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-http-example">
+<span id="id6"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-http-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -313,18 +313,18 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="kafka">
-<span id="pscheduler-ref-archivers-archivers-kafka"></span><h3><code class="docutils literal notranslate"><span class="pre">kafka</span></code><a class="headerlink" href="#kafka" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="kafka">
+<span id="pscheduler-ref-archivers-archivers-kafka"></span><h3><code class="docutils literal notranslate"><span class="pre">kafka</span></code><a class="headerlink" href="#kafka" title="Permalink to this headline">¶</a></h3>
 <p>The Kafka archiver sends the result of a pScheduler test as a message to a preexisting Apache Kafka message bus.</p>
-<section id="pscheduler-ref-archivers-archivers-kafka-data">
-<span id="id7"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-kafka-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="pscheduler-ref-archivers-archivers-kafka-data">
+<span id="id7"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-kafka-data" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">topic</span></code> - The topic under which the message should be posted on the message bus.</p>
 <p><code class="docutils literal notranslate"><span class="pre">server</span></code> - The address of the server hosting the Apache Kafka message bus.</p>
-</section>
-<section id="pscheduler-ref-archivers-archivers-kafka-example">
-<span id="id8"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-kafka-example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-kafka-example">
+<span id="id8"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-kafka-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;kafka&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -334,17 +334,17 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="postgresql">
-<span id="pscheduler-ref-archivers-archivers-postgresql"></span><h3><code class="docutils literal notranslate"><span class="pre">postgresql</span></code><a class="headerlink" href="#postgresql" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="postgresql">
+<span id="pscheduler-ref-archivers-archivers-postgresql"></span><h3><code class="docutils literal notranslate"><span class="pre">postgresql</span></code><a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> archiver connects to a PostgreSQL database and
 inserts a row into a table.</p>
 <p>The query made to do the insertion will be <code class="docutils literal notranslate"><span class="pre">INSERT</span> <span class="pre">INTO</span>
 <span class="pre">table_name(column_name)</span> <span class="pre">VALUES</span> <span class="pre">(...)</span></code> where <code class="docutils literal notranslate"><span class="pre">table_name</span></code> and
 <code class="docutils literal notranslate"><span class="pre">column_name</span></code> are the table and column specified.</p>
-<section id="pscheduler-ref-archivers-archivers-postgresql-data">
-<span id="id9"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-postgresql-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="pscheduler-ref-archivers-archivers-postgresql-data">
+<span id="id9"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-postgresql-data" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">_dsn</span></code> - Connection information for the PostgreSQL server.</p>
 <p><code class="docutils literal notranslate"><span class="pre">table</span></code> - The name of the table where the row will be inserted.</p>
 <p><code class="docutils literal notranslate"><span class="pre">column</span></code> - The name of the column where the data will be inserted.
@@ -355,9 +355,9 @@ kept alive.  The default is never.</p>
 <p><code class="docutils literal notranslate"><span class="pre">retry-policy</span></code> - Optional. Describes how to retry failed attempts to
 submit the measurement to esmond before giving up.  The default
 behavior is to try once and then give up.</p>
-</section>
-<section id="pscheduler-ref-archivers-archivers-postgresql-example">
-<span id="id10"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-postgresql-example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-postgresql-example">
+<span id="id10"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-postgresql-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;postgresql&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -372,13 +372,13 @@ behavior is to try once and then give up.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="rabbitmq">
-<span id="pscheduler-ref-archivers-archivers-rabbitmq"></span><h3><code class="docutils literal notranslate"><span class="pre">rabbitmq</span></code><a class="headerlink" href="#rabbitmq" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="rabbitmq">
+<span id="pscheduler-ref-archivers-archivers-rabbitmq"></span><h3><code class="docutils literal notranslate"><span class="pre">rabbitmq</span></code><a class="headerlink" href="#rabbitmq" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">rabbitmq</span></code> archiver sends raw JSON results to <a class="reference external" href="https://www.rabbitmq.com">RabbitMQ</a>.</p>
-<section id="pscheduler-ref-archivers-archivers-rabbitmq-data">
-<span id="id12"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="pscheduler-ref-archivers-archivers-rabbitmq-data">
+<span id="id12"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-data" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">_url</span></code> - An <code class="docutils literal notranslate"><span class="pre">amqp</span></code> URL for the RabbitMQ instance which will
 receive the result.</p>
 <p><code class="docutils literal notranslate"><span class="pre">exchange</span></code> (Optional) - The exchange to which the result will be
@@ -398,9 +398,9 @@ Requires <code class="docutils literal notranslate"><span class="pre">schema</sp
 <p><code class="docutils literal notranslate"><span class="pre">retry-policy</span></code> (Optional) - Describes how to retry failed attempts
 to submit the measurement to RabbitMQ before giving up.  The default
 behavior is to try once and then give up.</p>
-</section>
-<section id="pscheduler-ref-archivers-archivers-rabbitmq-example">
-<span id="id13"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-rabbitmq-example">
+<span id="id13"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-rabbitmq-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;rabbitmq&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -414,20 +414,20 @@ behavior is to try once and then give up.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="syslog">
-<span id="pscheduler-ref-archivers-archivers-syslog"></span><h3><code class="docutils literal notranslate"><span class="pre">syslog</span></code><a class="headerlink" href="#syslog" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="syslog">
+<span id="pscheduler-ref-archivers-archivers-syslog"></span><h3><code class="docutils literal notranslate"><span class="pre">syslog</span></code><a class="headerlink" href="#syslog" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">syslog</span></code> archiver sends the raw JSON result to the system log.</p>
 <p>Note that because most syslog implementations cannot handle arbitrarily-long log messages, this archiver should not be relied upon for anything other than debugging.</p>
-<section id="pscheduler-ref-archivers-archivers-syslog-data">
-<span id="id14"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="pscheduler-ref-archivers-archivers-syslog-data">
+<span id="id14"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-data" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">ident</span></code> - Optional.  The identification string to be used when submitting the log message.</p>
 <p><code class="docutils literal notranslate"><span class="pre">facility</span></code> - Optional.  The syslog facility to be used when the log entry is submitted.  Valid valies are <code class="docutils literal notranslate"><span class="pre">kern</span></code>, <code class="docutils literal notranslate"><span class="pre">user</span></code>, <code class="docutils literal notranslate"><span class="pre">mail</span></code>, <code class="docutils literal notranslate"><span class="pre">daemon</span></code>, <code class="docutils literal notranslate"><span class="pre">auth</span></code>, <code class="docutils literal notranslate"><span class="pre">lpr</span></code>, <code class="docutils literal notranslate"><span class="pre">news</span></code>, <code class="docutils literal notranslate"><span class="pre">uucp</span></code>, <code class="docutils literal notranslate"><span class="pre">cron</span></code>, <code class="docutils literal notranslate"><span class="pre">syslog</span></code>, <code class="docutils literal notranslate"><span class="pre">local0</span></code>, <code class="docutils literal notranslate"><span class="pre">local1</span></code>, <code class="docutils literal notranslate"><span class="pre">local2</span></code>, <code class="docutils literal notranslate"><span class="pre">local3</span></code>, <code class="docutils literal notranslate"><span class="pre">local4</span></code>, <code class="docutils literal notranslate"><span class="pre">local5</span></code>, <code class="docutils literal notranslate"><span class="pre">local6</span></code> and <code class="docutils literal notranslate"><span class="pre">local7</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">priority</span></code> - Optional.  The syslog priority to be used when the log entry is submitted.  Valid values are <code class="docutils literal notranslate"><span class="pre">emerg</span></code>, <code class="docutils literal notranslate"><span class="pre">alert</span></code>, <code class="docutils literal notranslate"><span class="pre">crit</span></code>, <code class="docutils literal notranslate"><span class="pre">err</span></code>, <code class="docutils literal notranslate"><span class="pre">warning</span></code>, <code class="docutils literal notranslate"><span class="pre">notice</span></code>, <code class="docutils literal notranslate"><span class="pre">info</span></code> and <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
-</section>
-<section id="pscheduler-ref-archivers-archivers-syslog-example">
-<span id="id15"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-syslog-example">
+<span id="id15"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-syslog-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;syslog&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -438,14 +438,14 @@ behavior is to try once and then give up.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="tcp">
-<span id="pscheduler-ref-archivers-archivers-tcp"></span><h3><code class="docutils literal notranslate"><span class="pre">tcp</span></code><a class="headerlink" href="#tcp" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="tcp">
+<span id="pscheduler-ref-archivers-archivers-tcp"></span><h3><code class="docutils literal notranslate"><span class="pre">tcp</span></code><a class="headerlink" href="#tcp" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">tcp</span></code> archiver connects to a listening TCP socket, sends the raw
 JSON result and disconnects.</p>
-<section id="pscheduler-ref-archivers-archivers-tcp-data">
-<span id="id16"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-tcp-data" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="pscheduler-ref-archivers-archivers-tcp-data">
+<span id="id16"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-tcp-data" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">host</span></code> - The host where the data should be sent.</p>
 <p><code class="docutils literal notranslate"><span class="pre">port</span></code> - The TCP port on the host used for the connection.</p>
 <p><code class="docutils literal notranslate"><span class="pre">bind</span></code> - Optional.  The local address to bind to when connecting to
@@ -456,9 +456,9 @@ it by querying DNS for an <code class="docutils literal notranslate"><span class
 <p><code class="docutils literal notranslate"><span class="pre">retry-policy</span></code> - Optional. Describes how to retry failed attempts to
 submit the measurement to esmond before giving up.  The default
 behavior is to try once and then give up.</p>
-</section>
-<section id="pscheduler-ref-archivers-archivers-tcp-example">
-<span id="id17"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-tcp-example" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pscheduler-ref-archivers-archivers-tcp-example">
+<span id="id17"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-archivers-archivers-tcp-example" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;tcp&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -468,11 +468,11 @@ behavior is to try once and then give up.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-<section id="transforms">
-<span id="pscheduler-ref-archivers-transforms"></span><h2>Transforms<a class="headerlink" href="#transforms" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="section" id="transforms">
+<span id="pscheduler-ref-archivers-transforms"></span><h2>Transforms<a class="headerlink" href="#transforms" title="Permalink to this headline">¶</a></h2>
 <p>As part of an archive specification, pScheduler may be instructed to pre-process a run result before it is handed to the archiver plugin.  This is accomplished by adding a <code class="docutils literal notranslate"><span class="pre">transform</span></code> section to the archive specification:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;syslog&quot;</span><span class="p">,</span>
@@ -493,68 +493,68 @@ behavior is to try once and then give up.</p>
 <p>If the script returns a JSON value of <code class="docutils literal notranslate"><span class="pre">null</span></code>, pScheduler will discard the result and not pass it to the plugin.  Because the transformation happens within pScheduler before any plugin code is invoked, this mechanism is a very efficient way to filter results and is preferred over writing custom plugins.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">raw-output</span></code> is present and <code class="docutils literal notranslate"><span class="pre">true</span></code>, the output will be treated as plain text instead of JSON.</p>
 <p>Note that some archiver plugins, notably <code class="docutils literal notranslate"><span class="pre">esmond</span></code>, may expect the input to be in the un-transformed format produced by pScheduler.  Using a transform in this case is not recommended.</p>
-<section id="example-transforms">
-<span id="pscheduler-ref-archivers-transforms-examples"></span><h3>Example Transforms<a class="headerlink" href="#example-transforms" title="Permalink to this heading">¶</a></h3>
-<section id="convert-to-plain-text">
-<span id="pscheduler-ref-archivers-transforms-examples-text"></span><h4>Convert to Plain Text<a class="headerlink" href="#convert-to-plain-text" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="example-transforms">
+<span id="pscheduler-ref-archivers-transforms-examples"></span><h3>Example Transforms<a class="headerlink" href="#example-transforms" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="convert-to-plain-text">
+<span id="pscheduler-ref-archivers-transforms-examples-text"></span><h4>Convert to Plain Text<a class="headerlink" href="#convert-to-plain-text" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">Ran </span><span class="se">\\</span><span class="s2">(.test.type) with </span><span class="se">\\</span><span class="s2">(.tool.name)</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
     <span class="s2">&quot;output-raw&quot;</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="generate-different-json">
-<span id="pscheduler-ref-archivers-transforms-examples-diffjson"></span><h4>Generate Different JSON<a class="headerlink" href="#generate-different-json" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="generate-different-json">
+<span id="pscheduler-ref-archivers-transforms-examples-diffjson"></span><h4>Generate Different JSON<a class="headerlink" href="#generate-different-json" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;{ </span><span class="se">\&quot;</span><span class="s2">foo</span><span class="se">\&quot;</span><span class="s2">: 123456, </span><span class="se">\&quot;</span><span class="s2">type</span><span class="se">\&quot;</span><span class="s2">: .test.type, </span><span class="se">\&quot;</span><span class="s2">tool</span><span class="se">\&quot;</span><span class="s2">: .tool.name }&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="archive-only-one-test-type">
-<span id="pscheduler-ref-archivers-transforms-examples-onetest"></span><h4>Archive Only One Test Type<a class="headerlink" href="#archive-only-one-test-type" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="archive-only-one-test-type">
+<span id="pscheduler-ref-archivers-transforms-examples-onetest"></span><h4>Archive Only One Test Type<a class="headerlink" href="#archive-only-one-test-type" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;if (.test.type == </span><span class="se">\&quot;</span><span class="s2">trace</span><span class="se">\&quot;</span><span class="s2">) then . else null end&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="archive-one-test-type-log-others">
-<span id="pscheduler-ref-archivers-transforms-examples-onetestlog"></span><h4>Archive One Test Type, Log Others<a class="headerlink" href="#archive-one-test-type-log-others" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="archive-one-test-type-log-others">
+<span id="pscheduler-ref-archivers-transforms-examples-onetestlog"></span><h4>Archive One Test Type, Log Others<a class="headerlink" href="#archive-one-test-type-log-others" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;if (.test.type == </span><span class="se">\&quot;</span><span class="s2">trace</span><span class="se">\&quot;</span><span class="s2">) then . else </span><span class="se">\&quot;</span><span class="s2">Discarded unwanted </span><span class="se">\\</span><span class="s2">(.test.type) test.</span><span class="se">\&quot;</span><span class="s2"> end&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="drop-and-transform">
-<span id="pscheduler-ref-archivers-transforms-examples-drop"></span><h4>Drop and Transform<a class="headerlink" href="#drop-and-transform" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="drop-and-transform">
+<span id="pscheduler-ref-archivers-transforms-examples-drop"></span><h4>Drop and Transform<a class="headerlink" href="#drop-and-transform" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;if (.test.type == </span><span class="se">\&quot;</span><span class="s2">idle</span><span class="se">\&quot;</span><span class="s2">) then null else { </span><span class="se">\&quot;</span><span class="s2">foo</span><span class="se">\&quot;</span><span class="s2">: 123456, </span><span class="se">\&quot;</span><span class="s2">type</span><span class="se">\&quot;</span><span class="s2">: .test.type, </span><span class="se">\&quot;</span><span class="s2">tool</span><span class="se">\&quot;</span><span class="s2">: .tool.name } end&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="summarize-trace-results">
-<span id="pscheduler-ref-archivers-transforms-examples-summtrace"></span><h4>Summarize Trace Results<a class="headerlink" href="#summarize-trace-results" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="summarize-trace-results">
+<span id="pscheduler-ref-archivers-transforms-examples-summtrace"></span><h4>Summarize Trace Results<a class="headerlink" href="#summarize-trace-results" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;if (.test.type == </span><span class="se">\&quot;</span><span class="s2">trace</span><span class="se">\&quot;</span><span class="s2">) then </span><span class="se">\&quot;</span><span class="s2">Trace to </span><span class="se">\\</span><span class="s2">(.test.spec.dest), </span><span class="se">\\</span><span class="s2">(.result.paths[0] | length) hops</span><span class="se">\&quot;</span><span class="s2"> else null end&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="alternate-json-with-trace-hop-list">
-<span id="pscheduler-ref-archivers-transforms-examples-alttrace"></span><h4>Alternate JSON with Trace Hop List<a class="headerlink" href="#alternate-json-with-trace-hop-list" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="alternate-json-with-trace-hop-list">
+<span id="pscheduler-ref-archivers-transforms-examples-alttrace"></span><h4>Alternate JSON with Trace Hop List<a class="headerlink" href="#alternate-json-with-trace-hop-list" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;if (.test.type == </span><span class="se">\&quot;</span><span class="s2">trace</span><span class="se">\&quot;</span><span class="s2">) then { </span><span class="se">\&quot;</span><span class="s2">test</span><span class="se">\&quot;</span><span class="s2">: .test.type, </span><span class="se">\&quot;</span><span class="s2">from</span><span class="se">\&quot;</span><span class="s2">: .participants[0], </span><span class="se">\&quot;</span><span class="s2">to</span><span class="se">\&quot;</span><span class="s2">: .test.spec.dest,  </span><span class="se">\&quot;</span><span class="s2">id</span><span class="se">\&quot;</span><span class="s2">: .id, </span><span class="se">\&quot;</span><span class="s2">start</span><span class="se">\&quot;</span><span class="s2">: .schedule.start, </span><span class="se">\&quot;</span><span class="s2">ips</span><span class="se">\&quot;</span><span class="s2">: [ .result.paths[0] | .[].ip ] } else null end&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="transform-input-example">
-<span id="pscheduler-ref-archivers-transforms-input-example"></span><h3>Transform Input Example<a class="headerlink" href="#transform-input-example" title="Permalink to this heading">¶</a></h3>
+</div>
+</div>
+<div class="section" id="transform-input-example">
+<span id="pscheduler-ref-archivers-transforms-input-example"></span><h3>Transform Input Example<a class="headerlink" href="#transform-input-example" title="Permalink to this headline">¶</a></h3>
 <p>This is an example of a throughput test result as it would be passed to a transform:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -1249,12 +1249,11 @@ behavior is to try once and then give up.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -1375,8 +1374,7 @@ behavior is to try once and then give up.</p>
         <li class="right" >
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Archiver Reference</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -1421,7 +1419,7 @@ behavior is to try once and then give up.</p>
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

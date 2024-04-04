@@ -1,20 +1,21 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
     <title>Configuring Regular Tests &#8212; perfSONAR Toolkit 5.0.8 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Updating Administrative Information" href="manage_admin_info.html" />
@@ -60,8 +61,7 @@
         <li class="right" >
           <a href="manage_choose.html" title="Choosing a Management Method"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Configuring Regular Tests</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,8 +73,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="configuring-regular-tests">
-<h1>Configuring Regular Tests<a class="headerlink" href="#configuring-regular-tests" title="Permalink to this heading">¶</a></h1>
+  <div class="section" id="configuring-regular-tests">
+<h1>Configuring Regular Tests<a class="headerlink" href="#configuring-regular-tests" title="Permalink to this headline">¶</a></h1>
 <p>A core function of the perfSONAR Toolkit is to run regularly scheduled network measurements. You can define the tests you want run through the toolkit’s web interface. This section describes using the interface to manage the set of tests run by tour toolkit node.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -84,8 +84,8 @@
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="manage_locating_hosts.html"><span class="doc">Locating Remote perfSONAR testpoints</span></a> for information on finding remote hosts to run tests to.</p>
 </div>
-<section id="accessing-the-configuration-interface">
-<span id="manage-reg-tests-access"></span><h2>Accessing the Configuration interface<a class="headerlink" href="#accessing-the-configuration-interface" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="accessing-the-configuration-interface">
+<span id="manage-reg-tests-access"></span><h2>Accessing the Configuration interface<a class="headerlink" href="#accessing-the-configuration-interface" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p>Open <strong>http://&lt;hostname&gt;</strong> in your browser where <strong>&lt;hostname&gt;</strong> is the name of your toolkit host.</p></li>
 <li><p>Click on <strong>Configure Tests</strong> in section <strong>Test Results</strong> of the page that loads.</p>
@@ -107,23 +107,23 @@
 </div></blockquote>
 </li>
 </ol>
-</section>
-<section id="types-of-regular-tests">
-<span id="manage-reg-tests-types"></span><h2>Types of Regular Tests<a class="headerlink" href="#types-of-regular-tests" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="types-of-regular-tests">
+<span id="manage-reg-tests-types"></span><h2>Types of Regular Tests<a class="headerlink" href="#types-of-regular-tests" title="Permalink to this headline">¶</a></h2>
 <p>As a first step test definition must be added. Multiple types of tests can be configured through the web interface. They are described below:</p>
-<dl class="simple glossary">
-<dt id="term-Throughput">Throughput<a class="headerlink" href="#term-Throughput" title="Permalink to this term">¶</a></dt><dd><p>This type of test measures the amount of data that can be transferred over a period of time. It is implemented using a tool called pScheduler that makes sure the throughput tests do not conflict with each other. By default pScheduler executes <a class="reference external" href="http://software.es.net/iperf/">iperf3</a> to actually measure throughput, but iperf2 and nuttcp can also be used. For a description of the pros and cons of each tool, see <a class="reference external" href="https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/">fasterdata.es.net</a>.</p>
+<dl class="glossary simple">
+<dt id="term-throughput">Throughput</dt><dd><p>This type of test measures the amount of data that can be transferred over a period of time. It is implemented using a tool called pScheduler that makes sure the throughput tests do not conflict with each other. By default pScheduler executes <a class="reference external" href="http://software.es.net/iperf/">iperf3</a> to actually measure throughput, but iperf2 and nuttcp can also be used. For a description of the pros and cons of each tool, see <a class="reference external" href="https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/throughput-tool-comparision/">fasterdata.es.net</a>.</p>
 </dd>
-<dt id="term-Ping">Ping<a class="headerlink" href="#term-Ping" title="Permalink to this term">¶</a></dt><dd><p>This type of test measures the round-trip-time of packet and other statistics such as loss. The pScheduler tool is used to manage the schedule and it spawns a ping command to perform the actual measurement. Ping collects similar statistics to the one-way latency test (such as packet loss) but does so at a much less granular level and without regard for whether the measured value occurred on the forward or reverse path. The advantage of ping tests is that many sites accept ping tests without the need for firewall modifications or special daemon’s running on the target host.</p>
+<dt id="term-ping">Ping</dt><dd><p>This type of test measures the round-trip-time of packet and other statistics such as loss. The pScheduler tool is used to manage the schedule and it spawns a ping command to perform the actual measurement. Ping collects similar statistics to the one-way latency test (such as packet loss) but does so at a much less granular level and without regard for whether the measured value occurred on the forward or reverse path. The advantage of ping tests is that many sites accept ping tests without the need for firewall modifications or special daemon’s running on the target host.</p>
 </dd>
-<dt id="term-One-way-latency">One-way latency<a class="headerlink" href="#term-One-way-latency" title="Permalink to this term">¶</a></dt><dd><p>This type of test measures delay and loss separately for each direction of a path (as opposed to combining the values of each direction as ping tests). The underling tool run is an OWAMP client. This type of test runs constantly sending several packets each seconds. This allows it to find very small amounts of loss if present that may be missed by other tools. If also running throughput tests, you may see anomalies such as a sudden burst of loss when throughput tests run. For this reason it is often recommended you run this type of test on a separate interface or host than the throughput tests. See <a class="reference internal" href="manage_dual_xface.html"><span class="doc">Configuring a Host with Multiple Interfaces</span></a> for more information on running tests on separate interfaces.</p>
+<dt id="term-one-way-latency">One-way latency</dt><dd><p>This type of test measures delay and loss separately for each direction of a path (as opposed to combining the values of each direction as ping tests). The underling tool run is an OWAMP client. This type of test runs constantly sending several packets each seconds. This allows it to find very small amounts of loss if present that may be missed by other tools. If also running throughput tests, you may see anomalies such as a sudden burst of loss when throughput tests run. For this reason it is often recommended you run this type of test on a separate interface or host than the throughput tests. See <a class="reference internal" href="manage_dual_xface.html"><span class="doc">Configuring a Host with Multiple Interfaces</span></a> for more information on running tests on separate interfaces.</p>
 </dd>
-<dt id="term-Traceroute">Traceroute<a class="headerlink" href="#term-Traceroute" title="Permalink to this term">¶</a></dt><dd><p>Traceroute tests periodically measure the path between the source and destination. By default this type of test will automatically be added every time you add any of the other types of tests. This type of test is crucial in determining how a packet traverses a network and can be helpful in identifying events such as path changes that affect other test types. The underlying tool is pScheduler to manage scheduling the test and the tracepath command to actual perform the measurement. The tool will fallback to traceroute if tracepath is not installed on the source host for some reason (all Toolkit hosts come with tracepath by default). It is also possible to choose <em>paris-traceroute</em> as in underlying tool.</p>
+<dt id="term-traceroute">Traceroute</dt><dd><p>Traceroute tests periodically measure the path between the source and destination. By default this type of test will automatically be added every time you add any of the other types of tests. This type of test is crucial in determining how a packet traverses a network and can be helpful in identifying events such as path changes that affect other test types. The underlying tool is pScheduler to manage scheduling the test and the tracepath command to actual perform the measurement. The tool will fallback to traceroute if tracepath is not installed on the source host for some reason (all Toolkit hosts come with tracepath by default). It is also possible to choose <em>paris-traceroute</em> as in underlying tool.</p>
 </dd>
 </dl>
-</section>
-<section id="adding-regular-tests">
-<span id="manage-reg-tests-add"></span><h2>Adding Regular Tests<a class="headerlink" href="#adding-regular-tests" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="adding-regular-tests">
+<span id="manage-reg-tests-add"></span><h2>Adding Regular Tests<a class="headerlink" href="#adding-regular-tests" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p>On the main page of the tests configuration interface click on the <strong>+Add Test</strong> button too choose and add the test type you would like.</p>
 <blockquote>
@@ -141,6 +141,11 @@
 <p><strong>Throughput</strong></p>
 <img alt="_images/manage_regular_tests-tests-add-test-bw-params.png" src="_images/manage_regular_tests-tests-add-test-bw-params.png" />
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 22%" />
+<col style="width: 45%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
 <th class="head"><p>Default</p></th>
@@ -227,6 +232,11 @@
 <p><strong>Ping</strong></p>
 <img alt="_images/manage_regular_tests-tests-add-test-ping-params.png" src="_images/manage_regular_tests-tests-add-test-ping-params.png" />
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 17%" />
+<col style="width: 51%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
 <th class="head"><p>Default</p></th>
@@ -277,6 +287,11 @@
 <p><strong>One-way delay</strong></p>
 <img alt="_images/manage_regular_tests-tests-add-test-owamp-params.png" src="_images/manage_regular_tests-tests-add-test-owamp-params.png" />
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 28%" />
+<col style="width: 45%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
 <th class="head"><p>Default</p></th>
@@ -315,6 +330,11 @@
 <p><strong>Traceroute</strong></p>
 <img alt="_images/manage_regular_tests-tests-add-test-tracert-params.png" src="_images/manage_regular_tests-tests-add-test-tracert-params.png" />
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 17%" />
+<col style="width: 51%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
 <th class="head"><p>Default</p></th>
@@ -430,11 +450,11 @@
 </div></blockquote>
 </li>
 </ol>
-</section>
-<section id="editing-regular-tests">
-<span id="manage-reg-tests-modify"></span><h2>Editing Regular Tests<a class="headerlink" href="#editing-regular-tests" title="Permalink to this heading">¶</a></h2>
-<section id="changing-test-parameters">
-<span id="manage-reg-tests-modify-params"></span><h3>Changing Test Parameters<a class="headerlink" href="#changing-test-parameters" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="editing-regular-tests">
+<span id="manage-reg-tests-modify"></span><h2>Editing Regular Tests<a class="headerlink" href="#editing-regular-tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="changing-test-parameters">
+<span id="manage-reg-tests-modify-params"></span><h3>Changing Test Parameters<a class="headerlink" href="#changing-test-parameters" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
 <li><p>You may modify settings of a test after adding it. Access the regular testing interface under <strong>Tests</strong> tab and in the list of tests click the configuration icon under <strong>ACTIONS</strong> next to any test you wish to change:</p>
 <blockquote>
@@ -444,9 +464,9 @@
 <li><p>From the page that loads you can make a number of changes. See the sections that follow for details on how to make some specific changes. See the tables <a class="reference internal" href="#manage-reg-tests-add-params"><span class="std std-ref">here</span></a> for complete listing of parameters and their meanings. Click <strong>OK</strong> to leave the test configuration window and keep your changes.</p></li>
 <li><p>If you are done with making necessary tests modification click the <strong>Save</strong> button at the bottom of the screen to apply all your changes.</p></li>
 </ol>
-</section>
-<section id="deleting-test-members">
-<span id="manage-reg-tests-modify-delmember"></span><h3>Deleting Test Members<a class="headerlink" href="#deleting-test-members" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="deleting-test-members">
+<span id="manage-reg-tests-modify-delmember"></span><h3>Deleting Test Members<a class="headerlink" href="#deleting-test-members" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
 <li><p>In the <strong>Configure Test</strong> configuration page, uder <strong>Test members</strong> section find the test member you wish to remove and click the trash bin symbol next to it.</p>
 <blockquote>
@@ -460,13 +480,13 @@
 </li>
 <li><p>If you are done making changes click <strong>OK</strong> to accept test configuration change and then <strong>Save</strong> to apply your changes to the system.</p></li>
 </ol>
-</section>
-<section id="adding-test-members">
-<span id="manage-reg-tests-modify-addmember"></span><h3>Adding Test Members<a class="headerlink" href="#adding-test-members" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="adding-test-members">
+<span id="manage-reg-tests-modify-addmember"></span><h3>Adding Test Members<a class="headerlink" href="#adding-test-members" title="Permalink to this headline">¶</a></h3>
 <p>From the configuration interface, the process for adding more test members is the same as that detailed in the section <a class="reference internal" href="#manage-reg-tests-add-host-in-test"><span class="std std-ref">here</span></a>.</p>
-</section>
-<section id="changing-test-member-ip-address-settings">
-<span id="manage-reg-tests-modify-ip"></span><h3>Changing Test Member IP Address Settings<a class="headerlink" href="#changing-test-member-ip-address-settings" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="changing-test-member-ip-address-settings">
+<span id="manage-reg-tests-modify-ip"></span><h3>Changing Test Member IP Address Settings<a class="headerlink" href="#changing-test-member-ip-address-settings" title="Permalink to this headline">¶</a></h3>
 <p>When you add a new test member, the configuration automatically determines if you should the test should run using IPv4, IPv6 or both. See the <a class="reference internal" href="#manage-reg-tests-add-ip-type"><span class="std std-ref">discussion</span></a> on IP type when adding a new test for more details on the default behavior. If you would like to override the default behavior or update the host address do the following:</p>
 <ol class="arabic">
 <li><p>In the <strong>Configure Test</strong> configuration page, under <strong>Test members</strong> section find the test member you would like to update and select the desired protocol type.</p>
@@ -480,10 +500,10 @@
 </li>
 <li><p>If you are done making changes click <strong>OK</strong> to accept test configuration change and then <strong>Save</strong> to apply your changes to the system.</p></li>
 </ol>
-</section>
-</section>
-<section id="disabling-enabling-regular-tests">
-<span id="manage-reg-tests-disable"></span><h2>Disabling/Enabling Regular Tests<a class="headerlink" href="#disabling-enabling-regular-tests" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="disabling-enabling-regular-tests">
+<span id="manage-reg-tests-disable"></span><h2>Disabling/Enabling Regular Tests<a class="headerlink" href="#disabling-enabling-regular-tests" title="Permalink to this headline">¶</a></h2>
 <p id="manage-reg-tests-disable-enable">In some cases it may be desirable to stop running tests for a period of time, but not to delete them entirely. This allows them to be enabled again at a later time without recreating the entire test set. To disable or enable an existing test set do the following:</p>
 <ol class="arabic">
 <li><p>Under <strong>Tests</strong> tab open the <strong>Configure Test</strong> configuration page selecting appropriate symbol from <strong>ACTIONS</strong> next to a test you want to disable.</p>
@@ -503,9 +523,9 @@
 </li>
 <li><p>When you are done making changes click <strong>OK</strong> to accept test configuration change and then <strong>Save</strong> to apply your changes to the system. Scheduled test list will indicate the current status of this option.</p></li>
 </ol>
-</section>
-<section id="deleting-regular-tests">
-<span id="manage-reg-tests-delete"></span><h2>Deleting Regular Tests<a class="headerlink" href="#deleting-regular-tests" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="deleting-regular-tests">
+<span id="manage-reg-tests-delete"></span><h2>Deleting Regular Tests<a class="headerlink" href="#deleting-regular-tests" title="Permalink to this headline">¶</a></h2>
 <p>The interface allows you to completely delete a test set. This will stop all tests in the set from running and completely remove them from the configuration interface. If after deleting a test set, you would like to re-add the tests, you will have to completely recreate the test set.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -525,11 +545,10 @@
 </li>
 <li><p>When you are done making changes click the <strong>Save</strong> button.</p></li>
 </ol>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -586,8 +605,7 @@
         <li class="right" >
           <a href="manage_choose.html" title="Choosing a Management Method"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Configuring Regular Tests</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.0.8 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -632,7 +650,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
