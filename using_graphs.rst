@@ -2,6 +2,8 @@
 Test Results Graphs
 *******************
 
+.. note:: This pages has not been updated for 5.1.0 and references graphs that are no longer available.
+
 Plots of perfSONAR test results can be viewed by selecting **Details** on the Toolkit web interface homepage or by clicking on a square in a perfSONAR MaDDash dashboard grid.
 
 A sample perfSONAR data plot can be seen here:
