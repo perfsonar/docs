@@ -75,13 +75,14 @@
             
   <section id="bundle-installation-on-debian">
 <h1>Bundle Installation on Debian<a class="headerlink" href="#bundle-installation-on-debian" title="Permalink to this heading">¶</a></h1>
-<p>perfSONAR combines various sets of measurement tools and services. For perfSONAR 5.0 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:</p>
+<p>perfSONAR combines various sets of measurement tools and services. We provide the whole perfSONAR Toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:</p>
 <ul class="simple">
-<li><p>Debian 10 Buster</p></li>
-<li><p>Ubuntu 18 Bionic Beaver</p></li>
+<li><p>Debian 11 Bullseye</p></li>
+<li><p>Debian 12 Bookworm</p></li>
 <li><p>Ubuntu 20 Focal Fossa</p></li>
+<li><p>Ubuntu 22 Jammy Jellyfish</p></li>
 </ul>
-<p>Debian meta packages are available to install the bundles described in <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR Installation Options</span></a>.  The <code class="docutils literal notranslate"><span class="pre">perfsonar-archive</span></code> package can also be installed on Debian 11 and Ubuntu 22.</p>
+<p>Debian meta packages are available to install the bundles described in <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR Installation Options</span></a>.</p>
 <p>The remaining sections of this document detail the steps required for installing these bundles.</p>
 <section id="system-requirements">
 <h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this heading">¶</a></h2>
@@ -102,8 +103,35 @@
 <p>Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.</p>
 </div>
 </section>
-<section id="installation">
-<span id="install-debian-installation"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
+<section id="installation-automated-script">
+<span id="install-debian-installation-quick"></span><h2>Installation (Automated Script)<a class="headerlink" href="#installation-automated-script" title="Permalink to this heading">¶</a></h2>
+<p>perfSONAR provides a script that will automatically perform the first two steps in <a class="reference internal" href="#install-debian-installation"><span class="std std-ref">Installation (Manual)</span></a>. You can install your choice of bundle with one of the commands below.</p>
+<ul>
+<li><p><strong>perfSONAR Tools</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="n">tools</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>perfSONAR Test Point</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="n">testpoint</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>perfSONAR Toolkit</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="n">toolkit</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>perfSONAR Archive</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="n">archive</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>If you would prefer to perform these steps manually see <a class="reference internal" href="#install-debian-step1"><span class="std std-ref">Step 1: Configure APT</span></a> and <a class="reference internal" href="#install-debian-step2"><span class="std std-ref">Step 2: Install a Bundle</span></a>.</p>
+</section>
+<section id="installation-manual">
+<span id="install-debian-installation"></span><h2>Installation (Manual)<a class="headerlink" href="#installation-manual" title="Permalink to this heading">¶</a></h2>
 <section id="step-1-configure-apt">
 <span id="install-debian-step1"></span><h3>Step 1: Configure APT<a class="headerlink" href="#step-1-configure-apt" title="Permalink to this heading">¶</a></h3>
 <p>All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. <strong>You will need to follow the steps below as privileged user</strong>:</p>
@@ -127,6 +155,10 @@
 <section id="step-2-install-a-bundle">
 <span id="install-debian-step2"></span><h3>Step 2: Install a Bundle<a class="headerlink" href="#step-2-install-a-bundle" title="Permalink to this heading">¶</a></h3>
 <p><strong>Choose one</strong> of the following bundles and see <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR Installation Options</span></a> page for more information about what these bundles are.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bundles that install Opensearch must set <code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">OPENSEARCH_INITIAL_ADMIN_PASSWORD=perfSONAR123!</span></code>. This is a requirement of the Opensearch package. The password will be overwritten with a random password by the perfsonar-archive package, so use <code class="docutils literal notranslate"><span class="pre">perfSONAR123!</span></code> since it meets Opensearch character requirements and will ultimately be replaced with a better password by install process.</p>
+</div>
 <ul>
 <li><p><strong>perfSONAR Tools</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">tools</span>
@@ -140,28 +172,24 @@
 <p>During the installation process, you’ll be asked to choose a password for the pscheduler database.</p>
 </li>
 <li><p><strong>perfSONAR Core</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">core</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>env OPENSEARCH_INITIAL_ADMIN_PASSWORD=perfSONAR123! apt install perfsonar-core
 </pre></div>
 </div>
 <p>During the installation process, you’ll be asked to choose a password for the pscheduler database.</p>
 </li>
 <li><p><strong>perfSONAR Archive</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">archive</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>env OPENSEARCH_INITIAL_ADMIN_PASSWORD=perfSONAR123! apt install perfsonar-archive
 </pre></div>
 </div>
 <p>During the installation process, you’ll be asked to choose a password for the pscheduler database.</p>
 </li>
 <li><p><strong>perfSONAR Toolkit</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">toolkit</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>env OPENSEARCH_INITIAL_ADMIN_PASSWORD=perfSONAR123! apt install perfsonar-toolkit
 </pre></div>
 </div>
 <p>During the installation process, you’ll be asked to choose a password for the pscheduler database.</p>
 </li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">perfsonar-archive</span></code> bundle is also supported on Debian 11 and Ubuntu 22.</p>
-</div>
 <section id="setting-the-default-user-password-in-postgresql">
 <h4>Setting the default user password in PostgreSQL<a class="headerlink" href="#setting-the-default-user-password-in-postgresql" title="Permalink to this heading">¶</a></h4>
 <p>With a regular <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">install</span></code>, the user is prompted to enter a password for the new PostgreSQL database created during installation. You can choose this password arbitrarily or leave it empty (the DB is only accessible locally).
@@ -335,7 +363,8 @@ ESnet provides a file containing all R&amp;E subnets, which is updated nightly. 
                 <ul>
 <li><a class="reference internal" href="#">Bundle Installation on Debian</a><ul>
 <li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
-<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#installation-automated-script">Installation (Automated Script)</a></li>
+<li><a class="reference internal" href="#installation-manual">Installation (Manual)</a><ul>
 <li><a class="reference internal" href="#step-1-configure-apt">Step 1: Configure APT</a></li>
 <li><a class="reference internal" href="#step-2-install-a-bundle">Step 2: Install a Bundle</a><ul>
 <li><a class="reference internal" href="#setting-the-default-user-password-in-postgresql">Setting the default user password in PostgreSQL</a></li>
