@@ -84,20 +84,37 @@
 <li><p>A clean installation of one of our EL or Debian bundles</p></li>
 <li><p>An upgrade of an existing EL or Debian installation</p></li>
 </ul>
-<p>You may consult <a class="reference external" href="https://github.com/perfsonar/project/wiki/Toolkit-Testing-Checklist">the testing checklist</a> to help guide your testing. For full instructions on how to get beta packages and ISOs, see the sections below.</p>
-<section id="testing-el-bundles-installation">
-<span id="install-rcs-clean-el"></span><h2>Testing EL Bundles Installation<a class="headerlink" href="#testing-el-bundles-installation" title="Permalink to this heading">¶</a></h2>
-<p>Install the staging yum repository where test versions of the software are kept. You may set this up with the following commands below.</p>
-<p><strong>EL7</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">internet2</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">rpms</span><span class="o">/</span><span class="n">el7</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">staging</span><span class="o">-</span><span class="mf">0.11</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
+<section id="testing-bundle-installation-automated-script">
+<span id="install-rcs-automatic"></span><h2>Testing Bundle Installation (Automated Script)<a class="headerlink" href="#testing-bundle-installation-automated-script" title="Permalink to this heading">¶</a></h2>
+<p>The easiest way to test a beta is by using an automated script that detects the operating system, sets-up necessary repos and installs the selected bundles. The key is to give it the parameter <cite>–repo staging</cite> to get the beta release. The following commands will install various bundles.</p>
+<ul>
+<li><p><strong>perfSONAR Tools</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="o">--</span><span class="n">repo</span> <span class="n">staging</span> <span class="n">tools</span>
 </pre></div>
 </div>
-<p><strong>EL8</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">internet2</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">rpms</span><span class="o">/</span><span class="n">el8</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">staging</span><span class="o">-</span><span class="mf">0.11</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
+</li>
+<li><p><strong>perfSONAR Test Point</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="o">--</span><span class="n">repo</span> <span class="n">staging</span> <span class="n">testpoint</span>
 </pre></div>
 </div>
+</li>
+<li><p><strong>perfSONAR Toolkit</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="o">--</span><span class="n">repo</span> <span class="n">staging</span> <span class="n">toolkit</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>perfSONAR Archive</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">installation</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">perfsonar</span> <span class="o">|</span> <span class="n">sh</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="o">--</span><span class="n">repo</span> <span class="n">staging</span> <span class="n">archive</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="testing-el-bundles-installation-manual">
+<span id="install-rcs-clean-el"></span><h2>Testing EL Bundles Installation (Manual)<a class="headerlink" href="#testing-el-bundles-installation-manual" title="Permalink to this heading">¶</a></h2>
+<p>If you would prefer to manually setup the repos on EL then install the staging yum repository where test versions of the software are kept. You may set this up with the following commands below.</p>
 <p><strong>EL9</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">internet2</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">rpms</span><span class="o">/</span><span class="n">el9</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">staging</span><span class="o">-</span><span class="mf">0.11</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">install</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">internet2</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">rpms</span><span class="o">/</span><span class="n">el9</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">staging</span><span class="o">-</span><span class="mf">0.11</span><span class="o">-</span><span class="mf">1.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
 </pre></div>
 </div>
 <p>Once you are pointing at the staging repository you may follow the steps at <a class="reference internal" href="install_el.html"><span class="doc">Bundle Installation on RedHat Enterprise Linux Variants</span></a> to choose and configure your bundle.</p>
@@ -106,11 +123,11 @@
 <p>If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours.</p>
 </div>
 </section>
-<section id="testing-upgrades-of-an-existing-toolkit-or-el-bundle-installation">
-<span id="install-rcs-upgrade-el"></span><h2>Testing Upgrades of an Existing Toolkit or EL Bundle Installation<a class="headerlink" href="#testing-upgrades-of-an-existing-toolkit-or-el-bundle-installation" title="Permalink to this heading">¶</a></h2>
+<section id="testing-upgrades-of-an-existing-toolkit-or-el-bundle-installation-manual">
+<span id="install-rcs-upgrade-el"></span><h2>Testing Upgrades of an Existing Toolkit or EL Bundle Installation (Manual)<a class="headerlink" href="#testing-upgrades-of-an-existing-toolkit-or-el-bundle-installation-manual" title="Permalink to this heading">¶</a></h2>
 <p>You can test upgrades of any existing EL-based perfSONAR installation by first pointing your existing EL installation at the perfSONAR staging yum repository and then running yum update:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">staging</span>
-<span class="n">yum</span> <span class="n">update</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">repo</span><span class="o">-</span><span class="n">staging</span>
+<span class="n">dnf</span> <span class="n">update</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -118,8 +135,8 @@
 <p>If you have auto-updates enabled, once you point your host at the staging repository, you will automatically get any new test packages that are added within 24 hours</p>
 </div>
 </section>
-<section id="testing-debian-installation">
-<span id="install-rcs-clean-debian"></span><h2>Testing Debian Installation<a class="headerlink" href="#testing-debian-installation" title="Permalink to this heading">¶</a></h2>
+<section id="testing-debian-installation-manual">
+<span id="install-rcs-clean-debian"></span><h2>Testing Debian Installation (Manual)<a class="headerlink" href="#testing-debian-installation-manual" title="Permalink to this heading">¶</a></h2>
 <p>The beta packages for Debian can be found in the source list below:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list">http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list</a></p></li>
@@ -138,8 +155,8 @@
 <p>If you have auto-updates enabled, once you point your host at this repository, you will automatically get any new test packages that are added within 24 hours</p>
 </div>
 </section>
-<section id="testing-debian-upgrades">
-<span id="install-rcs-upgrades-debian"></span><h2>Testing Debian Upgrades<a class="headerlink" href="#testing-debian-upgrades" title="Permalink to this heading">¶</a></h2>
+<section id="testing-debian-upgrades-manual">
+<span id="install-rcs-upgrades-debian"></span><h2>Testing Debian Upgrades (Manual)<a class="headerlink" href="#testing-debian-upgrades-manual" title="Permalink to this heading">¶</a></h2>
 <p>You may test upgrades of perfSONAR Debian packages by following the steps to setup the Debian repository in the <a class="reference internal" href="#install-rcs-clean-debian"><span class="std std-ref">previous section</span></a>. Once completed run the following to upgrade:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span>
 <span class="n">apt</span> <span class="n">upgrade</span>
@@ -171,10 +188,11 @@
                 
                 <ul>
 <li><a class="reference internal" href="#">Testing Beta Versions of perfSONAR</a><ul>
-<li><a class="reference internal" href="#testing-el-bundles-installation">Testing EL Bundles Installation</a></li>
-<li><a class="reference internal" href="#testing-upgrades-of-an-existing-toolkit-or-el-bundle-installation">Testing Upgrades of an Existing Toolkit or EL Bundle Installation</a></li>
-<li><a class="reference internal" href="#testing-debian-installation">Testing Debian Installation</a></li>
-<li><a class="reference internal" href="#testing-debian-upgrades">Testing Debian Upgrades</a></li>
+<li><a class="reference internal" href="#testing-bundle-installation-automated-script">Testing Bundle Installation (Automated Script)</a></li>
+<li><a class="reference internal" href="#testing-el-bundles-installation-manual">Testing EL Bundles Installation (Manual)</a></li>
+<li><a class="reference internal" href="#testing-upgrades-of-an-existing-toolkit-or-el-bundle-installation-manual">Testing Upgrades of an Existing Toolkit or EL Bundle Installation (Manual)</a></li>
+<li><a class="reference internal" href="#testing-debian-installation-manual">Testing Debian Installation (Manual)</a></li>
+<li><a class="reference internal" href="#testing-debian-upgrades-manual">Testing Debian Upgrades (Manual)</a></li>
 <li><a class="reference internal" href="#testing-docker-installation">Testing Docker Installation</a></li>
 <li><a class="reference internal" href="#testing-psconfig-web-administrator-installation">Testing pSConfig Web Administrator Installation</a></li>
 </ul>
