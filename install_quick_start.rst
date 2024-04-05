@@ -2,20 +2,15 @@
 Toolkit Installation Quick Start
 *********************************
 
-These instructions are for the full Toolkit installation on Alma 9 or Rocky 9. For other perfSONAR installation options, see :doc:`install_options`.
-
-#. Install Alma or Rocky 9 using your preferred method from https://almalinux.org/ or https://rockylinux.org/
+These instructions are for the full Toolkit installation on any supported operating system. For other perfSONAR installation options, see :doc:`install_options`.
 
 #. Login to the host and become sudo::
 
         sudo -s
 
-#. Run the following commands::
+#. Run the following command::
 
-        dnf config-manager --set-enabled crb
-        dnf install epel-release http://software.internet2.edu/rpms/el9/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
-        dnf clean all
-        dnf install perfsonar-toolkit
+        curl -s https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar | sh -s - toolkit
 
 #. Exit sudo and become sudo again to trigger login prompt::
 

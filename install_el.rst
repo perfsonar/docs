@@ -13,10 +13,32 @@ System Requirements
 
 .. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
 
+Installation (Automated Script)
+====================================
+perfSONAR provides a script that will automatically perform the first two steps in :ref:`_install_el_installation`. You can install your choice of bundle with one of the commands below.
+
+* **perfSONAR Tools**::
+
+    curl -s https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar | sh -s - tools
+
+* **perfSONAR Test Point**::
+
+    curl -s https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar | sh -s - testpoint
+
+* **perfSONAR Toolkit**::
+
+    curl -s https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar | sh -s - toolkit
+
+* **perfSONAR Archive**::
+
+    curl -s https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar | sh -s - archive
+
+If you would prefer to perform these steps manually see :ref:`_install_el_step1` and :ref:`_install_el_step2`.
+
 .. _install_el_installation:
 
-Installation 
-============
+Installation (Manual)
+========================
 
 .. _install_el_step1:
 
