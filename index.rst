@@ -61,7 +61,6 @@ perfSONAR Toolkit
    manage_limits
    manage_daemons
    using_graphs
-   using_ext_tools
    grafana_cookbook
 
 .. _index-pscheduler:

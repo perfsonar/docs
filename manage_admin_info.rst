@@ -9,7 +9,7 @@ For more information about your personal data read our `Privacy Policy <https://
 Accessing the Administrative Info Interface
 ===========================================
 #. Open **http://<hostname>** in your browser where **<hostname>** is the name of your toolkit host
-#. Click on **Edit** in the host information section of the main page (A) or **Configuration** button in the right-upper corner (B) and login as the web administrator user created in the previous step.
+#. Click on the **Configuration** button in the right-upper corner.
 
     .. image:: images/manage_admin_info-edit.png
 
