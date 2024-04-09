@@ -11,6 +11,8 @@ It is often desirable to view the pScheduler schedule to plan new tests, debug a
     * ``pscheduler schedule`` - This command outputs the schedule in the requested timeframe as text. See :ref:`pscheduler_client_schedule-schedule`.
     * ``pscheduler plot-schedule`` - This command creates a PNG image file that provides a box plot of the schedule. See :ref:`pscheduler_client_schedule-plot_schedule`.
     * ``pscheduler monitor`` - This command provides top-like output showing near real-time state of runs in the database. See :ref:`pscheduler_client_schedule-monitor`.
+	
+If you installed the ``perfsonar-toolkit`` bundle you can can visualize the pScheduler schedule directly in the Toolkit GUI. See :ref:`pscheduler_client_schedule-plot_schedule_toolkit`.
 
 .. _pscheduler_client_schedule-basics:
 
@@ -191,3 +193,18 @@ If you would like to monitor a pScheduler server on remote host you can add the 
 
 If you are curious about any additional options or details, you can also run ``pscheduler monitor --help`` to get more information about this command. 
 
+.. _pscheduler_client_schedule-plot_schedule_toolkit:
+
+Visualizing the Schedule with Plot Schedule Graph in Toolkit
+------------------------------------------------------------
+With Toolkit installation, you can view the pScheduler schedule with **Plot Schedule Graph** menu option that provides easy access to visualize the hosts's schedule in the Toolkit GUI.
+
+#. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host. 
+#. Click on the **Configuration** button in the right-upper corner of the main page and login as the web administrator user.
+#. On the page that loads go to **Tests** tab and click on **Plot-Schedule Graph** under **Resources** menu. The page that loads can be used to visualize the schedule in your Toolkit host.
+
+    .. image:: images/pscheduler_client_schedule-plot-toolkit-menu.png
+#. You will be prompted to select from drop-down lists a time period in the past where you wish the graph to start, and a time period in the future where the graph is to stop. These correspond to ``delta`` or ``start`` and ``end`` options of the ``pscheduler plot-schedule`` command. You can select only one of the periods or both.
+#. Click the **Process Graph** button to generate and display the schedule as an image file. 
+
+    .. image:: images/pscheduler_client_schedule-plot-toolkit-graph.png
