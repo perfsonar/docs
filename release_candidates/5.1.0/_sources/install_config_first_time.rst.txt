@@ -53,7 +53,7 @@ Updating Your Administrative Information
 Administrative information needs to be populated first. You will be prompted for basic location and contact information. This information is needed so other perfSONAR users can more accurately find your node. To populate the information do the following:
 
 #. Open *http://<hostname>* in a web browser where *<hostname>* is the name or address of your host. 
-#. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created in the previous step
+#. Click on the **Configuration** button in the right-upper corner and login as the web administrator user created in the previous step
     
     .. image:: images/install_config_first_time-web-admin-info1.png
 #. On the page that loads, enter the requested information in the provided fields. In order to update and save **Administrative Information** you will be required to agree to the perfSONAR `Privacy Policy <https://www.perfsonar.net/about/privacy-policy/>`_. Click **Save** when you are done.
@@ -61,9 +61,9 @@ Administrative information needs to be populated first. You will be prompted for
     .. image:: images/install_config_first_time-web-admin-info2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
 
-After completing this step, you should be able to access the `GlobalServices`_ directory page and see your host listed within 24 hours of making the change.
+After completing this step, you should be able to access the `Lookup Service Dashboard`_ directory page and see your host listed within 24 hours of making the change.
 
-.. _GlobalServices: http://stats.es.net/ServicesDirectory/
+.. _Lookup Service Dashboard: http://stats.perfsonar.net/
 
 Managing Toolkit Security
 =========================
@@ -93,6 +93,3 @@ You should now have a fully configured host regularly collecting data. A few thi
 
 * Join the `user <https://lists.internet2.edu/sympa/subscribe/perfsonar-user>`_ or `announce <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_ mailing lists.  
 * Your regular tests record data that can be presented on graphs. To view the results on the toolkit provided graphs see the section :doc:`using_graphs`
-* The perfSONAR Toolkit provides a number of on-demand testing tools you may be interested in exploring. More information can be found on the following pages:
-    * :doc:`using_ext_tools`
-
