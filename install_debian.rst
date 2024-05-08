@@ -65,9 +65,8 @@ Step 1: Configure APT
 ---------------------
 All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. **You will need to follow the steps below as privileged user**::
 
-    cd /etc/apt/sources.list.d/
-    curl -o perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
-    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-staging.gpg.asc http://downloads.perfsonar.net/debian/perfsonar-staging.gpg.key
+    curl -o /etc/apt/sources.list.d/perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
+    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-release.gpg.asc http://downloads.perfsonar.net/debian/perfsonar-release.gpg.key
    
 * **Ubuntu only**. Additionnaly, if you're running a stripped down Ubuntu installation, you might need to enable the universe repository.  This is done with the following command::
 
