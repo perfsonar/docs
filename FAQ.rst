@@ -25,7 +25,7 @@ Q: The *Services* screen shows many services in the non-running state when first
 
 **A:** Services should start right away. It may be an indication of an installation problem. See :doc:`manage_logs` for information on where to look for more information.
 
-Q: I do not see my service in the `directory of services <http://stats.es.net/ServicesDirectory/>`_, where is it?
+Q: I do not see my service in the `directory of services <https://stats.perfsonar.net>`_, where is it?
 ======================================================================================================================================================
 
 **A:** Much like DNS, the information that will populate the Lookup Service will take time to propagate. Please allow some time (e.g. a few hours) before your service will be fully visible. If it stil does not appear, you may want to look in :ref:`lsregistrationdaemon.log <config_files-lsreg-logs-primary>` for errors.
