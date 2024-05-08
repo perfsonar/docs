@@ -67,7 +67,7 @@ All you need to do is to configure the perfSONAR Debian repository source, along
 
     cd /etc/apt/sources.list.d/
     curl -o perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
-    curl http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
+    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-staging.gpg.asc http://downloads.perfsonar.net/debian/perfsonar-staging.gpg.key
    
 * **Ubuntu only**. Additionnaly, if you're running a stripped down Ubuntu installation, you might need to enable the universe repository.  This is done with the following command::
 

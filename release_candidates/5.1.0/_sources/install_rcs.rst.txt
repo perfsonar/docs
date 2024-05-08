@@ -73,7 +73,7 @@ You may install this source list as follows::
     
     cd /etc/apt/sources.list.d/
     wget http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
-    wget -qO - http://downloads.perfsonar.net/debian/perfsonar-snapshot.gpg.key | apt-key add -
+    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-staging.gpg.asc http://downloads.perfsonar.net/debian/perfsonar-staging.gpg.key
 
 These Debian packages should work on Debian 10, Ubuntu 18 and 20.  The perfsonar-archive bundle should also work on Debian 11 and Ubuntu 22.
 
