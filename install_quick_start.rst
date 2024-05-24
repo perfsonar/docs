@@ -10,7 +10,7 @@ These instructions are for the full Toolkit installation on any supported operat
 
 #. Run the following command::
 
-        curl -s https://raw.githubusercontent.com/perfsonar/project/installation-script/install-perfsonar | sh -s - toolkit
+        curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar| sh -s - toolkit
 
 #. Exit sudo and become sudo again to trigger login prompt::
 
