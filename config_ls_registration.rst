@@ -1095,8 +1095,8 @@ webui_url Directive
 :Syntax: ``webui_url URL``
 :Contexts: :ref:`service <config_ls_registration-service>` where :ref:`type <config_ls_registration-service-type>` is *dashboard*
 :Occurrences:  Zero or One
-:Default: The manually set address and port with path */maddash-webui*
-:Default (Autodiscover): The auto-detected address and port with path */maddash-webui*
+:Default: The manually set address and port with path */grafana*
+:Default (Autodiscover): The auto-detected address and port with path */grafana*
 :Compatibility: 3.4 and later
 
 .. _config_ls_registration-test:

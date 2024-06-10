@@ -2,20 +2,15 @@
 Toolkit Installation Quick Start
 *********************************
 
-These instructions are for the full Toolkit installation on Alma 9 or Rocky 9. For other perfSONAR installation options, see :doc:`install_options`.
-
-#. Install Alma or Rocky 9 using your preferred method from https://almalinux.org/ or https://rockylinux.org/
+These instructions are for the full Toolkit installation on any supported operating system. For other perfSONAR installation options, see :doc:`install_options`.
 
 #. Login to the host and become sudo::
 
         sudo -s
 
-#. Run the following commands::
+#. Run the following command::
 
-        dnf config-manager --set-enabled crb
-        dnf install epel-release http://software.internet2.edu/rpms/el9/x86_64/latest/packages/perfsonar-repo-0.11-1.noarch.rpm
-        dnf clean all
-        dnf install perfsonar-toolkit
+        curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar| sh -s - toolkit
 
 #. Exit sudo and become sudo again to trigger login prompt::
 
@@ -25,14 +20,14 @@ These instructions are for the full Toolkit installation on Alma 9 or Rocky 9. F
 #. You will be prompted to create a user and password that can be used to administer the host through the web interface. Follow the prompts to complete this step.
     .. image:: images/install_quick_start-first-login-prompt.png
 #. Open **http://<hostname>** in a web browser where **<hostname>** is the name or address of your host
-#. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created in the previous step
+#. Click on the **Configuration** button in the right-upper corner and login as the web administrator user created in the previous step
     
     .. image:: images/install_quick_start-web-admin-info1.png
 #. On the page that loads, enter the requested information in the provided fields. In order to save **Administrative Information** you will be required to agree to the perfSONAR `Privacy Policy <https://www.perfsonar.net/about/privacy-policy/>`_. Tick the Privacy Policy checkbox to accept it. Click **Save** when you are done. 
 
     .. image:: images/install_quick_start-web-admin-info2.png
     .. seealso:: For more information on updating administrative information see :doc:`manage_admin_info`
-#. You are now ready to add some regular tests. Click on **Configure tests** in main page.
+#. You are now ready to add some regular tests. Click on the **Tests** tab in the Configuration section.
 
     .. image:: images/install_quick_start-main-page.png
 #. On the page that loads click on the **+Test** button too choose and add the test type you would like.
@@ -52,7 +47,7 @@ These instructions are for the full Toolkit installation on Alma 9 or Rocky 9. F
     .. image:: images/install_quick_start-add-test-members-host.png
 #. Click **OK** to save test definition and close test configuration window. Then click the **Save** button at the bottom of the screen to apply your changes.
     .. seealso:: For more information on adding regular tests see :doc:`manage_regular_tests`
-#. After some time you may view the results of your tests in section **Test Results** in the main page.
+#. After some time you may view the results of your tests in section **Test Results Summary** in the main page.
 
     .. image:: images/install_quick_start-test-results.png
 

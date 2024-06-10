@@ -39,18 +39,6 @@ Most perfSONAR related services keep log files under the directory **/var/log/pe
 
 .. note:: The table above is not an exhaustive list of every log file on the system. It's intended to point at some *important* log files that are commonly used to debug issues with perfSONAR tools. Depending on the exact issue you may need to view other log files on the system to diagnose a problem. 
 
-Accessing Log Files Through the Web Interface
-=============================================
-Users with administrative rights may look at log files under **/var/log/perfsonar/** through the web interface. This obviously does not include all logs on the system, but does allow easy access for some of the major perfSONAR logs. To access this interface perform the following steps:
-    #. From your toolkit main web interface, look at the right side of **Services** section, under **SERVICE LOGS**. This place provides links to web interface access to selected toolkit logs.
-
-        .. image:: images/manage_logs-main.png
-    #. Login using the web administrator username and password.
-        .. seealso:: See :doc:`manage_users` for more details on creating a web administrator account.
-    #. Selected log files should be listed on the page that loads.
-
-        .. image:: images/manage_logs-list.png
-
 Determining Who Is Testing to Your Host
 =======================================
 This could likely be derived from the a combination pScheduler and OWAMP logs, but the best place to collect is information is likely not from the logs at all. See :doc:`pscheduler_client_schedule` for information on viewing tests initiated both by your host and others. 

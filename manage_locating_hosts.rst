@@ -6,47 +6,7 @@ Locating Remote perfSONAR testpoints
 
 The perfSONAR project maintains a graphical interface to the services directory of all perfSONAR nodes.  It can be found at this link:
 
-- http://stats.es.net/ServicesDirectory/
- 
-Interacting with this service can be done by scanning the map to find an instance where you may know a location, or by trying to search on specific terms.  
-
-As an example, a search for "es.net" will return hosts that have that domain:
-
-.. image:: images/directory-search.png
-
-Clicking on a host will bring up specific information about the software and hardware:
-
-.. image:: images/directory-host.png
-
-Searching the map after narrowing the results will place specific red beacons for each host.
-Zooming into a region that has a larger red beacon will show where individual nodes are located:
-
-.. image:: images/directory-map.png
-
-Note that map functionality relies on accurate latitude and longitude information, that is entered when the machine is configured.  Machines that have inaccurate information will not be placed correctly. 
-
-
-perfSONAR Lookup Service
-------------------------
-
-You can also query perfSONAR's *Simple Lookup Service* (sLS) directly. 
-
-There is a Python client available for the sLS that offers basic query functionality.  
-The sLS client comes with two wrapper functions:
-
-- find_ps_ma - a command line script that returns a list of MAs that have test results for given host.
-- sls_dig -  a script that is similar to "dig" tool. It retrieves information about a host registered in the sLS. 
-
-These can be installed via easy_install::
-
- easy_install sls-client
-
-Or via: https://pypi.python.org/simple/sls-client/
-
-For example, you can run::
-
- sls_dig hostname
- find_ps_ma -n hostname
+- https://stats.perfsonar.net
 
 Asking Sites to Deploy perfSONAR
 ---------------------------------

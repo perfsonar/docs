@@ -58,3 +58,14 @@ while the system is paused will fail with a ``missed`` status.
 
 The ``resume`` command will start runing tasks with the next one on
 the schedule.
+
+Contrary to regular pscheduler commands usage, both need to be run with special permissions, under ``root`` in RPM based distributions::
+
+        sudo pscheduler pause
+        sudo pscheduler resume
+
+and under ``pscheduler`` in DEB based ones::
+
+        sudo -u pscheduler pscheduler pause
+        sudo -u pscheduler pscheduler resume
+

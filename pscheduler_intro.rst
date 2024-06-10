@@ -103,18 +103,6 @@ If you want tp be able to schedule tasks on your host you will need to run a pSc
 
     * :doc:`pscheduler_server_running`
     * :doc:`config_pscheduler_limits`
-    
-
-BWCTL Backward Compatibility
-============================
-pScheduler was introduced in perfSONAR version 4.0 and replaced a component called BWCTL. pScheduler is a completely new codebase and protocol. It does NOT speak the BWCTL protocol natively but it does provide a backward compatibility strategy with BWCTL. This strategy does have limitations though and works as follows: 
-
-    * **For tests from a host running pScheduler to a host with only BWCTL** - For *throughput*, *rtt* and *trace* tests, pScheduler will automatically detect the lack of pScheduler on the remote-end and the presence of BWCTL. It will then choose a pScheduler :term:`tool` that  executes the *bwctl*, *bwping* or *bwctraceroute* command instead of the underlying tool directly. For *throughput* tests, this has the side effect of requiring more time on the pScheduler schedule since BWCTL may not run the test immediately. *If the BWCTL test does not start within 60 seconds of the start time assigned by pScheduler, the test will fail*.
-    * **For tests from a host running BWCTL to a host with only pScheduler** - perfSONAR 4.0 still runs the BWCTL server to support this use case. The pScheduler server knows nothing about the BWCTL server's schedule and vice versa, *so it is possible tests could collide*. Depending on how many remote sites initiates tests to you via BWCTL, the risk of this collision may be relatively low.  
-    
-Starting in 4.1, the BWCTL backward compatibility tools are not included in the default installation. If you would like to install them (along with BWCTL) you can install the `perfsonar-bwctl-compat` package using your operating system's package manager.
-
-If you also frequently use BWCTL at the command-line, we suggest you stop and start using the pScheduler command line. For a guide on how to convert your BWCTL commands to pScheduler see :doc:`pscheduler_ref_bwctl`.
 
 More Information
 ================

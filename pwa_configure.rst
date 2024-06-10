@@ -7,7 +7,7 @@ This guide assumes you have already pulled down the sample PWA config, either fr
 
 Most of the configuration files for PWA can be found in the ``/etc/perfsonar/psconfig-web`` directory. At a minimum, you need to configure your hostname, configure the datasources for your instance, configure the authentication module, and create a user before you can start using PWA.
 
-**Interaction with other web applications:** If you want to run PWA via Docker, on a node that is already running other web applications, such as MadDash or the perfSONAR Toolkit web interface, you will need to do a couple things differently. See `Running alongside other web applications <pwa_running_alongside>`_
+**Interaction with other web applications:** If you want to run PWA via Docker, on a node that is already running other web applications, such as the perfSONAR Toolkit web interface, you will need to do a couple things differently. See `Running alongside other web applications <pwa_running_alongside>`_
 
 If you are running an RPM-based install, you likely won't have to do anything differently.
 

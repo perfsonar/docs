@@ -2,10 +2,10 @@
 Running PWA alongside other web applications
 ============================================
 
-Running alongside a Toolkit or Maddash instance:
+Running alongside a Toolkit or Grafana instance:
 ------------------------------------------------
 
-Because of port conflicts, you will have to run PWA on a different port from the perfSONAR Toolkit or Maddash or any other web application.
+Because of port conflicts, you will have to run PWA on a different port from the perfSONAR Toolkit or Grafana or any other web application.
 
 For instance, you might run it on port 8000 rather than port 80 for http, and port 8443 rather than 443. In this case, you need to update the ports configured in ``/etc/pwa/nginx/conf.d/pwa.conf``
 

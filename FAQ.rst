@@ -25,7 +25,7 @@ Q: The *Services* screen shows many services in the non-running state when first
 
 **A:** Services should start right away. It may be an indication of an installation problem. See :doc:`manage_logs` for information on where to look for more information.
 
-Q: I do not see my service in the `directory of services <http://stats.es.net/ServicesDirectory/>`_, where is it?
+Q: I do not see my service in the `directory of services <https://stats.perfsonar.net>`_, where is it?
 ======================================================================================================================================================
 
 **A:** Much like DNS, the information that will populate the Lookup Service will take time to propagate. Please allow some time (e.g. a few hours) before your service will be fully visible. If it stil does not appear, you may want to look in :ref:`lsregistrationdaemon.log <config_files-lsreg-logs-primary>` for errors.
@@ -165,13 +165,6 @@ The perfSONAR toolkit follows this recommended host tuning: https://fasterdata.e
 pScheduler's throughput tests invoke "memory to memory" test tools. 
 perfSONAR typically runs short single streamed TCP tests.
 The user of a network may not have a machine that is as tuned as a perfSONAR node, could be using an application that is incorrect for the job of data movement, and may have a bottleneck due to storage performance. Consider all of these factors when working with them to identify performance issues. It is often the case that the 'network' may be working fine, but the host and software infrastructure need additional attention.
-
-Q: When I visit a MaDDash page my dashboards don't load and I see an error "Connections could not be acquired from the underlying database!". How do I fix this?
-========================================================================================================================================================================================
-**A:** When you see this behavior it means there is some type of corruption in the embedded database MaDDash uses to track the status of alerts. The most common cause is that your disk is full. The database itself is pretty small, so mostly likely something else on the system is using the space. Once you free-up space, you can restart MaDDash with *systemctl restart maddash-server* and the error may be corrected. If you still see this error the database may have gotten corrupted when the disk was filled. You can clear out the database (this is just the last 7 days of alert history and not your measurements) by running the following::
-
-   rm -rf /var/lib/maddash/* 
-   systemctl restart maddash-server
 
 
 Host and Network Administration Questions
