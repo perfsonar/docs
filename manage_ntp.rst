@@ -23,7 +23,7 @@ More details on NTP can be found at :doc:`ntp_overview`.
 Accessing the NTP Interface
 ===========================
 #. Open **http://<hostname>** in your browser where **<hostname>** is the name of your toolkit host.
-#. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created during installation.
+#. Click on the **Configuration** button in the right-upper corner and login as the web administrator user created in the previous step
 
     .. image:: images/manage_ntp-configure-icon.png
 
