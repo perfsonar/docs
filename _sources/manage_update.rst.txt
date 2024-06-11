@@ -81,7 +81,7 @@ Managing Automatic Updates from the Toolkit Web Interface
 If you are running the perfSONAR Toolkit, you may enable/disable automatic updates for **all packages** (not just perfSONAR) on the system from the web interface as follows:
 
 #. Open your toolkit web interface in a browser.
-#. Click on **Edit** (A) in the host information section of the main page or **Configuration** (B) button in the right-upper corner and login as the web administrator user created during installation.
+#. Click on the **Configuration** button in the right-upper corner and login as the web administrator user created during installation.
 
     .. image:: images/manage_update-configure-icon.png
 

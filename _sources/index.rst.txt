@@ -35,11 +35,11 @@ Installation
    install_quick_start
    install_config_first_time
    install_el
-   install_centos
    install_debian
    install_docker
    install_ansible
    manage_update
+   cookbook_central_archive
 
 .. _index-toolkit:
 
@@ -61,7 +61,6 @@ perfSONAR Toolkit
    manage_limits
    manage_daemons
    using_graphs
-   using_ext_tools
    grafana_cookbook
 
 .. _index-pscheduler:
@@ -80,7 +79,6 @@ Running Measurements with pScheduler
    pscheduler_ref_tests_tools
    pscheduler_ref_archivers
    pscheduler_ref_contexts
-   pscheduler_ref_bwctl
    pscheduler_disk_to_disk
    
 Managing Multiple Hosts with pSConfig
@@ -93,7 +91,7 @@ Managing Multiple Hosts with pSConfig
    psconfig_templates_intro
    psconfig_publish
    psconfig_pscheduler_agent
-   psconfig_maddash_agent
+   psconfig_grafana_agent
    pwa
    psconfig_templates_vars
    psconfig_templates_advanced
@@ -107,20 +105,6 @@ Archiving Measurements with OpenSearch
    
    multi_ma_install
    legacy_archive_esmond
-   
-Displaying Measurements with MaDDash
--------------------------------------
-.. toctree::
-   :maxdepth: 1
-  
-   maddash_intro
-   MaDDash Quick Install Guide <https://docs.google.com/document/d/1k7FT66MKPy3JjpD5k0OFAFlTpSdFmZ6huhTUDQ2rGGY/edit?usp=sharing>
-   maddash_install
-   maddash_config_server
-   maddash_running
-   maddash_config_webui
-   maddash_admin_ui
-   maddash_api_intro
 
 .. _index-config_ref:
 

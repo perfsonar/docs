@@ -2,13 +2,14 @@
 Bundle Installation on Debian
 ***********************************
 
-perfSONAR combines various sets of measurement tools and services. For perfSONAR 5.0 we provide the whole perfSONAR toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
+perfSONAR combines various sets of measurement tools and services. We provide the whole perfSONAR Toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
-* Debian 10 Buster
-* Ubuntu 18 Bionic Beaver
+* Debian 11 Bullseye
+* Debian 12 Bookworm
 * Ubuntu 20 Focal Fossa
+* Ubuntu 22 Jammy Jellyfish
 
-Debian meta packages are available to install the bundles described in :doc:`install_options`.  The ``perfsonar-archive`` package can also be installed on Debian 11 and Ubuntu 22.
+Debian meta packages are available to install the bundles described in :doc:`install_options`. 
 
 The remaining sections of this document detail the steps required for installing these bundles.
 
@@ -29,10 +30,34 @@ System Requirements
 
 .. note:: Installing a graphical/desktop environment with perfSONAR is not supported.  These environments generally come with a Network Manager that conflicts with the way that perfSONAR is tuning the network interface parameters.  We recommend doing only server grade OS installs.
 
+.. _install_debian_installation_quick:
+
+Installation (Automated Script)
+====================================
+perfSONAR provides a script that will automatically perform the first two steps in :ref:`install_debian_installation`. You can install your choice of bundle with one of the commands below.
+
+* **perfSONAR Tools**::
+
+    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - tools
+
+* **perfSONAR Test Point**::
+
+    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - testpoint
+
+* **perfSONAR Toolkit**::
+
+    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - toolkit
+
+* **perfSONAR Archive**::
+
+    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - archive
+
+If you would prefer to perform these steps manually see :ref:`install_debian_step1` and :ref:`install_debian_step2`.
+
 .. _install_debian_installation:
 
-Installation 
-============
+Installation (Manual)
+========================
 
 .. _install_debian_step1:
 
@@ -40,9 +65,8 @@ Step 1: Configure APT
 ---------------------
 All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. **You will need to follow the steps below as privileged user**::
 
-    cd /etc/apt/sources.list.d/
-    curl -o perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
-    curl http://downloads.perfsonar.net/debian/perfsonar-official.gpg.key | apt-key add -
+    curl -o /etc/apt/sources.list.d/perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
+    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-release.gpg.asc http://downloads.perfsonar.net/debian/perfsonar-release.gpg.key
    
 * **Ubuntu only**. Additionnaly, if you're running a stripped down Ubuntu installation, you might need to enable the universe repository.  This is done with the following command::
 
@@ -59,6 +83,8 @@ Step 2: Install a Bundle
 ------------------------ 
 **Choose one** of the following bundles and see :doc:`install_options` page for more information about what these bundles are.
 
+.. note:: Bundles that install Opensearch must set ``env OPENSEARCH_INITIAL_ADMIN_PASSWORD=perfSONAR123!``. This is a requirement of the Opensearch package. The password will be overwritten with a random password by the perfsonar-archive package, so use ``perfSONAR123!`` since it meets Opensearch character requirements and will ultimately be replaced with a better password by install process.
+
 * **perfSONAR Tools**::
 
     apt install perfsonar-tools
@@ -71,23 +97,21 @@ Step 2: Install a Bundle
 
 * **perfSONAR Core**::
 
-    apt install perfsonar-core
+    env OPENSEARCH_INITIAL_ADMIN_PASSWORD=perfSONAR123! apt install perfsonar-core
 
   During the installation process, you'll be asked to choose a password for the pscheduler database.
 
 * **perfSONAR Archive**::
 
-    apt install perfsonar-archive
+    env OPENSEARCH_INITIAL_ADMIN_PASSWORD=perfSONAR123! apt install perfsonar-archive
 
   During the installation process, you'll be asked to choose a password for the pscheduler database.
 
 * **perfSONAR Toolkit**::
 
-    apt install perfsonar-toolkit
+    env OPENSEARCH_INITIAL_ADMIN_PASSWORD=perfSONAR123! apt install perfsonar-toolkit
 
   During the installation process, you'll be asked to choose a password for the pscheduler database.
-
-.. note:: The ``perfsonar-archive`` bundle is also supported on Debian 11 and Ubuntu 22.
 
 Setting the default user password in PostgreSQL
 ++++++++++++++++++
