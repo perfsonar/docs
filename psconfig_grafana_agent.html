@@ -331,6 +331,69 @@
 <p>Since technically <cite>super_special_test</cite> would match both because its both a throughput test and has the name <cite>super_special_test</cite> we use priority to indicate that the name match has precedence. If we did not add that, we would get two grids displayed for super_special_test with different thresholds.</p>
 <p>Beyond changing thredholds, the default displays may be fine in most cases but you can add more entries to the displays section for different test types or have it grab different stats. Feel free to experiment with the different fields to learn more.</p>
 </section>
+<section id="organizing-grids-and-dashboards">
+<span id="psconfig-grafana-agent-org-dashboards"></span><h3>Organizing Grids and Dashboards<a class="headerlink" href="#organizing-grids-and-dashboards" title="Permalink to this heading">¶</a></h3>
+<p>Grouping grids onto the same dashboard can be controlled through your pSConfig JSON template under the <cite>tasks</cite> section. There are two values that need to be set under the task <cite>reference</cite> section:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Set the <cite>display-task-name</cite> to get a human readable title for the task</p></li>
+<li><p>Set the <cite>display-task-group</cite> to a list of dashboard names in which you want the grid included (NOTE: This must be an array even if it is just one element)</p></li>
+</ol>
+</div></blockquote>
+<p>See the snippet below that includes a grid displayed as <em>Example Throughput</em> in a dashboard named <em>Example Dashboard</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;example_throughput&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;display-set-source&quot;</span><span class="p">:</span> <span class="s2">&quot;{% jq .addresses[0]._meta.</span><span class="se">\&quot;</span><span class="s2">display-set</span><span class="se">\&quot;</span><span class="s2"> %}&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display-set-dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{% jq .addresses[1]._meta.</span><span class="se">\&quot;</span><span class="s2">display-set</span><span class="se">\&quot;</span><span class="s2"> %}&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Throughput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display-task-group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Example Dashboard&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;group&quot;</span> <span class="p">:</span> <span class="s2">&quot;example_thr_group&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;schedule&quot;</span> <span class="p">:</span> <span class="s2">&quot;schedule_0&quot;</span>
+    <span class="s2">&quot;test&quot;</span> <span class="p">:</span> <span class="s2">&quot;example_thr_test&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="graphing-multiple-interfaces-on-same-dashboard">
+<span id="psconfig-grafana-agent-multi-xfaces"></span><h3>Graphing Multiple Interfaces on Same Dashboard<a class="headerlink" href="#graphing-multiple-interfaces-on-same-dashboard" title="Permalink to this heading">¶</a></h3>
+<p>A common use case is that a single measurement host may have multiple interfaces, such as one dedicated to throughput and another dedicated to latency. The address for each interface is defined as separate <cite>address</cite> objects in your pSConfig file. By default, when the Grafana dashboards are generated these addresses will not be on the same graphs since the agent does not know they belong together. If you want this data to be on the same graph page you need to set some parameters that indicate the addresses should be grouped together. This requires two changes to your pSConfig template:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Update the <cite>address</cite> definitions with a <cite>_meta</cite> tag of <cite>display-set</cite>.</p></li>
+<li><p>Update the <cite>task</cite> definitions to include a <cite>reference</cite> section with <cite>display-set-source</cite> and <cite>display-set-dest</cite> that includes the <cite>dispay-set</cite> value from the source and destination.</p></li>
+</ol>
+</div></blockquote>
+<p>Let’s look at these steps in detail. First let’s say we have a host two interfaces: <em>example-tp.perfsonar.net</em> and <em>example-lat.perfsonar.net</em> that we want shown on the same graphs. When we define the addresses, we create a <cite>display-set</cite> called <cite>example.perfsonar.net</cite> (this can be any string as long as it is consistent between the two addresses) in our pSConfig template JSON. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="s2">&quot;example-tp.perfsonar.net&quot;</span> <span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;_meta&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;display-set&quot;</span> <span class="p">:</span> <span class="s2">&quot;example.perfsonar.net&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;address&quot;</span> <span class="p">:</span> <span class="s2">&quot;example-tp.perfsonar.net&quot;</span>
+<span class="p">},</span>
+<span class="s2">&quot;example-lat.perfsonar.net&quot;</span> <span class="p">:</span> <span class="p">{</span>
+     <span class="s2">&quot;_meta&quot;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;display-set&quot;</span> <span class="p">:</span> <span class="s2">&quot;example.perfsonar.net&quot;</span>
+     <span class="p">},</span>
+     <span class="s2">&quot;address&quot;</span> <span class="p">:</span> <span class="s2">&quot;example-lat.perfsonar.net&quot;</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>The next step is to make sure these values are passed to pScheduler when the tasks are created. This gives the agent enough information to build queries that can include results using both addresses on the graph. We do this by setting a <cite>display-set-source</cite> and <cite>display-set-dest</cite> in the <cite>reference</cite> section of the task. These use <cite>jq</cite> to dynamically set the values based on the source and destination. The task definition should look like the following and you can copy the definition of <cite>display-set-source</cite> and <cite>display-set-dest</cite> exactly to your template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="s2">&quot;example_throughput&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;display-set-source&quot;</span><span class="p">:</span> <span class="s2">&quot;{% jq .addresses[0]._meta.</span><span class="se">\&quot;</span><span class="s2">display-set</span><span class="se">\&quot;</span><span class="s2"> %}&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display-set-dest&quot;</span><span class="p">:</span> <span class="s2">&quot;{% jq .addresses[1]._meta.</span><span class="se">\&quot;</span><span class="s2">display-set</span><span class="se">\&quot;</span><span class="s2"> %}&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display-task-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Throughput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display-task-group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Example Dashboard&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;group&quot;</span> <span class="p">:</span> <span class="s2">&quot;example_thr_group&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;schedule&quot;</span> <span class="p">:</span> <span class="s2">&quot;schedule_0&quot;</span>
+    <span class="s2">&quot;test&quot;</span> <span class="p">:</span> <span class="s2">&quot;example_thr_test&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 <section id="advanced-configuration">
 <span id="psconfig-grafana-agent-advanced"></span><h3>Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Permalink to this heading">¶</a></h3>
 <p>The primary configuration file for the agent lives in <code class="docutils literal notranslate"><span class="pre">/etc/perfsonar/psconfig/grafana-agent.json</span></code>. It provides a number of options for fine-tuning your agent. The best way to edit the file is with the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">agentctl</span></code> command. You can get a full list of options supported by the agent with the following:</p>
@@ -445,6 +508,8 @@
 <li><a class="reference internal" href="#modifying-templates">Modifying Templates</a></li>
 <li><a class="reference internal" href="#configuring-displays-and-grafana">Configuring Displays and Grafana</a><ul>
 <li><a class="reference internal" href="#adjusting-thresholds-and-other-parameters">Adjusting Thresholds and Other Parameters</a></li>
+<li><a class="reference internal" href="#organizing-grids-and-dashboards">Organizing Grids and Dashboards</a></li>
+<li><a class="reference internal" href="#graphing-multiple-interfaces-on-same-dashboard">Graphing Multiple Interfaces on Same Dashboard</a></li>
 <li><a class="reference internal" href="#advanced-configuration">Advanced Configuration</a></li>
 </ul>
 </li>
