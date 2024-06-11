@@ -5,7 +5,7 @@ PWA RPM Installation
 .. role:: raw-html-m2r(raw)
    :format: html
 
-**If you are installing with Docker, SKIP THIS PAGE**
+.. note:: If you are installing with Docker, **SKIP THIS PAGE**
 
 Host Requirements
 ^^^^^^^^^^^^^^^^^
@@ -24,7 +24,7 @@ perfSONAR Repo
 
 You will need to have the main perfSONAR repo installed, if not already::
 
-    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.10-1.noarch.rpm 
+    rpm -hUv http://software.internet2.edu/rpms/el7/x86_64/latest/packages/perfSONAR-repo-0.11-1.noarch.rpm 
 
 Installing PWA from RPMs
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -66,8 +66,6 @@ Installing just the publisher:
 .. code-block:: bash
 
    yum install -y perfsonar-psconfig-web-admin-publisher
-
-Before you start the docker engine, you might want to add any VM specific configuration. For example, your VM might be using /usr/local as a primary partition for your VM. If so, you should have something like following..
 
 By default, your configuration files will be placed under:
 

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>perfSONAR Frequently Asked Questions (FAQs) &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
+    <title>perfSONAR Frequently Asked Questions (FAQs) &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="troubleshooting_overview.html" title="Troubleshooting perfSONAR"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">perfSONAR Frequently Asked Questions (FAQs)</a></li> 
       </ul>
     </div>
@@ -167,6 +167,17 @@ Don’t <em>restart</em> the journaling service (i.e., don’t do “systemctl r
 <section id="q-why-can-t-my-debian-ubuntu-host-find-ping">
 <h3>Q: Why can’t my Debian/Ubuntu host find ping?<a class="headerlink" href="#q-why-can-t-my-debian-ubuntu-host-find-ping" title="Permalink to this heading">¶</a></h3>
 <p><strong>A:</strong> Run <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">reinstall</span> <span class="pre">iputils-ping</span></code> to fix the issue. This was caused by a bug in the paris-traceroute package that installed a non-standard version of ping that required sudo. This was removed in perfSONAR 5.0.5 which left some systems without a ping command.</p>
+</section>
+<section id="q-why-aren-t-my-iptables-set-up-properly-when-i-installed-the-toolkit-in-debian-10">
+<h3>Q: Why aren’t my iptables set up properly when I installed the toolkit in Debian 10?<a class="headerlink" href="#q-why-aren-t-my-iptables-set-up-properly-when-i-installed-the-toolkit-in-debian-10" title="Permalink to this heading">¶</a></h3>
+<p><strong>A:</strong> The <code class="docutils literal notranslate"><span class="pre">perfsonar-toolkit-security</span></code> package, which configures the firewall for perfSONAR purposes, is not being set up properly under a plain Debian 10 installation. This is due to an old iptables version provided with Debian 10. Using the updated packages from Debian 10 backports solves this issue and properly configures the firewall. To use this correction, you can follow the 3 simple steps described here:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Add the following line in the /etc/apt/sources.list: <code class="docutils literal notranslate"><span class="pre">deb</span> <span class="pre">http://deb.debian.org/debian</span> <span class="pre">buster-backports</span> <span class="pre">main</span></code></p></li>
+<li><p>Then refresh apt and install the new version with: <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">update;</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">-t</span> <span class="pre">buster-backports</span> <span class="pre">iptables</span></code></p></li>
+<li><p>And finally re-install the perfsonar package to make sure everything is setup properly: <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">reinstall</span> <span class="pre">perfsonar-toolkit-security</span></code></p></li>
+</ol>
+</div></blockquote>
 </section>
 </section>
 <section id="tool-questions">
@@ -428,6 +439,7 @@ $PG_DUMP \
 <li><a class="reference internal" href="#q-where-can-i-find-more-resources-regarding-timekeeping-for-vmware-virtual-machines">Q: Where can I find more resources regarding timekeeping for VMWare Virtual Machines?</a></li>
 <li><a class="reference internal" href="#q-how-do-you-upgrade-a-perfsonar-node-from-debian-7-to-debian-9">Q: How do you upgrade a perfSONAR node from Debian 7 to Debian 9</a></li>
 <li><a class="reference internal" href="#q-why-can-t-my-debian-ubuntu-host-find-ping">Q: Why can’t my Debian/Ubuntu host find ping?</a></li>
+<li><a class="reference internal" href="#q-why-aren-t-my-iptables-set-up-properly-when-i-installed-the-toolkit-in-debian-10">Q: Why aren’t my iptables set up properly when I installed the toolkit in Debian 10?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#tool-questions">Tool Questions</a><ul>
@@ -512,7 +524,7 @@ $PG_DUMP \
         <li class="right" >
           <a href="troubleshooting_overview.html" title="Troubleshooting perfSONAR"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">perfSONAR Frequently Asked Questions (FAQs)</a></li> 
       </ul>
     </div>

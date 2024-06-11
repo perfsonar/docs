@@ -42,9 +42,7 @@ Accessing the Web Interface
 ===========================
 You may access the web interface by typing `http://<hostname>` in your web browser.
 
-.. note:: For best results it is recommended a browser other than Internet Explorer is used due to some javascript incompatibilities. All other major browsers have been shown to display the web interface without error.  
-
-You will be presented with a page like the following:
+You will be presented with a page like the following, mostly empty until the first tests are scheduled:
 
 .. image:: images/install_config_first_time-web.png
 

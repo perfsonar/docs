@@ -19,7 +19,7 @@ Run this script to create your nginx certs, if you don't already have them:
 
 Download the ``docker-compose.yml`` file from here:
 
-https://raw.githubusercontent.com/perfsonar/psconfig-web/master/deploy/docker/docker-compose.yml
+https://raw.githubusercontent.com/perfsonar/psconfig-web/master/psconfig-web-admin/perfsonar-psconfig-web-admin/deploy/docker/docker-compose.yml
 
 Bring up the application:
 

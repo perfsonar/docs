@@ -36,7 +36,7 @@ First, pull down the latest Docker image::
 
 This will download the latest built image of the perfsonar testpoint bundle. It includes a base Ubuntu 22.04 install and the perfsonar-testpoint packages. Once the image is downloaded and extracted, start up the container in the background by doing::
 
-  # docker run -d --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw -v ./compose/psconfig:/etc/perfsonar/psconfig --cgroupns host perfsonar/testpoint:systemd
+  # docker run -td --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /run/lock --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns host perfsonar/testpoint:systemd
 
 Verify that the container is running::
 
@@ -129,9 +129,17 @@ First, pull down the latest Docker image::
 
 Start the container in the background::
 
-  # docker run -d --name perfsonar-testpoint --net=host --cap-add CAP_NET_BIND_SERVICE -v ./compose/psconfig:/etc/perfsonar/psconfig perfsonar/testpoint
+  # docker run -d --name perfsonar-testpoint --net=host perfsonar/testpoint
 
 Or you can use `docker Compose <https://docs.docker.com/compose/>`_ to assist in this process.
+
+To obtain the docker-compose file, first download the *perfsonar-testpoint-docker* git repository::
+
+  # git clone https://github.com/perfsonar/perfsonar-testpoint-docker
+
+Next change your working directory to the downloaded directory::
+
+  # cd perfsonar-testpoint-docker
 
 Build the image locally::
 
@@ -179,7 +187,7 @@ Managing Upgrades
 
 To upgrade your Docker container, from the parent do the following::
 
-  # docker pull perfsonar/testpoint
+  # docker pull perfsonar/testpoint:systemd
 
 If it reports a message about "Image is up to date" then you are already running the latest version.
 
@@ -198,7 +206,7 @@ Once the container ID is known, have docker shut it down::
 
 And now start up the new one. This process is the same as the first time it was started, but now with the newer image it will start up the new version::
 
-  # docker run -d --net=host perfsonar/testpoint
+  # docker run -td --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /run/lock --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns host perfsonar/testpoint:systemd
 
 Your Docker instance of perfsonar-testpoint has now been upgraded to the latest perfSONAR code. 
 

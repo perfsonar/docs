@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using perfSONAR with Docker &#8212; perfSONAR Toolkit 5.1.0 Beta 1 documentation</title>
+    <title>Using perfSONAR with Docker &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
@@ -60,7 +60,7 @@
         <li class="right" >
           <a href="install_debian.html" title="Bundle Installation on Debian"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Using perfSONAR with Docker</a></li> 
       </ul>
     </div>
@@ -108,7 +108,7 @@
 </pre></div>
 </div>
 <p>This will download the latest built image of the perfsonar testpoint bundle. It includes a base Ubuntu 22.04 install and the perfsonar-testpoint packages. Once the image is downloaded and extracted, start up the container in the background by doing:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker run -d --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw -v ./compose/psconfig:/etc/perfsonar/psconfig --cgroupns host perfsonar/testpoint:systemd</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker run -td --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /run/lock --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns host perfsonar/testpoint:systemd</span>
 </pre></div>
 </div>
 <p>Verify that the container is running:</p>
@@ -205,10 +205,18 @@
 </pre></div>
 </div>
 <p>Start the container in the background:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker run -d --name perfsonar-testpoint --net=host --cap-add CAP_NET_BIND_SERVICE -v ./compose/psconfig:/etc/perfsonar/psconfig perfsonar/testpoint</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker run -d --name perfsonar-testpoint --net=host perfsonar/testpoint</span>
 </pre></div>
 </div>
 <p>Or you can use <a class="reference external" href="https://docs.docker.com/compose/">docker Compose</a> to assist in this process.</p>
+<p>To obtain the docker-compose file, first download the <em>perfsonar-testpoint-docker</em> git repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># git clone https://github.com/perfsonar/perfsonar-testpoint-docker</span>
+</pre></div>
+</div>
+<p>Next change your working directory to the downloaded directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd perfsonar-testpoint-docker</span>
+</pre></div>
+</div>
 <p>Build the image locally:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker compose build</span>
 </pre></div>
@@ -252,7 +260,7 @@
 <section id="managing-upgrades">
 <h2>Managing Upgrades<a class="headerlink" href="#managing-upgrades" title="Permalink to this heading">¶</a></h2>
 <p>To upgrade your Docker container, from the parent do the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker pull perfsonar/testpoint</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker pull perfsonar/testpoint:systemd</span>
 </pre></div>
 </div>
 <p>If it reports a message about “Image is up to date” then you are already running the latest version.</p>
@@ -272,7 +280,7 @@
 <p>Shutting down the container will cause it to lose all state. All scheduled tests will be forgotten and any configuration made that hasn’t been committed back to the Docker image will be lost.</p>
 </div>
 <p>And now start up the new one. This process is the same as the first time it was started, but now with the newer image it will start up the new version:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker run -d --net=host perfsonar/testpoint</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker run -td --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /run/lock --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns host perfsonar/testpoint:systemd</span>
 </pre></div>
 </div>
 <p>Your Docker instance of perfsonar-testpoint has now been upgraded to the latest perfSONAR code.</p>
@@ -340,7 +348,7 @@
         <li class="right" >
           <a href="install_debian.html" title="Bundle Installation on Debian"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 Beta 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Using perfSONAR with Docker</a></li> 
       </ul>
     </div>
