@@ -24,7 +24,7 @@ System Requirements
   * ARM64 (arm64)
   * PPC64 (ppc64el)
 
-* **Operating System:**  Any system running a Debian 10, Ubuntu 18 or 20 server OS is supported.  Other Debian flavours derived from Debian 10, Ubuntu 18 or 20 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 10, Ubuntu 20 or 22 server OS is supported.  Other Debian flavours derived from Debian 10 such as Ubuntu 18 might work too, but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
