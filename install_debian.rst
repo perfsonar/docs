@@ -2,7 +2,7 @@
 Bundle Installation on Debian
 ***********************************
 
-perfSONAR combines various sets of measurement tools and services. We provide the whole perfSONAR Toolkit as Debian packages for six different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
+perfSONAR combines various sets of measurement tools and services. We provide the whole perfSONAR Toolkit as Debian packages for four different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
 
 * Debian 11 Bullseye
 * Debian 12 Bookworm
@@ -24,7 +24,7 @@ System Requirements
   * ARM64 (arm64)
   * PPC64 (ppc64el)
 
-* **Operating System:**  Any system running a Debian 10, Ubuntu 18 or 20 server OS is supported.  Other Debian flavours derived from Debian 10, Ubuntu 18 or 20 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 11 or 12, Ubuntu 20 or 22 server OS is supported.  Other Debian flavours derived from Debian 11 or 12, Ubuntu 20 or 22 might work too but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
@@ -252,35 +252,35 @@ Configuring perfSONAR through the web interface
 ------------------------------------------------
 After installing the perfsonar-toolkit bundle, you can refer to the general perfSONAR configuration from :doc:`install_config_first_time`.
 
-Upgrading from 4.4.x
+Upgrading from 5.0.x
 ====================
-If you had installed a perfSONAR 4.4.x bundle and you now want to upgrade to perfSONAR 5.0, you'll have to follow the instructions here below.  This will only work for Debian and Ubuntu versions supported on both releases, i.e. Debian 10 and Ubuntu 18.
+If you had installed a perfSONAR 5.0.x bundle and you now want to upgrade to perfSONAR 5.1, you'll have to follow the instructions here below.  This will only work for the OS version supported on both releases, i.e. Ubuntu 20.
 
 Upgrade the perfSONAR installation
 ----------------------------------
-If you have auto-update enabled and already using the ``perfsonar-release.list`` APT source file (as was instructed when installing 4.4), you should receive the 5.0 upgrade automatically. However, because of some dependency changes and repository name change, the full upgrade need to be done manually.
+If you have auto-update enabled and already using the ``perfsonar-release.list`` APT source file (as was instructed when installing 5.0), you should receive the 5.1 upgrade automatically. However, because of some dependency changes and repository name change, the full upgrade need to be done manually.
 
 If this is the case or you don't use the auto-update feature, to upgrade your perfsonar installation, you need to run::
 
    apt update
    apt dist-upgrade
 
-The measurements and the measurement archives that you already have defined in your 4.4.x installation will be migrated to the 5.0 toolkit automatically.
+The measurements and the measurement archives that you already have defined in your 5.0.x installation will be migrated to the 5.1 toolkit automatically.
 
-.. note:: You might see ``apt`` issuing a warning about conflicting distribution with a message like ``W: Conflicting distribution: http://downloads.perfsonar.net/debian perfsonar-release InRelease (expected perfsonar-4.4 but got perfsonar-5.0)``  This is expected and can be ignored because you indeed are upgrading from 4.4 to 5.0.
+.. note:: You might see ``apt`` issuing a warning about conflicting distribution with a message like ``W: Conflicting distribution: http://downloads.perfsonar.net/debian perfsonar-release InRelease (expected perfsonar-5.0 but got perfsonar-5.1)``  This is expected and can be ignored because you indeed are upgrading from 5.0 to 5.1.
 
 Upgrade to another bundle
 -------------------------
 If you want to move from the `perfsonar-testpoint` bundle to another bundle that we provide for Debian, you can do so by following the instructions above from :ref:`install_debian_step2`.
 
-Upgrade from Ubuntu 18 to Ubuntu 20 
+Upgrade from Ubuntu 20 to Ubuntu 22
 -----------------------------------
-If you have a perfSONAR host running Ubuntu 18 and you want to upgrade it to 20, we recommend you to follow the following steps:
+If you have a perfSONAR host running Ubuntu 20 and you want to upgrade it to 22, we recommend you to follow the following steps:
 
-* Upgrade Ubuntu 18 to Ubuntu 20 (following official instructions, here are `Focal Upgrades notes <https://help.ubuntu.com/community/FocalUpgrades>`_)
+* Upgrade Ubuntu 20 to Ubuntu 22 (following official instructions, here are `Jammy Upgrades notes <https://help.ubuntu.com/community/JammyUpgrades>`_)
 * Reboot your system unless already done in previous step.
 * Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
 * Reboot your system one last time.
 
-Alternatively, do a fresh installation of perfSONAR on Ubuntu 20.
+Alternatively, do a fresh installation of perfSONAR on Ubuntu 22.
 
