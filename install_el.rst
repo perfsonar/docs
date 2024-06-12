@@ -33,7 +33,7 @@ perfSONAR provides a script that will automatically perform the first two steps 
 
     curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - archive
 
-If you would prefer to perform these steps manually see :ref:`_install_el_step1` and :ref:`_install_el_step2`.
+If you would prefer to perform these steps manually see :ref:`install_el_step1` and :ref:`install_el_step2`.
 
 .. _install_el_installation:
 
