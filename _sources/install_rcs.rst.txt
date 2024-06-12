@@ -74,7 +74,7 @@ You may install this source list as follows::
     curl -o /etc/apt/sources.list.d/perfsonar-minor-staging.list http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
     curl -s -o /etc/apt/trusted.gpg.d/perfsonar-staging.gpg.asc http://downloads.perfsonar.net/debian/perfsonar-staging.gpg.key
 
-These Debian packages should work on Debian 10, Ubuntu 18 and 20.  The perfsonar-archive bundle should also work on Debian 11 and Ubuntu 22.
+These Debian packages should work on Debian 11 and 12, Ubuntu 20 and 22.
 
 On Ubuntu you need to make you have the **universe** repository enabled, this is done with the command ``add-apt-repository universe``
 

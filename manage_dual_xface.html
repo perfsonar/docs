@@ -1,19 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Configuring a Host with Multiple Interfaces &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=f4a6cdb0" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -74,7 +73,7 @@
           <div class="body" role="main">
             
   <section id="configuring-a-host-with-multiple-interfaces">
-<h1>Configuring a Host with Multiple Interfaces<a class="headerlink" href="#configuring-a-host-with-multiple-interfaces" title="Permalink to this heading">¶</a></h1>
+<h1>Configuring a Host with Multiple Interfaces<a class="headerlink" href="#configuring-a-host-with-multiple-interfaces" title="Link to this heading">¶</a></h1>
 <p>You may run the perfSONAR Toolkit on a host with multiple interfaces. The most common reason to do this is to run throughput and latency tests on separate physical interfaces to prevent interference between the test types. Additional configuration is required to ensure this type of testing works properly. You will need to do the following:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -84,7 +83,7 @@
 </ol>
 </div></blockquote>
 <section id="ip-addressing-strategy">
-<span id="multixface-addressing"></span><h2>IP Addressing Strategy<a class="headerlink" href="#ip-addressing-strategy" title="Permalink to this heading">¶</a></h2>
+<span id="multixface-addressing"></span><h2>IP Addressing Strategy<a class="headerlink" href="#ip-addressing-strategy" title="Link to this heading">¶</a></h2>
 <p>The first decision to be made is how you are going to address the interfaces on your hosts. It is <strong>recommended</strong> that you assign each interface to a different subnet. For example, you may give each interface a /30 with the other end being the gateway. This is not strictly required but considerably simplifies the networking involved and can make debugging easier. You should consult with your local network operators when making this determination.</p>
 <p>If you do decide to put both interfaces on the same subnet, special <em>sysctl</em> settings are required to prevent ARP conflicts. These are set by default on the perfSONAR Toolkit but are documented below as reference:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">arp_ignore</span><span class="o">=</span><span class="mi">1</span>
@@ -95,9 +94,9 @@
 </div>
 </section>
 <section id="host-routing-table-configuration">
-<span id="multixface-route"></span><h2>Host Routing Table Configuration<a class="headerlink" href="#host-routing-table-configuration" title="Permalink to this heading">¶</a></h2>
+<span id="multixface-route"></span><h2>Host Routing Table Configuration<a class="headerlink" href="#host-routing-table-configuration" title="Link to this heading">¶</a></h2>
 <section id="adding-routes">
-<h3>Adding Routes<a class="headerlink" href="#adding-routes" title="Permalink to this heading">¶</a></h3>
+<h3>Adding Routes<a class="headerlink" href="#adding-routes" title="Link to this heading">¶</a></h3>
 <p>When a regular test is run (or you run a measurement at the command-line using an option to specify the source address), the operating system may or may not use the provided source IP address when deciding which interface on the local host to use for forwarding. Most default routing tables only look at the destination address when making forwarding decisions which can lead to unexpected behavior with your measurements.</p>
 <p>In order to avoid this situation, you need to run a special script to aid in route table setup that will look at the source address of your outgoing measurement traffic. The script can be found at <em>/usr/lib/perfsonar/scripts/mod_interface_route</em>. For <strong>each interface on the host</strong> you will run the script and provide it with the interface name, IPv4 gateway address (if you plan to use IPv4) and the IPv6 gateway address (if you plan to use IPv6). Assume we have a host with two interfaces each having the following characteristics:</p>
 <blockquote>
@@ -179,7 +178,7 @@ fi
 <p>After you have created those scripts, make sure that they are executable by running <strong>chmod ugo+x /sbin/ifup-local /sbin/ifdown-local</strong>.</p>
 </section>
 <section id="viewing-routes">
-<h3>Viewing Routes<a class="headerlink" href="#viewing-routes" title="Permalink to this heading">¶</a></h3>
+<h3>Viewing Routes<a class="headerlink" href="#viewing-routes" title="Link to this heading">¶</a></h3>
 <p>You may see the IPv4 changes by running the command <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">rule</span> <span class="pre">list</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ip rule list</span>
 <span class="mi">0</span><span class="p">:</span>  <span class="kn">from</span> <span class="nn">all</span> <span class="n">lookup</span> <span class="n">local</span>
@@ -199,7 +198,7 @@ fi
 </div>
 </section>
 <section id="deleting-routes">
-<h3>Deleting Routes<a class="headerlink" href="#deleting-routes" title="Permalink to this heading">¶</a></h3>
+<h3>Deleting Routes<a class="headerlink" href="#deleting-routes" title="Link to this heading">¶</a></h3>
 <p>If you would like to remove previously added rules and routes, simply give the <em>mod_interface_route</em> script the <em>delete</em> command and the device for which you want the rules removed. For example to remove both the rules from our previous example, run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">mod_interface_route</span> <span class="o">--</span><span class="n">command</span> <span class="n">delete</span> <span class="o">--</span><span class="n">device</span> <span class="n">eth0</span>
 <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">mod_interface_route</span> <span class="o">--</span><span class="n">command</span> <span class="n">delete</span> <span class="o">--</span><span class="n">device</span> <span class="n">eth1</span>
@@ -307,8 +306,8 @@ fi
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

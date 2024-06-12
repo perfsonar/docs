@@ -1,19 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>esmond Perl Client Libraries &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=f4a6cdb0" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -75,10 +74,10 @@
           <div class="body" role="main">
             
   <section id="esmond-perl-client-libraries">
-<h1>esmond Perl Client Libraries<a class="headerlink" href="#esmond-perl-client-libraries" title="Permalink to this heading">¶</a></h1>
+<h1>esmond Perl Client Libraries<a class="headerlink" href="#esmond-perl-client-libraries" title="Link to this heading">¶</a></h1>
 <p>This document describes the basics of reading and writing data from the perfSONAR measurement archive using the PERL API. The measurement archive implements a REST interface where clients can retrieve descriptions of measurements being run and the results of those measurements. It currently offers support for a range of measurements related to throughput, packet delay, packet loss, packet traces and more (with additional data types being added all the time). This document gives developers information on how to interact with the API using the Perl library.</p>
 <section id="where-to-get-the-api">
-<h2>Where to get the API<a class="headerlink" href="#where-to-get-the-api" title="Permalink to this heading">¶</a></h2>
+<h2>Where to get the API<a class="headerlink" href="#where-to-get-the-api" title="Link to this heading">¶</a></h2>
 <p>The API can currently be found in the perfsonar shared <a class="reference external" href="https://github.com/perfsonar/perl-shared">perl source tree</a>. You will find the client libraries under <cite>lib/perfSONAR_PS/Client/Esmond</cite>. You may add these as a git submodule to your own project. Assuming you keep your Perl files under <cite>lib</cite> you can include them as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">submodule</span> <span class="n">add</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">perl</span><span class="o">-</span><span class="n">shared</span> <span class="n">shared</span>
 <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">lib</span><span class="o">/</span><span class="n">perfSONAR_PS</span><span class="o">/</span><span class="n">Client</span><span class="o">/</span><span class="n">Esmond</span>
@@ -88,9 +87,9 @@
 </div>
 </section>
 <section id="querying-data">
-<h2>Querying Data<a class="headerlink" href="#querying-data" title="Permalink to this heading">¶</a></h2>
+<h2>Querying Data<a class="headerlink" href="#querying-data" title="Link to this heading">¶</a></h2>
 <section id="quickstart">
-<h3>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">¶</a></h3>
+<h3>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Define filters
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 $filters-&gt;source(&quot;host1.example.net&quot;);
@@ -122,7 +121,7 @@ foreach my $m(@{$md}){
 </div>
 </section>
 <section id="defining-filters">
-<span id="psclient-perl-filters"></span><h3>Defining filters<a class="headerlink" href="#defining-filters" title="Permalink to this heading">¶</a></h3>
+<span id="psclient-perl-filters"></span><h3>Defining filters<a class="headerlink" href="#defining-filters" title="Link to this heading">¶</a></h3>
 <p>The first step to querying the measurement archive is to define a set of filters. If you want a listing of all the measurements run by a measurement archive using default HTTP connection parameters then you can skip this step. The library allows you to filter measurements using the <strong>perfSONAR_PS::Client::Esmond::ApiFilters</strong> module. The class has a a set of well-known filters available as specific functions and also allows the setting of custom filters with direct access to the <em>metadata_filters</em> hash. It also allows you to define various settings related to the HTTP connection. In general, you can call the constructor without any options as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 </pre></div>
@@ -230,7 +229,7 @@ foreach my $m(@{$md}){
 </div>
 </section>
 <section id="connecting-to-the-api">
-<span id="psclient-perl-connect"></span><h3>Connecting to the API<a class="headerlink" href="#connecting-to-the-api" title="Permalink to this heading">¶</a></h3>
+<span id="psclient-perl-connect"></span><h3>Connecting to the API<a class="headerlink" href="#connecting-to-the-api" title="Link to this heading">¶</a></h3>
 <p>Once the filters are defined, you create an instance of <strong>perfSONAR_PS::Client::Esmond::ApiConnect</strong> as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
 my $client = new perfSONAR_PS::Client::Esmond::ApiConnect(
@@ -252,7 +251,7 @@ die $client-&gt;error if($client-&gt;error); #check for errors
 </div>
 </section>
 <section id="working-with-measurement-metadata">
-<span id="psclient-perl-metadata"></span><h3>Working with Measurement Metadata<a class="headerlink" href="#working-with-measurement-metadata" title="Permalink to this heading">¶</a></h3>
+<span id="psclient-perl-metadata"></span><h3>Working with Measurement Metadata<a class="headerlink" href="#working-with-measurement-metadata" title="Link to this heading">¶</a></h3>
 <p>As discussed in <a class="reference internal" href="#psclient-perl-connect"><span class="std std-ref">Connecting to the API</span></a> you can retrieve an ArrayRef to a list of <strong>perfSONAR_PS::Client::Esmond::Metadata</strong> objects. These objects describe tests and have the following property methods to retrieve common metadata parameters:</p>
 <table class="docutils align-default">
 <tbody>
@@ -325,7 +324,7 @@ my $throughput_et = $m-&gt;get_event_type(&quot;throughput&quot;);
 </div>
 </section>
 <section id="querying-base-measurement-results">
-<span id="psclient-perl-query-base"></span><h3>Querying Base Measurement Results<a class="headerlink" href="#querying-base-measurement-results" title="Permalink to this heading">¶</a></h3>
+<span id="psclient-perl-query-base"></span><h3>Querying Base Measurement Results<a class="headerlink" href="#querying-base-measurement-results" title="Link to this heading">¶</a></h3>
 <p>The <strong>perfSONAR_PS::Client::Esmond::EventType</strong> is the gateway object to pulling down actual results. It provides the following methods:</p>
 <table class="docutils align-default">
 <tbody>
@@ -386,7 +385,7 @@ foreach my $d(@{$data}){
 </div>
 </section>
 <section id="querying-summary-measurement-results">
-<h3>Querying Summary Measurement Results<a class="headerlink" href="#querying-summary-measurement-results" title="Permalink to this heading">¶</a></h3>
+<h3>Querying Summary Measurement Results<a class="headerlink" href="#querying-summary-measurement-results" title="Link to this heading">¶</a></h3>
 <p>The <strong>perfSONAR_PS::Client::Esmond::EventType</strong> contains two more methods for geting summary data:</p>
 <table class="docutils align-default">
 <tbody>
@@ -434,7 +433,7 @@ foreach my $agg_d(@{$agg_data}){
 </div>
 </section>
 <section id="advanced-time-filter-usage">
-<h3>Advanced Time Filter Usage<a class="headerlink" href="#advanced-time-filter-usage" title="Permalink to this heading">¶</a></h3>
+<h3>Advanced Time Filter Usage<a class="headerlink" href="#advanced-time-filter-usage" title="Link to this heading">¶</a></h3>
 <p>It’s important to note an important behavior of the time filters when working with a metadata request versus a data request. When you create a <strong>perfSONAR_PS::Client::Esmond::ApiFilters</strong> object, pass it to a <strong>perfSONAR_PS::Client::Esmond::ApiConnect</strong>, and the call to get_metadata() it will match the <em>last updated</em> time of the metadata. When making a data request, it will only return results <em>recorded in that time range</em>. This is a subtle but important difference. For example, let’s say you have a metadata object that was last updated 1 minute ago but you ultimately want data from between 2 hours and 1 hour ago. You might be tempted to try something like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 my $now = time;
@@ -479,7 +478,7 @@ foreach my $m(@{$md}){
 </div>
 </section>
 <section id="pagination-of-metadata-search-results">
-<span id="psclient-perl-pagination"></span><h3>Pagination of Metadata Search Results<a class="headerlink" href="#pagination-of-metadata-search-results" title="Permalink to this heading">¶</a></h3>
+<span id="psclient-perl-pagination"></span><h3>Pagination of Metadata Search Results<a class="headerlink" href="#pagination-of-metadata-search-results" title="Link to this heading">¶</a></h3>
 <p>For measurement archives hosting a large number of tests, it may be desirable to limit the number of metadata search results returned. This can be done using the <em>limit</em> and <em>offset</em> filters as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 $filters-&gt;limit(10); #return up to 10 results
@@ -564,7 +563,7 @@ while(defined $next){
 </div>
 </section>
 <section id="querying-data-by-uri">
-<h3>Querying Data by URI<a class="headerlink" href="#querying-data-by-uri" title="Permalink to this heading">¶</a></h3>
+<h3>Querying Data by URI<a class="headerlink" href="#querying-data-by-uri" title="Link to this heading">¶</a></h3>
 <p>In some cases you will already have the URI for the summary or base data that you want to request. For example, if you have a web page that first presents the list of tests available as returned by a metadata search, then upon user interaction you return data from a selected result of that search. There is no point in querying the metadata a second time since you should have all the URIs you need from the first request. You can request the data directly by URI with the <strong>get_data(*uri*)</strong> call from <strong>perfSONAR_PS::Client::Esmond::ApiConnect</strong>. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
 use CGI;
@@ -585,9 +584,9 @@ foreach my $d(@{$data}){
 </div>
 </section>
 <section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h3>
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
 <section id="querying-throughput">
-<h4>Querying Throughput<a class="headerlink" href="#querying-throughput" title="Permalink to this heading">¶</a></h4>
+<h4>Querying Throughput<a class="headerlink" href="#querying-throughput" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Define filters
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 $filters-&gt;source(&quot;host1.example.net&quot;);
@@ -619,7 +618,7 @@ foreach my $m(@{$md}){
 </div>
 </section>
 <section id="querying-delay-one-way-delay">
-<h4>Querying Delay/One-way Delay<a class="headerlink" href="#querying-delay-one-way-delay" title="Permalink to this heading">¶</a></h4>
+<h4>Querying Delay/One-way Delay<a class="headerlink" href="#querying-delay-one-way-delay" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># define filters
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 $filters-&gt;source(&quot;host1.example.net&quot;);
@@ -671,7 +670,7 @@ foreach my $m(@{$md}){
 </div>
 </section>
 <section id="querying-packet-loss">
-<h4>Querying Packet Loss<a class="headerlink" href="#querying-packet-loss" title="Permalink to this heading">¶</a></h4>
+<h4>Querying Packet Loss<a class="headerlink" href="#querying-packet-loss" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define filters
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 $filters-&gt;source(&quot;host1.example.net&quot;);
@@ -709,7 +708,7 @@ foreach my $m(@{$md}){
 </div>
 </section>
 <section id="querying-packet-traces">
-<h4>Querying Packet Traces<a class="headerlink" href="#querying-packet-traces" title="Permalink to this heading">¶</a></h4>
+<h4>Querying Packet Traces<a class="headerlink" href="#querying-packet-traces" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define filters
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 $filters-&gt;source(&quot;host1.example.net&quot;);
@@ -746,7 +745,7 @@ foreach my $m(@{$md}){
 </div>
 </section>
 <section id="querying-subintervals">
-<h4>Querying Subintervals<a class="headerlink" href="#querying-subintervals" title="Permalink to this heading">¶</a></h4>
+<h4>Querying Subintervals<a class="headerlink" href="#querying-subintervals" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Define filters
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters();
 $filters-&gt;source(&quot;host1.example.net&quot;);
@@ -783,9 +782,9 @@ foreach my $m(@{$md}){
 </section>
 </section>
 <section id="publishing-data">
-<h2>Publishing Data<a class="headerlink" href="#publishing-data" title="Permalink to this heading">¶</a></h2>
+<h2>Publishing Data<a class="headerlink" href="#publishing-data" title="Link to this heading">¶</a></h2>
 <section id="id1">
-<h3>Quickstart<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<h3>Quickstart<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define filters with authentication information
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters(
     &#39;auth_username&#39; =&gt; &#39;perfsonar&#39;,
@@ -832,7 +831,7 @@ die $bulk_post-&gt;error() if $bulk_post-&gt;error();
 </div>
 </section>
 <section id="authentication-and-authorization">
-<h3>Authentication and Authorization<a class="headerlink" href="#authentication-and-authorization" title="Permalink to this heading">¶</a></h3>
+<h3>Authentication and Authorization<a class="headerlink" href="#authentication-and-authorization" title="Link to this heading">¶</a></h3>
 <p>Writing data generally requires authentication and authorization. You can define authentication-related parameters using the options defined in the first table under <a class="reference internal" href="#psclient-perl-filters"><span class="std std-ref">Defining filters</span></a>. Specifically the option <strong>auth_username</strong> and <strong>auth_apikey</strong> are important for setting your user credentials. It is also highly recommended you send the message over HTTPS so the credentials are not sent plain-text (especially when sending to an external host). You may control HTTPS settings with the options <strong>ca_certificate_file</strong>, <strong>ca_certificate_path</strong> and/or <strong>verify_hostname</strong>. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters(
     &#39;auth_username&#39; =&gt; &#39;perfsonar&#39;,
@@ -843,7 +842,7 @@ die $bulk_post-&gt;error() if $bulk_post-&gt;error();
 </div>
 </section>
 <section id="publishing-the-measurement-description">
-<span id="psclient-perl-publish-metadata"></span><h3>Publishing the Measurement Description<a class="headerlink" href="#publishing-the-measurement-description" title="Permalink to this heading">¶</a></h3>
+<span id="psclient-perl-publish-metadata"></span><h3>Publishing the Measurement Description<a class="headerlink" href="#publishing-the-measurement-description" title="Link to this heading">¶</a></h3>
 <p>Publishing a new description of a measurement’s parameters requires the instantiation of a new <em>perfSONAR_PS::Client::Esmond::Metadata</em> object. Notice this is the same object returned when querying as described in <a class="reference internal" href="#psclient-perl-metadata"><span class="std std-ref">Working with Measurement Metadata</span></a>. This also means if you want to post data to an existing test, you can use the Metadata object returned directly. Assuming you are using a completely new object though, the object provides a number of setters for common fields:</p>
 <table class="docutils align-default">
 <tbody>
@@ -907,7 +906,7 @@ $metadata-&gt;add_event_type(&#39;packet-retransmits&#39;);
 <p>This sends an HTTP POST request to the server. If the request fails for any reason, there will be an error message returned by a call to the <em>error()</em> method. If it succeeds, the Metadata object will contain the resulting URIs and metadata_key in addition to the parameters already set. Also remember that if the server determines there is a metadata object that exactly matches, it will return the existing result instead of creating a duplicate. The resulting object can also be used to post measurement results as described in the next few sections.</p>
 </section>
 <section id="publishing-a-single-measurement-result">
-<h3>Publishing a Single Measurement Result<a class="headerlink" href="#publishing-a-single-measurement-result" title="Permalink to this heading">¶</a></h3>
+<h3>Publishing a Single Measurement Result<a class="headerlink" href="#publishing-a-single-measurement-result" title="Link to this heading">¶</a></h3>
 <p>Once you have the Metadata object by either creating your own as described in <a class="reference internal" href="#psclient-perl-publish-metadata"><span class="std std-ref">Publishing the Measurement Description</span></a> or querying an existing one as described in <a class="reference internal" href="#psclient-perl-metadata"><span class="std std-ref">Working with Measurement Metadata</span></a>, you can then retrieve a <em>perfSONAR_PS::Client::Esmond::EventType</em> object with the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>my $et = $metadata-&gt;get_event_type(&#39;throughput&#39;);
 </pre></div>
@@ -926,7 +925,7 @@ $metadata-&gt;add_event_type(&#39;packet-retransmits&#39;);
 </div>
 </section>
 <section id="publishing-multiple-measurement-results">
-<h3>Publishing Multiple Measurement Results<a class="headerlink" href="#publishing-multiple-measurement-results" title="Permalink to this heading">¶</a></h3>
+<h3>Publishing Multiple Measurement Results<a class="headerlink" href="#publishing-multiple-measurement-results" title="Link to this heading">¶</a></h3>
 <p>In addition to publishing single measurements, you may also perform bulk requests for multiple event types and multiple timestamps. All bulk requests go to the same Metadata object. As with the single result case, we must first <a class="reference internal" href="#psclient-perl-publish-metadata"><span class="std std-ref">create</span></a> or <a class="reference internal" href="#psclient-perl-metadata"><span class="std std-ref">retrieve</span></a> a Metadata object. We can do this be asking the metadata object to generate a <em>perfSONAR_PS::Client::Esmond::EventTypeBulkPost</em> instance (<em>NOTE: Do not construct perfSONAR_PS::Client::Esmond::EventTypeBulkPost directly, retrieve it from the Metadata object</em>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>my $bulk_post = $metadata-&gt;generate_event_type_bulk_post();
 </pre></div>
@@ -957,9 +956,9 @@ die $bulk_post-&gt;error() if $bulk_post-&gt;error();
 </div>
 </section>
 <section id="id2">
-<h3>Examples<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<h3>Examples<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
 <section id="publishing-throughput-data">
-<h4>Publishing Throughput Data<a class="headerlink" href="#publishing-throughput-data" title="Permalink to this heading">¶</a></h4>
+<h4>Publishing Throughput Data<a class="headerlink" href="#publishing-throughput-data" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#Define filters with authentication information
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters(
     &#39;auth_username&#39; =&gt; &#39;perfsonar&#39;,
@@ -1001,7 +1000,7 @@ die $bulk_post-&gt;error() if($bulk_post-&gt;error());
 </div>
 </section>
 <section id="publishing-delay-ping-data">
-<h4>Publishing Delay(Ping) Data<a class="headerlink" href="#publishing-delay-ping-data" title="Permalink to this heading">¶</a></h4>
+<h4>Publishing Delay(Ping) Data<a class="headerlink" href="#publishing-delay-ping-data" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define filters with authentication information
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters(
     &#39;auth_username&#39; =&gt; &#39;perfsonar&#39;,
@@ -1059,7 +1058,7 @@ die $bulk_post-&gt;error() if($bulk_post-&gt;error());
 </div>
 </section>
 <section id="publishing-one-way-delay-owamp-data">
-<h4>Publishing One-way Delay(OWAMP) Data<a class="headerlink" href="#publishing-one-way-delay-owamp-data" title="Permalink to this heading">¶</a></h4>
+<h4>Publishing One-way Delay(OWAMP) Data<a class="headerlink" href="#publishing-one-way-delay-owamp-data" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define filters with authentication information
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters(
     &#39;auth_username&#39; =&gt; &#39;perfsonar&#39;,
@@ -1120,7 +1119,7 @@ die $bulk_post-&gt;error() if($bulk_post-&gt;error());
 </div>
 </section>
 <section id="publishing-packet-loss">
-<h4>Publishing Packet Loss<a class="headerlink" href="#publishing-packet-loss" title="Permalink to this heading">¶</a></h4>
+<h4>Publishing Packet Loss<a class="headerlink" href="#publishing-packet-loss" title="Link to this heading">¶</a></h4>
 <p>Note that <em>packet-loss-rate</em> is a special percentage type and thus is not registered as a simple float. It is registered as an object with a <em>numerator</em> and a <em>denominator</em> so that it is easier to summarize. Packet loss is measured by tools such as owamp  (packet-loss-rate) and ping (packet-loss-rate-bidir), but the data registration portion is repeated below to highlight this difference:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
 $bulk_post-&gt;add_data_point(&#39;packet-loss-rate&#39;, $ts, {&#39;numerator&#39;=&gt; 0, &#39;denominator&#39;=&gt; 100});
@@ -1129,7 +1128,7 @@ $bulk_post-&gt;add_data_point(&#39;packet-loss-rate&#39;, $ts, {&#39;numerator&#
 </div>
 </section>
 <section id="publishing-packet-traces">
-<h4>Publishing Packet Traces<a class="headerlink" href="#publishing-packet-traces" title="Permalink to this heading">¶</a></h4>
+<h4>Publishing Packet Traces<a class="headerlink" href="#publishing-packet-traces" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define filters with authentication information
 my $filters = new perfSONAR_PS::Client::Esmond::ApiFilters(
     &#39;auth_username&#39; =&gt; &#39;perfsonar&#39;,
@@ -1337,8 +1336,8 @@ die $bulk_post-&gt;error() if($bulk_post-&gt;error());
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

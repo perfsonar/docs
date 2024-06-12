@@ -1,19 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Troubleshooting Docker Containers &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=f4a6cdb0" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -75,7 +74,7 @@
           <div class="body" role="main">
             
   <section id="troubleshooting-docker-containers">
-<h1>Troubleshooting Docker Containers<a class="headerlink" href="#troubleshooting-docker-containers" title="Permalink to this heading">¶</a></h1>
+<h1>Troubleshooting Docker Containers<a class="headerlink" href="#troubleshooting-docker-containers" title="Link to this heading">¶</a></h1>
 <p><strong>If you are not using Docker, SKIP THIS PAGE</strong></p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> command to list the running containers.</p>
 <p>You should see all 5-6 containers running (again, <code class="docutils literal notranslate"><span class="pre">postfix</span></code> is optional).</p>
@@ -92,7 +91,7 @@ c10b07ae72cc<span class="w">        </span>nginx<span class="w">                
 <p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
 <p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
 <section id="troubleshooting-containers">
-<h2>Troubleshooting Containers<a class="headerlink" href="#troubleshooting-containers" title="Permalink to this heading">¶</a></h2>
+<h2>Troubleshooting Containers<a class="headerlink" href="#troubleshooting-containers" title="Link to this heading">¶</a></h2>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span></code> command to see logs for a container. Adjust <code class="docutils literal notranslate"><span class="pre">--tail</span></code> to change how many logs are displayed. Add the <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag to watch the logs as new records come in (like <code class="docutils literal notranslate"><span class="pre">tail</span></code>)</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker logs pwa-admin1 --tail 10</span>
 <span class="m">1</span><span class="p">|</span>pwaadmin<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:41:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>HTTP<span class="w"> </span>POST<span class="w"> </span>/health/pwacache<span class="w"> </span><span class="nv">statusCode</span><span class="o">=</span><span class="m">200</span>,<span class="w"> </span><span class="nv">url</span><span class="o">=</span>/health/pwacache,<span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="m">0</span>.0.0.0:8080,<span class="w"> </span><span class="nv">accept</span><span class="o">=</span>application/json,<span class="w"> </span>content-type<span class="o">=</span>application/json,<span class="w"> </span>content-length<span class="o">=</span><span class="m">14</span>,<span class="w"> </span><span class="nv">connection</span><span class="o">=</span>close,<span class="w"> </span><span class="nv">method</span><span class="o">=</span>POST,<span class="w"> </span><span class="nv">httpVersion</span><span class="o">=</span><span class="m">1</span>.1,<span class="w"> </span><span class="nv">originalUrl</span><span class="o">=</span>/health/pwacache,<span class="w"> </span>,<span class="w"> </span><span class="nv">responseTime</span><span class="o">=</span><span class="m">1</span>
@@ -109,7 +108,7 @@ c10b07ae72cc<span class="w">        </span>nginx<span class="w">                
 </div>
 </section>
 <section id="interacting-with-containers">
-<h2>Interacting with containers<a class="headerlink" href="#interacting-with-containers" title="Permalink to this heading">¶</a></h2>
+<h2>Interacting with containers<a class="headerlink" href="#interacting-with-containers" title="Link to this heading">¶</a></h2>
 <p>You can enter an interactive <code class="docutils literal notranslate"><span class="pre">bash</span></code> shell within a container like this:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@hostname<span class="w"> </span>~<span class="o">]</span><span class="c1"># docker exec -it pwa-admin1 bash</span>
 root@2dd0cd671538:/#<span class="w"> </span>ls
@@ -129,7 +128,7 @@ auth<span class="w">  </span>index.js<span class="w">  </span>nginx<span class="
 </div>
 </section>
 <section id="firewall">
-<h2>Firewall<a class="headerlink" href="#firewall" title="Permalink to this heading">¶</a></h2>
+<h2>Firewall<a class="headerlink" href="#firewall" title="Link to this heading">¶</a></h2>
 <p>Docker will take care of its own firewall rules, so you don’t have to worry about opening ports manually.</p>
 <p>By default, following are the ports used by nginx container:</p>
 <ul class="simple">
@@ -235,8 +234,8 @@ auth<span class="w">  </span>index.js<span class="w">  </span>nginx<span class="
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>
