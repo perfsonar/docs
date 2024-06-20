@@ -38,19 +38,19 @@ perfSONAR provides a script that will automatically perform the first two steps 
 
 * **perfSONAR Tools**::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - tools
+    curl -s https://downloads.perfsonar.net/install | sh -s - tools
 
 * **perfSONAR Test Point**::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - testpoint
+    curl -s https://downloads.perfsonar.net/install | sh -s - testpoint
 
 * **perfSONAR Toolkit**::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - toolkit
+    curl -s https://downloads.perfsonar.net/install | sh -s - toolkit
 
 * **perfSONAR Archive**::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - archive
+    curl -s https://downloads.perfsonar.net/install | sh -s - archive
 
 If you would prefer to perform these steps manually see :ref:`install_debian_step1` and :ref:`install_debian_step2`.
 

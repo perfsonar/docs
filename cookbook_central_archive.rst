@@ -34,7 +34,7 @@ In this step we'll setup the *archive host* store measurements. Specifically we'
 
 3. Run the personar install script to setup the package repositories and install the perfSONAR archive. The command will automatically detect the operating system and install the correct packages::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - --repo staging archive
+    curl -s https://downloads.perfsonar.net/install | sh -s - --repo staging archive
 
 4. Let's quickly verify the archive is running with the *psarchive troubleshoot* utility. It will check that components such as OpenSearch and Logstash are running as well as verify authentication credentials. It can also check if the archive has data, but since we have not yet configured our measurement hosts we will skip that check with the `--skip-opensearch-data` option. Run the command as follows and if everything is marked as *OK* then proceed, otherwise follow the instructions in the command output to debug::
 
@@ -323,7 +323,7 @@ We will now logout of the archive host and login to a testpoint host. The steps 
 
 3. Now we'll run the installation script again, but specify the tespoint package::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - --repo staging testpoint
+    curl -s https://downloads.perfsonar.net/install | sh -s - --repo staging testpoint
  
 4. Let's verify our install worked by running the `pscheduler troubleshoot` command::
 

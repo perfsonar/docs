@@ -18,19 +18,19 @@ The easiest way to test a beta is by using an automated script that detects the 
 
 * **perfSONAR Tools**::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - --repo staging tools
+    curl -s https://downloads.perfsonar.net/install | sh -s - --repo staging tools
 
 * **perfSONAR Test Point**::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - --repo staging testpoint
+    curl -s https://downloads.perfsonar.net/install | sh -s - --repo staging testpoint
 
 * **perfSONAR Toolkit**::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - --repo staging toolkit
+    curl -s https://downloads.perfsonar.net/install | sh -s - --repo staging toolkit
 
 * **perfSONAR Archive**::
 
-    curl -s https://raw.githubusercontent.com/perfsonar/project/master/install-perfsonar | sh -s - --repo staging archive
+    curl -s https://downloads.perfsonar.net/install | sh -s - --repo staging archive
 
 
 .. _install_rcs-clean-el:
