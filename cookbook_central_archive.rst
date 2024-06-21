@@ -337,7 +337,7 @@ We will now logout of the archive host and login to a testpoint host. The steps 
 
 Step 6: Viewing Results
 ========================================================
-Return to *https://ARCHIVE_HOSTNAME/grafana*. You should now be able to start viewing results of you measurements. How quickly you see results will depend on the frequency with which you configured tests to run in your JSON file. For example, if you are running *latencybg* tests you should see results within a few minutes whereas most users run throughput tests every few hours, so they make take longer to appear. 
+Return to *https://ARCHIVE_HOSTNAME/grafana*. You should now be able to start viewing results of your measurements. How quickly you see results will depend on the frequency with which you configured tests to run in your JSON file. For example, if you are running *latencybg* tests you should see results within a few minutes whereas most users run throughput tests every few hours, so they make take longer to appear. 
 
 .. image:: images/grafana_cookbook-ui-final.png
 
