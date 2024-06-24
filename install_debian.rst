@@ -65,8 +65,8 @@ Step 1: Configure APT
 ---------------------
 All you need to do is to configure the perfSONAR Debian repository source, along with our signing key, on your Debian/Ubuntu machine. **You will need to follow the steps below as privileged user**::
 
-    curl -o /etc/apt/sources.list.d/perfsonar-release.list http://downloads.perfsonar.net/debian/perfsonar-release.list
-    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-release.gpg.asc http://downloads.perfsonar.net/debian/perfsonar-release.gpg.key
+    curl -o /etc/apt/sources.list.d/perfsonar-release.list https://downloads.perfsonar.net/debian/perfsonar-release.list
+    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-release.gpg.asc https://downloads.perfsonar.net/debian/perfsonar-release.gpg.key
    
 * **Ubuntu only**. Additionnaly, if you're running a stripped down Ubuntu installation, you might need to enable the universe repository.  This is done with the following command::
 
@@ -267,7 +267,7 @@ If this is the case or you don't use the auto-update feature, to upgrade your pe
 
 The measurements and the measurement archives that you already have defined in your 5.0.x installation will be migrated to the 5.1 toolkit automatically.
 
-.. note:: You might see ``apt`` issuing a warning about conflicting distribution with a message like ``W: Conflicting distribution: http://downloads.perfsonar.net/debian perfsonar-release InRelease (expected perfsonar-5.0 but got perfsonar-5.1)``  This is expected and can be ignored because you indeed are upgrading from 5.0 to 5.1.
+.. note:: You might see ``apt`` issuing a warning about conflicting distribution with a message like ``W: Conflicting distribution: https://downloads.perfsonar.net/debian perfsonar-release InRelease (expected perfsonar-5.0 but got perfsonar-5.1)``  This is expected and can be ignored because you indeed are upgrading from 5.0 to 5.1.
 
 Upgrade to another bundle
 -------------------------

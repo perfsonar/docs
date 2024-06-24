@@ -67,12 +67,12 @@ Testing Debian Installation (Manual)
 
 The beta packages for Debian can be found in the source list below:
 
-* http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
+* https://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
 
 You may install this source list as follows::
     
-    curl -o /etc/apt/sources.list.d/perfsonar-minor-staging.list http://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
-    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-staging.gpg.asc http://downloads.perfsonar.net/debian/perfsonar-staging.gpg.key
+    curl -o /etc/apt/sources.list.d/perfsonar-minor-staging.list https://downloads.perfsonar.net/debian/perfsonar-minor-staging.list
+    curl -s -o /etc/apt/trusted.gpg.d/perfsonar-staging.gpg.asc https://downloads.perfsonar.net/debian/perfsonar-staging.gpg.key
 
 These Debian packages should work on Debian 11 and 12, Ubuntu 20 and 22.
 
