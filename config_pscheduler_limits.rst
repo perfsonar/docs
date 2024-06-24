@@ -311,7 +311,7 @@ This identifier downloads the `Amazon Web Services CIDR block list <https://docs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``ip-cymru-bogon`` identifier determines whether or not the
-requester's address is in Team Cymru's `Bogon Refernce List
+requester's address is in Team Cymru's `Bogon Reference List
 <http://www.team-cymru.org/bogon-reference.html>`_.
 
 Its ``data`` is an object containing the following pairs:
@@ -325,7 +325,7 @@ Its ``data`` is an object containing the following pairs:
   definitive answer cannot be found.
 
 
-Note that this identifier uses the `Domain Name Service
+Note that this identifier uses the `Bogon Reference Domain Name Service
 <http://www.team-cymru.org/bogon-reference-dns.html>`_ to check
 whether or not an address is in the list, and therefore its use
 requires that the host be able to resolve hosts on the public
@@ -378,7 +378,7 @@ Its ``data`` is an object containing the following pairs:
   definitive answer cannot be found.
 
 
-Note that this identifier uses the `Domain Name Service
+Note that this identifier uses the `IP to ASN Domain Name Service
 <http://www.team-cymru.org/asn-reference-dns.html>`_ to check
 whether or not an address is in the list, and therefore its use
 requires that the host be able to resolve hosts on the public

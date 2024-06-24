@@ -318,7 +318,7 @@ Looking at the last run with ``psconfig stats pscheduler``
 -----------------------------------------------------------
 One of the first steps to perform when debugging the pSConfig pScheduler agent is to get information about the last time the agent ran. A run in this context describes an instance when pSConfig downloaded all the templates it is configured to use, made any local modifications and determined which tasks that need to be created and/or removed from the pScheduler servers with which it interacts. As described in :ref:`psconfig_pscheduler_agent-intro-role`, a run can be triggered by the passing of a set time interval (60 minutes by default) or a configuration file change.
 
-Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the ``psconfig stats pscheduler `` command. The command does not require any options and is shown below::
+Rather than manually digging through logs, pSConfig provides a tool for parsing summary information about the last run in the form of the ``psconfig stats pscheduler`` command. The command does not require any options and is shown below::
     
      psconfig stats pscheduler
 
