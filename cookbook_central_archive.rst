@@ -2,8 +2,6 @@
 Central Archive with Grafana Cookbook
 *********************************************************************************************************************
 
-.. note:: This page uses the staging repo and the URL https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json, which will change for final release
-
 This guide walks-through a standard perfSONAR setup where there are multiple perfSONAR Testpoint hosts writing measurements to central archive from which results can be displayed. 
 
 This guide will assume a setup that looks like the following:
@@ -34,7 +32,7 @@ In this step we'll setup the *archive host* store measurements. Specifically we'
 
 3. Run the personar install script to setup the package repositories and install the perfSONAR archive. The command will automatically detect the operating system and install the correct packages::
 
-    curl -s https://downloads.perfsonar.net/install | sh -s - --repo staging archive
+    curl -s https://downloads.perfsonar.net/install | sh -s - archive
 
 4. Let's quickly verify the archive is running with the *psarchive troubleshoot* utility. It will check that components such as OpenSearch and Logstash are running as well as verify authentication credentials. It can also check if the archive has data, but since we have not yet configured our measurement hosts we will skip that check with the `--skip-opensearch-data` option. Run the command as follows and if everything is marked as *OK* then proceed, otherwise follow the instructions in the command output to debug::
 
@@ -130,7 +128,7 @@ In this step we'll create a file that defines the measurements we want all the t
 
 2. Download the "skeleton" file which we will use as the starting point for our pSConfig template::
 
-    curl -o psconfig.json https://raw.githubusercontent.com/perfsonar/psconfig/5.1.0/psconfig/perfsonar-psconfig/doc/skeleton.json
+    curl -o psconfig.json https://raw.githubusercontent.com/perfsonar/psconfig/master/psconfig/perfsonar-psconfig/doc/skeleton.json
 
 3. The first thing we'll add to the pSConfig template is instructions that tell testpoints how to send results to the archive. There is a helper script that helps us generate this definition. You will pass it a `-n` that tells it the public address of your archive. In our example it is *archive.local* but change that to the address of your archive host. The command for this example looks like the following::
 
@@ -323,7 +321,7 @@ We will now logout of the archive host and login to a testpoint host. The steps 
 
 3. Now we'll run the installation script again, but specify the tespoint package::
 
-    curl -s https://downloads.perfsonar.net/install | sh -s - --repo staging testpoint
+    curl -s https://downloads.perfsonar.net/install | sh -s - testpoint
  
 4. Let's verify our install worked by running the `pscheduler troubleshoot` command::
 

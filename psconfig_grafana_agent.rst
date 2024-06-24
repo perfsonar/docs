@@ -287,6 +287,67 @@ Since technically `super_special_test` would match both because its both a throu
 
 Beyond changing thredholds, the default displays may be fine in most cases but you can add more entries to the displays section for different test types or have it grab different stats. Feel free to experiment with the different fields to learn more. 
 
+.. _psconfig_grafana_agent-org_dashboards:
+
+Organizing Grids and Dashboards
+-----------------------------------------------
+Grouping grids onto the same dashboard can be controlled through your pSConfig JSON template under the `tasks` section. There are two values that need to be set under the task `reference` section:
+
+    1. Set the `display-task-name` to get a human readable title for the task
+    2. Set the `display-task-group` to a list of dashboard names in which you want the grid included (NOTE: This must be an array even if it is just one element)
+
+See the snippet below that includes a grid displayed as *Example Throughput* in a dashboard named *Example Dashboard*::
+
+    "example_throughput" : {
+        "reference": {
+            "display-set-source": "{% jq .addresses[0]._meta.\"display-set\" %}",
+            "display-set-dest": "{% jq .addresses[1]._meta.\"display-set\" %}",
+            "display-task-name": "Example Throughput",
+            "display-task-group": ["Example Dashboard"]
+        },
+        "group" : "example_thr_group",
+        "schedule" : "schedule_0"
+        "test" : "example_thr_test"
+    }
+
+.. _psconfig_grafana_agent-multi_xfaces:
+
+Graphing Multiple Interfaces on Same Dashboard
+-----------------------------------------------
+A common use case is that a single measurement host may have multiple interfaces, such as one dedicated to throughput and another dedicated to latency. The address for each interface is defined as separate `address` objects in your pSConfig file. By default, when the Grafana dashboards are generated these addresses will not be on the same graphs since the agent does not know they belong together. If you want this data to be on the same graph page you need to set some parameters that indicate the addresses should be grouped together. This requires two changes to your pSConfig template: 
+
+    1. Update the `address` definitions with a `_meta` tag of `display-set`.
+    2. Update the `task` definitions to include a `reference` section with `display-set-source` and `display-set-dest` that includes the `dispay-set` value from the source and destination.
+
+Let's look at these steps in detail. First let's say we have a host two interfaces: *example-tp.perfsonar.net* and *example-lat.perfsonar.net* that we want shown on the same graphs. When we define the addresses, we create a `display-set` called `example.perfsonar.net` (this can be any string as long as it is consistent between the two addresses) in our pSConfig template JSON. For example::
+
+    "example-tp.perfsonar.net" : {
+      "_meta" : {
+         "display-set" : "example.perfsonar.net"
+      },
+      "address" : "example-tp.perfsonar.net"
+   },
+   "example-lat.perfsonar.net" : {
+        "_meta" : {
+           "display-set" : "example.perfsonar.net"
+        },
+        "address" : "example-lat.perfsonar.net"
+    }
+
+The next step is to make sure these values are passed to pScheduler when the tasks are created. This gives the agent enough information to build queries that can include results using both addresses on the graph. We do this by setting a `display-set-source` and `display-set-dest` in the `reference` section of the task. These use `jq` to dynamically set the values based on the source and destination. The task definition should look like the following and you can copy the definition of `display-set-source` and `display-set-dest` exactly to your template::
+
+     "example_throughput" : {
+        "reference": {
+            "display-set-source": "{% jq .addresses[0]._meta.\"display-set\" %}",
+            "display-set-dest": "{% jq .addresses[1]._meta.\"display-set\" %}",
+            "display-task-name": "Example Throughput",
+            "display-task-group": ["Example Dashboard"]
+        },
+        "group" : "example_thr_group",
+        "schedule" : "schedule_0"
+        "test" : "example_thr_test"
+    }
+
 .. _psconfig_grafana_agent-advanced:
 
 Advanced Configuration

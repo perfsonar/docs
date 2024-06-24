@@ -100,7 +100,6 @@ Q: Why can't my Debian/Ubuntu host find ping?
 
 **A:** Run ``apt reinstall iputils-ping`` to fix the issue. This was caused by a bug in the paris-traceroute package that installed a non-standard version of ping that required sudo. This was removed in perfSONAR 5.0.5 which left some systems without a ping command.
 
-
 Tool Questions
 ----------------
 
