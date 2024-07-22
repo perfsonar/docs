@@ -18,11 +18,15 @@ Basic JSON Syntax
 
 Archiving is accomplished by providing an *archive specification* in the form of a JSON object containing these values:
 
+``label`` (Requires schema 3) - A Human-readable label describing the destination.  This is optional but its use and some degree of uniqueness is strongly-recommended for diagnostic purposes.  Examples of useful labels are ``OpenSearch at XYZ University`` and ``Central Research Kafka Queue``.
+
 ``archiver`` - The name of the archiver to use. See :ref:`pscheduler_ref_archivers-archivers` for a list available in the base pScheduler distribution.
 
 ``data`` - A JSON object containing archiver-specific data to be used in deciding how to dispose of the result.
 
-``runs`` (Requires schema 2) - Which runs should be archived.  Valid values are ``succeeded`` for runs that produced a result, ``failed`` for those that did not and ``all`` for both.  This value is optional and will be treated as ``succeeded`` if not provided.
+..
+    This is in the schema but not implemented in the archiver daemon
+    ``runs`` (Requires schema 2) - Which runs should be archived.  Valid values are ``succeeded`` for runs that produced a result, ``failed`` for those that did not and ``all`` for both.  This value is optional and will be treated as ``succeeded`` if not provided.
 
 ``ttl`` - The absolute amount of time after which the result should be discarded if not successfully archived, specified as an `ISO8601 duration <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.  This value is optional and will be treated as infinite if not provided.
 
@@ -31,11 +35,11 @@ Archiving is accomplished by providing an *archive specification* in the form of
 For example (commentary is not part of the specification)::
 
     {
-        "schema": 2,                  Second schema, required for 'runs'
-        "archiver": "bitbucket",      Send to the archiver that goes nowhere.
-        "data": { },                  The "bitbucket" archiver takes no specific data.
-        "runs": "all",                Archive all runs.
-        "ttl": "PT12H"                Give up after 12 hours if not successfully archived.
+        "schema": 3,                 Third schema, required for 'label'
+	"label": "Nowhere At All",   Human-readable description of the destination
+        "archiver": "bitbucket",     Send to the archiver that goes nowhere.
+        "data": { },                 The 'bitbucket' archiver takes no specific data.
+        "ttl": "PT12H"               Give up after 12 hours if not successfully archived.
     }
 
 .. _pscheduler_ref_archivers-cli:
@@ -152,6 +156,60 @@ For example, this file will use the HTTP archiver to post the results of all thr
         },
         "ttl": "PT5M"
     }
+
+
+.. _pscheduler_ref_archiving_diagnostics:
+
+Archiving Diagnostics
+---------------------
+
+The ``pscheduler archiving-summary`` command will produce a summary of
+archiving activity over the last hour or any other duration specified:
+
+::
+
+   $ pscheduler archiving-summary PT10M
+
+   Succeeded         Failed            Label
+   ----------------  ----------------  -------------------------
+          10 (100%)          0 (  0%)  ABC University archive
+           0 (  0%)          5 (100%)  University of DEF archive
+          12 ( 57%)          9 ( 43%)  GHI Institute archive
+          26 (100%)          0 (  0%)  syslog
+          23 (100%)          0 (  0%)  syslog #2
+   ----------------  ----------------  -------------------------
+          71 ( 84%)         14 ( 16%)  Total (85)
+
+
+The ``Label`` column indicates what ``label`` was specified for the
+archiving or, if none was specified, the name of the archiver used.
+Archivings with the same label will be given numbers if their ``data``
+is different.  Note that the ``data`` is retrieved through the
+pScheduler API and will have sensitive information stripped out, which
+means different archivings (e.g., ``http`` ``POST`` to different
+destinations) may be grouped together.  To avoid this, it
+is strongly-recommended that archive specifications include a unique
+``label`` pair to prevent ambiguities, as in this example:
+
+::
+    {
+        "schema": 3,
+	"label": "A Deep, Dark Hole".
+        "archiver": "bitbucket",
+        "data": { }
+    }
+    
+    {
+        "schema": 3,
+	"label": "A Deeper, Darker Hole".
+        "archiver": "bitbucket",
+        "data": { }
+    }
+    
+
+Note that long intervals may pull a considerable amount of data on
+systems producing large numbers of archived measurements.
+
 
 .. _pscheduler_ref_archivers-archivers:
 
