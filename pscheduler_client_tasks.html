@@ -1,19 +1,21 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="./">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>Creating and Managing Tasks &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=68f3fa90" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Viewing the Schedule" href="pscheduler_client_schedule.html" />
@@ -59,8 +61,7 @@
         <li class="right" >
           <a href="pscheduler_intro.html" title="What is pScheduler?"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Creating and Managing Tasks</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -72,22 +73,22 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="creating-and-managing-tasks">
-<h1>Creating and Managing Tasks<a class="headerlink" href="#creating-and-managing-tasks" title="Link to this heading">¶</a></h1>
-<section id="the-task-command">
-<span id="pscheduler-client-tasks-taskcmd"></span><h2>The <cite>task</cite> command<a class="headerlink" href="#the-task-command" title="Link to this heading">¶</a></h2>
-<p>The <cite>pscheduler task</cite> command is the primary way from the command-line to create new pScheduler <a class="reference internal" href="pscheduler_intro.html#term-Task"><span class="xref std std-term">tasks</span></a>. It takes the following form:</p>
+  <div class="section" id="creating-and-managing-tasks">
+<h1>Creating and Managing Tasks<a class="headerlink" href="#creating-and-managing-tasks" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-task-command">
+<span id="pscheduler-client-tasks-taskcmd"></span><h2>The <cite>task</cite> command<a class="headerlink" href="#the-task-command" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>pscheduler task</cite> command is the primary way from the command-line to create new pScheduler <a class="reference internal" href="pscheduler_intro.html#term-task"><span class="xref std std-term">tasks</span></a>. It takes the following form:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="p">[</span> <span class="n">TASK_OPTIONS</span> <span class="p">]</span> <span class="n">TEST_TYPE</span> <span class="n">TEST_OPTIONS</span>
 </pre></div>
 </div>
-</section>
-<section id="the-basics">
-<span id="pscheduler-client-tasks-basics"></span><h2>The Basics<a class="headerlink" href="#the-basics" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="the-basics">
+<span id="pscheduler-client-tasks-basics"></span><h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h2>
 <p>The simplest task that can be run is a one-shot test with no special options, such as this one which conducts a round-trip time (<em>rtt</em>) test between the local host and <em>www.perfsonar.net</em>, then displays the results:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-<p>Note that the <code class="docutils literal notranslate"><span class="pre">--dest</span></code> option following <code class="docutils literal notranslate"><span class="pre">rtt</span></code> is a <a class="reference internal" href="pscheduler_intro.html#term-Test"><span class="xref std std-term">test</span></a> option specific to the test type being requested.  Each test has its own set of options, so what follows the test type will vary.  Most tests that have an option in common that serves the same purpose have consistent names between them.  For example, many tests that involve sending data to another host (<em>rtt</em>, <em>trace</em>, <em>throughput</em>, <em>latency</em>) will specify the other hosts using the <code class="docutils literal notranslate"><span class="pre">--dest</span></code> option.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">--dest</span></code> option following <code class="docutils literal notranslate"><span class="pre">rtt</span></code> is a <a class="reference internal" href="pscheduler_intro.html#term-test"><span class="xref std std-term">test</span></a> option specific to the test type being requested.  Each test has its own set of options, so what follows the test type will vary.  Most tests that have an option in common that serves the same purpose have consistent names between them.  For example, many tests that involve sending data to another host (<em>rtt</em>, <em>trace</em>, <em>throughput</em>, <em>latency</em>) will specify the other hosts using the <code class="docutils literal notranslate"><span class="pre">--dest</span></code> option.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">task</span></code> command has a set of its own options that go before the test type.  These options are related to how the task is run rather than what test is being conducted.  For example, the <code class="docutils literal notranslate"><span class="pre">--quiet</span></code> switch suppresses the diagnostic information that is usually produced:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">quiet</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
@@ -96,23 +97,23 @@
 <p class="admonition-title">Note</p>
 <p>You can get a full listing of supported task options by running <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">task</span> <span class="pre">--help</span></code>. Likewise you can get a full listing of test-specific options by running <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">task</span> <span class="pre">TEST_TYPE</span> <span class="pre">--help</span></code> where <code class="docutils literal notranslate"><span class="pre">TEST_TYPE</span></code> is replaced with the type of test you want to run.</p>
 </div>
-</section>
-<section id="running-tests-from-other-hosts">
-<span id="pscheduler-client-tasks-otherhosts"></span><h2>Running Tests from Other Hosts<a class="headerlink" href="#running-tests-from-other-hosts" title="Link to this heading">¶</a></h2>
-<p>pScheduler determines where to submits a task based on the test parameters. Where a task needs to be submitted is called the <a class="reference internal" href="pscheduler_intro.html#term-Lead-Participant"><span class="xref std std-term">lead participant</span></a>. For many tests run by perfSONAR, a <code class="docutils literal notranslate"><span class="pre">--source</span></code> switch which specifies where the test should originate and is also the <em>lead participant</em>:</p>
+</div>
+<div class="section" id="running-tests-from-other-hosts">
+<span id="pscheduler-client-tasks-otherhosts"></span><h2>Running Tests from Other Hosts<a class="headerlink" href="#running-tests-from-other-hosts" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler determines where to submits a task based on the test parameters. Where a task needs to be submitted is called the <a class="reference internal" href="pscheduler_intro.html#term-lead-participant"><span class="xref std std-term">lead participant</span></a>. For many tests run by perfSONAR, a <code class="docutils literal notranslate"><span class="pre">--source</span></code> switch which specifies where the test should originate and is also the <em>lead participant</em>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">source</span> <span class="n">host2</span> <span class="o">--</span><span class="n">dest</span> <span class="n">host3</span>
 </pre></div>
 </div>
 <p>If the example command above is run on <em>host1</em>, then the client will submit the task to <em>host2</em> and the test will be run between <em>host2</em> and <em>host3</em>.</p>
-<p>Not all tests use the source to calculate the lead participant and determining it can get complicated when dealing with things like BWCTL backward compatibility, etc. Luckily, each test plug-in installed on a pScheduler server has the logic required to calculate the lead in the face of this complexity. This does mean though, that the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command needs to be able to ask a pScheduler server, called the <a class="reference internal" href="pscheduler_intro.html#term-Assist-Server"><span class="xref std std-term">assist server</span></a>, where a task needs to be submitted.</p>
+<p>Not all tests use the source to calculate the lead participant and determining it can get complicated when dealing with things like BWCTL backward compatibility, etc. Luckily, each test plug-in installed on a pScheduler server has the logic required to calculate the lead in the face of this complexity. This does mean though, that the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command needs to be able to ask a pScheduler server, called the <a class="reference internal" href="pscheduler_intro.html#term-assist-server"><span class="xref std std-term">assist server</span></a>, where a task needs to be submitted.</p>
 <p>By default, the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command will assume there is a pScheduler server running on the local host and try to contact that as the default assist server. If there is NOT a pScheduler server on the local host, then you need to use the <code class="docutils literal notranslate"><span class="pre">--assist</span></code> flag. For example, say we run the following on <em>host4</em> and it does not have a pScheduler server but we know that <em>host1</em> does. Our command could be as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">assist</span> <span class="n">host1</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">source</span> <span class="n">host2</span> <span class="o">--</span><span class="n">dest</span> <span class="n">host3</span>
 </pre></div>
 </div>
 <p>The assist server could just as easily be <code class="docutils literal notranslate"><span class="pre">host2</span></code> or <code class="docutils literal notranslate"><span class="pre">host3</span></code> if they are also running pScheduler servers. It does not matter where the assist server is as long as it a) has a pScheduler server and b) has the test plugin installed for the type of test you want to run.</p>
-</section>
-<section id="selecting-tool-s-for-tasks">
-<span id="pscheduler-client-tasks-tools"></span><h2>Selecting Tool(s) for Tasks<a class="headerlink" href="#selecting-tool-s-for-tasks" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="selecting-tool-s-for-tasks">
+<span id="pscheduler-client-tasks-tools"></span><h2>Selecting Tool(s) for Tasks<a class="headerlink" href="#selecting-tool-s-for-tasks" title="Permalink to this headline">¶</a></h2>
 <p>By default, pScheduler will automatically select a tool for a task based on three factors:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -130,9 +131,9 @@
 </pre></div>
 </div>
 <p>Whether or not tools are specified, a task where no available tool is capable of making the measurement will be rejected.</p>
-</section>
-<section id="repeating-tasks">
-<span id="pscheduler-client-tasks-repeating"></span><h2>Repeating Tasks<a class="headerlink" href="#repeating-tasks" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="repeating-tasks">
+<span id="pscheduler-client-tasks-repeating"></span><h2>Repeating Tasks<a class="headerlink" href="#repeating-tasks" title="Permalink to this headline">¶</a></h2>
 <p>Any pScheduler task can be configured to run repeatedly by adding options to the <code class="docutils literal notranslate"><span class="pre">task</span></code> command:</p>
 <blockquote>
 <div><ul class="simple">
@@ -159,10 +160,10 @@
 </pre></div>
 </div>
 <p>Repeating tasks can be stopped using the <code class="docutils literal notranslate"><span class="pre">cancel</span></code> command.</p>
-</section>
-<section id="archiving-tasks">
-<span id="pscheduler-client-tasks-archiving"></span><h2>Archiving Tasks<a class="headerlink" href="#archiving-tasks" title="Link to this heading">¶</a></h2>
-<p>You can tell the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command to send results to an <a class="reference internal" href="pscheduler_intro.html#term-Archiver"><span class="xref std std-term">archiver</span></a> using the <code class="docutils literal notranslate"><span class="pre">--archive</span></code> switch. The definition you give the archiver can take two forms:</p>
+</div>
+<div class="section" id="archiving-tasks">
+<span id="pscheduler-client-tasks-archiving"></span><h2>Archiving Tasks<a class="headerlink" href="#archiving-tasks" title="Permalink to this headline">¶</a></h2>
+<p>You can tell the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command to send results to an <a class="reference internal" href="pscheduler_intro.html#term-archiver"><span class="xref std std-term">archiver</span></a> using the <code class="docutils literal notranslate"><span class="pre">--archive</span></code> switch. The definition you give the archiver can take two forms:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>A filename starting with the &#64; symbol that points at a file containing a JSON archiver specification.</p></li>
@@ -184,16 +185,16 @@ specified amount of time to save space.  For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">archive</span> <span class="s1">&#39;...&#39;</span> <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">after</span><span class="o">-</span><span class="n">archive</span> <span class="n">PT30S</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">www</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">net</span>
 </pre></div>
 </div>
-</section>
-<section id="exporting-tasks-to-json">
-<span id="pscheduler-client-tasks-exporting"></span><h2>Exporting tasks to JSON<a class="headerlink" href="#exporting-tasks-to-json" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="exporting-tasks-to-json">
+<span id="pscheduler-client-tasks-exporting"></span><h2>Exporting tasks to JSON<a class="headerlink" href="#exporting-tasks-to-json" title="Permalink to this headline">¶</a></h2>
 <p>The JSON version of a task specification can be sent to the standard output without scheduling using the <code class="docutils literal notranslate"><span class="pre">--export</span></code> switch:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">export</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">dest</span> <span class="n">wherever</span> <span class="o">--</span><span class="n">udp</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">version</span> <span class="mi">6</span> <span class="o">&gt;</span> <span class="n">mytask</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-</section>
-<section id="exporting-tasks-for-the-batch-processor">
-<h2>Exporting tasks for the Batch Processor<a class="headerlink" href="#exporting-tasks-for-the-batch-processor" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="exporting-tasks-for-the-batch-processor">
+<h2>Exporting tasks for the Batch Processor<a class="headerlink" href="#exporting-tasks-for-the-batch-processor" title="Permalink to this headline">¶</a></h2>
 <p>A minimal batch specification can be sent to the standard output
 without scheduling using the <code class="docutils literal notranslate"><span class="pre">--export</span></code> and <code class="docutils literal notranslate"><span class="pre">--export-format</span>
 <span class="pre">batch</span></code> switches:</p>
@@ -201,9 +202,9 @@ without scheduling using the <code class="docutils literal notranslate"><span cl
 </pre></div>
 </div>
 <p><strong>NOTE:</strong>  Tasks are not validated until submitted for scheduling, so it is possible to export invalid tasks.</p>
-</section>
-<section id="importing-tasks-from-json">
-<span id="pscheduler-client-tasks-importing"></span><h2>Importing tasks from JSON<a class="headerlink" href="#importing-tasks-from-json" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="importing-tasks-from-json">
+<span id="pscheduler-client-tasks-importing"></span><h2>Importing tasks from JSON<a class="headerlink" href="#importing-tasks-from-json" title="Permalink to this headline">¶</a></h2>
 <p>A JSON file that was previously exported or generated elsewhere can be imported using the <code class="docutils literal notranslate"><span class="pre">--import</span></code> switch:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="kn">import</span> <span class="nn">mytask.json</span> <span class="n">throughput</span>
 </pre></div>
@@ -212,9 +213,9 @@ without scheduling using the <code class="docutils literal notranslate"><span cl
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="kn">import</span> <span class="nn">mytask.json</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">dest</span> <span class="n">somewhere</span><span class="o">.</span><span class="k">else</span>
 </pre></div>
 </div>
-</section>
-<section id="substituting-files-for-test-parameters">
-<span id="pscheduler-client-tasks-substitutions"></span><h2>Substituting Files for Test Parameters<a class="headerlink" href="#substituting-files-for-test-parameters" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="substituting-files-for-test-parameters">
+<span id="pscheduler-client-tasks-substitutions"></span><h2>Substituting Files for Test Parameters<a class="headerlink" href="#substituting-files-for-test-parameters" title="Permalink to this headline">¶</a></h2>
 <p>All test parameters (i.e., those after the test type) may have their
 values read from a file by preceding the path to the file with an
 at sign (<code class="docutils literal notranslate"><span class="pre">&#64;</span></code>):</p>
@@ -226,9 +227,9 @@ can be disabled by escaping the first character with a backslash:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">idle</span> <span class="o">--</span><span class="n">starting</span><span class="o">-</span><span class="n">comment</span> <span class="s1">&#39;\@keep-this-argument-as-is&#39;</span> <span class="o">--</span><span class="n">duration</span> <span class="n">PT2S</span>
 </pre></div>
 </div>
-</section>
-<section id="canceling-tasks">
-<span id="pscheduler-client-tasks-canceling"></span><h2>Canceling Tasks<a class="headerlink" href="#canceling-tasks" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="canceling-tasks">
+<span id="pscheduler-client-tasks-canceling"></span><h2>Canceling Tasks<a class="headerlink" href="#canceling-tasks" title="Permalink to this headline">¶</a></h2>
 <p>You may cancel a task with the <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">cancel</span></code> command which takes the following form:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">cancel</span> <span class="n">TASK_URL</span>
 </pre></div>
@@ -237,11 +238,10 @@ can be disabled by escaping the first character with a backslash:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">cancel</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ps</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">/</span><span class="n">tasks</span><span class="o">/</span><span class="n">f1fc3a56</span><span class="o">-</span><span class="mi">080</span><span class="n">c</span><span class="o">-</span><span class="mi">46</span><span class="n">ec</span><span class="o">-</span><span class="n">a777</span><span class="o">-</span><span class="mi">91</span><span class="n">c26460a233</span>
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -297,8 +297,7 @@ can be disabled by escaping the first character with a backslash:</p>
         <li class="right" >
           <a href="pscheduler_intro.html" title="What is pScheduler?"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Creating and Managing Tasks</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -342,8 +341,8 @@ can be disabled by escaping the first character with a backslash:</p>
     </footer>
     
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

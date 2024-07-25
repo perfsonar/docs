@@ -1,19 +1,21 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="./">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>Running PWA alongside other web applications &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=68f3fa90" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 	<!-- Google tag (gtag.js) -->
@@ -51,8 +53,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Running PWA alongside other web applications</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -64,46 +65,45 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="running-pwa-alongside-other-web-applications">
-<h1>Running PWA alongside other web applications<a class="headerlink" href="#running-pwa-alongside-other-web-applications" title="Link to this heading">¶</a></h1>
-<section id="running-alongside-a-toolkit-or-grafana-instance">
-<h2>Running alongside a Toolkit or Grafana instance:<a class="headerlink" href="#running-alongside-a-toolkit-or-grafana-instance" title="Link to this heading">¶</a></h2>
+  <div class="section" id="running-pwa-alongside-other-web-applications">
+<h1>Running PWA alongside other web applications<a class="headerlink" href="#running-pwa-alongside-other-web-applications" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="running-alongside-a-toolkit-or-grafana-instance">
+<h2>Running alongside a Toolkit or Grafana instance:<a class="headerlink" href="#running-alongside-a-toolkit-or-grafana-instance" title="Permalink to this headline">¶</a></h2>
 <p>Because of port conflicts, you will have to run PWA on a different port from the perfSONAR Toolkit or Grafana or any other web application.</p>
 <p>For instance, you might run it on port 8000 rather than port 80 for http, and port 8443 rather than 443. In this case, you need to update the ports configured in <code class="docutils literal notranslate"><span class="pre">/etc/pwa/nginx/conf.d/pwa.conf</span></code></p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">listen</span><span class="w">       </span><span class="mf">80</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">listen</span>       <span class="mi">80</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>becomes</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">listen</span><span class="w">       </span><span class="mf">8000</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">listen</span>       <span class="mi">8000</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>AND</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">listen</span><span class="w">       </span><span class="mf">443</span><span class="w"> </span><span class="nx">ssl</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">listen</span>       <span class="mi">443</span> <span class="nx">ssl</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>becomes</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">listen</span><span class="w">        </span><span class="mf">8443</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">listen</span>        <span class="mi">8443</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>You also need to run the nginx container differently:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--restart<span class="o">=</span>always<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--net<span class="w"> </span>pwa<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--name<span class="w"> </span>nginx<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/etc/pwa/shared:/shared:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/etc/pwa/nginx:/etc/nginx:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/etc/pwa/auth:/certs:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">8443</span>:8443<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">9443</span>:9443<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-d<span class="w"> </span>nginx
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --restart<span class="o">=</span>always <span class="se">\</span>
+    --net pwa <span class="se">\</span>
+    --name nginx <span class="se">\</span>
+    -v /etc/pwa/shared:/shared:ro <span class="se">\</span>
+    -v /etc/pwa/nginx:/etc/nginx:ro <span class="se">\</span>
+    -v /etc/pwa/auth:/certs:ro <span class="se">\</span>
+    -p <span class="m">8000</span>:8000 <span class="se">\</span>
+    -p <span class="m">8443</span>:8443 <span class="se">\</span>
+    -p <span class="m">9443</span>:9443 <span class="se">\</span>
+    -d nginx
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -131,8 +131,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Running PWA alongside other web applications</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -176,8 +175,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

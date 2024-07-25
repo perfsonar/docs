@@ -1,19 +1,21 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="./">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>What is pScheduler? &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=68f3fa90" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Creating and Managing Tasks" href="pscheduler_client_tasks.html" />
@@ -59,8 +61,7 @@
         <li class="right" >
           <a href="grafana_cookbook.html" title="Grafana perfSONAR Dashboard Cookbook"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">What is pScheduler?</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -72,44 +73,44 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="what-is-pscheduler">
-<h1>What is pScheduler?<a class="headerlink" href="#what-is-pscheduler" title="Link to this heading">¶</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
-<p>pScheduler is responsible for managing the execution of network measurements, or more generally <a class="reference internal" href="#term-Task"><span class="xref std std-term">tasks</span></a>, in perfSONAR. When you want to run a network measurement on perfSONAR you ask a pScheduler server, either through the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command-line client or through the pScheduler API.</p>
-</section>
-<section id="terminology">
-<h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading">¶</a></h2>
-<dl class="simple glossary">
-<dt id="term-Archiver">Archiver<a class="headerlink" href="#term-Archiver" title="Link to this term">¶</a></dt><dd><p>Software that transfers <a class="reference internal" href="#term-Result"><span class="xref std std-term">results</span></a> to long-term storage or elsewhere for further processing.</p>
+  <div class="section" id="what-is-pscheduler">
+<h1>What is pScheduler?<a class="headerlink" href="#what-is-pscheduler" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>pScheduler is responsible for managing the execution of network measurements, or more generally <a class="reference internal" href="#term-task"><span class="xref std std-term">tasks</span></a>, in perfSONAR. When you want to run a network measurement on perfSONAR you ask a pScheduler server, either through the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> command-line client or through the pScheduler API.</p>
+</div>
+<div class="section" id="terminology">
+<h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary simple">
+<dt id="term-archiver">Archiver</dt><dd><p>Software that transfers <a class="reference internal" href="#term-result"><span class="xref std std-term">results</span></a> to long-term storage or elsewhere for further processing.</p>
 </dd>
-<dt id="term-Assist-Server">Assist Server<a class="headerlink" href="#term-Assist-Server" title="Link to this term">¶</a></dt><dd><p>A pScheduler server that accepts a test specification and can return the <a class="reference internal" href="#term-Lead-Participant"><span class="xref std std-term">lead participant</span></a>. The assist server may or may not be involved in the test specified, it’s role is simply to tell you the lead where the task should be submitted. By default the assist server is always the local host.</p>
+<dt id="term-assist-server">Assist Server</dt><dd><p>A pScheduler server that accepts a test specification and can return the <a class="reference internal" href="#term-lead-participant"><span class="xref std std-term">lead participant</span></a>. The assist server may or may not be involved in the test specified, it’s role is simply to tell you the lead where the task should be submitted. By default the assist server is always the local host.</p>
 </dd>
-<dt id="term-Context">Context<a class="headerlink" href="#term-Context" title="Link to this term">¶</a></dt><dd><p>A construct that allows certain user-specified changes to the execution environment prior to the execution of a <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tool</span></a> running a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a>.</p>
+<dt id="term-context">Context</dt><dd><p>A construct that allows certain user-specified changes to the execution environment prior to the execution of a <a class="reference internal" href="#term-tool"><span class="xref std std-term">tool</span></a> running a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>.</p>
 </dd>
-<dt id="term-Lead-Participant">Lead Participant<a class="headerlink" href="#term-Lead-Participant" title="Link to this term">¶</a></dt><dd><p>The pScheduler server where a task should be submitted. It will become responsible for contacting other participants, making scheduling decisions based on gathered information and archiving results.</p>
+<dt id="term-lead-participant">Lead Participant</dt><dd><p>The pScheduler server where a task should be submitted. It will become responsible for contacting other participants, making scheduling decisions based on gathered information and archiving results.</p>
 </dd>
-<dt id="term-Limits">Limits<a class="headerlink" href="#term-Limits" title="Link to this term">¶</a></dt><dd><p>Rules that define who is allowed to run what type of tests</p>
+<dt id="term-limits">Limits</dt><dd><p>Rules that define who is allowed to run what type of tests</p>
 </dd>
-<dt id="term-Participant">Participant<a class="headerlink" href="#term-Participant" title="Link to this term">¶</a></dt><dd><p>A node that runs pScheduler and handles some facet of conducting a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a>.</p>
+<dt id="term-participant">Participant</dt><dd><p>A node that runs pScheduler and handles some facet of conducting a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>.</p>
 </dd>
-<dt id="term-Result">Result<a class="headerlink" href="#term-Result" title="Link to this term">¶</a></dt><dd><p>The observation produced by a <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tool</span></a> conducting a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a>. For example, after conducting a throughput test, the iperf3 tool might generate a result that says “throughput from A to B was 3.4 Gb/s.”</p>
+<dt id="term-result">Result</dt><dd><p>The observation produced by a <a class="reference internal" href="#term-tool"><span class="xref std std-term">tool</span></a> conducting a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>. For example, after conducting a throughput test, the iperf3 tool might generate a result that says “throughput from A to B was 3.4 Gb/s.”</p>
 </dd>
-<dt id="term-Run">Run<a class="headerlink" href="#term-Run" title="Link to this term">¶</a></dt><dd><p>The act of conducting a <a class="reference internal" href="#term-Task"><span class="xref std std-term">task</span></a> one time and producing a <a class="reference internal" href="#term-Result"><span class="xref std std-term">result</span></a>.</p>
+<dt id="term-run">Run</dt><dd><p>The act of conducting a <a class="reference internal" href="#term-task"><span class="xref std std-term">task</span></a> one time and producing a <a class="reference internal" href="#term-result"><span class="xref std std-term">result</span></a>.</p>
 </dd>
-<dt id="term-Schedule-Horizon">Schedule Horizon<a class="headerlink" href="#term-Schedule-Horizon" title="Link to this term">¶</a></dt><dd><p>The amount ahead of time that pScheduler puts a run on the schedule.</p>
+<dt id="term-schedule-horizon">Schedule Horizon</dt><dd><p>The amount ahead of time that pScheduler puts a run on the schedule.</p>
 </dd>
-<dt id="term-Task">Task<a class="headerlink" href="#term-Task" title="Link to this term">¶</a></dt><dd><p>A job for pScheduler to do, consisting of a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a> to be carried out, scheduling information and other options.</p>
+<dt id="term-task">Task</dt><dd><p>A job for pScheduler to do, consisting of a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a> to be carried out, scheduling information and other options.</p>
 </dd>
-<dt id="term-Test">Test<a class="headerlink" href="#term-Test" title="Link to this term">¶</a></dt><dd><p>A set of the parameters required to perform a unit of work. A unit of work is usually a network measurement in perfSONAR, but could be any type of operation. Tests are generally named in terms of what is being produced, not what does the producing. As an example, if what is being produced is a report of the speed of a data transfer, then the test name is <em>throughput</em> NOT a <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tool</span></a> name like <em>iperf</em>.</p>
+<dt id="term-test">Test</dt><dd><p>A set of the parameters required to perform a unit of work. A unit of work is usually a network measurement in perfSONAR, but could be any type of operation. Tests are generally named in terms of what is being produced, not what does the producing. As an example, if what is being produced is a report of the speed of a data transfer, then the test name is <em>throughput</em> NOT a <a class="reference internal" href="#term-tool"><span class="xref std std-term">tool</span></a> name like <em>iperf</em>.</p>
 </dd>
-<dt id="term-Tool">Tool<a class="headerlink" href="#term-Tool" title="Link to this term">¶</a></dt><dd><p>A program executed during a <a class="reference internal" href="#term-Run"><span class="xref std std-term">run</span></a> of a <a class="reference internal" href="#term-Task"><span class="xref std std-term">task</span></a> to carry out a <a class="reference internal" href="#term-Test"><span class="xref std std-term">test</span></a>. For example, the <em>iperf3</em> tool conducts throughput tests and the <em>traceroute</em> and <em>tracepath</em> tools conduct trace tests.</p>
+<dt id="term-tool">Tool</dt><dd><p>A program executed during a <a class="reference internal" href="#term-run"><span class="xref std std-term">run</span></a> of a <a class="reference internal" href="#term-task"><span class="xref std std-term">task</span></a> to carry out a <a class="reference internal" href="#term-test"><span class="xref std std-term">test</span></a>. For example, the <em>iperf3</em> tool conducts throughput tests and the <em>traceroute</em> and <em>tracepath</em> tools conduct trace tests.</p>
 </dd>
 </dl>
-</section>
-<section id="benefits">
-<h2>Benefits<a class="headerlink" href="#benefits" title="Link to this heading">¶</a></h2>
-<p>The pScheduler server will handle the coordination, execution and optionally storage of the task requested. Many of the <a class="reference internal" href="#term-Tool"><span class="xref std std-term">tools</span></a> pScheduler executes could be run independently of pScheduler, but the added value provided by pScheduler is significant to perfSONAR hosts for the following reasons:</p>
+</div>
+<div class="section" id="benefits">
+<h2>Benefits<a class="headerlink" href="#benefits" title="Permalink to this headline">¶</a></h2>
+<p>The pScheduler server will handle the coordination, execution and optionally storage of the task requested. Many of the <a class="reference internal" href="#term-tool"><span class="xref std std-term">tools</span></a> pScheduler executes could be run independently of pScheduler, but the added value provided by pScheduler is significant to perfSONAR hosts for the following reasons:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>Measurement Integrity</strong> - pScheduler maintains a schedule of all measurements to be run and will not allow any measurements it knowns about to run simultaneously if doing so would adversely affect the result in a significant way. For example, it will not run two throughput tests at the same time as the competition for resources could affect the results of each. In contrast it will run latency tests in the background as the low resource consumption does not significantly affect results of parallel tests.</p></li>
@@ -120,9 +121,9 @@
 </div></blockquote>
 <p>In addition to these foundational features, perhaps pScheduler greatest asset is it’s extensibility. It allows allows plug-ins for new tests, tools and archivers to be written. This means that pScheduler is not limited by what it can do today, and it’s possible to extend it to perform new type of measurements or other functions as well as to have their results sent to new types of storage and/or analysis tools.</p>
 <p>The remainder of this document provides some basic information on pScheduler and pointers to more detailed information where applicable.</p>
-</section>
-<section id="basic-command-line-client-usage">
-<h2>Basic Command-Line Client Usage<a class="headerlink" href="#basic-command-line-client-usage" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="basic-command-line-client-usage">
+<h2>Basic Command-Line Client Usage<a class="headerlink" href="#basic-command-line-client-usage" title="Permalink to this headline">¶</a></h2>
 <p>Everything in the pScheduler command-line interface (CLI) begins by running the <cite>pscheduler</cite> program and specifying a <em>command</em> and, optionally, <em>arguments</em>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">COMMAND</span> <span class="p">[</span> <span class="n">ARGUMENTS</span> <span class="p">]</span>
 </pre></div>
@@ -135,9 +136,9 @@
 <li><p><a class="reference internal" href="pscheduler_client_schedule.html"><span class="doc">Viewing the Schedule</span></a></p></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="running-a-pscheduler-server">
-<h2>Running A pScheduler Server<a class="headerlink" href="#running-a-pscheduler-server" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="running-a-pscheduler-server">
+<h2>Running A pScheduler Server<a class="headerlink" href="#running-a-pscheduler-server" title="Permalink to this headline">¶</a></h2>
 <p>If you want tp be able to schedule tasks on your host you will need to run a pScheduler server. For more information on running a pScheduler server and to configure it with limits that meet your needs, see the following documents:</p>
 <blockquote>
 <div><ul class="simple">
@@ -145,9 +146,9 @@
 <li><p><a class="reference internal" href="config_pscheduler_limits.html"><span class="doc">Configuring pScheduler Limits</span></a></p></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="more-information">
-<h2>More Information<a class="headerlink" href="#more-information" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="more-information">
+<h2>More Information<a class="headerlink" href="#more-information" title="Permalink to this headline">¶</a></h2>
 <p>For useful reference material about different pSchedule options, plug-ins and more see the following:</p>
 <blockquote>
 <div><ul class="simple">
@@ -155,11 +156,10 @@
 <li><p><a class="reference internal" href="pscheduler_ref_archivers.html"><span class="doc">Archiver Reference</span></a></p></li>
 </ul>
 </div></blockquote>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -210,8 +210,7 @@
         <li class="right" >
           <a href="grafana_cookbook.html" title="Grafana perfSONAR Dashboard Cookbook"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">What is pScheduler?</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -255,8 +254,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

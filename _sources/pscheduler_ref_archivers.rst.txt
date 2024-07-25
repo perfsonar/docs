@@ -646,6 +646,14 @@ Alternate JSON with Trace Hop List
         "script": "if (.test.type == \"trace\") then { \"test\": .test.type, \"from\": .participants[0], \"to\": .test.spec.dest,  \"id\": .id, \"start\": .schedule.start, \"ips\": [ .result.paths[0] | .[].ip ] } else null end"
     }
 
+Skip default local archiving
+++++++++++++++++++++++++++++++++++++++++++++++
+Requires also setting ``reference`` in tasks specification like ``"reference": { "foo_reference": true }``
+::
+
+    "transform": {
+        "script": "if (.task.reference.\"foo_reference\" == true) then null else . end"
+    }
 
 .. _pscheduler_ref_archivers-transforms-input-example:
 

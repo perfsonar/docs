@@ -1,19 +1,21 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="./">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>Creating Docker containers &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=68f3fa90" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Troubleshooting Docker Containers" href="pwa_docker_troubleshoot.html" />
@@ -60,8 +62,7 @@
           <a href="pwa_configure.html" title="Configuration"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Creating Docker containers</a></li> 
+          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,11 +74,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="creating-docker-containers">
-<h1>Creating Docker containers<a class="headerlink" href="#creating-docker-containers" title="Link to this heading">¶</a></h1>
+  <div class="section" id="creating-docker-containers">
+<h1>Creating Docker containers<a class="headerlink" href="#creating-docker-containers" title="Permalink to this headline">¶</a></h1>
 <p><strong>If you are not using Docker, SKIP THIS PAGE</strong></p>
-<section id="creating-containers-using-docker-compose">
-<h2>Creating containers using <cite>docker-compose</cite><a class="headerlink" href="#creating-containers-using-docker-compose" title="Link to this heading">¶</a></h2>
+<div class="section" id="creating-containers-using-docker-compose">
+<h2>Creating containers using <cite>docker-compose</cite><a class="headerlink" href="#creating-containers-using-docker-compose" title="Permalink to this headline">¶</a></h2>
 <p><em>Note</em> make sure you have extracted the sample configs here:</p>
 <p><a class="reference internal" href="pwa_install_docker.html"><span class="doc">Docker Installation</span></a></p>
 <p>Run this script to create your nginx certs, if you don’t already have them:</p>
@@ -87,28 +88,28 @@
 <p>Download the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file from here:</p>
 <p><a class="reference external" href="https://raw.githubusercontent.com/perfsonar/psconfig-web/master/psconfig-web-admin/perfsonar-psconfig-web-admin/deploy/docker/docker-compose.yml">https://raw.githubusercontent.com/perfsonar/psconfig-web/master/psconfig-web-admin/perfsonar-psconfig-web-admin/deploy/docker/docker-compose.yml</a></p>
 <p>Bring up the application:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker-compose up -d
 </pre></div>
 </div>
 <p>Make sure the containers are running:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose ps</span>
 
-<span class="w">      </span>Name<span class="w">                      </span>Command<span class="w">               </span>State<span class="w">                             </span>Ports
+      Name                      Command               State                             Ports
 ------------------------------------------------------------------------------------------------------------------------
-docker_mongo_1<span class="w">        </span>docker-entrypoint.sh<span class="w"> </span>mongod<span class="w">      </span>Up<span class="w">      </span><span class="m">27017</span>/tcp
-docker_nginx_1<span class="w">        </span>/docker-entrypoint.sh<span class="w"> </span>ngin<span class="w"> </span>...<span class="w">   </span>Up<span class="w">      </span><span class="m">0</span>.0.0.0:443-&gt;443/tcp,<span class="w"> </span><span class="m">0</span>.0.0.0:80-&gt;80/tcp,
-<span class="w">                                                               </span><span class="m">0</span>.0.0.0:9443-&gt;9443/tcp
-docker_pwa-admin1_1<span class="w">   </span>docker-entrypoint.sh<span class="w"> </span>/start.sh<span class="w">   </span>Up<span class="w">      </span><span class="m">80</span>/tcp,<span class="w"> </span><span class="m">8080</span>/tcp
-docker_pwa-pub1_1<span class="w">     </span>node<span class="w"> </span>/app/api/pwapub.js<span class="w">          </span>Up<span class="w">      </span><span class="m">8080</span>/tcp
-docker_sca-auth_1<span class="w">     </span>docker-entrypoint.sh<span class="w"> </span>/app/<span class="w"> </span>...<span class="w">   </span>Up<span class="w">      </span><span class="m">80</span>/tcp,<span class="w"> </span><span class="m">8080</span>/tcp
+docker_mongo_1        docker-entrypoint.sh mongod      Up      <span class="m">27017</span>/tcp
+docker_nginx_1        /docker-entrypoint.sh ngin ...   Up      <span class="m">0</span>.0.0.0:443-&gt;443/tcp, <span class="m">0</span>.0.0.0:80-&gt;80/tcp,
+                                                               <span class="m">0</span>.0.0.0:9443-&gt;9443/tcp
+docker_pwa-admin1_1   docker-entrypoint.sh /start.sh   Up      <span class="m">80</span>/tcp, <span class="m">8080</span>/tcp
+docker_pwa-pub1_1     node /app/api/pwapub.js          Up      <span class="m">8080</span>/tcp
+docker_sca-auth_1     docker-entrypoint.sh /app/ ...   Up      <span class="m">80</span>/tcp, <span class="m">8080</span>/tcp
 </pre></div>
 </div>
 <p>If not everything is running, try <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">logs</span></code> to troubleshoot.</p>
 <p>Docker Compose documentation can be found here:</p>
 <p><a class="reference external" href="https://docs.docker.com/compose/">https://docs.docker.com/compose/</a></p>
-</section>
-<section id="creating-containers-using-a-script">
-<h2>Creating containers using a script<a class="headerlink" href="#creating-containers-using-a-script" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="creating-containers-using-a-script">
+<h2>Creating containers using a script<a class="headerlink" href="#creating-containers-using-a-script" title="Permalink to this headline">¶</a></h2>
 <p>Now we have all configuration files necessary to start installing PWA services.</p>
 <p>The easiest way to get the necessary containers installed and running is to use these scripts. You may want to modify them if you are doing something other than a default setup.</p>
 <p>Default setup uses a <code class="docutils literal notranslate"><span class="pre">pwa</span></code> docker network, data under <code class="docutils literal notranslate"><span class="pre">/usr/local/data</span></code>, one publisher named <code class="docutils literal notranslate"><span class="pre">pwa-pub1</span></code>, one PWA application named <code class="docutils literal notranslate"><span class="pre">pwa-admin1</span></code>, and one <code class="docutils literal notranslate"><span class="pre">sca-auth</span></code> instance named <code class="docutils literal notranslate"><span class="pre">sca-auth</span></code>. It also initializes <code class="docutils literal notranslate"><span class="pre">mongodb</span></code> and <code class="docutils literal notranslate"><span class="pre">nginx</span></code> instances. By default, a <code class="docutils literal notranslate"><span class="pre">postfix</span></code> instance is not created, so if you want to use that you’ll have to modify the script.</p>
@@ -120,47 +121,47 @@ docker_sca-auth_1<span class="w">     </span>docker-entrypoint.sh<span class="w"
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/usr/local/sbin/start_pwa_containers.sh
 </pre></div>
 </div>
-</section>
-<section id="updating-containers-with-a-script">
-<h2>Updating containers with a script<a class="headerlink" href="#updating-containers-with-a-script" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="updating-containers-with-a-script">
+<h2>Updating containers with a script<a class="headerlink" href="#updating-containers-with-a-script" title="Permalink to this headline">¶</a></h2>
 <p>To update PWA containers to the latest version, use this script (you may have to modify it, if you changed <code class="docutils literal notranslate"><span class="pre">init_docker.sh</span></code> or <code class="docutils literal notranslate"><span class="pre">start_pwa_containers.sh</span></code> above).</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/usr/local/sbin/update_pwa_containers.sh
 </pre></div>
 </div>
-</section>
-<section id="manually-creating-containers">
-<h2>Manually creating containers<a class="headerlink" href="#manually-creating-containers" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="manually-creating-containers">
+<h2>Manually creating containers<a class="headerlink" href="#manually-creating-containers" title="Permalink to this headline">¶</a></h2>
 <p>If you want a custom setup, or if you are trying to troubleshoot the containers, you may want to manually create the containers.</p>
 <ol class="arabic">
 <li><p>First, create the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/usr/local/data
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir -p /usr/local/data
 </pre></div>
 </div>
 </li>
 <li><p>Next, create a docker network to group all PWA containers</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>pwa
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker network create pwa
 </pre></div>
 </div>
 </li>
 <li><p>Create mongoDB container. Use -v to persist data on host directory (/usr/local/data/mongo)</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/usr/local/data
-docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>--restart<span class="o">=</span>always<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>--net<span class="w"> </span>pwa<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>--name<span class="w"> </span>mongo<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>-v<span class="w"> </span>/usr/local/data/mongo:/data/db<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>-d<span class="w"> </span>mongo
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir -p /usr/local/data
+docker run <span class="se">\</span>
+        --restart<span class="o">=</span>always <span class="se">\</span>
+        --net pwa <span class="se">\</span>
+        --name mongo <span class="se">\</span>
+        -v /usr/local/data/mongo:/data/db <span class="se">\</span>
+        -d mongo
 </pre></div>
 </div>
 </li>
 <li><p>Create SCA authentication service container. This service handles user authentication / account/user group management.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--restart<span class="o">=</span>always<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--net<span class="w"> </span>pwa<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--name<span class="w"> </span>sca-auth<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/etc/pwa/auth:/app/api/config<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/usr/local/data/auth:/db<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-d<span class="w"> </span>perfsonar/sca-auth
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --restart<span class="o">=</span>always <span class="se">\</span>
+    --net pwa <span class="se">\</span>
+    --name sca-auth <span class="se">\</span>
+    -v /etc/pwa/auth:/app/api/config <span class="se">\</span>
+    -v /usr/local/data/auth:/db <span class="se">\</span>
+    -d perfsonar/sca-auth
 </pre></div>
 </div>
 <blockquote>
@@ -169,49 +170,49 @@ The user account DB is stored in <code class="docutils literal notranslate"><spa
 </div></blockquote>
 </li>
 <li><p>Create PWA’s main UI/API container.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--restart<span class="o">=</span>always<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--net<span class="w"> </span>pwa<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--name<span class="w"> </span>pwa-admin1<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/etc/pwa:/app/api/config:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-d<span class="w"> </span>perfsonar/pwa-admin
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --restart<span class="o">=</span>always <span class="se">\</span>
+    --net pwa <span class="se">\</span>
+    --name pwa-admin1 <span class="se">\</span>
+    -v /etc/pwa:/app/api/config:ro <span class="se">\</span>
+    -d perfsonar/pwa-admin
 </pre></div>
 </div>
 </li>
 <li><p>Create meshconfig publishers.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="w">   </span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">       </span>--restart<span class="o">=</span>always<span class="w"> </span><span class="se">\</span>
-<span class="w">       </span>--net<span class="w"> </span>pwa<span class="w"> </span><span class="se">\</span>
-<span class="w">       </span>--name<span class="w"> </span>pwa-pub1<span class="w"> </span><span class="se">\</span>
-<span class="w">       </span>-v<span class="w"> </span>/etc/pwa:/app/api/config:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">       </span>-d<span class="w"> </span>perfsonar/pwa-pub
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>   docker run <span class="se">\</span>
+       --restart<span class="o">=</span>always <span class="se">\</span>
+       --net pwa <span class="se">\</span>
+       --name pwa-pub1 <span class="se">\</span>
+       -v /etc/pwa:/app/api/config:ro <span class="se">\</span>
+       -d perfsonar/pwa-pub
 
-You<span class="w"> </span>can<span class="w"> </span>create<span class="w"> </span>as<span class="w"> </span>many<span class="w"> </span>pwa-pub<span class="w"> </span>containers<span class="w"> </span>as<span class="w"> </span>desired<span class="w"> </span><span class="o">(</span>make<span class="w"> </span>sure<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span>unique<span class="w"> </span>names<span class="w"> </span><span class="sb">``</span>pwa-pub1<span class="sb">``</span><span class="se">\ </span>,<span class="w"> </span><span class="sb">``</span>pwa-pub2<span class="sb">``</span><span class="se">\ </span>,<span class="w"> </span>etc..<span class="o">)</span><span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>available<span class="w"> </span>resource<span class="w"> </span><span class="o">(</span>mainly<span class="w"> </span>CPU<span class="o">)</span><span class="w"> </span>.<span class="w"> </span><span class="m">1</span><span class="w"> </span>or<span class="w"> </span><span class="m">2</span><span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>fine<span class="w"> </span><span class="k">for</span><span class="w"> </span>most<span class="w"> </span>cases.
+You can create as many pwa-pub containers as desired <span class="o">(</span>make sure to use unique names <span class="sb">``</span>pwa-pub1<span class="sb">``</span><span class="se">\ </span>, <span class="sb">``</span>pwa-pub2<span class="sb">``</span><span class="se">\ </span>, etc..<span class="o">)</span> based on available resource <span class="o">(</span>mainly CPU<span class="o">)</span> . <span class="m">1</span> or <span class="m">2</span> should be fine <span class="k">for</span> most cases.
 
-If<span class="w"> </span>you<span class="w"> </span>use<span class="w"> </span>more<span class="w"> </span>than<span class="w"> </span><span class="m">1</span><span class="w"> </span>instance,<span class="w"> </span>please<span class="w"> </span>edit<span class="w"> </span><span class="sb">``</span>/etc/pwa/nginx/conf.d/pwa.conf<span class="sb">``</span><span class="w"> </span>to<span class="w"> </span>include<span class="w"> </span>all<span class="w"> </span>instances,<span class="w"> </span>like..
+If you use more than <span class="m">1</span> instance, please edit <span class="sb">``</span>/etc/pwa/nginx/conf.d/pwa.conf<span class="sb">``</span> to include all instances, like..
 
-..<span class="w"> </span>code-block::<span class="w"> </span>javascript
+.. code-block:: javascript
 
-<span class="w">   </span>upstream<span class="w"> </span>pwapub<span class="w"> </span><span class="o">{</span>
-<span class="w">       </span>server<span class="w"> </span>pwa-pub1:8080<span class="p">;</span>
-<span class="w">       </span>server<span class="w"> </span>pwa-pub2:8080<span class="p">;</span>
-<span class="w">       </span>server<span class="w"> </span>pwa-pub3:8080<span class="p">;</span>
-<span class="w">   </span><span class="o">}</span>
+   upstream pwapub <span class="o">{</span>
+       server pwa-pub1:8080<span class="p">;</span>
+       server pwa-pub2:8080<span class="p">;</span>
+       server pwa-pub3:8080<span class="p">;</span>
+   <span class="o">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Finally, we install nginx to expose these container via 80/443/9443</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--restart<span class="o">=</span>always<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--net<span class="w"> </span>pwa<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--name<span class="w"> </span>nginx<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/etc/pwa/shared:/shared:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/etc/pwa/nginx:/etc/nginx:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span>/etc/pwa/auth:/certs:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">80</span>:80<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">443</span>:443<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">9443</span>:9443<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-d<span class="w"> </span>nginx
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --restart<span class="o">=</span>always <span class="se">\</span>
+    --net pwa <span class="se">\</span>
+    --name nginx <span class="se">\</span>
+    -v /etc/pwa/shared:/shared:ro <span class="se">\</span>
+    -v /etc/pwa/nginx:/etc/nginx:ro <span class="se">\</span>
+    -v /etc/pwa/auth:/certs:ro <span class="se">\</span>
+    -p <span class="m">80</span>:80 <span class="se">\</span>
+    -p <span class="m">443</span>:443 <span class="se">\</span>
+    -p <span class="m">9443</span>:9443 <span class="se">\</span>
+    -d nginx
 </pre></div>
 </div>
 </li>
@@ -219,43 +220,42 @@ If<span class="w"> </span>you<span class="w"> </span>use<span class="w"> </span>
 <p>The <code class="docutils literal notranslate"><span class="pre">sca-auth</span></code> service sometimes needs to send e-mails to users, as part of the registration process, or for password resets, etc. It can be configured to use an external SMTP server, or you can run a separate docker container that runs postfix, in which case PWA will send its e-mail notices through that.</p>
 <p>If you are not using an external SMTP server, install a postfix docker container. This one has been tested and appears to work well, but it is not maintained by the perfSONAR project:</p>
 <p><a class="reference external" href="https://hub.docker.com/r/yorkshirekev/postfix/">Docker-postfix</a></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="w">       </span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">           </span>--network<span class="w"> </span>pwa<span class="w"> </span><span class="se">\</span>
-<span class="w">           </span>-d<span class="w"> </span>--name<span class="w"> </span>postfix<span class="w"> </span><span class="se">\</span>
-<span class="w">           </span>-p<span class="w"> </span><span class="m">587</span>:25<span class="w"> </span><span class="se">\</span>
-<span class="w">           </span>--restart<span class="w"> </span>always<span class="w"> </span><span class="se">\</span>
-<span class="w">           </span>yorkshirekev/postfix<span class="w"> </span>HOSTNAME
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>       docker run <span class="se">\</span>
+           --network pwa <span class="se">\</span>
+           -d --name postfix <span class="se">\</span>
+           -p <span class="m">587</span>:25 <span class="se">\</span>
+           --restart always <span class="se">\</span>
+           yorkshirekev/postfix HOSTNAME
 
-Make<span class="w"> </span>sure<span class="w"> </span>to<span class="w"> </span>replace<span class="w"> </span>HOSTNAME<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>actual<span class="w"> </span>hostname<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>main<span class="w"> </span>host.
-You<span class="w"> </span>might<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>try<span class="w"> </span>different<span class="w"> </span>ports<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="sb">``</span>-p<span class="w"> </span><span class="m">587</span>:25<span class="sb">``</span><span class="se">\ </span>,<span class="w"> </span>depending<span class="w"> </span>on<span class="w"> </span>what<span class="w"> </span>is<span class="w"> </span>available<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>main<span class="w"> </span>host.
+Make sure to replace HOSTNAME with the actual hostname of the main host.
+You might need to try different ports <span class="k">for</span> <span class="sb">``</span>-p <span class="m">587</span>:25<span class="sb">``</span><span class="se">\ </span>, depending on what is available on the main host.
 </pre></div>
 </div>
 </li>
 </ol>
-</section>
-<section id="manually-updating">
-<h2>Manually updating<a class="headerlink" href="#manually-updating" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="manually-updating">
+<h2>Manually updating<a class="headerlink" href="#manually-updating" title="Permalink to this headline">¶</a></h2>
 <p>Pull down the latest version using (for example):</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>perfsonar/pwa-admin1
-docker<span class="w"> </span>pull<span class="w"> </span>perfsonar/pwa-pub1
-docker<span class="w"> </span>pull<span class="w"> </span>perfsonar/sca-auth
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker pull perfsonar/pwa-admin1
+docker pull perfsonar/pwa-pub1
+docker pull perfsonar/sca-auth
 </pre></div>
 </div>
 <p>Then stop and remove each container you wish to upgrade – for example:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>stop<span class="w"> </span>pwa-admin1
-docker<span class="w"> </span>rm<span class="w"> </span>pwa-admin1
-docker<span class="w"> </span>stop<span class="w"> </span>pwa-pub1
-docker<span class="w"> </span>rm<span class="w"> </span>pwa-pub1
-docker<span class="w"> </span>stop<span class="w"> </span>sca-auth
-docker<span class="w"> </span>rm<span class="w"> </span>sca-auth
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker stop pwa-admin1
+docker rm pwa-admin1
+docker stop pwa-pub1
+docker rm pwa-pub1
+docker stop sca-auth
+docker rm sca-auth
 </pre></div>
 </div>
 <p>Re-run the container using the same <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">...</span></code> command you used to start it.</p>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -306,8 +306,7 @@ docker<span class="w"> </span>rm<span class="w"> </span>sca-auth
           <a href="pwa_configure.html" title="Configuration"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Creating Docker containers</a></li> 
+          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -351,8 +350,8 @@ docker<span class="w"> </span>rm<span class="w"> </span>sca-auth
     </footer>
     
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

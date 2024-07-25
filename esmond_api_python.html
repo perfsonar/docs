@@ -1,19 +1,21 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="./">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>esmond Python Client Libraries &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=68f3fa90" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Previous Release Documentation" href="previous_releases.html" />
@@ -60,8 +62,7 @@
           <a href="esmond_api_perl.html" title="esmond Perl Client Libraries"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="esmond_api_rest.html" accesskey="U">esmond API Reference</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">esmond Python Client Libraries</a></li> 
+          <li class="nav-item nav-item-1"><a href="esmond_api_rest.html" accesskey="U">esmond API Reference</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,16 +74,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="esmond-python-client-libraries">
-<h1>esmond Python Client Libraries<a class="headerlink" href="#esmond-python-client-libraries" title="Link to this heading">¶</a></h1>
+  <div class="section" id="esmond-python-client-libraries">
+<h1>esmond Python Client Libraries<a class="headerlink" href="#esmond-python-client-libraries" title="Permalink to this headline">¶</a></h1>
 <p>The pS data can be queried, retrieved and posted to the esmond/cassandra backend
 via a REST interface.  This is streamlined by the following libraries:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">esmond</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">query</span>
 <span class="n">esmond</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">perfsonar</span><span class="o">.</span><span class="n">post</span>
 </pre></div>
 </div>
-<section id="initializing-the-query-interface">
-<h2>Initializing the query interface<a class="headerlink" href="#initializing-the-query-interface" title="Link to this heading">¶</a></h2>
+<div class="section" id="initializing-the-query-interface">
+<h2>Initializing the query interface<a class="headerlink" href="#initializing-the-query-interface" title="Permalink to this headline">¶</a></h2>
 <p>The query libarary has two main “top level” classes: ApiFilters and ApiConnect.
 ApiFilters lets the user, through a series of properties, set the primary query
 criteria like time ranges, source, destination, etc.  The following criteria
@@ -128,9 +129,9 @@ using this.  But if one is doing development against the django runserver dev
 server, or if this has been set up differently, then the optional kwarg
 “script_alias” will need to be set as well.  Against the dev server, it can
 be set to script_alias=None since the Apache directive is not in place.</p>
-</section>
-<section id="retrieving-the-data">
-<h2>Retrieving the data<a class="headerlink" href="#retrieving-the-data" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="retrieving-the-data">
+<h2>Retrieving the data<a class="headerlink" href="#retrieving-the-data" title="Permalink to this headline">¶</a></h2>
 <p>The basic design of the returned data is a hierarchy of encapsulation objects
 that return additioanl objects objects, etc.  All of the returned objects
 have informative __repr__ methods defined, that might help when doing
@@ -231,9 +232,9 @@ window is the time duration of the aggregation rollups.</p>
 <p>Like with the EventType object, the underlying data can be retrieved by
 calling get_data() to get a DataPayload object and call the data property
 on that to get a list of DataPoint objects.</p>
-</section>
-<section id="writing-data-to-ps-esmond-backend">
-<h2>Writing data to pS esmond/backend<a class="headerlink" href="#writing-data-to-ps-esmond-backend" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="writing-data-to-ps-esmond-backend">
+<h2>Writing data to pS esmond/backend<a class="headerlink" href="#writing-data-to-ps-esmond-backend" title="Permalink to this headline">¶</a></h2>
 <p>The REST interface also supports adding metadata, event types and data if
 the user is properly authenticated using a username and api_key that has
 been generated by the admin of the system.  The following are presented as
@@ -327,15 +328,14 @@ a similar fashion minus the event_type arg:</p>
 </div>
 <p>NOTE: as noted in the previous section, the optional script_alias kwarg works
 the same way with the POST interface.</p>
-</section>
-<section id="additional-notes">
-<h2>Additional notes<a class="headerlink" href="#additional-notes" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="additional-notes">
+<h2>Additional notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h2>
 <p>TBA</p>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -385,8 +385,7 @@ the same way with the POST interface.</p>
           <a href="esmond_api_perl.html" title="esmond Perl Client Libraries"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="esmond_api_rest.html" >esmond API Reference</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">esmond Python Client Libraries</a></li> 
+          <li class="nav-item nav-item-1"><a href="esmond_api_rest.html" >esmond API Reference</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -430,8 +429,8 @@ the same way with the POST interface.</p>
     </footer>
     
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
