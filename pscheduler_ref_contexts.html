@@ -1,21 +1,20 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Contexts Reference &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Contexts Reference &#8212; perfSONAR Toolkit 5.1.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pScheduler Disk-to-Disk Tests" href="pscheduler_disk_to_disk.html" />
@@ -61,7 +60,8 @@
         <li class="right" >
           <a href="pscheduler_ref_archivers.html" title="Archiver Reference"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Contexts Reference</a></li> 
       </ul>
     </div>
     </div>
@@ -73,11 +73,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="contexts-reference">
-<h1>Contexts Reference<a class="headerlink" href="#contexts-reference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="introduction">
-<span id="pscheduler-ref-contexts-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>pScheduler supports a construct called a <a class="reference internal" href="pscheduler_intro.html#term-context"><span class="xref std std-term">context</span></a> which allows certain user-specified changes to the execution context prior to execution of that tool running a test.  One example of such changes (and the only one implemented at this time) is the selection of a non-root network namespace on a Linux system to allow alternate routing.</p>
+  <section id="contexts-reference">
+<h1>Contexts Reference<a class="headerlink" href="#contexts-reference" title="Permalink to this heading">¶</a></h1>
+<section id="introduction">
+<span id="pscheduler-ref-contexts-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<p>pScheduler supports a construct called a <a class="reference internal" href="pscheduler_intro.html#term-Context"><span class="xref std std-term">context</span></a> which allows certain user-specified changes to the execution context prior to execution of that tool running a test.  One example of such changes (and the only one implemented at this time) is the selection of a non-root network namespace on a Linux system to allow alternate routing.</p>
 <p>This feature has limitations/requirements that must be understood, particularly when using it to change the behavior of the system’s network stack:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -88,9 +88,9 @@
 <li><p>Archiving is done in the same context as the rest of pScheduler.</p></li>
 </ol>
 </div></blockquote>
-</div>
-<div class="section" id="basic-json-syntax">
-<span id="pscheduler-ref-contexts-syntax"></span><h2>Basic JSON Syntax<a class="headerlink" href="#basic-json-syntax" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="basic-json-syntax">
+<span id="pscheduler-ref-contexts-syntax"></span><h2>Basic JSON Syntax<a class="headerlink" href="#basic-json-syntax" title="Permalink to this heading">¶</a></h2>
 <p>Changing contexts is accomplished by providing a <em>context specification</em>.  The context specification is an array containing one or more sub-arrays, one for each participant in the test:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
@@ -116,21 +116,21 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="changing-contexts-from-the-command-line">
-<span id="pscheduler-ref-contexts-cli"></span><h2>Changing Contexts from the Command Line<a class="headerlink" href="#changing-contexts-from-the-command-line" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="changing-contexts-from-the-command-line">
+<span id="pscheduler-ref-contexts-cli"></span><h2>Changing Contexts from the Command Line<a class="headerlink" href="#changing-contexts-from-the-command-line" title="Permalink to this heading">¶</a></h2>
 <p>pScheduler can be directed to change contexts by using the <code class="docutils literal notranslate"><span class="pre">--context</span></code> switch followed by a context specification.</p>
-<div class="section" id="specifying-context-changers">
-<span id="pscheduler-ref-contexts-cli-changers"></span><h3>Specifying Context Changers<a class="headerlink" href="#specifying-context-changers" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="directly-as-a-string-literal">
-<span id="pscheduler-ref-contexts-cli-changers-string"></span><h4>Directly, as a String Literal<a class="headerlink" href="#directly-as-a-string-literal" title="Permalink to this headline">¶</a></h4>
+<section id="specifying-context-changers">
+<span id="pscheduler-ref-contexts-cli-changers"></span><h3>Specifying Context Changers<a class="headerlink" href="#specifying-context-changers" title="Permalink to this heading">¶</a></h3>
+<section id="directly-as-a-string-literal">
+<span id="pscheduler-ref-contexts-cli-changers-string"></span><h4>Directly, as a String Literal<a class="headerlink" href="#directly-as-a-string-literal" title="Permalink to this heading">¶</a></h4>
 <p>The context specification may be added directly to the command line as a string literal containing its JSON:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">context</span> <span class="s1">&#39;{ &quot;schema&quot;: 1, &quot;contexts&quot;: [ [ { &quot;context&quot;: &quot;linuxnns&quot;, &quot;data&quot;: { &quot;namespace&quot;: &quot;ou812&quot; } } ] ] }&#39;</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="mf">198.51</span><span class="o">.</span><span class="mf">100.86</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">context</span> <span class="s1">&#39;{ &quot;schema&quot;: 1, &quot;contexts&quot;: [ [ { &quot;context&quot;: &quot;linuxnns&quot;, &quot;data&quot;: { &quot;namespace&quot;: &quot;ou812&quot; } } ] ] }&#39;</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="mf">198.51.100.86</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="indirectly-from-a-file">
-<span id="pscheduler-ref-contexts-cli-changers-file"></span><h4>Indirectly, From a File<a class="headerlink" href="#indirectly-from-a-file" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="indirectly-from-a-file">
+<span id="pscheduler-ref-contexts-cli-changers-file"></span><h4>Indirectly, From a File<a class="headerlink" href="#indirectly-from-a-file" title="Permalink to this heading">¶</a></h4>
 <p>If the argument given to the <code class="docutils literal notranslate"><span class="pre">--context</span></code> switch begins with <code class="docutils literal notranslate"><span class="pre">&#64;</span></code>, the remainder of the argument will be treated as the path to a JSON file containing a context specification which will be opened, read and treated as if it had been typed in by hand.  (Note that the tilde (<code class="docutils literal notranslate"><span class="pre">~</span></code>) is not expanded to the user’s home directory.  Use <code class="docutils literal notranslate"><span class="pre">$HOME</span></code> instead.)  For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">cat</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">fred</span><span class="o">/</span><span class="n">context</span><span class="o">-</span><span class="n">ou812</span><span class="o">.</span><span class="n">json</span>
 <span class="p">{</span>
@@ -148,28 +148,28 @@
 <span class="p">}</span>
 
 
-<span class="o">%</span> <span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">context</span> <span class="o">@/</span><span class="n">home</span><span class="o">/</span><span class="n">fred</span><span class="o">/</span><span class="n">context</span><span class="o">-</span><span class="n">ou812</span><span class="o">.</span><span class="n">json</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="mf">198.51</span><span class="o">.</span><span class="mf">100.86</span>
+<span class="o">%</span> <span class="n">pscheduler</span> <span class="n">task</span> <span class="o">--</span><span class="n">context</span> <span class="o">@/</span><span class="n">home</span><span class="o">/</span><span class="n">fred</span><span class="o">/</span><span class="n">context</span><span class="o">-</span><span class="n">ou812</span><span class="o">.</span><span class="n">json</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="mf">198.51.100.86</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="contexts-in-psconfig-templates">
-<span id="pscheduler-ref-contexts-psconfig"></span><h2>Contexts in pSConfig Templates<a class="headerlink" href="#contexts-in-psconfig-templates" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="contexts-in-psconfig-templates">
+<span id="pscheduler-ref-contexts-psconfig"></span><h2>Contexts in pSConfig Templates<a class="headerlink" href="#contexts-in-psconfig-templates" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference internal" href="psconfig_intro.html"><span class="doc">pSConfig</span></a> allows for the use of context objects in the <code class="docutils literal notranslate"><span class="pre">contexts</span></code> section of pSConfig templates. They take the exact same format as described in this document. For more information on contexts in pSConfig see <a class="reference internal" href="psconfig_templates_advanced.html#psconfig-templates-advanced-contexts"><span class="std std-ref">Using contexts</span></a>.</p>
-</div>
-<div class="section" id="context-changers">
-<span id="pscheduler-ref-contexts-changers"></span><h2>Context Changers<a class="headerlink" href="#context-changers" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="context-changers">
+<span id="pscheduler-ref-contexts-changers"></span><h2>Context Changers<a class="headerlink" href="#context-changers" title="Permalink to this heading">¶</a></h2>
 <p>The context changers listed below are supplied as part of the standard distribution of pScheduler.</p>
-<div class="section" id="linuxnns">
-<span id="pscheduler-ref-contexts-changers-linuxnns"></span><h3><code class="docutils literal notranslate"><span class="pre">linuxnns</span></code><a class="headerlink" href="#linuxnns" title="Permalink to this headline">¶</a></h3>
+<section id="linuxnns">
+<span id="pscheduler-ref-contexts-changers-linuxnns"></span><h3><code class="docutils literal notranslate"><span class="pre">linuxnns</span></code><a class="headerlink" href="#linuxnns" title="Permalink to this heading">¶</a></h3>
 <p>This context changer switches to a different Linux network namespace.</p>
-<div class="section" id="context-changer-data">
-<span id="pscheduler-ref-contexts-changers-linuxnns-data"></span><h4>Context Changer Data<a class="headerlink" href="#context-changer-data" title="Permalink to this headline">¶</a></h4>
+<section id="context-changer-data">
+<span id="pscheduler-ref-contexts-changers-linuxnns-data"></span><h4>Context Changer Data<a class="headerlink" href="#context-changer-data" title="Permalink to this heading">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">namespace</span></code> - The name of the namespace to be used during the run of the test.</p>
-</div>
-<div class="section" id="example">
-<span id="pscheduler-ref-contexts-changers-linuxnns-example"></span><h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="example">
+<span id="pscheduler-ref-contexts-changers-linuxnns-example"></span><h4>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;linuxnns&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -178,46 +178,47 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="changenothing">
-<span id="pscheduler-ref-contexts-changers-changenothing"></span><h3><code class="docutils literal notranslate"><span class="pre">changenothing</span></code><a class="headerlink" href="#changenothing" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="changenothing">
+<span id="pscheduler-ref-contexts-changers-changenothing"></span><h3><code class="docutils literal notranslate"><span class="pre">changenothing</span></code><a class="headerlink" href="#changenothing" title="Permalink to this heading">¶</a></h3>
 <p>This context changer makes no changes to the execution context and is intended for development and testing only.</p>
-<div class="section" id="pscheduler-ref-contexts-changers-changenothing-data">
-<span id="id1"></span><h4>Context Changer Data<a class="headerlink" href="#pscheduler-ref-contexts-changers-changenothing-data" title="Permalink to this headline">¶</a></h4>
+<section id="pscheduler-ref-contexts-changers-changenothing-data">
+<span id="id1"></span><h4>Context Changer Data<a class="headerlink" href="#pscheduler-ref-contexts-changers-changenothing-data" title="Permalink to this heading">¶</a></h4>
 <p>This context changer has no data.</p>
-</div>
-<div class="section" id="pscheduler-ref-contexts-changers-changenothing-example">
-<span id="id2"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-contexts-changers-changenothing-example" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="pscheduler-ref-contexts-changers-changenothing-example">
+<span id="id2"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-contexts-changers-changenothing-example" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;changenothing&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="changefail">
-<span id="pscheduler-ref-contexts-changers-changefail"></span><h3><code class="docutils literal notranslate"><span class="pre">changefail</span></code><a class="headerlink" href="#changefail" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="changefail">
+<span id="pscheduler-ref-contexts-changers-changefail"></span><h3><code class="docutils literal notranslate"><span class="pre">changefail</span></code><a class="headerlink" href="#changefail" title="Permalink to this heading">¶</a></h3>
 <p>This context changer induces a falure and is intended for development and testing only.</p>
-<div class="section" id="pscheduler-ref-contexts-changers-changefail-data">
-<span id="id3"></span><h4>Context Changer Data<a class="headerlink" href="#pscheduler-ref-contexts-changers-changefail-data" title="Permalink to this headline">¶</a></h4>
+<section id="pscheduler-ref-contexts-changers-changefail-data">
+<span id="id3"></span><h4>Context Changer Data<a class="headerlink" href="#pscheduler-ref-contexts-changers-changefail-data" title="Permalink to this heading">¶</a></h4>
 <p>This context changer has no data.</p>
-</div>
-<div class="section" id="pscheduler-ref-contexts-changers-changefail-example">
-<span id="id4"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-contexts-changers-changefail-example" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="pscheduler-ref-contexts-changers-changefail-example">
+<span id="id4"></span><h4>Example<a class="headerlink" href="#pscheduler-ref-contexts-changers-changefail-example" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;changefail&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -291,7 +292,8 @@
         <li class="right" >
           <a href="pscheduler_ref_archivers.html" title="Archiver Reference"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Contexts Reference</a></li> 
       </ul>
     </div>
     <footer id="fat">
@@ -336,7 +338,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
     </div>
   </body>
 </html>
