@@ -1,20 +1,21 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Configuring pScheduler Limits &#8212; perfSONAR Toolkit 5.1.3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <title>Configuring pScheduler Limits &#8212; perfSONAR Toolkit 5.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Test and Tool Reference" href="pscheduler_ref_tests_tools.html" />
@@ -60,8 +61,7 @@
         <li class="right" >
           <a href="pscheduler_batch.html" title="Batch Processing"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Configuring pScheduler Limits</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,10 +73,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="configuring-pscheduler-limits">
-<h1>Configuring pScheduler Limits<a class="headerlink" href="#configuring-pscheduler-limits" title="Permalink to this heading">¶</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+  <div class="section" id="configuring-pscheduler-limits">
+<h1>Configuring pScheduler Limits<a class="headerlink" href="#configuring-pscheduler-limits" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>pScheduler offers the ability to control what tasks may be run, by
 whom and with what parameters.  This is achieved by writing and
 installing a <em>limit configuration file</em>.</p>
@@ -84,20 +84,20 @@ installing a <em>limit configuration file</em>.</p>
 <code class="docutils literal notranslate"><span class="pre">/usr/share/doc/pscheduler/limit-examples</span></code> on systems with the
 pScheduler bundle installed.  The limit configuration that ships with
 the perfSONAR toolkit may be found <a class="reference external" href="https://github.com/perfsonar/toolkit/blob/master/etc/default_service_configs/pscheduler_limits.conf">in the toolkit sources</a>.</p>
-</section>
-<section id="the-limit-configuration-file">
-<h2>The Limit Configuration File<a class="headerlink" href="#the-limit-configuration-file" title="Permalink to this heading">¶</a></h2>
-<section id="installing-a-limit-configuration">
-<h3>Installing a Limit Configuration<a class="headerlink" href="#installing-a-limit-configuration" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="the-limit-configuration-file">
+<h2>The Limit Configuration File<a class="headerlink" href="#the-limit-configuration-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-a-limit-configuration">
+<h3>Installing a Limit Configuration<a class="headerlink" href="#installing-a-limit-configuration" title="Permalink to this headline">¶</a></h3>
 <p>The limit configuration is installed in <code class="docutils literal notranslate"><span class="pre">/etc/pscheduler/limits.conf</span></code> and must be readable by the <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> user.  The recommended file attributes are owner <code class="docutils literal notranslate"><span class="pre">root</span></code>, group <code class="docutils literal notranslate"><span class="pre">pscheduler</span></code> and permissions <cite>0644</cite>.</p>
 <p>pScheduler server automatically detect changes to the limit configuration and put them into effect upon the arrival of the first request that requires checking limits or 15 seconds, whichever is longer.  Changes to the limit file are noted in the pScheduler log (usually <code class="docutils literal notranslate"><span class="pre">/var/log/pscheduler/pscheduler.log</span></code>), as are notifications of problems.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If the configuration file does not exist, is removed or fails to load, pScheduler will enforce no limits and grant every task request it receives.  For this reason, it is strongly recommended that configurations be verified as described in <a class="reference internal" href="#config-pscheduler-limits-check-validity"><span class="std std-ref">Checking Limit Configuration Files for Validity</span></a> before they are installed.</p>
 </div>
-</section>
-<section id="content">
-<h3>Content<a class="headerlink" href="#content" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="content">
+<h3>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h3>
 <p>The contents of the limit file can be either a URL with a scheme
 (e.g., <code class="docutils literal notranslate"><span class="pre">https://...</span></code>) or <a class="reference external" href="http://www.json.org">JavaScript Object Notation</a> (JSON).</p>
 <p>If the file contains a URL, the content at that location will be
@@ -117,9 +117,9 @@ JSON object with the pairs shown here:</p>
 </pre></div>
 </div>
 <p>Each pair is described in the sections below.</p>
-</section>
-<section id="comments">
-<h3>Comments<a class="headerlink" href="#comments" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="comments">
+<h3>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h3>
 <p>All JSON read by pScheduler supports in-line commenting by ignoring
 any pair whose key begins with a pound sign (<code class="docutils literal notranslate"><span class="pre">#</span></code>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -130,10 +130,10 @@ any pair whose key begins with a pound sign (<code class="docutils literal notra
 </pre></div>
 </div>
 <p>Note that this behavior is not part of ECMA 404, the JSON standard.</p>
-</section>
-</section>
-<section id="identifiers-who-s-asking">
-<h2>Identifiers:  <em>Who’s Asking?</em><a class="headerlink" href="#identifiers-who-s-asking" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="identifiers-who-s-asking">
+<h2>Identifiers:  <em>Who’s Asking?</em><a class="headerlink" href="#identifiers-who-s-asking" title="Permalink to this headline">¶</a></h2>
 <p>The first phase of vetting a task or run is <em>identification</em>, where
 attributes of the arriving request are used to create a list of narrow
 categories into which the requester fits.  Note that _requester_ means
@@ -187,10 +187,10 @@ opposite).</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-<section id="identifier-types">
-<h3>Identifier Types<a class="headerlink" href="#identifier-types" title="Permalink to this heading">¶</a></h3>
-<section id="always-identify-everyone">
-<h4><code class="docutils literal notranslate"><span class="pre">always</span></code> - Identify Everyone<a class="headerlink" href="#always-identify-everyone" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="identifier-types">
+<h3>Identifier Types<a class="headerlink" href="#identifier-types" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="always-identify-everyone">
+<h4><code class="docutils literal notranslate"><span class="pre">always</span></code> - Identify Everyone<a class="headerlink" href="#always-identify-everyone" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">always</span></code> identifier unconditionally identifies every requester,
 useful in catch-alls.</p>
 <p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an empty object:</p>
@@ -216,9 +216,9 @@ useful in catch-alls.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="hint-identify-using-server-provided-hints">
-<h4><code class="docutils literal notranslate"><span class="pre">hint</span></code> - Identify Using Server-Provided Hints<a class="headerlink" href="#hint-identify-using-server-provided-hints" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="hint-identify-using-server-provided-hints">
+<h4><code class="docutils literal notranslate"><span class="pre">hint</span></code> - Identify Using Server-Provided Hints<a class="headerlink" href="#hint-identify-using-server-provided-hints" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">hint</span></code> identifier matches information about the requester to
 make identifications.</p>
 <p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
@@ -248,9 +248,9 @@ arrived.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="ip-cidr-list-identify-by-requesting-ip-address">
-<h4><code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> - Identify By Requesting IP Address<a class="headerlink" href="#ip-cidr-list-identify-by-requesting-ip-address" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="ip-cidr-list-identify-by-requesting-ip-address">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> - Identify By Requesting IP Address<a class="headerlink" href="#ip-cidr-list-identify-by-requesting-ip-address" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> identifier determines whether or not the IP
 address of the host making a request falls into any of a list of
 <cite>Classless Inter-Domain Routing
@@ -278,9 +278,9 @@ address of the host making a request falls into any of a list of
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list">
-<h4><code class="docutils literal notranslate"><span class="pre">ip-cidr-list-url</span></code> - Identify By Requesting IP Address with Downloaded List<a class="headerlink" href="#ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-cidr-list-url</span></code> - Identify By Requesting IP Address with Downloaded List<a class="headerlink" href="#ip-cidr-list-url-identify-by-requesting-ip-address-with-downloaded-list" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">ip-cidr-list-url</span></code> identifier serves the same purpose as
 <code class="docutils literal notranslate"><span class="pre">ip-cidr-list</span></code> but downloads the list of CIDRs from a URL and
 periodically updates it.</p>
@@ -343,9 +343,9 @@ and excludes the private networks defined by RFC 1918:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="ip-cymru-bogon-identify-bogon-addresses">
-<h4><code class="docutils literal notranslate"><span class="pre">ip-cymru-bogon</span></code> - Identify Bogon Addresses<a class="headerlink" href="#ip-cymru-bogon-identify-bogon-addresses" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="ip-cymru-bogon-identify-bogon-addresses">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-cymru-bogon</span></code> - Identify Bogon Addresses<a class="headerlink" href="#ip-cymru-bogon-identify-bogon-addresses" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">ip-cymru-bogon</span></code> identifier determines whether or not the
 requester’s address is in Team Cymru’s <a class="reference external" href="http://www.team-cymru.org/bogon-reference.html">Bogon Reference List</a>.</p>
 <p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
@@ -383,9 +383,9 @@ cannot be found:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="ip-cymru-asn-identify-requesters-by-asn">
-<h4><code class="docutils literal notranslate"><span class="pre">ip-cymru-asn</span></code> - Identify Requesters by ASN<a class="headerlink" href="#ip-cymru-asn-identify-requesters-by-asn" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="ip-cymru-asn-identify-requesters-by-asn">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-cymru-asn</span></code> - Identify Requesters by ASN<a class="headerlink" href="#ip-cymru-asn-identify-requesters-by-asn" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">ip-cymru-asn</span></code> identifier uses <a class="reference external" href="https://team-cymru.com/community-services/ip-asn-mapping/#dns">Team Cymru’s IP to ASN service</a> to
 determine whether or not the requester’s address is part of an
 autonomous system number (ASN) or is peered with one in a provided
@@ -422,9 +422,9 @@ within ANs 123, 456 or 789:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="ip-reverse-dns-identify-requesters-by-host-name">
-<h4><code class="docutils literal notranslate"><span class="pre">ip-reverse-dns</span></code> - Identify Requesters By Host Name<a class="headerlink" href="#ip-reverse-dns-identify-requesters-by-host-name" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="ip-reverse-dns-identify-requesters-by-host-name">
+<h4><code class="docutils literal notranslate"><span class="pre">ip-reverse-dns</span></code> - Identify Requesters By Host Name<a class="headerlink" href="#ip-reverse-dns-identify-requesters-by-host-name" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">ip-reverse-dns</span></code> identifier attempts to reverse-resolve the
 requester’s IP address to a fully-qualified domain name and matches
 it against a pattern.</p>
@@ -454,9 +454,9 @@ giving up after two seconds:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="jq-use-a-jq-script-to-identify-requesters">
-<h4><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Identify Requesters<a class="headerlink" href="#jq-use-a-jq-script-to-identify-requesters" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="jq-use-a-jq-script-to-identify-requesters">
+<h4><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Identify Requesters<a class="headerlink" href="#jq-use-a-jq-script-to-identify-requesters" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">jq</span></code> identifier allows decisions to be made based on hints about
 the requester provided by the system using a <a class="reference external" href="https://stedolan.github.io/jq">jq</a>
 script.</p>
@@ -501,9 +501,9 @@ one of the management interfaces:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="localif-identify-requesters-on-local-interfaces">
-<h4><code class="docutils literal notranslate"><span class="pre">localif</span></code> - Identify Requesters On Local Interfaces<a class="headerlink" href="#localif-identify-requesters-on-local-interfaces" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="localif-identify-requesters-on-local-interfaces">
+<h4><code class="docutils literal notranslate"><span class="pre">localif</span></code> - Identify Requesters On Local Interfaces<a class="headerlink" href="#localif-identify-requesters-on-local-interfaces" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">localif</span></code> identifier determines whether or not the requester’s
 IP address is bound to an interface on the local system.</p>
 <p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an empty object:</p>
@@ -521,11 +521,11 @@ IP address is bound to an interface on the local system.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-<section id="classifiers-how-do-we-group-the-identifiers">
-<h2>Classifiers:  <em>How Do We Group the Identifiers?</em><a class="headerlink" href="#classifiers-how-do-we-group-the-identifiers" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="section" id="classifiers-how-do-we-group-the-identifiers">
+<h2>Classifiers:  <em>How Do We Group the Identifiers?</em><a class="headerlink" href="#classifiers-how-do-we-group-the-identifiers" title="Permalink to this headline">¶</a></h2>
 <p>Once a list of identifiers is determined, the second phase is grouping
 them into broader categories called <em>classifiers</em>.  Classifiers are
 simple groups containing a list of one or more identifiers.</p>
@@ -578,9 +578,9 @@ classification.  Valid values are <code class="docutils literal notranslate"><sp
 which makes it overlap with <code class="docutils literal notranslate"><span class="pre">friendlies</span></code> and <code class="docutils literal notranslate"><span class="pre">hostiles</span></code>.  As will
 be illustrated later, the narrower classifications can be used to
 allow or deny tasks before the wider ones.</p>
-</section>
-<section id="task-rewriting-what-should-be-changed">
-<h2>Task Rewriting:  <em>What Should Be Changed?</em><a class="headerlink" href="#task-rewriting-what-should-be-changed" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="task-rewriting-what-should-be-changed">
+<h2>Task Rewriting:  <em>What Should Be Changed?</em><a class="headerlink" href="#task-rewriting-what-should-be-changed" title="Permalink to this headline">¶</a></h2>
 <p>Before applying limits to an incoming task, the pScheduler limit
 system can apply a <a class="reference external" href="https://stedolan.github.io/jq">jq</a> script to the
 task to make changes on the fly.</p>
@@ -740,9 +740,9 @@ certain groups to 50 Mb/s:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="limits-what-are-the-restrictions">
-<h2>Limits:  <em>What Are the Restrictions?</em><a class="headerlink" href="#limits-what-are-the-restrictions" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="limits-what-are-the-restrictions">
+<h2>Limits:  <em>What Are the Restrictions?</em><a class="headerlink" href="#limits-what-are-the-restrictions" title="Permalink to this headline">¶</a></h2>
 <p>The third phase of vetting a task is determining whether or not its
 parameters fall within acceptable values.  Each limit is evaluated and
 either <em>passes</em> (i.e., the task parameters fell within the limit’s
@@ -823,10 +823,10 @@ would do the opposite).</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-<section id="limit-types">
-<h3>Limit Types<a class="headerlink" href="#limit-types" title="Permalink to this heading">¶</a></h3>
-<section id="jq-use-a-jq-script-to-make-a-pass-fail-decision">
-<h4><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Make a Pass/Fail Decision<a class="headerlink" href="#jq-use-a-jq-script-to-make-a-pass-fail-decision" title="Permalink to this heading">¶</a></h4>
+<div class="section" id="limit-types">
+<h3>Limit Types<a class="headerlink" href="#limit-types" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="jq-use-a-jq-script-to-make-a-pass-fail-decision">
+<h4><code class="docutils literal notranslate"><span class="pre">jq</span></code> - Use a jq Script to Make a Pass/Fail Decision<a class="headerlink" href="#jq-use-a-jq-script-to-make-a-pass-fail-decision" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">jq</span></code> limit hands the proposed task to a
 <a class="reference external" href="https://stedolan.github.io/jq">jq</a> script and passes or fails based
 on the script’s return value.</p>
@@ -929,9 +929,9 @@ of runs.</p></li>
 }
 </pre></div>
 </div>
-</section>
-<section id="pass-fail-explicitly-pass-or-fail">
-<h4><code class="docutils literal notranslate"><span class="pre">pass-fail</span></code> - Explicitly Pass or Fail<a class="headerlink" href="#pass-fail-explicitly-pass-or-fail" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="pass-fail-explicitly-pass-or-fail">
+<h4><code class="docutils literal notranslate"><span class="pre">pass-fail</span></code> - Explicitly Pass or Fail<a class="headerlink" href="#pass-fail-explicitly-pass-or-fail" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">pass-fail</span></code> limit will either pass or fail depending on a value
 in its <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
 <p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pair:</p>
@@ -950,9 +950,9 @@ or fail.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="run-daterange-check-run-times-against-a-range">
-<h4><code class="docutils literal notranslate"><span class="pre">run-daterange</span></code> - Check Run Times Against a Range<a class="headerlink" href="#run-daterange-check-run-times-against-a-range" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="run-daterange-check-run-times-against-a-range">
+<h4><code class="docutils literal notranslate"><span class="pre">run-daterange</span></code> - Check Run Times Against a Range<a class="headerlink" href="#run-daterange-check-run-times-against-a-range" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">run-daterange</span></code> limit tests to see whether the time range for a
 run falls within a specified range.</p>
 <p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs:</p>
@@ -977,9 +977,9 @@ and will be considered having passed when a task is submitted.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="run-schedule-check-attributes-of-the-run-time">
-<h4><code class="docutils literal notranslate"><span class="pre">run-schedule</span></code> - Check Attributes of the Run Time<a class="headerlink" href="#run-schedule-check-attributes-of-the-run-time" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="run-schedule-check-attributes-of-the-run-time">
+<h4><code class="docutils literal notranslate"><span class="pre">run-schedule</span></code> - Check Attributes of the Run Time<a class="headerlink" href="#run-schedule-check-attributes-of-the-run-time" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">run-schedule</span></code> limit tests to see whether attributes of the time
 range for a run matches those specified.</p>
 <p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pairs.  The format
@@ -1019,9 +1019,9 @@ and will be considered having passed when a task is submitted.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="test-type-check-test-type">
-<h4><code class="docutils literal notranslate"><span class="pre">test-type</span></code> - Check Test Type<a class="headerlink" href="#test-type-check-test-type" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="test-type-check-test-type">
+<h4><code class="docutils literal notranslate"><span class="pre">test-type</span></code> - Check Test Type<a class="headerlink" href="#test-type-check-test-type" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">test-type</span></code> limit compares the type of the proposed test to a
 list of test types.</p>
 <p>Its <code class="docutils literal notranslate"><span class="pre">data</span></code> is an object containing the following pair:</p>
@@ -1040,9 +1040,9 @@ or not the limit passes.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="url-fetch-get-a-decision-by-fetching-a-url">
-<h4><code class="docutils literal notranslate"><span class="pre">url-fetch</span></code> - Get a decision by fetching a URL<a class="headerlink" href="#url-fetch-get-a-decision-by-fetching-a-url" title="Permalink to this heading">¶</a></h4>
+</div>
+<div class="section" id="url-fetch-get-a-decision-by-fetching-a-url">
+<h4><code class="docutils literal notranslate"><span class="pre">url-fetch</span></code> - Get a decision by fetching a URL<a class="headerlink" href="#url-fetch-get-a-decision-by-fetching-a-url" title="Permalink to this headline">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">url-fetch</span></code> limit asks an external HTTP(S) server for a
 pass/fail decision based on information passed in as parameters or
 part of the URL.</p>
@@ -1135,11 +1135,11 @@ than <code class="docutils literal notranslate"><span class="pre">200</span></co
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-<section id="applications-to-whom-do-we-apply-the-limits">
-<h2>Applications: <em>To Whom do We Apply the Limits?</em><a class="headerlink" href="#applications-to-whom-do-we-apply-the-limits" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="section" id="applications-to-whom-do-we-apply-the-limits">
+<h2>Applications: <em>To Whom do We Apply the Limits?</em><a class="headerlink" href="#applications-to-whom-do-we-apply-the-limits" title="Permalink to this headline">¶</a></h2>
 <p>The final phase of vetting a task or run is determining whether or not
 its parameters make it permissible.  This is accomplished by
 evaluating a series of <em>limit applications</em>, each of which ties a
@@ -1211,8 +1211,8 @@ in the <code class="docutils literal notranslate"><span class="pre">guests</span
 throughput or round-trip time test that meets predefined limits for
 guests.  Failing both of those will result in denial because the
 policy is to deny unless explicitly allowed.</p>
-<section id="applying-limit-requirements">
-<h3>Applying Limit Requirements<a class="headerlink" href="#applying-limit-requirements" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="applying-limit-requirements">
+<h3>Applying Limit Requirements<a class="headerlink" href="#applying-limit-requirements" title="Permalink to this headline">¶</a></h3>
 <p>Each limit requirement is a JSON object containing the following:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">limits</span></code> - An array of strings naming one or more limits to be
@@ -1233,10 +1233,10 @@ limits passes.</p></li>
 pass.</p></li>
 </ul>
 </div></blockquote>
-</section>
-</section>
-<section id="priorities-which-runs-happen-and-which-do-not">
-<span id="config-pscheduler-limits-priorities"></span><h2>Priorities: <em>Which Runs Happen and Which Do Not?</em><a class="headerlink" href="#priorities-which-runs-happen-and-which-do-not" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="priorities-which-runs-happen-and-which-do-not">
+<span id="config-pscheduler-limits-priorities"></span><h2>Priorities: <em>Which Runs Happen and Which Do Not?</em><a class="headerlink" href="#priorities-which-runs-happen-and-which-do-not" title="Permalink to this headline">¶</a></h2>
 <p>Once a run has been vetted by the limit system, it can be assigned a
 priority used in resolving conflicts with other runs scheduled at the
 same time.  This applies to tests like <code class="docutils literal notranslate"><span class="pre">throughput</span></code>, which are given
@@ -1257,8 +1257,8 @@ with a higher priority is scheduled.  At the scheduled start time, the
 run will happen if there are no overlapping runs of higher priority.
 Otherwise, the lower-priority run will be considered preempted in
 favor of the higher-priority run.</p>
-<section id="the-priority-script">
-<h3>The Priority Script<a class="headerlink" href="#the-priority-script" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="the-priority-script">
+<h3>The Priority Script<a class="headerlink" href="#the-priority-script" title="Permalink to this headline">¶</a></h3>
 <p>If the limit configuration contains a <code class="docutils literal notranslate"><span class="pre">priority</span></code> object, its
 contents will be a standard jq transform as used elsewhere in
 pScheduler.  If it does not, the priority system will be disabled and
@@ -1293,10 +1293,10 @@ information and make changes:</p>
 </div></blockquote>
 <p>The priority in effect at the end of the script will be assigned to
 the run and any diagnostics produced will be stored.</p>
-</section>
-</section>
-<section id="checking-limit-configuration-files-for-validity">
-<span id="config-pscheduler-limits-check-validity"></span><h2>Checking Limit Configuration Files for Validity<a class="headerlink" href="#checking-limit-configuration-files-for-validity" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="checking-limit-configuration-files-for-validity">
+<span id="config-pscheduler-limits-check-validity"></span><h2>Checking Limit Configuration Files for Validity<a class="headerlink" href="#checking-limit-configuration-files-for-validity" title="Permalink to this headline">¶</a></h2>
 <p>pScheduler includes a <code class="docutils literal notranslate"><span class="pre">validate-limits</span></code> command which can be used to
 verify that a limit configuration is valid during development and
 prior to installation on the system.</p>
@@ -1320,13 +1320,13 @@ sent to the standard output if it is a TTY or the <code class="docutils literal 
 is not in effect.</p>
 <p>Details on command-line switches and sample invocations can be
 obtained by running the command <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">validate-limits</span> <span class="pre">--help</span></code>.</p>
-</section>
-<section id="standard-objects">
-<h2>Standard Objects<a class="headerlink" href="#standard-objects" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="standard-objects">
+<h2>Standard Objects<a class="headerlink" href="#standard-objects" title="Permalink to this headline">¶</a></h2>
 <p>This section describes standard JSON objects used in the limit configuration.</p>
 <p>Content in this section is forthcoming.</p>
-<section id="stringmatch-string-matching-specification">
-<h3><code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> - String Matching Specification<a class="headerlink" href="#stringmatch-string-matching-specification" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="stringmatch-string-matching-specification">
+<h3><code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> - String Matching Specification<a class="headerlink" href="#stringmatch-string-matching-specification" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> is a JSON object containing the following pairs:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">style</span></code> - A string specifying what type of matching should be
@@ -1353,14 +1353,14 @@ containing a vowel:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="limit-parameter-types">
-<h2>Limit Parameter Types<a class="headerlink" href="#limit-parameter-types" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="limit-parameter-types">
+<h2>Limit Parameter Types<a class="headerlink" href="#limit-parameter-types" title="Permalink to this headline">¶</a></h2>
 <p>This section describes standard types of objects used by the <code class="docutils literal notranslate"><span class="pre">test</span></code>
 limit.</p>
-<section id="boolean-compares-boolean-values">
-<h3><code class="docutils literal notranslate"><span class="pre">Boolean</span></code> - Compares Boolean Values<a class="headerlink" href="#boolean-compares-boolean-values" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="boolean-compares-boolean-values">
+<h3><code class="docutils literal notranslate"><span class="pre">Boolean</span></code> - Compares Boolean Values<a class="headerlink" href="#boolean-compares-boolean-values" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">match</span></code> - A boolean value (<code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>) to be matched</p></li>
@@ -1371,9 +1371,9 @@ limit.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="cardinal-compares-one-based-integers">
-<h3><code class="docutils literal notranslate"><span class="pre">Cardinal</span></code> - Compares One-Based Integers<a class="headerlink" href="#cardinal-compares-one-based-integers" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="cardinal-compares-one-based-integers">
+<h3><code class="docutils literal notranslate"><span class="pre">Cardinal</span></code> - Compares One-Based Integers<a class="headerlink" href="#cardinal-compares-one-based-integers" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">Cardinal</span></code> values to be matched.</p></li>
@@ -1386,9 +1386,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="cardinallist-compares-a-list-of-one-based-integers">
-<h3><code class="docutils literal notranslate"><span class="pre">CardinalList</span></code> - Compares a List of One-Based Integers<a class="headerlink" href="#cardinallist-compares-a-list-of-one-based-integers" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="cardinallist-compares-a-list-of-one-based-integers">
+<h3><code class="docutils literal notranslate"><span class="pre">CardinalList</span></code> - Compares a List of One-Based Integers<a class="headerlink" href="#cardinallist-compares-a-list-of-one-based-integers" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">match</span></code> - A list of <code class="docutils literal notranslate"><span class="pre">Cardinal</span></code> values to be matched.</p></li>
@@ -1401,9 +1401,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="cardinalzero-compares-zero-based-integers">
-<h3><code class="docutils literal notranslate"><span class="pre">CardinalZero</span></code> - Compares Zero-Based Integers<a class="headerlink" href="#cardinalzero-compares-zero-based-integers" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="cardinalzero-compares-zero-based-integers">
+<h3><code class="docutils literal notranslate"><span class="pre">CardinalZero</span></code> - Compares Zero-Based Integers<a class="headerlink" href="#cardinalzero-compares-zero-based-integers" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">CardinalZero</span></code> values to be matched.</p></li>
@@ -1416,9 +1416,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="cardinalzerolist-compares-a-list-of-zero-based-integers">
-<h3><code class="docutils literal notranslate"><span class="pre">CardinalZeroList</span></code> - Compares a List of Zero-Based Integers<a class="headerlink" href="#cardinalzerolist-compares-a-list-of-zero-based-integers" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="cardinalzerolist-compares-a-list-of-zero-based-integers">
+<h3><code class="docutils literal notranslate"><span class="pre">CardinalZeroList</span></code> - Compares a List of Zero-Based Integers<a class="headerlink" href="#cardinalzerolist-compares-a-list-of-zero-based-integers" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">match</span></code> - A list of <code class="docutils literal notranslate"><span class="pre">CardinalZero</span></code> values to be matched.</p></li>
@@ -1431,9 +1431,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="duration-compares-iso-8601-durations">
-<h3><code class="docutils literal notranslate"><span class="pre">Duration</span></code> - Compares ISO 8601 Durations<a class="headerlink" href="#duration-compares-iso-8601-durations" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="duration-compares-iso-8601-durations">
+<h3><code class="docutils literal notranslate"><span class="pre">Duration</span></code> - Compares ISO 8601 Durations<a class="headerlink" href="#duration-compares-iso-8601-durations" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">Duration</span></code> values to be matched.</p></li>
@@ -1446,9 +1446,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="sinumber-compares-ranges-of-integers-with-si-units">
-<h3><code class="docutils literal notranslate"><span class="pre">SINumber</span></code> - Compares Ranges of Integers with SI Units<a class="headerlink" href="#sinumber-compares-ranges-of-integers-with-si-units" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="sinumber-compares-ranges-of-integers-with-si-units">
+<h3><code class="docutils literal notranslate"><span class="pre">SINumber</span></code> - Compares Ranges of Integers with SI Units<a class="headerlink" href="#sinumber-compares-ranges-of-integers-with-si-units" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">SINumber</span></code> values to be matched.</p></li>
@@ -1461,9 +1461,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="ipversion-compares-internet-protocol-versions">
-<h3><code class="docutils literal notranslate"><span class="pre">IPVersion</span></code> - Compares Internet Protocol Versions<a class="headerlink" href="#ipversion-compares-internet-protocol-versions" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="ipversion-compares-internet-protocol-versions">
+<h3><code class="docutils literal notranslate"><span class="pre">IPVersion</span></code> - Compares Internet Protocol Versions<a class="headerlink" href="#ipversion-compares-internet-protocol-versions" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">match</span></code> - An IP version to be matched</p></li>
@@ -1476,9 +1476,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="ipversionlist-compares-a-list-of-ip-protocol-versions">
-<h3><code class="docutils literal notranslate"><span class="pre">IPVersionList</span></code> - Compares a List of IP Protocol Versions<a class="headerlink" href="#ipversionlist-compares-a-list-of-ip-protocol-versions" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="ipversionlist-compares-a-list-of-ip-protocol-versions">
+<h3><code class="docutils literal notranslate"><span class="pre">IPVersionList</span></code> - Compares a List of IP Protocol Versions<a class="headerlink" href="#ipversionlist-compares-a-list-of-ip-protocol-versions" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">enumeration</span></code> - A list of <code class="docutils literal notranslate"><span class="pre">IPVersion</span></code> values to be matched.</p></li>
@@ -1491,9 +1491,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="probability-compares-ranges-of-decimal-probabilities">
-<h3><code class="docutils literal notranslate"><span class="pre">Probability</span></code> - Compares Ranges of Decimal Probabilities<a class="headerlink" href="#probability-compares-ranges-of-decimal-probabilities" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="probability-compares-ranges-of-decimal-probabilities">
+<h3><code class="docutils literal notranslate"><span class="pre">Probability</span></code> - Compares Ranges of Decimal Probabilities<a class="headerlink" href="#probability-compares-ranges-of-decimal-probabilities" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">range</span></code> - A range of <code class="docutils literal notranslate"><span class="pre">Probability</span></code> values to be matched.</p></li>
@@ -1506,9 +1506,9 @@ be negated.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="string-compares-strings">
-<h3><code class="docutils literal notranslate"><span class="pre">String</span></code> - Compares Strings<a class="headerlink" href="#string-compares-strings" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="string-compares-strings">
+<h3><code class="docutils literal notranslate"><span class="pre">String</span></code> - Compares Strings<a class="headerlink" href="#string-compares-strings" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - An optional human-readable description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">match</span></code> - A <code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> object.  (See <em>Standard Objects</em>, above.)</p></li>
@@ -1527,12 +1527,11 @@ be negated.</p></li>
 </div>
 <p>Note that it is possible to have <code class="docutils literal notranslate"><span class="pre">invert</span></code> in both the limit and the
 <code class="docutils literal notranslate"><span class="pre">match</span></code> <code class="docutils literal notranslate"><span class="pre">StringMatch</span></code> object.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -1640,8 +1639,7 @@ be negated.</p></li>
         <li class="right" >
           <a href="pscheduler_batch.html" title="Batch Processing"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Configuring pScheduler Limits</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -1686,7 +1684,7 @@ be negated.</p></li>
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

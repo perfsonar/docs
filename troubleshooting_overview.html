@@ -1,20 +1,21 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Troubleshooting perfSONAR &#8212; perfSONAR Toolkit 5.1.3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <title>Troubleshooting perfSONAR &#8212; perfSONAR Toolkit 5.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="perfSONAR Frequently Asked Questions (FAQs)" href="FAQ.html" />
@@ -60,8 +61,7 @@
         <li class="right" >
           <a href="config_owamp_limits.html" title="OWAMP Limits Configuration File"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Troubleshooting perfSONAR</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,22 +73,18 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="troubleshooting-perfsonar">
-<h1>Troubleshooting perfSONAR<a class="headerlink" href="#troubleshooting-perfsonar" title="Permalink to this heading">¶</a></h1>
-<p>This page contains some hints on how to troubleshoot perfSONAR 4.0 and later. You may also find some helpful notes in <a class="reference internal" href="FAQ.html"><span class="doc">perfSONAR Frequently Asked Questions (FAQs)</span></a>.</p>
-<section id="system">
-<h2>System<a class="headerlink" href="#system" title="Permalink to this heading">¶</a></h2>
-</section>
-<section id="logs">
-<h2>Logs<a class="headerlink" href="#logs" title="Permalink to this heading">¶</a></h2>
-<p>Check the logs using the information <a class="reference internal" href="manage_logs.html"><span class="doc">here</span></a>.</p>
-</section>
-<section id="pscheduler">
-<h2>pScheduler<a class="headerlink" href="#pscheduler" title="Permalink to this heading">¶</a></h2>
-<section id="pscheduler-on-local-host">
-<h3>pScheduler on Local Host<a class="headerlink" href="#pscheduler-on-local-host" title="Permalink to this heading">¶</a></h3>
-<p>These steps will allow you to verify the basic health of pScheduler in a local host.
-Confirm that pScheduler on the local system is functioning running a command which will ping the localhost using pScheduler:</p>
+  <div class="section" id="troubleshooting-perfsonar">
+<h1>Troubleshooting perfSONAR<a class="headerlink" href="#troubleshooting-perfsonar" title="Permalink to this headline">¶</a></h1>
+<p>This page contains some hints on how to troubleshoot perfSONAR instance. You may also find some helpful notes in <a class="reference internal" href="FAQ.html"><span class="doc">perfSONAR Frequently Asked Questions (FAQs)</span></a>.</p>
+<div class="section" id="pscheduler">
+<h2>pScheduler<a class="headerlink" href="#pscheduler" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pscheduler-on-local-host">
+<h3>pScheduler on Local Host<a class="headerlink" href="#pscheduler-on-local-host" title="Permalink to this headline">¶</a></h3>
+<p>This step will allow you to verify the basic health of pScheduler in a local host. This will also check if your node has the basic, necessary pScheduler services running properly, run basic idle test, check pScheduler archiving function, print MTU settings and clock synchronisation status. Look for errors in the command output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">troubleshoot</span>
+</pre></div>
+</div>
+<p>If you want to simply confirm that pScheduler on the local system is functioning run the following command which will ping the localhost using pScheduler:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">ping</span> <span class="n">localhost</span>
 </pre></div>
 </div>
@@ -96,46 +92,45 @@ Confirm that pScheduler on the local system is functioning running a command whi
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fgrep</span> <span class="s1">&#39; ERROR &#39;</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">/</span><span class="n">pscheduler</span><span class="o">.</span><span class="n">log</span>
 </pre></div>
 </div>
-<p>Run basic tests on the local system:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">idle</span> <span class="o">--</span><span class="n">duration</span> <span class="n">PT2S</span>
-<span class="n">pscheduler</span> <span class="n">task</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="mf">127.0.0.1</span>
+</div>
+<div class="section" id="pscheduler-on-remote-hosts">
+<h3>pScheduler on Remote Hosts<a class="headerlink" href="#pscheduler-on-remote-hosts" title="Permalink to this headline">¶</a></h3>
+<p>This step will allow you to verify the basic health of pScheduler in a remote host. This will also check if the remote node has the basic, necessary pScheduler services running properly, run basic idle test, check pScheduler archiving function, print MTU settings and clock synchronisation status. Look for errors in the command output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">troubleshoot</span> <span class="o">--</span><span class="n">host</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span>
 </pre></div>
 </div>
-</section>
-<section id="pscheduler-on-remote-hosts">
-<h3>pScheduler on Remote Hosts<a class="headerlink" href="#pscheduler-on-remote-hosts" title="Permalink to this heading">¶</a></h3>
-<p>These steps will allow you to verify the basic health of pScheduler in a remote host.
-Confirm that pScheduler on the other host (<code class="docutils literal notranslate"><span class="pre">REMOTE-HOST</span></code>) is reachable and working running a command which will ping the remote host using pScheduler:</p>
+<p>You may also test two remote hosts against each other to ensure the two nodes can successfully complete a test:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">troubleshoot</span> <span class="o">--</span><span class="n">host</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span><span class="o">-</span><span class="mi">1</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span><span class="o">-</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>If you want to simply confirm that pScheduler on the remote system is functioning and reachable run a command which will ping the remote host using pScheduler:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">ping</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span>
 </pre></div>
 </div>
-<p>Run basic tests to the other host (the first test requires that TCP
-ports 5890-5899 be open on that system):</p>
+<p>In addition run basic tests to the other host (the first test requires that TCP ports 5890-5899 be open on that system):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">trace</span> <span class="o">--</span><span class="n">dest</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span>
 <span class="n">pscheduler</span> <span class="n">task</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">dest</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span>
 <span class="n">pscheduler</span> <span class="n">task</span> <span class="n">simplestream</span> <span class="o">--</span><span class="n">dest</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span>
 <span class="n">pscheduler</span> <span class="n">task</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">bandwidth</span> <span class="mi">1</span><span class="n">M</span> <span class="o">--</span><span class="n">dest</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span>
 </pre></div>
 </div>
-<p>Run the same tests in the opposite direction (from <code class="docutils literal notranslate"><span class="pre">REMOTE-HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">LOCAL-HOST</span></code>):</p>
+<p>Also run the same tests in the opposite direction (from <code class="docutils literal notranslate"><span class="pre">REMOTE-HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">LOCAL-HOST</span></code>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">task</span> <span class="n">trace</span> <span class="o">--</span><span class="n">source</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span> <span class="o">--</span><span class="n">dest</span> <span class="n">LOCAL</span><span class="o">-</span><span class="n">HOST</span>
 <span class="n">pscheduler</span> <span class="n">task</span> <span class="n">rtt</span> <span class="o">--</span><span class="n">source</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span> <span class="o">--</span><span class="n">dest</span> <span class="n">LOCAL</span><span class="o">-</span><span class="n">HOST</span>
 <span class="n">pscheduler</span> <span class="n">task</span> <span class="n">simplestream</span> <span class="o">--</span><span class="n">source</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span> <span class="o">--</span><span class="n">dest</span> <span class="n">LOCAL</span><span class="o">-</span><span class="n">HOST</span>
 <span class="n">pscheduler</span> <span class="n">task</span> <span class="n">throughput</span> <span class="o">--</span><span class="n">bandwidth</span> <span class="mi">1</span><span class="n">M</span> <span class="o">--</span><span class="n">source</span> <span class="n">REMOTE</span><span class="o">-</span><span class="n">HOST</span> <span class="o">--</span><span class="n">dest</span> <span class="n">LOCAL</span><span class="o">-</span><span class="n">HOST</span>
 </pre></div>
 </div>
-</section>
-<section id="checking-the-schedule">
-<h3>Checking the Schedule<a class="headerlink" href="#checking-the-schedule" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="checking-the-schedule">
+<h3>Checking the Schedule<a class="headerlink" href="#checking-the-schedule" title="Permalink to this headline">¶</a></h3>
 <p>If results are missing, looking at the pScheduler’s timeline of runs (the <em>schedule</em>) can be useful.</p>
-<p>Note that <code class="docutils literal notranslate"><span class="pre">--host</span> <span class="pre">HOST-NAME</span></code> can be added to the switches to
-retrieve the schedule from other hosts.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">--host</span> <span class="pre">HOST-NAME</span></code> can be added to the switches to retrieve the schedule from other hosts.</p>
 <p>Retrieve the schedule for a specified range of times:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">02</span><span class="n">T12</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">02</span><span class="n">T12</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>
 </pre></div>
 </div>
-<p>Retrieve the schedule for a specified range of times relative to right
-now:</p>
+<p>Retrieve the schedule for a specified range of times relative to right now:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">-</span><span class="n">PT10M</span> <span class="o">+</span><span class="n">PT5M</span>
 </pre></div>
 </div>
@@ -147,8 +142,7 @@ now:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">-</span><span class="n">PT2H</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="mi">2</span> <span class="n">Non</span><span class="o">-</span><span class="n">Starter</span>
 </pre></div>
 </div>
-<p>Look at schedule details for throughput tests in the last hour
-involving the host <code class="docutils literal notranslate"><span class="pre">TEST-HOST</span></code>:</p>
+<p>Look at schedule details for throughput tests in the last hour involving the host <code class="docutils literal notranslate"><span class="pre">TEST-HOST</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">schedule</span> <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">test</span><span class="o">=</span><span class="n">throughput</span> <span class="o">-</span><span class="n">PT1H</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="mi">2</span> <span class="n">TEST</span><span class="o">-</span><span class="n">HOST</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="mi">2</span> <span class="n">iperf3</span>
 </pre></div>
 </div>
@@ -164,21 +158,15 @@ involving the host <code class="docutils literal notranslate"><span class="pre">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">plot</span><span class="o">-</span><span class="n">schedule</span> <span class="o">-</span><span class="n">PT30M</span> <span class="o">+</span><span class="n">PT30M</span> <span class="o">&gt;</span> <span class="n">plot</span><span class="o">.</span><span class="n">png</span>
 </pre></div>
 </div>
-</section>
-<section id="additional-debug-logging">
-<h3>Additional Debug Logging<a class="headerlink" href="#additional-debug-logging" title="Permalink to this heading">¶</a></h3>
-<p>The programs that manage pScheduler’s activities can produce
-additional debugging information useful to the development team in
-finding problems.</p>
-<p>To enable logging of debug output from pScheduler’s components, run
-(as <code class="docutils literal notranslate"><span class="pre">root</span></code>):</p>
+</div>
+<div class="section" id="additional-debug-logging">
+<h3>Additional Debug Logging<a class="headerlink" href="#additional-debug-logging" title="Permalink to this headline">¶</a></h3>
+<p>The programs that manage pScheduler’s activities can produce additional debugging information useful to the development team in finding problems.</p>
+<p>To enable logging of debug output from pScheduler’s components, run (as <code class="docutils literal notranslate"><span class="pre">root</span></code>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">debug</span> <span class="n">on</span> <span class="n">PROGRAMS</span>
 </pre></div>
 </div>
-<p>Where <code class="docutils literal notranslate"><span class="pre">PROGRAMS</span></code> is a list of any of <code class="docutils literal notranslate"><span class="pre">scheduler</span></code>, <code class="docutils literal notranslate"><span class="pre">runner</span></code>,
-<code class="docutils literal notranslate"><span class="pre">archiver</span></code>, <code class="docutils literal notranslate"><span class="pre">ticker</span></code> or <code class="docutils literal notranslate"><span class="pre">api</span></code>.  Turning on debug for anything
-other than <code class="docutils literal notranslate"><span class="pre">scheduler</span></code> and <code class="docutils literal notranslate"><span class="pre">runner</span></code> rarely be necessary.  If no
-list is provided, debug will be enabled for all pScheduler programs.</p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">PROGRAMS</span></code> is a list of any of <code class="docutils literal notranslate"><span class="pre">scheduler</span></code>, <code class="docutils literal notranslate"><span class="pre">runner</span></code>, <code class="docutils literal notranslate"><span class="pre">archiver</span></code>, <code class="docutils literal notranslate"><span class="pre">ticker</span></code> or <code class="docutils literal notranslate"><span class="pre">api</span></code>.  Turning on debug for anything other than <code class="docutils literal notranslate"><span class="pre">scheduler</span></code> and <code class="docutils literal notranslate"><span class="pre">runner</span></code> rarely be necessary.  If no list is provided, debug will be enabled for all pScheduler programs.</p>
 <p>Logging can be disabled by running:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscheduler</span> <span class="n">debug</span> <span class="n">off</span> <span class="n">PROGRAMS</span>
 </pre></div>
@@ -187,12 +175,26 @@ list is provided, debug will be enabled for all pScheduler programs.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/perfsonar/pscheduler/wiki/Error-Messages">https://github.com/perfsonar/pscheduler/wiki/Error-Messages</a></p></li>
 </ul>
-</section>
-</section>
-</section>
+</div>
+</div>
+<div class="section" id="measurement-archive-host">
+<h2>Measurement Archive Host<a class="headerlink" href="#measurement-archive-host" title="Permalink to this headline">¶</a></h2>
+<p>This step will allow you to verify the basic health of archiving in a Measurement Archive host. This command will pinpoint issues when there are problems storing test results into the archive. It will also check connectivity to components like OpenSearch and Logstash, try to fetch data and verify credentials. Look for errors in the command output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psarchive</span> <span class="n">troubleshoot</span>
+</pre></div>
+</div>
+<p>This command will by default also check if the archive has data. If you have not yet configured your measurement hosts to store data into the Measurement Archive skip that check with the <cite>–skip-opensearch-data</cite> option to avoid possible errors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>psarchive troubleshoot –skip-opensearch-data
+</pre></div>
+</div>
+</div>
+<div class="section" id="logs">
+<h2>Logs<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h2>
+<p>Check the logs using the information <a class="reference internal" href="manage_logs.html"><span class="doc">here</span></a>.</p>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -202,8 +204,6 @@ list is provided, debug will be enabled for all pScheduler programs.</p>
                 
                 <ul>
 <li><a class="reference internal" href="#">Troubleshooting perfSONAR</a><ul>
-<li><a class="reference internal" href="#system">System</a></li>
-<li><a class="reference internal" href="#logs">Logs</a></li>
 <li><a class="reference internal" href="#pscheduler">pScheduler</a><ul>
 <li><a class="reference internal" href="#pscheduler-on-local-host">pScheduler on Local Host</a></li>
 <li><a class="reference internal" href="#pscheduler-on-remote-hosts">pScheduler on Remote Hosts</a></li>
@@ -211,6 +211,8 @@ list is provided, debug will be enabled for all pScheduler programs.</p>
 <li><a class="reference internal" href="#additional-debug-logging">Additional Debug Logging</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#measurement-archive-host">Measurement Archive Host</a></li>
+<li><a class="reference internal" href="#logs">Logs</a></li>
 </ul>
 </li>
 </ul>
@@ -246,8 +248,7 @@ list is provided, debug will be enabled for all pScheduler programs.</p>
         <li class="right" >
           <a href="config_owamp_limits.html" title="OWAMP Limits Configuration File"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Troubleshooting perfSONAR</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -292,7 +293,7 @@ list is provided, debug will be enabled for all pScheduler programs.</p>
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

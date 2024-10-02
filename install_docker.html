@@ -1,20 +1,21 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Using perfSONAR with Docker &#8212; perfSONAR Toolkit 5.1.3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <title>Using perfSONAR with Docker &#8212; perfSONAR Toolkit 5.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Using perfSONAR with Ansible" href="install_ansible.html" />
@@ -60,8 +61,7 @@
         <li class="right" >
           <a href="install_debian.html" title="Bundle Installation on Debian"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Using perfSONAR with Docker</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,28 +73,28 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="using-perfsonar-with-docker">
-<h1>Using perfSONAR with Docker<a class="headerlink" href="#using-perfsonar-with-docker" title="Permalink to this heading">¶</a></h1>
+  <div class="section" id="using-perfsonar-with-docker">
+<h1>Using perfSONAR with Docker<a class="headerlink" href="#using-perfsonar-with-docker" title="Permalink to this headline">¶</a></h1>
 <p>Using perfSONAR with Docker provides a non-intrusive way to run the perfSONAR software on a variety of platforms including Linux, Mac and Windows. This document focuses on setting-up an instance of the perfsonar-testpoint bundle, described in <a class="reference internal" href="install_options.html"><span class="doc">perfSONAR Installation Options</span></a>.</p>
-<section id="geting-docker">
-<h2>Geting Docker<a class="headerlink" href="#geting-docker" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="geting-docker">
+<h2>Geting Docker<a class="headerlink" href="#geting-docker" title="Permalink to this headline">¶</a></h2>
 <p>Docker must be installed and the Docker daemon running in order to use perfSONAR in a container. Detailed instructions for installing docker are beyond the scope of this document. Docker is available on all major platforms at <a class="reference external" href="https://docs.docker.com/engine/install/">https://docs.docker.com/engine/install/</a> and may also be available via your operating system’s native package manager, such as yum or apt.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The perfSONAR container has been tested with <strong>recent</strong> versions of Docker CE and Podman.  Older versions of Docker (specifically 1.x) are known to cause problems.</p>
 </div>
-</section>
-<section id="considerations">
-<h2>Considerations<a class="headerlink" href="#considerations" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="considerations">
+<h2>Considerations<a class="headerlink" href="#considerations" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><p>This Docker image is intended to provide an isolated environment for bringing-up a quick testing client than can easily be removed when complete. It can also be used as a more permenent tester but requires additional considerations such as how to persist and manage configurations.</p></li>
 <li><p>Performance of Docker containers may vary depending on the environment. In general, the network measurements in Docker will perform better than a virtual machine (VM) but not as well as a bare metal host. This is a broad generalization though as non-Linux OSes such as Windows and Mac actually run containers in a virtual machine.</p></li>
 <li><p>Networking configuration is one of the biggest considerations when running perfSONAR in a container. Docker provides a number of different modes each with tradeoffs. This choice is made more complicated by the fact that implementations can vary between underlying operating systems. Running with <em>host</em> networking provides an experience closest to a traditional non-containerized perfSONAR installation. There is no NAT with which to contend and IPv6 support is inherited from the base system. The downside is that you may not have external software like httpd, postgres or other applications that use the same ports as perfSONAR running on the host system. Other modes such as those that use port forwarding do not have this limitation, but can be significantly more challenging to get working with protocols such as IPv6.</p></li>
 <li><p>Currently perfSONAR does NOT provide a container image that supports ARM.</p></li>
 </ol>
-</section>
-<section id="quickstart-using-the-docker-command">
-<h2>QuickStart using the <cite>docker</cite> command<a class="headerlink" href="#quickstart-using-the-docker-command" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="quickstart-using-the-docker-command">
+<h2>QuickStart using the <cite>docker</cite> command<a class="headerlink" href="#quickstart-using-the-docker-command" title="Permalink to this headline">¶</a></h2>
 <p>These instructions are good for those that want to get a container running quickly using the <cite>docker</cite> command directly. The following assumes that Docker has been successfully installed and is running on the host system. It also assumes that the base host is running a time keeping system such as NTP and is NOT running httpd, postgres, or anything else listening on the list of ports below. The Docker image will share the network stack with the host and so expects to be able to bind to all of the ports as if it were being run natively.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -131,8 +131,8 @@
 </pre></div>
 </div>
 <p>Congratulations, you’re running perfSONAR in Docker!</p>
-<section id="running-the-container-with-the-psdocker-script">
-<h3>Running the container with the <cite>psdocker</cite> script<a class="headerlink" href="#running-the-container-with-the-psdocker-script" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="running-the-container-with-the-psdocker-script">
+<h3>Running the container with the <cite>psdocker</cite> script<a class="headerlink" href="#running-the-container-with-the-psdocker-script" title="Permalink to this headline">¶</a></h3>
 <p>If you are attempting the steps in the previous section on a Mac OS X system then the <cite>pscheduler task</cite> command may fail with an error such as <cite>Unable to locate pscheduler server</cite>. This is usually due to the way hostnames are assigned in Docker on Mac. With that in mind the perfSONAR team provides a script that helps setup the container properly (this works on non-Mac systems as well). You can use the script by following the steps below.</p>
 <p>Download the <em>perfsonar-testpoint-docker</em> git reposiory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># git clone https://github.com/perfsonar/perfsonar-testpoint-docker</span>
@@ -155,10 +155,10 @@
 <p class="admonition-title">Note</p>
 <p>If you find this script useful you may decide to put it in your path. Example: <cite>sudo cp ./perfsonar-testpoint-docker/utils/psdocker /usr/local/bin/psdocker</cite></p>
 </div>
-</section>
-</section>
-<section id="running-with-docker-compose">
-<h2>Running with <cite>docker-compose</cite><a class="headerlink" href="#running-with-docker-compose" title="Permalink to this heading">¶</a></h2>
+</div>
+</div>
+<div class="section" id="running-with-docker-compose">
+<h2>Running with <cite>docker-compose</cite><a class="headerlink" href="#running-with-docker-compose" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://docs.docker.com/compose/">Docker Compose</a> is software that assists in running and managing one or more containers defined in a YAML file. For covenience, perfSONAR provides such a YAML file to assist in setting-up a single testpoint with a shared volume to persist test configurations. This setup can also be used for ad-hoc testers if you find the docker-compose method more convenient than the other options mentioned in previous sections.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -196,9 +196,9 @@
 <span class="c1"># docker compose -f docker-compose.systemd.yml exec testpoint psconfig remote list</span>
 </pre></div>
 </div>
-</section>
-<section id="running-the-supervisord-image">
-<h2>Running the Supervisord Image<a class="headerlink" href="#running-the-supervisord-image" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="running-the-supervisord-image">
+<h2>Running the Supervisord Image<a class="headerlink" href="#running-the-supervisord-image" title="Permalink to this headline">¶</a></h2>
 <p>The container image adopted in the previous steps uses <a class="reference external" href="https://systemd.io/">systemd</a> for managing system processes, aligning with our recommendation for better stability. However, we also offer a version based on <a class="reference external" href="http://supervisord.org/">supervisord</a> for scenarios where the host does not support cgroups v2, which is required by the systemd-based version.</p>
 <p>First, pull down the latest Docker image:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker pull perfsonar/testpoint</span>
@@ -242,9 +242,9 @@
 <span class="c1"># docker compose exec testpoint psconfig remote list</span>
 </pre></div>
 </div>
-</section>
-<section id="troubleshooting">
-<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
 <p>The easiest way to troubleshoot issues with the Docker image are to connect to it while running. Find the container ID of the running container:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker ps</span>
 <span class="n">CONTAINER</span> <span class="n">ID</span>   <span class="n">IMAGE</span>                         <span class="n">COMMAND</span>                  <span class="n">CREATED</span>         <span class="n">STATUS</span>         <span class="n">PORTS</span>     <span class="n">NAMES</span>
@@ -256,9 +256,9 @@
 </pre></div>
 </div>
 <p>And then do troubleshooting as you would anywhere else in perfSONAR. You can look at various log files, run commands in debug mode, etc.</p>
-</section>
-<section id="managing-upgrades">
-<h2>Managing Upgrades<a class="headerlink" href="#managing-upgrades" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="managing-upgrades">
+<h2>Managing Upgrades<a class="headerlink" href="#managing-upgrades" title="Permalink to this headline">¶</a></h2>
 <p>To upgrade your Docker container, from the parent do the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker pull perfsonar/testpoint:systemd</span>
 </pre></div>
@@ -284,15 +284,14 @@
 </pre></div>
 </div>
 <p>Your Docker instance of perfsonar-testpoint has now been upgraded to the latest perfSONAR code.</p>
-</section>
-<section id="advanced-managing-the-firewall">
-<h2>Advanced: Managing the Firewall<a class="headerlink" href="#advanced-managing-the-firewall" title="Permalink to this heading">¶</a></h2>
+</div>
+<div class="section" id="advanced-managing-the-firewall">
+<h2>Advanced: Managing the Firewall<a class="headerlink" href="#advanced-managing-the-firewall" title="Permalink to this headline">¶</a></h2>
 <p>By default, the docker container does not touch the host firewall. The firewall (iptables) is managed by the Linux kernel and thus the container has to share the firewall with the host system. Additionally, the container does not have permission to run or manage iptables. Therefore, if you intend to configure the firewall, you should ensure to install the <strong>perfsonar-toolkit-security</strong> package on the host system (i.e. outside the container).</p>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -348,8 +347,7 @@
         <li class="right" >
           <a href="install_debian.html" title="Bundle Installation on Debian"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Using perfSONAR with Docker</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -394,7 +392,7 @@
     
     <div class="footer" role="contentinfo">
         &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
