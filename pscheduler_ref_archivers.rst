@@ -343,11 +343,16 @@ Archiver Data
 
 ``op`` - Optional.  The HTTP operation to be used, ``post`` or ``put``.
 
+``timeout`` (Requires schema 4) - The maximum amount of time that may
+pass before the operation is aborted.  The default is ``PT30S``.
+Values exceeding ``PT2M`` are not recommended.
+
 ``headers`` - Optional, available in schema 2 and later.  A JSON object consisting of pairs whose values are strings, numeric types or ``null``.  Each pair except those whose values are ``null`` will be passed to the HTTP server as a header.  The archiver gives special treatment to the following headers:
 
  - ``Content-Type`` - If not provided, the archiver will provide one of ``text/plain`` if the data to be archived is a string or ``application/json`` for any other JSON-representable type.  To force strings into JSON format, provide a ``Content-Type`` of ``application/json``.  This behavior can be disabled by providing a ``Content-Type`` header with the desired type or ``null``.
 
  - ``Content-Length`` - If not provided (which should be the usual case), the archiver will calculate and supply the length of the content.  This behavior can be disabled by providing a ``Content-Length`` of ``null``.
+
 
 ``bind`` - Optional.  The address on the host to which the HTTP client should bind when making the request.
 
