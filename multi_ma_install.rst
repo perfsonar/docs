@@ -27,7 +27,7 @@ The measurement archive is implemented using a software package named *perfsonar
 
   *Debian/Ubuntu:*::
 
-     apt-get install perfsonar-archive
+     DEBIAN_FRONTEND=noninteractive apt-get install perfsonar-archive
 
 Authenticating Measurement Hosts
 ================================
