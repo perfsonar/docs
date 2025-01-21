@@ -124,7 +124,6 @@ In addition to any of the bundles above you may also **optionally** choose to in
 
      * ``apt install perfsonar-toolkit-ntp`` - Automatically detects closest NTP servers and sets them in ntp.conf
      * ``apt install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
-     * ``apt install perfsonar-toolkit-servicewatcher`` - Adds a cron job that checks if services are still running
      * ``apt install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
      * ``apt install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
@@ -203,27 +202,15 @@ Full perfSONAR toolkit upgrades (i.e. upgrade to new major versions) might still
 
 .. _install_debian_step6:
 
-Step 6: Service Watcher
-------------------------
-The `perfsonar-toolkit-servicewatcher` installs scripts that check if pscheduler, owamp, databases and other processes are running and restarts if they have stopped unexpectedly. 
-
-The install automatically configures cron to run the service_watcher regularly.
-
-To run the script manually, run::
-
-  /usr/lib/perfsonar/scripts/service_watcher
-
-.. _install_debian_step7:
-
-Step 7: Register your services 
+Step 6: Register your services 
 ------------------------------- 
 Note: this step can be done through the web interface if the perfsonar-toolkit bundle was installed. See :doc:`manage_admin_info`.
 
 No actual configuration is required but filling fields such as administrator_email, site_name, city, country, latitude, longitude, etc. are **highly recommended**. You can add these by removing the leading `#` of any property and filling it out with a proper value for your host. Changes will be picked-up automatically without need for any restarts.
 
-.. _install_debian_step8:
+.. _install_debian_step7:
 
-Step 8: Starting your services 
+Step 7: Starting your services 
 ------------------------------- 
 You can start all the services by rebooting the host since all are configured to run by default. In order to check services status issue the following commands::
     
