@@ -250,7 +250,10 @@ Example
 ``esmond``
 -------------------------------------------
 
-The ``esmond`` archiver submits measurement results to the esmond time series database using specialized translations of results for ``throughput``, ``latency``, ``trace`` and ``rtt`` tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the ``pscheduler-raw`` event type. 
+The ``esmond`` archiver submits measurement results to the esmond time series database using specialized translations of results for ``throughput``, ``latency``, ``trace`` and ``rtt`` tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the ``pscheduler-raw`` event type.
+
+Note that Esmond is no longer provided or supported by the perfSONAR
+team; this archiver is included for those using it on older systems.
 
 .. _pscheduler_ref_archivers-archivers-esmond-data:
 
@@ -440,7 +443,7 @@ be automatically cast on insertion.
 kept alive.  The default is never.
 
 ``retry-policy`` - Optional. Describes how to retry failed attempts to
-submit the measurement to esmond before giving up.  The default
+submit the measurement to PostgreSQL before giving up.  The default
 behavior is to try once and then give up.
 
 
@@ -582,7 +585,7 @@ Archiver Data
 it by querying DNS for an ``AAAA`` or ``A`` record, in that order.
 
 ``retry-policy`` - Optional. Describes how to retry failed attempts to
-submit the measurement to esmond before giving up.  The default
+submit the measurement to the socket before giving up.  The default
 behavior is to try once and then give up.
 
 
