@@ -96,7 +96,6 @@ Optional Packages
 In addition to any of the bundles above you may also **optionnally** choose to install one or more of our add-on packages (these are automatically added on the perfsonar-toolkit bundle):
 
      * ``dnf install perfsonar-toolkit-security`` - Adds default firewall rules and installs fail2ban
-     * ``dnf install perfsonar-toolkit-servicewatcher`` - Adds a cron job that checks if services are still running.
      * ``dnf install perfsonar-toolkit-sysctl`` - Adds default sysctl tuning settings
      * ``dnf install perfsonar-toolkit-systemenv-testpoint`` - Configures auto-update and set some default logging locations
 
