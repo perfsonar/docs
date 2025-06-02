@@ -1,21 +1,20 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Troubleshooting Docker Containers &#8212; perfSONAR Toolkit 5.1.4 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Troubleshooting Docker Containers &#8212; perfSONAR Toolkit 5.1.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="User Management" href="pwa_user_management.html" />
@@ -61,8 +60,9 @@
         <li class="right" >
           <a href="pwa_docker_create.html" title="Creating Docker containers"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.4 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" accesskey="U">pSConfig Web Admin</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Troubleshooting Docker Containers</a></li> 
       </ul>
     </div>
     </div>
@@ -74,62 +74,62 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="troubleshooting-docker-containers">
-<h1>Troubleshooting Docker Containers<a class="headerlink" href="#troubleshooting-docker-containers" title="Permalink to this headline">¶</a></h1>
+  <section id="troubleshooting-docker-containers">
+<h1>Troubleshooting Docker Containers<a class="headerlink" href="#troubleshooting-docker-containers" title="Permalink to this heading">¶</a></h1>
 <p><strong>If you are not using Docker, SKIP THIS PAGE</strong></p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> command to list the running containers.</p>
 <p>You should see all 5-6 containers running (again, <code class="docutils literal notranslate"><span class="pre">postfix</span></code> is optional).</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker ps</span>
-CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                                                              NAMES
-2dd0cd671538        perfsonar/pwa-admin    <span class="s2">&quot;/start.sh&quot;</span>              <span class="m">2</span> weeks ago         Up <span class="m">2</span> weeks          <span class="m">80</span>/tcp, <span class="m">8080</span>/tcp                                                   pwa-admin1
-f2227dd2ee2a        perfsonar/pwa-pub      <span class="s2">&quot;node /app/api/pwapub&quot;</span>   <span class="m">2</span> weeks ago         Up <span class="m">2</span> weeks          <span class="m">8080</span>/tcp                                                           pwa-pub1
-36179bd10524        perfsonar/sca-auth     <span class="s2">&quot;/app/docker/start.sh&quot;</span>   <span class="m">2</span> weeks ago         Up <span class="m">2</span> weeks          <span class="m">80</span>/tcp, <span class="m">8080</span>/tcp                                                   sca-auth
-c10b07ae72cc        nginx                  <span class="s2">&quot;nginx -g &#39;daemon off&quot;</span>   <span class="m">3</span> weeks ago         Up <span class="m">5</span> days           <span class="m">0</span>.0.0.0:80-&gt;80/tcp, <span class="m">0</span>.0.0.0:443-&gt;443/tcp, <span class="m">0</span>.0.0.0:9443-&gt;9443/tcp   nginx
-727dc2f5e528        mongo                  <span class="s2">&quot;docker-entrypoint.sh&quot;</span>   <span class="m">8</span> months ago        Up <span class="m">4</span> weeks          <span class="m">27017</span>/tcp                                                          mongo
-0c03b689c722        yorkshirekev/postfix   <span class="s2">&quot;/startservices.sh mc&quot;</span>   <span class="m">3</span> weeks ago         Up <span class="m">3</span> weeks          <span class="m">0</span>.0.0.0:587-&gt;25/tcp                                                postfix
+CONTAINER<span class="w"> </span>ID<span class="w">        </span>IMAGE<span class="w">                  </span>COMMAND<span class="w">                  </span>CREATED<span class="w">             </span>STATUS<span class="w">              </span>PORTS<span class="w">                                                              </span>NAMES
+2dd0cd671538<span class="w">        </span>perfsonar/pwa-admin<span class="w">    </span><span class="s2">&quot;/start.sh&quot;</span><span class="w">              </span><span class="m">2</span><span class="w"> </span>weeks<span class="w"> </span>ago<span class="w">         </span>Up<span class="w"> </span><span class="m">2</span><span class="w"> </span>weeks<span class="w">          </span><span class="m">80</span>/tcp,<span class="w"> </span><span class="m">8080</span>/tcp<span class="w">                                                   </span>pwa-admin1
+f2227dd2ee2a<span class="w">        </span>perfsonar/pwa-pub<span class="w">      </span><span class="s2">&quot;node /app/api/pwapub&quot;</span><span class="w">   </span><span class="m">2</span><span class="w"> </span>weeks<span class="w"> </span>ago<span class="w">         </span>Up<span class="w"> </span><span class="m">2</span><span class="w"> </span>weeks<span class="w">          </span><span class="m">8080</span>/tcp<span class="w">                                                           </span>pwa-pub1
+36179bd10524<span class="w">        </span>perfsonar/sca-auth<span class="w">     </span><span class="s2">&quot;/app/docker/start.sh&quot;</span><span class="w">   </span><span class="m">2</span><span class="w"> </span>weeks<span class="w"> </span>ago<span class="w">         </span>Up<span class="w"> </span><span class="m">2</span><span class="w"> </span>weeks<span class="w">          </span><span class="m">80</span>/tcp,<span class="w"> </span><span class="m">8080</span>/tcp<span class="w">                                                   </span>sca-auth
+c10b07ae72cc<span class="w">        </span>nginx<span class="w">                  </span><span class="s2">&quot;nginx -g &#39;daemon off&quot;</span><span class="w">   </span><span class="m">3</span><span class="w"> </span>weeks<span class="w"> </span>ago<span class="w">         </span>Up<span class="w"> </span><span class="m">5</span><span class="w"> </span>days<span class="w">           </span><span class="m">0</span>.0.0.0:80-&gt;80/tcp,<span class="w"> </span><span class="m">0</span>.0.0.0:443-&gt;443/tcp,<span class="w"> </span><span class="m">0</span>.0.0.0:9443-&gt;9443/tcp<span class="w">   </span>nginx
+727dc2f5e528<span class="w">        </span>mongo<span class="w">                  </span><span class="s2">&quot;docker-entrypoint.sh&quot;</span><span class="w">   </span><span class="m">8</span><span class="w"> </span>months<span class="w"> </span>ago<span class="w">        </span>Up<span class="w"> </span><span class="m">4</span><span class="w"> </span>weeks<span class="w">          </span><span class="m">27017</span>/tcp<span class="w">                                                          </span>mongo
+0c03b689c722<span class="w">        </span>yorkshirekev/postfix<span class="w">   </span><span class="s2">&quot;/startservices.sh mc&quot;</span><span class="w">   </span><span class="m">3</span><span class="w"> </span>weeks<span class="w"> </span>ago<span class="w">         </span>Up<span class="w"> </span><span class="m">3</span><span class="w"> </span>weeks<span class="w">          </span><span class="m">0</span>.0.0.0:587-&gt;25/tcp<span class="w">                                                </span>postfix
 </pre></div>
 </div>
 <p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
 <p>Note: sometimes, docker containers will initially not have connectivity to the outside world. Usually this can be resolved by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code>. If you are experiencing this issue, make sure your firewall rules are not being overridden by config management software (puppet, ansible, etc).</p>
-<div class="section" id="troubleshooting-containers">
-<h2>Troubleshooting Containers<a class="headerlink" href="#troubleshooting-containers" title="Permalink to this headline">¶</a></h2>
+<section id="troubleshooting-containers">
+<h2>Troubleshooting Containers<a class="headerlink" href="#troubleshooting-containers" title="Permalink to this heading">¶</a></h2>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span></code> command to see logs for a container. Adjust <code class="docutils literal notranslate"><span class="pre">--tail</span></code> to change how many logs are displayed. Add the <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag to watch the logs as new records come in (like <code class="docutils literal notranslate"><span class="pre">tail</span></code>)</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker logs pwa-admin1 --tail 10</span>
-<span class="m">1</span><span class="p">|</span>pwaadmin       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:41:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: HTTP POST /health/pwacache <span class="nv">statusCode</span><span class="o">=</span><span class="m">200</span>, <span class="nv">url</span><span class="o">=</span>/health/pwacache, <span class="nv">host</span><span class="o">=</span><span class="m">0</span>.0.0.0:8080, <span class="nv">accept</span><span class="o">=</span>application/json, content-type<span class="o">=</span>application/json, content-length<span class="o">=</span><span class="m">14</span>, <span class="nv">connection</span><span class="o">=</span>close, <span class="nv">method</span><span class="o">=</span>POST, <span class="nv">httpVersion</span><span class="o">=</span><span class="m">1</span>.1, <span class="nv">originalUrl</span><span class="o">=</span>/health/pwacache, , <span class="nv">responseTime</span><span class="o">=</span><span class="m">1</span>
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: Host found in hostgroup<span class="p">;</span> not expiring  5b05d426f895e94f17bef826 em-4.of-proxy.newy32aoa.net.internet2.edu
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: Host found in hostgroup<span class="p">;</span> not expiring  5b05d42af895e94f17bf0216 perfsonar.cbio.uct.ac.za
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: All hosts have been processed successfully
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: successfully deleted hosts
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: processing datasource <span class="k">for</span> expiration/duplication prevention:gls ................................................................................
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: lookup service <span class="nv">label</span><span class="o">=</span>GLS, <span class="nv">type</span><span class="o">=</span>global-sls, <span class="nv">activehosts_url</span><span class="o">=</span>http://ps1.es.net:8096/lookup/activehosts.json, <span class="nv">query</span><span class="o">=</span>?type<span class="o">=</span>service, <span class="nv">url</span><span class="o">=</span>http://35.237.255.214:8090/lookup/records?type<span class="o">=</span>service
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:43 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: num result <span class="m">2543</span>
-<span class="m">2</span><span class="p">|</span>pwacache       <span class="p">|</span> Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:42:47 GMT+0000 <span class="o">(</span>UTC<span class="o">)</span> - info: <span class="k">done</span> expiring/updating LS URLs <span class="k">for</span> db hosts
-<span class="m">3</span><span class="p">|</span>ui             <span class="p">|</span> <span class="o">[</span>Tue Feb <span class="m">12</span> <span class="m">2019</span> <span class="m">21</span>:51:56 GMT+0000 <span class="o">(</span>UTC<span class="o">)]</span> <span class="s2">&quot;GET /&quot;</span> <span class="s2">&quot;undefined&quot;</span>
+<span class="m">1</span><span class="p">|</span>pwaadmin<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:41:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>HTTP<span class="w"> </span>POST<span class="w"> </span>/health/pwacache<span class="w"> </span><span class="nv">statusCode</span><span class="o">=</span><span class="m">200</span>,<span class="w"> </span><span class="nv">url</span><span class="o">=</span>/health/pwacache,<span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="m">0</span>.0.0.0:8080,<span class="w"> </span><span class="nv">accept</span><span class="o">=</span>application/json,<span class="w"> </span>content-type<span class="o">=</span>application/json,<span class="w"> </span>content-length<span class="o">=</span><span class="m">14</span>,<span class="w"> </span><span class="nv">connection</span><span class="o">=</span>close,<span class="w"> </span><span class="nv">method</span><span class="o">=</span>POST,<span class="w"> </span><span class="nv">httpVersion</span><span class="o">=</span><span class="m">1</span>.1,<span class="w"> </span><span class="nv">originalUrl</span><span class="o">=</span>/health/pwacache,<span class="w"> </span>,<span class="w"> </span><span class="nv">responseTime</span><span class="o">=</span><span class="m">1</span>
+<span class="m">2</span><span class="p">|</span>pwacache<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:42:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>Host<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>hostgroup<span class="p">;</span><span class="w"> </span>not<span class="w"> </span>expiring<span class="w">  </span>5b05d426f895e94f17bef826<span class="w"> </span>em-4.of-proxy.newy32aoa.net.internet2.edu
+<span class="m">2</span><span class="p">|</span>pwacache<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:42:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>Host<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>hostgroup<span class="p">;</span><span class="w"> </span>not<span class="w"> </span>expiring<span class="w">  </span>5b05d42af895e94f17bf0216<span class="w"> </span>perfsonar.cbio.uct.ac.za
+<span class="m">2</span><span class="p">|</span>pwacache<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:42:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>All<span class="w"> </span>hosts<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>processed<span class="w"> </span>successfully
+<span class="m">2</span><span class="p">|</span>pwacache<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:42:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>successfully<span class="w"> </span>deleted<span class="w"> </span>hosts
+<span class="m">2</span><span class="p">|</span>pwacache<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:42:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>processing<span class="w"> </span>datasource<span class="w"> </span><span class="k">for</span><span class="w"> </span>expiration/duplication<span class="w"> </span>prevention:gls<span class="w"> </span>................................................................................
+<span class="m">2</span><span class="p">|</span>pwacache<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:42:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>lookup<span class="w"> </span>service<span class="w"> </span><span class="nv">label</span><span class="o">=</span>GLS,<span class="w"> </span><span class="nv">type</span><span class="o">=</span>global-sls,<span class="w"> </span><span class="nv">activehosts_url</span><span class="o">=</span>http://ps1.es.net:8096/lookup/activehosts.json,<span class="w"> </span><span class="nv">query</span><span class="o">=</span>?type<span class="o">=</span>service,<span class="w"> </span><span class="nv">url</span><span class="o">=</span>http://35.237.255.214:8090/lookup/records?type<span class="o">=</span>service
+<span class="m">2</span><span class="p">|</span>pwacache<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:42:43<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span>num<span class="w"> </span>result<span class="w"> </span><span class="m">2543</span>
+<span class="m">2</span><span class="p">|</span>pwacache<span class="w">       </span><span class="p">|</span><span class="w"> </span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:42:47<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)</span><span class="w"> </span>-<span class="w"> </span>info:<span class="w"> </span><span class="k">done</span><span class="w"> </span>expiring/updating<span class="w"> </span>LS<span class="w"> </span>URLs<span class="w"> </span><span class="k">for</span><span class="w"> </span>db<span class="w"> </span>hosts
+<span class="m">3</span><span class="p">|</span>ui<span class="w">             </span><span class="p">|</span><span class="w"> </span><span class="o">[</span>Tue<span class="w"> </span>Feb<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">2019</span><span class="w"> </span><span class="m">21</span>:51:56<span class="w"> </span>GMT+0000<span class="w"> </span><span class="o">(</span>UTC<span class="o">)]</span><span class="w"> </span><span class="s2">&quot;GET /&quot;</span><span class="w"> </span><span class="s2">&quot;undefined&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="interacting-with-containers">
-<h2>Interacting with containers<a class="headerlink" href="#interacting-with-containers" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="interacting-with-containers">
+<h2>Interacting with containers<a class="headerlink" href="#interacting-with-containers" title="Permalink to this heading">¶</a></h2>
 <p>You can enter an interactive <code class="docutils literal notranslate"><span class="pre">bash</span></code> shell within a container like this:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@hostname ~<span class="o">]</span><span class="c1"># docker exec -it pwa-admin1 bash</span>
-root@2dd0cd671538:/# ls
-app  bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  start.sh  sys  tmp  usr  var
-root@2dd0cd671538:/# ls -l app/api/config
-total <span class="m">12</span>
-drwxrwxr-x <span class="m">2</span> <span class="m">11264</span> <span class="m">11264</span>  <span class="m">146</span> Jan <span class="m">24</span> <span class="m">22</span>:06 auth
--rw-rw-r-- <span class="m">1</span> <span class="m">11264</span> <span class="m">11264</span> <span class="m">6096</span> May <span class="m">23</span>  <span class="m">2018</span> index.js
-drwxrwxr-x <span class="m">4</span> <span class="m">11264</span> <span class="m">11264</span> <span class="m">4096</span> Jan <span class="m">25</span> <span class="m">20</span>:44 nginx
-drwxrwxr-x <span class="m">2</span> <span class="m">11264</span> <span class="m">11264</span>   <span class="m">55</span> May <span class="m">23</span>  <span class="m">2018</span> shared
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@hostname<span class="w"> </span>~<span class="o">]</span><span class="c1"># docker exec -it pwa-admin1 bash</span>
+root@2dd0cd671538:/#<span class="w"> </span>ls
+app<span class="w">  </span>bin<span class="w">  </span>boot<span class="w">  </span>dev<span class="w">  </span>etc<span class="w">  </span>home<span class="w">  </span>lib<span class="w">  </span>lib64<span class="w">  </span>media<span class="w">  </span>mnt<span class="w">  </span>opt<span class="w">  </span>proc<span class="w">  </span>root<span class="w">  </span>run<span class="w">  </span>sbin<span class="w">  </span>srv<span class="w">  </span>start.sh<span class="w">  </span>sys<span class="w">  </span>tmp<span class="w">  </span>usr<span class="w">  </span>var
+root@2dd0cd671538:/#<span class="w"> </span>ls<span class="w"> </span>-l<span class="w"> </span>app/api/config
+total<span class="w"> </span><span class="m">12</span>
+drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">11264</span><span class="w"> </span><span class="m">11264</span><span class="w">  </span><span class="m">146</span><span class="w"> </span>Jan<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">22</span>:06<span class="w"> </span>auth
+-rw-rw-r--<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">11264</span><span class="w"> </span><span class="m">11264</span><span class="w"> </span><span class="m">6096</span><span class="w"> </span>May<span class="w"> </span><span class="m">23</span><span class="w">  </span><span class="m">2018</span><span class="w"> </span>index.js
+drwxrwxr-x<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">11264</span><span class="w"> </span><span class="m">11264</span><span class="w"> </span><span class="m">4096</span><span class="w"> </span>Jan<span class="w"> </span><span class="m">25</span><span class="w"> </span><span class="m">20</span>:44<span class="w"> </span>nginx
+drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">11264</span><span class="w"> </span><span class="m">11264</span><span class="w">   </span><span class="m">55</span><span class="w"> </span>May<span class="w"> </span><span class="m">23</span><span class="w">  </span><span class="m">2018</span><span class="w"> </span>shared
 </pre></div>
 </div>
 <p>Or directly execute commands like this:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@hostname ~<span class="o">]</span><span class="c1"># docker exec -it pwa-admin1 ls /app/api/config</span>
-auth  index.js  nginx  shared
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@hostname<span class="w"> </span>~<span class="o">]</span><span class="c1"># docker exec -it pwa-admin1 ls /app/api/config</span>
+auth<span class="w">  </span>index.js<span class="w">  </span>nginx<span class="w">  </span>shared
 </pre></div>
 </div>
-</div>
-<div class="section" id="firewall">
-<h2>Firewall<a class="headerlink" href="#firewall" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="firewall">
+<h2>Firewall<a class="headerlink" href="#firewall" title="Permalink to this heading">¶</a></h2>
 <p>Docker will take care of its own firewall rules, so you don’t have to worry about opening ports manually.</p>
 <p>By default, following are the ports used by nginx container:</p>
 <ul class="simple">
@@ -137,10 +137,11 @@ auth  index.js  nginx  shared
 <li><p>80 (For PWA configuration publisher)</p></li>
 <li><p>9443 (For x509 authentication to PWA administrative GUI)</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -188,8 +189,9 @@ auth  index.js  nginx  shared
         <li class="right" >
           <a href="pwa_docker_create.html" title="Creating Docker containers"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.4 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pwa.html" >pSConfig Web Admin</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Troubleshooting Docker Containers</a></li> 
       </ul>
     </div>
     <footer id="fat">
@@ -233,8 +235,8 @@ auth  index.js  nginx  shared
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2025, perfSONAR Project.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+        &#169; Copyright 2024, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
     </div>
   </body>
 </html>
