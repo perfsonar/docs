@@ -29,9 +29,6 @@ Most perfSONAR related services keep log files under the directory **/var/log/pe
 +----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
 | perfSONAR Lookup Service Registration Daemon | * /var/log/perfsonar/lsregistrationdaemon.log                     | |log_descr_lsreg|                          |
 +----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
-| perfSONAR Service Watcher                    | * /var/log/perfsonar/servicewatcher.log                           | |log_descr_watcher|                        |
-|                                              | * /var/log/perfsonar/servicewatcher_error.log                     |                                            |
-+----------------------------------------------+-------------------------------------------------------------------+--------------------------------------------+
 | perfSONAR Web Interface                      | * /var/log/perfsonar/web_admin/web_admin.log                      | |log_descr_web|                            |
 |                                              | * /var/log/httpd/error_log                                        |                                            |
 |                                              | * /var/log/apache2/error.log (Debian/Ubuntu)                      |                                            |

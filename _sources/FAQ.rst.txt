@@ -100,15 +100,6 @@ Q: Why can't my Debian/Ubuntu host find ping?
 
 **A:** Run ``apt reinstall iputils-ping`` to fix the issue. This was caused by a bug in the paris-traceroute package that installed a non-standard version of ping that required sudo. This was removed in perfSONAR 5.0.5 which left some systems without a ping command.
 
-Q: Why aren't my iptables set up properly when I installed the toolkit in Debian 10?
-====================================================================================
-
-**A:** The ``perfsonar-toolkit-security`` package, which configures the firewall for perfSONAR purposes, is not being set up properly under a plain Debian 10 installation. This is due to an old iptables version provided with Debian 10. Using the updated packages from Debian 10 backports solves this issue and properly configures the firewall. To use this correction, you can follow the 3 simple steps described here:
-
-    #. Add the following line in the /etc/apt/sources.list: ``deb http://deb.debian.org/debian buster-backports main``
-    #. Then refresh apt and install the new version with: ``apt-get update; apt-get install -t buster-backports iptables``
-    #. And finally re-install the perfsonar package to make sure everything is setup properly: ``apt-get reinstall perfsonar-toolkit-security``
-	
 Tool Questions
 ----------------
 

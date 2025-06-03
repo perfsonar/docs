@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction to pSConfig Templates &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
+    <title>Introduction to pSConfig Templates &#8212; perfSONAR Toolkit 5.2.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css?v=68f3fa90" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
+    <script src="_static/documentation_options.js?v=2dde5210"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -47,7 +47,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -59,7 +59,7 @@
         <li class="right" >
           <a href="psconfig_quickstart.html" title="pSConfig Quickstart Guide"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Introduction to pSConfig Templates</a></li> 
       </ul>
     </div>
@@ -74,6 +74,10 @@
             
   <section id="introduction-to-psconfig-templates">
 <h1>Introduction to pSConfig Templates<a class="headerlink" href="#introduction-to-psconfig-templates" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download a full example of the JSON file described in this section <a class="reference download internal" download="" href="_downloads/8869a9a155c5a08b2aa00e6bd4ab57cd/psconfig_templates_intro-network.json"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>. For more example templates see the directory <code class="docutils literal notranslate"><span class="pre">/usr/share/doc/perfsonar/psconfig</span></code> on any host with a pSConfig package installed. In particular see <code class="docutils literal notranslate"><span class="pre">/usr/share/doc/perfsonar/psconfig/skeleton.json</span></code> for a good starting point of building your own template.</p>
+</div>
 <section id="introduction">
 <span id="psconfig-templates-intro-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>As detailed in <a class="reference internal" href="psconfig_intro.html"><span class="doc">What is pSConfig?</span></a>, pSConfig’s workflow centers around <em>templates</em> that describe a topology of tasks. The concepts behind these templates and the format in which they are expressed are the primary focus of this document.</p>
@@ -90,10 +94,10 @@
 <section id="addresses">
 <span id="psconfig-templates-intro-concepts-addresses"></span><h3>Addresses<a class="headerlink" href="#addresses" title="Link to this heading">¶</a></h3>
 <p>The most basic unit of a template is an <strong>address</strong>. An address is a collection of properties that act as the unit of input to a task. Despite the name and the fact that pSConfig’s primary use case is in networking, an address is not necessarily connected to an interface or host. It is simply an object with properties. If it helps, think of each of the shapes in the diagram below as a pSConfig <em>address</em>:</p>
-<figure class="align-center" id="id12">
+<figure class="align-center" id="id11">
 <img alt="_images/psconfig_templates_intro-concepts-addrs.png" src="_images/psconfig_templates_intro-concepts-addrs.png" />
 <figcaption>
-<p><span class="caption-text"><em>An abstract representation of three addresses as colored shapes.</em></span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><em>An abstract representation of three addresses as colored shapes.</em></span><a class="headerlink" href="#id11" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Each of the shapes has certain properties such as they are all round and each is a particular color. In pSConfig terms, these properties can be used when constructing a task. Now let’s take a closer look at how we bring these properties together in <a class="reference internal" href="#psconfig-templates-intro-concepts-groups"><span class="std std-ref">groups</span></a>.</p>
@@ -102,24 +106,24 @@
 <span id="psconfig-templates-intro-concepts-groups"></span><h3>Groups<a class="headerlink" href="#groups" title="Link to this heading">¶</a></h3>
 <p>A <strong>group</strong> is a description of how to combine addresses when building the list of tasks. All groups have a <em>type</em> that provides the base for how addresses are combined. Most types also provide type-specific options to customize that combination such as excluding specific pairs, directionality etc. Currently, pSConfig support three group types.</p>
 <p>The first group type is <strong>mesh</strong>. A group of type mesh pairs every address with every other address in the group. Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">addresses</span></a> example, if we add them all to a group of type mesh, we will get the pairs shown on the right of the diagram below:</p>
-<figure class="align-center" id="id13">
+<figure class="align-center" id="id12">
 <img alt="_images/psconfig_templates_intro-concepts-mesh.png" src="_images/psconfig_templates_intro-concepts-mesh.png" />
 <figcaption>
-<p><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type mesh.</em></span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type mesh.</em></span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The second group type is <strong>disjoint</strong>. A group of type disjoint pairs every address in one group (Group A) with every address in another group (Group B). Both groups can have one or more addresses. Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">addresses</span></a> example, if we add them all to a disjoint group we will get the pairs shown on the right of the diagram below:</p>
-<figure class="align-center" id="id14">
+<figure class="align-center" id="id13">
 <img alt="_images/psconfig_templates_intro-concepts-disjoint.png" src="_images/psconfig_templates_intro-concepts-disjoint.png" />
 <figcaption>
-<p><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type disjoint.</em></span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type disjoint.</em></span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The final group type is <strong>list</strong>. A group of type list returns each address independently. It is the only current type that does not pair addresses. Instead, it just generates a one-dimensional <em>list</em> of addresses (hence the name). Using the shapes from our <a class="reference internal" href="#psconfig-templates-intro-concepts-addresses"><span class="std std-ref">addresses</span></a> example, if we add them all to a list group we will get the items shown on the right of the diagram below:</p>
-<figure class="align-center" id="id15">
+<figure class="align-center" id="id14">
 <img alt="_images/psconfig_templates_intro-concepts-list.png" src="_images/psconfig_templates_intro-concepts-list.png" />
 <figcaption>
-<p><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type list.</em></span><a class="headerlink" href="#id15" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><em>An abstract example of how addresses are combined in a group of type list.</em></span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>No matter which group type is used, we now have the basis for generating our task list. Let’s now explore how we can pull properties out of the generated pairs and <a class="reference internal" href="#psconfig-templates-intro-concepts-tasks"><span class="std std-ref">construct a task</span></a></p>
@@ -134,10 +138,10 @@
 <li><p>Zero or more <em>archives</em> that describe how to store the task results each time it runs</p></li>
 </ul>
 <p><strong>Template variables</strong> allow pSConfig to access properties of the task components listed above to connect the various pieces of the task together. A visual representation of a task definiton is shown in the following diagram:</p>
-<figure class="align-center" id="id16">
+<figure class="align-center" id="id15">
 <img alt="_images/psconfig_templates_intro-concepts-task.png" src="_images/psconfig_templates_intro-concepts-task.png" />
 <figcaption>
-<p><span class="caption-text"><em>An abstract example of a task with a test using two template variables, an archive, and a schedule</em></span><a class="headerlink" href="#id16" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><em>An abstract example of a task with a test using two template variables, an archive, and a schedule</em></span><a class="headerlink" href="#id15" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>In the above example, there is a test defined that extracts the color of the first address object using a template variable and does the same for a second input address.</p>
@@ -151,10 +155,10 @@
 <section id="putting-it-all-together">
 <span id="psconfig-templates-intro-concepts-conclusion"></span><h3>Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Link to this heading">¶</a></h3>
 <p>The diagram below shows the output when we associate our <em>group</em> of type <em>mesh</em> with the task definition from the <a class="reference internal" href="#psconfig-templates-intro-concepts-tasks"><span class="std std-ref">previous section</span></a>:</p>
-<figure class="align-center" id="id17">
+<figure class="align-center" id="id16">
 <img alt="_images/psconfig_templates_intro-concepts-conclusion.png" src="_images/psconfig_templates_intro-concepts-conclusion.png" />
 <figcaption>
-<p><span class="caption-text"><em>The combination a group of type mesh and task definition yields a task for each address pair that contains the colors of both addresses in the the test portion of the task</em></span><a class="headerlink" href="#id17" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><em>The combination a group of type mesh and task definition yields a task for each address pair that contains the colors of both addresses in the the test portion of the task</em></span><a class="headerlink" href="#id16" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>As shown in the diagram, for each pair in the group, we generate a task to be run using properties of the input addresses. Notice that the color of each address in the generated pair is used in the test component.</p>
@@ -399,10 +403,10 @@
 <section id="real-world-example">
 <span id="psconfig-templates-intro-example"></span><h2>Real-World Example<a class="headerlink" href="#real-world-example" title="Link to this heading">¶</a></h2>
 <p>With the basic concepts behind us, we will now move away from the abstract and into an example with foundations closer to reality. The basic setup of the example is described by the diagram below:</p>
-<figure class="align-center" id="id18">
+<figure class="align-center" id="id17">
 <img alt="_images/psconfig_templates_intro-example-network.png" src="_images/psconfig_templates_intro-example-network.png" />
 <figcaption>
-<p><span class="caption-text"><em>Example set of hosts we want to run tests between each other and publish to a central archive</em></span><a class="headerlink" href="#id18" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><em>Example set of hosts we want to run tests between each other and publish to a central archive</em></span><a class="headerlink" href="#id17" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>In the diagram, hosts are represented by the images of blade servers. We have four hosts that we want to run latency and/or throughput tasks and a fifth host that does not schedule any tasks but instead stores the results of the others in a central archive. Under each server image is one or more hostnames of network interfaces attached to that host. The diagram color-codes the interface hostnames, but working counter-clockwise around the diagram each host has interfaces with the following role:</p>
@@ -564,11 +568,6 @@
 </div>
 <p>As expected there are two tasks: one for latency measurements and another for throughput measurements. Notice that <code class="docutils literal notranslate"><span class="pre">latency_task</span></code> does not reference a schedule whereas <code class="docutils literal notranslate"><span class="pre">throughput_task</span></code> does. This is because <code class="docutils literal notranslate"><span class="pre">latency_task</span></code> runs continuously whereas <code class="docutils literal notranslate"><span class="pre">throughput_task</span></code> is on a periodic schedule. Beyond that, the task references the other components by name. With this final piece in place, we now have a complete template that describes our originally stated task topology.</p>
 </section>
-<section id="psconfig-templates-intro-conclusion">
-<span id="id11"></span><h3>Putting it all together<a class="headerlink" href="#psconfig-templates-intro-conclusion" title="Link to this heading">¶</a></h3>
-<p>You can download a full example of the JSON file described in this section <a class="reference download internal" download="" href="_downloads/8869a9a155c5a08b2aa00e6bd4ab57cd/psconfig_templates_intro-network.json"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>.</p>
-<p>For more example templates see the directory <code class="docutils literal notranslate"><span class="pre">/usr/share/doc/perfsonar/psconfig</span></code> on any host with a pSConfig package installed. In particular see <code class="docutils literal notranslate"><span class="pre">/usr/share/doc/perfsonar/psconfig/skeleton.json</span></code> for a good starting point of building your own template.</p>
-</section>
 </section>
 <section id="further-reading">
 <h2>Further Reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
@@ -617,7 +616,6 @@
 <li><a class="reference internal" href="#psconfig-templates-intro-example-archives"><code class="docutils literal notranslate"><span class="pre">archives</span></code></a></li>
 <li><a class="reference internal" href="#psconfig-templates-intro-example-schedules"><code class="docutils literal notranslate"><span class="pre">schedules</span></code></a></li>
 <li><a class="reference internal" href="#psconfig-templates-intro-example-tasks"><code class="docutils literal notranslate"><span class="pre">tasks</span></code></a></li>
-<li><a class="reference internal" href="#psconfig-templates-intro-conclusion">Putting it all together</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#further-reading">Further Reading</a></li>
@@ -644,7 +642,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -656,7 +654,7 @@
         <li class="right" >
           <a href="psconfig_quickstart.html" title="pSConfig Quickstart Guide"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Introduction to pSConfig Templates</a></li> 
       </ul>
     </div>
@@ -701,8 +699,8 @@
     </footer>
     
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    &#169; Copyright 2025, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     </div>
   </body>
 </html>

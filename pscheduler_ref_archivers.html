@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Archiver Reference &#8212; perfSONAR Toolkit 5.1.0 documentation</title>
+    <title>Archiver Reference &#8212; perfSONAR Toolkit 5.2.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css?v=68f3fa90" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script src="_static/documentation_options.js?v=bfa18cfb"></script>
+    <script src="_static/documentation_options.js?v=2dde5210"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -47,7 +47,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -59,7 +59,7 @@
         <li class="right" >
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Archiver Reference</a></li> 
       </ul>
     </div>
@@ -82,18 +82,18 @@
 <section id="basic-json-syntax">
 <span id="pscheduler-ref-archivers-syntax"></span><h2>Basic JSON Syntax<a class="headerlink" href="#basic-json-syntax" title="Link to this heading">¶</a></h2>
 <p>Archiving is accomplished by providing an <em>archive specification</em> in the form of a JSON object containing these values:</p>
+<p><code class="docutils literal notranslate"><span class="pre">label</span></code> (Requires schema 3) - A Human-readable label describing the destination.  This is optional but its use and some degree of uniqueness is strongly-recommended for diagnostic purposes.  Examples of useful labels are <code class="docutils literal notranslate"><span class="pre">OpenSearch</span> <span class="pre">at</span> <span class="pre">XYZ</span> <span class="pre">University</span></code> and <code class="docutils literal notranslate"><span class="pre">Central</span> <span class="pre">Research</span> <span class="pre">Kafka</span> <span class="pre">Queue</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">archiver</span></code> - The name of the archiver to use. See <a class="reference internal" href="#pscheduler-ref-archivers-archivers"><span class="std std-ref">Archivers</span></a> for a list available in the base pScheduler distribution.</p>
 <p><code class="docutils literal notranslate"><span class="pre">data</span></code> - A JSON object containing archiver-specific data to be used in deciding how to dispose of the result.</p>
-<p><code class="docutils literal notranslate"><span class="pre">runs</span></code> (Requires schema 2) - Which runs should be archived.  Valid values are <code class="docutils literal notranslate"><span class="pre">succeeded</span></code> for runs that produced a result, <code class="docutils literal notranslate"><span class="pre">failed</span></code> for those that did not and <code class="docutils literal notranslate"><span class="pre">all</span></code> for both.  This value is optional and will be treated as <code class="docutils literal notranslate"><span class="pre">succeeded</span></code> if not provided.</p>
 <p><code class="docutils literal notranslate"><span class="pre">ttl</span></code> - The absolute amount of time after which the result should be discarded if not successfully archived, specified as an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO8601 duration</a>.  This value is optional and will be treated as infinite if not provided.</p>
 <p><code class="docutils literal notranslate"><span class="pre">uri-host</span></code> (Requeres schema 2) - Host name and optional port to be used in URIs for the task and run provided to the archiver.  This value is optional and will default to the system’s best estimate of its own fully-qualified domain name.</p>
 <p>For example (commentary is not part of the specification):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>                  <span class="n">Second</span> <span class="n">schema</span><span class="p">,</span> <span class="n">required</span> <span class="k">for</span> <span class="s1">&#39;runs&#39;</span>
-    <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;bitbucket&quot;</span><span class="p">,</span>      <span class="n">Send</span> <span class="n">to</span> <span class="n">the</span> <span class="n">archiver</span> <span class="n">that</span> <span class="n">goes</span> <span class="n">nowhere</span><span class="o">.</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">},</span>                  <span class="n">The</span> <span class="s2">&quot;bitbucket&quot;</span> <span class="n">archiver</span> <span class="n">takes</span> <span class="n">no</span> <span class="n">specific</span> <span class="n">data</span><span class="o">.</span>
-    <span class="s2">&quot;runs&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>                <span class="n">Archive</span> <span class="nb">all</span> <span class="n">runs</span><span class="o">.</span>
-    <span class="s2">&quot;ttl&quot;</span><span class="p">:</span> <span class="s2">&quot;PT12H&quot;</span>                <span class="n">Give</span> <span class="n">up</span> <span class="n">after</span> <span class="mi">12</span> <span class="n">hours</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">successfully</span> <span class="n">archived</span><span class="o">.</span>
+    <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>                 <span class="n">Third</span> <span class="n">schema</span><span class="p">,</span> <span class="n">required</span> <span class="k">for</span> <span class="s1">&#39;label&#39;</span>
+    <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Nowhere At All&quot;</span><span class="p">,</span>   <span class="n">Human</span><span class="o">-</span><span class="n">readable</span> <span class="n">description</span> <span class="n">of</span> <span class="n">the</span> <span class="n">destination</span>
+    <span class="s2">&quot;archiver&quot;</span><span class="p">:</span> <span class="s2">&quot;bitbucket&quot;</span><span class="p">,</span>     <span class="n">Send</span> <span class="n">to</span> <span class="n">the</span> <span class="n">archiver</span> <span class="n">that</span> <span class="n">goes</span> <span class="n">nowhere</span><span class="o">.</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="p">},</span>                 <span class="n">The</span> <span class="s1">&#39;bitbucket&#39;</span> <span class="n">archiver</span> <span class="n">takes</span> <span class="n">no</span> <span class="n">specific</span> <span class="n">data</span><span class="o">.</span>
+    <span class="s2">&quot;ttl&quot;</span><span class="p">:</span> <span class="s2">&quot;PT12H&quot;</span>               <span class="n">Give</span> <span class="n">up</span> <span class="n">after</span> <span class="mi">12</span> <span class="n">hours</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">successfully</span> <span class="n">archived</span><span class="o">.</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -194,6 +194,54 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<section id="archiving-diagnostics">
+<span id="pscheduler-ref-archiving-diagnostics"></span><h3>Archiving Diagnostics<a class="headerlink" href="#archiving-diagnostics" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">pscheduler</span> <span class="pre">archiving-summary</span></code> command will produce a summary of
+archiving activity over the last hour or any other duration specified:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pscheduler archiving-summary PT10M
+
+Succeeded         Failed            Label
+----------------  ----------------  -------------------------
+       10 (100%)          0 (  0%)  ABC University archive
+        0 (  0%)          5 (100%)  University of DEF archive
+       12 ( 57%)          9 ( 43%)  GHI Institute archive
+       26 (100%)          0 (  0%)  syslog
+       23 (100%)          0 (  0%)  syslog #2
+----------------  ----------------  -------------------------
+       71 ( 84%)         14 ( 16%)  Total (85)
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Label</span></code> column indicates what <code class="docutils literal notranslate"><span class="pre">label</span></code> was specified for the
+archiving or, if none was specified, the name of the archiver used.
+Archivings with the same label will be given numbers if their <code class="docutils literal notranslate"><span class="pre">data</span></code>
+is different.  Note that the <code class="docutils literal notranslate"><span class="pre">data</span></code> is retrieved through the
+pScheduler API and will have sensitive information stripped out, which
+means different archivings (e.g., <code class="docutils literal notranslate"><span class="pre">http</span></code> <code class="docutils literal notranslate"><span class="pre">POST</span></code> to different
+destinations) may be grouped together.  To avoid this, it
+is strongly-recommended that archive specifications include a unique
+<code class="docutils literal notranslate"><span class="pre">label</span></code> pair to prevent ambiguities, as in this example:</p>
+<dl>
+<dt>::</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>“schema”: 3,
+“label”: “A Deep, Dark Hole”.
+“archiver”: “bitbucket”,
+“data”: { }</p>
+</dd>
+</dl>
+<p>}</p>
+<dl class="simple">
+<dt>{</dt><dd><p>“schema”: 3,
+“label”: “A Deeper, Darker Hole”.
+“archiver”: “bitbucket”,
+“data”: { }</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>Note that long intervals may pull a considerable amount of data on
+systems producing large numbers of archived measurements.</p>
+</section>
 </section>
 <section id="archivers">
 <span id="pscheduler-ref-archivers-archivers"></span><h2>Archivers<a class="headerlink" href="#archivers" title="Link to this heading">¶</a></h2>
@@ -222,6 +270,8 @@
 <section id="esmond">
 <span id="pscheduler-ref-archivers-archivers-esmond"></span><h3><code class="docutils literal notranslate"><span class="pre">esmond</span></code><a class="headerlink" href="#esmond" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">esmond</span></code> archiver submits measurement results to the esmond time series database using specialized translations of results for <code class="docutils literal notranslate"><span class="pre">throughput</span></code>, <code class="docutils literal notranslate"><span class="pre">latency</span></code>, <code class="docutils literal notranslate"><span class="pre">trace</span></code> and <code class="docutils literal notranslate"><span class="pre">rtt</span></code> tests into a format used by earlier versions of perfSONAR. If it does not recognize a test it will store the raw JSON of the pscheduler result in the <code class="docutils literal notranslate"><span class="pre">pscheduler-raw</span></code> event type.</p>
+<p>Note that Esmond is no longer provided or supported by the perfSONAR
+team; this archiver is included for those using it on older systems.</p>
 <section id="pscheduler-ref-archivers-archivers-esmond-data">
 <span id="id1"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-esmond-data" title="Link to this heading">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> - The URL for the esmond server which will collect the result.</p>
@@ -287,6 +337,9 @@
 <span id="id5"></span><h4>Archiver Data<a class="headerlink" href="#pscheduler-ref-archivers-archivers-http-data" title="Link to this heading">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">_url</span></code> - The URL to which the data should be posted or put.</p>
 <p><code class="docutils literal notranslate"><span class="pre">op</span></code> - Optional.  The HTTP operation to be used, <code class="docutils literal notranslate"><span class="pre">post</span></code> or <code class="docutils literal notranslate"><span class="pre">put</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> (Requires schema 4) - The maximum amount of time that may
+pass before the operation is aborted.  The default is <code class="docutils literal notranslate"><span class="pre">PT30S</span></code>.
+Values exceeding <code class="docutils literal notranslate"><span class="pre">PT2M</span></code> are not recommended.</p>
 <p><code class="docutils literal notranslate"><span class="pre">headers</span></code> - Optional, available in schema 2 and later.  A JSON object consisting of pairs whose values are strings, numeric types or <code class="docutils literal notranslate"><span class="pre">null</span></code>.  Each pair except those whose values are <code class="docutils literal notranslate"><span class="pre">null</span></code> will be passed to the HTTP server as a header.  The archiver gives special treatment to the following headers:</p>
 <blockquote>
 <div><ul class="simple">
@@ -352,7 +405,7 @@ be automatically cast on insertion.</p>
 <p><code class="docutils literal notranslate"><span class="pre">connection-expires</span></code> - Optional.  How long the connection should be
 kept alive.  The default is never.</p>
 <p><code class="docutils literal notranslate"><span class="pre">retry-policy</span></code> - Optional. Describes how to retry failed attempts to
-submit the measurement to esmond before giving up.  The default
+submit the measurement to PostgreSQL before giving up.  The default
 behavior is to try once and then give up.</p>
 </section>
 <section id="pscheduler-ref-archivers-archivers-postgresql-example">
@@ -453,7 +506,7 @@ JSON result and disconnects.</p>
 <code class="docutils literal notranslate"><span class="pre">4</span></code> or <code class="docutils literal notranslate"><span class="pre">6</span></code>.  If not provided, the archiver will attempt to guess
 it by querying DNS for an <code class="docutils literal notranslate"><span class="pre">AAAA</span></code> or <code class="docutils literal notranslate"><span class="pre">A</span></code> record, in that order.</p>
 <p><code class="docutils literal notranslate"><span class="pre">retry-policy</span></code> - Optional. Describes how to retry failed attempts to
-submit the measurement to esmond before giving up.  The default
+submit the measurement to the socket before giving up.  The default
 behavior is to try once and then give up.</p>
 </section>
 <section id="pscheduler-ref-archivers-archivers-tcp-example">
@@ -547,6 +600,15 @@ behavior is to try once and then give up.</p>
 <span id="pscheduler-ref-archivers-transforms-examples-alttrace"></span><h4>Alternate JSON with Trace Hop List<a class="headerlink" href="#alternate-json-with-trace-hop-list" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;if (.test.type == </span><span class="se">\&quot;</span><span class="s2">trace</span><span class="se">\&quot;</span><span class="s2">) then { </span><span class="se">\&quot;</span><span class="s2">test</span><span class="se">\&quot;</span><span class="s2">: .test.type, </span><span class="se">\&quot;</span><span class="s2">from</span><span class="se">\&quot;</span><span class="s2">: .participants[0], </span><span class="se">\&quot;</span><span class="s2">to</span><span class="se">\&quot;</span><span class="s2">: .test.spec.dest,  </span><span class="se">\&quot;</span><span class="s2">id</span><span class="se">\&quot;</span><span class="s2">: .id, </span><span class="se">\&quot;</span><span class="s2">start</span><span class="se">\&quot;</span><span class="s2">: .schedule.start, </span><span class="se">\&quot;</span><span class="s2">ips</span><span class="se">\&quot;</span><span class="s2">: [ .result.paths[0] | .[].ip ] } else null end&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="skip-default-local-archiving">
+<h4>Skip default local archiving<a class="headerlink" href="#skip-default-local-archiving" title="Link to this heading">¶</a></h4>
+<p>Requires also setting <code class="docutils literal notranslate"><span class="pre">reference</span></code> in tasks specification like <code class="docutils literal notranslate"><span class="pre">&quot;reference&quot;:</span> <span class="pre">{</span> <span class="pre">&quot;foo_reference&quot;:</span> <span class="pre">true</span> <span class="pre">}</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;if (.task.reference.</span><span class="se">\&quot;</span><span class="s2">foo_reference</span><span class="se">\&quot;</span><span class="s2"> == true) then null else . end&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -1276,7 +1338,10 @@ behavior is to try once and then give up.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#archiving-in-psconfig-templates">Archiving in pSConfig Templates</a></li>
-<li><a class="reference internal" href="#archiving-globally">Archiving Globally</a></li>
+<li><a class="reference internal" href="#archiving-globally">Archiving Globally</a><ul>
+<li><a class="reference internal" href="#archiving-diagnostics">Archiving Diagnostics</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#archivers">Archivers</a><ul>
 <li><a class="reference internal" href="#bitbucket"><code class="docutils literal notranslate"><span class="pre">bitbucket</span></code></a><ul>
 <li><a class="reference internal" href="#archiver-data">Archiver Data</a></li>
@@ -1334,6 +1399,7 @@ behavior is to try once and then give up.</p>
 <li><a class="reference internal" href="#drop-and-transform">Drop and Transform</a></li>
 <li><a class="reference internal" href="#summarize-trace-results">Summarize Trace Results</a></li>
 <li><a class="reference internal" href="#alternate-json-with-trace-hop-list">Alternate JSON with Trace Hop List</a></li>
+<li><a class="reference internal" href="#skip-default-local-archiving">Skip default local archiving</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#transform-input-example">Transform Input Example</a></li>
@@ -1362,7 +1428,7 @@ behavior is to try once and then give up.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -1374,7 +1440,7 @@ behavior is to try once and then give up.</p>
         <li class="right" >
           <a href="pscheduler_ref_tests_tools.html" title="Test and Tool Reference"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Archiver Reference</a></li> 
       </ul>
     </div>
@@ -1419,8 +1485,8 @@ behavior is to try once and then give up.</p>
     </footer>
     
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    &#169; Copyright 2025, perfSONAR Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     </div>
   </body>
 </html>

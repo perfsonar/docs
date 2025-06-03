@@ -15,7 +15,7 @@ On the host where the template is to be published...
 
     *Debian/Ubuntu*::
     
-        apt-get install perfsonar-psconfig-publisher
+        DEBIAN_FRONTEND=noninteractive apt-get install perfsonar-psconfig-publisher
 #. Create a pSConfig template.
 #. Publish the template::
 
@@ -32,7 +32,7 @@ On each host running measurements...
 
     *Debian/Ubuntu*::
     
-        apt-get install perfsonar-psconfig-pscheduler
+        DEBIAN_FRONTEND=noninteractive apt-get install perfsonar-psconfig-pscheduler
 #. Run the following command to point the agent at the template::
 
     psconfig remote add https://MYHOST/psconfig/template.json
@@ -47,7 +47,7 @@ On your Grafana host...
 
     *Debian/Ubuntu*::
     
-        apt-get install perfsonar-psconfig-grafana
+        DEBIAN_FRONTEND=noninteractive apt-get install perfsonar-psconfig-grafana
 #. Run the following command to point the agent at the template::
 
     psconfig remote add https://MYHOST/psconfig/template.json

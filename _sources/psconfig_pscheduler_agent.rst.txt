@@ -92,7 +92,7 @@ The pSConfig pScheduler agent is installed with the package ``perfsonar-psconfig
 
     *Debian/Ubuntu*::
     
-        apt-get install perfsonar-psconfig-pscheduler
+        DEBIAN_FRONTEND=noninteractive apt-get install perfsonar-psconfig-pscheduler
 
 .. _psconfig_pscheduler_agent-bundle:
 
