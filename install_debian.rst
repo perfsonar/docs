@@ -1,5 +1,5 @@
 ***********************************
-Bundle Installation on Debian
+Bundle Installation on Debian and Ubuntu
 ***********************************
 
 perfSONAR combines various sets of measurement tools and services. We provide the whole perfSONAR Toolkit as Debian packages for four different architectures.  This should enable you to deploy a full perfSONAR node on one of the following distributions:
@@ -8,6 +8,7 @@ perfSONAR combines various sets of measurement tools and services. We provide th
 * Debian 12 Bookworm
 * Ubuntu 20 Focal Fossa
 * Ubuntu 22 Jammy Jellyfish
+* Ubuntu 24 Noble Numbat
 
 Debian meta packages are available to install the bundles described in :doc:`install_options`. 
 
@@ -24,7 +25,7 @@ System Requirements
   * ARM64 (arm64)
   * PPC64 (ppc64el)
 
-* **Operating System:**  Any system running a Debian 11 or 12, Ubuntu 20 or 22 server OS is supported.  Other Debian flavours derived from Debian 11 or 12, Ubuntu 20 or 22 might work too but are not officially supported.
+* **Operating System:**  Any system running a Debian 11 or 12, Ubuntu 20, 22 or 24 server OS is supported.  Other Debian flavours derived from Debian 11 or 12, Ubuntu 20, 22 or 24 might work too but are not officially supported.
 
 * See :doc:`install_hardware` for hardware requirements and more.
 
@@ -270,4 +271,15 @@ If you have a perfSONAR host running Ubuntu 20 and you want to upgrade it to 22,
 * Reboot your system one last time.
 
 Alternatively, do a fresh installation of perfSONAR on Ubuntu 22.
+
+Upgrade from Ubuntu 22 to Ubuntu 24
+-----------------------------------
+If you have a perfSONAR host running Ubuntu 22 and you want to upgrade it to 24, we recommend you to follow the following steps:
+
+* Upgrade Ubuntu 22 to Ubuntu 24 (following official instructions, here are `Noble Upgrades notes <https://help.ubuntu.com/community/NobleUpgrades>`_)
+* Reboot your system unless already done in previous step.
+* Run ``apt-get update; apt-get dist-upgrade`` to get the latest version of perfSONAR.
+* Reboot your system one last time.
+
+Alternatively, do a fresh installation of perfSONAR on Ubuntu 24.
 
