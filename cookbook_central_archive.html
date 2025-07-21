@@ -1,19 +1,21 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="./">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Central Archive with Grafana Cookbook &#8212; perfSONAR Toolkit 5.2.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=68f3fa90" />
+    <title>Central Archive with Grafana Cookbook &#8212; perfSONAR Toolkit 5.2.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script src="_static/documentation_options.js?v=2dde5210"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Choosing a Management Method" href="manage_choose.html" />
@@ -47,7 +49,7 @@
     </header>
     <div style="display:block;clear:both;">
     
-    <div class="related" role="navigation" aria-label="Related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -59,8 +61,7 @@
         <li class="right" >
           <a href="manage_update.html" title="Updating perfSONAR"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Central Archive with Grafana Cookbook</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -72,12 +73,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="central-archive-with-grafana-cookbook">
-<h1>Central Archive with Grafana Cookbook<a class="headerlink" href="#central-archive-with-grafana-cookbook" title="Link to this heading">¶</a></h1>
+  <div class="section" id="central-archive-with-grafana-cookbook">
+<h1>Central Archive with Grafana Cookbook<a class="headerlink" href="#central-archive-with-grafana-cookbook" title="Permalink to this headline">¶</a></h1>
 <p>This guide walks-through a standard perfSONAR setup where there are multiple perfSONAR Testpoint hosts writing measurements to central archive from which results can be displayed.</p>
 <p>This guide will assume a setup that looks like the following:</p>
-<a class="reference external image-reference" href="_images/cbca_setup.png"><img alt="_images/cbca_setup.png" src="_images/cbca_setup.png" />
-</a>
+<a class="reference external image-reference" href="_images/cbca_setup.png"><img alt="_images/cbca_setup.png" src="_images/cbca_setup.png" /></a>
 <p>This setup has two types of hosts:</p>
 <ul class="simple">
 <li><p><strong>Archive Host</strong> - A single host where all measurements are stored. In this setup it also runs Grafan for visualizing results.</p></li>
@@ -91,8 +91,8 @@
 <p class="admonition-title">Note</p>
 <p>perfSONAR supports many variations on the architecture above (e.g. Grafana on a different host, running a mixture of Toolkits and testpoints, and many more). This guide strictly focuses on a central archive setup with multiple testpoints for simplicity, but feel free to adapt this guide to your own needs.</p>
 </div>
-<section id="step-1-setup-the-perfsonar-archive-for-storing-measurements">
-<h2>Step 1: Setup the perfSONAR Archive for Storing Measurements<a class="headerlink" href="#step-1-setup-the-perfsonar-archive-for-storing-measurements" title="Link to this heading">¶</a></h2>
+<div class="section" id="step-1-setup-the-perfsonar-archive-for-storing-measurements">
+<h2>Step 1: Setup the perfSONAR Archive for Storing Measurements<a class="headerlink" href="#step-1-setup-the-perfsonar-archive-for-storing-measurements" title="Permalink to this headline">¶</a></h2>
 <p>In this step we’ll setup the <em>archive host</em> store measurements. Specifically we’ll use the <em>perfsonar-archive</em> package to install and setup Logstash and OpenSearch. Follow the steps below:</p>
 <ol class="arabic">
 <li><p>Login via SSH or similar to the command-line of your <strong>archive host</strong>.</p></li>
@@ -143,7 +143,7 @@
         <span class="c1">## There are are many options, some of which are shown below but for full docs see</span>
         <span class="c1">## https://httpd.apache.org/docs/2.4/howto/access.html</span>
         <span class="c1">##</span>
-        <span class="n">Require</span> <span class="n">ip</span> <span class="mf">10.1.1.0</span><span class="o">/</span><span class="mi">24</span>
+        <span class="n">Require</span> <span class="n">ip</span> <span class="mf">10.1</span><span class="o">.</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">24</span>
         <span class="n">Require</span> <span class="n">ip</span> <span class="p">::</span><span class="n">ffff</span><span class="p">:</span><span class="n">a01</span><span class="p">:</span><span class="mi">100</span><span class="o">/</span><span class="mi">120</span>
 
         <span class="o">&lt;/</span><span class="n">RequireAny</span><span class="o">&gt;</span>
@@ -169,9 +169,9 @@
 </ul>
 </div></blockquote>
 <p>We now have a host capable of storing results. We are now ready to setup Grafana so we’ll be able to visualize results.</p>
-</section>
-<section id="step-2-setup-visualization-with-grafana">
-<h2>Step 2: Setup Visualization with Grafana<a class="headerlink" href="#step-2-setup-visualization-with-grafana" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="step-2-setup-visualization-with-grafana">
+<h2>Step 2: Setup Visualization with Grafana<a class="headerlink" href="#step-2-setup-visualization-with-grafana" title="Permalink to this headline">¶</a></h2>
 <p>Now that the host can store measurements, let’s prepare to visualize them. You should perform all of these steps on the <strong>archive host</strong>. Let’s begin:</p>
 <ol class="arabic simple">
 <li><p>The first step is to install a group of packages we’ll need to finish the setup. The commands are OS-dependent:</p></li>
@@ -204,9 +204,9 @@
 </li>
 </ol>
 <p>We now have a working Grafana installation. For now there is not much to show beyond host statistics, but we will revisit this after we have the measurements running. In the next step, we’ll define the measurements to run.</p>
-</section>
-<section id="step-3-creating-your-measurement-configuration-with-psconfig">
-<h2>Step 3: Creating Your Measurement Configuration with pSConfig<a class="headerlink" href="#step-3-creating-your-measurement-configuration-with-psconfig" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="step-3-creating-your-measurement-configuration-with-psconfig">
+<h2>Step 3: Creating Your Measurement Configuration with pSConfig<a class="headerlink" href="#step-3-creating-your-measurement-configuration-with-psconfig" title="Permalink to this headline">¶</a></h2>
 <p>In this step we’ll create a file that defines the measurements we want all the testpoints to run. This is called a <strong>pSConfig Template File</strong>. If you want to learn more about pSConfig templates see <a class="reference internal" href="psconfig_intro.html"><span class="doc">What is pSConfig?</span></a>. In this example we’ll generate the file by hand from a skeleton file then use some helpful utilities to fill-in and publish. Steps are as follows:</p>
 <ol class="arabic">
 <li><p>Create a directory where you will edit the templates:</p>
@@ -379,9 +379,9 @@
 </div>
 </li>
 </ol>
-</section>
-<section id="step-4-publishing-your-measurement-configuration-with-psconfig">
-<h2>Step 4: Publishing Your Measurement Configuration with pSConfig<a class="headerlink" href="#step-4-publishing-your-measurement-configuration-with-psconfig" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="step-4-publishing-your-measurement-configuration-with-psconfig">
+<h2>Step 4: Publishing Your Measurement Configuration with pSConfig<a class="headerlink" href="#step-4-publishing-your-measurement-configuration-with-psconfig" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p>We will now publish the file to a local web server so the testpoints can download it. We do this will the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">publish</span> <span class="n">psconfig</span><span class="o">.</span><span class="n">json</span>
@@ -409,9 +409,9 @@ Execute the following on a host running an agent to use this file:
 </div></blockquote>
 </li>
 </ol>
-</section>
-<section id="step-5-setup-perfsonar-testpoint-hosts">
-<h2>Step 5: Setup perfSONAR Testpoint hosts<a class="headerlink" href="#step-5-setup-perfsonar-testpoint-hosts" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="step-5-setup-perfsonar-testpoint-hosts">
+<h2>Step 5: Setup perfSONAR Testpoint hosts<a class="headerlink" href="#step-5-setup-perfsonar-testpoint-hosts" title="Permalink to this headline">¶</a></h2>
 <p>We will now logout of the archive host and login to a testpoint host. The steps in this section we will repeat for each of our testpoint hosts.</p>
 <ol class="arabic">
 <li><p>Login via SSH or similar to the command-line of the <strong>testpoint host</strong> you want to setup.</p></li>
@@ -437,19 +437,18 @@ Execute the following on a host running an agent to use this file:
 </li>
 <li><p>The testpoint is now setup. Repeat these steps for each testpoint.</p></li>
 </ol>
-</section>
-<section id="step-6-viewing-results">
-<h2>Step 6: Viewing Results<a class="headerlink" href="#step-6-viewing-results" title="Link to this heading">¶</a></h2>
+</div>
+<div class="section" id="step-6-viewing-results">
+<h2>Step 6: Viewing Results<a class="headerlink" href="#step-6-viewing-results" title="Permalink to this headline">¶</a></h2>
 <p>Return to <em>https://ARCHIVE_HOSTNAME/grafana</em>. You should now be able to start viewing results of your measurements. How quickly you see results will depend on the frequency with which you configured tests to run in your JSON file. For example, if you are running <em>latencybg</em> tests you should see results within a few minutes whereas most users run throughput tests every few hours, so they make take longer to appear.</p>
 <img alt="_images/grafana_cookbook-ui-final.png" src="_images/grafana_cookbook-ui-final.png" />
 <p>On the page that loads, you should see a breakdown of the number of tests running by type. You should also see a table summarizing the results of throughput, latency and RTT tests.</p>
 <p>You can also quickly navigate to dashboards configured from your pSConfig file using links in the bottom right menu.</p>
 <p>Feel free to explore the interface but if you have reached this point then you have successfully configured your perfSONAR central archive setup.</p>
-</section>
-</section>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -488,7 +487,7 @@ Execute the following on a host running an agent to use this file:
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="Related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -500,8 +499,7 @@ Execute the following on a host running an agent to use this file:
         <li class="right" >
           <a href="manage_update.html" title="Updating perfSONAR"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Central Archive with Grafana Cookbook</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -545,8 +543,8 @@ Execute the following on a host running an agent to use this file:
     </footer>
     
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2025, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+        &#169; Copyright 2025, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
