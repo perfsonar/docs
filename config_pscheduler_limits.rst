@@ -43,6 +43,23 @@ The contents of the limit file can be either a URL with a scheme
 If the file contains a URL, the content at that location will be
 fetched and its contents will be parsed as shown below.
 
+.. note::
+
+    It is possible to use a proxy when fetching the ``limits.conf`` from a URL.
+    The proxy should be in the format of ``protocol://user:password@hostname:port`` with ``user`` and ``password`` being optional.
+    The proxy string should be provided separately in a new line after the URL.
+
+    Examples::
+
+        https://example.com/limits.conf
+        http://user:password@proxy.example.com:8080
+
+    or::
+
+        https://example.com/limits.conf
+        http://proxy.example.com:8080
+
+
 Whether read directly or fetched, the limit file contains a single
 JSON object with the pairs shown here::
 
@@ -250,6 +267,8 @@ Its ``data`` is an object containing the following pairs:
   list of individual IPs or CIDRs separated by newlines.  Empty lines
   or those beginning with a pound sign (``#``) are treated as
   comments and ignored.
+- ``proxy`` - An optional string indicating the proxy to be used when fetching the URL.
+  The proxy should be in the format of ``protocol://user:password@hostname:port`` with ``user`` and ``password`` being optional.
 - ``update`` - An ISO 8601 duration indicating how often the limit
   processor should attempt to retrieve a new copy of the list from
   the ``source``.
@@ -1135,6 +1154,8 @@ The limit's ``data`` is an object containing the following pairs:
   proposed task may be accessed with ``.task`` and server hints are
   available by calling the ``hint($value)`` function.  The original
   URL can be accessed as ``.url``.
+- ``proxy`` - An optional string indicating the proxy to be used when fetching the URL.
+  The proxy should be in the format of ``protocol://user:password@hostname:port`` with ``user`` and ``password`` being optional.
 - ``bind`` - An optional string indicating the hostname or address to
   which the system should bind when connecting.
 - ``verify-keys`` - An optional boolean indicating whether or not
