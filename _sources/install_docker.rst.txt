@@ -36,7 +36,7 @@ First, pull down the latest Docker image::
 
 This will download the latest built image of the perfsonar testpoint bundle. It includes a base Ubuntu 22.04 install and the perfsonar-testpoint packages. Once the image is downloaded and extracted, start up the container in the background by doing::
 
-  # docker run -td --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /run/lock --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns host perfsonar/testpoint:systemd
+  # docker run -td --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /run/lock --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns host --cap-add CAP_NET_RAW perfsonar/testpoint:systemd
 
 Verify that the container is running::
 
@@ -129,7 +129,7 @@ First, pull down the latest Docker image::
 
 Start the container in the background::
 
-  # docker run -d --name perfsonar-testpoint --net=host perfsonar/testpoint
+  # docker run -d --name perfsonar-testpoint --net=host --cap-add CAP_NET_RAW perfsonar/testpoint
 
 Or you can use `docker Compose <https://docs.docker.com/compose/>`_ to assist in this process.
 
@@ -206,7 +206,7 @@ Once the container ID is known, have docker shut it down::
 
 And now start up the new one. This process is the same as the first time it was started, but now with the newer image it will start up the new version::
 
-  # docker run -td --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /run/lock --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns host perfsonar/testpoint:systemd
+  # docker run -td --name perfsonar-testpoint --net=host --tmpfs /run --tmpfs /run/lock --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns host --cap-add CAP_NET_RAW perfsonar/testpoint:systemd
 
 Your Docker instance of perfsonar-testpoint has now been upgraded to the latest perfSONAR code. 
 

@@ -1,20 +1,21 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Publishing a pSConfig Template &#8212; perfSONAR Toolkit 5.1.3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <title>Publishing a pSConfig Template &#8212; perfSONAR Toolkit 5.2.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/language_data.js"></script>
     
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Running the pSConfig pScheduler Agent" href="psconfig_pscheduler_agent.html" />
@@ -60,8 +61,7 @@
         <li class="right" >
           <a href="psconfig_templates_intro.html" title="Introduction to pSConfig Templates"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Publishing a pSConfig Template</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     </div>
@@ -73,10 +73,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="publishing-a-psconfig-template">
-<h1>Publishing a pSConfig Template<a class="headerlink" href="#publishing-a-psconfig-template" title="Permalink to this heading">¶</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+  <div class="section" id="publishing-a-psconfig-template">
+<h1>Publishing a pSConfig Template<a class="headerlink" href="#publishing-a-psconfig-template" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>After you have <a class="reference internal" href="psconfig_templates_intro.html"><span class="doc">created a template</span></a> you will need to publish your template so that it can be downloaded by agents. You have a number of options for doing so including choosing one of the following:</p>
 <ul class="simple">
 <li><p><strong>Option 1: Using the pSConfig publisher command-line tools.</strong> This is a set of simple command line tools provided by pSConfig that validate the JSON and save a version of it in a standard location under an Apache web server. More details on this method can be found below in the section <a class="reference internal" href="#psconfig-publish-cli"><span class="std std-ref">pSConfig Publisher Command-Line Tools</span></a>.</p></li>
@@ -85,11 +85,11 @@
 <li><p><strong>Option 4: Put the template on the local filesystem of the agent.</strong> You may either point at it directly or use an agent’s template include directory. See the <a class="reference internal" href="psconfig_pscheduler_agent.html"><span class="doc">Running the pSConfig pScheduler Agent</span></a> and <a class="reference internal" href="psconfig_grafana_agent.html"><span class="doc">Running the pSConfig Grafana Agent</span></a> documents for information on how to do so for individual agents.</p></li>
 </ul>
 <p>This document with only cover <em>option 1</em>. If you already have a template, are not using the <a class="reference internal" href="pwa.html"><span class="doc">WebAdmin</span></a> and aren’t sure which of the options to use, then the pSConfig publisher command-line tools are the recommended choice.</p>
-</section>
-<section id="psconfig-publisher-command-line-tools">
-<span id="psconfig-publish-cli"></span><h2>pSConfig Publisher Command-Line Tools<a class="headerlink" href="#psconfig-publisher-command-line-tools" title="Permalink to this heading">¶</a></h2>
-<section id="installing">
-<h3>Installing<a class="headerlink" href="#installing" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="psconfig-publisher-command-line-tools">
+<span id="psconfig-publish-cli"></span><h2>pSConfig Publisher Command-Line Tools<a class="headerlink" href="#psconfig-publisher-command-line-tools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing">
+<h3>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h3>
 <p>The pSConfig publisher command-line tools can be installed separately or part of a perfSONAR bundle. The tools are included by default in the following bundles:</p>
 <ul class="simple">
 <li><p><em>perfsonar-toolkit</em></p></li>
@@ -102,7 +102,7 @@
 </pre></div>
 </div>
 <p><em>Debian/Ubuntu</em>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">publisher</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DEBIAN_FRONTEND</span><span class="o">=</span><span class="n">noninteractive</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">perfsonar</span><span class="o">-</span><span class="n">psconfig</span><span class="o">-</span><span class="n">publisher</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -115,9 +115,9 @@
 <p class="admonition-title">Note</p>
 <p>You may also use <a class="reference external" href="http://">http://</a> in your URL but <a class="reference external" href="https://">https://</a> is recommended. All of the documentation and the command output use https in the displayed URLs.</p>
 </div>
-</section>
-<section id="publishing-a-file-with-psconfig-publish">
-<h3>Publishing a File with <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">publish</span></code><a class="headerlink" href="#publishing-a-file-with-psconfig-publish" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="publishing-a-file-with-psconfig-publish">
+<h3>Publishing a File with <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">publish</span></code><a class="headerlink" href="#publishing-a-file-with-psconfig-publish" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You need to run this command as a <strong>sudo</strong> user since the web directory used by this tool is owned by the <em>perfsonar</em> user and group</p>
@@ -157,9 +157,9 @@ Execute the following on a host running an agent to use this file:
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psconfig</span> <span class="n">publish</span> <span class="o">--</span><span class="n">help</span>
 </pre></div>
 </div>
-</section>
-<section id="viewing-published-files-with-psconfig-published">
-<h3>Viewing Published Files with <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">published</span></code><a class="headerlink" href="#viewing-published-files-with-psconfig-published" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="viewing-published-files-with-psconfig-published">
+<h3>Viewing Published Files with <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">published</span></code><a class="headerlink" href="#viewing-published-files-with-psconfig-published" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You need to run this command as a <strong>sudo</strong> user since the web directory used by this tool is owned by the <em>perfsonar</em> user and group</p>
@@ -178,19 +178,18 @@ Execute the following on a host running an agent to use this file:
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">No</span> <span class="n">files</span> <span class="n">currently</span> <span class="n">published</span>
 </pre></div>
 </div>
-</section>
-<section id="removing-published-files">
-<h3>Removing Published Files<a class="headerlink" href="#removing-published-files" title="Permalink to this heading">¶</a></h3>
+</div>
+<div class="section" id="removing-published-files">
+<h3>Removing Published Files<a class="headerlink" href="#removing-published-files" title="Permalink to this headline">¶</a></h3>
 <p>There is no special tool for unpublishing files. You may do so by removing the file directly from the published directory. If you need help determining the location you may use the <code class="docutils literal notranslate"><span class="pre">psconfig</span> <span class="pre">published</span></code> command. An example of how to delete a file is as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rm</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">perfsonar</span><span class="o">/</span><span class="n">web</span><span class="o">-</span><span class="n">psconfig</span><span class="o">/</span><span class="n">example</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
-            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -243,8 +242,7 @@ Execute the following on a host running an agent to use this file:
         <li class="right" >
           <a href="psconfig_templates_intro.html" title="Introduction to pSConfig Templates"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.1.3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Publishing a pSConfig Template</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.2.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     <footer id="fat">
@@ -288,8 +286,8 @@ Execute the following on a host running an agent to use this file:
     </footer>
     
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2024, perfSONAR Project.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+        &#169; Copyright 2025, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>

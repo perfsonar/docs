@@ -51,7 +51,7 @@ Run the following commands to **enable** automatic updates (must be run as a roo
 
 *Debian/Ubuntu*::
 
-    apt-get install unattended-upgrades
+    DEBIAN_FRONTEND=noninteractive apt-get install unattended-upgrades
     /usr/lib/perfsonar/scripts/system_environment/enable_auto_updates new
     
 Likewise, you may **disable** auto-updates from the command-line by running the following:
