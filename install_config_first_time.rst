@@ -90,4 +90,4 @@ What next?
 You should now have a fully configured host regularly collecting data. A few things you may consider exploring:
 
 * Join the `user <https://lists.internet2.edu/sympa/subscribe/perfsonar-user>`_ or `announce <https://lists.internet2.edu/sympa/subscribe/perfsonar-announce>`_ mailing lists.  
-* Your regular tests record data that can be presented on graphs. To view the results on the toolkit provided graphs see the section :doc:`using_graphs`
+* Your regular tests record data that can be presented on graphs. To view the results on the toolkit provided graphs see the section :doc:`grafana_howto`

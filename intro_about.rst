@@ -95,5 +95,6 @@ In general, no configuration is needed of the registration component but for a g
 .. _iperf2: https://sourceforge.net/projects/iperf2/
 .. _nuttcp: https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/nuttcp/
 .. _traceroute: https://linux.die.net/man/8/traceroute
+.. _paris-traceroute: https://paris-traceroute.net/
 .. _tracepath: https://linux.die.net/man/8/tracepath
 .. _ping: https://linux.die.net/man/8/ping

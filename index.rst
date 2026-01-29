@@ -60,7 +60,18 @@ perfSONAR Toolkit
    manage_security
    manage_limits
    manage_daemons
-   using_graphs
+
+.. _index-grafana:
+
+Visualizing Measurements with Grafana
+--------------------------------------
+.. toctree::
+   :maxdepth: 1
+   
+   grafana_other_archives
+   grafana_importing
+   grafana_howto
+   grafana_own_dashboards
    grafana_cookbook
 
 .. _index-pscheduler:
