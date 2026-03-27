@@ -32,4 +32,4 @@ User-created dashboards folder is also accessible from perfSONAR Main Dashboard 
 
 Building Your Own Line Graph
 ============================
-TBD
+See also :ref:`grafana_cookbook_line_graph`.

@@ -72,6 +72,7 @@ Visualizing Measurements with Grafana
    grafana_importing
    grafana_howto
    grafana_own_dashboards
+   grafana_alerts
    grafana_cookbook
 
 .. _index-pscheduler:

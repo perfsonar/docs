@@ -154,6 +154,8 @@ This step will walkthrough how to import a pre-existing set of dashboards provid
 
 After you have spent some time exploring, proceed to the next section to walkthrough an example of how to build a basic line graph from scratch.
 
+.. _grafana_cookbook_line_graph:
+
 Step 5: Building Your Own Line Graph
 =========================================
 This section will walkthrough how to build a new dashboard and add a line graph that shows maximum packet loss over time for all tests. This is intended to be a very simple example. The steps you follow to add this graph are similar to adding other visualizations, so can be used as a launching point to further customization. The steps for adding a new dashboard with a line graph are as follows:
