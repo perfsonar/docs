@@ -172,6 +172,16 @@ Future Releases
    
    install_rcs
 
+.. _index-add-ons:
+
+Add-ons
+-------
+.. toctree::
+   :maxdepth: 1
+
+   addon_intro
+   addon_microdep
+
 .. _index-further_info:
 
 Further Information
