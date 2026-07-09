@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Importing Dashboards into Existing Grafana &#8212; perfSONAR Toolkit 5.3.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/perfsonar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="How to Use perfSONAR Grafana Dashboards" href="grafana_howto.html" />
+    <link rel="prev" title="Visualising Measurements from other Archives" href="grafana_other_archives.html" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-52RNZ729B1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-52RNZ729B1');
+	</script>
+	 
+
+  </head><body>
+    <header>
+        <div class="headerContents">
+          <a href="index.html" border="0"><img src="_static/perfsonar-logo-black-full-100.png"></a>
+          <div class="acctSearchContainer">
+              <section id="searchBox" class="searchBox">
+                  <!--Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+                  <!--The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+                  <form action="search.html" id="cse-search-box" method="get">
+                    <input type="text" name="q" size="25" class="searchInput" placeholder="Search"/>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </section>
+         </div>
+        </div>
+    </header>
+    <div style="display:block;clear:both;">
+    
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="grafana_howto.html" title="How to Use perfSONAR Grafana Dashboards"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="grafana_other_archives.html" title="Visualising Measurements from other Archives"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.3.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="importing-dashboards-into-existing-grafana">
+<h1>Importing Dashboards into Existing Grafana<a class="headerlink" href="#importing-dashboards-into-existing-grafana" title="Permalink to this headline">¶</a></h1>
+<p>You can use existing Grafana instance to visualize your measurements data from perfSONAR archive. You can either <a class="reference internal" href="#grafana-importing-templates"><span class="std std-ref">import perfSONAR dashboard templates</span></a> into such Grafana and use them to extend your visualizations or <a class="reference internal" href="#grafana-importing-psconfig"><span class="std std-ref">tell local pSConfig agent to set-up additional dashboards</span></a> and data sources in a remote existing Grafana server.</p>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="importing-dashboard-templates-into-existing-grafana">
+<span id="grafana-importing-templates"></span><h2>Importing Dashboard Templates into Existing Grafana<a class="headerlink" href="#importing-dashboard-templates-into-existing-grafana" title="Permalink to this headline">¶</a></h2>
+<p>You can import preconfigured perfSONAR dashboards into your own Grafana instance from perfSONAR repository. perfSONAR provides a few default dashboards with visualizations of your data:</p>
+<ul class="simple">
+<li><p>perfSONAR Endpoint Pair Explorer - enables browsing perfSONAR test results between selected source and destination measurement hosts. The metrics include: throughput, latency, packet loss, jiter, rtt, traceroute hop count and unique results. Test results are presented in both directions.</p></li>
+<li><p>perfSONAR Host Metrics - presents overview of selected measurement host status. This includes the history of perfSONAR services status, basic host hardware and software information and settings, CPU, RAM and disk utilization, pScheduler and pSConfig metrics.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Importing perfSONAR dashboards into existing Grafana may require additional dashboard’s confguration to tailor it to your local environment.</p>
+</div>
+<div class="section" id="download-perfsonar-dashboard">
+<h3>Download perfSONAR Dashboard<a class="headerlink" href="#download-perfsonar-dashboard" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Open the following perfSONAR repository in your web browser:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://github.com/perfsonar/grafana/tree/master/perfsonar-grafana/perfsonar-grafana/dashboards/toolkit">https://github.com/perfsonar/grafana/tree/master/perfsonar-grafana/perfsonar-grafana/dashboards/toolkit</a></p>
+</div></blockquote>
+</li>
+<li><p>Within the browser, click the selected JSON file.</p></li>
+<li><p>On the selected JSON file view page, right-click the <strong>Raw</strong> button in the upper right-hand corner and  click <strong>Save Link as…</strong> which should allow you to save the .json file on your local machine.</p></li>
+</ol>
+</div>
+<div class="section" id="import-a-dashboard">
+<h3>Import a Dashboard<a class="headerlink" href="#import-a-dashboard" title="Permalink to this headline">¶</a></h3>
+<p>To import a dashboard, follow these steps:</p>
+<ol class="arabic">
+<li><p>Login as priviledged user to your Grafana instance.</p></li>
+<li><p>Click <strong>Dashboards</strong> in the menu.</p></li>
+<li><p>Click <strong>New</strong> and select <strong>Import</strong> in the drop-down menu.</p></li>
+<li><p>Perform one of the following steps:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Upload a previously downloaded dashboard JSON file.</p></li>
+<li><p>Paste dashboard JSON text directly into the JSON model text area.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Change UID, if required.</p></li>
+<li><p>Click <strong>Load</strong>.</p>
+<blockquote>
+<div></div></blockquote>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="setting-up-perfsonar-dashboards-in-existing-remote-grafana">
+<span id="grafana-importing-psconfig"></span><h2>Setting-up perfSONAR Dashboards in Existing Remote Grafana<a class="headerlink" href="#setting-up-perfsonar-dashboards-in-existing-remote-grafana" title="Permalink to this headline">¶</a></h2>
+<p>You can point the <cite>psconfig-grafana-agent</cite> at an existing Grafana instance to add/modify dashboards on another remote Grafana instance. The pSConfig Grafana agent will connect to remote host and modify its Grafana instance with perfSONAR dashboards, similarly to the local instance.</p>
+<div class="section" id="in-the-remote-grafana-server">
+<h3>In the Remote Grafana Server<a class="headerlink" href="#in-the-remote-grafana-server" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Log in to the remote Grafana as a user with admin rights and create a Grafana service account following Grafana documentation <a class="reference external" href="https://grafana.com/docs/grafana/latest/administration/service-accounts/">https://grafana.com/docs/grafana/latest/administration/service-accounts/</a>. Assign <em>Admin</em> role to your new service account.</p></li>
+<li><p>Add a token to this service account.</p></li>
+<li><p>Copy the generated token.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about creating service accounts contact the remote Grafana instance administrator.</p>
+</div>
+</div>
+<div class="section" id="in-the-local-archive-and-psconfig-server">
+<h3>In the Local Archive and pSConfig Server<a class="headerlink" href="#in-the-local-archive-and-psconfig-server" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Use the previously created token and set it in your local pSConfig so that it can modify remote Grafana desahboards:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># psconfig agentctl grafana grafana-token &lt;service-account-token&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Point the local <cite>psconfig-grafana-agent</cite> at a remote Grafana instance where dashboards and datasources will be built based on the local pSConfig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># psconfig agentctl grafana grafana-url &lt;remote-grafana-url&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <nav id="channelNav" class="channelNav">
+                
+                <ul>
+<li><a class="reference internal" href="#">Importing Dashboards into Existing Grafana</a><ul>
+<li><a class="reference internal" href="#importing-dashboard-templates-into-existing-grafana">Importing Dashboard Templates into Existing Grafana</a><ul>
+<li><a class="reference internal" href="#download-perfsonar-dashboard">Download perfSONAR Dashboard</a></li>
+<li><a class="reference internal" href="#import-a-dashboard">Import a Dashboard</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#setting-up-perfsonar-dashboards-in-existing-remote-grafana">Setting-up perfSONAR Dashboards in Existing Remote Grafana</a><ul>
+<li><a class="reference internal" href="#in-the-remote-grafana-server">In the Remote Grafana Server</a></li>
+<li><a class="reference internal" href="#in-the-local-archive-and-psconfig-server">In the Local Archive and pSConfig Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                <ul>
+                  <li>
+                  <a href="grafana_other_archives.html">Previous topic</a>
+                  <ul><li><a href="grafana_other_archives.html" title="previous chapter">Visualising Measurements from other Archives</a></li></ul>
+                  </li>
+                </ul>
+                  <ul>
+                      <li>
+                      <a href="grafana_howto.html">Next topic</a>
+                      <ul><li><a href="grafana_howto.html" title="next chapter">How to Use perfSONAR Grafana Dashboards</a></li></ul>
+                      </li>
+                  </ul>
+                
+                
+            </nav>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="grafana_howto.html" title="How to Use perfSONAR Grafana Dashboards"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="grafana_other_archives.html" title="Visualising Measurements from other Archives"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">perfSONAR Toolkit 5.3.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <footer id="fat">
+        <div class="footerContents">
+            <nav id="fatFooterNav" class="fatFooterNav">
+                <ul id="menu-partners" class="menu depth-0">
+                    <li id="footer-partner-text" class="partner-menu">
+                        perfSONAR 
+                        <br>
+                        partners 
+                        <br>
+                        include: 
+                    </li>
+    
+                <li id="footer-partner-esnet" class="partner-menu">
+                    <a href="http://www.es.net/" title="Visit DOE's Energy Sciences Network"><img src="_static/ESnet-ps.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-geant" class="partner-menu">
+                    <a href="http://www.geant.org/" title="Visit GEANT"><img src="_static/geant-ps.png" alt="" style="border:none;"/></a> </li>
+        
+                <li id="footer-partner-iu" class="partner-menu">
+                    <a href="http://www.iu.edu/" title="Visit Indiana University"><img src="_static/IU-ps.png" alt="" style="border:none;"></a> </li>
+
+                <li id="footer-partner-i2" class="partner-menu">
+                    <a href="http://www.internet2.edu/" title="Visit Internet2"><img src="_static/I2-ps.png" alt="" style="border:none;"></a> </li>
+					
+				<li id="footer-partner-rnp" class="partner-menu">
+                    <a href="https://www.rnp.br/en" title="Visit RNP"><img src="_static/rnp.png" alt="" style="border:none;"></a> </li>
+                
+                <li id="footer-partner-um" class="partner-menu">
+                    <a href="http://www.umich.edu/" title="Visit University of Michigan"><img src="_static/UM-ps.png" alt="" style="border:none;"></a> </li>
+
+                </ul>
+
+            </nav>
+            <nav id="minFooterNav" class="minFooterNav">
+                <span class="copyright">PERFormance Service Oriented Network monitoring ARchitecture </span>
+            </nav>
+          
+        </div> <!-- /footerContents -->
+    </footer>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2026, perfSONAR Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>
