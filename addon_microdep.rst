@@ -11,6 +11,46 @@ Installation
 
 *Microdep* is available to install via Linux distribution packages from the package repo of perfSONAR version >= 5.3.0. On Debian based distribution (e.g Debian and Ubuntu) ``sudo apt install <package-name>`` is applied while on Red Hat based distributions (e.g. Alma Linux and Rocky Linux) ``sudo dnf install <package-name>`` is applied.
 
+The three core packages to be installed to enable the Microdep add-on are
+
+  *  *perfsonar-microdep-map* - Web based map GUI
+  *  *perfsonar-microdep-ana* - Analytic scripts reporting anomalities 
+  *  *perfsonar-microdep-archive* - Storage additions to "feed" the analytic scripts and store reported anomality events
+
+Different perfSONAR system architecture are supported for the add-on. Two variant are described below.
+  
+All on one - Toolkit install
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The most straigh forward install of *Microdep* is done on a perfSONAR toolkit host (see :doc:`install_quick_start`), i.e. on a host running a full suit of perfSONAR functionality.
+
+To add *Microdep* run::
+
+    sudo [apt|dnf] install perfsonar-microdep-toolkit
+
+The microdep-toolkit "umbrella" package will ensure the full collection of required packages are installed, i.e. all three mentioned above.
+
+    
+Distributed
+^^^^^^^^^^^
+
+In operatinal larger scale perfSONAR installations system components are typically distributed among several hosts (physical or virtual). One such "hypre distributed" architecture may include a dedicated 
+
+  * *Central measurement archive host* (or cluster) running storage components only (see :doc:`multi_ma_install`)
+  * *User interface host* providing the perfsonar web GUI.
+  * *Measurement configuration host* to manage and distribute mesurement topology configurations to testpoints (measurement hosts, see :doc:`sfds`).
+  * *Analysis host" to run analytic scripts and return misc findings (e.g. anomality events).
+  * *Measurement hosts* (testpoints) running the actual measurements and repoting (raw) results.
+
+Typical installations will often combined one or more of the above mentioned hosts into one ("toolkit" being the extreme case). A perfSONAR "standard central archive" distributed arcitecture (see :doc:`cookbook_central_archive`)      
+
+Conifguration
+-------------
+
+Depending on the overall architecture of the perfSONAR system where the Microdep add-on is desired to operate, differetin      
+
+
+
 
 
 ...THE STUFF BELOW HERE IS JUST A COPY OF PSHCEDULER DOCS...
