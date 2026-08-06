@@ -1,5 +1,0 @@
-**************************************
-BWCTL to pScheduler Command Reference
-**************************************
-
-See http://fasterdata.es.net/performance-testing/network-troubleshooting-tools/pscheduler
