@@ -6,6 +6,8 @@ The  *Microdep* add-on provides a toolset which analyses raw measurements from `
 
 The name "Microdep" stems from the objective to study, on small time scales, dependability variations observed in end-to-end active measurements. The original ambition was to perform measurements accurate enough to do analysis on a microsecond timescale. However, due to limitations on time accuracy of current systems running perfSONAR, analysis is currently on a millisecond timescale. But in the future...
 
+.. _addon_microdep_installation:
+
 Installation
 ------------
 
@@ -19,7 +21,7 @@ The three core packages to be installed to enable the Microdep add-on are
 
 Different perfSONAR system architecture are supported for the add-on. Two variant are described below.
 
-Note that no install will output results "out of the box", i.e. some configuration (see below) is always required.
+Note that no install will output results "out of the box", i.e. some configuration (see :ref:`addon_microdep_configuration`) is always required.
   
 All-on-one / toolkit
 ^^^^^^^^^^^^^^^^^^^^
@@ -91,7 +93,9 @@ The response below should appear::
 	:align: center
 
 Note that an empty plot will appear here if your perfSONAR system has no tasks configured, i.e. you perfSONAR archive has never received results from any tests (or you user interface host cannot access you archive host).
-		
+
+.. _addon_microdep_configuration:
+
 Configuration
 ------------- 
 
@@ -102,12 +106,14 @@ Task configuration may be achived by several means.
   * Via CLI pscheduler may be instructed to initiate tasks directly (see :doc:`pscheduler_intro`).
   * A JSON-file with all data required for task initiation may be composed (in a text editor), verified and published via psConfig (see :doc:`psconfig_intro`).
 
+.. _addon_microdep_raw-output:
+    
 Latency tests - raw output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Microdep analysis of datasets from latencybg-test (i.e. the perfsonar-microdep-gap-ana service) requires raw data to be reported by the owamp tools. To enable raw data output either
+Microdep analysis of data-sets from latencybg-test (i.e. the perfsonar-microdep-gap-ana service) requires raw data to be reported by the latency measurement tools (owamp). To enable raw data either
 
- * tick the *output raw* box in you test specification in psCompose. 
+ * tick the *output raw* box in you test specification in psCompose 
  * add ``--output-raw`` to the pscheduler commandline when initiating a latencybg-test (see :doc:`pscheduler_ref_tests_tools`). 
  * add ``output-raw: true`` in the settings structure of latencybg test specifications in your psConfig JSON file. Example below::
 
@@ -126,10 +132,49 @@ Microdep analysis of datasets from latencybg-test (i.e. the perfsonar-microdep-g
      ...
      }
      
+Connecting hosts - Microdep's data-flow
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+As explained in :ref:`addon_microdep_installation` the *Microdep* addon consists of three core components; a map wed-GUI, analytic services and archiving additions. These components assume the data-flow illustrated below is operational. 
 
+.. image:: images/addon_microdep_data-flow.png
+        :target: _images/addon_microdep_data-flow.png
+        :scale: 75 %
+	:align: center
 
+Test datapackets flow between *testpoint* hosts to performce measurements. Measurement data (raw for latencybg tests) are uploaded to the *archive* host. *Analysis* services download results from the *archive*, process them, and upload record with analytic results. The *map GUI* fetches topology info, analytic results and measurement data for presentation.
 
+Each arrow in the diagram requires configuration.
 
+  * **Testpoint - Testpoint**: Configured in task/test specification (psCompose, psConfig, pScheduler).
+  * **Testpoint - Archive**: Configured in task/test specification (psCompose, psConfig, pScheduler, :ref:`addon_microdep_raw-output`).
+  * **Archive - Analysis**: Specified in yaml-config file for each analytic service.
 
+    * In `/etc/perfsoner/micordep/microdep-gap-ana.yml` for gap analysis (based on latencybg data)::
+       owamp: "https://your.perfsonar.archive.host/opensearch"
+    * In `/etc/perfsoner/micordep/microdep-trace-ana.yml` for traceroute analysis (based on traceroute data)::
+       pssrc: "https://your.perfsonar.archive.host/opensearch"
 
+  * **Analysis - Archive**: Specified in json config file as well a yaml config file for each analytic service.
+    
+    * In `/etc/perfsonar/microdep/microdep-ana-archive.json` for all analytic services. The content should be the archive specification output when running `/usr/local/bin/psconfig_archive_ana.sh` on your archive host. You will need to adjust the `_url:` vaule to match your archive hostname (and probably improve the authentication setup). A example is::
+	{
+            "archiver": "http",
+	    "data": {
+	        "schema": 1,
+                "_url": "https://your.perfsonar.archiv.host/logstash-ana",
+                "verify-ssl": false,
+                "op": "put",
+                "_headers": {
+                    "content-type": "application/json",
+                    "Authorization":"Basic SomeHashValueSomeHashValueSomeHashValue"
+                }
+            }
+        } 
+	
+    * In `/etc/perfsoner/micordep/microdep-gap-ana.yml` for gap analysis (based on latencybg data)::
+       owamp: "https://your.perfsonar.archive.host/opensearch"
+    * In `/etc/perfsoner/micordep/microdep-trace-ana.yml` for traceroute analysis (based on traceroute data)::
+       pssrc: "https://your.perfsonar.archive.host/opensearch"
+       
+ 
