@@ -33,19 +33,65 @@ The ``task`` command has a set of its own options that go before the test type. 
 Running Tests from Other Hosts
 ------------------------------
 
-pScheduler determines where to submits a task based on the test parameters. Where a task needs to be submitted is called the :term:`lead participant`. For many tests run by perfSONAR, a ``--source`` switch which specifies where the test should originate and is also the *lead participant*::
+pScheduler determines where to submit a task based on the test
+parameters.  The system where the task is submitted is called the
+:term:`lead participant`.  For many tests run by perfSONAR, a
+``--source`` or ``--host`` parameter is used to determine the lead
+participant.  Each pScheduler test plugin contains logic to figure
+that out because future tests may use other parameters and the
+``task`` command will ask an :term:`assist server` for the answer.  By
+default, the assist server is the pScheduler server on the local
+system::
+
 
     pscheduler task throughput --source host2 --dest host3
 
-If the example command above is run on *host1*, then the client will submit the task to *host2* and the test will be run between *host2* and *host3*. 
+If the example command above is run on ``host1``, the ``task`` command
+will ask pScheduler server on ``host1`` and it will determine that the
+lead participant is ``host2``.  That is where the task will be submitted.
 
-Not all tests use the source to calculate the lead participant and determining it can get complicated when dealing with things like BWCTL backward compatibility, etc. Luckily, each test plug-in installed on a pScheduler server has the logic required to calculate the lead in the face of this complexity. This does mean though, that the ``pscheduler`` command needs to be able to ask a pScheduler server, called the :term:`assist server`, where a task needs to be submitted. 
+If there is not a pScheduler server on the local host, using the
+``--assist`` option or set the ``PSCHEDULER_ASSIST`` environment
+variable will tell the ``task`` command which server to ask.
 
-By default, the ``pscheduler`` command will assume there is a pScheduler server running on the local host and try to contact that as the default assist server. If there is NOT a pScheduler server on the local host, then you need to use the ``--assist`` flag. For example, say we run the following on *host4* and it does not have a pScheduler server but we know that *host1* does. Our command could be as follows::
+The value of the option or environment variable may be any of the
+following:
+
+    * **A Host/Port Pair** - Any string except those described below.
+      This string will be interpreted as a host with an optional port,
+      e.g., ``host.example.net`` or ``host.example.net:1234``.
+
+    * **A Parameter List** - This is a comma-saperated list of test
+      parameter names to be searched preceded by a dot (e.g.,
+      ``.source,dest``) The value of the first parameter in the list
+      to be found in a command-line argument (checked first) or an
+      imported task (checked second) will be used.
+
+    * **Keyword ``auto``** - Attempt to glean the assist server from
+      appropriate, commonly-used parameters.  This is a convenient
+      shorthand for ``.host-node,source-node,host,source``.
+
+For example, running either of the following on ``host4``, which does
+not have a pScheduler server, would direct the ``task`` command to get
+assistance from ``host1``, which does::
 
     pscheduler task --assist host1 throughput --source host2 --dest host3
-    
-The assist server could just as easily be ``host2`` or ``host3`` if they are also running pScheduler servers. It does not matter where the assist server is as long as it a) has a pScheduler server and b) has the test plugin installed for the type of test you want to run. 
+
+    PSCHEDULER_ASSIST=host1 pscheduler task throughput --source host2 --dest host3
+
+The assist server could just as easily be ``host2`` or ``host3`` if
+they are also running pScheduler servers. It does not matter where the
+assist server is as long as it has a pScheduler server and the test
+plugin installed for the type of test you want to run is installed..
+
+pScheduler can also be directed to pick a value from the command-line
+arguments or an imported task::
+
+    pscheduler task --assist .source,host throughput --source host2 --dest host3
+
+In this case, the test parameters will be scanned for ``source`` and
+``host`` and the first to have a value, ``host2``, will be used.
+
 
 
 .. _pscheduler_client_tasks-tools:
