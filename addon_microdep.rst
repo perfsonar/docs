@@ -92,17 +92,40 @@ The response below should appear::
 
 Note that an empty plot will appear here if your perfSONAR system has no tasks configured, i.e. you perfSONAR archive has never received results from any tests (or you user interface host cannot access you archive host).
 		
-Conifguration
+Configuration
 ------------- 
 
-The current version the *Microdep* add-on performs analysis and reports results based on to type of tests: **traceroute** and **latencybg** ( see :doc:`pscheduler_ref_tests_tools`). Hence for the add-on to output anything of interest at least *one traceroute-task* or one *latencybg-task* needs to be configured to generate input to the analysis components of *Microdep*.
+The current version on the *Microdep* add-on performs analysis and reports results based on to type of tests: **traceroute** and **latencybg** ( see :doc:`pscheduler_ref_tests_tools`). Hence, for the add-on to output anything of interest at least one *traceroute-task* or one *latencybg-task* needs to be configured to generate input to the analysis components of *Microdep*.
 
 Task configuration may be achived by several means.
   * A GUI-based configuration service is available (see :doc:`pscompose`).
   * Via CLI pscheduler may be instructed to initiate tasks directly (see :doc:`pscheduler_intro`).
   * A JSON-file with all data required for task initiation may be composed (in a text editor), verified and published via psConfig (see :doc:`psconfig_intro`).
 
+Latency tests - raw output
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Microdep analysis of datasets from latencybg-test (i.e. the perfsonar-microdep-gap-ana service) requires raw data to be reported by the owamp tools. To enable raw data output either
+
+ * tick the *output raw* box in you test specification in psCompose. 
+ * add ``--output-raw`` to the pscheduler commandline when initiating a latencybg-test (see :doc:`pscheduler_ref_tests_tools`). 
+ * add ``output-raw: true`` in the settings structure of latencybg test specifications in your psConfig JSON file. Example below::
+
+     {
+     ...
+       "tests" : {
+         "my-latencybg-test" : {
+           "spec" : {
+              ...
+              "output-raw" : true,
+              ...
+            },
+            "type" : "latencybg"
+          }
+       }
+     ...
+     }
+     
 
 
 
