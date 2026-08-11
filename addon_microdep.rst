@@ -220,7 +220,7 @@ A *Gap* is defined as a sequence of one or more lost packets. There are two clas
 
 A *Large gap* is considered closed when 5 consequtive packets arrive correctly in sequence (``recover:``).
 
-Event records for *Large gaps* contained a generous collection of data. The often more relevant are:
+Event records for *Large gaps* (with event_type = "gap") contains a generous collection of data. The often more relevant values are:
 
   * **Time lost** (tloss): Downtime in packet flow, i.e. size of gap in milliseconds.
   * **Queueing time** (h_ddelay): Difference between average end-to-end delay of 50 (``win:``) packets ahead of gap and the overall minimum delay observed in a sliding window of last 10000 (``slep:``) packets. 
@@ -230,7 +230,7 @@ Event records for *Large gaps* contained a generous collection of data. The ofte
 
 See also ``/etc/perfsonar/microdep/mapconfig.yml`` on your *User interface* host for descriptions. 
 
-*Small gaps* are only counted and reported in summary event records, typically once per 24h.
+*Small gaps* are only counted and reported in summary event records (event_type = "gapsum"). Such records are output when the *perfsonar-microdep-gap-ana* service is stopped/reset, by default once every 24h.
 
 .. _addon_microdep_jitter-analysis:
 
@@ -248,7 +248,7 @@ Simple moving averages are applied. The expressions imlemented are::
 
 where *D(i,j)* is difference in packet spacing with *Si* and *Ri* being timestamps of packet when sent and received respectively, and *J(i) is jitter after receiving packet number *i*. *W* is a weighting factor set to 16 in RFC3550 but 5 (``rtp:``) in *Microdep*.
 
-Jitter events records are pushed to the same index as gap events , i.e. the **microdep_gap_ana** Opensearch index on the *Archive* host.  The maximum time between a jitter event records is 600 seconds (``jitter:``).
+Jitter events records (with event_type = "jitter") are pushed to the same index as gap events , i.e. the **microdep_gap_ana** Opensearch index on the *Archive* host.  The maximum time between a jitter event records is 600 seconds (``jitter:``).
 
 Queue analysis
 ^^^^^^^^^^^^^^
@@ -269,8 +269,23 @@ The more relevant data for queueing analysis output in jitter records are:
 Route error analysis
 ^^^^^^^^^^^^^^^^^^^^
 
+Microdep search for and report *Route errors* based on output from traceroute tests, both UDP and TCP. A simple anomaly detection algorithm is applied to enable event records output only when the status in a traceroute data set changes significantly.
+
+Event records are pushed to the **microdep_trace_ana** Opensearch index on the *Archive* host.
+
+Parameters controlling *Route error* analysis may be adjusted by editing ``/etc/perfsonar/microdep/microdep-trace-ana.yml``. See ``<param>:`` in text below.
+
+Trace routes are examined for
+  * Missing destination IP in last hop, i.e. never reaching its intended destination
+  * ICMP errors returned from the network
+
+Route error are documented by four type of event records:
+  * **Route warning** (event_type = "routewarn"): An abnormal traceroute, being the (potential) start of a sequence of abnormal traceroutes.
+  * **Route error** (event_type = "routeerr"): An number of abnormal traceroutes (default is 1, ``f_csensitivity:``) has being observed.
+  * **Route normal** (event_type = "routenorm"): The most common traceroute observed, being 30 (``f_majority:``) or more than the second most common, has changed. The now most common traceroute is considered to be normal. 
+  * **Route summary** (event_type = "routesum"): The *perfsonar-microdep-trace-ana* service has been stopped/restarted, triggering the output of a summary event record for the last time period it was running. Default reset interval is 24h.   
+
 Route change analysis
 ^^^^^^^^^^^^^^^^^^^^^
 
 
-..  LocalWords:  jitter
