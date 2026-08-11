@@ -288,4 +288,22 @@ Route error are documented by four type of event records:
 Route change analysis
 ^^^^^^^^^^^^^^^^^^^^^
 
+Map GUI
+-------
+
+Test flow overview map
+^^^^^^^^^^^^^^^^^^^^^^
+
+Summary popup window
+^^^^^^^^^^^^^^^^^^^^
+
+Summaries tables
+^^^^^^^^^^^^^^^^
+
+Traceroute viewer
+^^^^^^^^^^^^^^^^^
+
+Event record plots
+^^^^^^^^^^^^^^^^^^
+
 
