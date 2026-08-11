@@ -2,7 +2,7 @@
 Microdep - Event based analysis
 *******************************
 
-The  *Microdep* add-on provides a toolset which analyses raw measurements from ``latencybg`` amd ``traceroute`` test, and presents results in a map/GIS-based web GUI.
+The  *Microdep* add-on provides a toolset which analyses raw measurements from ``latencybg`` and ``traceroute`` test, and presents results in a map/GIS-based web GUI.
 
 The name "Microdep" stems from the objective to study, on small time scales, dependability variations observed in end-to-end active measurements. The original ambition was to perform measurements accurate enough to do analysis on a microsecond timescale. However, due to limitations on time accuracy of current systems running perfSONAR, analysis is currently on a millisecond timescale. But in the future...
 
@@ -22,7 +22,7 @@ On Red Hat based distributions (e.g. Alma Linux and Rocky Linux) apply::
 The three core packages to be installed to enable the *Microdep* add-on are
 
   *  *perfsonar-microdep-map* - Web based map GUI
-  *  *perfsonar-microdep-ana* - Analytic scripts reporting anomalities 
+  *  *perfsonar-microdep-ana* - Analytic scripts reporting anomalies 
   *  *perfsonar-microdep-archive* - Storage additions to "feed" the analytic scripts and store reported anomality events
 
 The add-on may be install on different perfSONAR system architectures. Two variant are described in the following subsection.
@@ -204,32 +204,73 @@ Note that when install ``perfsonar-microdep-toolkit`` on a perfSONAR *Toolkit* h
 Operation
 ---------
 
-*Microdep* analyses raw results from **latencybg tests**, and results from **traceroute tests**, both UDP and TCP based. The following subsections presents details about what type of analysis is performed and what type of new (aggregated) results are generated.
+*Microdep* analyses raw results from **latencybg tests**, and results from **traceroute tests** (both UDP and TCP based). The following subsections presents some details of the analysis performed and the new (aggregated) results generated.
 
 Gap analysis
 ^^^^^^^^^^^^
 
-Microdep search for *Gaps* in data flows from latencybg tests (i.e. by owamp tools) and generate event records when such are found.
+Microdep search for *Gaps* in data flows from latencybg tests (i.e. by owamp tools) and generate event records when such are found. Event records are pushed to the **microdep_gap_ana** Opensearch index on the *Archive* host.
+
+Parameters controlling Gap analysis may be adjusted by editing ``/etc/perfsonar/microdep/microdep-gap-ana.yml``. See (``<param>:``) in text below.
 
 A *Gap* is defined as a sequence of one or more lost packets. There are two classes of *Gaps*:
 
-  * **Large gaps**: 5 or more consequtive packets are missing (sometimes also called "Big gaps")
-  * **Small gaps**: Less than 5 packets are missing
+  * **Large gaps**: 5 (``minloss:``) or more consequtive packets are missing 
+  * **Small gaps**: Less than 5 (``minloss:``) packets are missing
 
-A *Large gap* is considered closed when 5 consequtive packets arrive correctly in sequence.
-
-The thresholds for gaps may be configured in ``/etc/perfsonar/micordep/microdep-gap-ana.yml`` by adjusting ``minloss:`` and ``recover:``.
+A *Large gap* is considered closed when 5 consequtive packets arrive correctly in sequence (``recover:``).
 
 Event records for *Large gaps* contained a generous collection of data. The often more relevant are:
 
-  *
-  *
+  * **Time lost** (tloss): Downtime in packet flow, i.e. size of gap in milliseconds.
+  * **Queueing time** (h_ddelay): Difference between average end-to-end delay of 50 (``win:``) packets ahead of gap and the overall minimum delay observed in a sliding window of last 10000 (``slep:``) packets. 
+  * **Jitter** (h_jit): Delay variations observed ahead of gap measured as specified by RFC3550 appendix A.8.
+  * **Min delay** (h_min_d): Minimum end-to-end delay seen in a window of 10000  (``slep:``) packets ahead of gap.
+  * **Slope** (h_slope_10): Slope of increase in delay ahead of a gap, based on 10 packets received before gap.
 
-*Small gaps* are only counted and reported in summary records, typically once per 24h.
+See also ``/etc/perfsonar/microdep/mapconfig.yml`` on your *User interface* host for descriptions. 
+
+*Small gaps* are only counted and reported in summary event records, typically once per 24h.
+
+.. _addon_microdep_jitter-analysis:
 
 Jitter analysis
 ^^^^^^^^^^^^^^^
 
+Microdep calculates *Jitter* in data flows from latencybg test (i.e. by owamp tools) by following reccommendations from `RFC3550 <https://datatracker.ietf.org/doc/html/rfc3550#section-6.4.1>`_.
+
+Parameters controlling Jitter analysis may be adjusted by editing ``/etc/perfsonar/microdep/microdep-gap-ana.yml``. See (``<param>:``) in text below.
+
+Simple moving averages are applied. The expressions imlemented are::
+  
+    D(i,j) = (Rj - Ri) - (Sj - Si) = (Rj - Sj) - (Ri - Si)
+    J(i) = J(i-1) + (|D(i-1,i)| - J(i-1))/W
+
+where *D(i,j)* is difference in packet spacing with *Si* and *Ri* being timestamps of packet when sent and received respectively, and *J(i) is jitter after receiving packet number *i*. *W* is a weighting factor set to 16 in RFC3550 but 5 (``rtp:``) in *Microdep*.
+
+Jitter events records are pushed to the same index as gap events , i.e. the **microdep_gap_ana** Opensearch index on the *Archive* host.  The maximum time between a jitter event records is 600 seconds (``jitter:``).
+
 Queue analysis
 ^^^^^^^^^^^^^^
 
+Parameters controlling *Queue* analysis may be adjusted by editing ``/etc/perfsonar/microdep/microdep-gap-ana.yml``. See ``<param>:`` in text below.
+
+As an supplement to jitter measurements Microdep attempts to discover queuing events by looking for radical changes in average end-to-end delay of last 50 (``win:``) packets seen and the minimum end-to-end delay observed in a limited recent time window of 10000 (``slep:``) packets, termed **Queueing time** (or delay difference). Two thresholds apply:
+
+  * When queuing time exceeds 10ms (``ddelay_high:``) significant queuing is considered to take place (i.e. a *queueing event* has started), and an extra jitter event record (see :ref:`addon_microdep_jitter-analysis`) is output presenting jitter (h_jit) and queueing time (h_ddelay) data.
+  * When queuing time returns below 2ms (``ddelay_low:``) queuing is no longer considered significant (i.e. a *queuing event* has concluded), and an extra jitter event record is again output.
+
+The more relevant data for queueing analysis output in jitter records are:
+
+  * **Queueing time** (h_ddelay): Difference between average end-to-end delay of 50 (``win:``) packets ahead of gap and the overall minimum delay observed in a sliding window of last 10000 (``slep:``) packets. 
+  * **Jitter** (h_jit): Delay variations observed ahead of gap measured as specified by RFC3550 appendix A.8.
+  * **Min delay** (h_min_d): Minimum end-to-end delay seen in a window of 10000  (``slep:``) packets ahead of gap.
+
+Route error analysis
+^^^^^^^^^^^^^^^^^^^^
+
+Route change analysis
+^^^^^^^^^^^^^^^^^^^^^
+
+
+..  LocalWords:  jitter
