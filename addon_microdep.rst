@@ -260,9 +260,9 @@ As an supplement to jitter measurements Microdep attempts to discover queuing ev
   * When queuing time exceeds 10ms (``ddelay_high:``) significant queuing is considered to take place (i.e. a *queueing event* has started), and an extra jitter event record (see :ref:`addon_microdep_jitter-analysis`) is output presenting jitter (h_jit) and queueing time (h_ddelay) data.
   * When queuing time returns below 2ms (``ddelay_low:``) queuing is no longer considered significant (i.e. a *queuing event* has concluded), and an extra jitter event record is again output.
 
-The more relevant data for queueing analysis output in jitter records are:
+The more relevant data for queuing analysis output in jitter records are:
 
-  * **Queueing time** (h_ddelay): Difference between average end-to-end delay of 50 (``win:``) packets ahead of gap and the overall minimum delay observed in a sliding window of last 10000 (``slep:``) packets. 
+  * **Queuing time** (h_ddelay): Difference between average end-to-end delay of 50 (``win:``) packets ahead of gap and the overall minimum delay observed in a sliding window of last 10000 (``slep:``) packets. 
   * **Jitter** (h_jit): Delay variations observed ahead of gap measured as specified by RFC3550 appendix A.8.
   * **Min delay** (h_min_d): Minimum end-to-end delay seen in a window of 10000  (``slep:``) packets ahead of gap.
 
@@ -287,6 +287,24 @@ Route error are documented by four type of event records:
 
 Route change analysis
 ^^^^^^^^^^^^^^^^^^^^^
+
+Microdep search for and report *Route changes* based on output from traceroute tests, both UDP and TCP. A cross-entropy based algorithm is applied to detect when a route has changed significantly.
+
+Event records are pushed to the **microdep_trace_ana** Opensearch index on the *Archive* host.
+
+Parameters controlling *Route change* analysis may be adjusted by editing ``/etc/perfsonar/microdep/microdep-trace-ana.yml``. See ``<param>:`` in text below.
+
+The algorithm applied has in short the following steps:
+  * When a new traceroute measurement is available for a peer, a database of counters is updated, counting occurrences of specific IP-address at specific hops in the route.
+  * For each hop on the route a `Monte Carlo estimates of the true cross entropy <https://en.wikipedia.org/wiki/Cross-entropy#Estimation>`_  of the IP-address distributions is calculated.
+  * The (absolute) shift in cross-entropy value, i.e. the *ce-delta*, from previous to current measurement of each hop of a route is also calculated.
+  * A **Route change** event is recorded if one (or more) hops have *ce-delta* above 3.0 (``ce_delta_limit:``), i.e. the a route is considered changed enough to be reported.
+
+In the data set reported by *Route change* event some of the more relevant values are
+  * **no_hops_over_ce_limit**: The total number hops in a route considered changed significantly from earlier traceroute measurements.
+  * **routechange_ip**: IP-address in hop before first hop with high delta-ce value, i.e. the IP-address of router potentially responsible for a route change.
+    * The event record is also enriched with the route-change IP's hostname, ASN, AS-name values.
+  * **ce_delta**: A vector showing all ce-delta values along a route, i.e. indicating which part of a route has been changing (edge v.s. core).
 
 Map GUI
 -------
