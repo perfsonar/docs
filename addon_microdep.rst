@@ -201,6 +201,8 @@ Each arrow in the diagram requires configuration.
 
 Note that when install ``perfsonar-microdep-toolkit`` on a perfSONAR *Toolkit* host the default configuration files for the add-on should ensure operation without additional configuration.
 
+.. _addon_microdep_operation:
+
 Operation
 ---------
 
@@ -323,13 +325,31 @@ The main map GUI is composed of
   * A vertical navigation and search bar to the left. See blue circle in figure above.
   * A tab management bar above the world map. See green circle in figure above.
 
-Test flow overview - world map
+Test flow overview - World map
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+When Microdep's analytic services find new traceroute or latencybg test results in the archive, a number event records may be generated (see :ref:`addon_microdep_operation`). The *world map* in the web user interface utilizes topology event records to present the test flow topology being analyzed. The image below shows such an example topology. 
 
+.. image:: images/addon_microdep_map-gui-grey-flows.png
+        :target: _images/addon_microdep_map-gui-grey-flows.png
+        :scale: 40 %
+	:align: center
+
+Testpoint hosts are place at their geo-coordinates (when available), and grey lines are drawn between the testpoint running mesurements. The lines stay grey until at least one other (none-topoloy) event becomes available.
+
+Note that a flow line only indicate direction and endpoints of measurements. If the *show hop geo path* box is ticked in the navigation bar the map makes an attempt at drawing the actual route taken by the flows.
 
 Summary popup window
 ^^^^^^^^^^^^^^^^^^^^
+
+When clicking on a topology
+
+.. image:: images/addon_microdep_map-gui-popup.png
+        :target: _images/addon_microdep_map-gui-popup.png
+        :scale: 20 %
+	:align: center
+
+
 
 Summaries tables
 ^^^^^^^^^^^^^^^^
