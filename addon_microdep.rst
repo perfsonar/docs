@@ -306,11 +306,27 @@ In the data set reported by *Route change* event some of the more relevant value
     * The event record is also enriched with the route-change IP's hostname, ASN, AS-name values.
   * **ce_delta**: A vector showing all ce-delta values along a route, i.e. indicating which part of a route has been changing (edge v.s. core).
 
-Map GUI
--------
+User interface
+--------------
 
-Test flow overview map
-^^^^^^^^^^^^^^^^^^^^^^
+A dedicated web based user interface to present Microdep event data is available via the ``perfsonar_microdep_map`` packages (see :ref:`addon_microdep_installation`).
+
+A running measurements setup, with traceroute and latencybg test (the latter with *output-raw* enabled, see :ref:`addon_microdep_configuration`) results in a main map GUI similar to the image below
+
+.. image:: images/addon_microdep_main-map-gui-circles.png
+        :target: _images/addon_microdep_main-map-gui-circles.png
+        :scale: 20 %
+	:align: center
+
+The main map GUI is composed of
+  * A world map (Open street map) showing testpoint locations and measurement flows between them. See red circle in figure above.
+  * A vertical navigation and search bar to the left. See blue circle in figure above.
+  * A tab management bar above the world map. See green circle in figure above.
+
+Test flow overview - world map
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
 
 Summary popup window
 ^^^^^^^^^^^^^^^^^^^^
