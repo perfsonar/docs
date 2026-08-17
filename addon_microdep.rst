@@ -81,7 +81,6 @@ Before starting to configure your system to utilize the *Microdep* add-on you ma
 .. image:: images/addon_microdep_empty-map.png
         :target: _images/addon_microdep_empty-map.png
         :scale: 20 %
-	:align: center
 
 **Check status of analysis**. Logg into you analysis host and run::
 
@@ -97,7 +96,6 @@ The response below should appear::
 .. image:: images/addon_microdep_raw-counters.png
         :target: _images/addon_microdep_raw-counters.png
         :scale: 50 %
-	:align: center
 
 Note that an empty plot will appear here if your perfSONAR system has no tasks configured, i.e. you perfSONAR archive has never received results from any tests (or your user interface host cannot access you archive host).
 
@@ -147,7 +145,6 @@ As explained in :ref:`addon_microdep_installation` the *Microdep* add-on consist
 .. image:: images/addon_microdep_data-flow.png
         :target: _images/addon_microdep_data-flow.png
         :scale: 75 %
-	:align: center
 
 Test datapackets flow between *Testpoint* hosts to perform measurements. Measurement data (raw for latencybg tests) are uploaded to the *Archive* host. *Analysis* services download results from the *Archive*, process them, and upload record with analytic results back to the *Archive*. The *Map GUI* fetches topology info, analytic results and measurement data from the *Archive* for presentation.
 
@@ -299,8 +296,8 @@ Parameters controlling *Route change* analysis may be adjusted by editing ``/etc
 The algorithm applied has in short the following steps:
   * When a new traceroute measurement is available for a peer, a database of counters is updated, counting occurrences of specific IP-address at specific hops in the route.
   * For each hop on the route a `Monte Carlo estimates of the true cross entropy <https://en.wikipedia.org/wiki/Cross-entropy#Estimation>`_  of the IP-address distributions is calculated.
-  * The (absolute) shift in cross-entropy value, i.e. the *ce-delta*, from previous to current measurement of each hop of a route is also calculated.
-  * A **Route change** event is recorded if one (or more) hops have *ce-delta* above 3.0 (``ce_delta_limit:``), i.e. the a route is considered changed enough to be reported.
+  * The (absolute) shift in cross-entropy value, i.e. the *ce-delta*, from previous to current measurement of each hop of a route is also calculated. 
+  * A **Route change** event is recorded if one (or more) hops have *ce-delta* above 3.0 (``ce_delta_limit:``), i.e. the route is considered changed enough to be reported.
 
 In the data set reported by *Route change* event some of the more relevant values are
   * **no_hops_over_ce_limit**: The total number hops in a route considered changed significantly from earlier traceroute measurements.
@@ -318,7 +315,6 @@ A running measurements setup, with traceroute and latencybg test (the latter wit
 .. image:: images/addon_microdep_main-map-gui-circles.png
         :target: _images/addon_microdep_main-map-gui-circles.png
         :scale: 20 %
-	:align: center
 
 The main map GUI is composed of
   * A world map (Open street map) showing testpoint locations and measurement flows between them. See red circle in figure above.
@@ -333,9 +329,12 @@ When Microdep's analytic services find new traceroute or latencybg test results 
 .. image:: images/addon_microdep_map-gui-grey-flows.png
         :target: _images/addon_microdep_map-gui-grey-flows.png
         :scale: 40 %
-	:align: center
+.. image:: images/addon_microdep_map-gui-tlr-flows.png
+        :target: _images/addon_microdep_map-gui-tlr-flows.png
+        :scale: 40 %
 
-Testpoint hosts are place at their geo-coordinates (when available), and grey lines are drawn between the testpoint running mesurements. The lines stay grey until at least one other (none-topoloy) event becomes available.
+
+Testpoint hosts are place at their geo-coordinates (when available), and grey lines are drawn between the testpoint running mesurements (left image above). The lines stay grey until at least one other (none-topoloy) event becomes available. *Traffic light rating* (TLR) is then applied to indicate which flow has reported more significat events (right image above). The TLR coloring reflects values for the currently selected *property* in the navigation/search bar.
 
 Note that a flow line only indicate direction and endpoints of measurements. If the *show hop geo path* box is ticked in the navigation bar the map makes an attempt at drawing the actual route taken by the flows.
 
@@ -346,10 +345,9 @@ When clicking on a topology
 
 .. image:: images/addon_microdep_map-gui-popup.png
         :target: _images/addon_microdep_map-gui-popup.png
-        :scale: 20 %
-	:align: center
+        :scale: 40 %
 
-
+More text here...
 
 Summaries tables
 ^^^^^^^^^^^^^^^^
