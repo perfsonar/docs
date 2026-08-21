@@ -317,9 +317,9 @@ A running measurements setup, with traceroute and latencybg test (the latter wit
         :scale: 40 %
 
 The main map GUI is composed of
-  * A world map (Open street map) showing testpoint locations and measurement flows between them. See red circle in figure above.
-  * A vertical navigation and search bar to the left. See blue circle in figure above.
-  * A tab management bar above the world map. See green circle in figure above.
+  * A world map (Open street map) showing testpoint locations and measurement flows between them.
+  * A vertical navigation and search bar to the left.
+  * A tab management bar above the world map.
 
 Test flow overview - World map
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -340,6 +340,8 @@ Testpoint hosts are place at their geo-coordinates (when available), and grey li
 
 Note that a flow line only indicate direction and endpoints of measurements. If the *show hop geo path* box is ticked in the navigation bar the map makes an attempt at drawing the actual geographic route taken by the flows.
 
+.. _addon_microdep_summary-popup: 
+
 Summary popup window
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -347,14 +349,14 @@ On mouse-over of a flow line a small window pops up with basic info about the fl
 
 .. image:: images/addon_microdep_map-gui-popup.png
         :target: _images/addon_microdep_map-gui-popup.png
-        :scale: 40 %
+        :scale: 25 %
 
 The link details windows presents
   * A summary of property values for the flow line selected over the time period set in the navigation bar. Note that for periods shorter than *Day* the summary will have somewhat limited information.
   * A trend diagram for the currently selected property
   * A button for opening a traceroute viewer for the flow in a seperate tab (next to the map).  
-  * A button for showing a list of more significat events orded by the property selected in the navigation bar.
-  * A buttons for opening plots of selected properties, including the one set in the navigation bar, in a seperate tab (next to the map).  
+  * A button for showing a list of more significat events orded by the property selected in the navigation bar. See :ref:`addon_microdep_traceroute-viewer`.
+  * Buttons for opening plots of selected properties, including the one set in the navigation bar, in a seperate tab (next to the map). See :ref:`addon_microdep_property-plots`. 
 
 Summaries tables and heatmap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -381,26 +383,46 @@ A graphical traceroute viewer is available to visualize and study the network to
   * Access *Link details* by clicking a flow line and click on the *Routes* button.
   * Select *Routes* in the tab menu (upper left corner) and then select which peer (flow) to visualize.
 
-The viewer has its own tabs. The images below show example outputs of three of the tabs.
+The viewer has its own tabs, a *Topology* tab, a *Hop stats* tab, a *Traceroute* tab and a *Docs* tab.
 
 .. image:: images/addon_microdep_traceroute-topo.png
         :target: _images/addon_microdep_traceroute-topo.png
         :scale: 20 %
+
+The **Topology** tab (image above) shows a graph based visualization of all traceroutes seen in the selected time period. Each circle represents unique router/host observations and each arrow represents an assumed link between two hosts.
+
+Circles with a * prefixed by a number N indicates a non-responsive host seen at hop N. A green circle labeled *start* represents the source host for the traceroute measurement.
+
+Darkness of color and thickness of lines indicate how frequently a host or link is observed (darker/thicker => more frequent). Legends for the coloring are available to the right indicating number of observations given a color.
+
+A control bar is also available to the right to allow some topology layout manipulations. When a circle is clicked a *Router Details* popup window appears presenting observation statistics and other details of the host/router selected.
+
 .. image:: images/addon_microdep_traceroute-hops.png
         :target: _images/addon_microdep_traceroute-hops.png
         :scale: 20 %
+
+The **Hop stats** tab (image above) shows a table summary of all traceroute observations in the selected time period. Essentially the summary of all info available in popup windows in the *Topology tab*.
+		
 .. image:: images/addon_microdep_traceroute-routes.png
         :target: _images/addon_microdep_traceroute-routes.png
         :scale: 20 %
 
-The **Topology** tab (leftmost image above) shows a graph based visualization of all traceroutes seen in the selected time period. Each circle represents unique router/host observations and each arrow represents an assumed link between two hosts. Circles with a * prefixed by a number N indicates a none responsive host seen at hop N. A green circle labeled *start* represents the source host for the traceroute measurement. Darkness of color and thickness of lines indicate how frequently a host or link is observed (darker/thicker => more frequent). A control bar is available to the right to allow some topology layout manipulations. Legends for the coloring are also shown indicating number of observations. When a circle is clicked a *Router Details* popup window appears presenting observation statistics and other details of the host/router selected.
+The **Traceroute** tab (image above) shows all unique traceroutes observed in selected time period including hop addresses, RTT values and a count for number of identical traceroutes seen. Empty rows imply a missing response for the hop. A collection of unique routes may be compared by checking boxes in the upper right corner of relevant routes followed by clicking *Compare*.
 
-The **Hop stats** tab (center image above) shows a table summary of all traceroute observations in the selected time period. Essentially the summary of all info available in pop up windows in the Topology tab.
+There is also a time navigation bar in the lower part of the *Route* tab which enables movement in time to some degree. Adjustingtime period in the main navigation bar (left side) followed by reopening traceroute views is recommended, though.
 
-The **Traceroute** tab (right image above) shows all unique traceroutes observed including hops, RTT values and a count for number of identical traceroutes seen. Empty rows imply a missing response for the hop. A collection of unique routes may be compared by checking boxes in the upper right corner of relevant routes followed by clicking *Compare*. 
+.. _addon_microdep_property-plots: 
 
-		
-Event record plots
-^^^^^^^^^^^^^^^^^^
+Property plots
+^^^^^^^^^^^^^^^
+
+Time series plots of property values are available via the summary popup windows (see :ref:`addon_microdep_summary-popup`). When clicking a property button a plot is made available in a seperate tab (next to the map).
+
+.. image:: images/addon_microdep_property-plot.png
+        :target: _images/addon_microdep_property-plot.png
+        :scale: 20 %
+
+The plot tab (example above) offers zooming features as well as navigation in time via its own navigation bar in the upper part of the tab. Additional plots may be generated by selecting "Add curve" in the tab navigation bar. Each new plot appears in its own sub-tab.
+
 
 
