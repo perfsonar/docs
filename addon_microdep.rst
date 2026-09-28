@@ -342,6 +342,8 @@ Testpoint hosts are place at their geo-coordinates (when available), and grey li
 
 Note that a flow line only indicates direction and endpoints of measurements. If the *show hop geo path* box is ticked in the navigation bar the map makes an attempt at drawing the actual geographic route taken by the flows.
 
+Clicking a testpoint rather than a flow line offers *Routes to all peers*, which opens the traceroute viewer for every flow from that host at once (see :ref:`addon_microdep_traceroute-tree`).
+
 .. _addon_microdep_summary-popup: 
 
 Summary popup window
@@ -374,44 +376,109 @@ Available tabs are:
   * **Missing**: Presents a table of flow peers where results from only one direction are reported. Note, this feature assumes that symmetric measurements are desired.
   * **Asymmetry**: Presents a table of *to-form* and *from-to* property values of the selected property together for comparison. 
   * **Summary**: Presents a table with all properties of selected event type for all flows in the topology, i.e. the same values available in *Link Detail* popup windows, but for all flows in one table.
-  * **Routes**: Opens a *Traceroute viewer* where collections of traceroutes for selected flows may be inspected. See :ref:`addon_microdep_traceroute-viewer`.
+  * **Routes**: Opens a *Traceroute viewer* where collections of traceroutes for selected flows may be inspected, one flow at a time or several at once. See :ref:`addon_microdep_traceroute-viewer`.
 
-.. _addon_microdep_traceroute-viewer: 
+.. _addon_microdep_traceroute-viewer:
 
 Traceroute viewer
 ^^^^^^^^^^^^^^^^^
 
 A graphical traceroute viewer is available to visualize and study the network topology being measured. To access the viewer either
+
   * Access *Link details* by clicking a flow line in the map and then the *Routes* button.
   * Select *Routes* in the tab menu (upper left corner) and then select which flow (peer) to visualize.
+  * Click a testpoint in the map and select *Routes to all peers* to see every route from that host at once (see :ref:`addon_microdep_traceroute-tree`).
 
-The viewer has its own tabs, a *Topology* tab, a *Hop stats* tab, a *Traceroute* tab and a *Docs* tab.
+The viewer has its own tabs: a *Topology* tab, a *Paths* tab, a *Timeline* tab, a *Hop stats* tab, a *Traceroute* tab and a *Docs* tab. The viewer opens on *Paths*, and the tab you leave it on is remembered for the next flow you open.
+
+All the views share two conventions. Line colour is the *minimum round-trip time the hop adds*, i.e. how much further away the next host is, on a log scale in the three bands hop lengths naturally fall into: below 1 ms for access networks, 1 to 10 ms for a core, above 10 ms for long haul. Line width is the number of traceroutes that took that link. A *Full* / *Simple* switch is available in the *Paths* and *Timeline* tabs, and as a pair of buttons in the *Topology* tab: *Simple* drops the hops that never answered and any host that answers again at the very next hop.
+
+Paths
+"""""
+
+.. image:: images/addon_microdep_traceroute-paths.png
+        :target: _images/addon_microdep_traceroute-paths.png
+        :scale: 20 %
+
+The **Paths** tab (image above) lays every traceroute of the period out by hop: one lane per hop number, the hosts seen at that hop side by side in the lane, and a ribbon between lanes for each link. The width of a ribbon is the number of traceroutes that took it, so the route most traffic follows is simply the thickest band, and the alternatives peel off and rejoin around it. Unlike the force-directed *Topology* view the drawing is deterministic: the same data always produces the same picture.
+
+A *latency profile* stands beside the diagram on the same lanes, showing the median round-trip time per hop on a log scale, with the dominant route accented, the other routes in grey and the minimum to maximum of all traces shaded behind them. Below the two charts a table lists the distinct routes of the period with their share of the traces, their length, the hop at which each leaves the dominant route, and the round-trip time at the end. Clicking a row isolates that route in the diagram.
+
+The control bar offers
+
+  * **Flow**: *Down* lays the path out top to bottom, which reads like the traceroute listing itself and leaves room for a full host name beside every node. *Across* lays it out left to right, showing the whole path in one glance, with names in alternating rows tied to their node by a leader line.
+  * **Detail**: *Full* or *Simple* filtering, as described above.
+  * **Hops**: *Compact* folds a run of hops with no branching into a single segment labelled with its length and the latency it adds; click a segment to open it. *Every hop* shows them all.
+  * **Routes**: how many of the distinct routes the table and the diagram highlight.
+
+Timeline
+""""""""
+
+.. image:: images/addon_microdep_traceroute-timeline.png
+        :target: _images/addon_microdep_traceroute-timeline.png
+        :scale: 20 %
+
+The **Timeline** tab (image above) lays the same traceroutes out by time instead of by hop: one column per traceroute, or per time bin when there are more than fit. Three bands share the time axis.
+
+  * A **route barcode** across the top, coloured by which route each traceroute took, with runs of the same route merged into one block. A change of route, and how long it held, is a change of colour.
+  * A **hop by time heatmap**, one row per host of the reference route, labelled with the hop numbers at which that host is seen. Cell colour is how far above its own minimum for the period the hop's round-trip time was, so a hop that starts queueing changes colour in its row at that moment. Hatching marks a different host than the reference one at that hop, and grey means no reply.
+  * The **round-trip time to the last responding hop** over the period.
+
+Hovering a column reports the time, the route and the hop under the pointer; clicking one isolates that route in the *Paths* tab. *Only changing* limits the rows to the hops where the host changes or the latency moves by a millisecond or more.
+
+Topology
+""""""""
 
 .. image:: images/addon_microdep_traceroute-topo.png
         :target: _images/addon_microdep_traceroute-topo.png
         :scale: 20 %
 
-The **Topology** tab (image above) shows a graph based visualization of all traceroutes seen in the selected time period. Each circle represents unique router/host observations and each arrow represents an assumed link between two hosts.
+The **Topology** tab (image above) shows a graph based visualization of all traceroutes seen in the selected time period. Each circle represents unique router/host observations and each arrow represents an assumed link between two hosts. Circles with a * prefixed by a number N indicate a non-responsive host seen at hop N. The source host of the measurement is marked in green and the destination in amber; a host that ended a traceroute short of the destination keeps a red border.
 
-Circles with a * prefixed by a number N indicates a non-responsive host seen at hop N. A green circle labeled *start* represents the source host for the traceroute measurement.
+Shading of the circles indicates how frequently a host was observed, darker meaning more frequent. Arrow colour and thickness carry the two conventions described above, and the scale to the right of the graph maps colour to the minimum round-trip time a hop adds.
 
-Darkness of color and thickness of lines indicate how frequently a host or link is observed (darker/thicker => more frequent). Legends for the coloring are available to the right indicating number of observations given a color.
+The control column to the right is grouped by what its buttons do.
 
-A control bar is also available to the right to allow some topology layout manipulations. When a circle is clicked a *Router Details* popup window appears presenting observation statistics and other details of the host/router selected.
+  * **Size**: hand the graph the whole screen, or the whole tab.
+  * **Detail**: *Simple* or *Full* filtering. Where *Simple* drops a host, the surviving neighbours are linked directly by a dashed line, so removing a host never cuts the graph in two.
+  * **Layout**: *Layered* places every host in the row of its hop, top down, ordered within the row by where its links come from. No physics is involved, so the drawing is the same on every reload and a long path reads as the chain it is; hosts can still be dragged aside where a row is crowded. *Free* is the force-directed layout, which finds its own shape.
+  * **Forces**, which apply to the free layout only: hold the layout still, let it settle again, or let every link ask for a length matching the minimum round-trip time its hop adds, so the routers of one site gather and the long haul hops stretch.
+  * **Legend**: the colour scale.
+
+Clicking a circle opens a *Router Details* window with observation statistics and other details of the host selected. The arrow keys pan the graph, and scroll the *Paths* and *Timeline* charts, whenever one of these views is on screen.
+
+.. _addon_microdep_traceroute-tree:
+
+Every route from one host
+"""""""""""""""""""""""""
+
+.. image:: images/addon_microdep_traceroute-tree.png
+        :target: _images/addon_microdep_traceroute-tree.png
+        :scale: 20 %
+
+The same viewer can be opened for a whole testpoint rather than a single flow, by clicking a testpoint in the map and selecting *Routes to all peers*, or by ticking flows in the *Peers* list and pressing *Show selected*. Every traceroute the host ran in the period is then drawn as one picture (image above): the hops the routes share merge into a trunk, the peers are the leaves, and each leaf takes the colour its flow line has in the map for the property currently selected in the navigation bar. It shows at a glance which shared hop sits behind the trouble of several peers.
+
+In this mode the *Timeline* tab shows one row per peer rather than per hop, coloured either by the round-trip time to that peer above its minimum, or by which of the peer's routes was taken.
+
+Hop stats
+"""""""""
 
 .. image:: images/addon_microdep_traceroute-hops.png
         :target: _images/addon_microdep_traceroute-hops.png
         :scale: 20 %
 
-The **Hop stats** tab (image above) shows a table summary of all traceroute observations in the selected time period. Essentially the summary of all info available in popup windows in the *Topology tab*.
-		
+The **Hop stats** tab (image above) shows a table summary of all traceroute observations in the selected time period. Essentially the summary of all info available in popup windows in the *Topology* tab.
+
+Traceroute
+""""""""""
+
 .. image:: images/addon_microdep_traceroute-routes.png
         :target: _images/addon_microdep_traceroute-routes.png
         :scale: 20 %
 
 The **Traceroute** tab (image above) shows all unique traceroutes observed in selected time period including hop addresses, RTT values and a count for number of identical traceroutes seen. Empty rows imply a missing response for that hop. A collection of unique routes may be compared by checking boxes in the upper right corner of relevant routes followed by clicking *Compare*.
 
-There is also a time navigation bar in the lower part of the *Route* tab which enables movement in time to some degree. However, adjusting time period in the main navigation bar (left side) followed by re-opening traceroute views is recommended.
+There is also a time navigation bar in the lower part of the viewer which enables movement in time to some degree. However, adjusting time period in the main navigation bar (left side) followed by re-opening traceroute views is recommended.
 
 .. _addon_microdep_property-plots: 
 
