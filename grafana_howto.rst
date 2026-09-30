@@ -86,7 +86,7 @@ The perfSONAR Host Metrics dashboard contains the following panels:
     .. image:: images/grafana_howto_host_metrics1.png
 
 * **Host Metrics**
-    * **Memory** - shows total amount of RAM and configured swap space. It also shows **available** amount of RAM and swap left in the host.
+    * **Memory** - shows **total** amount of RAM (which is the total amount of physical RAM available in the machine) and configured swap space. It also shows **vailable** amount of RAM (which represents the amount of memory that Linux estimates can be allocated to new applications without starting to swap heavily) and swap left in the host.
     * **Average CPU Utilization** - shows average CPU utilization
     * **Network Traffic** - shows network traffic on available interfaces
     * **Disk Free** - shows available (free) disk space in configured filesystems
