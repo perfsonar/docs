@@ -376,7 +376,12 @@ Example
 	    "_headers": {
 	        "Authorization": "mumblemumble",
 	        "Content-Type": "application/json"
-	    }
+	    },
+            "retry-policy": [
+                { "attempts": 1,  "wait": "PT60S"   },
+                { "attempts": 1,  "wait": "PT300S"  },
+                { "attempts": 11, "wait": "PT3600S" }
+            ]
         }
     }
 
