@@ -15,7 +15,7 @@ A number of commented samples may be found in
 ``/usr/share/doc/pscheduler/limit-examples`` on systems with the
 pScheduler bundle installed.  The limit configuration that ships with
 the perfSONAR toolkit may be found `in the toolkit sources
-<https://github.com/perfsonar/toolkit/blob/master/etc/default_service_configs/pscheduler_limits.conf>`_.
+<https://github.com/perfsonar/toolkit/blob/main/toolkit/perfsonar-toolkit/etc/default_service_configs/pscheduler_limits.conf>`_.
 
 
 ****************************
